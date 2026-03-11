@@ -10,11 +10,16 @@ A complete, tested guide for turning the Beelink GTR9 Pro into a local LLM infer
 |-----------|------|
 | CPU | AMD Ryzen AI MAX+ 395 (32 cores / 64 threads, Zen 5) |
 | GPU | Radeon 8060S (gfx1151, RDNA 3.5 integrated GPU) |
-| RAM | 128GB unified memory (~215 GB/s bandwidth) |
+| RAM | 128GB LPDDR5X-8000 unified memory (~256 GB/s bandwidth) |
+| NPU | XDNA 2 (126 AI TOPS) |
+| TDP | 140W (dual-turbine fans + vapor chamber, 32dB) |
+| Storage | 2TB NVMe PCIe 4.0 (up to 7000 MB/s), dual M.2 slots |
+| Connectivity | Dual 10GbE LAN, Dual USB4 (40Gbps), HDMI 2.1, DP 2.1 |
 | WiFi | MediaTek MT7925 (mt7925e) |
-| Storage | NVMe SSD |
+| PSU | Built-in 230W |
+| Price | [$2,699 USD](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395) |
 
-> **Why this hardware?** 128GB unified memory shared between CPU and GPU means you can run **50GB+ models entirely on the GPU** — something an RTX 4090 (24GB VRAM) cannot do. You trade raw speed (~215 GB/s vs ~1 TB/s) for the ability to run much larger, smarter models.
+> **Why this hardware?** 128GB unified memory shared between CPU and GPU means you can run **50GB+ models entirely on the GPU** — something an RTX 4090 (24GB VRAM) cannot do. You trade raw speed (~256 GB/s vs ~1 TB/s) for the ability to run much larger, smarter models. The 140W TDP with vapor chamber cooling means no thermal throttling during sustained inference.
 
 ## Benchmark Results
 
@@ -64,7 +69,7 @@ A complete, tested guide for turning the Beelink GTR9 Pro into a local LLM infer
 | RTX 4090 | ~1008 GB/s | 100-122 | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 | 24 GB | ~$800 used |
 | Apple M4 Max | ~546 GB/s | ~100 (MLX) | 128 GB | ~$4000+ |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **48.4** | **120+ GB** | **~$1500-2000** |
+| **Beelink GTR9 Pro** | **~256 GB/s** | **48.8** | **120+ GB** | **$2,699** |
 | NVIDIA DGX Spark | ~273 GB/s | 38 | 128 GB | ~$3000 |
 
 > The GTR9 Pro **beats the $3000 DGX Spark** on token generation and runs 51GB models that don't fit on any consumer GPU.
