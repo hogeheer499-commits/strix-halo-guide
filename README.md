@@ -18,6 +18,20 @@ A complete, tested guide for turning the Beelink GTR9 Pro into a local LLM infer
 
 ## Benchmark Results
 
+### llama.cpp via ROCm 7.2 HIP (Recommended)
+
+**Qwen3.5-35B-A3B** (Q4_K_M, 19.92 GiB) — self-compiled llama.cpp build 8301, Flash Attention + hipBLASLt:
+
+| pp128 | pp512 | tg128 |
+|-------|-------|-------|
+| 469 | 926 | 48.38 |
+
+**Llama 2 7B** (Q4_K_M, 3.80 GiB) — kyuz0 pre-built binary (build 8189), Flash Attention + hipBLASLt:
+
+| pp128 | pp256 | pp512 | pp1024 | tg128 |
+|-------|-------|-------|--------|-------|
+| 1163 | 1199 | 1261 | 1256 | 45.07 |
+
 ### Ollama + Vulkan (RADV Mesa 26.0.1)
 
 **Qwen3.5-35B-A3B** (Q4_K_M, ~23GB):
@@ -34,13 +48,14 @@ A complete, tested guide for turning the Beelink GTR9 Pro into a local LLM infer
 | 12 tokens | 96 t/s | 38 t/s |
 | 54 tokens | 136 t/s | 37 t/s |
 
-### llama.cpp via ROCm 7.2 (kyuz0 container)
+### ROCm HIP vs Ollama Vulkan (Qwen3.5-35B-A3B)
 
-**Llama 2 7B** (Q4_K_M, 3.80 GiB) with Flash Attention + hipBLASLt:
+| Backend | pp128 | pp512 | tg128 | Notes |
+|---------|-------|-------|-------|-------|
+| **ROCm HIP (llama.cpp)** | **469** | **926** | **48.4** | llama-server, best performance |
+| Ollama Vulkan | ~310 | ~467 | 45.9 | Easiest setup |
 
-| pp128 | pp256 | pp512 | pp1024 | tg128 |
-|-------|-------|-------|--------|-------|
-| 1163 | 1199 | 1261 | 1256 | 45.07 |
+> **ROCm HIP gives +51% prompt eval (pp128), +98% prompt eval (pp512), and +5.4% generation** compared to Ollama Vulkan on the same model.
 
 ### How This Compares
 
@@ -49,7 +64,7 @@ A complete, tested guide for turning the Beelink GTR9 Pro into a local LLM infer
 | RTX 4090 | ~1008 GB/s | 100-122 | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 | 24 GB | ~$800 used |
 | Apple M4 Max | ~546 GB/s | ~100 (MLX) | 128 GB | ~$4000+ |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **45.8** | **120+ GB** | **~$1500-2000** |
+| **Beelink GTR9 Pro** | **~215 GB/s** | **48.4** | **120+ GB** | **~$1500-2000** |
 | NVIDIA DGX Spark | ~273 GB/s | 38 | 128 GB | ~$3000 |
 
 > The GTR9 Pro **beats the $3000 DGX Spark** on token generation and runs 51GB models that don't fit on any consumer GPU.
@@ -202,9 +217,63 @@ tuned-adm active
 
 Expected: `Current active profile: accelerator-performance`
 
-> **Impact:** +5-8% overall performance improvement.
+> **Impact:** +5-8% overall performance improvement. Sets CPU governor to `performance` instead of `powersave`.
 
-### Step 4.2: Upgrade Mesa Vulkan Drivers
+> **WARNING:** After reboot, verify tuned is actually running with `tuned-adm active`. We found it can silently fail to start, leaving the CPU governor on `powersave` — a massive performance loss.
+
+### Step 4.2: Sysctl and Memory Tuning
+
+Create `/etc/sysctl.d/99-llm-performance.conf`:
+
+```bash
+sudo nano /etc/sysctl.d/99-llm-performance.conf
+```
+
+Add:
+
+```
+# Lower swappiness - keep LLM model weights in RAM
+vm.swappiness=10
+
+# Optimize dirty page writeback
+vm.dirty_ratio=40
+vm.dirty_background_ratio=10
+
+# Increase max memory map areas (helps large mmap'd model files)
+vm.max_map_count=2097152
+
+# Network buffer tuning (helps API throughput)
+net.core.rmem_max=16777216
+net.core.wmem_max=16777216
+```
+
+Apply:
+
+```bash
+sudo sysctl --system
+```
+
+### Step 4.3: Enable Transparent Huge Pages
+
+```bash
+echo always | sudo tee /sys/kernel/mm/transparent_hugepage/enabled
+echo 0 | sudo tee /proc/sys/kernel/numa_balancing
+```
+
+To persist across reboots, create `/etc/tmpfiles.d/llm-performance.conf`:
+
+```bash
+sudo nano /etc/tmpfiles.d/llm-performance.conf
+```
+
+Add:
+
+```
+w /sys/kernel/mm/transparent_hugepage/enabled - - - - always
+w /proc/sys/kernel/numa_balancing - - - - 0
+```
+
+### Step 4.4: Upgrade Mesa Vulkan Drivers
 
 The default Mesa on Ubuntu 24.04 (25.2.x) is significantly slower than newer versions. Upgrade to 26.0.1+:
 
@@ -261,7 +330,9 @@ Environment="HIP_VISIBLE_DEVICES=-1"
 Environment="OLLAMA_FLASH_ATTENTION=1"
 Environment="OLLAMA_CONTEXT_LENGTH=8192"
 Environment="AMD_VULKAN_ICD=RADV"
-Environment="OLLAMA_NUM_BATCH=256"
+Environment="VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json"
+Environment="OLLAMA_NUM_BATCH=512"
+Environment="OLLAMA_NUM_PARALLEL=1"
 ```
 
 Save (Ctrl+O, Enter) and exit (Ctrl+X), then restart:
@@ -281,7 +352,9 @@ sudo systemctl restart ollama
 | `OLLAMA_FLASH_ATTENTION=1` | Enable flash attention for faster prompt processing |
 | `OLLAMA_CONTEXT_LENGTH=8192` | Limit context to prevent memory over-allocation |
 | `AMD_VULKAN_ICD=RADV` | Force RADV driver (faster than AMDVLK — see [Driver Comparison](#driver-comparison)) |
-| `OLLAMA_NUM_BATCH=256` | Larger batch size for better throughput on long prompts |
+| `VK_ICD_FILENAMES=...` | Explicitly select RADV ICD (needed when AMDVLK is also installed — `AMD_VULKAN_ICD` alone may not work) |
+| `OLLAMA_NUM_BATCH=512` | Larger batch size for better throughput on long prompts |
+| `OLLAMA_NUM_PARALLEL=1` | Single parallel request for maximum per-request speed |
 
 ### Step 5.3: Pull Models
 
@@ -392,25 +465,92 @@ distrobox create llama-rocm-72 \
 distrobox enter llama-rocm-72
 ```
 
+Inside the container, verify ROCm works:
+
+```bash
+/opt/rocm/bin/rocm-smi  # Should show your gfx1151 GPU
+```
+
+### Step 7.4: Download a Compatible GGUF Model
+
+> **IMPORTANT:** Ollama's GGUF files are NOT compatible with standalone llama.cpp due to different tensor naming conventions. You must download a proper GGUF from HuggingFace.
+
+Install huggingface-hub (on the host, outside the container):
+
+```bash
+pipx install huggingface-hub
+pipx inject huggingface-hub "huggingface-hub[cli]"
+```
+
+Download a compatible Qwen3.5-35B-A3B GGUF:
+
+```bash
+python3 -c "
+from huggingface_hub import hf_hub_download
+hf_hub_download('bartowski/Qwen_Qwen3.5-35B-A3B-GGUF',
+                'Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf',
+                local_dir='$HOME/models/')
+"
+```
+
+> This downloads ~21GB. The model will be accessible inside the container via `~/models/`.
+
+### Step 7.5: Rebuild llama.cpp (For Newer Models)
+
+The kyuz0 pre-built binary (build 8189) is fast but too old for newer models like Qwen3.5. To rebuild:
+
 Inside the container:
 
 ```bash
-rocm-smi  # Should show your gfx1151 GPU
+export PATH=/opt/rocm/bin:$PATH
+cd ~/llama.cpp
+git pull
+rm -rf build && mkdir build && cd build
+cmake .. -DGGML_HIP=ON -DAMDGPU_TARGETS=gfx1151 -DCMAKE_BUILD_TYPE=Release
+make -j$(nproc)
 ```
 
-### Step 7.4: Run llama-bench
+> **Build time:** ~5 minutes with 32 cores.
 
-The container comes with a pre-built, optimized llama.cpp binary:
+> **Note:** The kyuz0 pre-built binary (build 8189) is ~10% faster than self-compiled on small models (Llama 7B) due to undocumented compiler optimizations. However, for newer models like Qwen3.5-35B-A3B, you must use a newer build as the old one lacks support for the `qwen35moe` architecture.
+
+### Step 7.6: Run llama-bench
 
 ```bash
 export ROCBLAS_USE_HIPBLASLT=1
-cd ~/llama.cpp
-./build/bin/llama-bench -m ~/models/your-model.gguf -fa 1 -ngl 999
+cd ~/llama.cpp/build
+./bin/llama-bench -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf -fa on -ngl 999 -p 128,512 -n 128
 ```
 
-> **Important:** The pre-built kyuz0 binary uses the critical compiler flag `--amdgpu-unroll-threshold-local=600`. Self-compiled binaries without this flag are ~5% slower.
+Expected results (Qwen3.5-35B-A3B Q4_K_M):
 
-> **Important:** `ROCBLAS_USE_HIPBLASLT=1` + `-fa 1` gives **+13% prompt processing** and **+8% token generation**.
+| pp128 | pp512 | tg128 |
+|-------|-------|-------|
+| ~469 | ~926 | ~48.4 |
+
+> **Important:** `ROCBLAS_USE_HIPBLASLT=1` + `-fa on` gives **+13% prompt processing** and **+8% token generation**.
+
+### Step 7.7: Run llama-server (API Alternative to Ollama)
+
+For the best inference performance, use `llama-server` instead of Ollama:
+
+Inside the container:
+
+```bash
+export ROCBLAS_USE_HIPBLASLT=1
+cd ~/llama.cpp/build
+./bin/llama-server \
+  -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf \
+  -ngl 999 \
+  -fa on \
+  -c 8192 \
+  --host 0.0.0.0 \
+  --port 8080
+```
+
+The server provides an OpenAI-compatible API at `http://localhost:8080`. You can use it with any OpenAI-compatible client.
+
+> **Performance:** llama-server via ROCm HIP gives **+5.4% generation speed** and **up to 2x faster prompt processing** compared to Ollama Vulkan on the same model.
 
 ---
 
@@ -481,19 +621,23 @@ To force RADV when AMDVLK is installed, set `AMD_VULKAN_ICD=RADV`.
 | Ollama HIP/ROCm | Crashes with "out of memory" on gfx1151 | "Use ROCm backend" | Use Vulkan instead |
 | AMDVLK | 14% slower prompt eval than RADV | "AMDVLK is fastest" | RADV Mesa 26.0.1 is faster |
 | ROCm 7.0 RC | Segfaults on kernel 6.18.14 | "Use ROCm 7 RC" | Use ROCm 7.2 |
-| BIOS VRAM for speed | No speed difference after change | "More GPU VRAM = faster" | Vulkan uses GTT anyway |
+| BIOS VRAM for speed | No speed difference after change | "More GPU VRAM = faster" | Speed stays the same, but you MUST set to lowest (512MB) to make GTT RAM available to the OS — without this, the OS only sees ~31GB |
 
 ### Things That DO Work
 
 | Optimization | Impact | Notes |
 |-------------|--------|-------|
-| Mesa 25.2.8 → 26.0.1 | **+9%** prompt eval | kisak PPA |
-| Flash Attention | **+13%** prompt processing | `-fa 1` or `OLLAMA_FLASH_ATTENTION=1` |
+| **ROCm HIP instead of Vulkan** | **+5% gen, +98% pp512** | llama-server via ROCm container — biggest win |
+| Mesa 25.2.8 → 26.0.1 | **+9%** prompt eval | kisak PPA (Vulkan/Ollama only) |
+| Flash Attention | **+13%** prompt processing | `-fa on` or `OLLAMA_FLASH_ATTENTION=1` |
 | hipBLASLt | **+8%** token generation | `ROCBLAS_USE_HIPBLASLT=1` (ROCm only) |
-| tuned accelerator-performance | **+5-8%** overall | `sudo tuned-adm profile accelerator-performance` |
-| RADV over AMDVLK | **+14%** prompt eval | `AMD_VULKAN_ICD=RADV` |
+| tuned accelerator-performance | **+5-8%** overall | Verify it's running after reboot! |
+| Transparent Huge Pages | marginal | `echo always > /sys/kernel/mm/transparent_hugepage/enabled` |
+| Sysctl tuning | marginal | `vm.swappiness=10`, `vm.max_map_count=2097152` |
+| RADV over AMDVLK | **+14%** prompt eval | Use `VK_ICD_FILENAMES` to force (Vulkan/Ollama only) |
 | BIOS VRAM → 512MB | OS sees 125GB instead of 31GB | No speed change, but makes system usable |
 | `HIP_VISIBLE_DEVICES=-1` | Fixes Ollama crash | Required for Vulkan-only mode |
+| HuggingFace GGUF | Required for llama.cpp | Ollama GGUFs are incompatible with standalone llama.cpp |
 
 ---
 
