@@ -519,16 +519,18 @@ make -j$(nproc)
 ```bash
 export ROCBLAS_USE_HIPBLASLT=1
 cd ~/llama.cpp/build
-./bin/llama-bench -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf -fa on -ngl 999 -p 128,512 -n 128
+./bin/llama-bench -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf -fa on -ngl 999 -mmp 0 -p 128,512 -n 128
 ```
 
 Expected results (Qwen3.5-35B-A3B Q4_K_M):
 
 | pp128 | pp512 | tg128 |
 |-------|-------|-------|
-| ~469 | ~926 | ~48.4 |
+| ~472 | ~922 | ~48.8 |
 
 > **Important:** `ROCBLAS_USE_HIPBLASLT=1` + `-fa on` gives **+13% prompt processing** and **+8% token generation**.
+
+> **Important:** Always use `-mmp 0` (disable mmap) with ROCm GPU backends. With mmap enabled, short prompt eval has high variance and is ~22% slower (388 ± 129 vs 472 ± 15 t/s at pp128) due to page fault overhead. Long prompts (pp512+) are unaffected.
 
 ### Step 7.7: Run llama-server (API Alternative to Ollama)
 
@@ -543,6 +545,7 @@ cd ~/llama.cpp/build
   -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf \
   -ngl 999 \
   -fa on \
+  --no-mmap \
   -c 8192 \
   --host 0.0.0.0 \
   --port 8080
@@ -632,6 +635,7 @@ To force RADV when AMDVLK is installed, set `AMD_VULKAN_ICD=RADV`.
 | Flash Attention | **+13%** prompt processing | `-fa on` or `OLLAMA_FLASH_ATTENTION=1` |
 | hipBLASLt | **+8%** token generation | `ROCBLAS_USE_HIPBLASLT=1` (ROCm only) |
 | tuned accelerator-performance | **+5-8%** overall | Verify it's running after reboot! |
+| Disable mmap (`-mmp 0`) | **+22% pp128**, stable | Eliminates page fault overhead on short prompts (ROCm only) |
 | Transparent Huge Pages | marginal | `echo always > /sys/kernel/mm/transparent_hugepage/enabled` |
 | Sysctl tuning | marginal | `vm.swappiness=10`, `vm.max_map_count=2097152` |
 | RADV over AMDVLK | **+14%** prompt eval | Use `VK_ICD_FILENAMES` to force (Vulkan/Ollama only) |
