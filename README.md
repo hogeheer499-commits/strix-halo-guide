@@ -718,7 +718,10 @@ To force RADV when AMDVLK is installed, set `AMD_VULKAN_ICD=RADV`.
 | rocWMMA | **25% REGRESSION** on ROCm 7.2 + gfx1151 | "Enable for 2x speed" | 980 vs 1291 t/s — do NOT enable |
 | Ollama HIP/ROCm | Crashes with "out of memory" on gfx1151 | "Use ROCm backend" | Use Vulkan instead |
 | AMDVLK | 14% slower prompt eval than RADV | "AMDVLK is fastest" | RADV Mesa 26.0.1 is faster |
-| ROCm 7.0 RC | Segfaults on kernel 6.18.14 | "Use ROCm 7 RC" | Use ROCm 7.2 |
+| ROCm 7.0 RC | Segfaults on kernel 6.18.14 | "Use ROCm 7 RC" | Use ROCm 7.2 or 6.4.4 |
+| Direct-IO (`-dio 1`) | **-6% pp512**, no gen change | "Bypass page cache" | no-mmap (`-mmp 0`) is better |
+| CPU MoE offload (`-ncmoe`) | **-11% to -20% generation** | "Offload MoE to CPU" | GPU-only is fastest — model fits in VRAM |
+| vLLM (GGUF on ROCm) | Engine crashes on gfx1151 | "60% faster than llama.cpp" | GGUF support on ROCm not mature (qwen35moe unsupported) |
 | BIOS VRAM for speed | No speed difference after change | "More GPU VRAM = faster" | Speed stays the same, but you MUST set to lowest (512MB) to make GTT RAM available to the OS — without this, the OS only sees ~31GB |
 
 ### Things That DO Work
