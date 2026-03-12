@@ -667,26 +667,38 @@ Expected results (Qwen3.5-35B-A3B Q4_K_M):
 
 ### Step 7.7: Run llama-server (API Alternative to Ollama)
 
-For the best inference performance, use `llama-server` instead of Ollama:
-
-Inside the container:
+For the best inference performance, use `llama-server` inside a Vulkan AMDVLK container instead of Ollama:
 
 ```bash
-export ROCBLAS_USE_HIPBLASLT=1
-cd ~/llama.cpp/build
-./bin/llama-server \
+distrobox enter llama-vulkan-amdvlk -- llama-server \
   -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf \
   -ngl 999 \
-  -fa on \
+  -fa 1 \
   --no-mmap \
   -c 8192 \
+  -np 1 \
   --host 0.0.0.0 \
   --port 8080
 ```
 
-The server provides an OpenAI-compatible API at `http://localhost:8080`. You can use it with any OpenAI-compatible client.
+The server provides an OpenAI-compatible API at `http://localhost:8080`. Use it with any OpenAI-compatible client (Open WebUI, SillyTavern, Continue.dev, etc.).
 
-> **Performance:** llama-server via ROCm HIP gives **+5.4% generation speed** and **up to 2x faster prompt processing** compared to Ollama Vulkan on the same model.
+| Parameter | Purpose |
+|-----------|---------|
+| `-np 1` | Single parallel slot — maximizes per-request speed (use `-np 4` for multi-user) |
+| `-c 8192` | Context window size (increase for longer conversations, costs ~0.5 t/s per 2K) |
+| `--no-mmap` | Prevents page fault overhead — faster and more stable than mmap |
+| `-fa 1` | Flash Attention — +13% prompt processing |
+
+> **Measured server performance:** **56.3 t/s generation**, **78.7 t/s prompt eval** (91 tokens) — that's **+23% generation** and **+69% prompt processing** compared to Ollama Vulkan on the same model.
+
+For ROCm HIP (alternative):
+
+```bash
+distrobox enter llama-rocm-72 -- bash -c 'ROCBLAS_USE_HIPBLASLT=1 llama-server \
+  -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf \
+  -ngl 999 -fa on --no-mmap -c 8192 -np 1 --host 0.0.0.0 --port 8080'
+```
 
 ---
 
@@ -752,7 +764,7 @@ For Ollama users, force RADV with `AMD_VULKAN_ICD=RADV` and `VK_ICD_FILENAMES=/u
 
 | Issue | Detail | Common Advice | Reality |
 |-------|--------|---------------|---------|
-| rocWMMA (standard) | **25% REGRESSION** at short context | "Enable for 2x speed" | Hurts short-context performance. However, [lhl's tuned branch](https://github.com/lhl/llama.cpp/tree/rocm-wmma-tune) fixes long-context (16K+) regression: +63% pp at 16K, +136% decode at 65K |
+| rocWMMA (standard) | **25% REGRESSION** at short context | "Enable for 2x speed" | Hurts performance on gfx1151. [lhl's tuned branch](https://github.com/lhl/llama.cpp/tree/rocm-wmma-tune) fixes decode regression but is still **2-3% slower** for prompt processing vs standard FA in our testing (up to 8K context). Branch too old for Qwen3.5 models. |
 | Ollama HIP/ROCm | Crashes with "out of memory" on gfx1151 | "Use ROCm backend" | Use Vulkan instead |
 | AMDVLK via Ollama | 14% slower pp than RADV via Ollama | "AMDVLK is fastest" | AMDVLK IS fastest for generation (57.3 t/s), but only via kyuz0 container — NOT via Ollama |
 | ROCm 7.0 RC | Segfaults on kernel 6.18.14 | "Use ROCm 7 RC" | Use ROCm 7.2 or 6.4.4 |
