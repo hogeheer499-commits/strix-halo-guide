@@ -762,6 +762,7 @@ For Ollama users, force RADV with `AMD_VULKAN_ICD=RADV` and `VK_ICD_FILENAMES=/u
 | ROCm env vars tuning | **-38% generation** regression | "GPU_MAX_HW_QUEUES=8 speeds up" | `HIP_FORCE_DEV_KERNARG`, `GPU_MAX_HW_QUEUES`, `HIP_MEM_POOL_SUPPORT` all HURT gfx1151 |
 | Smaller batch size (`-b 256`) | **-37% generation** | "Smaller batches help MoE" | Destroys generation speed. Default `-b 2048 -ub 512` is optimal |
 | RADV with `-ub 1024` | **-8% pp512** | "ub=1024 best for RADV" | ub=512 is faster on Vulkan RADV for MoE models |
+| Speculative decoding | Token mismatch error | "2x faster with draft model" | Qwen3-0.6B special tokens don't match Qwen3.5-35B-A3B — no compatible small draft model exists yet for this MoE family |
 | BIOS VRAM for speed | No speed difference after change | "More GPU VRAM = faster" | Speed stays the same, but you MUST set to lowest (512MB) to make GTT RAM available to the OS — without this, the OS only sees ~31GB |
 
 ### Things That DO Work
