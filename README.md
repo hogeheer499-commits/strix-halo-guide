@@ -1,5 +1,8 @@
 # AMD Strix Halo LLM Optimization Guide — 57 t/s on a $2,699 Mini PC
 
+[![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=social)](https://github.com/hogeheer499-commits/strix-halo-guide)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 **The complete, benchmarked guide to running large language models on AMD Ryzen AI MAX+ 395 (Strix Halo) systems.** Every optimization tested, every dead end documented. Save hours of trial and error.
 
 > **57.3 t/s generation** on Qwen3.5-35B-A3B (35B parameter MoE model) — **51% faster than NVIDIA's $3,000 DGX Spark.** Run 50GB+ models that don't fit on any consumer GPU.
@@ -26,6 +29,38 @@
 - [Key Findings & Corrections](#key-findings--corrections)
 - [Troubleshooting](#troubleshooting)
 - [Credits & References](#credits--references)
+
+---
+
+## Quick Start (TL;DR)
+
+Already have Ubuntu 24.04 running on Strix Halo? Get to 57 t/s in 5 commands:
+
+```bash
+# 1. Install containers
+sudo apt install podman -y
+curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sudo sh
+
+# 2. Create the fastest container (Vulkan AMDVLK)
+distrobox create llama-vulkan-amdvlk \
+  --image docker.io/kyuz0/amd-strix-halo-toolboxes:vulkan-amdvlk \
+  --additional-flags "--device /dev/dri --group-add video --security-opt seccomp=unconfined"
+
+# 3. Download a model
+pip install huggingface-hub
+python3 -c "from huggingface_hub import hf_hub_download; hf_hub_download('bartowski/Qwen_Qwen3.5-35B-A3B-GGUF', 'Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf', local_dir='$HOME/models/')"
+
+# 4. Start the server (OpenAI-compatible API)
+distrobox enter llama-vulkan-amdvlk -- llama-server \
+  -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf \
+  -ngl 999 -fa 1 --no-mmap -c 8192 --host 0.0.0.0 --port 8080
+
+# 5. Chat! (http://localhost:8080 or use any OpenAI client)
+curl http://localhost:8080/v1/chat/completions -H "Content-Type: application/json" \
+  -d '{"model":"qwen","messages":[{"role":"user","content":"Hello!"}]}'
+```
+
+> For the full setup (BIOS, kernel tuning, GPU clocks, +8-15% more speed), follow the phases below.
 
 ---
 
@@ -190,14 +225,14 @@ sudo nano /etc/default/grub
 Set `GRUB_CMDLINE_LINUX_DEFAULT` to:
 
 ```
-GRUB_CMDLINE_LINUX_DEFAULT="quiet splash iommu=pt amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash iommu=pt amdgpu.gttsize=126976 ttm.pages_limit=32505856 amdgpu.cwsr_enable=0"
 ```
 
 | Parameter | Purpose |
 |-----------|---------|
 | `iommu=pt` | IOMMU passthrough mode — reduces overhead without disabling security |
-| `amdgpu.gttsize=131072` | Set GTT (GPU-accessible system memory) to 128GB |
-| `ttm.pages_limit=31457280` | Set TTM page limit to ~120GB |
+| `amdgpu.gttsize=126976` | Set GTT (GPU-accessible system memory) to ~124GB (matches available RAM after BIOS reserves ~4GB) |
+| `ttm.pages_limit=32505856` | Set TTM page limit to 124GB (~32.5M pages × 4KB) |
 | `amdgpu.cwsr_enable=0` | Disable compute wave save/restore (not needed for LLM inference) |
 
 Apply:
@@ -215,9 +250,9 @@ sudo nano /etc/modprobe.d/amdgpu_llm_optimized.conf
 Add:
 
 ```
-options amdgpu gttsize=122800
-options ttm pages_limit=31457280
-options ttm page_pool_size=31457280
+options amdgpu gttsize=126976
+options ttm pages_limit=32505856
+options ttm page_pool_size=32505856
 ```
 
 Update initramfs:
@@ -875,6 +910,18 @@ sudo tuned-adm profile accelerator-performance
 - [Strix Halo HomeLab Wiki](https://strixhalo-homelab.d7.wtf/) — Community Discord and wiki for edge cases
 - [kisak-mesa PPA](https://launchpad.net/~kisak/+archive/ubuntu/kisak-mesa) — Latest Mesa drivers for Ubuntu
 - [GPUOpen-Drivers/AMDVLK](https://github.com/GPUOpen-Drivers/AMDVLK) — AMD open-source Vulkan driver
+
+---
+
+## Contributing
+
+Found an optimization we missed? Have benchmark results from a different Strix Halo system? Contributions are welcome!
+
+- **Report findings:** Open an [issue](https://github.com/hogeheer499-commits/strix-halo-guide/issues) with your benchmark numbers
+- **Submit improvements:** PRs welcome — include before/after benchmarks
+- **Share your system:** Tested on Framework Desktop, GMKtec EVO-X2, or another Strix Halo system? Let us know your numbers
+
+If this guide saved you time, consider giving it a star — it helps others find it.
 
 ---
 
