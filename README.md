@@ -23,19 +23,45 @@ A complete, tested guide for turning the Beelink GTR9 Pro into a local LLM infer
 
 ## Benchmark Results
 
-### llama.cpp via ROCm 7.2 HIP (Recommended)
+All benchmarks: GPU clocks forced high (2900 MHz), `--no-mmap`, `ROCBLAS_USE_HIPBLASLT=1`, Flash Attention on.
 
-**Qwen3.5-35B-A3B** (Q4_K_M, 19.92 GiB), GPU clocks forced high, no-mmap, hipBLASLt:
+### Qwen3.5-35B-A3B (Q4_K_M, 19.92 GiB) — Full Comparison
 
-| Binary | FA | pp128 | pp512 | tg128 | Best for |
-|--------|-----|-------|-------|-------|----------|
-| Self-compiled (b8301) | on | 488 | **996** | 48.8 | Prompt processing |
-| kyuz0 pre-built (b8298) | on | 306 | 520 | **55.3** | Token generation |
-| kyuz0 pre-built (b8298) | off | 352 | 524 | 53.8 | Balanced |
+| Backend | Binary | pp64 | pp128 | pp256 | pp512 | pp1024 | pp2048 | tg128 | tg256 | tg512 |
+|---------|--------|------|-------|-------|-------|--------|--------|-------|-------|-------|
+| **ROCm 7.2 HIP** | Self-compiled (b8301) | 473 | 504 | 735 | **996** | **929** | **919** | 48.5 | — | — |
+| **ROCm 6.4.4 HIP** | kyuz0 pre-built (b8298) | 436 | **472** | **680** | 672 | 653 | 828 | 52.0 | 51.8 | 52.1 |
+| **ROCm 7.2 HIP** | kyuz0 pre-built (b8298) | 452 | 348 | 440 | 507 | 499 | 488 | **55.6** | **54.8** | **55.0** |
+| **Ollama Vulkan** | RADV Mesa 26.0.1 | — | ~224 | — | ~467 | — | — | 45.8 | — | — |
 
-> **Trade-off:** The kyuz0 pre-built binary generates **+13% faster** (55.3 vs 48.8 t/s) but processes prompts **48% slower** (520 vs 996 t/s). Choose based on your workload: long conversations benefit from faster generation, while RAG/search benefits from faster prompt processing.
+> **Key finding: ROCm 6.4.4 gives +33% faster prompt processing** than ROCm 7.2 with the same pre-built binary (672 vs 507 t/s at pp512), but **-6.5% slower generation** (52.0 vs 55.6 t/s). Self-compiled ROCm 7.2 still has the best prompt processing (996 t/s) due to custom compiler optimizations.
 
-**Llama 2 7B** (Q4_K_M, 3.80 GiB) — kyuz0 pre-built binary (build 8189), Flash Attention + hipBLASLt:
+> **Choose your backend:**
+> - **Interactive chat** (fast responses): ROCm 7.2 kyuz0 pre-built → **55.6 t/s generation**
+> - **RAG / long context**: Self-compiled ROCm 7.2 → **996 t/s prompt processing**
+> - **Balanced workload**: ROCm 6.4.4 kyuz0 pre-built → good at both (672 pp512, 52 tg128)
+> - **Easy setup**: Ollama Vulkan → 45.8 t/s, no containers needed
+
+### Ubatch Size Impact (Qwen3.5-35B-A3B, ROCm 7.2 kyuz0)
+
+| ubatch | pp512 (t/s) | tg128 (t/s) | Notes |
+|--------|-------------|-------------|-------|
+| 128 | 288 | 54.9 | Too small for MoE |
+| 256 | 389 | 54.4 | Good balance |
+| **512** | **507** | **55.6** | **Optimal for MoE models** |
+| 1024 | 191 | 25.3 | Too large, causes stalls |
+
+> **Recommendation:** Use `ubatch=512` for MoE models like Qwen3.5-35B-A3B. Larger ubatch sizes cause severe performance degradation.
+
+### Llama 2 7B (Q4_K_M, 3.80 GiB) — Dense Model Comparison
+
+Self-compiled ROCm 7.2 (b8301), Flash Attention + hipBLASLt:
+
+| pp128 | pp256 | pp512 | pp1024 | tg128 |
+|-------|-------|-------|--------|-------|
+| 1183 | — | 1215 | 1082 | 40.87 |
+
+kyuz0 pre-built ROCm 7.2 (b8189):
 
 | pp128 | pp256 | pp512 | pp1024 | tg128 |
 |-------|-------|-------|--------|-------|
@@ -57,16 +83,15 @@ A complete, tested guide for turning the Beelink GTR9 Pro into a local LLM infer
 | 12 tokens | 96 t/s | 38 t/s |
 | 54 tokens | 136 t/s | 37 t/s |
 
-### ROCm HIP vs Ollama Vulkan (Qwen3.5-35B-A3B)
+### ROCm Version Comparison Summary
 
-| Backend | pp128 | pp512 | tg128 | Notes |
-|---------|-------|-------|-------|-------|
-| **ROCm HIP kyuz0 (b8298)** | 306 | 520 | **55.3** | Best generation speed |
-| **ROCm HIP self-compiled (b8301)** | **488** | **996** | 48.8 | Best prompt processing |
-| Ollama Vulkan (high clocks) | ~224 | ~467 | 47.5 | Easiest setup |
-| Ollama Vulkan (low clocks) | ~310 | ~467 | 45.9 | Default (GPU clock bug) |
+| ROCm Version | pp512 (kyuz0 b8298) | tg128 (kyuz0 b8298) | Verdict |
+|-------------|---------------------|---------------------|---------|
+| **ROCm 7.2** | 507 | **55.6** | Best generation |
+| **ROCm 6.4.4** | **672** (+33%) | 52.0 (-6.5%) | Best prompt processing (pre-built) |
+| ROCm 7.0 RC | — | — | Segfaults on kernel 6.18.14 |
 
-> **ROCm HIP gives +51% prompt eval (pp128), +98% prompt eval (pp512), and +5.4% generation** compared to Ollama Vulkan on the same model.
+> **ROCm HIP gives +51% prompt eval (pp128), +114% prompt eval (pp512), and +21% generation** compared to Ollama Vulkan on the same model.
 
 ### How This Compares
 
@@ -75,10 +100,10 @@ A complete, tested guide for turning the Beelink GTR9 Pro into a local LLM infer
 | RTX 4090 | ~1008 GB/s | 100-122 | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 | 24 GB | ~$800 used |
 | Apple M4 Max | ~546 GB/s | ~100 (MLX) | 128 GB | ~$4000+ |
-| **Beelink GTR9 Pro** | **~256 GB/s** | **55.3** | **120+ GB** | **$2,699** |
+| **Beelink GTR9 Pro** | **~256 GB/s** | **55.6** | **120+ GB** | **$2,699** |
 | NVIDIA DGX Spark | ~273 GB/s | 38 | 128 GB | ~$3000 |
 
-> The GTR9 Pro **beats the $3000 DGX Spark** on token generation and runs 51GB models that don't fit on any consumer GPU.
+> The GTR9 Pro **beats the $3000 DGX Spark by 46%** on token generation and runs 51GB models that don't fit on any consumer GPU.
 
 ---
 
@@ -509,13 +534,25 @@ curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sudo
 
 > **Note:** Ubuntu 24.04 does not include `toolbox` in its repos. Use **Distrobox** instead.
 
-### Step 7.2: Create the ROCm 7.2 Container
+### Step 7.2: Create a ROCm Container
+
+**ROCm 7.2** — Best generation speed (55.6 t/s):
 
 ```bash
 distrobox create llama-rocm-72 \
-  --image docker.io/kyuz0/amd-strix-halo-toolboxes:llama-rocm-72 \
-  --additional-flags "--device /dev/dri --device /dev/kfd --group-add video --group-add render --group-add sudo --security-opt seccomp=unconfined"
+  --image docker.io/kyuz0/amd-strix-halo-toolboxes:rocm-7.2 \
+  --additional-flags "--device /dev/dri --device /dev/kfd --group-add video --group-add render --security-opt seccomp=unconfined"
 ```
+
+**ROCm 6.4.4** — Better prompt processing (+33%), slightly slower generation (-6.5%):
+
+```bash
+distrobox create llama-rocm-644 \
+  --image docker.io/kyuz0/amd-strix-halo-toolboxes:rocm-6.4.4 \
+  --additional-flags "--device /dev/dri --device /dev/kfd --group-add video --group-add render --security-opt seccomp=unconfined"
+```
+
+> **Which to choose?** ROCm 7.2 for interactive chat (fastest generation). ROCm 6.4.4 for RAG/search workloads (faster prompt processing). Both containers include pre-built llama.cpp binaries.
 
 ### Step 7.3: Enter and Test
 
@@ -688,7 +725,8 @@ To force RADV when AMDVLK is installed, set `AMD_VULKAN_ICD=RADV`.
 
 | Optimization | Impact | Notes |
 |-------------|--------|-------|
-| **ROCm HIP instead of Vulkan** | **+5% gen, +98% pp512** | llama-server via ROCm container — biggest win |
+| **ROCm HIP instead of Vulkan** | **+21% gen, +114% pp512** | llama-server via ROCm container — biggest win |
+| **ROCm 6.4.4 instead of 7.2** | **+33% pp512** (pre-built) | Trade-off: -6.5% generation speed |
 | Force GPU high clocks | **+8% pp512** | Fixes AMD driver bug where GPU stays at 900 MHz |
 | Mesa 25.2.8 → 26.0.1 | **+9%** prompt eval | kisak PPA (Vulkan/Ollama only) |
 | Flash Attention | **+13%** prompt processing | `-fa on` or `OLLAMA_FLASH_ATTENTION=1` |
