@@ -25,11 +25,15 @@ A complete, tested guide for turning the Beelink GTR9 Pro into a local LLM infer
 
 ### llama.cpp via ROCm 7.2 HIP (Recommended)
 
-**Qwen3.5-35B-A3B** (Q4_K_M, 19.92 GiB) — self-compiled llama.cpp build 8301, Flash Attention + hipBLASLt:
+**Qwen3.5-35B-A3B** (Q4_K_M, 19.92 GiB), GPU clocks forced high, no-mmap, hipBLASLt:
 
-| pp128 | pp512 | tg128 |
-|-------|-------|-------|
-| 469 | 926 | 48.38 |
+| Binary | FA | pp128 | pp512 | tg128 | Best for |
+|--------|-----|-------|-------|-------|----------|
+| Self-compiled (b8301) | on | 488 | **996** | 48.8 | Prompt processing |
+| kyuz0 pre-built (b8298) | on | 306 | 520 | **55.3** | Token generation |
+| kyuz0 pre-built (b8298) | off | 352 | 524 | 53.8 | Balanced |
+
+> **Trade-off:** The kyuz0 pre-built binary generates **+13% faster** (55.3 vs 48.8 t/s) but processes prompts **48% slower** (520 vs 996 t/s). Choose based on your workload: long conversations benefit from faster generation, while RAG/search benefits from faster prompt processing.
 
 **Llama 2 7B** (Q4_K_M, 3.80 GiB) — kyuz0 pre-built binary (build 8189), Flash Attention + hipBLASLt:
 
@@ -57,8 +61,10 @@ A complete, tested guide for turning the Beelink GTR9 Pro into a local LLM infer
 
 | Backend | pp128 | pp512 | tg128 | Notes |
 |---------|-------|-------|-------|-------|
-| **ROCm HIP (llama.cpp)** | **469** | **926** | **48.4** | llama-server, best performance |
-| Ollama Vulkan | ~310 | ~467 | 45.9 | Easiest setup |
+| **ROCm HIP kyuz0 (b8298)** | 306 | 520 | **55.3** | Best generation speed |
+| **ROCm HIP self-compiled (b8301)** | **488** | **996** | 48.8 | Best prompt processing |
+| Ollama Vulkan (high clocks) | ~224 | ~467 | 47.5 | Easiest setup |
+| Ollama Vulkan (low clocks) | ~310 | ~467 | 45.9 | Default (GPU clock bug) |
 
 > **ROCm HIP gives +51% prompt eval (pp128), +98% prompt eval (pp512), and +5.4% generation** compared to Ollama Vulkan on the same model.
 
@@ -69,7 +75,7 @@ A complete, tested guide for turning the Beelink GTR9 Pro into a local LLM infer
 | RTX 4090 | ~1008 GB/s | 100-122 | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 | 24 GB | ~$800 used |
 | Apple M4 Max | ~546 GB/s | ~100 (MLX) | 128 GB | ~$4000+ |
-| **Beelink GTR9 Pro** | **~256 GB/s** | **48.8** | **120+ GB** | **$2,699** |
+| **Beelink GTR9 Pro** | **~256 GB/s** | **55.3** | **120+ GB** | **$2,699** |
 | NVIDIA DGX Spark | ~273 GB/s | 38 | 128 GB | ~$3000 |
 
 > The GTR9 Pro **beats the $3000 DGX Spark** on token generation and runs 51GB models that don't fit on any consumer GPU.
@@ -226,7 +232,54 @@ Expected: `Current active profile: accelerator-performance`
 
 > **WARNING:** After reboot, verify tuned is actually running with `tuned-adm active`. We found it can silently fail to start, leaving the CPU governor on `powersave` — a massive performance loss.
 
-### Step 4.2: Sysctl and Memory Tuning
+### Step 4.2: Force GPU High Performance Clocks
+
+> **CRITICAL:** Due to a [known AMD driver bug](https://github.com/ROCm/ROCm/issues/5750), the GPU may stay stuck at ~900 MHz instead of ramping to the full 2900 MHz under compute load. This causes **significant performance loss** for prompt processing (+8% pp512 when fixed).
+
+Check current GPU clock:
+
+```bash
+cat /sys/class/drm/card*/device/pp_dpm_sclk
+```
+
+If the `*` is next to a low clock (600-900 MHz) instead of the highest, force high performance:
+
+```bash
+echo high | sudo tee /sys/class/drm/card1/device/power_dpm_force_performance_level
+```
+
+To persist across reboots, create a systemd service:
+
+```bash
+sudo nano /etc/systemd/system/gpu-high-clocks.service
+```
+
+Add:
+
+```ini
+[Unit]
+Description=Force AMD GPU to high performance clocks
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c 'echo high > /sys/class/drm/card1/device/power_dpm_force_performance_level'
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Enable:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable gpu-high-clocks.service
+```
+
+> **Note:** This increases idle power consumption. The GPU will always run at maximum clocks. For a dedicated LLM inference machine, this is the correct trade-off.
+
+### Step 4.3: Sysctl and Memory Tuning
 
 Create `/etc/sysctl.d/99-llm-performance.conf`:
 
@@ -636,6 +689,7 @@ To force RADV when AMDVLK is installed, set `AMD_VULKAN_ICD=RADV`.
 | Optimization | Impact | Notes |
 |-------------|--------|-------|
 | **ROCm HIP instead of Vulkan** | **+5% gen, +98% pp512** | llama-server via ROCm container — biggest win |
+| Force GPU high clocks | **+8% pp512** | Fixes AMD driver bug where GPU stays at 900 MHz |
 | Mesa 25.2.8 → 26.0.1 | **+9%** prompt eval | kisak PPA (Vulkan/Ollama only) |
 | Flash Attention | **+13%** prompt processing | `-fa on` or `OLLAMA_FLASH_ATTENTION=1` |
 | hipBLASLt | **+8%** token generation | `ROCBLAS_USE_HIPBLASLT=1` (ROCm only) |
