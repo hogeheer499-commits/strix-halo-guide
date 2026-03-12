@@ -1,8 +1,33 @@
-# Optimal Ubuntu 24.04 Setup Roadmap for Beelink GTR9 Pro (Ryzen AI MAX+ 395)
+# AMD Strix Halo LLM Optimization Guide — 57 t/s on a $2,699 Mini PC
 
-A complete, tested guide for turning the Beelink GTR9 Pro into a local LLM inference machine. Based on real benchmarks and extensive testing — including things that **don't work** so you don't waste time.
+**The complete, benchmarked guide to running large language models on AMD Ryzen AI MAX+ 395 (Strix Halo) systems.** Every optimization tested, every dead end documented. Save hours of trial and error.
 
-> **Based on:** [pablo-ross/strix-halo-gmktec-evo-x2](https://github.com/pablo-ross/strix-halo-gmktec-evo-x2) — rewritten with corrections and additional findings for the Beelink GTR9 Pro.
+> **57.3 t/s generation** on Qwen3.5-35B-A3B (35B parameter MoE model) — **51% faster than NVIDIA's $3,000 DGX Spark.** Run 50GB+ models that don't fit on any consumer GPU.
+
+**Tested on:** Beelink GTR9 Pro | **Works on:** Any Strix Halo system (Framework Desktop, GMKtec EVO-X2, ASUS NUC 14 Pro AI, etc.)
+
+> Built on the work of [kyuz0](https://github.com/kyuz0/amd-strix-halo-toolboxes), [lhl](https://github.com/lhl/strix-halo-testing), and [pablo-ross](https://github.com/pablo-ross/strix-halo-gmktec-evo-x2) — with independent verification and additional findings.
+
+---
+
+## Table of Contents
+
+- [Hardware](#hardware)
+- [Benchmark Results](#benchmark-results)
+- [Phase 1: BIOS Configuration](#phase-1-bios-configuration-before-os-installation)
+- [Phase 2: Ubuntu Installation](#phase-2-ubuntu-2404-base-installation)
+- [Phase 3: Kernel Configuration](#phase-3-kernel-configuration)
+- [Phase 4: Performance Tuning](#phase-4-performance-tuning)
+- [Phase 5: Ollama Setup (Easy)](#phase-5-ollama-setup-recommended-for-most-users)
+- [Phase 6: Benchmarking](#phase-6-benchmarking)
+- [Phase 7: kyuz0 Containers (Maximum Performance)](#phase-7-advanced--llamacpp-via-kyuz0-containers-recommended)
+- [Phase 8: SSH Security](#phase-8-ssh-security-optional)
+- [Driver Comparison](#driver-comparison)
+- [Key Findings & Corrections](#key-findings--corrections)
+- [Troubleshooting](#troubleshooting)
+- [Credits & References](#credits--references)
+
+---
 
 ## Hardware
 
