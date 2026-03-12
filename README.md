@@ -759,6 +759,9 @@ For Ollama users, force RADV with `AMD_VULKAN_ICD=RADV` and `VK_ICD_FILENAMES=/u
 | Direct-IO (`-dio 1`) | **-6% pp512**, no gen change | "Bypass page cache" | no-mmap (`-mmp 0`) is better |
 | CPU MoE offload (`-ncmoe`) | **-11% to -20% generation** | "Offload MoE to CPU" | GPU-only is fastest — model fits in VRAM |
 | vLLM (GGUF on ROCm) | Engine crashes on gfx1151 | "60% faster than llama.cpp" | GGUF support on ROCm not mature (qwen35moe unsupported) |
+| ROCm env vars tuning | **-38% generation** regression | "GPU_MAX_HW_QUEUES=8 speeds up" | `HIP_FORCE_DEV_KERNARG`, `GPU_MAX_HW_QUEUES`, `HIP_MEM_POOL_SUPPORT` all HURT gfx1151 |
+| Smaller batch size (`-b 256`) | **-37% generation** | "Smaller batches help MoE" | Destroys generation speed. Default `-b 2048 -ub 512` is optimal |
+| RADV with `-ub 1024` | **-8% pp512** | "ub=1024 best for RADV" | ub=512 is faster on Vulkan RADV for MoE models |
 | BIOS VRAM for speed | No speed difference after change | "More GPU VRAM = faster" | Speed stays the same, but you MUST set to lowest (512MB) to make GTT RAM available to the OS — without this, the OS only sees ~31GB |
 
 ### Things That DO Work
