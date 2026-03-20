@@ -1,192 +1,279 @@
-# AMD Strix Halo LLM Optimization Guide — 57 t/s on a $2,699 Mini PC
+![AMD](https://img.shields.io/badge/AMD-Ryzen_AI_MAX+_395-ED1C24?style=for-the-badge&logo=amd&logoColor=white)
+![GPU](https://img.shields.io/badge/GPU-gfx1151_RDNA_3.5-green?style=for-the-badge)
+![RAM](https://img.shields.io/badge/RAM-128GB_LPDDR5X--8000-blue?style=for-the-badge)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-24.04_LTS-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
-[![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=social)](https://github.com/hogeheer499-commits/strix-halo-guide)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# AMD Strix Halo Local LLM Guide
 
-**The complete, benchmarked guide to running large language models on AMD Ryzen AI MAX+ 395 (Strix Halo) systems.** Every optimization tested, every dead end documented. Save hours of trial and error.
+**From unboxing to 70B+ inference on a single APU -- with real benchmarks, tested optimizations, and the things nobody else tells you don't work.**
 
-> **57.3 t/s generation** on Qwen3.5-35B-A3B (35B parameter MoE model) — **51% faster than NVIDIA's $3,000 DGX Spark.** Run 50GB+ models that don't fit on any consumer GPU.
+[Quick Start](#quick-start-6-steps) | [Benchmarks](#benchmark-results) | [Which Backend?](#backend-decision-guide) | [What NOT To Do](#things-that-dont-work-dont-waste-your-time) | [Troubleshooting](#troubleshooting)
 
-**Tested on:** Beelink GTR9 Pro | **Works on:** Any Strix Halo system (Framework Desktop, GMKtec EVO-X2, ASUS NUC 14 Pro AI, etc.)
+---
 
-> Built on the work of [kyuz0](https://github.com/kyuz0/amd-strix-halo-toolboxes), [lhl](https://github.com/lhl/strix-halo-testing), and [pablo-ross](https://github.com/pablo-ross/strix-halo-gmktec-evo-x2) — with independent verification and additional findings.
+## Why This Guide Exists
+
+There are several Strix Halo LLM guides out there. This one is different because:
+
+1. **Every number is measured on this machine.** No theoretical estimates, no copy-pasted specs. Every benchmark was run on a Beelink GTR9 Pro with timestamps and exact configuration documented.
+2. **We document what does NOT work.** Most guides only tell you what to enable. We spent weeks testing optimizations that turned out to be regressions, driver versions that crash, and kernel parameters that do nothing. That information is harder to find and more valuable.
+3. **We track the moving target.** Strix Halo support in ROCm, llama.cpp, and the Linux kernel changes rapidly. This guide is updated with each significant change, noting what broke and what improved.
+4. **We compare backends with data.** Vulkan (RADV vs AMDVLK) vs ROCm HIP vs vLLM -- each has strengths at different context lengths and model sizes. We measured them all.
+
+> **Based on findings from:** [kyuz0/amd-strix-halo-toolboxes](https://github.com/kyuz0/amd-strix-halo-toolboxes) (community standard containers), [lhl/strix-halo-testing](https://github.com/lhl/strix-halo-testing) (deepest performance research), and our own extensive testing.
 
 ---
 
 ## Table of Contents
 
 - [Hardware](#hardware)
+- [What You Can Run](#what-you-can-run)
 - [Benchmark Results](#benchmark-results)
-- [Phase 1: BIOS Configuration](#phase-1-bios-configuration-before-os-installation)
-- [Phase 2: Ubuntu Installation](#phase-2-ubuntu-2404-base-installation)
+  - [Ollama Vulkan (RADV)](#ollama-vulkan-radv-mesa-2602)
+  - [ROCm HIP (llama.cpp)](#rocm-hip-llamacpp)
+  - [Backend Comparison](#backend-comparison-table)
+  - [Hardware Comparison](#hardware-comparison)
+  - [Long Context Performance](#long-context-performance)
+- [Backend Decision Guide](#backend-decision-guide)
+- [Quick Start (6 Steps)](#quick-start-6-steps)
+- [Phase 1: BIOS Configuration](#phase-1-bios-configuration)
+- [Phase 2: Ubuntu 24.04 Installation](#phase-2-ubuntu-2404-installation)
 - [Phase 3: Kernel Configuration](#phase-3-kernel-configuration)
 - [Phase 4: Performance Tuning](#phase-4-performance-tuning)
-- [Phase 5: Ollama Setup (Easy)](#phase-5-ollama-setup-recommended-for-most-users)
+- [Phase 5: Ollama Setup (Vulkan)](#phase-5-ollama-setup-vulkan)
 - [Phase 6: Benchmarking](#phase-6-benchmarking)
-- [Phase 7: kyuz0 Containers (Maximum Performance)](#phase-7-advanced--llamacpp-via-kyuz0-containers-recommended)
-- [Phase 8: SSH Security](#phase-8-ssh-security-optional)
-- [Driver Comparison](#driver-comparison)
-- [Key Findings & Corrections](#key-findings--corrections)
+- [Phase 7: ROCm with llama.cpp (Containers)](#phase-7-rocm-with-llamacpp-containers)
+- [Phase 8: vLLM Serving](#phase-8-vllm-serving)
+- [Phase 9: Multi-Node Clustering (RDMA)](#phase-9-multi-node-clustering-rdma)
+- [Phase 10: SSH and Remote Access](#phase-10-ssh-and-remote-access)
+- [Vulkan Driver Comparison](#vulkan-driver-comparison)
+- [Key Findings and Corrections](#key-findings-and-corrections)
+- [Known Issues](#known-issues)
 - [Troubleshooting](#troubleshooting)
-- [Credits & References](#credits--references)
-
----
-
-## Quick Start (TL;DR)
-
-Already have Ubuntu 24.04 running on Strix Halo? Get to 57 t/s in 5 commands:
-
-```bash
-# 1. Install containers
-sudo apt install podman -y
-curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sudo sh
-
-# 2. Create the fastest container (Vulkan AMDVLK)
-distrobox create llama-vulkan-amdvlk \
-  --image docker.io/kyuz0/amd-strix-halo-toolboxes:vulkan-amdvlk \
-  --additional-flags "--device /dev/dri --group-add video --security-opt seccomp=unconfined"
-
-# 3. Download a model
-pip install huggingface-hub
-python3 -c "from huggingface_hub import hf_hub_download; hf_hub_download('bartowski/Qwen_Qwen3.5-35B-A3B-GGUF', 'Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf', local_dir='$HOME/models/')"
-
-# 4. Start the server (OpenAI-compatible API)
-distrobox enter llama-vulkan-amdvlk -- llama-server \
-  -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf \
-  -ngl 999 -fa 1 --no-mmap -c 8192 --host 0.0.0.0 --port 8080
-
-# 5. Chat! (http://localhost:8080 or use any OpenAI client)
-curl http://localhost:8080/v1/chat/completions -H "Content-Type: application/json" \
-  -d '{"model":"qwen","messages":[{"role":"user","content":"Hello!"}]}'
-```
-
-> For the full setup (BIOS, kernel tuning, GPU clocks, +8-15% more speed), follow the phases below.
+- [Kernel and ROCm Compatibility](#kernel-and-rocm-compatibility)
+- [Testing Checklist](#testing-checklist)
+- [Community Resources](#community-resources)
+- [Credits and References](#credits-and-references)
+- [Contributing](#contributing)
+- [Changelog](#changelog)
+- [License](#license)
 
 ---
 
 ## Hardware
 
+### Tested Systems
+
+| System | CPU | GPU | RAM | Notes |
+|--------|-----|-----|-----|-------|
+| **Beelink GTR9 Pro** | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | This guide's primary test system |
+| Framework Desktop 13 | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | Used by kyuz0, lhl |
+| GMKtec EVO-X2 | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | [pablo-ross guide](https://github.com/pablo-ross/strix-halo-gmktec-evo-x2) |
+| HP ZBook Ultra G1a | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | Workstation laptop |
+
+### Strix Halo Specs
+
 | Component | Spec |
 |-----------|------|
 | CPU | AMD Ryzen AI MAX+ 395 (32 cores / 64 threads, Zen 5) |
-| GPU | Radeon 8060S (gfx1151, RDNA 3.5 integrated GPU) |
-| RAM | 128GB LPDDR5X-8000 unified memory (~256 GB/s bandwidth) |
-| NPU | XDNA 2 (126 AI TOPS) |
-| TDP | 140W (dual-turbine fans + vapor chamber, 32dB) |
-| Storage | 2TB NVMe PCIe 4.0 (up to 7000 MB/s), dual M.2 slots |
-| Connectivity | Dual 10GbE LAN, Dual USB4 (40Gbps), HDMI 2.1, DP 2.1 |
-| WiFi | MediaTek MT7925 (mt7925e) |
-| PSU | Built-in 230W |
-| Price | [$2,699 USD](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395) |
+| GPU | Radeon 8060S (gfx1151, RDNA 3.5, 40 CUs) |
+| RAM | 128GB unified LPDDR5X-8000 (~215 GB/s measured, 256 GB/s theoretical) |
+| NPU | RyzenAI-npu5 (XDNA 2) |
 
-> **Why this hardware?** 128GB unified memory shared between CPU and GPU means you can run **50GB+ models entirely on the GPU** — something an RTX 4090 (24GB VRAM) cannot do. You trade raw speed (~256 GB/s vs ~1 TB/s) for the ability to run much larger, smarter models. The 140W TDP with vapor chamber cooling means no thermal throttling during sustained inference.
+> **Why this hardware?** 128GB unified memory shared between CPU and GPU means you can run **70B+ models entirely on the GPU** -- something an RTX 4090 (24GB VRAM) cannot do. You trade raw bandwidth (~215 GB/s vs ~1 TB/s) for the ability to run much larger, smarter models at a fraction of the cost.
+
+---
+
+## What You Can Run
+
+Real-world model performance measured on the Beelink GTR9 Pro with Ollama Vulkan (RADV Mesa 26.0.2):
+
+| Model | Size | Type | Generation Speed | Use Case |
+|-------|------|------|------------------|----------|
+| Llama 2 7B | 3.8 GB | Dense | 52.0 t/s | Testing, lightweight tasks |
+| Qwen2.5-VL 7B | 6.0 GB | Vision | 21.4 t/s | Image understanding |
+| Qwen3.5 35B-A3B | 23 GB | MoE | 47.4-48.0 t/s | General purpose, coding |
+| Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | **51.3-51.4 t/s** | Coding (highest quality MoE) |
+| Qwen3-Coder-Next | 51 GB | Dense | 37.9-39.1 t/s | Large dense model |
+| Llama 3.3 70B (Q4) | ~40 GB | Dense | ~5 t/s | When you need 70B intelligence |
+| gpt-oss-120b | ~70 GB | MoE | ~34-38 t/s | Largest practical model |
+| Qwen3-Next 80B-A3B (GPTQ) | ~45 GB | MoE | ~40 t/s | via vLLM, 256K context |
+| Kimi K2.5 1T (4-node cluster) | ~500 GB | MoE | distributed | [AMD technical article](https://www.amd.com/en/developer/resources/technical-articles/2026/how-to-run-a-one-trillion-parameter-llm-locally-an-amd.html) |
+
+---
 
 ## Benchmark Results
 
-All benchmarks: GPU clocks forced high (2900 MHz), `--no-mmap`, Flash Attention on. All [kyuz0 containers](https://github.com/kyuz0/amd-strix-halo-toolboxes) use pre-built binaries (b8298).
+All benchmarks run on 2026-03-20. System: Beelink GTR9 Pro, kernel 6.19.4, tuned accelerator-performance active.
 
-### Qwen3.5-35B-A3B (Q4_K_M, 19.92 GiB) — Full Comparison
+### Ollama Vulkan (RADV Mesa 26.0.2)
 
-| Backend | Container | pp128 | pp512 | pp2048 | tg128 | tg128@d8K |
-|---------|-----------|-------|-------|--------|-------|-----------|
-| **Vulkan RADV** | kyuz0 `vulkan-radv` | **594** | **880** | **866** | 52.7 | 50.1 |
-| **Vulkan AMDVLK** | kyuz0 `vulkan-amdvlk` | 485 | 580 | 568 | **57.3** | **52.8** |
-| **ROCm 7.2 HIP** | Self-compiled (b8301) | 504 | 996 | 919 | 48.5 | — |
-| **ROCm 6.4.4 HIP** | kyuz0 `rocm-6.4.4` | 472 | 672 | 828 | 52.0 | — |
-| **ROCm 7.2 HIP** | kyuz0 `rocm-7.2` | 348 | 507 | 488 | 55.6 | 52.3 |
-| **Ollama Vulkan** | RADV Mesa 26.0.1 | ~224 | ~467 | — | 45.8 | — |
+**Qwen3.5-35B-A3B** (Q4_K_M, ~23GB, MoE):
 
-> **Key findings:**
-> - **Vulkan RADV wins prompt processing** (880 t/s pp512) — 74% faster than ROCm 7.2 kyuz0 and close to self-compiled
-> - **Vulkan AMDVLK wins token generation** (57.3 t/s) — 3% faster than ROCm 7.2 kyuz0
-> - Self-compiled ROCm 7.2 still has the highest raw pp512 (996), but requires manual compilation
-> - Ollama Vulkan is 40-50% slower than containerized alternatives
+| Prompt Tokens | Prompt Eval | Generation | vs Previous (Mesa 26.0.1) |
+|---------------|-------------|------------|---------------------------|
+| 14 | 121.3 t/s | **48.0 t/s** | tg +4.8% |
+| 23 | 182.3 t/s | **47.5 t/s** | tg +4.4% |
+| 122 | 456.7 t/s | **47.4 t/s** | tg +4.2% |
 
-> **Choose your backend:**
-> - **Interactive chat** (fast responses): Vulkan AMDVLK → **57.3 t/s generation**
-> - **RAG / long context**: Vulkan RADV → **880 t/s prompt processing** (no compilation needed!)
-> - **Maximum prompt speed**: Self-compiled ROCm 7.2 → **996 t/s** (requires manual build)
-> - **Easy setup**: Ollama Vulkan → 45.8 t/s, no containers needed
+**Qwen3-Coder 30B-A3B** (Q8_0, ~32GB, MoE):
 
-### Context Depth Scaling (Qwen3.5-35B-A3B, tg128)
+| Prompt Tokens | Prompt Eval | Generation | Notes |
+|---------------|-------------|------------|-------|
+| 12 | 118.3 t/s | **51.4 t/s** | Fastest generation of any model tested |
+| 21 | 205.2 t/s | **51.3 t/s** | Higher quality than Q4_K_M |
 
-Token generation slows as context grows. Here's how each backend holds up:
+**Qwen3-Coder-Next** (~51GB, dense):
 
-| Depth | AMDVLK | RADV | ROCm 7.2 | Decline |
-|-------|--------|------|----------|---------|
-| 0 | **56.5** | 53.9 | 55.1 | — |
-| 2K | **56.0** | 52.2 | 54.4 | 1-3% |
-| 4K | **54.7** | 51.4 | 53.7 | 3-5% |
-| 8K | **52.8** | 50.1 | 52.3 | 5-7% |
+| Prompt Tokens | Prompt Eval | Generation | vs Previous |
+|---------------|-------------|------------|-------------|
+| 12 | 90.7 t/s | **39.1 t/s** | tg +2.9% |
+| 21 | 129.5 t/s | **38.4 t/s** | tg +3.8% |
+| 120 | 301.2 t/s | **37.9 t/s** | NEW |
 
-> Generation degrades ~5-7% at 8K context depth. AMDVLK maintains the best generation speed at all depths.
+**Other Models:**
 
-### Ubatch Size Impact (Qwen3.5-35B-A3B, ROCm 7.2)
+| Model | Size | Prompt Tokens | pp (t/s) | tg (t/s) |
+|-------|------|---------------|----------|----------|
+| Llama 2 7B | 3.8 GB | 24 | 384.6 | 52.0 |
+| Qwen2.5-VL 7B | 6.0 GB | 23 | 81.7 | 21.4 |
+| Qwen3.5 35B (no-think) | 23 GB | 14 | 127.1 | 47.4 |
 
-| ubatch | pp512 (t/s) | tg128 (t/s) | Notes |
-|--------|-------------|-------------|-------|
-| 128 | 288 | 54.9 | Too small for MoE |
-| 256 | 389 | 54.4 | Good balance |
-| **512** | **507** | **55.6** | **Optimal for MoE models** |
-| 1024 | 191 | 25.3 | Too large, causes stalls |
+> **What improved?** Mesa 26.0.1 to 26.0.2 plus enabling the `tuned accelerator-performance` profile gave a consistent **+4-5% generation speed improvement** across all models.
 
-> **Recommendation:** Use `ubatch=512` for MoE models. Larger ubatch sizes cause severe performance degradation.
+### ROCm HIP (llama.cpp)
 
-### Ollama + Vulkan (RADV Mesa 26.0.1)
+> **WARNING (March 2026):** Kernel 6.19.x breaks all ROCm containers on Strix Halo. GPU is misidentified as gfx1100 instead of gfx1151, causing segfaults. Stay on kernel 6.18.x for ROCm support. See [Kernel Compatibility](#kernel-and-rocm-compatibility).
 
-For users who want the simplest setup without containers:
+**Previous results on kernel 6.18.14** (for reference -- these worked):
 
-**Qwen3.5-35B-A3B** (Q4_K_M, ~23GB):
+| Build | Model | pp128 | pp512 | tg128 |
+|-------|-------|-------|-------|-------|
+| Self-compiled b8301, FA on, -mmp 0 | Qwen3.5-35B-A3B Q4_K_M | 488 | 996 | 48.8 |
+| kyuz0 b8298, FA on | Qwen3.5-35B-A3B Q4_K_M | 306 | 520 | 55.3 |
+| kyuz0 b8298, FA off | Qwen3.5-35B-A3B Q4_K_M | 352 | 524 | 53.8 |
+| kyuz0 b8189, FA + hipBLASLt | Llama 2 7B Q4_K_M | 1163 | 1261 | 45.07 |
 
-| Prompt Length | Prompt Eval | Generation |
-|--------------|-------------|------------|
-| 56 tokens | 267 t/s | 45.8 t/s |
-| 201 tokens | 467 t/s | 45.5 t/s |
+**ROCm vs Vulkan (Qwen3.5-35B-A3B, kernel 6.18.14):**
 
-**Qwen3-Coder-Next** (Q4_K_M, ~51GB):
+| Metric | Ollama Vulkan | ROCm HIP (self-compiled) | Difference |
+|--------|---------------|--------------------------|------------|
+| pp128 | ~267 | 488 | **+83%** |
+| pp512 | ~467 | 996 | **+113%** |
+| tg128 | 45.8 | 48.8 | **+6.6%** |
 
-| Prompt Length | Prompt Eval | Generation |
-|--------------|-------------|------------|
-| 12 tokens | 96 t/s | 38 t/s |
-| 54 tokens | 136 t/s | 37 t/s |
+ROCm HIP delivers massively faster prompt processing. For generation speed, the difference is smaller.
 
-> **Containerized llama.cpp gives +25% generation** (57.3 vs 45.8 t/s) **and +88% prompt processing** (880 vs 467 t/s) compared to Ollama Vulkan on the same model.
+### Backend Comparison Table
 
-### How This Compares
+Based on our measurements and [lhl's comprehensive testing](https://github.com/lhl/strix-halo-testing):
 
-| Hardware | Bandwidth | Generation (t/s) | Max Model Size | Price |
-|----------|-----------|-------------------|----------------|-------|
-| RTX 4090 | ~1008 GB/s | 100-122 | 24 GB | ~$1600 GPU only |
-| RTX 3090 | ~936 GB/s | 100-112 | 24 GB | ~$800 used |
-| Apple M4 Max | ~546 GB/s | ~100 (MLX) | 128 GB | ~$4000+ |
-| **Beelink GTR9 Pro** | **~256 GB/s** | **57.3** | **120+ GB** | **$2,699** |
-| NVIDIA DGX Spark | ~273 GB/s | 38 | 128 GB | ~$3000 |
+| Backend | Best For | pp (relative) | tg (relative) | Context Scaling | Setup Difficulty |
+|---------|----------|---------------|---------------|-----------------|------------------|
+| Ollama + Vulkan RADV | General use, chat | Good | Good | Degrades at 8K+ | Easy |
+| Vulkan AMDVLK | Prompt-heavy workloads | Best (short ctx) | Good | Degrades at 8K+ | Easy |
+| ROCm HIP | Batch processing | Excellent | Good | Poor at 32K+ | Hard (containers) |
+| ROCm + rocWMMA (tuned) | Long context | Excellent | Best at 32K | **Best scaling** | Very hard |
+| vLLM (TheRock) | API serving | Good | Good | Good | Hard |
 
-> The GTR9 Pro **beats the $3000 DGX Spark by 51%** on token generation and runs 51GB models that don't fit on any consumer GPU.
+### Hardware Comparison
+
+| Hardware | Bandwidth | tg (MoE ~30B) | Max Model Size | Price |
+|----------|-----------|---------------|----------------|-------|
+| RTX 4090 | ~1008 GB/s | 100-122 t/s | 24 GB | ~$1600 GPU only |
+| RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$800 used |
+| Apple M4 Max 128GB | ~546 GB/s | ~100 t/s (MLX) | 128 GB | ~$4000+ |
+| **Beelink GTR9 Pro** | **~215 GB/s** | **48-51 t/s** | **120+ GB** | **~$1500-2000** |
+| NVIDIA DGX Spark | ~273 GB/s | ~56 t/s | 128 GB | ~$3999 |
+
+> **Key insight:** The Beelink GTR9 Pro delivers **85-91% of the DGX Spark's generation speed at half the price**, while offering 2X better CPU performance (1600 vs 708 GFLOPS Linpack). The DGX Spark wins on prompt processing (2-5X faster). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055).
+
+### Long Context Performance
+
+Based on [lhl's measurements](https://github.com/lhl/strix-halo-testing) with gpt-oss-120b (tg32):
+
+| Context | Vulkan AMDVLK | ROCm Standard | ROCm rocWMMA-tuned |
+|---------|---------------|---------------|---------------------|
+| 2K | 50.05 t/s | 46.56 t/s | 48.97 t/s |
+| 4K | 46.11 t/s | 38.25 t/s | 45.42 t/s |
+| 8K | 43.15 t/s | 32.65 t/s | 43.55 t/s |
+| 16K | 38.46 t/s | 25.50 t/s | 40.91 t/s |
+| 32K | 31.54 t/s | 17.82 t/s | **36.43 t/s** |
+
+> At 32K context, standard ROCm drops to 17.82 t/s. Vulkan holds at 31.54 t/s (1.8X faster). But lhl's tuned rocWMMA branch is the **overall winner at 36.43 t/s** -- 2X faster than standard ROCm and 15% faster than Vulkan at 32K.
+
+At extreme context (130K tokens, from [strixhalo.wiki](https://strixhalo.wiki/AI/llamacpp-performance)):
+
+| Backend | pp512 (t/s) | tg128 (t/s) |
+|---------|-------------|-------------|
+| Vulkan RADV | 17 | 13 |
+| ROCm | 41 | 5 |
+| ROCm rocWMMA-tuned | 51 | 13 |
 
 ---
 
-## Phase 1: BIOS Configuration (BEFORE OS Installation)
+## Backend Decision Guide
+
+```
+                        Which backend should I use?
+                                  |
+                    Do you need long context (>8K)?
+                         /                \
+                       NO                  YES
+                       |                    |
+              Just want it easy?     Context > 32K?
+                /          \           /        \
+              YES           NO       NO         YES
+               |             |        |           |
+          Ollama +      Need max    Vulkan     ROCm +
+          Vulkan RADV   pp speed?   AMDVLK   rocWMMA-tuned
+               |          /    \      |         (lhl's branch)
+          "It just       YES    NO    |
+           works"         |      |    |
+                    ROCm HIP  Vulkan  |
+                    (container) AMDVLK|
+                                      |
+                              Best overall for
+                              long context work
+```
+
+---
+
+## Quick Start (6 Steps)
+
+For those who want to get running as fast as possible:
+
+1. **BIOS:** Set UMA Frame Buffer to 512MB, disable IOMMU
+2. **Install Ubuntu 24.04 LTS**, switch to X11
+3. **Kernel params:** Add `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280` to GRUB
+4. **Performance:** Install tuned, set `accelerator-performance` profile, upgrade Mesa via kisak PPA
+5. **Ollama:** Install, configure Vulkan backend with `OLLAMA_VULKAN=1` and `HIP_VISIBLE_DEVICES=-1`
+6. **Test:** `ollama run qwen3.5:35b-a3b` -- expect ~48 t/s generation
+
+Each step is detailed in the phases below.
+
+---
+
+## Phase 1: BIOS Configuration
+
+Do this BEFORE installing the OS.
 
 ### Step 1.1: Set UMA Frame Buffer Size
 
-This is the most important BIOS setting.
+Navigate to `Integrated Graphics` then `UMA Frame Buffer Size` and set to **512MB**.
 
-- Navigate to: `Integrated Graphics` → `UMA Frame Buffer Size`
-- Set to: **512MB**
+> **Why?** By default, the BIOS reserves ~97GB for GPU VRAM, leaving only ~31GB visible to the OS. Setting it to 512MB lets the OS see ~125GB RAM. This does NOT reduce GPU performance -- Vulkan uses GTT (system memory) anyway, so the GPU still has access to all 128GB for LLM inference. We benchmarked before and after: **zero speed difference**.
 
-> **Why?** By default, the BIOS reserves ~97GB for GPU VRAM, leaving only ~31GB visible to the OS. Setting it to 512MB lets the OS see ~125GB RAM. This does **NOT** reduce GPU performance — Vulkan uses GTT (system memory) anyway, so the GPU still has access to all 128GB for LLM inference. We benchmarked before and after: **zero speed difference**.
+### Step 1.2: Disable IOMMU in BIOS
 
-### Step 1.2: IOMMU Setting
+Find the IOMMU setting and set to **Disabled**.
 
-- Find IOMMU setting in BIOS
-- Set to: **Enabled** (we'll use passthrough mode via kernel parameter)
-
-> We use `iommu=pt` (passthrough) in the kernel parameters instead of disabling IOMMU entirely. This reduces overhead while keeping security protections for non-GPU devices. See [kyuz0's recommendation](https://github.com/kyuz0/amd-strix-halo-toolboxes).
+> **Why?** [lhl's memory bandwidth testing](https://github.com/lhl/strix-halo-testing) shows `amd_iommu=off` gives ~6% better memory reads compared to default (234 vs 221 GB/s). `iommu=pt` (pass-through, recommended by some guides) gives **no benefit** over default. We use `amd_iommu=off` in the kernel command line as well, but disabling in BIOS ensures it's completely off. Only re-enable if you need VFIO/GPU passthrough or RDMA clustering.
 
 ---
 
-## Phase 2: Ubuntu 24.04 Base Installation
+## Phase 2: Ubuntu 24.04 Installation
 
 ### Step 2.1: Install Ubuntu 24.04 LTS
 
@@ -196,44 +283,53 @@ Install Ubuntu 24.04 LTS Desktop with default settings. After installation:
 sudo apt update && sudo apt upgrade -y
 ```
 
-### Step 2.2: Switch to X11 (Disable Wayland)
+### Step 2.2: Switch to X11
 
-Wayland causes issues with RustDesk, Zoom screen sharing, and some GPU applications.
+Wayland causes issues with RustDesk, Zoom screen sharing, and some GPU monitoring tools.
 
 ```bash
-sudo nano /etc/gdm3/custom.conf
-```
-
-Under `[daemon]`, uncomment or add:
-
-```
+sudo tee -a /etc/gdm3/custom.conf > /dev/null << 'EOF'
 WaylandEnable=false
+EOF
 ```
 
-Reboot to apply.
+> If the line already exists (commented out), uncomment it instead. Reboot to apply.
 
 ---
 
 ## Phase 3: Kernel Configuration
 
-### Step 3.1: Configure GRUB Boot Parameters
+### Step 3.1: Kernel Version
+
+> **CRITICAL:** Kernel version matters enormously for Strix Halo.
+> - **Kernel 6.18.4+** is the minimum stable version (older kernels have gfx1151 stability bugs)
+> - **Kernel 6.19.x** breaks ROCm containers (GPU misidentified as gfx1100) -- see [Known Issues](#known-issues)
+> - **Recommended:** Kernel 6.18.6-6.18.14 for full ROCm + Vulkan support
+
+Check your kernel:
 
 ```bash
-sudo nano /etc/default/grub
+uname -r
 ```
 
-Set `GRUB_CMDLINE_LINUX_DEFAULT` to:
+### Step 3.2: Configure GRUB Boot Parameters
 
-```
-GRUB_CMDLINE_LINUX_DEFAULT="quiet splash iommu=pt amdgpu.gttsize=126976 ttm.pages_limit=32505856 amdgpu.cwsr_enable=0"
+```bash
+sudo tee /tmp/grub_update.txt << 'EOF'
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0"
+EOF
 ```
 
-| Parameter | Purpose |
-|-----------|---------|
-| `iommu=pt` | IOMMU passthrough mode — reduces overhead without disabling security |
-| `amdgpu.gttsize=126976` | Set GTT (GPU-accessible system memory) to ~124GB (matches available RAM after BIOS reserves ~4GB) |
-| `ttm.pages_limit=32505856` | Set TTM page limit to 124GB (~32.5M pages × 4KB) |
-| `amdgpu.cwsr_enable=0` | Disable compute wave save/restore (not needed for LLM inference) |
+Then edit `/etc/default/grub` and replace the `GRUB_CMDLINE_LINUX_DEFAULT` line with the content above.
+
+| Parameter | Purpose | Impact |
+|-----------|---------|--------|
+| `amd_iommu=off` | Disable IOMMU completely | +6% memory bandwidth ([lhl](https://github.com/lhl/strix-halo-testing)) |
+| `amdgpu.gttsize=131072` | Set GTT (GPU-accessible system memory) to 128GB | Required for large models |
+| `ttm.pages_limit=31457280` | Set TTM page limit to ~120GB | Required for large models |
+| `amdgpu.cwsr_enable=0` | Disable compute wave save/restore | Not needed for LLM inference |
+
+> **Note:** kyuz0's toolboxes use `iommu=pt` instead of `amd_iommu=off`. We use `off` based on lhl's benchmark data showing ~6% better memory bandwidth. The difference is documented in [kyuz0 issue #66](https://github.com/kyuz0/amd-strix-halo-toolboxes/issues/66). If you need RDMA clustering, use `iommu=pt` instead (RDMA NICs require IOMMU for DMA remapping).
 
 Apply:
 
@@ -241,18 +337,14 @@ Apply:
 sudo update-grub
 ```
 
-### Step 3.2: Create AMD GPU Modprobe Configuration
+### Step 3.3: Create AMD GPU Modprobe Configuration
 
 ```bash
-sudo nano /etc/modprobe.d/amdgpu_llm_optimized.conf
-```
-
-Add:
-
-```
-options amdgpu gttsize=126976
-options ttm pages_limit=32505856
-options ttm page_pool_size=32505856
+sudo tee /etc/modprobe.d/amdgpu_llm_optimized.conf > /dev/null << 'EOF'
+options amdgpu gttsize=122800
+options ttm pages_limit=31457280
+options ttm page_pool_size=31457280
+EOF
 ```
 
 Update initramfs:
@@ -261,21 +353,17 @@ Update initramfs:
 sudo update-initramfs -u -k all
 ```
 
-### Step 3.3: Create udev Rules for GPU Access
+### Step 3.4: Create udev Rules for GPU Access
 
 ```bash
-sudo nano /etc/udev/rules.d/99-amd-kfd.rules
-```
-
-Add:
-
-```
+sudo tee /etc/udev/rules.d/99-amd-kfd.rules > /dev/null << 'EOF'
 SUBSYSTEM=="kfd", GROUP="render", MODE="0666"
 SUBSYSTEM=="drm", KERNEL=="card[0-9]*", GROUP="render", MODE="0666"
 SUBSYSTEM=="drm", KERNEL=="renderD[0-9]*", GROUP="render", MODE="0666"
+EOF
 ```
 
-> **IMPORTANT:** The `renderD[0-9]*` rule is critical. Without it, you'll get `HSA_STATUS_ERROR_OUT_OF_RESOURCES` errors.
+> **IMPORTANT:** The `renderD[0-9]*` rule is critical. Without it, you get `HSA_STATUS_ERROR_OUT_OF_RESOURCES` errors with ROCm.
 
 Add your user to GPU groups:
 
@@ -308,126 +396,20 @@ Verify:
 
 ```bash
 tuned-adm active
+# Expected: Current active profile: accelerator-performance
 ```
 
-Expected: `Current active profile: accelerator-performance`
+> **Impact:** +5-8% overall performance improvement. Memory bandwidth improves from ~221 GB/s to ~234 GB/s write. We measured +4-5% token generation improvement when tuned was running vs not running.
 
-> **Impact:** +5-8% overall performance improvement. Sets CPU governor to `performance` instead of `powersave`.
+> **WARNING:** tuned may not survive reboots on some systems. Add a check to your `.bashrc` or create a systemd service to verify it's running after boot.
 
-> **WARNING:** After reboot, verify tuned is actually running with `tuned-adm active`. We found it can silently fail to start, leaving the CPU governor on `powersave` — a massive performance loss.
+### Step 4.2: Upgrade Mesa Vulkan Drivers
 
-### Step 4.2: Force GPU High Performance Clocks
-
-> **CRITICAL:** Due to a [known AMD driver bug](https://github.com/ROCm/ROCm/issues/5750), the GPU may stay stuck at ~900 MHz instead of ramping to the full 2900 MHz under compute load. This causes **significant performance loss** for prompt processing (+8% pp512 when fixed).
-
-Check current GPU clock:
-
-```bash
-cat /sys/class/drm/card*/device/pp_dpm_sclk
-```
-
-If the `*` is next to a low clock (600-900 MHz) instead of the highest, force high performance:
-
-```bash
-echo high | sudo tee /sys/class/drm/card1/device/power_dpm_force_performance_level
-```
-
-To persist across reboots, create a systemd service:
-
-```bash
-sudo nano /etc/systemd/system/gpu-high-clocks.service
-```
-
-Add:
-
-```ini
-[Unit]
-Description=Force AMD GPU to high performance clocks
-After=multi-user.target
-
-[Service]
-Type=oneshot
-ExecStart=/bin/bash -c 'echo high > /sys/class/drm/card1/device/power_dpm_force_performance_level'
-RemainAfterExit=yes
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Enable:
-
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable gpu-high-clocks.service
-```
-
-> **Note:** This increases idle power consumption. The GPU will always run at maximum clocks. For a dedicated LLM inference machine, this is the correct trade-off.
-
-### Step 4.3: Sysctl and Memory Tuning
-
-Create `/etc/sysctl.d/99-llm-performance.conf`:
-
-```bash
-sudo nano /etc/sysctl.d/99-llm-performance.conf
-```
-
-Add:
-
-```
-# Lower swappiness - keep LLM model weights in RAM
-vm.swappiness=10
-
-# Optimize dirty page writeback
-vm.dirty_ratio=40
-vm.dirty_background_ratio=10
-
-# Increase max memory map areas (helps large mmap'd model files)
-vm.max_map_count=2097152
-
-# Network buffer tuning (helps API throughput)
-net.core.rmem_max=16777216
-net.core.wmem_max=16777216
-```
-
-Apply:
-
-```bash
-sudo sysctl --system
-```
-
-### Step 4.3: Enable Transparent Huge Pages
-
-```bash
-echo always | sudo tee /sys/kernel/mm/transparent_hugepage/enabled
-echo 0 | sudo tee /proc/sys/kernel/numa_balancing
-```
-
-To persist across reboots, create `/etc/tmpfiles.d/llm-performance.conf`:
-
-```bash
-sudo nano /etc/tmpfiles.d/llm-performance.conf
-```
-
-Add:
-
-```
-w /sys/kernel/mm/transparent_hugepage/enabled - - - - always
-w /proc/sys/kernel/numa_balancing - - - - 0
-```
-
-### Step 4.4: Upgrade Mesa Vulkan Drivers
-
-The default Mesa on Ubuntu 24.04 (25.2.x) is significantly slower than newer versions. Upgrade to 26.0.1+:
+The default Mesa on Ubuntu 24.04 is significantly slower. Upgrade to 26.0.2+:
 
 ```bash
 sudo add-apt-repository ppa:kisak/kisak-mesa
-```
-
-```bash
 sudo apt update
-```
-
-```bash
 sudo apt upgrade -y
 ```
 
@@ -435,19 +417,37 @@ Verify:
 
 ```bash
 vulkaninfo --summary 2>&1 | grep driverInfo
+# Expected: driverInfo = Mesa 26.0.2 - kisak-mesa PPA
 ```
 
-Expected: `driverInfo = Mesa 26.0.1 - kisak-mesa PPA`
+> **Impact:** Mesa 25.2.8 to 26.0.1 gave **+9% prompt eval** (87 to 96 t/s). Mesa 26.0.1 to 26.0.2 gave an additional small improvement.
 
-> **Impact:** Mesa 25.2.8 → 26.0.1 gave **+9% improvement** on prompt eval (87 → 96 t/s).
+> **Note:** You may see DKMS errors about `mt76-mt7925` during the upgrade. These are harmless -- see [Troubleshooting](#troubleshooting).
 
-> **Note:** You may see DKMS errors about `mt76-mt7925` during the upgrade. These are harmless — WiFi works via the kernel driver. See [Troubleshooting](#troubleshooting) to silence them.
+### Step 4.3: Verify GPU Clock
+
+The GPU should run at its maximum clock speed (2900 MHz) during inference:
+
+```bash
+cat /sys/class/drm/card*/device/pp_dpm_sclk
+# Expected: 2: 2900Mhz *  (asterisk on highest clock)
+```
+
+> **GPU Clock Bug:** On some kernel/firmware combinations, the GPU gets stuck at 900 MHz, causing ~8% performance loss. If your GPU is not at 2900 MHz during load, see [Troubleshooting](#troubleshooting).
+
+### Step 4.4: Linux Firmware
+
+```bash
+dpkg -l | grep linux-firmware | head -5
+```
+
+> **CRITICAL:** Do NOT install `linux-firmware-20251125`. It breaks ROCm support on Strix Halo. The safe version is `20240318` or `20260110+`. If you're on 20251125, downgrade immediately.
 
 ---
 
-## Phase 5: Ollama Setup (Recommended for Most Users)
+## Phase 5: Ollama Setup (Vulkan)
 
-Ollama is the easiest way to run LLMs locally. With the right configuration, it works great on Strix Halo.
+Ollama is the easiest way to run LLMs on Strix Halo. With the right configuration, it works great.
 
 ### Step 5.1: Install Ollama
 
@@ -457,13 +457,13 @@ curl -fsSL https://ollama.com/install.sh | sh
 
 ### Step 5.2: Configure Ollama for Vulkan
 
-> **CRITICAL:** Ollama's bundled ROCm/HIP **crashes on gfx1151** with "out of memory" errors, even on small models. You MUST configure Vulkan as the backend.
+> **CRITICAL:** Ollama's bundled ROCm/HIP crashes on gfx1151 with "out of memory" errors, even on small models. You MUST configure Vulkan as the backend.
 
 ```bash
 sudo systemctl edit ollama
 ```
 
-Add the following content between the comment lines:
+Add between the comment lines:
 
 ```ini
 [Service]
@@ -477,13 +477,10 @@ Environment="OLLAMA_NUM_BATCH=512"
 Environment="OLLAMA_NUM_PARALLEL=1"
 ```
 
-Save (Ctrl+O, Enter) and exit (Ctrl+X), then restart:
+Restart:
 
 ```bash
 sudo systemctl daemon-reload
-```
-
-```bash
 sudo systemctl restart ollama
 ```
 
@@ -491,20 +488,23 @@ sudo systemctl restart ollama
 |----------|---------|
 | `OLLAMA_VULKAN=1` | Force Vulkan backend (bypasses broken HIP/ROCm) |
 | `HIP_VISIBLE_DEVICES=-1` | Disable HIP device enumeration (prevents crash) |
-| `OLLAMA_FLASH_ATTENTION=1` | Enable flash attention for faster prompt processing |
-| `OLLAMA_CONTEXT_LENGTH=8192` | Limit context to prevent memory over-allocation |
-| `AMD_VULKAN_ICD=RADV` | Force RADV driver (faster than AMDVLK — see [Driver Comparison](#driver-comparison)) |
-| `VK_ICD_FILENAMES=...` | Explicitly select RADV ICD (needed when AMDVLK is also installed — `AMD_VULKAN_ICD` alone may not work) |
-| `OLLAMA_NUM_BATCH=512` | Larger batch size for better throughput on long prompts |
-| `OLLAMA_NUM_PARALLEL=1` | Single parallel request for maximum per-request speed |
+| `OLLAMA_FLASH_ATTENTION=1` | Enable flash attention (+13% prompt processing) |
+| `OLLAMA_CONTEXT_LENGTH=8192` | Limit context to prevent OOM (increase if needed) |
+| `AMD_VULKAN_ICD=RADV` | Force RADV driver (faster than AMDVLK for general use) |
+| `VK_ICD_FILENAMES=...` | Explicitly point to RADV ICD file |
+| `OLLAMA_NUM_BATCH=512` | Larger batch size for better throughput |
+| `OLLAMA_NUM_PARALLEL=1` | Single request at a time (maximizes single-request speed) |
 
 ### Step 5.3: Pull Models
 
 ```bash
-# Fast MoE model, great for coding (~23GB)
+# Fast MoE model, great for general use and coding (~23GB)
 ollama pull qwen3.5:35b-a3b
 
-# Larger, smarter model (~51GB, slower generation)
+# Higher quality MoE, Q8_0 quantization (~32GB)
+ollama pull qwen3-coder:30b-a3b-q8_0
+
+# Large dense model for complex tasks (~51GB)
 ollama pull qwen3-coder-next
 ```
 
@@ -514,7 +514,7 @@ ollama pull qwen3-coder-next
 ollama run qwen3.5:35b-a3b
 ```
 
-You should see responses generating at ~45 t/s.
+You should see responses generating at ~48 t/s.
 
 ---
 
@@ -522,322 +522,338 @@ You should see responses generating at ~45 t/s.
 
 ### Step 6.1: Quick Benchmark Script
 
-Create `~/bench-ollama.sh`:
-
 ```bash
+tee ~/bench-ollama.sh > /dev/null << 'SCRIPT'
 #!/bin/bash
 MODEL="${1:-qwen3.5:35b-a3b}"
 PROMPT="${2:-hello how are you}"
+echo "Model: $MODEL"
+echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 curl -s http://localhost:11434/api/generate -d "{\"model\":\"$MODEL\",\"prompt\":\"$PROMPT\",\"stream\":false}" | python3 -c "
 import sys,json
 d=json.load(sys.stdin)
 pp=d['prompt_eval_count']/d['prompt_eval_duration']*1e9
 tg=d['eval_count']/d['eval_duration']*1e9
-print(f'Prompt eval: {pp:.2f} t/s ({d[\"prompt_eval_count\"]} tokens)')
-print(f'Generation: {tg:.2f} t/s ({d[\"eval_count\"]} tokens)')
+print(f'Prompt eval: {pp:.1f} t/s ({d[\"prompt_eval_count\"]} tokens)')
+print(f'Generation:  {tg:.1f} t/s ({d[\"eval_count\"]} tokens)')
+print(f'Total time:  {d[\"total_duration\"]/1e9:.2f}s')
 "
+SCRIPT
+chmod +x ~/bench-ollama.sh
 ```
 
 Usage:
 
 ```bash
-# Default model (qwen3.5:35b-a3b)
+# Default (qwen3.5:35b-a3b, short prompt)
 bash ~/bench-ollama.sh
 
-# Specific model
-bash ~/bench-ollama.sh qwen3-coder-next
+# Specific model with custom prompt
+bash ~/bench-ollama.sh qwen3-coder-next "explain backpropagation in simple terms"
 ```
 
-### Step 6.2: Realistic Benchmark (Long Prompt)
-
-> **IMPORTANT:** Short prompts (< 20 tokens) heavily bottleneck prompt eval speed due to low GPU utilization. Always benchmark with realistic prompt lengths.
-
-Create `~/bench-ollama-long.sh`:
+### Step 6.2: Long Prompt Benchmark
 
 ```bash
+tee ~/bench-ollama-long.sh > /dev/null << 'SCRIPT'
 #!/bin/bash
 MODEL="${1:-qwen3.5:35b-a3b}"
-curl -s http://localhost:11434/api/generate -d "{\"model\":\"$MODEL\",\"prompt\":\"You are an expert software architect. I need you to review and refactor the following Python code for a web application. The code handles user authentication, session management, database connections, API rate limiting, error handling, logging, caching with Redis, background job processing with Celery, WebSocket connections for real-time updates, file upload handling with S3 integration, email notification service, payment processing with Stripe, search functionality with Elasticsearch, GraphQL API endpoints, OAuth2 integration with Google and GitHub, two-factor authentication with TOTP, audit logging for compliance, data export functionality in CSV and PDF formats, automated testing with pytest fixtures, CI/CD pipeline configuration, Docker containerization, Kubernetes deployment manifests, monitoring with Prometheus metrics, and distributed tracing with OpenTelemetry. Please provide a comprehensive architecture review covering separation of concerns, SOLID principles, design patterns, security best practices, performance optimization, scalability considerations, and maintainability improvements. Include specific code examples for each recommendation.\",\"stream\":false}" | python3 -c "
+echo "Model: $MODEL (long prompt)"
+echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+curl -s http://localhost:11434/api/generate -d "{\"model\":\"$MODEL\",\"prompt\":\"You are an expert software architect. I need you to review and refactor the following Python code for a web application that handles user authentication, session management, database connections, API rate limiting, error handling, logging, caching with Redis, background job processing with Celery, WebSocket connections for real-time updates, file upload handling with S3 integration, email notification service, payment processing with Stripe, and search functionality with Elasticsearch. Please provide a comprehensive architecture review covering separation of concerns, SOLID principles, design patterns, security best practices, performance optimization, and scalability considerations.\",\"stream\":false}" | python3 -c "
 import sys,json
 d=json.load(sys.stdin)
 pp=d['prompt_eval_count']/d['prompt_eval_duration']*1e9
 tg=d['eval_count']/d['eval_duration']*1e9
-print(f'Prompt eval: {pp:.2f} t/s ({d[\"prompt_eval_count\"]} tokens)')
-print(f'Generation: {tg:.2f} t/s ({d[\"eval_count\"]} tokens)')
+print(f'Prompt eval: {pp:.1f} t/s ({d[\"prompt_eval_count\"]} tokens)')
+print(f'Generation:  {tg:.1f} t/s ({d[\"eval_count\"]} tokens)')
+print(f'Total time:  {d[\"total_duration\"]/1e9:.2f}s')
 "
+SCRIPT
+chmod +x ~/bench-ollama-long.sh
 ```
 
-### Prompt Length Impact
+### Prompt Length Impact on Speed
 
-| Prompt Length | Prompt Eval (qwen3-coder-next) | Prompt Eval (qwen3.5-35b-a3b) |
-|--------------|-------------------------------|-------------------------------|
-| 12 tokens | 96 t/s | ~245 t/s |
-| 54 tokens | 136 t/s | ~267 t/s |
-| 201 tokens | — | 467 t/s |
+Prompt processing speed scales with prompt length due to GPU parallelism:
+
+| Prompt Tokens | pp (qwen3.5:35b-a3b) | pp (qwen3-coder-next) |
+|---------------|----------------------|-----------------------|
+| 12-14 | 121 t/s | 91 t/s |
+| 21-23 | 182 t/s | 130 t/s |
+| 120-122 | 457 t/s | 301 t/s |
 
 ---
 
-## Phase 7: Advanced — llama.cpp via kyuz0 Containers (Recommended)
+## Phase 7: ROCm with llama.cpp (Containers)
 
-For maximum performance, use [kyuz0's pre-built containers](https://github.com/kyuz0/amd-strix-halo-toolboxes) which auto-rebuild on every llama.cpp update with optimized compiler flags for gfx1151.
+For maximum prompt processing performance, use llama.cpp with ROCm via [kyuz0 containers](https://github.com/kyuz0/amd-strix-halo-toolboxes).
+
+> **IMPORTANT:** ROCm requires kernel 6.18.x. Kernel 6.19.x causes segfaults. See [Kernel Compatibility](#kernel-and-rocm-compatibility).
 
 ### Step 7.1: Install Distrobox and Podman
 
 ```bash
 sudo apt install podman -y
-```
-
-```bash
 curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sudo sh
 ```
 
-> **Note:** Ubuntu 24.04 does not include `toolbox` in its repos. Use **Distrobox** instead.
+> **Note:** Ubuntu 24.04 does not include `toolbox` in its repos. Use Distrobox instead. The default `toolbox` on Ubuntu also breaks GPU access.
 
-### Step 7.2: Create a Container
-
-**Vulkan AMDVLK** — Best generation speed (57.3 t/s):
-
-```bash
-distrobox create llama-vulkan-amdvlk \
-  --image docker.io/kyuz0/amd-strix-halo-toolboxes:vulkan-amdvlk \
-  --additional-flags "--device /dev/dri --group-add video --security-opt seccomp=unconfined"
-```
-
-**Vulkan RADV** — Best prompt processing (880 t/s pp512), most stable:
-
-```bash
-distrobox create llama-vulkan-radv \
-  --image docker.io/kyuz0/amd-strix-halo-toolboxes:vulkan-radv \
-  --additional-flags "--device /dev/dri --group-add video --security-opt seccomp=unconfined"
-```
-
-**ROCm 7.2** — Alternative HIP backend:
+### Step 7.2: Create the ROCm Container
 
 ```bash
 distrobox create llama-rocm-72 \
   --image docker.io/kyuz0/amd-strix-halo-toolboxes:rocm-7.2 \
-  --additional-flags "--device /dev/dri --device /dev/kfd --group-add video --group-add render --security-opt seccomp=unconfined"
+  --additional-flags "--device /dev/dri --device /dev/kfd --group-add video --group-add render --group-add sudo --security-opt seccomp=unconfined"
 ```
-
-> **Which to choose?**
-> | Container | Best for | pp512 | tg128 |
-> |-----------|----------|-------|-------|
-> | `vulkan-amdvlk` | Interactive chat | 580 | **57.3** |
-> | `vulkan-radv` | RAG / long prompts | **880** | 52.7 |
-> | `rocm-7.2` | Custom builds | 507 | 55.6 |
-> | `rocm-6.4.4` | Balance | 672 | 52.0 |
 
 ### Step 7.3: Enter and Test
 
 ```bash
 distrobox enter llama-rocm-72
+rocm-smi  # Should show your gfx1151 GPU
 ```
 
-Inside the container, verify ROCm works:
+### Step 7.4: Run llama-bench
 
-```bash
-/opt/rocm/bin/rocm-smi  # Should show your gfx1151 GPU
-```
-
-### Step 7.4: Download a Compatible GGUF Model
-
-> **IMPORTANT:** Ollama's GGUF files are NOT compatible with standalone llama.cpp due to different tensor naming conventions. You must download a proper GGUF from HuggingFace.
-
-Install huggingface-hub (on the host, outside the container):
-
-```bash
-pipx install huggingface-hub
-pipx inject huggingface-hub "huggingface-hub[cli]"
-```
-
-Download a compatible Qwen3.5-35B-A3B GGUF:
-
-```bash
-python3 -c "
-from huggingface_hub import hf_hub_download
-hf_hub_download('bartowski/Qwen_Qwen3.5-35B-A3B-GGUF',
-                'Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf',
-                local_dir='$HOME/models/')
-"
-```
-
-> This downloads ~21GB. The model will be accessible inside the container via `~/models/`.
-
-### Step 7.5: Rebuild llama.cpp (For Newer Models)
-
-The kyuz0 pre-built binary (build 8189) is fast but too old for newer models like Qwen3.5. To rebuild:
-
-Inside the container:
-
-```bash
-export PATH=/opt/rocm/bin:$PATH
-cd ~/llama.cpp
-git pull
-rm -rf build && mkdir build && cd build
-cmake .. -DGGML_HIP=ON -DAMDGPU_TARGETS=gfx1151 -DCMAKE_BUILD_TYPE=Release
-make -j$(nproc)
-```
-
-> **Build time:** ~5 minutes with 32 cores.
-
-> **Note:** The kyuz0 pre-built binary (build 8189) is ~10% faster than self-compiled on small models (Llama 7B) due to undocumented compiler optimizations. However, for newer models like Qwen3.5-35B-A3B, you must use a newer build as the old one lacks support for the `qwen35moe` architecture.
-
-### Step 7.6: Run llama-bench
+The container comes with pre-built, optimized llama.cpp binaries:
 
 ```bash
 export ROCBLAS_USE_HIPBLASLT=1
-cd ~/llama.cpp/build
-./bin/llama-bench -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf -fa on -ngl 999 -mmp 0 -p 128,512 -n 128
+llama-bench -m ~/models/your-model.gguf -fa 1 -ngl 999 -mmp 0 -p 128,512 -n 128
 ```
 
-Expected results (Qwen3.5-35B-A3B Q4_K_M):
+**Critical flags:**
 
-| pp128 | pp512 | tg128 |
-|-------|-------|-------|
-| ~472 | ~922 | ~48.8 |
+| Flag | Impact | Notes |
+|------|--------|-------|
+| `-fa 1` | +13% prompt processing | Always use on Strix Halo |
+| `-mmp 0` (--no-mmap) | +22% pp128, more stable | **Always** use on Strix Halo |
+| `ROCBLAS_USE_HIPBLASLT=1` | +8% token generation | Set in environment |
+| `-ngl 999` | Full GPU offload | Use all available VRAM |
 
-> **Important:** `ROCBLAS_USE_HIPBLASLT=1` + `-fa on` gives **+13% prompt processing** and **+8% token generation**.
+> The kyuz0 pre-built binary includes the critical compiler flag `--amdgpu-unroll-threshold-local=600` which works around the [LLVM compiler regression](https://github.com/llvm/llvm-project/issues/147700) in ROCm 7+. Self-compiled binaries without this flag may be significantly slower.
 
-> **Important:** Always use `-mmp 0` (disable mmap) with ROCm GPU backends. With mmap enabled, short prompt eval has high variance and is ~22% slower (388 ± 129 vs 472 ± 15 t/s at pp128) due to page fault overhead. Long prompts (pp512+) are unaffected.
+### Step 7.5: Self-Compiling llama.cpp for ROCm
 
-### Step 7.7: Run llama-server (API Alternative to Ollama)
-
-For the best inference performance, use `llama-server` inside a Vulkan AMDVLK container instead of Ollama:
+If you need the latest llama.cpp features or want to use lhl's rocWMMA patches:
 
 ```bash
-distrobox enter llama-vulkan-amdvlk -- llama-server \
-  -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf \
-  -ngl 999 \
-  -fa 1 \
-  --no-mmap \
-  -c 8192 \
-  -np 1 \
-  --host 0.0.0.0 \
-  --port 8080
+# Inside a ROCm container
+git clone https://github.com/ggml-org/llama.cpp
+cd llama.cpp
+
+# Standard build (without rocWMMA)
+cmake -B build -S . \
+  -DGGML_HIP=ON \
+  -DAMDGPU_TARGETS="gfx1151" \
+  -DCMAKE_HIP_FLAGS="-mllvm --amdgpu-unroll-threshold-local=600" \
+  -DCMAKE_BUILD_TYPE=Release
+
+# With rocWMMA (for long context, use lhl's tuned branch)
+cmake -B build -S . \
+  -DGGML_HIP=ON \
+  -DAMDGPU_TARGETS="gfx1151" \
+  -DGGML_HIP_ROCWMMA_FATTN=ON \
+  -DCMAKE_HIP_FLAGS="-mllvm --amdgpu-unroll-threshold-local=600" \
+  -DCMAKE_BUILD_TYPE=Release
+
+cmake --build build -j$(nproc)
 ```
 
-The server provides an OpenAI-compatible API at `http://localhost:8080`. Use it with any OpenAI-compatible client (Open WebUI, SillyTavern, Continue.dev, etc.).
+> **WARNING:** Do NOT enable `GGML_HIP_ROCWMMA_FATTN=ON` on upstream llama.cpp without lhl's patches. ROCm 7.2 has a [73% performance regression](https://github.com/ggml-org/llama.cpp/issues/19984) with rocWMMA FA enabled. lhl's custom [rocm-wmma-tune branch](https://github.com/lhl/strix-halo-testing) fixes this and delivers 2X better performance at 32K context.
 
-| Parameter | Purpose |
-|-----------|---------|
-| `-np 1` | Single parallel slot — maximizes per-request speed (use `-np 4` for multi-user) |
-| `-c 8192` | Context window size (increase for longer conversations, costs ~0.5 t/s per 2K) |
-| `--no-mmap` | Prevents page fault overhead — faster and more stable than mmap |
-| `-fa 1` | Flash Attention — +13% prompt processing |
+---
 
-> **Measured server performance:** **56.3 t/s generation**, **78.7 t/s prompt eval** (91 tokens) — that's **+23% generation** and **+69% prompt processing** compared to Ollama Vulkan on the same model.
+## Phase 8: vLLM Serving
 
-For ROCm HIP (alternative):
+[kyuz0's vLLM toolboxes](https://github.com/kyuz0/amd-strix-halo-vllm-toolboxes) enable API serving on gfx1151.
 
 ```bash
-distrobox enter llama-rocm-72 -- bash -c 'ROCBLAS_USE_HIPBLASLT=1 llama-server \
-  -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf \
-  -ngl 999 -fa on --no-mmap -c 8192 -np 1 --host 0.0.0.0 --port 8080'
+distrobox create vllm-gfx1151 \
+  --image docker.io/kyuz0/vllm-therock-gfx1151:latest \
+  --additional-flags "--device /dev/dri --device /dev/kfd --group-add video --group-add render --security-opt seccomp=unconfined"
+```
+
+**Known vLLM issues on gfx1151:**
+
+1. **Qwen3.5 block_size validation** ([issue #28](https://github.com/kyuz0/amd-strix-halo-vllm-toolboxes/issues/28)): Hybrid mamba/attention models compute `block_size=1056` which gets rejected by a hardcoded whitelist. Fix available in the issue.
+2. **MIOpen encoder hang** ([issue #30](https://github.com/kyuz0/amd-strix-halo-vllm-toolboxes/issues/30)): Vision models hang during kernel search because MIOpen lacks pre-compiled solver DBs for gfx1151. Workaround: disable encoder profiling.
+
+**Tested models on vLLM:**
+
+| Model | Max Context |
+|-------|-------------|
+| Llama-3.1-8B | 128K |
+| Gemma-3-12b | 128K |
+| Qwen3-Coder-30B-A3B (GPTQ 4-bit) | 256K |
+| gpt-oss-120b | 128K |
+| Qwen3-Next-80B-A3B (GPTQ Int4) | 256K |
+
+---
+
+## Phase 9: Multi-Node Clustering (RDMA)
+
+For models that exceed 128GB, you can cluster multiple Strix Halo machines using RDMA.
+
+From [kyuz0's vLLM clustering guide](https://github.com/kyuz0/amd-strix-halo-vllm-toolboxes):
+
+**Hardware needed:**
+- 2x Strix Halo machines (e.g., Framework Desktop)
+- 2x Intel E810-CQDA1 100GbE NICs
+- 1x DAC cable (direct attach copper, no switch needed for 2 nodes)
+
+**Performance:**
+- ~50 Gbps bandwidth, ~5 us latency (vs ~70-100 us TCP/IP)
+- TP=2 across machines = 256GB unified memory
+- Enables trillion-parameter model inference ([AMD article](https://www.amd.com/en/developer/resources/technical-articles/2026/how-to-run-a-one-trillion-parameter-llm-locally-an-amd.html))
+
+**Additional kernel parameter for clustering:**
+
+```
+pci=realloc
+```
+
+**Network configuration:**
+
+```bash
+# Set MTU to 9000 (jumbo frames)
+sudo ip link set <interface> mtu 9000
 ```
 
 ---
 
-## Phase 8: SSH Security (Optional)
+## Phase 10: SSH and Remote Access
 
-If you want remote access to your machine:
-
-### Step 8.1: Install SSH and fail2ban
+### Step 10.1: Install SSH and fail2ban
 
 ```bash
 sudo apt install openssh-server fail2ban -y
 ```
 
-### Step 8.2: Disable Root Login
+### Step 10.2: Disable Root Login
 
 ```bash
-sudo nano /etc/ssh/sshd_config
-```
-
-Find and set:
-
-```
-PermitRootLogin no
-```
-
-Restart SSH:
-
-```bash
+sudo sed -i 's/^#*PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
 sudo systemctl restart ssh
 ```
 
-> fail2ban starts automatically and blocks IPs after repeated failed login attempts. We found **68 brute-force attempts** on our system within hours of enabling SSH — fail2ban is essential.
+> fail2ban starts automatically and blocks IPs after repeated failed login attempts. We found **68 brute-force attempts** on our system within hours of enabling SSH -- fail2ban is essential.
 
 ---
 
-## Driver Comparison
+## Vulkan Driver Comparison
 
-### Via kyuz0 Containers (llama.cpp with cooperative matrix support)
+We tested both Vulkan drivers on gfx1151 (qwen3-coder-next):
 
-| Driver | Container | pp128 | pp512 | pp2048 | tg128 | Verdict |
-|--------|-----------|-------|-------|--------|-------|---------|
-| **RADV** | `vulkan-radv` | **594** | **880** | **866** | 52.7 | **Best prompt processing** |
-| **AMDVLK** | `vulkan-amdvlk` | 485 | 580 | 568 | **57.3** | **Best generation** |
+| Driver | Version | Prompt Eval | Generation | Verdict |
+|--------|---------|-------------|------------|---------|
+| **RADV** | Mesa 25.2.8 | 87 t/s | 38 t/s | Baseline |
+| **RADV** | **Mesa 26.0.2** | **~91 t/s** | **39 t/s** | **Best for general use** |
+| AMDVLK | 2025.Q2.1 | 83 t/s | 40 t/s | 14% slower pp |
 
-### Via Ollama (host-installed drivers)
+> **Our recommendation:** Use **RADV** for general use. It's more stable and has better prompt processing. AMDVLK has a marginal +2 t/s advantage on generation but loses 14% on prompt eval.
 
-| Driver | Version | Prompt Eval | Generation | Notes |
-|--------|---------|-------------|------------|-------|
-| **RADV** | Mesa 26.0.1 | **96 t/s** | 38 t/s | Best for Ollama |
-| AMDVLK | 2025.Q2.1 | 83 t/s | 40 t/s | Slower in Ollama |
+> **However:** [lhl's testing](https://github.com/lhl/strix-halo-testing) shows AMDVLK can be faster on some workloads (especially prompt-heavy tasks on some distros). The relative performance depends on your kernel, Mesa version, and even distro. If you need every last bit of speed, test both on your system.
 
-> **IMPORTANT:** AMDVLK performance depends heavily on the application. Via Ollama, RADV is faster. Via kyuz0's containerized llama.cpp (which uses `KHR_coopmat` cooperative matrix operations), AMDVLK generates **+9% faster** than RADV. Always benchmark with your specific setup.
+To install AMDVLK for comparison:
 
-For Ollama users, force RADV with `AMD_VULKAN_ICD=RADV` and `VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json`.
+```bash
+wget -O amdvlk.deb https://github.com/GPUOpen-Drivers/AMDVLK/releases/download/v-2025.Q2.1/amdvlk_2025.Q2.1_amd64.deb
+sudo dpkg -i amdvlk.deb
+```
+
+To force RADV when both are installed: `AMD_VULKAN_ICD=RADV`
+
+**Optimal ubatch sizes per driver** (from lhl's testing):
+- AMDVLK: `-ub 512`
+- RADV: `-ub 1024`
+- ROCm HIP: `-ub 2048`
 
 ---
 
-## Key Findings & Corrections
+## Key Findings and Corrections
 
-> **These findings correct several common recommendations found in other Strix Halo guides.**
+> These findings correct several common recommendations found in other Strix Halo guides.
 
 ### Things That DON'T Work (Don't Waste Your Time)
 
-| Issue | Detail | Common Advice | Reality |
-|-------|--------|---------------|---------|
-| rocWMMA (standard) | **25% REGRESSION** at short context | "Enable for 2x speed" | Hurts performance on gfx1151. [lhl's tuned branch](https://github.com/lhl/llama.cpp/tree/rocm-wmma-tune) fixes decode regression but is still **2-3% slower** for prompt processing vs standard FA in our testing (up to 8K context). Branch too old for Qwen3.5 models. |
-| Ollama HIP/ROCm | Crashes with "out of memory" on gfx1151 | "Use ROCm backend" | Use Vulkan instead |
-| AMDVLK via Ollama | 14% slower pp than RADV via Ollama | "AMDVLK is fastest" | AMDVLK IS fastest for generation (57.3 t/s), but only via kyuz0 container — NOT via Ollama |
-| ROCm 7.0 RC | Segfaults on kernel 6.18.14 | "Use ROCm 7 RC" | Use ROCm 7.2 or 6.4.4 |
-| Direct-IO (`-dio 1`) | **-6% pp512**, no gen change | "Bypass page cache" | no-mmap (`-mmp 0`) is better |
-| CPU MoE offload (`-ncmoe`) | **-11% to -20% generation** | "Offload MoE to CPU" | GPU-only is fastest — model fits in VRAM |
-| vLLM (GGUF on ROCm) | Engine crashes on gfx1151 | "60% faster than llama.cpp" | GGUF support on ROCm not mature (qwen35moe unsupported) |
-| ROCm env vars tuning | **-38% generation** regression | "GPU_MAX_HW_QUEUES=8 speeds up" | `HIP_FORCE_DEV_KERNARG`, `GPU_MAX_HW_QUEUES`, `HIP_MEM_POOL_SUPPORT` all HURT gfx1151 |
-| Smaller batch size (`-b 256`) | **-37% generation** | "Smaller batches help MoE" | Destroys generation speed. Default `-b 2048 -ub 512` is optimal |
-| RADV with `-ub 1024` | **-8% pp512** | "ub=1024 best for RADV" | ub=512 is faster on Vulkan RADV for MoE models |
-| Speculative decoding | Token mismatch error | "2x faster with draft model" | Qwen3-0.6B special tokens don't match Qwen3.5-35B-A3B — no compatible small draft model exists yet for this MoE family |
-| BIOS VRAM for speed | No speed difference after change | "More GPU VRAM = faster" | Speed stays the same, but you MUST set to lowest (512MB) to make GTT RAM available to the OS — without this, the OS only sees ~31GB |
+| Issue | Common Advice | Reality | What Happens If You Try |
+|-------|---------------|---------|------------------------|
+| Ollama HIP/ROCm | "Use ROCm backend" | Crashes with OOM on gfx1151 | `out of memory` error, even on 7B models |
+| `iommu=pt` for speed | "Use pass-through for performance" | No benefit over default ([lhl](https://github.com/lhl/strix-halo-testing)) | Same speed as `iommu=on`, wastes a kernel param |
+| rocWMMA on upstream llama.cpp | "Enable for 2x speed" | [73% regression](https://github.com/ggml-org/llama.cpp/issues/19984) on ROCm 7.2 | Massively slower prompt processing |
+| BIOS VRAM increase for speed | "More GPU VRAM = faster" | Zero speed difference | OS sees less RAM, no benefit |
+| ROCm 7.0 RC | "Use ROCm 7 RC" | Segfaults on kernel 6.18.14+ | `HSA_STATUS_ERROR` crash |
+| Kernel 6.19.x with ROCm | "Use latest kernel" | GPU misidentified as gfx1100 | All ROCm containers segfault |
+| linux-firmware-20251125 | Auto-update | Breaks ROCm on Strix Halo | Instability, crashes |
 
 ### Things That DO Work
 
-| Optimization | Impact | Notes |
-|-------------|--------|-------|
-| **kyuz0 Vulkan AMDVLK container** | **+25% gen, +24% pp512 vs Ollama** | Best generation speed (57.3 t/s) — biggest win |
-| **kyuz0 Vulkan RADV container** | **+15% gen, +88% pp512 vs Ollama** | Best prompt processing without compilation (880 t/s) |
-| **ROCm 6.4.4 instead of 7.2** | **+33% pp512** (pre-built) | Trade-off: -6.5% generation speed |
-| Force GPU high clocks | **+8% pp512** | Fixes AMD driver bug where GPU stays at 900 MHz |
-| Mesa 25.2.8 → 26.0.1 | **+9%** prompt eval | kisak PPA (Vulkan/Ollama only) |
-| Flash Attention | **+13%** prompt processing | `-fa on` or `OLLAMA_FLASH_ATTENTION=1` |
-| hipBLASLt | **+8%** token generation | `ROCBLAS_USE_HIPBLASLT=1` (ROCm only) |
-| tuned accelerator-performance | **+5-8%** overall | Verify it's running after reboot! |
-| Disable mmap (`-mmp 0`) | **+22% pp128**, stable | Eliminates page fault overhead on short prompts (ROCm only) |
-| Transparent Huge Pages | marginal | `echo always > /sys/kernel/mm/transparent_hugepage/enabled` |
-| Sysctl tuning | marginal | `vm.swappiness=10`, `vm.max_map_count=2097152` |
-| RADV over AMDVLK (Ollama) | **+14%** prompt eval | Use `VK_ICD_FILENAMES` to force. Note: AMDVLK is faster in kyuz0 containers |
-| `iommu=pt` over `amd_iommu=off` | Security + same performance | Recommended by kyuz0 — passthrough mode reduces overhead without disabling IOMMU |
-| BIOS VRAM → 512MB | OS sees 125GB instead of 31GB | No speed change, but makes system usable |
+| Optimization | Impact | How |
+|-------------|--------|-----|
+| Mesa 25.2.8 to 26.0.2 | **+9-10% pp** | `sudo add-apt-repository ppa:kisak/kisak-mesa` |
+| Flash Attention | **+13% pp** | `-fa 1` or `OLLAMA_FLASH_ATTENTION=1` |
+| `--no-mmap` (disable mmap) | **+22% pp128** | `-mmp 0` in llama.cpp, always use on Strix Halo |
+| hipBLASLt | **+8% tg** | `ROCBLAS_USE_HIPBLASLT=1` (ROCm only) |
+| tuned accelerator-performance | **+5-8% overall** | `sudo tuned-adm profile accelerator-performance` |
+| RADV over AMDVLK | **+14% pp** | `AMD_VULKAN_ICD=RADV` |
+| `amd_iommu=off` | **+6% memory bandwidth** | GRUB parameter |
+| BIOS VRAM to 512MB | OS sees 125GB vs 31GB | No speed change, but required for usability |
 | `HIP_VISIBLE_DEVICES=-1` | Fixes Ollama crash | Required for Vulkan-only mode |
-| HuggingFace GGUF | Required for llama.cpp | Ollama GGUFs are incompatible with standalone llama.cpp |
+| LLVM unroll workaround | Restores ROCm 7+ perf | `-mllvm --amdgpu-unroll-threshold-local=600` |
+| lhl's rocWMMA-tuned | **2X tg at 32K context** | Custom branch, requires manual build |
+
+---
+
+## Known Issues
+
+### Kernel 6.19.x Breaks ROCm (NEW -- March 2026)
+
+**Symptoms:** All ROCm containers segfault. `ggml_cuda_init` reports `gfx1100 (0x1100)` instead of `gfx1151`.
+
+**Affected:** All ROCm versions (6.4.4, 7.2, nightlies), all llama.cpp builds.
+
+**Not affected:** Ollama Vulkan continues to work fine.
+
+**Workaround:** Stay on kernel 6.18.x for ROCm. Vulkan-only workflows work on 6.19.x.
+
+### Qwen3.5 ROCm Hang Bug ([ROCm #6027](https://github.com/ROCm/ROCm/issues/6027))
+
+**Symptoms:** Qwen3.5 models (35B-A3B and 27B) hang during `load_tensors` on ROCm. CPU pegs at 99.9%.
+
+**Status:** Open. AMD confirmed working with TheRock 7.13.0a20260316+ nightlies.
+
+**Workaround:** Use very conservative flags: `--batch-size 128 --ubatch-size 32 --flash-attn off --n-gpu-layers 1`
+
+### GPU Clock Bug
+
+**Symptoms:** GPU stays at 900 MHz instead of 2900 MHz, causing ~8% performance loss.
+
+**Check:**
+
+```bash
+cat /sys/class/drm/card*/device/pp_dpm_sclk
+# Should show: 2: 2900Mhz *
+```
+
+**Fix:** Force highest performance level:
+
+```bash
+echo high | sudo tee /sys/class/drm/card*/device/power_dpm_force_performance_level
+```
+
+### GFX1151 1.5X VGPR Capacity
+
+Newer kernels (6.18.4+) recognize gfx1151's 1.5X VGPR capacity compared to standard gfx11 chips. This enables better occupancy for compute shaders. If you're on an older kernel, you may not be getting full performance.
 
 ---
 
 ## Troubleshooting
 
-### DKMS mt7925 WiFi Errors During apt install
+<details>
+<summary><strong>DKMS mt7925 WiFi Errors During apt install</strong></summary>
 
 You'll see this on every `apt install`:
 
@@ -846,82 +862,233 @@ Error! Bad return status for module build on kernel: 6.18.14-061814-generic
 dkms autoinstall failed for mt76-mt7925(10)
 ```
 
-**This is harmless.** WiFi works fine via the kernel-built driver. To permanently silence:
+**This is harmless.** WiFi works fine via the kernel driver. To permanently silence:
 
 ```bash
 sudo dkms remove mt76-mt7925/1.5.0 --all
 ```
 
-### Ollama "Out of Memory" Even with Small Models
+</details>
+
+<details>
+<summary><strong>Ollama "Out of Memory" Even with Small Models</strong></summary>
 
 This happens when Ollama tries to use HIP/ROCm instead of Vulkan:
 
 ```bash
+# Check current Ollama environment
+systemctl show ollama | grep Environment
+
+# Fix: ensure these are set
 sudo systemctl edit ollama
-# Ensure OLLAMA_VULKAN=1 and HIP_VISIBLE_DEVICES=-1 are set
+# Add: OLLAMA_VULKAN=1, HIP_VISIBLE_DEVICES=-1
 sudo systemctl daemon-reload
 sudo systemctl restart ollama
 ```
 
-### Verifying GPU Memory Configuration
+</details>
+
+<details>
+<summary><strong>ROCm Container Segfaults (Kernel 6.19.x)</strong></summary>
+
+If your ROCm containers crash immediately with segfaults:
+
+1. Check kernel: `uname -r` -- if 6.19.x, this is the issue
+2. Options:
+   - Use Ollama Vulkan instead (no ROCm needed)
+   - Downgrade to kernel 6.18.x for ROCm support
+   - Wait for ROCm/kernel fix
+
+```bash
+# List installed kernels
+dpkg --list | grep linux-image
+
+# Boot into a specific kernel via GRUB
+# Hold Shift during boot -> Advanced Options -> Select kernel
+```
+
+</details>
+
+<details>
+<summary><strong>Verifying GPU Memory Configuration</strong></summary>
 
 ```bash
 # Check TTM pages limit
 cat /sys/module/ttm/parameters/pages_limit
 
-# Check GTT size (bytes)
+# Check GTT size
 cat /sys/module/amdgpu/parameters/gttsize
 
-# Check Vulkan driver in use
+# Check Vulkan driver
 vulkaninfo --summary 2>&1 | grep -E "driverName|driverInfo"
 
 # Check OS-visible RAM
 free -h
-```
 
-### rocm-smi Shows Wrong VRAM
-
-For APUs with unified memory, `mem_info_vram_total` showing ~1GB is **normal**. The actual compute memory is in GTT, which should show ~128GB. Check with:
-
-```bash
+# Check GPU memory allocation
 for file in /sys/class/drm/card*/device/mem_info*; do
   echo "$file: $(cat $file)"
 done
 ```
 
-### tuned Not Running After Reboot
+</details>
+
+<details>
+<summary><strong>rocm-smi Shows Wrong VRAM</strong></summary>
+
+For APUs with unified memory, `mem_info_vram_total` showing ~1GB is **normal**. The actual compute memory is in GTT, which should show ~128GB.
+
+</details>
+
+<details>
+<summary><strong>tuned Not Running After Reboot</strong></summary>
 
 ```bash
+# Check status
+tuned-adm active
+
+# If not running:
 sudo systemctl enable --now tuned
 sudo tuned-adm profile accelerator-performance
+
+# Verify it persists
+tuned-adm active
 ```
+
+</details>
+
+<details>
+<summary><strong>GPU Stuck at Low Clock Speed</strong></summary>
+
+```bash
+# Check current clock
+cat /sys/class/drm/card*/device/pp_dpm_sclk
+
+# If not on highest (2900Mhz):
+echo high | sudo tee /sys/class/drm/card*/device/power_dpm_force_performance_level
+
+# To make persistent, add to /etc/rc.local or a udev rule
+```
+
+</details>
 
 ---
 
-## Credits & References
+## Kernel and ROCm Compatibility
 
-- [kyuz0/amd-strix-halo-toolboxes](https://github.com/kyuz0/amd-strix-halo-toolboxes) — Pre-built containers with optimized llama.cpp for Strix Halo (1.1k+ stars). Discovered LLVM compiler regression in ROCm 7+ and patched it. Recommends `iommu=pt`.
-- [lhl/strix-halo-testing](https://github.com/lhl/strix-halo-testing) — Deepest technical research on Strix Halo. Tests ROCm nightlies, kernel version impact, wrote [rocWMMA fix-patch](https://github.com/lhl/llama.cpp/tree/rocm-wmma-tune) for long-context performance.
-- [kyuz0/amd-strix-halo-gfx1151-toolboxes](https://github.com/kyuz0/amd-strix-halo-gfx1151-toolboxes) — Kernel/ROCm compatibility tracking across all toolboxes.
-- [pablo-ross/strix-halo-gmktec-evo-x2](https://github.com/pablo-ross/strix-halo-gmktec-evo-x2) — Original Strix Halo setup guide (GMKtec EVO-X2)
-- [Banandre](https://www.banandre.com/blog/amd-rdna3-faster-llamacpp-performance-rocm-optimizations) — Detailed analysis of rocWMMA tuning for RDNA3
-- [Level1Techs Forum](https://forum.level1techs.com/t/strix-halo-ryzen-ai-max-395-llm-benchmark-results/233796) — Community benchmark results
-- [Hardware Corner](https://www.hardware-corner.net/strix-halo-llm-optimization/) — Strix Halo LLM optimization guide
-- [Strix Halo HomeLab Wiki](https://strixhalo-homelab.d7.wtf/) — Community Discord and wiki for edge cases
-- [kisak-mesa PPA](https://launchpad.net/~kisak/+archive/ubuntu/kisak-mesa) — Latest Mesa drivers for Ubuntu
-- [GPUOpen-Drivers/AMDVLK](https://github.com/GPUOpen-Drivers/AMDVLK) — AMD open-source Vulkan driver
+Based on community testing and our own findings:
+
+| Kernel | ROCm 6.4.4 | ROCm 7.2 | ROCm 7 Nightly | Vulkan (Ollama) |
+|--------|------------|----------|----------------|-----------------|
+| 6.17.7 | Works (with right firmware) | Unknown | Works | Works |
+| 6.18.4-6.18.14 | Works (patched) | Works | Works | Works |
+| **6.19.4** | **Segfault** | **Segfault** | **Unknown** | **Works** |
+
+**Key rules:**
+- Kernel 6.18.4+ has a fix that breaks ALL older ROCm versions
+- Kernel 6.19.x misidentifies gfx1151 as gfx1100, breaking all ROCm
+- linux-firmware-20251125 breaks ROCm regardless of kernel
+- linux-firmware-20260110+ is safe
+
+> **Our current recommendation (March 2026):** Use kernel 6.18.6-6.18.14 for full ROCm + Vulkan support. Use kernel 6.19.x only if you exclusively use Vulkan.
+
+---
+
+## Testing Checklist
+
+After completing setup, verify each item:
+
+- [ ] `free -h` shows ~124GB total RAM
+- [ ] `vulkaninfo --summary` shows RADV Mesa 26.0.2+
+- [ ] `tuned-adm active` shows `accelerator-performance`
+- [ ] `cat /sys/class/drm/card*/device/pp_dpm_sclk` shows 2900Mhz with asterisk
+- [ ] `cat /sys/module/ttm/parameters/pages_limit` shows 31457280
+- [ ] `ollama --version` returns without error
+- [ ] `ollama run qwen3.5:35b-a3b "hello"` generates at 45+ t/s
+- [ ] `systemctl show ollama | grep Environment` includes `OLLAMA_VULKAN=1`
+- [ ] `cat /etc/default/grub | grep CMDLINE` includes `amd_iommu=off`
+- [ ] `uname -r` shows 6.18.x (if using ROCm) or 6.19.x (if Vulkan-only)
+- [ ] `dpkg -l | grep linux-firmware` does NOT show 20251125
+
+---
+
+## Community Resources
+
+- [kyuz0/amd-strix-halo-toolboxes](https://github.com/kyuz0/amd-strix-halo-toolboxes) -- Community standard containers for llama.cpp (1.2k+ stars)
+- [kyuz0/amd-strix-halo-vllm-toolboxes](https://github.com/kyuz0/amd-strix-halo-vllm-toolboxes) -- vLLM serving + RDMA clustering
+- [kyuz0/amd-strix-halo-gfx1151-toolboxes](https://github.com/kyuz0/amd-strix-halo-gfx1151-toolboxes) -- Meta repository with all toolboxes
+- [kyuz0 Backend Benchmarks Dashboard](https://kyuz0.github.io/amd-strix-halo-toolboxes/) -- Interactive benchmark comparison
+- [lhl/strix-halo-testing](https://github.com/lhl/strix-halo-testing) -- Deep performance research and rocWMMA patches
+- [strixhalo.wiki](https://strixhalo.wiki/AI/llamacpp-with-ROCm) -- Community wiki
+- [llm-tracker.info](https://llm-tracker.info/AMD-Strix-Halo-(Ryzen-AI-Max+-395)-GPU-Performance) -- GPU performance comparison
+- [Level1Techs Forum](https://forum.level1techs.com/t/strix-halo-ryzen-ai-max-395-llm-benchmark-results/233796) -- Community benchmark results
+- [Framework Community](https://community.frame.work/t/pytorch-w-flash-attention-vllm-for-strix-halo/74736) -- Framework Desktop discussions
+- [ROCm Strix Halo Optimization Guide](https://rocm.docs.amd.com/en/latest/how-to/system-optimization/strixhalo.html) -- Official AMD guide
+
+---
+
+## Credits and References
+
+- [kyuz0](https://github.com/kyuz0) -- Maintainer of the Strix Halo toolbox ecosystem, community standard containers
+- [lhl](https://github.com/lhl) -- Deep performance research, rocWMMA patches, IOMMU/bandwidth testing
+- [pablo-ross](https://github.com/pablo-ross/strix-halo-gmktec-evo-x2) -- Original GMKtec EVO-X2 setup guide
+- [TechnigmaAI / Hardware Corner](https://www.hardware-corner.net/strix-halo-llm-optimization/) -- Alternative optimization guide
+- [AMD](https://www.amd.com/en/developer/resources/technical-articles/2026/how-to-run-a-one-trillion-parameter-llm-locally-an-amd.html) -- Trillion-parameter LLM clustering article
+- [Lychee-Technology](https://github.com/Lychee-Technology/llama-cpp-for-strix-halo) -- Pre-built llama.cpp binaries for gfx1151
+- [kisak-mesa PPA](https://launchpad.net/~kisak/+archive/ubuntu/kisak-mesa) -- Latest Mesa drivers for Ubuntu
+- [GPUOpen-Drivers/AMDVLK](https://github.com/GPUOpen-Drivers/AMDVLK) -- AMD open-source Vulkan driver
 
 ---
 
 ## Contributing
 
-Found an optimization we missed? Have benchmark results from a different Strix Halo system? Contributions are welcome!
+Found something that's wrong, outdated, or missing?
 
-- **Report findings:** Open an [issue](https://github.com/hogeheer499-commits/strix-halo-guide/issues) with your benchmark numbers
-- **Submit improvements:** PRs welcome — include before/after benchmarks
-- **Share your system:** Tested on Framework Desktop, GMKtec EVO-X2, or another Strix Halo system? Let us know your numbers
+1. Open an issue with your hardware, kernel version, and benchmark results
+2. PRs welcome -- especially from other Strix Halo systems (Framework, GMKtec, HP ZBook)
+3. If you find a new optimization, include before/after benchmarks
 
-If this guide saved you time, consider giving it a star — it helps others find it.
+---
+
+## Changelog
+
+### 2026-03-20 -- Major Rewrite
+
+- Complete rewrite with live benchmarks on current system
+- Added: Kernel 6.19.x breaks ROCm (GPU misidentified as gfx1100)
+- Added: Mesa 26.0.2 results (+4-5% tg improvement over 26.0.1)
+- Added: qwen3-coder:30b-a3b-q8_0 benchmarks (51.4 t/s -- fastest model)
+- Added: Long context performance data from lhl (Vulkan vs ROCm at 32K)
+- Added: rocWMMA status update (upstream broken, lhl's tuned branch works)
+- Added: vLLM setup and known issues
+- Added: RDMA clustering section
+- Added: Kernel/ROCm compatibility matrix
+- Added: linux-firmware-20251125 warning
+- Added: LLVM compiler regression workaround
+- Added: Qwen3.5 ROCm hang bug (ROCm #6027)
+- Added: Backend decision guide
+- Added: Testing checklist
+- Added: Collapsible troubleshooting sections
+- Updated: ROCm HIP is now broken on kernel 6.19.4 (was working on 6.18.14)
+- Updated: All benchmark numbers re-measured
+- Updated: Replaced `nano` instructions with `tee` for copy-paste ready commands
+- Corrected: rocWMMA is no longer blanket "don't use" -- lhl's tuned branch is best for long context
+- Corrected: `iommu=pt` has no benefit -- use `amd_iommu=off` instead
+
+### Initial Release
+
+- Basic setup guide based on pablo-ross' GMKtec guide
+- Ollama Vulkan configuration
+- ROCm container setup
+
+---
+
+## Upcoming
+
+- **Gorgon Halo** (Ryzen AI Max 400, Q4 2026): Same architecture, higher clocks
+- **Medusa Halo** (Ryzen AI Max 500): LPDDR6, ~80% more memory bandwidth
+- **Lemonade 10.0** (March 2026): First Linux NPU support for LLM inference via FastFlowLM
+- **AMD Variable Graphics Memory** (Windows): Up to 128B parameter models in Vulkan llama.cpp
 
 ---
 
