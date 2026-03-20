@@ -1191,18 +1191,97 @@ ollama pull qwen3.5:35b-a3b
 
 ---
 
+## Use Cases
+
+### AI Coding Assistant (Claude Code, Cursor, Continue.dev)
+
+Ollama provides an OpenAI-compatible API. Point any coding tool at it:
+
+```bash
+# For Cursor, Continue.dev, or any OpenAI-compatible client:
+# Base URL: http://localhost:11434/v1
+# Model: qwen3.5:35b-a3b (or qwen3-coder-next for max quality)
+# API Key: ollama (or leave empty)
+```
+
+For Claude Code specifically:
+
+```bash
+ANTHROPIC_BASE_URL=http://localhost:11434 claude --model qwen3.5:35b-a3b
+```
+
+At 48-87 t/s, local inference feels instant for code completion and review.
+
+### ChatGPT-like Web Interface (Open WebUI)
+
+```bash
+docker run -d -p 3000:8080 \
+  --add-host=host.docker.internal:host-gateway \
+  -v open-webui:/app/backend/data \
+  --name open-webui \
+  ghcr.io/open-webui/open-webui:main
+```
+
+Open `http://localhost:3000`. You get conversation history, document upload, multi-model support, and built-in RAG -- all local, no cloud.
+
+### RAG (Document Q&A)
+
+For querying your own documents locally:
+
+```bash
+# 1. Pull an embedding model
+ollama pull nomic-embed-text
+
+# 2. Use Open WebUI's built-in RAG (easiest)
+#    or set up LangChain + ChromaDB for custom pipelines
+```
+
+### Image Generation
+
+kyuz0's [ComfyUI toolboxes](https://github.com/kyuz0/amd-strix-halo-gfx1151-toolboxes) provide ROCm containers for Flux, Wan 2.2, and Hunyuan on gfx1151. For Vulkan-only: `stable-diffusion.cpp` works with the RADV driver.
+
+### Voice / TTS
+
+Qwen3-TTS and Chatterbox TTS both run on Strix Halo with GPU acceleration. lhl's [voicechat2](https://github.com/lhl) provides a complete local AI voice chat system.
+
+---
+
 ## Buying Guide
 
 All current Strix Halo mini PCs use the same AMD Ryzen AI MAX+ 395 APU with 128GB LPDDR5X-8000. The differentiators are form factor, cooling, ports, and price.
 
-| System | Price (approx) | Form Factor | Cooling | Ports | Notes |
-|--------|---------------|-------------|---------|-------|-------|
-| **Beelink GTR9 Pro** | $1,500-1,800 | Mini PC | Fan | USB-C, HDMI, 2.5GbE | Best value, this guide's test system |
-| **GMKtec EVO-X2** | $1,700-2,200 | Mini PC | Fan | USB-C, HDMI, 2.5GbE | Similar to Beelink |
-| **Framework Desktop 13** | $2,000-2,500 | Modular | Fan | USB-C (modular) | Most hackable, used by kyuz0/lhl |
-| **HP ZBook Ultra G1a** | $3,000+ | Laptop | Fan | Thunderbolt, HDMI | Mobile, enterprise |
+| System | Price | Cooling | Networking | Key Differentiator |
+|--------|-------|---------|------------|-------------------|
+| **Bosgame M5** | ~$1,700 | Air (blower) | 2.5GbE | Cheapest 128GB option |
+| **GMKtec EVO-X2** | ~$1,800 | Air (blower) | 2.5GbE | Most popular, reliable |
+| **Beelink GTR9 Pro** | ~$1,800 | Air (Mac Studio) | Dual 10GbE | Best for clustering (this guide's test system) |
+| **Framework Desktop 13** | ~$2,000 | Air (optimized) | Modular | Best community/support, quietest, most repairable |
+| **Corsair AI Workstation 300** | ~$2,300 | Liquid cooled | 2.5GbE | Brand reputation, quiet under load |
+| **Minisforum MS-S1 MAX** | ~$2,300 | Air | Dual 10GbE, USB4 v2 | PCIe x16 slot (x4 speed) |
+| **HP ZBook Ultra G1a** | $3,700+ | Air (laptop) | WiFi/1GbE | Only portable option, 14" OLED |
 
-> **Our recommendation:** For pure LLM inference, get the cheapest one. They all have the same APU, same RAM, same performance. The Beelink GTR9 Pro offers the best price-to-performance ratio. The Framework Desktop 13 is best if you want modularity and community support.
+> **WARNING (Beelink GTR9 Pro):** The v1 motherboard has a fatal NIC stability issue that cannot be fixed in software. Verify you are getting board revision **v2.2** (with Realtek NICs) before purchasing. Beelink offers free replacement for v1 boards. Contact their support with your serial number.
+
+**Recommendation tiers:**
+- **Best value:** Bosgame M5 ($1,700) or GMKtec EVO-X2 ($1,800)
+- **Best overall:** Framework Desktop 13 ($2,000) -- best cooling, community, repairability, used by kyuz0 and lhl
+- **Best for clustering:** Beelink GTR9 Pro v2.2 ($1,800) or Minisforum MS-S1 MAX ($2,300) -- dual 10GbE for RDMA
+- **Only if you need portability:** HP ZBook Ultra G1a ($3,700+)
+
+> **Important:** ~90% of Chinese mini PCs (Bosgame, GMKtec, Beelink) use the same Sixunited platform internally. Performance is identical. Pick based on price, ports, and cooling preference.
+
+### Windows vs Linux
+
+| Feature | Linux (recommended) | Windows |
+|---------|-------------------|---------|
+| LLM performance | Baseline (fastest) | ~20-40% slower |
+| Max model size | ~120 GB | ~64 GB (known limitation) |
+| ROCm/HIP | Supported (kernel 6.18.x) | Very limited |
+| vLLM serving | Works | Not supported |
+| Image generation | Works (ComfyUI) | Limited |
+| Setup effort | Higher (this guide helps) | Lower (but slower) |
+
+> Linux is strongly recommended for Strix Halo LLM work. Windows works for casual use with Ollama but leaves significant performance on the table.
 
 ---
 
