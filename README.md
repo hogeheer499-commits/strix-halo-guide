@@ -784,7 +784,7 @@ To force RADV when both are installed: `AMD_VULKAN_ICD=RADV`
 | Ollama HIP/ROCm | "Use ROCm backend" | Crashes with OOM on gfx1151 | `out of memory` error, even on 7B models |
 | `iommu=pt` for speed | "Use pass-through for performance" | No benefit over default ([lhl](https://github.com/lhl/strix-halo-testing)) | Same speed as `iommu=on`, wastes a kernel param |
 | rocWMMA on upstream llama.cpp | "Enable for 2x speed" | [73% regression](https://github.com/ggml-org/llama.cpp/issues/19984) on ROCm 7.2 | Massively slower prompt processing |
-| BIOS VRAM increase for speed | "More GPU VRAM = faster" | Zero speed difference | OS sees less RAM, no benefit |
+| BIOS VRAM increase for speed | "More GPU VRAM = faster" | Zero speed difference, but you lose OS-visible RAM and GTT capacity. Set to 512MB or your system is crippled (31GB usable instead of 125GB). | OS sees only 31GB RAM, large models won't load at all |
 | ROCm 7.0 RC | "Use ROCm 7 RC" | Segfaults on kernel 6.18.14+ | `HSA_STATUS_ERROR` crash |
 | Kernel 6.19.x with ROCm | "Use latest kernel" | GPU misidentified as gfx1100 | All ROCm containers segfault |
 | linux-firmware-20251125 | Auto-update | Breaks ROCm on Strix Halo | Instability, crashes |
@@ -800,7 +800,7 @@ To force RADV when both are installed: `AMD_VULKAN_ICD=RADV`
 | tuned accelerator-performance | **+5-8% overall** | `sudo tuned-adm profile accelerator-performance` |
 | RADV over AMDVLK | **+14% pp** | `AMD_VULKAN_ICD=RADV` |
 | `amd_iommu=off` | **+6% memory bandwidth** | GRUB parameter |
-| BIOS VRAM to 512MB | OS sees 125GB vs 31GB | No speed change, but required for usability |
+| BIOS VRAM to 512MB | OS sees 125GB vs 31GB, GTT gets full 128GB | No speed change, but **required** -- without this, models >31GB won't load |
 | `HIP_VISIBLE_DEVICES=-1` | Fixes Ollama crash | Required for Vulkan-only mode |
 | LLVM unroll workaround | Restores ROCm 7+ perf | `-mllvm --amdgpu-unroll-threshold-local=600` |
 | lhl's rocWMMA-tuned | **2X tg at 32K context** | Custom branch, requires manual build |
