@@ -1,27 +1,51 @@
 ![AMD](https://img.shields.io/badge/AMD-Ryzen_AI_MAX+_395-ED1C24?style=for-the-badge&logo=amd&logoColor=white)
 ![GPU](https://img.shields.io/badge/GPU-gfx1151_RDNA_3.5-green?style=for-the-badge)
 ![RAM](https://img.shields.io/badge/RAM-128GB_LPDDR5X--8000-blue?style=for-the-badge)
+![Speed](https://img.shields.io/badge/Speed-87_t/s-brightgreen?style=for-the-badge)
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-24.04_LTS-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
 # AMD Strix Halo Local LLM Guide
 
-**From unboxing to 70B+ inference on a single APU -- with real benchmarks, tested optimizations, and the things nobody else tells you don't work.**
+**From unboxing to 87 tokens/second on a $1,500 mini PC that beats the $4,000 DGX Spark.**
 
-[Quick Start](#quick-start-6-steps) | [Benchmarks](#benchmark-results) | [Which Backend?](#backend-decision-guide) | [What NOT To Do](#things-that-dont-work-dont-waste-your-time) | [Troubleshooting](#troubleshooting)
+```
+   You are here                  What you'll get
+   +-----------+                 +---------------------------+
+   | Box from  |    30 min       | 87 t/s on 30B models      |
+   | Amazon    | ==============> | 56 t/s on 35B models      |
+   +-----------+   this guide    | 70B+ models on one device |
+                                 | No cloud. No subscription |
+                                 +---------------------------+
+```
+
+[One-Command Setup](#one-command-setup) | [Quick Start](#quick-start-6-steps) | [Benchmarks](#benchmark-results) | [Which Model?](#model-recommendation-guide) | [Which Backend?](#backend-decision-guide) | [What NOT To Do](#things-that-dont-work-dont-waste-your-time) | [Glossary](#glossary)
 
 ---
 
 ## Why This Guide Exists
 
-There are several Strix Halo LLM guides out there. This one is different because:
+There are several Strix Halo LLM guides out there. This one is different:
 
-1. **Every number is measured on this machine.** No theoretical estimates, no copy-pasted specs. Every benchmark was run on a Beelink GTR9 Pro with timestamps and exact configuration documented.
-2. **We document what does NOT work.** Most guides only tell you what to enable. We spent weeks testing optimizations that turned out to be regressions, driver versions that crash, and kernel parameters that do nothing. That information is harder to find and more valuable.
-3. **We track the moving target.** Strix Halo support in ROCm, llama.cpp, and the Linux kernel changes rapidly. This guide is updated with each significant change, noting what broke and what improved.
-4. **We compare backends with data.** Vulkan (RADV vs AMDVLK) vs ROCm HIP vs vLLM -- each has strengths at different context lengths and model sizes. We measured them all.
+1. **Every number is measured on this machine.** No theoretical estimates, no copy-pasted specs. Every benchmark was run on a Beelink GTR9 Pro with timestamps.
+2. **We document what does NOT work.** Most guides only tell you what to enable. We tested optimizations that turned out to be regressions, driver versions that crash, and parameters that do nothing. That info is harder to find and more valuable.
+3. **We track the moving target.** Strix Halo support changes rapidly. This guide is updated with each change, noting what broke and what improved.
+4. **We compare backends with data.** Vulkan (RADV vs AMDVLK) vs ROCm HIP vs vLLM -- each has strengths. We measured them all.
+5. **We explain everything.** New to local LLMs? See the [Glossary](#glossary). Not sure which model to pick? See the [Model Guide](#model-recommendation-guide).
 
-> **Based on findings from:** [kyuz0/amd-strix-halo-toolboxes](https://github.com/kyuz0/amd-strix-halo-toolboxes) (community standard containers), [lhl/strix-halo-testing](https://github.com/lhl/strix-halo-testing) (deepest performance research), and our own extensive testing.
+> **Built on findings from:** [kyuz0/amd-strix-halo-toolboxes](https://github.com/kyuz0/amd-strix-halo-toolboxes) (1.2k stars, community standard), [lhl/strix-halo-testing](https://github.com/lhl/strix-halo-testing) (deepest research), and our own extensive testing.
+
+---
+
+## One-Command Setup
+
+If you've already set your BIOS (UMA = 512MB, IOMMU = off) and installed Ubuntu 24.04:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/setup.sh | bash
+```
+
+This installs everything, configures Ollama with Vulkan, pulls a model, and runs a benchmark. Takes ~10 minutes (plus model download time). For manual step-by-step setup, see [Quick Start](#quick-start-6-steps).
 
 ---
 
@@ -53,6 +77,11 @@ There are several Strix Halo LLM guides out there. This one is different because
 - [Troubleshooting](#troubleshooting)
 - [Kernel and ROCm Compatibility](#kernel-and-rocm-compatibility)
 - [Testing Checklist](#testing-checklist)
+- [Model Recommendation Guide](#model-recommendation-guide)
+- [Cost: Local vs Cloud](#cost-local-vs-cloud)
+- [Buying Guide](#buying-guide)
+- [Glossary](#glossary)
+- [FAQ](#faq)
 - [Community Resources](#community-resources)
 - [Credits and References](#credits-and-references)
 - [Contributing](#contributing)
@@ -1085,6 +1114,221 @@ After completing setup, verify each item:
 - [Level1Techs Forum](https://forum.level1techs.com/t/strix-halo-ryzen-ai-max-395-llm-benchmark-results/233796) -- Community benchmark results
 - [Framework Community](https://community.frame.work/t/pytorch-w-flash-attention-vllm-for-strix-halo/74736) -- Framework Desktop discussions
 - [ROCm Strix Halo Optimization Guide](https://rocm.docs.amd.com/en/latest/how-to/system-optimization/strixhalo.html) -- Official AMD guide
+
+---
+
+## Model Recommendation Guide
+
+Not sure which model to run? Here's what we recommend based on use case:
+
+| I want to... | Model | Size | Speed | Why |
+|--------------|-------|------|-------|-----|
+| **Code** (best speed) | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 16.5 GB | 87 t/s | Fastest coding model, MoE architecture |
+| **Code** (best quality) | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | 51 t/s | Same model, higher fidelity quantization |
+| **Chat** (general) | Qwen3.5 35B-A3B | 23 GB | 48-56 t/s | Great all-rounder, thinking capable |
+| **Chat** (no thinking) | Qwen3.5 35B-A3B (no-think) | 23 GB | 47 t/s | Same speed, direct answers |
+| **Chat** (smartest possible) | Qwen3-Coder-Next | 51 GB | 38 t/s | Dense 51B model, slower but smarter |
+| **Analyze images** | Qwen2.5-VL 7B | 6 GB | 21 t/s | Vision-language model |
+| **Maximum intelligence** | Llama 3.3 70B (Q4) | ~40 GB | ~5 t/s | Slow but very capable |
+| **Process documents** | Qwen3.5 35B-A3B | 23 GB | 48 t/s | Fast enough for RAG pipelines |
+| **Learn / experiment** | Llama 2 7B | 3.8 GB | 52 t/s | Small, fast, well-documented |
+| **Throughput testing** | Qwen3-0.6B (Q8_0) | 0.8 GB | 266 t/s | Speed ceiling benchmark |
+
+**How to install any model:**
+
+```bash
+# Via Ollama (easiest)
+ollama pull qwen3.5:35b-a3b
+
+# For llama-bench direct (need GGUF file)
+# Download from huggingface.co, place in ~/models/
+```
+
+### Understanding Model Names
+
+```
+  Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
+  |     |      |   |   |        |  |
+  |     |      |   |   |        |  +-- Quantization (see Glossary)
+  |     |      |   |   |        +-- "Unsloth Dynamic" quant method
+  |     |      |   |   +-- Fine-tuned for instructions
+  |     |      |   +-- 3B Active parameters (MoE)
+  |     |      +-- 30B Total parameters
+  |     +-- Optimized for coding
+  +-- Model family (by Alibaba)
+```
+
+---
+
+## Cost: Local vs Cloud
+
+### Is a Strix Halo system worth it vs paying for cloud AI?
+
+**Assumptions:** Qwen3.5-35B-A3B level intelligence, 1000 tokens per query, 50 queries per day.
+
+| Option | Monthly Cost | Speed | Privacy | Offline |
+|--------|-------------|-------|---------|---------|
+| **ChatGPT Plus** | $20/mo | Fast | No | No |
+| **Claude Pro** | $20/mo | Fast | No | No |
+| **OpenAI API** (gpt-4o, 50 queries/day) | ~$15/mo | Fast | No | No |
+| **Anthropic API** (Claude Sonnet, 50 queries/day) | ~$12/mo | Fast | No | No |
+| **Strix Halo** (after purchase) | **~$8/mo electricity** | 48-87 t/s | **Yes** | **Yes** |
+
+**Break-even calculation:**
+
+| Scenario | System Cost | Monthly Savings | Break-even |
+|----------|------------|-----------------|------------|
+| vs ChatGPT Plus | ~$1,500 | $12/mo | ~10 years |
+| vs API heavy use (200 queries/day) | ~$1,500 | ~$50/mo | ~2.5 years |
+| vs API power use (1000+ queries/day) | ~$1,500 | ~$200/mo | **~7 months** |
+
+> **The real value is not cost savings.** It's running AI with **no rate limits, no content filters, no data leaving your machine, and no internet required**. If you value privacy, unrestricted use, or offline capability, local LLM pays for itself immediately.
+
+**Power consumption:**
+- Idle: ~30W
+- Under inference load: 120-140W
+- Monthly electricity (8 hours/day inference): ~$8 at $0.15/kWh
+
+---
+
+## Buying Guide
+
+All current Strix Halo mini PCs use the same AMD Ryzen AI MAX+ 395 APU with 128GB LPDDR5X-8000. The differentiators are form factor, cooling, ports, and price.
+
+| System | Price (approx) | Form Factor | Cooling | Ports | Notes |
+|--------|---------------|-------------|---------|-------|-------|
+| **Beelink GTR9 Pro** | $1,500-1,800 | Mini PC | Fan | USB-C, HDMI, 2.5GbE | Best value, this guide's test system |
+| **GMKtec EVO-X2** | $1,700-2,200 | Mini PC | Fan | USB-C, HDMI, 2.5GbE | Similar to Beelink |
+| **Framework Desktop 13** | $2,000-2,500 | Modular | Fan | USB-C (modular) | Most hackable, used by kyuz0/lhl |
+| **HP ZBook Ultra G1a** | $3,000+ | Laptop | Fan | Thunderbolt, HDMI | Mobile, enterprise |
+
+> **Our recommendation:** For pure LLM inference, get the cheapest one. They all have the same APU, same RAM, same performance. The Beelink GTR9 Pro offers the best price-to-performance ratio. The Framework Desktop 13 is best if you want modularity and community support.
+
+---
+
+## Glossary
+
+New to local LLMs? Here's what the technical terms mean.
+
+<details>
+<summary><strong>Click to expand glossary</strong></summary>
+
+**APU** -- Accelerated Processing Unit. AMD's term for a chip that combines CPU and GPU on one die. Strix Halo's APU shares 128GB of memory between CPU and GPU, which is why it can run large models.
+
+**GGUF** -- GPT-Generated Unified Format. The file format used by llama.cpp to store AI models. A .gguf file contains the model weights and metadata needed to run inference.
+
+**Quantization** -- Reducing the precision of model weights to use less memory and run faster. Common types:
+- **Q4_K_M** -- 4-bit quantization, medium quality. Good balance of size and quality.
+- **Q8_0** -- 8-bit quantization. Better quality, ~2x the size of Q4.
+- **UD-Q4_K_XL** -- Unsloth Dynamic 4-bit. Uses higher precision for important layers.
+- **BF16** -- Full precision (16-bit). Best quality, largest size.
+
+**MoE (Mixture of Experts)** -- A model architecture where only a subset of parameters are active for each token. A "30B-A3B" model has 30 billion total parameters but only activates 3 billion per token, making it much faster than a dense 30B model while retaining most of the intelligence.
+
+**Dense Model** -- A model where all parameters are used for every token. Slower but potentially smarter per parameter count. A dense 7B model uses all 7 billion parameters for every token.
+
+**Token** -- The basic unit of text for LLMs. Roughly 3/4 of a word in English. "Hello, how are you?" is about 6 tokens.
+
+**Prompt Processing (pp)** -- How fast the model reads your input. Measured in tokens/second. Higher is better. A pp of 800 t/s means the model can read ~600 words per second.
+
+**Token Generation (tg)** -- How fast the model writes its response. Measured in tokens/second. This is the speed you "feel" when chatting. 50 t/s feels instant. 5 t/s feels slow.
+
+**Unified Memory** -- Memory shared between CPU and GPU. Unlike discrete GPUs (RTX 4090 has separate 24GB VRAM), Strix Halo's GPU uses the same 128GB as the CPU. This means you can load models up to ~120GB.
+
+**GTT (Graphics Translation Table)** -- The portion of system memory that the GPU can access via Vulkan. On Strix Halo, you configure this to ~128GB so the GPU can use all available memory.
+
+**Vulkan** -- A graphics/compute API. On Strix Halo, Vulkan is the most reliable backend for LLM inference via Ollama.
+
+**ROCm** -- AMD's GPU compute platform (like NVIDIA's CUDA). Provides HIP backend for llama.cpp. Faster prompt processing than Vulkan but harder to set up and currently broken on kernel 6.19.x.
+
+**RADV** -- Mesa's open-source Vulkan driver for AMD GPUs. Generally faster and more stable than AMDVLK on Strix Halo.
+
+**AMDVLK** -- AMD's open-source Vulkan driver. Sometimes faster for token generation on MoE models, but has a 2 GiB buffer limit that cripples prompt processing on some models.
+
+**Ollama** -- A tool that makes running LLMs as easy as `ollama run model-name`. Handles model downloading, GPU acceleration, and provides an API. Uses Vulkan on Strix Halo.
+
+**llama.cpp** -- The open-source C++ library that powers most local LLM inference. Supports Vulkan, ROCm/HIP, and CPU backends.
+
+**Flash Attention** -- An optimized attention algorithm that reduces memory usage and improves speed. Always enable it on Strix Halo (`-fa 1` or `OLLAMA_FLASH_ATTENTION=1`).
+
+**tuned** -- A Linux daemon that applies system performance profiles. The `accelerator-performance` profile gives +5-8% LLM speed on Strix Halo.
+
+</details>
+
+---
+
+## FAQ
+
+<details>
+<summary><strong>Can I run ChatGPT-level intelligence locally?</strong></summary>
+
+Yes. Qwen3.5-35B-A3B runs at 48-56 t/s and is comparable to GPT-4o-mini for most tasks. For coding, Qwen3-Coder 30B-A3B runs at 87 t/s and is competitive with commercial coding assistants. For maximum intelligence, you can run 70B+ dense models at ~5 t/s -- slower but very capable.
+
+</details>
+
+<details>
+<summary><strong>Do I need Linux? Can I use Windows?</strong></summary>
+
+Linux (Ubuntu 24.04) gives the best performance and is the only way to use ROCm. Windows works for basic inference via Ollama with Vulkan, and AMD's Adrenalin 25.8.1+ drivers added Variable Graphics Memory support for up to 96GB VGM. However, Windows performance is typically 10-20% lower and community tooling is less mature.
+
+</details>
+
+<details>
+<summary><strong>Is 128GB enough for the biggest models?</strong></summary>
+
+128GB unified memory lets you run models up to ~120GB (some memory reserved for OS and GPU overhead). This covers all 70B Q4 models and most 120B MoE models. For larger models, you can cluster two Strix Halo systems via RDMA for 256GB unified memory. AMD demonstrated a 4-node cluster running a 1 trillion parameter model.
+
+</details>
+
+<details>
+<summary><strong>How does this compare to a Mac Studio?</strong></summary>
+
+The Mac Studio M4 Max (128GB) costs $4,000+ and gets ~100 t/s via MLX with ~546 GB/s bandwidth. The Beelink GTR9 Pro costs $1,500 and gets 87 t/s via Vulkan with ~215 GB/s bandwidth. The Mac is ~15% faster but costs 2.7X more. The Mac has better software polish (MLX is excellent). The Strix Halo has better value and Linux flexibility.
+
+</details>
+
+<details>
+<summary><strong>Why is my speed lower than the guide says?</strong></summary>
+
+Common causes:
+1. **tuned not running** -- Run `tuned-adm active`. Should show `accelerator-performance`. This alone is worth +5-8%.
+2. **Old Mesa drivers** -- Check `vulkaninfo --summary | grep driverInfo`. Should be Mesa 26.0.2+.
+3. **Using Ollama instead of llama-bench** -- Ollama has ~8% overhead. The 87 t/s number is via llama-bench direct.
+4. **GPU clock stuck low** -- Check `cat /sys/class/drm/card*/device/pp_dpm_sclk`. Should show 2900Mhz with asterisk.
+5. **Wrong BIOS VRAM setting** -- Check `free -h`. Should show ~124GB. If only 31GB, set UMA Frame Buffer to 512MB in BIOS.
+6. **Different model/quantization** -- The 87 t/s is specifically Qwen3-Coder-30B-A3B UD-Q4_K_XL via RADV. Larger or denser models are slower.
+
+</details>
+
+<details>
+<summary><strong>Can I use this for AI coding assistants like Cursor or Continue.dev?</strong></summary>
+
+Yes. Ollama provides an OpenAI-compatible API at `http://localhost:11434/v1`. You can point any tool that supports OpenAI API to your local Ollama:
+
+```bash
+# In Continue.dev, Cursor, or any OpenAI-compatible client:
+# Base URL: http://localhost:11434/v1
+# Model: qwen3.5:35b-a3b
+# API Key: (leave empty or use "ollama")
+```
+
+At 48 t/s, local inference feels instant for code completion and review tasks.
+
+</details>
+
+<details>
+<summary><strong>Can I run image generation (Stable Diffusion, Flux)?</strong></summary>
+
+Yes. kyuz0's [ComfyUI toolboxes](https://github.com/kyuz0/amd-strix-halo-gfx1151-toolboxes) provide ROCm containers for image and video generation on gfx1151, supporting Flux, Wan 2.2, and Hunyuan models.
+
+</details>
+
+<details>
+<summary><strong>Can I fine-tune models on this hardware?</strong></summary>
+
+Yes, with limitations. QLoRA fine-tuning of 7B-30B models works via kyuz0's [fine-tuning toolbox](https://github.com/kyuz0/amd-strix-halo-gfx1151-toolboxes). Full fine-tuning of large models is not practical due to memory bandwidth constraints compared to datacenter GPUs.
+
+</details>
 
 ---
 
