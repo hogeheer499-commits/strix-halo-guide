@@ -7,15 +7,15 @@
 
 # AMD Strix Halo Local LLM Guide
 
-**From unboxing to 87 tokens/second on a $1,500 mini PC that beats the $4,000 DGX Spark.**
+**From unboxing to 87 tokens/second -- faster generation than the DGX Spark, on a mini PC you can actually buy.**
 
 ```
    You are here                  What you'll get
    +-----------+                 +---------------------------+
-   | Box from  |    30 min       | 87 t/s on 30B models      |
-   | Amazon    | ==============> | 56 t/s on 35B models      |
-   +-----------+   this guide    | 70B+ models on one device |
-                                 | No cloud. No subscription |
+   | Strix     |    30 min       | 87 t/s on 30B MoE models  |
+   | Halo      | ==============> | 56 t/s on 35B MoE models  |
+   | mini PC   |   this guide    | 70B+ models on one device |
+   +-----------+                 | No cloud. No subscription |
                                  +---------------------------+
 ```
 
@@ -264,11 +264,11 @@ Based on our measurements and [lhl's comprehensive testing](https://github.com/l
 |----------|-----------|---------------|----------------|-------|
 | RTX 4090 | ~1008 GB/s | 100-122 t/s | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$800 used |
-| Apple M4 Max 128GB | ~546 GB/s | ~100 t/s (MLX) | 128 GB | ~$4000+ |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **56-87 t/s** | **120+ GB** | **~$1500-2000** |
-| NVIDIA DGX Spark | ~273 GB/s | ~56 t/s | 128 GB | ~$3999 |
+| Apple Mac Studio M4 Max 128GB | ~546 GB/s | ~100 t/s (MLX) | 128 GB | $3,699 |
+| **Beelink GTR9 Pro** | **~215 GB/s** | **56-87 t/s** | **120+ GB** | **$2,999** |
+| NVIDIA DGX Spark | ~273 GB/s | ~56 t/s | 128 GB | $4,699 |
 
-> **Key insight:** The Beelink GTR9 Pro **matches or exceeds the DGX Spark** on generation speed (56 t/s AMDVLK, 87 t/s RADV with Qwen3-30B MoE) at half the price, while offering 2X better CPU performance (1600 vs 708 GFLOPS Linpack). The DGX Spark wins on prompt processing (2-5X faster). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055).
+> **Key insight:** The Beelink GTR9 Pro **beats the DGX Spark** on generation speed (87 t/s vs 56 t/s with Qwen3-30B MoE) while costing **$1,700 less** ($2,999 vs $4,699), while offering 2X better CPU performance (1600 vs 708 GFLOPS Linpack). The DGX Spark wins on prompt processing (2-5X faster). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055).
 
 ### Long Context Performance
 
@@ -1178,9 +1178,9 @@ ollama pull qwen3.5:35b-a3b
 
 | Scenario | System Cost | Monthly Savings | Break-even |
 |----------|------------|-----------------|------------|
-| vs ChatGPT Plus | ~$1,500 | $12/mo | ~10 years |
-| vs API heavy use (200 queries/day) | ~$1,500 | ~$50/mo | ~2.5 years |
-| vs API power use (1000+ queries/day) | ~$1,500 | ~$200/mo | **~7 months** |
+| vs ChatGPT Plus | ~$2,999 | $12/mo | ~20 years |
+| vs API heavy use (200 queries/day) | ~$2,999 | ~$50/mo | ~5 years |
+| vs API power use (1000+ queries/day) | ~$2,999 | ~$200/mo | **~15 months** |
 
 > **The real value is not cost savings.** It's running AI with **no rate limits, no content filters, no data leaving your machine, and no internet required**. If you value privacy, unrestricted use, or offline capability, local LLM pays for itself immediately.
 
@@ -1250,23 +1250,25 @@ Qwen3-TTS and Chatterbox TTS both run on Strix Halo with GPU acceleration. lhl's
 
 All current Strix Halo mini PCs use the same AMD Ryzen AI MAX+ 395 APU with 128GB LPDDR5X-8000. The differentiators are form factor, cooling, ports, and price.
 
-| System | Price | Cooling | Networking | Key Differentiator |
-|--------|-------|---------|------------|-------------------|
-| **Bosgame M5** | ~$1,700 | Air (blower) | 2.5GbE | Cheapest 128GB option |
-| **GMKtec EVO-X2** | ~$1,800 | Air (blower) | 2.5GbE | Most popular, reliable |
-| **Beelink GTR9 Pro** | ~$1,800 | Air (Mac Studio) | Dual 10GbE | Best for clustering (this guide's test system) |
-| **Framework Desktop 13** | ~$2,000 | Air (optimized) | Modular | Best community/support, quietest, most repairable |
-| **Corsair AI Workstation 300** | ~$2,300 | Liquid cooled | 2.5GbE | Brand reputation, quiet under load |
-| **Minisforum MS-S1 MAX** | ~$2,300 | Air | Dual 10GbE, USB4 v2 | PCIe x16 slot (x4 speed) |
-| **HP ZBook Ultra G1a** | $3,700+ | Air (laptop) | WiFi/1GbE | Only portable option, 14" OLED |
+| System | Price (Mar 2026) | Cooling | Networking | Key Differentiator |
+|--------|-----------------|---------|------------|-------------------|
+| **GMKtec EVO-X2** | $2,199 | Air (blower) | 2.5GbE | Best value, most popular |
+| **Bosgame M5** | $2,399 | Air (blower) | 2.5GbE | Budget option |
+| **Framework Desktop 13** | ~$2,599 | Air (optimized) | Modular | Best community/support, quietest, DIY kit (no SSD/OS) |
+| **Corsair AI Workstation 300** | $2,700 | Liquid cooled | 2.5GbE | Brand reputation, quiet under load |
+| **Beelink GTR9 Pro** | $2,999 | Air (Mac Studio) | Dual 10GbE | Best for clustering (this guide's test system) |
+| **Minisforum MS-S1 MAX** | $3,039 | Air | Dual 10GbE, USB4 v2 | PCIe x16 slot (x4 speed) |
+| **HP ZBook Ultra G1a** | ~$4,049+ | Air (laptop) | WiFi/1GbE | Only portable option, 14" OLED |
+
+> **Note:** Prices have increased significantly since launch due to global LPDDR5X memory shortages. The DGX Spark went from $3,999 to $4,699 in Feb 2026. Strix Halo systems are up $500-1,000 from launch prices. Check current availability before buying.
 
 > **WARNING (Beelink GTR9 Pro):** The v1 motherboard has a fatal NIC stability issue that cannot be fixed in software. Verify you are getting board revision **v2.2** (with Realtek NICs) before purchasing. Beelink offers free replacement for v1 boards. Contact their support with your serial number.
 
 **Recommendation tiers:**
-- **Best value:** Bosgame M5 ($1,700) or GMKtec EVO-X2 ($1,800)
-- **Best overall:** Framework Desktop 13 ($2,000) -- best cooling, community, repairability, used by kyuz0 and lhl
-- **Best for clustering:** Beelink GTR9 Pro v2.2 ($1,800) or Minisforum MS-S1 MAX ($2,300) -- dual 10GbE for RDMA
-- **Only if you need portability:** HP ZBook Ultra G1a ($3,700+)
+- **Best value:** GMKtec EVO-X2 ($2,199)
+- **Best overall:** Framework Desktop 13 (~$2,599) -- best cooling, community, repairability, used by kyuz0 and lhl
+- **Best for clustering:** Beelink GTR9 Pro v2.2 ($2,999) or Minisforum MS-S1 MAX ($3,039) -- dual 10GbE for RDMA
+- **Only if you need portability:** HP ZBook Ultra G1a ($4,049+)
 
 > **Important:** ~90% of Chinese mini PCs (Bosgame, GMKtec, Beelink) use the same Sixunited platform internally. Performance is identical. Pick based on price, ports, and cooling preference.
 
@@ -1362,7 +1364,7 @@ Linux (Ubuntu 24.04) gives the best performance and is the only way to use ROCm.
 <details>
 <summary><strong>How does this compare to a Mac Studio?</strong></summary>
 
-The Mac Studio M4 Max (128GB) costs $4,000+ and gets ~100 t/s via MLX with ~546 GB/s bandwidth. The Beelink GTR9 Pro costs $1,500 and gets 87 t/s via Vulkan with ~215 GB/s bandwidth. The Mac is ~15% faster but costs 2.7X more. The Mac has better software polish (MLX is excellent). The Strix Halo has better value and Linux flexibility.
+The Mac Studio M4 Max (128GB) costs $3,699 and gets ~100 t/s via MLX with ~546 GB/s bandwidth. The Beelink GTR9 Pro costs $2,999 and gets 87 t/s via Vulkan with ~215 GB/s bandwidth. The Mac is ~15% faster but costs $700 more. The Mac has better software polish (MLX is excellent). The Strix Halo has better value, Linux flexibility, and beats the $4,699 DGX Spark on generation speed.
 
 </details>
 
