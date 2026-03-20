@@ -91,10 +91,12 @@ Real-world model performance measured on the Beelink GTR9 Pro with Ollama Vulkan
 
 | Model | Size | Type | Generation Speed | Use Case |
 |-------|------|------|------------------|----------|
+| Qwen3-0.6B (Q8_0) | 0.8 GB | Dense | 266 t/s | Ultra-fast tiny model |
 | Llama 2 7B | 3.8 GB | Dense | 52.0 t/s | Testing, lightweight tasks |
 | Qwen2.5-VL 7B | 6.0 GB | Vision | 21.4 t/s | Image understanding |
-| Qwen3.5 35B-A3B | 23 GB | MoE | 47.4-48.0 t/s | General purpose, coding |
-| Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | **51.3-51.4 t/s** | Coding (highest quality MoE) |
+| Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 16.5 GB | MoE | **86.81 t/s** | Best speed/quality ratio |
+| Qwen3.5 35B-A3B | 23 GB | MoE | 52-56 t/s | General purpose, coding |
+| Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | 51.3-51.4 t/s | Coding (highest quality MoE) |
 | Qwen3-Coder-Next | 51 GB | Dense | 37.9-39.1 t/s | Large dense model |
 | Llama 3.3 70B (Q4) | ~40 GB | Dense | ~5 t/s | When you need 70B intelligence |
 | gpt-oss-120b | ~70 GB | MoE | ~34-38 t/s | Largest practical model |
@@ -141,6 +143,41 @@ All benchmarks run on 2026-03-20. System: Beelink GTR9 Pro, kernel 6.19.4, tuned
 | Qwen3.5 35B (no-think) | 23 GB | 14 | 127.1 | 47.4 |
 
 > **What improved?** Mesa 26.0.1 to 26.0.2 plus enabling the `tuned accelerator-performance` profile gave a consistent **+4-5% generation speed improvement** across all models.
+
+### llama-bench Direct (kyuz0 Vulkan Containers, b8298)
+
+Using llama-bench directly via kyuz0 containers eliminates Ollama overhead and gives the best possible performance.
+
+**Qwen3-Coder 30B-A3B** (UD-Q4_K_XL, 16.5GB, MoE) -- the speed champion:
+
+| Driver | pp128 | pp512 | tg128 | Notes |
+|--------|-------|-------|-------|-------|
+| **RADV** (-ub 1024) | 638 | **1350** | **86.81** | Matches strixhalo.wiki reference (85 t/s) |
+| AMDVLK (-ub 512) | 582 | 914 | 84.00 | -3% tg vs RADV |
+
+**Qwen3.5-35B-A3B** (Q4_K_M, 19.9GB, MoE) -- with optimal ubatch:
+
+| Driver | pp128 | pp512 | pp2048 | pp8192 | tg128 | tg512 |
+|--------|-------|-------|--------|--------|-------|-------|
+| **RADV** (-ub 1024) | 583 | **868** | **830** | **826** | 52.06 | 51.82 |
+| AMDVLK (-ub 512) | 479 | 576 | 563 | 533 | **56.08** | **55.49** |
+
+> RADV dominates prompt processing (+22% to +55% depending on context length). AMDVLK wins on generation speed (+7.7%). RADV scales beautifully at long context (pp8192 = 826, only 5% drop from pp512).
+
+**Llama 2 7B** (Q4_K_M, 3.8GB, Dense):
+
+| Driver | pp128 | pp512 | pp1024 | tg128 |
+|--------|-------|-------|--------|-------|
+| **RADV** | **1154** | **1377** | **1356** | 48.12 |
+| AMDVLK | 335 | 327 | 325 | 48.02 |
+
+> AMDVLK is 3-4X slower on pp for dense models (2 GiB buffer limit). Use RADV.
+
+**Qwen3-0.6B** (Q8_0, 762MB, Dense) -- maximum throughput:
+
+| Driver | pp128 | pp512 | tg128 |
+|--------|-------|-------|-------|
+| RADV | **10,313** | **13,112** | **266** |
 
 ### ROCm HIP (llama.cpp)
 
@@ -199,10 +236,10 @@ Based on our measurements and [lhl's comprehensive testing](https://github.com/l
 | RTX 4090 | ~1008 GB/s | 100-122 t/s | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$800 used |
 | Apple M4 Max 128GB | ~546 GB/s | ~100 t/s (MLX) | 128 GB | ~$4000+ |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **52-56 t/s** | **120+ GB** | **~$1500-2000** |
+| **Beelink GTR9 Pro** | **~215 GB/s** | **56-87 t/s** | **120+ GB** | **~$1500-2000** |
 | NVIDIA DGX Spark | ~273 GB/s | ~56 t/s | 128 GB | ~$3999 |
 
-> **Key insight:** The Beelink GTR9 Pro delivers **93-99% of the DGX Spark's generation speed at half the price**, while offering 2X better CPU performance (1600 vs 708 GFLOPS Linpack). The DGX Spark wins on prompt processing (2-5X faster). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055).
+> **Key insight:** The Beelink GTR9 Pro **matches or exceeds the DGX Spark** on generation speed (56 t/s AMDVLK, 87 t/s RADV with Qwen3-30B MoE) at half the price, while offering 2X better CPU performance (1600 vs 708 GFLOPS Linpack). The DGX Spark wins on prompt processing (2-5X faster). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055).
 
 ### Long Context Performance
 
