@@ -116,17 +116,17 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 
 ## What You Can Run
 
-Real-world model performance measured on the Beelink GTR9 Pro with Ollama Vulkan (RADV Mesa 26.0.2):
+Real-world generation speeds measured on the Beelink GTR9 Pro (RADV Mesa 26.0.2). Speeds marked with * are via llama-bench direct; others are via Ollama.
 
 | Model | Size | Type | Generation Speed | Use Case |
 |-------|------|------|------------------|----------|
-| Qwen3-0.6B (Q8_0) | 0.8 GB | Dense | 266 t/s | Ultra-fast tiny model |
-| Llama 2 7B | 3.8 GB | Dense | 52.0 t/s | Testing, lightweight tasks |
+| Qwen3-0.6B (Q8_0) | 0.8 GB | Dense | 266 t/s * | Ultra-fast tiny model |
+| Llama 2 7B | 3.8 GB | Dense | 48-52 t/s | Testing, lightweight tasks |
 | Qwen2.5-VL 7B | 6.0 GB | Vision | 21.4 t/s | Image understanding |
-| Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 16.5 GB | MoE | **86.81 t/s** | Best speed/quality ratio |
-| Qwen3.5 35B-A3B | 23 GB | MoE | 52-56 t/s | General purpose, coding |
-| Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | 51.3-51.4 t/s | Coding (highest quality MoE) |
-| Qwen3-Coder-Next | 51 GB | Dense | 37.9-39.1 t/s | Large dense model |
+| Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 16.5 GB | MoE | **85-87 t/s** * | Best speed/quality ratio |
+| Qwen3.5 35B-A3B | 23 GB | MoE | 47-56 t/s | General purpose, coding |
+| Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | 51 t/s | Coding (highest quality MoE) |
+| Qwen3-Coder-Next | 51 GB | Dense | 38-39 t/s | Large dense model |
 | Llama 3.3 70B (Q4) | ~40 GB | Dense | ~5 t/s | When you need 70B intelligence |
 | gpt-oss-120b | ~70 GB | MoE | ~34-38 t/s | Largest practical model |
 | Qwen3-Next 80B-A3B (GPTQ) | ~45 GB | MoE | ~40 t/s | via vLLM, 256K context |
@@ -152,7 +152,7 @@ All benchmarks run on 2026-03-20. System: Beelink GTR9 Pro, kernel 6.19.4, tuned
 
 | Prompt Tokens | Prompt Eval | Generation | Notes |
 |---------------|-------------|------------|-------|
-| 12 | 118.3 t/s | **51.4 t/s** | Fastest generation of any model tested |
+| 12 | 118.3 t/s | **51.4 t/s** | Fastest via Ollama |
 | 21 | 205.2 t/s | **51.3 t/s** | Higher quality than Q4_K_M |
 
 **Qwen3-Coder-Next** (~51GB, dense):
@@ -266,7 +266,7 @@ Based on our measurements and [lhl's comprehensive testing](https://github.com/l
 | RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$800 used |
 | Apple Mac Studio M4 Max 128GB | ~546 GB/s | ~100 t/s (MLX) | 128 GB | $3,699 |
 | **Beelink GTR9 Pro** | **~215 GB/s** | **50-87 t/s** | **120+ GB** | **$2,999** |
-| NVIDIA DGX Spark | ~273 GB/s | 47-56 t/s | 128 GB | $4,699 |
+| NVIDIA DGX Spark | ~273 GB/s | 52-56 t/s (120B) | 128 GB | $4,699 |
 
 > **Apples-to-apples (gpt-oss-120b, same model, both platforms):** Strix Halo gets 50-53 t/s vs DGX Spark's 52-56 t/s -- **within 5-10%** on the same workload, while costing **$1,700 less** ($2,999 vs $4,699). On smaller MoE models (Qwen3-30B), Strix Halo hits 87 t/s. The DGX Spark wins on prompt processing (3-5X faster) and long context (23%+ faster at 32K). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
 
