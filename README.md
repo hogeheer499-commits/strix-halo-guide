@@ -7,13 +7,13 @@
 
 # AMD Strix Halo Local LLM Guide
 
-**From unboxing to 87 tokens/second -- faster generation than the DGX Spark, on a mini PC you can actually buy.**
+**From unboxing to 87 tokens/second on a $2,999 mini PC -- within 5% of the $4,699 DGX Spark on the same model, and $1,700 cheaper.**
 
 ```
    You are here                  What you'll get
    +-----------+                 +---------------------------+
    | Strix     |    30 min       | 87 t/s on 30B MoE models  |
-   | Halo      | ==============> | 56 t/s on 35B MoE models  |
+   | Halo      | ==============> | 52-56 t/s on 35B models   |
    | mini PC   |   this guide    | 70B+ models on one device |
    +-----------+                 | No cloud. No subscription |
                                  +---------------------------+
@@ -265,10 +265,10 @@ Based on our measurements and [lhl's comprehensive testing](https://github.com/l
 | RTX 4090 | ~1008 GB/s | 100-122 t/s | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$800 used |
 | Apple Mac Studio M4 Max 128GB | ~546 GB/s | ~100 t/s (MLX) | 128 GB | $3,699 |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **56-87 t/s** | **120+ GB** | **$2,999** |
-| NVIDIA DGX Spark | ~273 GB/s | ~56 t/s | 128 GB | $4,699 |
+| **Beelink GTR9 Pro** | **~215 GB/s** | **50-87 t/s** | **120+ GB** | **$2,999** |
+| NVIDIA DGX Spark | ~273 GB/s | 47-56 t/s | 128 GB | $4,699 |
 
-> **Key insight:** The Beelink GTR9 Pro **beats the DGX Spark** on generation speed (87 t/s vs 56 t/s with Qwen3-30B MoE) while costing **$1,700 less** ($2,999 vs $4,699), while offering 2X better CPU performance (1600 vs 708 GFLOPS Linpack). The DGX Spark wins on prompt processing (2-5X faster). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055).
+> **Apples-to-apples (gpt-oss-120b, same model, both platforms):** Strix Halo gets 50-53 t/s vs DGX Spark's 52-56 t/s -- **within 5-10%** on the same workload, while costing **$1,700 less** ($2,999 vs $4,699). On smaller MoE models (Qwen3-30B), Strix Halo hits 87 t/s. The DGX Spark wins on prompt processing (3-5X faster) and long context (23%+ faster at 32K). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
 
 ### Long Context Performance
 
@@ -1364,7 +1364,7 @@ Linux (Ubuntu 24.04) gives the best performance and is the only way to use ROCm.
 <details>
 <summary><strong>How does this compare to a Mac Studio?</strong></summary>
 
-The Mac Studio M4 Max (128GB) costs $3,699 and gets ~100 t/s via MLX with ~546 GB/s bandwidth. The Beelink GTR9 Pro costs $2,999 and gets 87 t/s via Vulkan with ~215 GB/s bandwidth. The Mac is ~15% faster but costs $700 more. The Mac has better software polish (MLX is excellent). The Strix Halo has better value, Linux flexibility, and beats the $4,699 DGX Spark on generation speed.
+The Mac Studio M4 Max (128GB) costs $3,699 and gets ~100 t/s via MLX with ~546 GB/s bandwidth. The Beelink GTR9 Pro costs $2,999 and gets 50-87 t/s via Vulkan (model-dependent) with ~215 GB/s bandwidth. The Mac is faster per-model due to higher bandwidth, but costs $700 more. The Mac has better software polish (MLX is excellent). The Strix Halo offers better value, Linux flexibility, and ROCm/vLLM ecosystem access.
 
 </details>
 
