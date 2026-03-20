@@ -155,15 +155,29 @@ All benchmarks run on 2026-03-20. System: Beelink GTR9 Pro, kernel 6.19.4, tuned
 | kyuz0 b8298, FA off | Qwen3.5-35B-A3B Q4_K_M | 352 | 524 | 53.8 |
 | kyuz0 b8189, FA + hipBLASLt | Llama 2 7B Q4_K_M | 1163 | 1261 | 45.07 |
 
-**ROCm vs Vulkan (Qwen3.5-35B-A3B, kernel 6.18.14):**
+**Vulkan llama-bench Direct (kyuz0 containers, b8298) -- March 2026:**
 
-| Metric | Ollama Vulkan | ROCm HIP (self-compiled) | Difference |
-|--------|---------------|--------------------------|------------|
-| pp128 | ~267 | 488 | **+83%** |
-| pp512 | ~467 | 996 | **+113%** |
-| tg128 | 45.8 | 48.8 | **+6.6%** |
+| Driver | Model | pp128 | pp256 | pp512 | pp1024 | tg128 |
+|--------|-------|-------|-------|-------|--------|-------|
+| **RADV** | Qwen3.5-35B-A3B Q4_K_M | **503.67** | - | **858.88** | - | 52.15 |
+| **AMDVLK** | Qwen3.5-35B-A3B Q4_K_M | 477.28 | - | 575.59 | - | **55.54** |
+| **RADV** | Llama 2 7B Q4_K_M | **1153.53** | **1364.45** | **1377.18** | **1355.88** | 48.12 |
+| **AMDVLK** | Llama 2 7B Q4_K_M | 334.50 | 337.96 | 327.35 | 325.33 | 48.02 |
 
-ROCm HIP delivers massively faster prompt processing. For generation speed, the difference is smaller.
+> **Critical finding:** AMDVLK has a 2 GiB single buffer allocation limit that cripples prompt processing on some models. On Llama 2 7B, RADV is **3.4-4.2X faster** for pp while tg is identical. On the larger Qwen3.5-35B-A3B, AMDVLK is closer on pp and slightly faster on tg (+6.5%). **Test both on your specific models.**
+
+**ROCm vs Vulkan comparison (kernel 6.18.14 vs 6.19.4):**
+
+| Metric | Ollama Vulkan | Vulkan RADV (direct) | ROCm HIP (self-compiled) | Best |
+|--------|---------------|---------------------|--------------------------|------|
+| pp128 (Qwen3.5 35B) | ~182 | **503.67** | 488 | **Vulkan RADV** |
+| pp512 (Qwen3.5 35B) | ~457 | **858.88** | 996 | ROCm (but close) |
+| tg128 (Qwen3.5 35B) | 47.4 | 52.15 | 48.8 | **Vulkan RADV** |
+| pp128 (Llama 2 7B) | ~385 | **1153.53** | 1163 | Essentially equal |
+| pp512 (Llama 2 7B) | - | **1377.18** | 1261 | **Vulkan RADV (+9%)** |
+| tg128 (Llama 2 7B) | 52.0 | 48.12 | 45.07 | **Ollama Vulkan** |
+
+> **Surprise: Vulkan RADV now matches or beats ROCm HIP** on prompt processing, while being much easier to set up. With ROCm broken on kernel 6.19.x, Vulkan RADV is the clear winner for most users. Use `llama-bench` directly (via kyuz0 Vulkan containers) instead of Ollama to eliminate the ~8% Ollama overhead on tg.
 
 ### Backend Comparison Table
 
@@ -171,9 +185,10 @@ Based on our measurements and [lhl's comprehensive testing](https://github.com/l
 
 | Backend | Best For | pp (relative) | tg (relative) | Context Scaling | Setup Difficulty |
 |---------|----------|---------------|---------------|-----------------|------------------|
-| Ollama + Vulkan RADV | General use, chat | Good | Good | Degrades at 8K+ | Easy |
-| Vulkan AMDVLK | Prompt-heavy workloads | Best (short ctx) | Good | Degrades at 8K+ | Easy |
-| ROCm HIP | Batch processing | Excellent | Good | Poor at 32K+ | Hard (containers) |
+| Ollama + Vulkan RADV | General use, chat | Good | Good | Degrades at 8K+ | Easiest |
+| llama.cpp + Vulkan RADV (container) | Max speed, no overhead | **Best** | **Best (short ctx)** | Degrades at 8K+ | Easy |
+| llama.cpp + Vulkan AMDVLK | Some MoE models | Model-dependent | Good | Degrades at 8K+ | Easy |
+| ROCm HIP | Batch processing | Excellent | Good | Poor at 32K+ | Hard (needs 6.18.x kernel) |
 | ROCm + rocWMMA (tuned) | Long context | Excellent | Best at 32K | **Best scaling** | Very hard |
 | vLLM (TheRock) | API serving | Good | Good | Good | Hard |
 
@@ -184,10 +199,10 @@ Based on our measurements and [lhl's comprehensive testing](https://github.com/l
 | RTX 4090 | ~1008 GB/s | 100-122 t/s | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$800 used |
 | Apple M4 Max 128GB | ~546 GB/s | ~100 t/s (MLX) | 128 GB | ~$4000+ |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **48-51 t/s** | **120+ GB** | **~$1500-2000** |
+| **Beelink GTR9 Pro** | **~215 GB/s** | **52-56 t/s** | **120+ GB** | **~$1500-2000** |
 | NVIDIA DGX Spark | ~273 GB/s | ~56 t/s | 128 GB | ~$3999 |
 
-> **Key insight:** The Beelink GTR9 Pro delivers **85-91% of the DGX Spark's generation speed at half the price**, while offering 2X better CPU performance (1600 vs 708 GFLOPS Linpack). The DGX Spark wins on prompt processing (2-5X faster). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055).
+> **Key insight:** The Beelink GTR9 Pro delivers **93-99% of the DGX Spark's generation speed at half the price**, while offering 2X better CPU performance (1600 vs 708 GFLOPS Linpack). The DGX Spark wins on prompt processing (2-5X faster). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055).
 
 ### Long Context Performance
 
@@ -745,17 +760,25 @@ sudo systemctl restart ssh
 
 ## Vulkan Driver Comparison
 
-We tested both Vulkan drivers on gfx1151 (qwen3-coder-next):
+We tested both Vulkan drivers extensively via llama-bench (kyuz0 containers, b8298):
 
-| Driver | Version | Prompt Eval | Generation | Verdict |
-|--------|---------|-------------|------------|---------|
-| **RADV** | Mesa 25.2.8 | 87 t/s | 38 t/s | Baseline |
-| **RADV** | **Mesa 26.0.2** | **~91 t/s** | **39 t/s** | **Best for general use** |
-| AMDVLK | 2025.Q2.1 | 83 t/s | 40 t/s | 14% slower pp |
+**Qwen3.5-35B-A3B (MoE, Q4_K_M):**
 
-> **Our recommendation:** Use **RADV** for general use. It's more stable and has better prompt processing. AMDVLK has a marginal +2 t/s advantage on generation but loses 14% on prompt eval.
+| Driver | pp128 | pp512 | tg128 | Verdict |
+|--------|-------|-------|-------|---------|
+| **RADV** Mesa 26.0.2 | **503.67** | **858.88** | 52.15 | Best pp |
+| AMDVLK 2025.Q2.1 | 477.28 | 575.59 | **55.54** | +6.5% tg, -33% pp512 |
 
-> **However:** [lhl's testing](https://github.com/lhl/strix-halo-testing) shows AMDVLK can be faster on some workloads (especially prompt-heavy tasks on some distros). The relative performance depends on your kernel, Mesa version, and even distro. If you need every last bit of speed, test both on your system.
+**Llama 2 7B (Dense, Q4_K_M):**
+
+| Driver | pp128 | pp512 | pp1024 | tg128 | Verdict |
+|--------|-------|-------|--------|-------|---------|
+| **RADV** Mesa 26.0.2 | **1153** | **1377** | **1356** | 48.12 | **3-4X faster pp** |
+| AMDVLK 2025.Q2.1 | 334 | 327 | 325 | 48.02 | Broken pp (2 GiB buffer limit) |
+
+> **Our recommendation:** Use **RADV** for general use. AMDVLK has a catastrophic 2 GiB single buffer allocation limit that cripples prompt processing on many models (3-4X slower on Llama 2 7B). For MoE models (Qwen3.5-35B-A3B), AMDVLK gives +6.5% tg but -33% pp512.
+
+> **Exception:** [lhl's testing](https://github.com/lhl/strix-halo-testing) shows AMDVLK can be faster on specific workloads on Fedora/CachyOS. Performance depends on kernel, Mesa version, distro, and model architecture. Test both if you need maximum tg speed on MoE models.
 
 To install AMDVLK for comparison:
 
@@ -783,6 +806,7 @@ To force RADV when both are installed: `AMD_VULKAN_ICD=RADV`
 |-------|---------------|---------|------------------------|
 | Ollama HIP/ROCm | "Use ROCm backend" | Crashes with OOM on gfx1151 | `out of memory` error, even on 7B models |
 | `iommu=pt` for speed | "Use pass-through for performance" | No benefit over default ([lhl](https://github.com/lhl/strix-halo-testing)) | Same speed as `iommu=on`, wastes a kernel param |
+| AMDVLK for all workloads | "AMDVLK is fastest" | 2 GiB buffer limit causes 3-4X slower pp on many models | Only marginally better tg on some MoE models |
 | rocWMMA on upstream llama.cpp | "Enable for 2x speed" | [73% regression](https://github.com/ggml-org/llama.cpp/issues/19984) on ROCm 7.2 | Massively slower prompt processing |
 | BIOS VRAM increase for speed | "More GPU VRAM = faster" | Zero speed difference, but you lose OS-visible RAM and GTT capacity. Set to 512MB or your system is crippled (31GB usable instead of 125GB). | OS sees only 31GB RAM, large models won't load at all |
 | ROCm 7.0 RC | "Use ROCm 7 RC" | Segfaults on kernel 6.18.14+ | `HSA_STATUS_ERROR` crash |
@@ -798,7 +822,7 @@ To force RADV when both are installed: `AMD_VULKAN_ICD=RADV`
 | `--no-mmap` (disable mmap) | **+22% pp128** | `-mmp 0` in llama.cpp, always use on Strix Halo |
 | hipBLASLt | **+8% tg** | `ROCBLAS_USE_HIPBLASLT=1` (ROCm only) |
 | tuned accelerator-performance | **+5-8% overall** | `sudo tuned-adm profile accelerator-performance` |
-| RADV over AMDVLK | **+14% pp** | `AMD_VULKAN_ICD=RADV` |
+| RADV over AMDVLK | **+14% pp (Ollama), up to 4X pp (llama-bench)** | `AMD_VULKAN_ICD=RADV` |
 | `amd_iommu=off` | **+6% memory bandwidth** | GRUB parameter |
 | BIOS VRAM to 512MB | OS sees 125GB vs 31GB, GTT gets full 128GB | No speed change, but **required** -- without this, models >31GB won't load |
 | `HIP_VISIBLE_DEVICES=-1` | Fixes Ollama crash | Required for Vulkan-only mode |
