@@ -210,6 +210,27 @@ Extended context scaling (pp only):
 
 > RADV dominates prompt processing (+36% to +61% depending on context length) and scales far better (1.5% vs 17% drop at 16K). AMDVLK wins only on generation speed (+9%). For chat and coding use, RADV is the clear choice. For batch processing where tg matters most, consider AMDVLK.
 
+**Batch size and ubatch tuning results (Qwen3.5-35B-A3B, RADV):**
+
+We swept batch sizes 64-2048 and ubatch sizes 32-1024 to find the optimal configuration. Result: **the default is already optimal.** There is no free performance left on Vulkan.
+
+| Parameter | Tested Range | Optimal | pp512 at optimal | Notes |
+|-----------|-------------|---------|------------------|-------|
+| batch size (-b) | 64, 128, 256, 512, 1024, 2048 | **512** | 858 t/s | Plateau at 512, no gain above |
+| ubatch size (-ub) | 32, 64, 128, 256, 512, 1024 | **512** | 856 t/s | Plateau at 512, no gain above |
+
+The same pattern holds for AMDVLK (optimal at b=512, ub=512, plateau at 569 t/s pp512).
+
+> **What this means:** We are at the Vulkan compute ceiling for prompt processing on this hardware. The only way to improve pp further is ROCm HIP, which achieved 996 t/s pp512 (+15%) on kernel 6.18.14 before the kernel 6.19.x regression broke it. If prompt processing speed is critical for your use case (RAG pipelines, long document processing), consider staying on or downgrading to kernel 6.18.x for ROCm access.
+
+**Performance ceiling summary (Qwen3.5-35B-A3B Q4_K_M):**
+
+```
+Token Generation:   56.08 t/s (AMDVLK)  = ~99% of theoretical ceiling (bandwidth-limited)
+Prompt Processing:  868 t/s (RADV)       = Vulkan ceiling (compute-limited)
+                    996 t/s (ROCm HIP)   = +15% over Vulkan (requires kernel 6.18.x)
+```
+
 **Llama 2 7B** (Q4_K_M, 3.8GB, Dense):
 
 | Driver | pp128 | pp512 | pp1024 | tg128 |
