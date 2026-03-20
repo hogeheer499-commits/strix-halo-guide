@@ -127,7 +127,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (RADV Mesa 26.0.2)
 | Qwen3.5 35B-A3B | 23 GB | MoE | 47-56 t/s | General purpose, coding |
 | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | 51 t/s | Coding (highest quality MoE) |
 | Qwen3-Coder-Next | 51 GB | Dense | 38-39 t/s | Large dense model |
-| Llama 3.3 70B (Q4) | ~40 GB | Dense | ~5 t/s | When you need 70B intelligence |
+| Llama 3.1 70B (Q4_K_M) | 42 GB | Dense | **4.7-4.9 t/s** | 70B intelligence, doesn't fit on RTX 4090 |
 | gpt-oss-120b | ~70 GB | MoE | ~34-38 t/s | Largest practical model |
 | Qwen3-Next 80B-A3B (GPTQ) | ~45 GB | MoE | ~40 t/s | via vLLM, 256K context |
 | Kimi K2.5 1T (4-node cluster) | ~500 GB | MoE | distributed | [AMD technical article](https://www.amd.com/en/developer/resources/technical-articles/2026/how-to-run-a-one-trillion-parameter-llm-locally-an-amd.html) |
@@ -171,6 +171,16 @@ All benchmarks run on 2026-03-20. System: Beelink GTR9 Pro, kernel 6.19.4, tuned
 | Qwen2.5-VL 7B | 6.0 GB | 23 | 81.7 | 21.4 |
 | Qwen3.5 35B (no-think) | 23 GB | 14 | 127.1 | 47.4 |
 
+**Llama 3.1 70B** (Q4_K_M, 42GB, Dense -- the "doesn't fit on RTX 4090" showcase):
+
+| Prompt Tokens | Prompt Eval | Generation | Notes |
+|---------------|-------------|------------|-------|
+| 14 | 22.1 t/s | 4.9 t/s | Cold start |
+| 23 | 36.8 t/s | 4.8 t/s | Realistic chat |
+| 122 | 79.6 t/s | 4.7 t/s | Long prompt |
+
+> **Why so slow?** This is a 42GB dense model -- every token reads all 42GB of weights. At ~215 GB/s bandwidth, the theoretical maximum is 215/42 = 5.1 t/s. We hit 4.8 t/s = **94% of the theoretical ceiling**. The model is slow not because of poor optimization, but because it's massive. An RTX 4090 (24GB VRAM) cannot run this model at all. This is the Strix Halo advantage: running models that don't fit on consumer GPUs.
+
 > **What improved?** Mesa 26.0.1 to 26.0.2 plus enabling the `tuned accelerator-performance` profile gave a consistent **+4-5% generation speed improvement** across all models.
 
 ### llama-bench Direct (kyuz0 Vulkan Containers, b8298)
@@ -191,7 +201,14 @@ Using llama-bench directly via kyuz0 containers eliminates Ollama overhead and g
 | **RADV** (-ub 1024) | 583 | **868** | **830** | **826** | 52.06 | 51.82 |
 | AMDVLK (-ub 512) | 479 | 576 | 563 | 533 | **56.08** | **55.49** |
 
-> RADV dominates prompt processing (+22% to +55% depending on context length). AMDVLK wins on generation speed (+7.7%). RADV scales beautifully at long context (pp8192 = 826, only 5% drop from pp512).
+Extended context scaling (pp only):
+
+| Driver | pp512 | pp4096 | pp16384 | Drop at 16K |
+|--------|-------|--------|---------|-------------|
+| **RADV** | 777 | 820 | **765** | **-1.5%** |
+| AMDVLK | 573 | 546 | 476 | -17% |
+
+> RADV dominates prompt processing (+36% to +61% depending on context length) and scales far better (1.5% vs 17% drop at 16K). AMDVLK wins only on generation speed (+9%). For chat and coding use, RADV is the clear choice. For batch processing where tg matters most, consider AMDVLK.
 
 **Llama 2 7B** (Q4_K_M, 3.8GB, Dense):
 
