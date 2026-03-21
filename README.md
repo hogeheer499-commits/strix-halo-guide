@@ -186,6 +186,10 @@ All benchmarks run on 2026-03-20. System: Beelink GTR9 Pro, kernel 6.19.4, tuned
 ### llama-bench Direct -- Latest llama.cpp (b8460) vs kyuz0 Containers (b8298)
 
 > **UPDATE (2026-03-21): Updating llama.cpp from b8298 to b8460 gave +25% on both pp and tg for MoE models.** The new build includes a Vulkan Flash Attention refactor ([PR #19625](https://github.com/ggml-org/llama.cpp/pull/19625)), graphics queue optimization for AMD ([PR #20551](https://github.com/ggml-org/llama.cpp/pull/20551)), and GDN shader support for Qwen3.5 ([PR #20334](https://github.com/ggml-org/llama.cpp/pull/20334)). **Always use the latest llama.cpp build.**
+>
+> **Important caveats:**
+> - The +25% improvement is specific to **MoE models on Vulkan** due to the Wave32 FA refactor and graphics queue change. Dense models (Llama 2 7B, Llama 3.1 70B) showed minimal change (<2%) because they were already at the memory bandwidth ceiling.
+> - If you use [kyuz0's containers](https://github.com/kyuz0/amd-strix-halo-toolboxes), you get these updates automatically -- the containers rebuild on every llama.cpp master update. kyuz0's toolboxes remain the easiest way to stay current. Our finding here validates the importance of their approach.
 
 **Qwen3.5-35B-A3B** (Q4_K_M, 19.9GB, MoE) -- the biggest improvement:
 
@@ -235,7 +239,7 @@ We discovered that `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0` fixes
 | llama-bench RADV **(b8460)** | **1080** | **64.85** | **Updating llama.cpp = +25%** |
 | ROCm HIP (b8301, HSA fix) | 1059 | 47.87 | ROCm no longer fastest |
 
-> The single biggest optimization you can make is **updating llama.cpp to the latest build**. It gave us more improvement (+25%) than all kernel tuning, batch size sweeps, and driver comparisons combined.
+> The single biggest optimization you can make is **updating llama.cpp to the latest build**. It gave us more improvement (+25% on MoE models) than all kernel tuning, batch size sweeps, and driver comparisons combined. This is counter-intuitive -- people spend hours on kernel parameters, GRUB flags, and Mesa versions, while `git pull && cmake --build` delivers more than everything else put together. Note: this applies to MoE models specifically. Dense models were already at the bandwidth ceiling and show <2% change.
 
 **Batch size and ubatch tuning results (b8298, for reference):**
 
