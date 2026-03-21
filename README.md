@@ -112,7 +112,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 | RAM | 128GB unified LPDDR5X-8000 (~215 GB/s measured, 256 GB/s theoretical) |
 | NPU | RyzenAI-npu5 (XDNA 2) |
 
-> **Why this hardware?** 128GB unified memory shared between CPU and GPU means you can run **70B+ models entirely on the GPU** -- something an RTX 4090 (24GB VRAM) cannot do. You trade raw bandwidth (~215 GB/s vs ~1 TB/s) for the ability to run much larger, smarter models at a fraction of the cost.
+> **Why this hardware?** 128GB unified memory shared between CPU and GPU means you can run **70B+ models entirely on the GPU** -- something an RTX 4090 (24GB VRAM) cannot do. You trade raw bandwidth (~215 GB/s vs ~1 TB/s) for the ability to run much larger, smarter models at a lower price ($2,999 vs $4,699 for the DGX Spark).
 
 ---
 
@@ -138,7 +138,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (RADV Mesa 26.0.2)
 
 ## Benchmark Results
 
-All benchmarks run on 2026-03-20. System: Beelink GTR9 Pro, kernel 6.19.4, tuned accelerator-performance active.
+All benchmarks run on 2026-03-20 and 2026-03-21. System: Beelink GTR9 Pro, kernel 6.19.4, tuned accelerator-performance active.
 
 ### Ollama Vulkan (RADV Mesa 26.0.2)
 
@@ -314,18 +314,14 @@ export ROCBLAS_USE_HIPBLASLT=1
 
 > **Critical finding (b8298):** AMDVLK has a 2 GiB single buffer allocation limit that cripples pp on dense models (3-4X slower on Llama 2 7B). On MoE models, AMDVLK was slightly faster on tg (+6.5%) with b8298, but **this advantage disappeared with b8460** -- see the [latest benchmarks](#llama-bench-direct----latest-llamacpp-b8460-vs-kyuz0-containers-b8298) where RADV wins on both pp and tg.
 
-**ROCm vs Vulkan comparison (kernel 6.18.14 vs 6.19.4):**
+**Vulkan RADV vs ROCm HIP (same build b8460, Qwen3.5-35B-A3B):**
 
-| Metric | Ollama Vulkan | Vulkan RADV (direct) | ROCm HIP (self-compiled) | Best |
-|--------|---------------|---------------------|--------------------------|------|
-| pp128 (Qwen3.5 35B) | ~182 | **503.67** | 488 | **Vulkan RADV** |
-| pp512 (Qwen3.5 35B) | ~457 | **858.88** | 996 | ROCm (but close) |
-| tg128 (Qwen3.5 35B) | 47.4 | 52.15 | 48.8 | **Vulkan RADV** |
-| pp128 (Llama 2 7B) | ~385 | **1153.53** | 1163 | Essentially equal |
-| pp512 (Llama 2 7B) | - | **1377.18** | 1261 | **Vulkan RADV (+9%)** |
-| tg128 (Llama 2 7B) | 52.0 | 48.12 | 45.07 | **Ollama Vulkan** |
+| Metric | Ollama (b8298) | Vulkan RADV (b8460) | ROCm HIP (b8460) | Best |
+|--------|----------------|---------------------|-------------------|------|
+| pp512 | ~457 | **1080** | 1047 | **Vulkan RADV** |
+| tg128 | 47.4 | **64.85** | 54.67 | **Vulkan RADV** |
 
-> **Surprise: Vulkan RADV now matches or beats ROCm HIP** on prompt processing with the latest build (b8460), while being much easier to set up. ROCm works on kernel 6.19.x with the HSA override fix, but Vulkan RADV (latest build) is now faster on both pp and tg anyway. Use `llama-bench` directly instead of Ollama to eliminate the ~8% overhead.
+> **Vulkan RADV wins on both pp and tg** with the latest llama.cpp build. ROCm works on kernel 6.19.x with the HSA override fix but is no longer the fastest backend for MoE models. Use `llama-bench` or `llama-server` directly instead of Ollama to avoid the ~35% overhead.
 
 ### Backend Comparison Table
 
@@ -335,7 +331,7 @@ Based on our measurements and [lhl's detailed testing](https://github.com/lhl/st
 |---------|----------|---------------|---------------|-----------------|------------------|
 | Ollama + Vulkan RADV | General use, chat | Good | Good | Degrades at 8K+ | Easiest |
 | llama.cpp + Vulkan RADV (container) | Max speed, no overhead | **Best** | **Best (short ctx)** | Degrades at 8K+ | Easy |
-| llama.cpp + Vulkan AMDVLK | Some MoE models | Model-dependent | Good | Degrades at 8K+ | Easy |
+| llama.cpp + Vulkan AMDVLK | Not recommended | Slower than RADV on b8460 | Slower on dense (2 GiB limit) | Degrades at 8K+ | Easy |
 | ROCm HIP | Batch processing | Excellent | Good | Poor at 32K+ | Medium (needs HSA fix on 6.19.x) |
 | ROCm + rocWMMA (tuned) | Long context | Excellent | Best at 32K | **Best scaling** | Very hard |
 | vLLM (TheRock) | API serving | Good | Good | Good | Hard |
@@ -381,24 +377,20 @@ At extreme context (130K tokens, from [strixhalo.wiki](https://strixhalo.wiki/AI
 ```
                         Which backend should I use?
                                   |
-                    Do you need long context (>8K)?
+                    Do you need long context (>32K)?
                          /                \
                        NO                  YES
                        |                    |
-              Just want it easy?     Context > 32K?
-                /          \           /        \
-              YES           NO       NO         YES
-               |             |        |           |
-          Ollama +      Need max    Vulkan     ROCm +
-          Vulkan RADV   pp speed?   AMDVLK   rocWMMA-tuned
-               |          /    \      |         (lhl's branch)
-          "It just       YES    NO    |
-           works"         |      |    |
-                    ROCm HIP  Vulkan  |
-                    (container) AMDVLK|
-                                      |
-                              Best overall for
-                              long context work
+              Just want it easy?      ROCm + rocWMMA-tuned
+                /          \            (lhl's branch)
+              YES           NO          Best for 32K+ context
+               |             |
+          Ollama +      Build latest
+          Vulkan RADV   llama.cpp yourself
+               |             |
+          "It just      llama-server +
+           works"       Vulkan RADV
+           48 t/s        65 t/s
 ```
 
 ---
