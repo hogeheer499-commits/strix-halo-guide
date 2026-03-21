@@ -1,13 +1,15 @@
 ![AMD](https://img.shields.io/badge/AMD-Ryzen_AI_MAX+_395-ED1C24?style=for-the-badge&logo=amd&logoColor=white)
-![GPU](https://img.shields.io/badge/GPU-gfx1151_RDNA_3.5-green?style=for-the-badge)
-![RAM](https://img.shields.io/badge/RAM-128GB_LPDDR5X--8000-blue?style=for-the-badge)
-![Speed](https://img.shields.io/badge/Speed-87_t/s-brightgreen?style=for-the-badge)
-![Ubuntu](https://img.shields.io/badge/Ubuntu-24.04_LTS-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
+![Speed](https://img.shields.io/badge/65--87_t/s_generation-brightgreen?style=for-the-badge)
+![RAM](https://img.shields.io/badge/128GB_unified-blue?style=for-the-badge)
+![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
+![Last commit](https://img.shields.io/github/last-commit/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 
 # AMD Strix Halo Local LLM Guide
 
-**From unboxing to 87 tokens/second on a $2,999 mini PC -- faster than the $4,699 DGX Spark on MoE models, within 5% on dense models, and $1,700 cheaper.**
+**65-87 t/s local LLM inference on a $2,999 mini PC. Within 5% of the $4,699 DGX Spark. No cloud, no subscription.**
+
+> If this guide saves you time, consider giving it a star -- it helps others find it.
 
 ```
    You are here                  What you'll get
@@ -25,7 +27,7 @@
 
 ## Why This Guide Exists
 
-There are several Strix Halo LLM guides out there. This one is different:
+A complete guide for running local LLMs on AMD Ryzen AI MAX+ 395 (Strix Halo) with llama.cpp, Ollama, Vulkan, and ROCm. Several Strix Halo guides exist. This one is different:
 
 1. **Every number is measured on this machine.** No theoretical estimates, no copy-pasted specs. Every benchmark was run on a Beelink GTR9 Pro with timestamps.
 2. **We document what does NOT work.** Most guides only tell you what to enable. We tested optimizations that turned out to be regressions, driver versions that crash, and parameters that do nothing. That info is harder to find and more valuable.
@@ -1628,3 +1630,7 @@ Found something that's wrong, outdated, or missing?
 ## License
 
 MIT
+
+---
+
+*Found this guide useful? Give it a star on GitHub -- it helps other Strix Halo owners find it. Found something wrong? [Open an issue](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new/choose).*
