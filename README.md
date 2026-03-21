@@ -308,7 +308,7 @@ export ROCBLAS_USE_HIPBLASLT=1
 | **RADV** | Llama 2 7B Q4_K_M | **1153.53** | **1364.45** | **1377.18** | **1355.88** | 48.12 |
 | **AMDVLK** | Llama 2 7B Q4_K_M | 334.50 | 337.96 | 327.35 | 325.33 | 48.02 |
 
-> **Critical finding:** AMDVLK has a 2 GiB single buffer allocation limit that cripples prompt processing on some models. On Llama 2 7B, RADV is **3.4-4.2X faster** for pp while tg is identical. On the larger Qwen3.5-35B-A3B, AMDVLK is closer on pp and slightly faster on tg (+6.5%). **Test both on your specific models.**
+> **Critical finding (b8298):** AMDVLK has a 2 GiB single buffer allocation limit that cripples pp on dense models (3-4X slower on Llama 2 7B). On MoE models, AMDVLK was slightly faster on tg (+6.5%) with b8298, but **this advantage disappeared with b8460** -- see the [latest benchmarks](#llama-bench-direct----latest-llamacpp-b8460-vs-kyuz0-containers-b8298) where RADV wins on both pp and tg.
 
 **ROCm vs Vulkan comparison (kernel 6.18.14 vs 6.19.4):**
 
@@ -332,7 +332,7 @@ Based on our measurements and [lhl's comprehensive testing](https://github.com/l
 | Ollama + Vulkan RADV | General use, chat | Good | Good | Degrades at 8K+ | Easiest |
 | llama.cpp + Vulkan RADV (container) | Max speed, no overhead | **Best** | **Best (short ctx)** | Degrades at 8K+ | Easy |
 | llama.cpp + Vulkan AMDVLK | Some MoE models | Model-dependent | Good | Degrades at 8K+ | Easy |
-| ROCm HIP | Batch processing | Excellent | Good | Poor at 32K+ | Hard (needs 6.18.x kernel) |
+| ROCm HIP | Batch processing | Excellent | Good | Poor at 32K+ | Medium (needs HSA fix on 6.19.x) |
 | ROCm + rocWMMA (tuned) | Long context | Excellent | Best at 32K | **Best scaling** | Very hard |
 | vLLM (TheRock) | API serving | Good | Good | Good | Hard |
 
@@ -463,7 +463,7 @@ EOF
 > **CRITICAL:** Kernel version matters enormously for Strix Halo.
 > - **Kernel 6.18.4+** is the minimum stable version (older kernels have gfx1151 stability bugs)
 > - **Kernel 6.19.x** misidentifies gfx1151 as gfx1100 for ROCm -- fixable with `HSA_OVERRIDE_GFX_VERSION=11.5.1` (see [Known Issues](#known-issues))
-> - **Recommended:** Kernel 6.18.6-6.18.14 for full ROCm + Vulkan support
+> - **Recommended:** Kernel 6.18.6+ or 6.19.x (6.19.x needs HSA override for ROCm)
 
 Check your kernel:
 
@@ -904,25 +904,25 @@ sudo systemctl restart ssh
 
 ## Vulkan Driver Comparison
 
-We tested both Vulkan drivers extensively via llama-bench (kyuz0 containers, b8298):
+We tested both Vulkan drivers via llama-bench. Results depend heavily on the llama.cpp build version:
 
-**Qwen3.5-35B-A3B (MoE, Q4_K_M):**
+**With kyuz0 containers (b8298):**
 
-| Driver | pp128 | pp512 | tg128 | Verdict |
-|--------|-------|-------|-------|---------|
-| **RADV** Mesa 26.0.2 | **503.67** | **858.88** | 52.15 | Best pp |
-| AMDVLK 2025.Q2.1 | 477.28 | 575.59 | **55.54** | +6.5% tg, -33% pp512 |
+| Driver | Model | pp512 | tg128 |
+|--------|-------|-------|-------|
+| **RADV** | Qwen3.5-35B-A3B | **859** | 52.15 |
+| AMDVLK | Qwen3.5-35B-A3B | 576 | **55.54** |
+| **RADV** | Llama 2 7B | **1377** | 48.12 |
+| AMDVLK | Llama 2 7B | 327 | 48.02 |
 
-**Llama 2 7B (Dense, Q4_K_M):**
+**With latest llama.cpp (b8460) -- AMDVLK advantage is gone:**
 
-| Driver | pp128 | pp512 | pp1024 | tg128 | Verdict |
-|--------|-------|-------|--------|-------|---------|
-| **RADV** Mesa 26.0.2 | **1153** | **1377** | **1356** | 48.12 | **3-4X faster pp** |
-| AMDVLK 2025.Q2.1 | 334 | 327 | 325 | 48.02 | Broken pp (2 GiB buffer limit) |
+| Driver | Model | pp512 | tg128 |
+|--------|-------|-------|-------|
+| **RADV** | Qwen3.5-35B-A3B | **1080** | **64.85** |
+| AMDVLK | Qwen3.5-35B-A3B | 663 | 64.10 |
 
-> **Our recommendation:** Use **RADV** for general use. AMDVLK has a catastrophic 2 GiB single buffer allocation limit that cripples prompt processing on many models (3-4X slower on Llama 2 7B). For MoE models (Qwen3.5-35B-A3B), AMDVLK gives +6.5% tg but -33% pp512.
-
-> **Exception:** [lhl's testing](https://github.com/lhl/strix-halo-testing) shows AMDVLK can be faster on specific workloads on Fedora/CachyOS. Performance depends on kernel, Mesa version, distro, and model architecture. Test both if you need maximum tg speed on MoE models.
+> **Our recommendation:** Use **RADV**. With the latest llama.cpp, RADV wins on BOTH pp and tg. The old AMDVLK tg advantage (+6.5% on b8298) disappeared with the graphics queue optimization in b8460. AMDVLK also has a 2 GiB buffer limit that causes 3-4X slower pp on dense models.
 
 To install AMDVLK for comparison:
 
@@ -950,7 +950,7 @@ To force RADV when both are installed: `AMD_VULKAN_ICD=RADV`
 |-------|---------------|---------|------------------------|
 | Ollama HIP/ROCm | "Use ROCm backend" | Crashes with OOM on gfx1151 | `out of memory` error, even on 7B models |
 | `iommu=pt` for speed | "Use pass-through for performance" | No benefit over default ([lhl](https://github.com/lhl/strix-halo-testing)) | Same speed as `iommu=on`, wastes a kernel param |
-| AMDVLK for all workloads | "AMDVLK is fastest" | 2 GiB buffer limit causes 3-4X slower pp on many models | Only marginally better tg on some MoE models |
+| AMDVLK for all workloads | "AMDVLK is fastest" | 2 GiB buffer limit causes 3-4X slower pp on dense models. With latest llama.cpp (b8460), RADV beats AMDVLK on both pp AND tg | No remaining advantage with latest build |
 | rocWMMA on upstream llama.cpp | "Enable for 2x speed" | [73% regression](https://github.com/ggml-org/llama.cpp/issues/19984) on ROCm 7.2 | Massively slower prompt processing |
 | BIOS VRAM increase for speed | "More GPU VRAM = faster" | Zero speed difference, but you lose OS-visible RAM and GTT capacity. Set to 512MB or your system is crippled (31GB usable instead of 125GB). | OS sees only 31GB RAM, large models won't load at all |
 | ROCm 7.0 RC | "Use ROCm 7 RC" | Segfaults on kernel 6.18.14+ | `HSA_STATUS_ERROR` crash |
@@ -972,6 +972,8 @@ To force RADV when both are installed: `AMD_VULKAN_ICD=RADV`
 | `HIP_VISIBLE_DEVICES=-1` | Fixes Ollama crash | Required for Vulkan-only mode |
 | LLVM unroll workaround | Restores ROCm 7+ perf | `-mllvm --amdgpu-unroll-threshold-local=600` |
 | lhl's rocWMMA-tuned | **2X tg at 32K context** | Custom branch, requires manual build |
+| **Updating llama.cpp** | **+25% pp and tg (MoE)** | `git pull && cmake --build` -- biggest single optimization |
+| HSA_OVERRIDE_GFX_VERSION=11.5.1 | Fixes ROCm on kernel 6.19.x | Required for ROCm on 6.19.x, +6% pp vs 6.18.x |
 
 ---
 
@@ -1403,7 +1405,7 @@ New to local LLMs? Here's what the technical terms mean.
 
 **RADV** -- Mesa's open-source Vulkan driver for AMD GPUs. Generally faster and more stable than AMDVLK on Strix Halo.
 
-**AMDVLK** -- AMD's open-source Vulkan driver. Sometimes faster for token generation on MoE models, but has a 2 GiB buffer limit that cripples prompt processing on some models.
+**AMDVLK** -- AMD's open-source Vulkan driver. Has a 2 GiB buffer limit that cripples prompt processing on dense models. With the latest llama.cpp (b8460+), RADV beats AMDVLK on both pp and tg, making AMDVLK unnecessary for most users.
 
 **Ollama** -- A tool that makes running LLMs as easy as `ollama run model-name`. Handles model downloading, GPU acceleration, and provides an API. Uses Vulkan on Strix Halo.
 
@@ -1553,6 +1555,33 @@ Found something that's wrong, outdated, or missing?
 ---
 
 ## Changelog
+
+### 2026-03-21 -- Performance Breakthrough + Beginner Content
+
+- **BREAKTHROUGH:** llama.cpp b8298 to b8460 = +25% tg and pp on MoE models (52 to 65 t/s)
+  - Key PRs: #19625 (FA refactor), #20551 (graphics queue), #20334 (GDN shader)
+  - RADV now beats AMDVLK on both pp AND tg (old AMDVLK tg advantage is gone)
+  - RADV now beats ROCm on both pp (1080 vs 1059) and tg (65 vs 48)
+  - Dense models show <2% change (already at bandwidth ceiling)
+- **BREAKTHROUGH:** ROCm works on kernel 6.19.4 with `HSA_OVERRIDE_GFX_VERSION=11.5.1`
+  - Fixed 12 outdated "ROCm broken" references throughout the guide
+  - ROCm pp is actually +6% faster on 6.19.4 than on 6.18.14
+- Added: Llama 3.1 70B benchmark (4.8 t/s, 94% of theoretical ceiling)
+- Added: Complete Ollama vs llama.cpp FAQ (browser analogy, llama-server setup)
+- Added: Model recommendation guide (10 use cases)
+- Added: Cost comparison (local vs cloud with break-even analysis)
+- Added: Buying guide (7 systems with March 2026 verified prices)
+- Added: Glossary (20+ terms explained for beginners)
+- Added: FAQ (8 common questions)
+- Added: Use cases (Claude Code, Cursor, RAG, image gen, TTS)
+- Added: One-command setup script (`setup.sh`)
+- Added: CONTRIBUTING.md and GitHub issue templates
+- Added: Build instructions for latest llama.cpp with Vulkan
+- Added: Auto-update script for llama.cpp (`update-and-build.sh`)
+- Added: Batch size sweep results (default 512 is optimal, no headroom)
+- Fixed: All prices verified against current retail (Beelink $2,999, DGX Spark $4,699)
+- Fixed: DGX Spark comparison is now apples-to-apples (same model, same context)
+- Corrected: BIOS VRAM 512MB is mandatory, not just speed-neutral
 
 ### 2026-03-20 -- Major Rewrite
 
