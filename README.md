@@ -288,7 +288,7 @@ export ROCBLAS_USE_HIPBLASLT=1
 
 ### ROCm HIP (llama.cpp)
 
-> **WARNING (March 2026):** Kernel 6.19.x breaks all ROCm containers on Strix Halo. GPU is misidentified as gfx1100 instead of gfx1151, causing segfaults. Stay on kernel 6.18.x for ROCm support. See [Kernel Compatibility](#kernel-and-rocm-compatibility).
+> **NOTE (March 2026):** Kernel 6.19.x misidentifies gfx1151 as gfx1100 for ROCm, but this is fixable with `HSA_OVERRIDE_GFX_VERSION=11.5.1` and `HSA_ENABLE_SDMA=0`. See [ROCm on kernel 6.19.x](#rocm-on-kernel-619x-the-fix) for the full fix. Without these environment variables, ROCm containers will segfault.
 
 **Previous results on kernel 6.18.14** (for reference -- these worked):
 
@@ -321,7 +321,7 @@ export ROCBLAS_USE_HIPBLASLT=1
 | pp512 (Llama 2 7B) | - | **1377.18** | 1261 | **Vulkan RADV (+9%)** |
 | tg128 (Llama 2 7B) | 52.0 | 48.12 | 45.07 | **Ollama Vulkan** |
 
-> **Surprise: Vulkan RADV now matches or beats ROCm HIP** on prompt processing, while being much easier to set up. With ROCm broken on kernel 6.19.x, Vulkan RADV is the clear winner for most users. Use `llama-bench` directly (via kyuz0 Vulkan containers) instead of Ollama to eliminate the ~8% Ollama overhead on tg.
+> **Surprise: Vulkan RADV now matches or beats ROCm HIP** on prompt processing with the latest build (b8460), while being much easier to set up. ROCm works on kernel 6.19.x with the HSA override fix, but Vulkan RADV (latest build) is now faster on both pp and tg anyway. Use `llama-bench` directly instead of Ollama to eliminate the ~8% overhead.
 
 ### Backend Comparison Table
 
@@ -462,7 +462,7 @@ EOF
 
 > **CRITICAL:** Kernel version matters enormously for Strix Halo.
 > - **Kernel 6.18.4+** is the minimum stable version (older kernels have gfx1151 stability bugs)
-> - **Kernel 6.19.x** breaks ROCm containers (GPU misidentified as gfx1100) -- see [Known Issues](#known-issues)
+> - **Kernel 6.19.x** misidentifies gfx1151 as gfx1100 for ROCm -- fixable with `HSA_OVERRIDE_GFX_VERSION=11.5.1` (see [Known Issues](#known-issues))
 > - **Recommended:** Kernel 6.18.6-6.18.14 for full ROCm + Vulkan support
 
 Check your kernel:
@@ -645,7 +645,7 @@ sudo systemctl restart ollama
 
 | Variable | Purpose |
 |----------|---------|
-| `OLLAMA_VULKAN=1` | Force Vulkan backend (bypasses broken HIP/ROCm) |
+| `OLLAMA_VULKAN=1` | Force Vulkan backend (Ollama's bundled HIP/ROCm crashes on gfx1151) |
 | `HIP_VISIBLE_DEVICES=-1` | Disable HIP device enumeration (prevents crash) |
 | `OLLAMA_FLASH_ATTENTION=1` | Enable flash attention (+13% prompt processing) |
 | `OLLAMA_CONTEXT_LENGTH=8192` | Limit context to prevent OOM (increase if needed) |
@@ -748,7 +748,7 @@ Prompt processing speed scales with prompt length due to GPU parallelism:
 
 For maximum prompt processing performance, use llama.cpp with ROCm via [kyuz0 containers](https://github.com/kyuz0/amd-strix-halo-toolboxes).
 
-> **IMPORTANT:** ROCm requires kernel 6.18.x. Kernel 6.19.x causes segfaults. See [Kernel Compatibility](#kernel-and-rocm-compatibility).
+> **NOTE:** On kernel 6.19.x, ROCm requires `HSA_OVERRIDE_GFX_VERSION=11.5.1` and `HSA_ENABLE_SDMA=0` to work. Without these, it segfaults. See [ROCm on kernel 6.19.x](#rocm-on-kernel-619x-the-fix).
 
 ### Step 7.1: Install Distrobox and Podman
 
@@ -954,7 +954,7 @@ To force RADV when both are installed: `AMD_VULKAN_ICD=RADV`
 | rocWMMA on upstream llama.cpp | "Enable for 2x speed" | [73% regression](https://github.com/ggml-org/llama.cpp/issues/19984) on ROCm 7.2 | Massively slower prompt processing |
 | BIOS VRAM increase for speed | "More GPU VRAM = faster" | Zero speed difference, but you lose OS-visible RAM and GTT capacity. Set to 512MB or your system is crippled (31GB usable instead of 125GB). | OS sees only 31GB RAM, large models won't load at all |
 | ROCm 7.0 RC | "Use ROCm 7 RC" | Segfaults on kernel 6.18.14+ | `HSA_STATUS_ERROR` crash |
-| Kernel 6.19.x with ROCm | "Use latest kernel" | GPU misidentified as gfx1100 | All ROCm containers segfault |
+| Kernel 6.19.x with ROCm (without fix) | "Just use latest kernel" | GPU misidentified as gfx1100 without HSA override | Segfaults unless you set `HSA_OVERRIDE_GFX_VERSION=11.5.1` |
 | linux-firmware-20251125 | Auto-update | Breaks ROCm on Strix Halo | Instability, crashes |
 
 ### Things That DO Work
@@ -977,15 +977,18 @@ To force RADV when both are installed: `AMD_VULKAN_ICD=RADV`
 
 ## Known Issues
 
-### Kernel 6.19.x Breaks ROCm (NEW -- March 2026)
+### Kernel 6.19.x ROCm GPU Misidentification (March 2026 -- FIXED)
 
-**Symptoms:** All ROCm containers segfault. `ggml_cuda_init` reports `gfx1100 (0x1100)` instead of `gfx1151`.
+**Symptoms:** Without the fix, ROCm containers segfault. `ggml_cuda_init` reports `gfx1100 (0x1100)` instead of `gfx1151`.
 
-**Affected:** All ROCm versions (6.4.4, 7.2, nightlies), all llama.cpp builds.
+**Fix:** Set these environment variables before running any ROCm binary:
 
-**Not affected:** Ollama Vulkan continues to work fine.
+```bash
+export HSA_OVERRIDE_GFX_VERSION=11.5.1
+export HSA_ENABLE_SDMA=0
+```
 
-**Workaround:** Stay on kernel 6.18.x for ROCm. Vulkan-only workflows work on 6.19.x.
+With this fix, ROCm works on kernel 6.19.4 and actually performs **+6% better on pp** than it did on kernel 6.18.14. See [benchmarks](#rocm-hip----now-working-on-kernel-6194) for numbers.
 
 ### Qwen3.5 ROCm Hang Bug ([ROCm #6027](https://github.com/ROCm/ROCm/issues/6027))
 
@@ -1059,21 +1062,19 @@ sudo systemctl restart ollama
 <details>
 <summary><strong>ROCm Container Segfaults (Kernel 6.19.x)</strong></summary>
 
-If your ROCm containers crash immediately with segfaults:
-
-1. Check kernel: `uname -r` -- if 6.19.x, this is the issue
-2. Options:
-   - Use Ollama Vulkan instead (no ROCm needed)
-   - Downgrade to kernel 6.18.x for ROCm support
-   - Wait for ROCm/kernel fix
+If your ROCm containers crash immediately with segfaults on kernel 6.19.x:
 
 ```bash
-# List installed kernels
-dpkg --list | grep linux-image
+# Fix: set these BEFORE running any ROCm binary
+export HSA_OVERRIDE_GFX_VERSION=11.5.1
+export HSA_ENABLE_SDMA=0
+export ROCBLAS_USE_HIPBLASLT=1
 
-# Boot into a specific kernel via GRUB
-# Hold Shift during boot -> Advanced Options -> Select kernel
+# Then run llama-bench or llama-server as normal
+llama-bench -m model.gguf -fa 1 -ngl 999 -mmp 0 -p 512 -n 128
 ```
+
+The GPU is misidentified as gfx1100 instead of gfx1151 on kernel 6.19.x. The `HSA_OVERRIDE_GFX_VERSION` forces correct identification. This is a kernel/ROCm compatibility issue that will likely be fixed in future ROCm releases.
 
 </details>
 
@@ -1150,15 +1151,15 @@ Based on community testing and our own findings:
 |--------|------------|----------|----------------|-----------------|
 | 6.17.7 | Works (with right firmware) | Unknown | Works | Works |
 | 6.18.4-6.18.14 | Works (patched) | Works | Works | Works |
-| **6.19.4** | **Segfault** | **Segfault** | **Unknown** | **Works** |
+| **6.19.4** | **Works (HSA fix)** | **Works (HSA fix)** | **Unknown** | **Works** |
 
 **Key rules:**
 - Kernel 6.18.4+ has a fix that breaks ALL older ROCm versions
-- Kernel 6.19.x misidentifies gfx1151 as gfx1100, breaking all ROCm
+- Kernel 6.19.x misidentifies gfx1151 as gfx1100, fixable with `HSA_OVERRIDE_GFX_VERSION=11.5.1`
 - linux-firmware-20251125 breaks ROCm regardless of kernel
 - linux-firmware-20260110+ is safe
 
-> **Our current recommendation (March 2026):** Use kernel 6.18.6-6.18.14 for full ROCm + Vulkan support. Use kernel 6.19.x only if you exclusively use Vulkan.
+> **Our current recommendation (March 2026):** Kernel 6.19.x works for both Vulkan and ROCm (ROCm requires `HSA_OVERRIDE_GFX_VERSION=11.5.1`). Kernel 6.18.6-6.18.14 works without the HSA workaround.
 
 ---
 
@@ -1175,7 +1176,7 @@ After completing setup, verify each item:
 - [ ] `ollama run qwen3.5:35b-a3b "hello"` generates at 45+ t/s
 - [ ] `systemctl show ollama | grep Environment` includes `OLLAMA_VULKAN=1`
 - [ ] `cat /etc/default/grub | grep CMDLINE` includes `amd_iommu=off`
-- [ ] `uname -r` shows 6.18.x (if using ROCm) or 6.19.x (if Vulkan-only)
+- [ ] `uname -r` shows 6.18.x+ (ROCm on 6.19.x requires HSA override -- see Known Issues)
 - [ ] `dpkg -l | grep linux-firmware` does NOT show 20251125
 
 ---
@@ -1398,7 +1399,7 @@ New to local LLMs? Here's what the technical terms mean.
 
 **Vulkan** -- A graphics/compute API. On Strix Halo, Vulkan is the most reliable backend for LLM inference via Ollama.
 
-**ROCm** -- AMD's GPU compute platform (like NVIDIA's CUDA). Provides HIP backend for llama.cpp. Faster prompt processing than Vulkan but harder to set up and currently broken on kernel 6.19.x.
+**ROCm** -- AMD's GPU compute platform (like NVIDIA's CUDA). Provides HIP backend for llama.cpp. On kernel 6.19.x, requires `HSA_OVERRIDE_GFX_VERSION=11.5.1` to work. With the latest llama.cpp, Vulkan RADV is now faster than ROCm on both pp and tg for MoE models.
 
 **RADV** -- Mesa's open-source Vulkan driver for AMD GPUs. Generally faster and more stable than AMDVLK on Strix Halo.
 
@@ -1556,7 +1557,7 @@ Found something that's wrong, outdated, or missing?
 ### 2026-03-20 -- Major Rewrite
 
 - Complete rewrite with live benchmarks on current system
-- Added: Kernel 6.19.x breaks ROCm (GPU misidentified as gfx1100)
+- Added: Kernel 6.19.x ROCm fix (HSA_OVERRIDE_GFX_VERSION=11.5.1)
 - Added: Mesa 26.0.2 results (+4-5% tg improvement over 26.0.1)
 - Added: qwen3-coder:30b-a3b-q8_0 benchmarks (51.4 t/s -- fastest model)
 - Added: Long context performance data from lhl (Vulkan vs ROCm at 32K)
@@ -1570,7 +1571,7 @@ Found something that's wrong, outdated, or missing?
 - Added: Backend decision guide
 - Added: Testing checklist
 - Added: Collapsible troubleshooting sections
-- Updated: ROCm HIP is now broken on kernel 6.19.4 (was working on 6.18.14)
+- Updated: ROCm HIP works on kernel 6.19.4 with HSA override (even +6% faster pp than 6.18.14)
 - Updated: All benchmark numbers re-measured
 - Updated: Replaced `nano` instructions with `tee` for copy-paste ready commands
 - Corrected: rocWMMA is no longer blanket "don't use" -- lhl's tuned branch is best for long context
