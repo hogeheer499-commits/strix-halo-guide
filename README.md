@@ -1562,30 +1562,47 @@ Found something that's wrong, outdated, or missing?
 
 ### 2026-03-21 -- Performance Breakthrough + Beginner Content
 
-- **BREAKTHROUGH:** llama.cpp b8298 to b8460 = +25% tg and pp on MoE models (52 to 65 t/s)
+**Performance discoveries:**
+- llama.cpp b8298 to b8460 = +25% tg and +24% pp on MoE models (52 to 65 t/s tg, 868 to 1080 pp512)
   - Key PRs: #19625 (FA refactor), #20551 (graphics queue), #20334 (GDN shader)
-  - RADV now beats AMDVLK on both pp AND tg (old AMDVLK tg advantage is gone)
-  - RADV now beats ROCm on both pp (1080 vs 1059) and tg (65 vs 48)
+  - +25% breaks down as ~14% generic (both backends got this) + ~11% Vulkan-specific
   - Dense models show <2% change (already at bandwidth ceiling)
-- **BREAKTHROUGH:** ROCm works on kernel 6.19.4 with `HSA_OVERRIDE_GFX_VERSION=11.5.1`
-  - Fixed 12 outdated "ROCm broken" references throughout the guide
-  - ROCm pp is actually +6% faster on 6.19.4 than on 6.18.14
-- Added: Llama 3.1 70B benchmark (4.8 t/s, 94% of theoretical ceiling)
-- Added: Complete Ollama vs llama.cpp FAQ (browser analogy, llama-server setup)
-- Added: Model recommendation guide (10 use cases)
-- Added: Cost comparison (local vs cloud with break-even analysis)
-- Added: Buying guide (7 systems with March 2026 verified prices)
-- Added: Glossary (20+ terms explained for beginners)
-- Added: FAQ (8 common questions)
-- Added: Use cases (Claude Code, Cursor, RAG, image gen, TTS)
-- Added: One-command setup script (`setup.sh`)
-- Added: CONTRIBUTING.md and GitHub issue templates
-- Added: Build instructions for latest llama.cpp with Vulkan
-- Added: Auto-update script for llama.cpp (`update-and-build.sh`)
-- Added: Batch size sweep results (default 512 is optimal, no headroom)
-- Fixed: All prices verified against current retail (Beelink $2,999, DGX Spark $4,699)
-- Fixed: DGX Spark comparison is now apples-to-apples (same model, same context)
-- Corrected: BIOS VRAM 512MB is mandatory, not just speed-neutral
+- RADV now beats AMDVLK on both pp AND tg with latest build (old AMDVLK tg advantage gone)
+- RADV now beats ROCm on both pp (1080 vs 1047) and tg (65 vs 55) on same b8460 build
+- ROCm works on kernel 6.19.4 with `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0`
+- ROCm b8460 got +14% tg from generic improvements (47.87 to 54.67)
+- Batch/ubatch sweep: default 512 is optimal, no tuning headroom left
+
+**New benchmarks:**
+- Llama 3.1 70B (4.8 t/s, 94% of theoretical ceiling, doesn't fit on RTX 4090)
+- Qwen3-Coder-30B UD-Q4_K_XL (87 t/s tg via RADV)
+- Qwen3-0.6B (266 t/s tg, 13,112 pp512)
+- Extended context scaling (pp flat from 512 to 8K, only 3% drop)
+
+**Beginner content:**
+- Ollama vs llama.cpp FAQ with browser analogy and llama-server setup
+- Model recommendation guide (10 use cases)
+- Cost comparison (local vs cloud with break-even analysis)
+- Buying guide (7 systems with March 2026 verified prices, Beelink v1 board warning)
+- Glossary (20+ terms for beginners)
+- FAQ (8 common questions)
+- Use cases (Claude Code, Cursor, RAG, image gen, TTS)
+- Windows vs Linux comparison
+
+**Infrastructure:**
+- One-command setup script (`setup.sh`)
+- Auto-update script for llama.cpp (`update-and-build.sh`)
+- CONTRIBUTING.md and 3 GitHub issue templates
+- GitHub release v1.0.0
+- 19 topics for discoverability
+- GitHub stars + last-commit badges
+
+**Fixes:**
+- All prices verified against current retail (Beelink $2,999, DGX Spark $4,699)
+- DGX Spark comparison is now apples-to-apples (same model, same context)
+- Fixed 12 outdated "ROCm broken on 6.19.x" references
+- BIOS VRAM 512MB is mandatory, not just speed-neutral
+- Vulkan Driver Comparison updated with b8460 data
 
 ### 2026-03-20 -- Major Rewrite
 
