@@ -221,14 +221,15 @@ Extended context scaling (latest build, RADV):
 
 **ROCm HIP -- now working on kernel 6.19.4!**
 
-We discovered that `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0` fixes the ROCm segfault on kernel 6.19.x:
+We discovered that `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0` fixes the ROCm segfault on kernel 6.19.x. We also rebuilt ROCm with the same b8460 source to make the comparison fair:
 
 | Build | pp128 | pp512 | tg128 | Notes |
 |-------|-------|-------|-------|-------|
-| b8301 (self-compiled, kernel 6.19.4) | **542** | **1059** | 47.87 | +6% pp vs old ROCm! |
+| **b8460 (latest, kernel 6.19.4)** | **547** | **1047** | **54.67** | **tg +14% vs b8301** |
+| b8301 (self-compiled, kernel 6.19.4) | 542 | 1059 | 47.87 | old build |
 | b8301 (self-compiled, kernel 6.18.14) | 488 | 996 | 48.80 | previous best |
 
-> ROCm works again but **Vulkan RADV (b8460) is now faster than ROCm on both pp and tg**: RADV 1080 vs ROCm 1059 pp512, RADV 64.85 vs ROCm 47.87 tg128. The only remaining ROCm advantage is for workloads that specifically benefit from hipBLASLt or rocWMMA at very long context.
+> ROCm also improved with the latest build: tg went from 47.87 to **54.67** (+14%) thanks to generic llama.cpp optimizations. But **Vulkan RADV (b8460) is still faster on both pp and tg**: RADV 1080 vs ROCm 1047 pp512 (+3%), RADV 64.85 vs ROCm 54.67 tg128 (+19%). The +25% Vulkan improvement was ~14% generic (ROCm got this too) plus ~11% Vulkan-specific (FA refactor, graphics queue). ROCm's remaining advantage is hipBLASLt and rocWMMA at very long context (32K+).
 
 **Build version matters enormously:**
 
@@ -237,7 +238,8 @@ We discovered that `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0` fixes
 | Ollama Vulkan RADV (b8298) | ~457 (via API) | 47.4 | Ollama adds overhead |
 | llama-bench RADV (b8298) | 868 | 52.06 | Eliminating Ollama helps |
 | llama-bench RADV **(b8460)** | **1080** | **64.85** | **Updating llama.cpp = +25%** |
-| ROCm HIP (b8301, HSA fix) | 1059 | 47.87 | ROCm no longer fastest |
+| ROCm HIP (b8301, HSA fix) | 1059 | 47.87 | Old build, unfair comparison |
+| ROCm HIP **(b8460, HSA fix)** | **1047** | **54.67** | **ROCm got +14% tg from same update** |
 
 > The single biggest optimization you can make is **updating llama.cpp to the latest build**. It gave us more improvement (+25% on MoE models) than all kernel tuning, batch size sweeps, and driver comparisons combined. This is counter-intuitive -- people spend hours on kernel parameters, GRUB flags, and Mesa versions, while `git pull && cmake --build` delivers more than everything else put together. Note: this applies to MoE models specifically. Dense models were already at the bandwidth ceiling and show <2% change.
 
