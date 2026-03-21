@@ -1604,6 +1604,8 @@ Found something that's wrong, outdated, or missing?
 - Fixed 12 outdated "ROCm broken on 6.19.x" references
 - BIOS VRAM 512MB is mandatory, not just speed-neutral
 - Vulkan Driver Comparison updated with b8460 data
+- RADV_PERFTEST env vars (cswave32, nogttspill) tested and found to be -10% slower. Don't use.
+- Posted findings on [llama.cpp Vulkan discussion](https://github.com/ggml-org/llama.cpp/discussions/10879#discussioncomment-16235771)
 
 ### 2026-03-20 -- Major Rewrite
 
