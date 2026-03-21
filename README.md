@@ -7,13 +7,13 @@
 
 # AMD Strix Halo Local LLM Guide
 
-**From unboxing to 87 tokens/second on a $2,999 mini PC -- within 5% of the $4,699 DGX Spark on the same model, and $1,700 cheaper.**
+**From unboxing to 87 tokens/second on a $2,999 mini PC -- faster than the $4,699 DGX Spark on MoE models, within 5% on dense models, and $1,700 cheaper.**
 
 ```
    You are here                  What you'll get
    +-----------+                 +---------------------------+
    | Strix     |    30 min       | 87 t/s on 30B MoE models  |
-   | Halo      | ==============> | 52-56 t/s on 35B models   |
+   | Halo      | ==============> | 65 t/s on 35B models      |
    | mini PC   |   this guide    | 70B+ models on one device |
    +-----------+                 | No cloud. No subscription |
                                  +---------------------------+
@@ -123,8 +123,8 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (RADV Mesa 26.0.2)
 | Qwen3-0.6B (Q8_0) | 0.8 GB | Dense | 266 t/s * | Ultra-fast tiny model |
 | Llama 2 7B | 3.8 GB | Dense | 48-52 t/s | Testing, lightweight tasks |
 | Qwen2.5-VL 7B | 6.0 GB | Vision | 21.4 t/s | Image understanding |
-| Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 16.5 GB | MoE | **85-87 t/s** * | Best speed/quality ratio |
-| Qwen3.5 35B-A3B | 23 GB | MoE | 47-56 t/s | General purpose, coding |
+| Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 16.5 GB | MoE | **87 t/s** * | Best speed/quality ratio |
+| Qwen3.5 35B-A3B | 23 GB | MoE | 48-**65 t/s** | General purpose, coding (65 with latest llama.cpp) |
 | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | 51 t/s | Coding (highest quality MoE) |
 | Qwen3-Coder-Next | 51 GB | Dense | 38-39 t/s | Large dense model |
 | Llama 3.1 70B (Q4_K_M) | 42 GB | Dense | **4.7-4.9 t/s** | 70B intelligence, doesn't fit on RTX 4090 |
@@ -183,52 +183,88 @@ All benchmarks run on 2026-03-20. System: Beelink GTR9 Pro, kernel 6.19.4, tuned
 
 > **What improved?** Mesa 26.0.1 to 26.0.2 plus enabling the `tuned accelerator-performance` profile gave a consistent **+4-5% generation speed improvement** across all models.
 
-### llama-bench Direct (kyuz0 Vulkan Containers, b8298)
+### llama-bench Direct -- Latest llama.cpp (b8460) vs kyuz0 Containers (b8298)
 
-Using llama-bench directly via kyuz0 containers eliminates Ollama overhead and gives the best possible performance.
+> **UPDATE (2026-03-21): Updating llama.cpp from b8298 to b8460 gave +25% on both pp and tg for MoE models.** The new build includes a Vulkan Flash Attention refactor ([PR #19625](https://github.com/ggml-org/llama.cpp/pull/19625)), graphics queue optimization for AMD ([PR #20551](https://github.com/ggml-org/llama.cpp/pull/20551)), and GDN shader support for Qwen3.5 ([PR #20334](https://github.com/ggml-org/llama.cpp/pull/20334)). **Always use the latest llama.cpp build.**
 
-**Qwen3-Coder 30B-A3B** (UD-Q4_K_XL, 16.5GB, MoE) -- the speed champion:
+**Qwen3.5-35B-A3B** (Q4_K_M, 19.9GB, MoE) -- the biggest improvement:
 
-| Driver | pp128 | pp512 | tg128 | Notes |
-|--------|-------|-------|-------|-------|
-| **RADV** (-ub 1024) | 638 | **1350** | **86.81** | Matches strixhalo.wiki reference (85 t/s) |
-| AMDVLK (-ub 512) | 582 | 914 | 84.00 | -3% tg vs RADV |
+| Build | Driver | pp128 | pp512 | tg128 | vs old RADV |
+|-------|--------|-------|-------|-------|-------------|
+| **b8460 (latest)** | **RADV** | **623** | **1080** | **64.85** | **pp +24%, tg +25%** |
+| b8460 (latest) | AMDVLK | 521 | 663 | 64.10 | pp -24%, tg +23% |
+| b8298 (kyuz0) | RADV | 583 | 868 | 52.06 | baseline |
+| b8298 (kyuz0) | AMDVLK | 479 | 576 | 56.08 | |
 
-**Qwen3.5-35B-A3B** (Q4_K_M, 19.9GB, MoE) -- with optimal ubatch:
+> **RADV now wins on EVERYTHING.** The old AMDVLK tg advantage (+7.7%) is gone. With the latest build, RADV is faster on both pp (+63% over AMDVLK) and tg (+1.2% over AMDVLK). Use RADV.
 
-| Driver | pp128 | pp512 | pp2048 | pp8192 | tg128 | tg512 |
-|--------|-------|-------|--------|--------|-------|-------|
-| **RADV** (-ub 1024) | 583 | **868** | **830** | **826** | 52.06 | 51.82 |
-| AMDVLK (-ub 512) | 479 | 576 | 563 | 533 | **56.08** | **55.49** |
+Extended context scaling (latest build, RADV):
 
-Extended context scaling (pp only):
+| pp512 | pp2048 | pp4096 | pp8192 | Drop at 8K |
+|-------|--------|--------|--------|------------|
+| **1080** | **1057** | **1049** | **1049** | **-3%** |
 
-| Driver | pp512 | pp4096 | pp16384 | Drop at 16K |
-|--------|-------|--------|---------|-------------|
-| **RADV** | 777 | 820 | **765** | **-1.5%** |
-| AMDVLK | 573 | 546 | 476 | -17% |
+> pp is virtually flat from 512 to 8192 tokens. Only 3% drop at 8K context.
 
-> RADV dominates prompt processing (+36% to +61% depending on context length) and scales far better (1.5% vs 17% drop at 16K). AMDVLK wins only on generation speed (+9%). For chat and coding use, RADV is the clear choice. For batch processing where tg matters most, consider AMDVLK.
+**Qwen3-Coder 30B-A3B** (UD-Q4_K_XL, 16.5GB, MoE):
 
-**Batch size and ubatch tuning results (Qwen3.5-35B-A3B, RADV):**
+| Build | Driver | pp512 | tg128 | Notes |
+|-------|--------|-------|-------|-------|
+| **b8460 (latest)** | **RADV** | 1342 | **87.11** | Already at bandwidth ceiling |
+| b8298 (kyuz0) | RADV | 1350 | 86.81 | ~same (model was already at ceiling) |
 
-We swept batch sizes 64-2048 and ubatch sizes 32-1024 to find the optimal configuration. Result: **the default is already optimal.** There is no free performance left on Vulkan.
+> The 30B model shows minimal improvement because it was already hitting the memory bandwidth ceiling at 87 t/s. The 35B model had more headroom, which the new build exploited.
 
-| Parameter | Tested Range | Optimal | pp512 at optimal | Notes |
-|-----------|-------------|---------|------------------|-------|
-| batch size (-b) | 64, 128, 256, 512, 1024, 2048 | **512** | 858 t/s | Plateau at 512, no gain above |
-| ubatch size (-ub) | 32, 64, 128, 256, 512, 1024 | **512** | 856 t/s | Plateau at 512, no gain above |
+**ROCm HIP -- now working on kernel 6.19.4!**
 
-The same pattern holds for AMDVLK (optimal at b=512, ub=512, plateau at 569 t/s pp512).
+We discovered that `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0` fixes the ROCm segfault on kernel 6.19.x:
 
-> **What this means:** We are at the Vulkan compute ceiling for prompt processing on this hardware. The only way to improve pp further is ROCm HIP, which achieved 996 t/s pp512 (+15%) on kernel 6.18.14 before the kernel 6.19.x regression broke it. If prompt processing speed is critical for your use case (RAG pipelines, long document processing), consider staying on or downgrading to kernel 6.18.x for ROCm access.
+| Build | pp128 | pp512 | tg128 | Notes |
+|-------|-------|-------|-------|-------|
+| b8301 (self-compiled, kernel 6.19.4) | **542** | **1059** | 47.87 | +6% pp vs old ROCm! |
+| b8301 (self-compiled, kernel 6.18.14) | 488 | 996 | 48.80 | previous best |
 
-**Performance ceiling summary (Qwen3.5-35B-A3B Q4_K_M):**
+> ROCm works again but **Vulkan RADV (b8460) is now faster than ROCm on both pp and tg**: RADV 1080 vs ROCm 1059 pp512, RADV 64.85 vs ROCm 47.87 tg128. The only remaining ROCm advantage is for workloads that specifically benefit from hipBLASLt or rocWMMA at very long context.
 
+**Build version matters enormously:**
+
+| What we tested | pp512 | tg128 | Lesson |
+|----------------|-------|-------|--------|
+| Ollama Vulkan RADV (b8298) | ~457 (via API) | 47.4 | Ollama adds overhead |
+| llama-bench RADV (b8298) | 868 | 52.06 | Eliminating Ollama helps |
+| llama-bench RADV **(b8460)** | **1080** | **64.85** | **Updating llama.cpp = +25%** |
+| ROCm HIP (b8301, HSA fix) | 1059 | 47.87 | ROCm no longer fastest |
+
+> The single biggest optimization you can make is **updating llama.cpp to the latest build**. It gave us more improvement (+25%) than all kernel tuning, batch size sweeps, and driver comparisons combined.
+
+**Batch size and ubatch tuning results (b8298, for reference):**
+
+We swept batch sizes 64-2048 and ubatch sizes 32-1024. Result: **default 512 is optimal.** No headroom via tuning -- the improvement came from updating the build.
+
+**How to build the latest llama.cpp with Vulkan:**
+
+```bash
+git clone https://github.com/ggml-org/llama.cpp
+cd llama.cpp
+CC=/usr/bin/gcc CXX=/usr/bin/g++ cmake -B build -S . \
+  -DGGML_VULKAN=ON \
+  -DCMAKE_BUILD_TYPE=Release \
+  -G "Unix Makefiles"
+cmake --build build -j$(nproc)
+
+# Benchmark
+AMD_VULKAN_ICD=RADV ./build/bin/llama-bench \
+  -m ~/models/your-model.gguf \
+  -fa 1 -ngl 999 -mmp 0 -p 512 -n 128
 ```
-Token Generation:   56.08 t/s (AMDVLK)  = ~99% of theoretical ceiling (bandwidth-limited)
-Prompt Processing:  868 t/s (RADV)       = Vulkan ceiling (compute-limited)
-                    996 t/s (ROCm HIP)   = +15% over Vulkan (requires kernel 6.18.x)
+
+**ROCm on kernel 6.19.x (the fix):**
+
+```bash
+# Add these environment variables before running llama-bench:
+export HSA_OVERRIDE_GFX_VERSION=11.5.1
+export HSA_ENABLE_SDMA=0
+export ROCBLAS_USE_HIPBLASLT=1
 ```
 
 **Llama 2 7B** (Q4_K_M, 3.8GB, Dense):
@@ -303,7 +339,7 @@ Based on our measurements and [lhl's comprehensive testing](https://github.com/l
 | RTX 4090 | ~1008 GB/s | 100-122 t/s | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$800 used |
 | Apple Mac Studio M4 Max 128GB | ~546 GB/s | ~100 t/s (MLX) | 128 GB | $3,699 |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **50-87 t/s** | **120+ GB** | **$2,999** |
+| **Beelink GTR9 Pro** | **~215 GB/s** | **65-87 t/s** | **120+ GB** | **$2,999** |
 | NVIDIA DGX Spark | ~273 GB/s | 52-56 t/s (120B) | 128 GB | $4,699 |
 
 > **Apples-to-apples (gpt-oss-120b, same model, both platforms):** Strix Halo gets 50-53 t/s vs DGX Spark's 52-56 t/s -- **within 5-10%** on the same workload, while costing **$1,700 less** ($2,999 vs $4,699). On smaller MoE models (Qwen3-30B), Strix Halo hits 87 t/s. The DGX Spark wins on prompt processing (3-5X faster) and long context (23%+ faster at 32K). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
