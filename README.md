@@ -329,7 +329,7 @@ export ROCBLAS_USE_HIPBLASLT=1
 
 ### Backend Comparison Table
 
-Based on our measurements and [lhl's comprehensive testing](https://github.com/lhl/strix-halo-testing):
+Based on our measurements and [lhl's detailed testing](https://github.com/lhl/strix-halo-testing):
 
 | Backend | Best For | pp (relative) | tg (relative) | Context Scaling | Setup Difficulty |
 |---------|----------|---------------|---------------|-----------------|------------------|
