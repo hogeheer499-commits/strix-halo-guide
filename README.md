@@ -1568,6 +1568,7 @@ Found something that's wrong, outdated, or missing?
   - +25% breaks down as ~14% generic (both backends got this) + ~11% Vulkan-specific
   - Dense models show <2% change (already at bandwidth ceiling)
 - RADV now beats AMDVLK on both pp AND tg with latest build (old AMDVLK tg advantage gone)
+- Exceeded theoretical tg ceiling: measured 65 t/s vs calculated max of ~57 t/s. The standard formula (bandwidth / active_model_size) underestimates MoE performance because it ignores caching and memory access optimizations in newer llama.cpp builds. The real ceiling is a moving target.
 - RADV now beats ROCm on both pp (1080 vs 1047) and tg (65 vs 55) on same b8460 build
 - ROCm works on kernel 6.19.4 with `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0`
 - ROCm b8460 got +14% tg from generic improvements (47.87 to 54.67)
