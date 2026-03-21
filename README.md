@@ -1419,9 +1419,46 @@ New to local LLMs? Here's what the technical terms mean.
 ## FAQ
 
 <details>
+<summary><strong>What is the difference between Ollama and llama.cpp? Why is llama.cpp faster?</strong></summary>
+
+They are not two different programs. **Ollama is a wrapper around llama.cpp.** It adds model management (`ollama pull`), a simple API, and easy commands (`ollama run`). Under the hood, it runs the same llama.cpp inference engine.
+
+So why is llama.cpp direct 35% faster? Two reasons:
+
+1. **Wrapper overhead.** Ollama adds layers between you and the GPU: model loading, API translation, memory management. This costs ~8-15% on token generation.
+
+2. **Bundled version.** Ollama ships with a specific llama.cpp version baked in. As of March 2026, Ollama bundles an older build that misses recent Vulkan optimizations (Flash Attention refactor, graphics queue on AMD, GDN shaders). These optimizations gave us +25% on MoE models. Ollama will catch up eventually, but there's always a lag.
+
+**Think of it like a web browser:** Ollama is Chrome (easy to use, auto-updates, but bundles a specific engine version). llama.cpp direct is building Chromium from source (more work, but you get the latest engine immediately).
+
+**What should you use?**
+
+| Use case | Recommendation |
+|----------|---------------|
+| Just want it to work | **Ollama** -- install and go, 48 t/s is still fast |
+| Want maximum speed | **llama-server** (from latest llama.cpp) -- 65 t/s, same API as Ollama |
+| Using kyuz0 containers | **kyuz0** -- they auto-rebuild on llama.cpp updates, best of both worlds |
+| Benchmarking | **llama-bench** -- eliminates all overhead, pure GPU measurement |
+
+**How to run llama-server (Ollama replacement with full speed):**
+
+```bash
+# Start llama-server with your model (OpenAI-compatible API on port 8080)
+cd ~/llama-cpp-latest
+AMD_VULKAN_ICD=RADV ./build-vulkan/bin/llama-server \
+  -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf \
+  -ngl 999 -fa --no-mmap -c 8192 \
+  --host 0.0.0.0 --port 8080
+```
+
+Then point your tools at `http://localhost:8080/v1` instead of `http://localhost:11434/v1`. Same API, 35% faster.
+
+</details>
+
+<details>
 <summary><strong>Can I run ChatGPT-level intelligence locally?</strong></summary>
 
-Yes. Qwen3.5-35B-A3B runs at 48-56 t/s and is comparable to GPT-4o-mini for most tasks. For coding, Qwen3-Coder 30B-A3B runs at 87 t/s and is competitive with commercial coding assistants. For maximum intelligence, you can run 70B+ dense models at ~5 t/s -- slower but very capable.
+Yes. Qwen3.5-35B-A3B runs at 48-65 t/s (Ollama vs llama-server) and is comparable to GPT-4o-mini for most tasks. For coding, Qwen3-Coder 30B-A3B runs at 87 t/s and is competitive with commercial coding assistants. For maximum intelligence, you can run 70B+ dense models at ~5 t/s -- slower but very capable.
 
 </details>
 
