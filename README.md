@@ -632,9 +632,7 @@ curl -fsSL https://ollama.com/install.sh | sh
 
 ### Step 5.2: Configure Ollama for Vulkan
 
-> **CRITICAL:** Ollama's bundled ROCm/HIP crashes on gfx1151 with "out of memory" errors, even on small models. You MUST configure Vulkan as the backend.
->
-> **Update (April 2026):** Ollama ROCm may now work on gfx1151 via `HSA_OVERRIDE_GFX_VERSION=11.5.1` ([ollama/ollama#14855](https://github.com/ollama/ollama/issues/14855)). We are testing this. For now, Vulkan remains our recommendation -- results will follow.
+> **Update (April 2026):** Ollama ROCm now works on gfx1151 with `HSA_OVERRIDE_GFX_VERSION=11.5.1` ([ollama/ollama#14855](https://github.com/ollama/ollama/issues/14855)). However, **Vulkan is still ~9% faster** on token generation (46.6 vs 42.4 t/s on Qwen3.5-35B). We recommend Vulkan for best performance. If you need ROCm (for vLLM compatibility or other reasons), add `HSA_OVERRIDE_GFX_VERSION=11.5.1` and `HSA_ENABLE_SDMA=0` to your Ollama environment instead of the Vulkan variables below.
 
 ```bash
 sudo systemctl edit ollama
@@ -969,7 +967,7 @@ To force RADV when both are installed: `AMD_VULKAN_ICD=RADV`
 
 | Issue | Common Advice | Reality | What Happens If You Try |
 |-------|---------------|---------|------------------------|
-| Ollama HIP/ROCm | "Use ROCm backend" | Crashes with OOM on gfx1151 | `out of memory` error, even on 7B models |
+| ~~Ollama HIP/ROCm~~ | ~~"Use ROCm backend"~~ | **Fixed in Ollama 0.20+** with `HSA_OVERRIDE_GFX_VERSION=11.5.1`. Works but ~9% slower tg than Vulkan | Use Vulkan for best speed, ROCm if you need vLLM compatibility |
 | `iommu=pt` for speed | "Use pass-through for performance" | No benefit over default ([lhl](https://github.com/lhl/strix-halo-testing)) | Same speed as `iommu=on`, wastes a kernel param |
 | AMDVLK for all workloads | "AMDVLK is fastest" | 2 GiB buffer limit causes 3-4X slower pp on dense models. With latest llama.cpp (b8460), RADV beats AMDVLK on both pp AND tg | No remaining advantage with latest build |
 | rocWMMA on upstream llama.cpp | "Enable for 2x speed" | [73% regression](https://github.com/ggml-org/llama.cpp/issues/19984) on ROCm 7.2 | Massively slower prompt processing |
@@ -1585,7 +1583,7 @@ Found something that's wrong, outdated, or missing?
 - Updated all prices: Beelink $2,999 to $3,299, Corsair $2,700 to $3,399, GMKtec $2,199 to ~$2,349
 - Added linux-firmware-20251125 source attribution and downgrade instructions
 - Added Ubuntu 26.04 LTS note (Wayland-only, testing in progress)
-- Added Ollama ROCm HSA override note (ollama/ollama#14855, testing in progress)
+- **Ollama ROCm confirmed working** on gfx1151 with `HSA_OVERRIDE_GFX_VERSION=11.5.1` (Ollama 0.20.4). Benchmarked: 42.4 t/s tg vs Vulkan's 46.6 t/s (-9%). Vulkan still recommended for speed
 
 ### 2026-03-21 -- Performance Breakthrough + Beginner Content
 
