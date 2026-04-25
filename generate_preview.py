@@ -20,7 +20,7 @@ draw.rectangle([0, 0, W, 4], fill=ACCENT)
 # Three big numbers side by side
 stats = [
     ("87", "t/s", "MoE inference"),
-    ("$3,299", "", "mini PC"),
+    ("70B+", "", "parameter models"),
     ("128", "GB", "unified memory"),
 ]
 
