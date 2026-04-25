@@ -125,6 +125,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (RADV Mesa 26.0.2)
 | Qwen3-0.6B (Q8_0) | 0.8 GB | Dense | 266 t/s * | Ultra-fast tiny model |
 | Llama 2 7B | 3.8 GB | Dense | 48-52 t/s | Testing, lightweight tasks |
 | Qwen2.5-VL 7B | 6.0 GB | Vision | 21.4 t/s | Image understanding |
+| Gemma 4 26B-A4B (UD-Q4_K_M) | 15.7 GB | MoE | **47.6 t/s** * | Google's latest MoE, strong reasoning |
 | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 16.5 GB | MoE | **87 t/s** * | Best speed/quality ratio |
 | Qwen3.5 35B-A3B | 23 GB | MoE | 48-**65 t/s** | General purpose, coding (65 with latest llama.cpp) |
 | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | 51 t/s | Coding (highest quality MoE) |
@@ -220,6 +221,16 @@ Extended context scaling (latest build, RADV):
 | b8298 (kyuz0) | RADV | 1350 | 86.81 | ~same (model was already at ceiling) |
 
 > The 30B model shows minimal improvement because it was already hitting the memory bandwidth ceiling at 87 t/s. The 35B model had more headroom, which the new build exploited.
+
+**Gemma 4 26B-A4B** (UD-Q4_K_M, 15.7GB, MoE) -- tested on b8933 (earliest build with Gemma 4 support):
+
+| Build | Driver | pp512 | tg128 | Notes |
+|-------|--------|-------|-------|-------|
+| **b8933** | **RADV** | **745** | **47.60** | Google's latest MoE |
+
+> Gemma 4 is architecturally slower than Qwen MoE models despite similar size. The reason: head_dim 256/512 (vs Qwen's 128) makes flash attention less efficient, mixed sliding-window/full attention adds overhead, and 3.8B active params vs Qwen's 3.3B. This is not a llama.cpp issue -- it's inherent to the model design. 47.6 t/s is still 3x human reading speed and very usable for interactive chat.
+>
+> **WARNING:** Gemma 4 is extremely sensitive to KV cache quantization. Using q8_0 KV cache causes 3.5x worse quality degradation compared to Qwen models. Stick with f16 KV cache for Gemma 4. Do NOT use `--cache-type-k q4_0`.
 
 **ROCm HIP -- now working on kernel 6.19.4!**
 
@@ -669,6 +680,9 @@ ollama pull qwen3.5:35b-a3b
 
 # Higher quality MoE, Q8_0 quantization (~32GB)
 ollama pull qwen3-coder:30b-a3b-q8_0
+
+# Google's MoE model, strong reasoning (~16GB)
+ollama pull gemma4:26b-a4b
 
 # Large dense model for complex tasks (~51GB)
 ollama pull qwen3-coder-next
@@ -1563,8 +1577,10 @@ Found something that's wrong, outdated, or missing?
 
 ## Changelog
 
-### 2026-04-25 -- April Update
+### 2026-04-25 -- April Update + Gemma 4 Benchmark
 
+- **Gemma 4 26B-A4B benchmark:** 47.6 t/s tg, 745 pp512 via Vulkan RADV (b8933). First Strix Halo benchmark for this model. Includes KV cache quantization warning (3.5x worse quality degradation vs Qwen at q8_0)
+- **Vulkan pp regression found:** b8933 has -32% to -39% prompt processing regression vs b8460 on MoE models. tg is unaffected. Guide continues to recommend b8460 for existing models
 - Merged PR #1: vulkan-tools install check in setup.sh (thanks @ignasivt)
 - Updated all prices: Beelink $2,999 to $3,299, Corsair $2,700 to $3,399, GMKtec $2,199 to ~$2,349
 - Added linux-firmware-20251125 source attribution and downgrade instructions
