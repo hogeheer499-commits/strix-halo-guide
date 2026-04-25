@@ -7,7 +7,7 @@
 
 # AMD Strix Halo Local LLM Guide
 
-**65-87 t/s local LLM inference on a $2,999 mini PC. Within 5% of the $4,699 DGX Spark. No cloud, no subscription.**
+**65-87 t/s local LLM inference on a $3,299 mini PC. Within 5% of the $4,699 DGX Spark. No cloud, no subscription.**
 
 > If this guide saves you time, consider giving it a star -- it helps others find it.
 
@@ -112,7 +112,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 | RAM | 128GB unified LPDDR5X-8000 (~215 GB/s measured, 256 GB/s theoretical) |
 | NPU | RyzenAI-npu5 (XDNA 2) |
 
-> **Why this hardware?** 128GB unified memory shared between CPU and GPU means you can run **70B+ models entirely on the GPU** -- something an RTX 4090 (24GB VRAM) cannot do. You trade raw bandwidth (~215 GB/s vs ~1 TB/s) for the ability to run much larger, smarter models at a lower price ($2,999 vs $4,699 for the DGX Spark).
+> **Why this hardware?** 128GB unified memory shared between CPU and GPU means you can run **70B+ models entirely on the GPU** -- something an RTX 4090 (24GB VRAM) cannot do. You trade raw bandwidth (~215 GB/s vs ~1 TB/s) for the ability to run much larger, smarter models at a lower price ($3,299 vs $4,699 for the DGX Spark).
 
 ---
 
@@ -343,10 +343,10 @@ Based on our measurements and [lhl's detailed testing](https://github.com/lhl/st
 | RTX 4090 | ~1008 GB/s | 100-122 t/s | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$800 used |
 | Apple Mac Studio M4 Max 128GB | ~546 GB/s | ~100 t/s (MLX) | 128 GB | $3,699 |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **65-87 t/s** | **120+ GB** | **$2,999** |
+| **Beelink GTR9 Pro** | **~215 GB/s** | **65-87 t/s** | **120+ GB** | **$3,299** |
 | NVIDIA DGX Spark | ~273 GB/s | 52-56 t/s (120B) | 128 GB | $4,699 |
 
-> **Apples-to-apples (gpt-oss-120b, same model, both platforms):** Strix Halo gets 50-53 t/s vs DGX Spark's 52-56 t/s -- **within 5-10%** on the same workload, while costing **$1,700 less** ($2,999 vs $4,699). On smaller MoE models (Qwen3-30B), Strix Halo hits 87 t/s. The DGX Spark wins on prompt processing (3-5X faster) and long context (23%+ faster at 32K). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
+> **Apples-to-apples (gpt-oss-120b, same model, both platforms):** Strix Halo gets 50-53 t/s vs DGX Spark's 52-56 t/s -- **within 5-10%** on the same workload, while costing **$1,400 less** ($3,299 vs $4,699). On smaller MoE models (Qwen3-30B), Strix Halo hits 87 t/s. The DGX Spark wins on prompt processing (3-5X faster) and long context (23%+ faster at 32K). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
 
 ### Long Context Performance
 
@@ -449,6 +449,8 @@ EOF
 ```
 
 > If the line already exists (commented out), uncomment it instead. Reboot to apply.
+
+> **Ubuntu 26.04 LTS** (released April 2026) ships with Linux 7.0, Mesa 26.0, and native `apt install rocm`. Early tests show significant Strix Halo performance gains. However, 26.04 is **Wayland-only** -- the X11 switch above does not work on 26.04. This guide is written for **Ubuntu 24.04 LTS**. We are testing 26.04 and will update the guide with results and migration instructions.
 
 ---
 
@@ -596,7 +598,14 @@ cat /sys/class/drm/card*/device/pp_dpm_sclk
 dpkg -l | grep linux-firmware | head -5
 ```
 
-> **CRITICAL:** Do NOT install `linux-firmware-20251125`. It breaks ROCm support on Strix Halo. The safe version is `20240318` or `20260110+`. If you're on 20251125, downgrade immediately.
+> **CRITICAL:** Do NOT install `linux-firmware-20251125`. It breaks ROCm support on Strix Halo (confirmed by [kyuz0 toolboxes](https://github.com/kyuz0/amd-strix-halo-toolboxes)). Symptoms: instability, crashes, ROCm containers failing to start. The safe versions are `20240318` or `20260110+`. If you're on 20251125, downgrade immediately:
+>
+> ```bash
+> # Check your version
+> dpkg -l | grep linux-firmware
+> # If 20251125, hold the package to prevent auto-updates pulling it back
+> sudo apt-mark hold linux-firmware
+> ```
 
 ---
 
@@ -613,6 +622,8 @@ curl -fsSL https://ollama.com/install.sh | sh
 ### Step 5.2: Configure Ollama for Vulkan
 
 > **CRITICAL:** Ollama's bundled ROCm/HIP crashes on gfx1151 with "out of memory" errors, even on small models. You MUST configure Vulkan as the backend.
+>
+> **Update (April 2026):** Ollama ROCm may now work on gfx1151 via `HSA_OVERRIDE_GFX_VERSION=11.5.1` ([ollama/ollama#14855](https://github.com/ollama/ollama/issues/14855)). We are testing this. For now, Vulkan remains our recommendation -- results will follow.
 
 ```bash
 sudo systemctl edit ollama
@@ -1255,9 +1266,9 @@ ollama pull qwen3.5:35b-a3b
 
 | Scenario | System Cost | Monthly Savings | Break-even |
 |----------|------------|-----------------|------------|
-| vs ChatGPT Plus | ~$2,999 | $12/mo | ~20 years |
-| vs API heavy use (200 queries/day) | ~$2,999 | ~$50/mo | ~5 years |
-| vs API power use (1000+ queries/day) | ~$2,999 | ~$200/mo | **~15 months** |
+| vs ChatGPT Plus | ~$3,299 | $12/mo | ~23 years |
+| vs API heavy use (200 queries/day) | ~$3,299 | ~$50/mo | ~5.5 years |
+| vs API power use (1000+ queries/day) | ~$3,299 | ~$200/mo | **~16 months** |
 
 > **The real value is not cost savings.** It's running AI with **no rate limits, no content filters, no data leaving your machine, and no internet required**. If you value privacy, unrestricted use, or offline capability, local LLM pays for itself immediately.
 
@@ -1327,24 +1338,24 @@ Qwen3-TTS and Chatterbox TTS both run on Strix Halo with GPU acceleration. lhl's
 
 All current Strix Halo mini PCs use the same AMD Ryzen AI MAX+ 395 APU with 128GB LPDDR5X-8000. The differentiators are form factor, cooling, ports, and price.
 
-| System | Price (Mar 2026) | Cooling | Networking | Key Differentiator |
+| System | Price (Apr 2026) | Cooling | Networking | Key Differentiator |
 |--------|-----------------|---------|------------|-------------------|
-| **GMKtec EVO-X2** | $2,199 | Air (blower) | 2.5GbE | Best value, most popular |
+| **GMKtec EVO-X2** | ~$2,349 | Air (blower) | 2.5GbE | Best value, most popular |
 | **Bosgame M5** | $2,399 | Air (blower) | 2.5GbE | Budget option |
 | **Framework Desktop 13** | ~$2,599 | Air (optimized) | Modular | Best community/support, quietest, DIY kit (no SSD/OS) |
-| **Corsair AI Workstation 300** | $2,700 | Liquid cooled | 2.5GbE | Brand reputation, quiet under load |
-| **Beelink GTR9 Pro** | $2,999 | Air (Mac Studio) | Dual 10GbE | Best for clustering (this guide's test system) |
+| **Beelink GTR9 Pro** | $3,299 | Air (Mac Studio) | Dual 10GbE | Best for clustering (this guide's test system) |
+| **Corsair AI Workstation 300** | $3,399 | Liquid cooled | 2.5GbE | Brand reputation, quiet under load |
 | **Minisforum MS-S1 MAX** | $3,039 | Air | Dual 10GbE, USB4 v2 | PCIe x16 slot (x4 speed) |
 | **HP ZBook Ultra G1a** | ~$4,049+ | Air (laptop) | WiFi/1GbE | Only portable option, 14" OLED |
 
-> **Note:** Prices have increased significantly since launch due to global LPDDR5X memory shortages. The DGX Spark went from $3,999 to $4,699 in Feb 2026. Strix Halo systems are up $500-1,000 from launch prices. Check current availability before buying.
+> **Note:** Prices have increased significantly since launch due to global LPDDR5X memory shortages and tariffs. The DGX Spark went from $3,999 to $4,699 in Feb 2026. Strix Halo systems are up $500-1,000+ from launch prices (Corsair jumped $699 in one month). Check current availability before buying.
 
 > **WARNING (Beelink GTR9 Pro):** The v1 motherboard has a fatal NIC stability issue that cannot be fixed in software. Verify you are getting board revision **v2.2** (with Realtek NICs) before purchasing. Beelink offers free replacement for v1 boards. Contact their support with your serial number.
 
 **Recommendation tiers:**
-- **Best value:** GMKtec EVO-X2 ($2,199)
+- **Best value:** GMKtec EVO-X2 (~$2,349)
 - **Best overall:** Framework Desktop 13 (~$2,599) -- best cooling, community, repairability, used by kyuz0 and lhl
-- **Best for clustering:** Beelink GTR9 Pro v2.2 ($2,999) or Minisforum MS-S1 MAX ($3,039) -- dual 10GbE for RDMA
+- **Best for clustering:** Beelink GTR9 Pro v2.2 ($3,299) or Minisforum MS-S1 MAX ($3,039) -- dual 10GbE for RDMA
 - **Only if you need portability:** HP ZBook Ultra G1a ($4,049+)
 
 > **Important:** ~90% of Chinese mini PCs (Bosgame, GMKtec, Beelink) use the same Sixunited platform internally. Performance is identical. Pick based on price, ports, and cooling preference.
@@ -1478,7 +1489,7 @@ Linux (Ubuntu 24.04) gives the best performance and is the only way to use ROCm.
 <details>
 <summary><strong>How does this compare to a Mac Studio?</strong></summary>
 
-The Mac Studio M4 Max (128GB) costs $3,699 and gets ~100 t/s via MLX with ~546 GB/s bandwidth. The Beelink GTR9 Pro costs $2,999 and gets 50-87 t/s via Vulkan (model-dependent) with ~215 GB/s bandwidth. The Mac is faster per-model due to higher bandwidth, but costs $700 more. The Mac has better software polish (MLX is excellent). The Strix Halo offers better value, Linux flexibility, and ROCm/vLLM ecosystem access.
+The Mac Studio M4 Max (128GB) costs $3,699 and gets ~100 t/s via MLX with ~546 GB/s bandwidth. The Beelink GTR9 Pro costs $3,299 and gets 50-87 t/s via Vulkan (model-dependent) with ~215 GB/s bandwidth. The Mac is faster per-model due to higher bandwidth, but costs $400 more. The Mac has better software polish (MLX is excellent). The Strix Halo offers better value, Linux flexibility, and ROCm/vLLM ecosystem access.
 
 </details>
 
@@ -1552,6 +1563,14 @@ Found something that's wrong, outdated, or missing?
 
 ## Changelog
 
+### 2026-04-25 -- April Update
+
+- Merged PR #1: vulkan-tools install check in setup.sh (thanks @ignasivt)
+- Updated all prices: Beelink $2,999 to $3,299, Corsair $2,700 to $3,399, GMKtec $2,199 to ~$2,349
+- Added linux-firmware-20251125 source attribution and downgrade instructions
+- Added Ubuntu 26.04 LTS note (Wayland-only, testing in progress)
+- Added Ollama ROCm HSA override note (ollama/ollama#14855, testing in progress)
+
 ### 2026-03-21 -- Performance Breakthrough + Beginner Content
 
 **Performance discoveries:**
@@ -1591,7 +1610,7 @@ Found something that's wrong, outdated, or missing?
 - GitHub stars + last-commit badges
 
 **Fixes:**
-- All prices verified against current retail (Beelink $2,999, DGX Spark $4,699)
+- All prices verified against current retail (March 2026 snapshot)
 - DGX Spark comparison is now apples-to-apples (same model, same context)
 - Fixed 12 outdated "ROCm broken on 6.19.x" references
 - BIOS VRAM 512MB is mandatory, not just speed-neutral
