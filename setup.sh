@@ -148,6 +148,11 @@ else
 fi
 
 # Mesa upgrade
+if ! command -v vulkaninfo &>/dev/null; then
+    info "Installing vulkan-tools..."
+    sudo apt install -y vulkan-tools
+fi
+
 MESA_VERSION=$(vulkaninfo --summary 2>&1 | grep "driverInfo" | head -1 | grep -o "Mesa [0-9.]*" || echo "unknown")
 info "Current Mesa: $MESA_VERSION"
 
