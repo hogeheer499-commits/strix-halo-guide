@@ -960,16 +960,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | **RADV** | Qwen3.5-35B-A3B | **1080** | **64.85** |
 | AMDVLK | Qwen3.5-35B-A3B | 663 | 64.10 |
 
-> **Our recommendation:** Use **RADV**. With the latest llama.cpp, RADV wins on BOTH pp and tg. The old AMDVLK tg advantage (+6.5% on b8298) disappeared with the graphics queue optimization in b8460. AMDVLK also has a 2 GiB buffer limit that causes 3-4X slower pp on dense models.
-
-To install AMDVLK for comparison:
-
-```bash
-wget -O amdvlk.deb https://github.com/GPUOpen-Drivers/AMDVLK/releases/download/v-2025.Q2.1/amdvlk_2025.Q2.1_amd64.deb
-sudo dpkg -i amdvlk.deb
-```
-
-To force RADV when both are installed: `AMD_VULKAN_ICD=RADV`
+> **Our recommendation:** Use **RADV**. AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025) -- RADV is now AMD's only supported open-source Vulkan driver. Even before discontinuation, RADV won on both pp and tg with latest llama.cpp. AMDVLK also had a 2 GiB buffer limit that caused 3-4X slower pp on dense models. Don't install AMDVLK.
 
 **Optimal ubatch sizes per driver** (from lhl's testing):
 - AMDVLK: `-ub 512`
@@ -988,7 +979,7 @@ To force RADV when both are installed: `AMD_VULKAN_ICD=RADV`
 |-------|---------------|---------|------------------------|
 | ~~Ollama HIP/ROCm~~ | ~~"Use ROCm backend"~~ | **Fixed in Ollama 0.20+** with `HSA_OVERRIDE_GFX_VERSION=11.5.1`. Works but ~9% slower tg than Vulkan | Use Vulkan for best speed, ROCm if you need vLLM compatibility |
 | `iommu=pt` for speed | "Use pass-through for performance" | No benefit over default ([lhl](https://github.com/lhl/strix-halo-testing)) | Same speed as `iommu=on`, wastes a kernel param |
-| AMDVLK for all workloads | "AMDVLK is fastest" | 2 GiB buffer limit causes 3-4X slower pp on dense models. With latest llama.cpp (b8460), RADV beats AMDVLK on both pp AND tg | No remaining advantage with latest build |
+| AMDVLK for all workloads | "AMDVLK is fastest" | [Project discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025). RADV is now AMD's only supported open-source Vulkan driver. RADV beats AMDVLK on both pp and tg with latest llama.cpp | Don't install AMDVLK -- RADV is faster and actively maintained |
 | rocWMMA on upstream llama.cpp | "Enable for 2x speed" | [73% regression](https://github.com/ggml-org/llama.cpp/issues/19984) on ROCm 7.2 | Massively slower prompt processing |
 | BIOS VRAM increase for speed | "More GPU VRAM = faster" | Zero speed difference, but you lose OS-visible RAM and GTT capacity. Set to 512MB or your system is crippled (31GB usable instead of 125GB). | OS sees only 31GB RAM, large models won't load at all |
 | ROCm 7.0 RC | "Use ROCm 7 RC" | Segfaults on kernel 6.18.14+ | `HSA_STATUS_ERROR` crash |
@@ -1445,9 +1436,9 @@ New to local LLMs? Here's what the technical terms mean.
 
 **ROCm** -- AMD's GPU compute platform (like NVIDIA's CUDA). Provides HIP backend for llama.cpp. On kernel 6.19.x, requires `HSA_OVERRIDE_GFX_VERSION=11.5.1` to work. With the latest llama.cpp, Vulkan RADV is now faster than ROCm on both pp and tg for MoE models.
 
-**RADV** -- Mesa's open-source Vulkan driver for AMD GPUs. Generally faster and more stable than AMDVLK on Strix Halo.
+**RADV** -- Mesa's open-source Vulkan driver for AMD GPUs. AMD's only supported open-source Vulkan driver since AMDVLK was discontinued. Fastest backend for LLM inference on Strix Halo.
 
-**AMDVLK** -- AMD's open-source Vulkan driver. Has a 2 GiB buffer limit that cripples prompt processing on dense models. With the latest llama.cpp (b8460+), RADV beats AMDVLK on both pp and tg, making AMDVLK unnecessary for most users.
+**AMDVLK** -- AMD's former open-source Vulkan driver. [Discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025). Had a 2 GiB buffer limit and was slower than RADV on latest llama.cpp. Don't install it.
 
 **Ollama** -- A tool that makes running LLMs as easy as `ollama run model-name`. Handles model downloading, GPU acceleration, and provides an API. Uses Vulkan on Strix Halo.
 
