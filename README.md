@@ -131,6 +131,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (RADV Mesa 26.0.2)
 | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | 51 t/s | Coding (highest quality MoE) |
 | Qwen3-Coder-Next | 51 GB | Dense | 38-39 t/s | Large dense model |
 | Llama 3.1 70B (Q4_K_M) | 42 GB | Dense | **4.7-4.9 t/s** | 70B intelligence, doesn't fit on RTX 4090 |
+| Llama 4 Scout 109B (Q4_K_M) | 61 GB | MoE | **18.2 t/s** * | 109B params on a mini PC -- RTX 4090 can't even load this |
 | gpt-oss-120b | ~70 GB | MoE | ~34-38 t/s | Largest practical model |
 | Qwen3-Next 80B-A3B (GPTQ) | ~45 GB | MoE | ~40 t/s | via vLLM, 256K context |
 | Kimi K2.5 1T (4-node cluster) | ~500 GB | MoE | distributed | [AMD technical article](https://www.amd.com/en/developer/resources/technical-articles/2026/how-to-run-a-one-trillion-parameter-llm-locally-an-amd.html) |
@@ -231,6 +232,14 @@ Extended context scaling (latest build, RADV):
 > Gemma 4 is architecturally slower than Qwen MoE models despite similar size. The reason: head_dim 256/512 (vs Qwen's 128) makes flash attention less efficient, mixed sliding-window/full attention adds overhead, and 3.8B active params vs Qwen's 3.3B. This is not a llama.cpp issue -- it's inherent to the model design. 47.6 t/s is still 3x human reading speed and very usable for interactive chat.
 >
 > **WARNING:** Gemma 4 is extremely sensitive to KV cache quantization. Using q8_0 KV cache causes 3.5x worse quality degradation compared to Qwen models. Stick with f16 KV cache for Gemma 4. Do NOT use `--cache-type-k q4_0`.
+
+**Llama 4 Scout 109B** (Q4_K_M, 60.9GB, MoE -- 109B total params, 17B active):
+
+| Build | Driver | pp512 | tg128 | Notes |
+|-------|--------|-------|-------|-------|
+| **b8933** | **RADV** | **154** | **18.22** | 109B model running on a mini PC |
+
+> A 109 billion parameter model running at 18 t/s on a $3,299 mini PC. An RTX 4090 (24GB VRAM) cannot even load this model. The speed is bandwidth-limited at 17B active parameters -- theoretical max is ~25 t/s at 215 GB/s, we hit 73% of that ceiling.
 
 **ROCm HIP -- now working on kernel 6.19.4!**
 
@@ -1578,7 +1587,8 @@ Found something that's wrong, outdated, or missing?
 ### 2026-04-25 -- April Update + Gemma 4 Benchmark
 
 - **Gemma 4 26B-A4B benchmark:** 47.6 t/s tg, 745 pp512 via Vulkan RADV (b8933). First Strix Halo benchmark for this model. Includes KV cache quantization warning (3.5x worse quality degradation vs Qwen at q8_0)
-- **Vulkan pp regression found:** b8933 has -32% to -39% prompt processing regression vs b8460 on MoE models. tg is unaffected. Guide continues to recommend b8460 for existing models
+- **Llama 4 Scout 109B benchmark:** 18.2 t/s tg, 154 pp512 via Vulkan RADV (b8933). 109B parameter model running on a mini PC -- RTX 4090 can't load this
+- **Vulkan pp regression found:** b8933 has -32% to -39% prompt processing regression vs b8460 on MoE models. tg is unaffected. Guide continues to recommend b8460 for existing models. Reported as [llama.cpp #22375](https://github.com/ggml-org/llama.cpp/issues/22375)
 - Merged PR #1: vulkan-tools install check in setup.sh (thanks @ignasivt)
 - Updated all prices: Beelink $2,999 to $3,299, Corsair $2,700 to $3,399, GMKtec $2,199 to ~$2,349
 - Added linux-firmware-20251125 source attribution and downgrade instructions
