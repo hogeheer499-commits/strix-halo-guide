@@ -118,7 +118,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 
 ## What You Can Run
 
-Real-world generation speeds measured on the Beelink GTR9 Pro (RADV Mesa 26.0.2). Speeds marked with * are via llama-bench direct; others are via Ollama.
+Real-world generation speeds measured on the Beelink GTR9 Pro (RADV Mesa 26.0.5). Speeds marked with * are via llama-bench direct; others are via Ollama.
 
 | Model | Size | Type | Generation Speed | Use Case |
 |-------|------|------|------------------|----------|
@@ -127,6 +127,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (RADV Mesa 26.0.2)
 | Qwen2.5-VL 7B | 6.0 GB | Vision | 21.4 t/s | Image understanding |
 | Gemma 4 26B-A4B (UD-Q4_K_M) | 15.7 GB | MoE | **47.6 t/s** * | Google's latest MoE, strong reasoning |
 | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 16.5 GB | MoE | **87 t/s** * | Best speed/quality ratio |
+| Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | MoE | **64 t/s** * | Best all-rounder, drop-in upgrade from 3.5 |
 | Qwen3.5 35B-A3B | 23 GB | MoE | 48-**65 t/s** | General purpose, coding (65 with latest llama.cpp) |
 | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | 51 t/s | Coding (highest quality MoE) |
 | Qwen3-Coder-Next | 51 GB | Dense | 38-39 t/s | Large dense model |
@@ -250,6 +251,17 @@ Extended context scaling (latest build, RADV):
 | b8460 | RADV | 481 | 53.61 | No pp regression on this model |
 
 > 80 billion parameters running at 54 t/s on a mini PC. This is the largest Qwen3-family MoE model -- 80B total with only 3B active parameters and a 256K context window. Despite being 42.9 GB on disk, the MoE routing keeps only 3B params active per token, making it faster than the 51B dense Qwen3-Coder-Next (38 t/s). No prompt processing regression between b8460 and b8933, unlike Qwen3.5.
+
+**Qwen3.6-35B-A3B** (Q4_K_M, 19.9GB, MoE -- drop-in upgrade from Qwen3.5, released April 2026):
+
+| Build | Driver | pp512 | tg128 | Notes |
+|-------|--------|-------|-------|-------|
+| **b8460** | **RADV** | **660** | **64.14** | Same speed as Qwen3.5 |
+| b8933 | RADV | 659 | 64.12 | No pp regression between builds |
+
+> Qwen3.6 is a drop-in replacement for Qwen3.5 with significantly improved coding and reasoning quality (same architecture, same active parameters, identical speed). **Use Q4_K_M, not UD-Q4_K_M** -- Unsloth Dynamic quantization costs 13% tg speed (56.6 vs 64.1 t/s) due to mixed-precision layers, with minimal quality benefit at this quant level.
+>
+> pp values here are lower than the March benchmarks above due to a Mesa RADV 26.0.2 → 26.0.5 driver update. This affects all models equally and does not impact token generation speed.
 
 **ROCm HIP -- now working on kernel 6.19.4!**
 
@@ -1236,15 +1248,15 @@ Not sure which model to run? Here's what we recommend based on use case:
 |--------------|-------|------|-------|-----|
 | **Code** (best speed) | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 16.5 GB | 87 t/s | Fastest coding model, MoE architecture |
 | **Code** (best quality) | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | 51 t/s | Same model, higher fidelity quantization |
-| **Chat** (general) | Qwen3.5 35B-A3B | 23 GB | 48-56 t/s | Great all-rounder, thinking capable |
-| **Chat** (no thinking) | Qwen3.5 35B-A3B (no-think) | 23 GB | 47 t/s | Same speed, direct answers |
+| **Chat** (general) | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | **64 t/s** | Best all-rounder, successor to 3.5 |
+| **Chat** (no thinking) | Qwen3.6 35B-A3B (no-think) | 20 GB | 64 t/s | Same speed, direct answers |
 | **Code** (best quality, 256K ctx) | Qwen3-Next 80B-A3B | 42.9 GB | **54 t/s** | 80B MoE, only 3B active, 256K context |
 | **Chat** (smartest possible) | Qwen3-Coder-Next | 51 GB | 38 t/s | Dense 51B model, slower but smarter |
 | **Reasoning** | Gemma 4 26B-A4B | 15.7 GB | 47.6 t/s | Google's latest MoE, strong reasoning |
 | **Analyze images** | Qwen2.5-VL 7B | 6 GB | 21 t/s | Vision-language model |
 | **Maximum intelligence** | Llama 3.3 70B (Q4) | ~40 GB | ~5 t/s | Slow but very capable |
 | **"Can it run?"** | Llama 4 Scout 109B | 61 GB | 18 t/s | 109B model on a mini PC. RTX 4090 can't |
-| **Process documents** | Qwen3.5 35B-A3B | 23 GB | 48 t/s | Fast enough for RAG pipelines |
+| **Process documents** | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | 64 t/s | Fast enough for RAG pipelines |
 | **Learn / experiment** | Llama 2 7B | 3.8 GB | 52 t/s | Small, fast, well-documented |
 | **Throughput testing** | Qwen3-0.6B (Q8_0) | 0.8 GB | 266 t/s | Speed ceiling benchmark |
 
@@ -1252,7 +1264,7 @@ Not sure which model to run? Here's what we recommend based on use case:
 
 ```bash
 # Via Ollama (easiest)
-ollama pull qwen3.5:35b-a3b
+ollama pull qwen3.6:35b-a3b
 
 # For llama-bench direct (need GGUF file)
 # Download from huggingface.co, place in ~/models/
@@ -1278,7 +1290,7 @@ ollama pull qwen3.5:35b-a3b
 
 ### Is a Strix Halo system worth it vs paying for cloud AI?
 
-**Assumptions:** Qwen3.5-35B-A3B level intelligence, 1000 tokens per query, 50 queries per day.
+**Assumptions:** Qwen3.6-35B-A3B level intelligence, 1000 tokens per query, 50 queries per day.
 
 | Option | Monthly Cost | Speed | Privacy | Offline |
 |--------|-------------|-------|---------|---------|
@@ -1482,7 +1494,7 @@ So why is llama.cpp direct 35% faster? Two reasons:
 # Start llama-server with your model (OpenAI-compatible API on port 8080)
 cd ~/llama-cpp-latest
 AMD_VULKAN_ICD=RADV ./build-vulkan/bin/llama-server \
-  -m ~/models/Qwen_Qwen3.5-35B-A3B-Q4_K_M.gguf \
+  -m ~/models/Qwen3.6-35B-A3B-Q4_K_M.gguf \
   -ngl 999 -fa --no-mmap -c 8192 \
   --host 0.0.0.0 --port 8080
 ```
@@ -1494,7 +1506,7 @@ Then point your tools at `http://localhost:8080/v1` instead of `http://localhost
 <details>
 <summary><strong>Can I run ChatGPT-level intelligence locally?</strong></summary>
 
-Yes. Qwen3.5-35B-A3B runs at 48-65 t/s (Ollama vs llama-server) and is comparable to GPT-4o-mini for most tasks. For coding, Qwen3-Coder 30B-A3B runs at 87 t/s and is competitive with commercial coding assistants. For maximum intelligence, you can run 70B+ dense models at ~5 t/s -- slower but very capable.
+Yes. Qwen3.6-35B-A3B runs at 64 t/s via llama-server and is comparable to GPT-4o-mini for most tasks. For coding, Qwen3-Coder 30B-A3B runs at 87 t/s and is competitive with commercial coding assistants. For maximum intelligence, you can run 70B+ dense models at ~5 t/s -- slower but very capable.
 
 </details>
 
@@ -1589,8 +1601,9 @@ Found something that's wrong, outdated, or missing?
 
 ## Changelog
 
-### 2026-04-26 -- April Update + Qwen3-Next 80B Benchmark
+### 2026-04-26 -- April Update + Qwen3.6 + Qwen3-Next 80B Benchmarks
 
+- **Qwen3.6-35B-A3B benchmark:** **64 t/s** tg via Vulkan RADV (b8460). Drop-in replacement for Qwen3.5 with better coding/reasoning quality, identical speed. Use Q4_K_M -- UD-Q4_K_M costs 13% speed (56.6 t/s)
 - **Qwen3-Next 80B-A3B benchmark:** **53.7 t/s** tg, 486 pp512 via Vulkan RADV (b8933). 80B MoE (3B active) with 256K context window. Faster than the 51B dense Qwen3-Coder-Next (38 t/s). No pp regression between b8460 and b8933
 - **Gemma 4 26B-A4B benchmark:** 47.6 t/s tg, 745 pp512 via Vulkan RADV (b8933). First Strix Halo benchmark for this model. Includes KV cache quantization warning (3.5x worse quality degradation vs Qwen at q8_0)
 - **Llama 4 Scout 109B benchmark:** 18.2 t/s tg, 154 pp512 via Vulkan RADV (b8933). 109B parameter model running on a mini PC -- RTX 4090 can't load this
