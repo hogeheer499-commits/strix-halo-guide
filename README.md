@@ -143,9 +143,16 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (Vulkan RADV). Spe
 
 All benchmarks run on 2026-03-20 and 2026-03-21. System: Beelink GTR9 Pro, kernel 6.19.4, tuned accelerator-performance active.
 
-### Ollama Vulkan (RADV Mesa 26.0.2)
+### Ollama Vulkan (RADV, Ollama 0.21.2)
 
-**Qwen3.5-35B-A3B** (Q4_K_M, ~23GB, MoE):
+**Qwen3.6-35B-A3B** (Q4_K_M, ~20GB, MoE -- Ollama 0.21.2):
+
+| Prompt Tokens | Prompt Eval | Generation | Notes |
+|---------------|-------------|------------|-------|
+| 20 | 163 t/s | **45.6 t/s** | ~30% slower than llama-bench direct (64 t/s) |
+| 22 | 174 t/s | **45.4 t/s** | Ollama overhead is real but acceptable |
+
+**Qwen3.5-35B-A3B** (Q4_K_M, ~23GB, MoE -- Ollama 0.20.4):
 
 | Prompt Tokens | Prompt Eval | Generation | vs Previous (Mesa 26.0.1) |
 |---------------|-------------|------------|---------------------------|
@@ -1611,6 +1618,7 @@ Found something that's wrong, outdated, or missing?
 - Updated all prices: Beelink $2,999 to $3,299, Corsair $2,700 to $3,399, GMKtec $2,199 to ~$2,349
 - Added linux-firmware-20251125 source attribution and downgrade instructions
 - Added Ubuntu 26.04 LTS note (Wayland-only, testing in progress)
+- **Ollama upgraded to 0.21.2:** FA now enabled by default. Qwen3.6 via Ollama: 45.5 t/s (vs 64 t/s llama-bench direct, ~30% overhead)
 - **Ollama ROCm confirmed working** on gfx1151 with `HSA_OVERRIDE_GFX_VERSION=11.5.1` (Ollama 0.20.4). Benchmarked: 42.4 t/s tg vs Vulkan's 46.6 t/s (-9%). Vulkan still recommended for speed
 
 ### 2026-03-21 -- Performance Breakthrough + Beginner Content
