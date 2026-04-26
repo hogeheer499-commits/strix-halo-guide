@@ -480,7 +480,7 @@ EOF
 
 > If the line already exists (commented out), uncomment it instead. Reboot to apply.
 
-> **Ubuntu 26.04 LTS** (released April 2026) ships with Linux 7.0, Mesa 26.0, and native `apt install rocm`. Early tests show significant Strix Halo performance gains. However, 26.04 is **Wayland-only** -- the X11 switch above does not work on 26.04. This guide is written for **Ubuntu 24.04 LTS**. We are testing 26.04 and will update the guide with results and migration instructions.
+> **Ubuntu 26.04 LTS** (released April 2026) ships with Linux 7.0, Mesa 26.0, and native `apt install rocm`. However, 26.04 is **Wayland-only** (X11 switch above does not work) and the performance-relevant components (kernel, Mesa RADV) are already available on 24.04 via the [kisak PPA](https://launchpad.net/~kisak/+archive/ubuntu/kisak-mesa) and [mainline kernel PPA](https://kernel.ubuntu.com/mainline/). **Upgrading is not needed for LLM performance.** This guide stays on 24.04 LTS.
 
 ---
 
