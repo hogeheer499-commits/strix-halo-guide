@@ -994,6 +994,7 @@ To force RADV when both are installed: `AMD_VULKAN_ICD=RADV`
 | ROCm 7.0 RC | "Use ROCm 7 RC" | Segfaults on kernel 6.18.14+ | `HSA_STATUS_ERROR` crash |
 | Kernel 6.19.x with ROCm (without fix) | "Just use latest kernel" | GPU misidentified as gfx1100 without HSA override | Segfaults unless you set `HSA_OVERRIDE_GFX_VERSION=11.5.1` |
 | linux-firmware-20251125 | Auto-update | Breaks ROCm on Strix Halo | Instability, crashes |
+| PyTorch / HuggingFace Transformers | "Just load the model" | [92-95% of decode time is hipMemcpy](https://github.com/pytorch/pytorch/issues/171687), not compute. ~1.5 t/s on 70B vs llama.cpp's 4.8 t/s | PyTorch doesn't handle UMA correctly -- use llama.cpp or Ollama |
 
 ### Things That DO Work
 
