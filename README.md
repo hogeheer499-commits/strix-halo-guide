@@ -189,11 +189,12 @@ All benchmarks run on 2026-03-20 and 2026-03-21. System: Beelink GTR9 Pro, kerne
 
 ### llama-bench Direct -- Latest llama.cpp (b8460) vs kyuz0 Containers (b8298)
 
-> **UPDATE (2026-03-21): Updating llama.cpp from b8298 to b8460 gave +25% on both pp and tg for MoE models.** The new build includes a Vulkan Flash Attention refactor ([PR #19625](https://github.com/ggml-org/llama.cpp/pull/19625)), graphics queue optimization for AMD ([PR #20551](https://github.com/ggml-org/llama.cpp/pull/20551)), and GDN shader support for Qwen3.5 ([PR #20334](https://github.com/ggml-org/llama.cpp/pull/20334)). **Always use the latest llama.cpp build.**
+> **UPDATE (2026-03-21): Updating llama.cpp from b8298 to b8460 gave +25% on both pp and tg for MoE models.** The new build includes a Vulkan Flash Attention refactor ([PR #19625](https://github.com/ggml-org/llama.cpp/pull/19625)), graphics queue optimization for AMD ([PR #20551](https://github.com/ggml-org/llama.cpp/pull/20551)), and GDN shader support for Qwen3.5 ([PR #20334](https://github.com/ggml-org/llama.cpp/pull/20334)).
 >
 > **Important caveats:**
 > - The +25% improvement is specific to **MoE models on Vulkan** due to the Wave32 FA refactor and graphics queue change. Dense models (Llama 2 7B, Llama 3.1 70B) showed minimal change (<2%) because they were already at the memory bandwidth ceiling.
 > - If you use [kyuz0's containers](https://github.com/kyuz0/amd-strix-halo-toolboxes), you get these updates automatically -- the containers rebuild on every llama.cpp master update. kyuz0's toolboxes remain the easiest way to stay current. Our finding here validates the importance of their approach.
+> - **WARNING (April 2026):** Builds after b8460 (tested up to b8933) have a [Vulkan prompt processing regression](https://github.com/ggml-org/llama.cpp/issues/22375) of -32% to -39% on MoE models. Token generation (tg) is unaffected. We recommend **b8460** until this is fixed. Newer builds are required for newer models (Gemma 4, Llama 4 Scout).
 
 **Qwen3.5-35B-A3B** (Q4_K_M, 19.9GB, MoE) -- the biggest improvement:
 
@@ -1236,9 +1237,12 @@ Not sure which model to run? Here's what we recommend based on use case:
 | **Code** (best quality) | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | 51 t/s | Same model, higher fidelity quantization |
 | **Chat** (general) | Qwen3.5 35B-A3B | 23 GB | 48-56 t/s | Great all-rounder, thinking capable |
 | **Chat** (no thinking) | Qwen3.5 35B-A3B (no-think) | 23 GB | 47 t/s | Same speed, direct answers |
+| **Code** (best quality, 256K ctx) | Qwen3-Next 80B-A3B | ~46 GB | ~37 t/s | 80B MoE, only 3B active, 256K context |
 | **Chat** (smartest possible) | Qwen3-Coder-Next | 51 GB | 38 t/s | Dense 51B model, slower but smarter |
+| **Reasoning** | Gemma 4 26B-A4B | 15.7 GB | 47.6 t/s | Google's latest MoE, strong reasoning |
 | **Analyze images** | Qwen2.5-VL 7B | 6 GB | 21 t/s | Vision-language model |
 | **Maximum intelligence** | Llama 3.3 70B (Q4) | ~40 GB | ~5 t/s | Slow but very capable |
+| **"Can it run?"** | Llama 4 Scout 109B | 61 GB | 18 t/s | 109B model on a mini PC. RTX 4090 can't |
 | **Process documents** | Qwen3.5 35B-A3B | 23 GB | 48 t/s | Fast enough for RAG pipelines |
 | **Learn / experiment** | Llama 2 7B | 3.8 GB | 52 t/s | Small, fast, well-documented |
 | **Throughput testing** | Qwen3-0.6B (Q8_0) | 0.8 GB | 266 t/s | Speed ceiling benchmark |
