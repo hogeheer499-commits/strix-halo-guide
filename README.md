@@ -200,22 +200,22 @@ All benchmarks run on 2026-03-20 and 2026-03-21. System: Beelink GTR9 Pro, kerne
 
 **Qwen3.5-35B-A3B** (Q4_K_M, 19.9GB, MoE) -- the biggest improvement:
 
-| Build | Driver | pp128 | pp512 | tg128 | vs old RADV |
-|-------|--------|-------|-------|-------|-------------|
-| **b8460 (latest)** | **RADV** | **623** | **1080** | **64.85** | **pp +24%, tg +25%** |
-| b8460 (latest) | AMDVLK | 521 | 663 | 64.10 | pp -24%, tg +23% |
-| b8298 (kyuz0) | RADV | 583 | 868 | 52.06 | baseline |
-| b8298 (kyuz0) | AMDVLK | 479 | 576 | 56.08 | |
+| Build | Driver | pp128 | pp512 | tg128 | vs old RADV | Mesa |
+|-------|--------|-------|-------|-------|-------------|------|
+| **b8460 (latest)** | **RADV** | **623** | **1080** | **64.85** | **pp +24%, tg +25%** | 26.0.2 |
+| b8460 (latest) | AMDVLK | 521 | 663 | 64.10 | pp -24%, tg +23% | - |
+| b8298 (kyuz0) | RADV | 583 | 868 | 52.06 | baseline | 26.0.1 |
+| b8298 (kyuz0) | AMDVLK | 479 | 576 | 56.08 | | - |
 
-> **RADV now wins on EVERYTHING.** The old AMDVLK tg advantage (+7.7%) is gone. With the latest build, RADV is faster on both pp (+63% over AMDVLK) and tg (+1.2% over AMDVLK). Use RADV.
+> **RADV now wins on EVERYTHING.** The old AMDVLK tg advantage (+7.7%) is gone. With the latest build, RADV is faster on both pp (+63% over AMDVLK) and tg (+1.2% over AMDVLK). Use RADV. Note: pp 1080 was measured on Mesa 26.0.2. On Mesa 26.0.5, pp drops to ~660 (tg unchanged). See [Mesa warning above](#mesa-radv-pp-regression-2602--2605).
 
-Extended context scaling (latest build, RADV):
+Extended context scaling (latest build, RADV, Mesa 26.0.2):
 
 | pp512 | pp2048 | pp4096 | pp8192 | Drop at 8K |
 |-------|--------|--------|--------|------------|
 | **1080** | **1057** | **1049** | **1049** | **-3%** |
 
-> pp is virtually flat from 512 to 8192 tokens. Only 3% drop at 8K context.
+> pp is virtually flat from 512 to 8192 tokens. Only 3% drop at 8K context. The scaling ratio (3% drop) is independent of Mesa version.
 
 **Qwen3-Coder 30B-A3B** (UD-Q4_K_XL, 16.5GB, MoE):
 
@@ -274,7 +274,7 @@ We discovered that `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0` fixes
 | b8301 (self-compiled, kernel 6.19.4) | 542 | 1059 | 47.87 | old build |
 | b8301 (self-compiled, kernel 6.18.14) | 488 | 996 | 48.80 | previous best |
 
-> ROCm also improved with the latest build: tg went from 47.87 to **54.67** (+14%) thanks to generic llama.cpp optimizations. But **Vulkan RADV (b8460) is still faster on both pp and tg**: RADV 1080 vs ROCm 1047 pp512 (+3%), RADV 64.85 vs ROCm 54.67 tg128 (+19%). The +25% Vulkan improvement was ~14% generic (ROCm got this too) plus ~11% Vulkan-specific (FA refactor, graphics queue). ROCm's remaining advantage is hipBLASLt and rocWMMA at very long context (32K+).
+> ROCm also improved with the latest build: tg went from 47.87 to **54.67** (+14%) thanks to generic llama.cpp optimizations. **Vulkan RADV is still faster on tg**: 64.85 vs 54.67 (+19%). pp comparison depends on Mesa version -- on Mesa 26.0.2, RADV won pp (1080 vs 1047); on Mesa 26.0.5, ROCm wins pp due to a [Mesa RADV driver regression](#mesa-radv-pp-regression-2602--2605). For interactive chat, tg matters more than pp. ROCm's remaining advantage is hipBLASLt and rocWMMA at very long context (32K+).
 
 **Build version matters enormously:**
 
@@ -282,7 +282,7 @@ We discovered that `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0` fixes
 |----------------|-------|-------|--------|
 | Ollama Vulkan RADV (b8298) | ~457 (via API) | 47.4 | Ollama adds overhead |
 | llama-bench RADV (b8298) | 868 | 52.06 | Eliminating Ollama helps |
-| llama-bench RADV **(b8460)** | **1080** | **64.85** | **Updating llama.cpp = +25%** |
+| llama-bench RADV **(b8460)** | **1080** | **64.85** | **+25% (Mesa 26.0.2; pp ~660 on 26.0.5)** |
 | ROCm HIP (b8301, HSA fix) | 1059 | 47.87 | Old build, unfair comparison |
 | ROCm HIP **(b8460, HSA fix)** | **1047** | **54.67** | **ROCm got +14% tg from same update** |
 
@@ -966,12 +966,14 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | **RADV** | Llama 2 7B | **1377** | 48.12 |
 | AMDVLK | Llama 2 7B | 327 | 48.02 |
 
-**With latest llama.cpp (b8460) -- AMDVLK advantage is gone:**
+**With latest llama.cpp (b8460, Mesa 26.0.2) -- AMDVLK advantage is gone:**
 
 | Driver | Model | pp512 | tg128 |
 |--------|-------|-------|-------|
 | **RADV** | Qwen3.5-35B-A3B | **1080** | **64.85** |
 | AMDVLK | Qwen3.5-35B-A3B | 663 | 64.10 |
+
+> pp values measured on Mesa 26.0.2. On Mesa 26.0.5, RADV pp drops to ~660. tg is unaffected. AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) -- RADV is the only option now.
 
 > **Our recommendation:** Use **RADV**. AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025) -- RADV is now AMD's only supported open-source Vulkan driver. Even before discontinuation, RADV won on both pp and tg with latest llama.cpp. AMDVLK also had a 2 GiB buffer limit that caused 3-4X slower pp on dense models. Don't install AMDVLK.
 
