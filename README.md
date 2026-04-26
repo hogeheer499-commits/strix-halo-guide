@@ -196,6 +196,7 @@ All benchmarks run on 2026-03-20 and 2026-03-21. System: Beelink GTR9 Pro, kerne
 > - The +25% improvement is specific to **MoE models on Vulkan** due to the Wave32 FA refactor and graphics queue change. Dense models (Llama 2 7B, Llama 3.1 70B) showed minimal change (<2%) because they were already at the memory bandwidth ceiling.
 > - If you use [kyuz0's containers](https://github.com/kyuz0/amd-strix-halo-toolboxes), you get these updates automatically -- the containers rebuild on every llama.cpp master update. kyuz0's toolboxes remain the easiest way to stay current. Our finding here validates the importance of their approach.
 > - **WARNING (April 2026):** Builds after b8460 (tested up to b8933) have a [Vulkan prompt processing regression](https://github.com/ggml-org/llama.cpp/issues/22375) of -32% to -39% on MoE models. Token generation (tg) is unaffected. **Use b8460 for Qwen3/Qwen3.5 models.** Newer architectures (Gemma 4, Llama 4 Scout, Qwen3-Next) require b8933+ despite the pp regression -- their tg speeds are still accurate.
+> - **Mesa RADV pp regression (26.0.2 → 26.0.5):** The kisak PPA auto-updated Mesa, causing an additional pp drop on all models (~1080 → ~660 pp512 for Qwen3.5). Token generation is unaffected. If prompt processing speed matters for your workload, pin Mesa 26.0.2: `sudo apt install mesa-vulkan-drivers=26.0.2~kisak1~n`.
 
 **Qwen3.5-35B-A3B** (Q4_K_M, 19.9GB, MoE) -- the biggest improvement:
 
