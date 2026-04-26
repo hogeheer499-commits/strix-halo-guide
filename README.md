@@ -118,23 +118,23 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 
 ## What You Can Run
 
-Real-world generation speeds measured on the Beelink GTR9 Pro (RADV Mesa 26.0.5). Speeds marked with * are via llama-bench direct; others are via Ollama.
+Real-world generation speeds measured on the Beelink GTR9 Pro (Vulkan RADV). Speeds marked with * are via llama-bench direct; others are via Ollama.
 
 | Model | Size | Type | Generation Speed | Use Case |
 |-------|------|------|------------------|----------|
 | Qwen3-0.6B (Q8_0) | 0.8 GB | Dense | 266 t/s * | Ultra-fast tiny model |
 | Llama 2 7B | 3.8 GB | Dense | 48-52 t/s | Testing, lightweight tasks |
 | Qwen2.5-VL 7B | 6.0 GB | Vision | 21.4 t/s | Image understanding |
-| Gemma 4 26B-A4B (UD-Q4_K_M) | 15.7 GB | MoE | **47.6 t/s** * | Google's latest MoE, strong reasoning |
+| Gemma 4 26B-A4B (UD-Q4_K_M) | 15.7 GB | MoE | **48.5 t/s** * | Google's latest MoE, strong reasoning |
 | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 16.5 GB | MoE | **87 t/s** * | Best speed/quality ratio |
 | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | MoE | **64 t/s** * | Best all-rounder, drop-in upgrade from 3.5 |
 | Qwen3.5 35B-A3B | 23 GB | MoE | 48-**65 t/s** | General purpose, coding (65 with latest llama.cpp) |
 | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | 51 t/s | Coding (highest quality MoE) |
 | Qwen3-Coder-Next | 51 GB | Dense | 38-39 t/s | Large dense model |
 | Llama 3.1 70B (Q4_K_M) | 42 GB | Dense | **4.7-4.9 t/s** | 70B intelligence, doesn't fit on RTX 4090 |
-| Llama 4 Scout 109B (Q4_K_M) | 61 GB | MoE | **18.2 t/s** * | 109B params on a mini PC -- RTX 4090 can't even load this |
+| Llama 4 Scout 109B (Q4_K_M) | 61 GB | MoE | **18.3 t/s** * | 109B params on a mini PC -- RTX 4090 can't even load this |
 | gpt-oss-120b | ~70 GB | MoE | ~34-38 t/s | Largest practical model |
-| Qwen3-Next 80B-A3B (UD-Q4_K_XL) | 42.9 GB | MoE | **53.7 t/s** * | 80B model, 256K context -- faster than dense 51B |
+| Qwen3-Next 80B-A3B (UD-Q4_K_XL) | 42.9 GB | MoE | **55 t/s** * | 80B model, 256K context -- faster than dense 51B |
 | Kimi K2.5 1T (4-node cluster) | ~500 GB | MoE | distributed | [AMD technical article](https://www.amd.com/en/developer/resources/technical-articles/2026/how-to-run-a-one-trillion-parameter-llm-locally-an-amd.html) |
 
 ---
@@ -195,27 +195,26 @@ All benchmarks run on 2026-03-20 and 2026-03-21. System: Beelink GTR9 Pro, kerne
 > **Important caveats:**
 > - The +25% improvement is specific to **MoE models on Vulkan** due to the Wave32 FA refactor and graphics queue change. Dense models (Llama 2 7B, Llama 3.1 70B) showed minimal change (<2%) because they were already at the memory bandwidth ceiling.
 > - If you use [kyuz0's containers](https://github.com/kyuz0/amd-strix-halo-toolboxes), you get these updates automatically -- the containers rebuild on every llama.cpp master update. kyuz0's toolboxes remain the easiest way to stay current. Our finding here validates the importance of their approach.
-> - **WARNING (April 2026):** Builds after b8460 (tested up to b8933) have a [Vulkan prompt processing regression](https://github.com/ggml-org/llama.cpp/issues/22375) of -32% to -39% on MoE models. Token generation (tg) is unaffected. **Use b8460 for Qwen3/Qwen3.5 models.** Newer architectures (Gemma 4, Llama 4 Scout, Qwen3-Next) require b8933+ despite the pp regression -- their tg speeds are still accurate.
-> - **Mesa RADV pp regression (26.0.2 → 26.0.5):** The kisak PPA auto-updated Mesa, causing an additional pp drop on all models (~1080 → ~660 pp512 for Qwen3.5). Token generation is unaffected. If prompt processing speed matters for your workload, pin Mesa 26.0.2: `sudo apt install mesa-vulkan-drivers=26.0.2~kisak1~n`.
+> - **WARNING: AMDVLK silently overrides RADV.** If AMDVLK is installed, its `/etc/vulkan/icd.d/amd_icd64.json` takes priority over RADV. This halves your pp speed (1080 → 660 pp512) without any visible error. Always set `AMD_VULKAN_ICD=RADV` or uninstall AMDVLK entirely: `sudo dpkg -r amdvlk && sudo rm -f /etc/vulkan/icd.d/amd_icd64.json`. Check your driver: RADV shows `(RADV STRIX_HALO) (radv)` with `shared memory: 65536` in llama-bench output. AMDVLK shows `(AMD open-source driver)` with `shared memory: 32768`. We [originally reported this as a llama.cpp regression](https://github.com/ggml-org/llama.cpp/issues/22375) -- it wasn't.
 
 **Qwen3.5-35B-A3B** (Q4_K_M, 19.9GB, MoE) -- the biggest improvement:
 
-| Build | Driver | pp128 | pp512 | tg128 | vs old RADV | Mesa |
-|-------|--------|-------|-------|-------|-------------|------|
-| **b8460 (latest)** | **RADV** | **623** | **1080** | **64.85** | **pp +24%, tg +25%** | 26.0.2 |
-| b8460 (latest) | AMDVLK | 521 | 663 | 64.10 | pp -24%, tg +23% | - |
-| b8298 (kyuz0) | RADV | 583 | 868 | 52.06 | baseline | 26.0.1 |
-| b8298 (kyuz0) | AMDVLK | 479 | 576 | 56.08 | | - |
+| Build | Driver | pp128 | pp512 | tg128 | vs old RADV |
+|-------|--------|-------|-------|-------|-------------|
+| **b8460 (latest)** | **RADV** | **623** | **1080** | **64.85** | **pp +24%, tg +25%** |
+| b8460 (latest) | AMDVLK | 521 | 663 | 64.10 | pp -24%, tg +23% |
+| b8298 (kyuz0) | RADV | 583 | 868 | 52.06 | baseline |
+| b8298 (kyuz0) | AMDVLK | 479 | 576 | 56.08 | |
 
-> **RADV now wins on EVERYTHING.** The old AMDVLK tg advantage (+7.7%) is gone. With the latest build, RADV is faster on both pp (+63% over AMDVLK) and tg (+1.2% over AMDVLK). Use RADV. Note: pp 1080 was measured on Mesa 26.0.2. On Mesa 26.0.5, pp drops to ~660 (tg unchanged). See [Mesa warning above](#mesa-radv-pp-regression-2602--2605).
+> **RADV now wins on EVERYTHING.** The old AMDVLK tg advantage (+7.7%) is gone. With the latest build, RADV is faster on both pp (+63% over AMDVLK) and tg (+1.2% over AMDVLK). Use RADV. AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) -- uninstall it to avoid silent ICD hijacking.
 
-Extended context scaling (latest build, RADV, Mesa 26.0.2):
+Extended context scaling (latest build, RADV):
 
 | pp512 | pp2048 | pp4096 | pp8192 | Drop at 8K |
 |-------|--------|--------|--------|------------|
 | **1080** | **1057** | **1049** | **1049** | **-3%** |
 
-> pp is virtually flat from 512 to 8192 tokens. Only 3% drop at 8K context. The scaling ratio (3% drop) is independent of Mesa version.
+> pp is virtually flat from 512 to 8192 tokens. Only 3% drop at 8K context.
 
 **Qwen3-Coder 30B-A3B** (UD-Q4_K_XL, 16.5GB, MoE):
 
@@ -230,9 +229,9 @@ Extended context scaling (latest build, RADV, Mesa 26.0.2):
 
 | Build | Driver | pp512 | tg128 | Notes |
 |-------|--------|-------|-------|-------|
-| **b8933** | **RADV** | **745** | **47.60** | Google's latest MoE |
+| **b8933** | **RADV** | **1142** | **48.46** | Google's latest MoE |
 
-> Gemma 4 is architecturally slower than Qwen MoE models despite similar size. The reason: head_dim 256/512 (vs Qwen's 128) makes flash attention less efficient, mixed sliding-window/full attention adds overhead, and 3.8B active params vs Qwen's 3.3B. This is not a llama.cpp issue -- it's inherent to the model design. 47.6 t/s is still 3x human reading speed and very usable for interactive chat.
+> Gemma 4 is architecturally slower on tg than Qwen MoE models despite similar size. The reason: head_dim 256/512 (vs Qwen's 128) makes flash attention less efficient, mixed sliding-window/full attention adds overhead, and 3.8B active params vs Qwen's 3.3B. This is not a llama.cpp issue -- it's inherent to the model design. 48.5 t/s is still 3x human reading speed and very usable for interactive chat.
 >
 > **WARNING:** Gemma 4 is extremely sensitive to KV cache quantization. Using q8_0 KV cache causes 3.5x worse quality degradation compared to Qwen models. Stick with f16 KV cache for Gemma 4. Do NOT use `--cache-type-k q4_0`.
 
@@ -240,29 +239,26 @@ Extended context scaling (latest build, RADV, Mesa 26.0.2):
 
 | Build | Driver | pp512 | tg128 | Notes |
 |-------|--------|-------|-------|-------|
-| **b8933** | **RADV** | **154** | **18.22** | 109B model running on a mini PC |
+| **b8933** | **RADV** | **331** | **18.32** | 109B model running on a mini PC |
 
-> A 109 billion parameter model running at 18 t/s on a $3,299 mini PC. An RTX 4090 (24GB VRAM) cannot even load this model. The speed is bandwidth-limited at 17B active parameters -- theoretical max is ~25 t/s at 215 GB/s, we hit 73% of that ceiling.
+> A 109 billion parameter model running at 18.3 t/s on a $3,299 mini PC. An RTX 4090 (24GB VRAM) cannot even load this model. The speed is bandwidth-limited at 17B active parameters -- theoretical max is ~25 t/s at 215 GB/s, we hit 73% of that ceiling.
 
 **Qwen3-Next 80B-A3B** (UD-Q4_K_XL, 42.9GB, MoE -- 80B total params, 3B active, 256K context):
 
 | Build | Driver | pp512 | tg128 | Notes |
 |-------|--------|-------|-------|-------|
-| **b8933** | **RADV** | **486** | **53.73** | 80B model at 54 t/s |
-| b8460 | RADV | 481 | 53.61 | No pp regression on this model |
+| **b8933** | **RADV** | **657** | **54.92** | 80B model at 55 t/s |
 
-> 80 billion parameters running at 54 t/s on a mini PC. This is the largest Qwen3-family MoE model -- 80B total with only 3B active parameters and a 256K context window. Despite being 42.9 GB on disk, the MoE routing keeps only 3B params active per token, making it faster than the 51B dense Qwen3-Coder-Next (38 t/s). No prompt processing regression between b8460 and b8933, unlike Qwen3.5.
+> 80 billion parameters running at 55 t/s on a mini PC. This is the largest Qwen3-family MoE model -- 80B total with only 3B active parameters and a 256K context window. Despite being 42.9 GB on disk, the MoE routing keeps only 3B params active per token, making it faster than the 51B dense Qwen3-Coder-Next (38 t/s).
 
 **Qwen3.6-35B-A3B** (Q4_K_M, 19.9GB, MoE -- drop-in upgrade from Qwen3.5, released April 2026):
 
 | Build | Driver | pp512 | tg128 | Notes |
 |-------|--------|-------|-------|-------|
-| **b8460** | **RADV** | **660** | **64.14** | Same speed as Qwen3.5 |
-| b8933 | RADV | 659 | 64.12 | No pp regression between builds |
+| **b8460** | **RADV** | **1064** | **63.76** | Same speed as Qwen3.5 |
+| b8933 | RADV | 1040 | 63.66 | No regression between builds |
 
 > Qwen3.6 is a drop-in replacement for Qwen3.5 with significantly improved coding and reasoning quality (same architecture, same active parameters, identical speed). **Use Q4_K_M, not UD-Q4_K_M** -- Unsloth Dynamic quantization costs 13% tg speed (56.6 vs 64.1 t/s) due to mixed-precision layers, with minimal quality benefit at this quant level.
->
-> pp values here are lower than the March benchmarks above due to a Mesa RADV 26.0.2 → 26.0.5 driver update. This affects all models equally and does not impact token generation speed.
 
 **ROCm HIP -- now working on kernel 6.19.4!**
 
@@ -274,7 +270,7 @@ We discovered that `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0` fixes
 | b8301 (self-compiled, kernel 6.19.4) | 542 | 1059 | 47.87 | old build |
 | b8301 (self-compiled, kernel 6.18.14) | 488 | 996 | 48.80 | previous best |
 
-> ROCm also improved with the latest build: tg went from 47.87 to **54.67** (+14%) thanks to generic llama.cpp optimizations. **Vulkan RADV is still faster on tg**: 64.85 vs 54.67 (+19%). pp comparison depends on Mesa version -- on Mesa 26.0.2, RADV won pp (1080 vs 1047); on Mesa 26.0.5, ROCm wins pp due to a [Mesa RADV driver regression](#mesa-radv-pp-regression-2602--2605). For interactive chat, tg matters more than pp. ROCm's remaining advantage is hipBLASLt and rocWMMA at very long context (32K+).
+> ROCm also improved with the latest build: tg went from 47.87 to **54.67** (+14%) thanks to generic llama.cpp optimizations. But **Vulkan RADV is still faster on both pp and tg**: RADV 1080 vs ROCm 1047 pp512 (+3%), RADV 64.85 vs ROCm 54.67 tg128 (+19%). The +25% Vulkan improvement was ~14% generic (ROCm got this too) plus ~11% Vulkan-specific (FA refactor, graphics queue). ROCm's remaining advantage is hipBLASLt and rocWMMA at very long context (32K+).
 
 **Build version matters enormously:**
 
@@ -282,7 +278,7 @@ We discovered that `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0` fixes
 |----------------|-------|-------|--------|
 | Ollama Vulkan RADV (b8298) | ~457 (via API) | 47.4 | Ollama adds overhead |
 | llama-bench RADV (b8298) | 868 | 52.06 | Eliminating Ollama helps |
-| llama-bench RADV **(b8460)** | **1080** | **64.85** | **+25% (Mesa 26.0.2; pp ~660 on 26.0.5)** |
+| llama-bench RADV **(b8460)** | **1080** | **64.85** | **Updating llama.cpp = +25%** |
 | ROCm HIP (b8301, HSA fix) | 1059 | 47.87 | Old build, unfair comparison |
 | ROCm HIP **(b8460, HSA fix)** | **1047** | **54.67** | **ROCm got +14% tg from same update** |
 
@@ -966,14 +962,14 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | **RADV** | Llama 2 7B | **1377** | 48.12 |
 | AMDVLK | Llama 2 7B | 327 | 48.02 |
 
-**With latest llama.cpp (b8460, Mesa 26.0.2) -- AMDVLK advantage is gone:**
+**With latest llama.cpp (b8460) -- AMDVLK advantage is gone:**
 
 | Driver | Model | pp512 | tg128 |
 |--------|-------|-------|-------|
 | **RADV** | Qwen3.5-35B-A3B | **1080** | **64.85** |
 | AMDVLK | Qwen3.5-35B-A3B | 663 | 64.10 |
 
-> pp values measured on Mesa 26.0.2. On Mesa 26.0.5, RADV pp drops to ~660. tg is unaffected. AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) -- RADV is the only option now.
+> AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416). **Uninstall it** -- even inactive, its ICD file silently hijacks Vulkan and halves your pp speed. See [AMDVLK warning above](#things-that-dont-work-yet).
 
 > **Our recommendation:** Use **RADV**. AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025) -- RADV is now AMD's only supported open-source Vulkan driver. Even before discontinuation, RADV won on both pp and tg with latest llama.cpp. AMDVLK also had a 2 GiB buffer limit that caused 3-4X slower pp on dense models. Don't install AMDVLK.
 
@@ -994,7 +990,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 |-------|---------------|---------|------------------------|
 | ~~Ollama HIP/ROCm~~ | ~~"Use ROCm backend"~~ | **Fixed in Ollama 0.20+** with `HSA_OVERRIDE_GFX_VERSION=11.5.1`. Works but ~9% slower tg than Vulkan | Use Vulkan for best speed, ROCm if you need vLLM compatibility |
 | `iommu=pt` for speed | "Use pass-through for performance" | No benefit over default ([lhl](https://github.com/lhl/strix-halo-testing)) | Same speed as `iommu=on`, wastes a kernel param |
-| AMDVLK for all workloads | "AMDVLK is fastest" | [Project discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025). RADV is now AMD's only supported open-source Vulkan driver. RADV beats AMDVLK on both pp and tg with latest llama.cpp | Don't install AMDVLK -- RADV is faster and actively maintained |
+| AMDVLK for all workloads | "AMDVLK is fastest" | [Project discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025). RADV beats AMDVLK on both pp (+63%) and tg. **Worse: even if you don't use AMDVLK, its ICD file (`/etc/vulkan/icd.d/amd_icd64.json`) silently hijacks Vulkan and halves your pp speed.** You won't see an error -- just mysteriously slow prompt processing | **Uninstall it completely:** `sudo dpkg -r amdvlk && sudo rm -f /etc/vulkan/icd.d/amd_icd64.json`. Verify with llama-bench: RADV shows `(RADV STRIX_HALO)` with `shared memory: 65536`. AMDVLK shows `(AMD open-source driver)` with `shared memory: 32768` |
 | rocWMMA on upstream llama.cpp | "Enable for 2x speed" | [73% regression](https://github.com/ggml-org/llama.cpp/issues/19984) on ROCm 7.2 | Massively slower prompt processing |
 | BIOS VRAM increase for speed | "More GPU VRAM = faster" | Zero speed difference, but you lose OS-visible RAM and GTT capacity. Set to 512MB or your system is crippled (31GB usable instead of 125GB). | OS sees only 31GB RAM, large models won't load at all |
 | ROCm 7.0 RC | "Use ROCm 7 RC" | Segfaults on kernel 6.18.14+ | `HSA_STATUS_ERROR` crash |
@@ -1011,7 +1007,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | `--no-mmap` (disable mmap) | **+22% pp128** | `-mmp 0` in llama.cpp, always use on Strix Halo |
 | hipBLASLt | **+8% tg** | `ROCBLAS_USE_HIPBLASLT=1` (ROCm only) |
 | tuned accelerator-performance | **+5-8% overall** | `sudo tuned-adm profile accelerator-performance` |
-| RADV over AMDVLK | **+14% pp (Ollama), up to 4X pp (llama-bench)** | `AMD_VULKAN_ICD=RADV` |
+| RADV over AMDVLK | **+63% pp, +1.2% tg** | Uninstall AMDVLK entirely (see above). `AMD_VULKAN_ICD=RADV` works too but is easy to forget |
 | `amd_iommu=off` | **+6% memory bandwidth** | GRUB parameter |
 | BIOS VRAM to 512MB | OS sees 125GB vs 31GB, GTT gets full 128GB | No speed change, but **required** -- without this, models >31GB won't load |
 | `HIP_VISIBLE_DEVICES=-1` | Fixes Ollama crash | Required for Vulkan-only mode |
@@ -1253,9 +1249,9 @@ Not sure which model to run? Here's what we recommend based on use case:
 | **Code** (best quality) | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | 51 t/s | Same model, higher fidelity quantization |
 | **Chat** (general) | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | **64 t/s** | Best all-rounder, successor to 3.5 |
 | **Chat** (no thinking) | Qwen3.6 35B-A3B (no-think) | 20 GB | 64 t/s | Same speed, direct answers |
-| **Code** (best quality, 256K ctx) | Qwen3-Next 80B-A3B | 42.9 GB | **54 t/s** | 80B MoE, only 3B active, 256K context |
+| **Code** (best quality, 256K ctx) | Qwen3-Next 80B-A3B | 42.9 GB | **55 t/s** | 80B MoE, only 3B active, 256K context |
 | **Chat** (smartest possible) | Qwen3-Coder-Next | 51 GB | 38 t/s | Dense 51B model, slower but smarter |
-| **Reasoning** | Gemma 4 26B-A4B | 15.7 GB | 47.6 t/s | Google's latest MoE, strong reasoning |
+| **Reasoning** | Gemma 4 26B-A4B | 15.7 GB | 48.5 t/s | Google's latest MoE, strong reasoning |
 | **Analyze images** | Qwen2.5-VL 7B | 6 GB | 21 t/s | Vision-language model |
 | **Maximum intelligence** | Llama 3.3 70B (Q4) | ~40 GB | ~5 t/s | Slow but very capable |
 | **"Can it run?"** | Llama 4 Scout 109B | 61 GB | 18 t/s | 109B model on a mini PC. RTX 4090 can't |
@@ -1453,7 +1449,7 @@ New to local LLMs? Here's what the technical terms mean.
 
 **RADV** -- Mesa's open-source Vulkan driver for AMD GPUs. AMD's only supported open-source Vulkan driver since AMDVLK was discontinued. Fastest backend for LLM inference on Strix Halo.
 
-**AMDVLK** -- AMD's former open-source Vulkan driver. [Discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025). Had a 2 GiB buffer limit and was slower than RADV on latest llama.cpp. Don't install it.
+**AMDVLK** -- AMD's former open-source Vulkan driver. [Discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025). **Uninstall it** -- even inactive, its ICD file silently hijacks Vulkan and halves pp speed.
 
 **Ollama** -- A tool that makes running LLMs as easy as `ollama run model-name`. Handles model downloading, GPU acceleration, and provides an API. Uses Vulkan on Strix Halo.
 
@@ -1606,11 +1602,11 @@ Found something that's wrong, outdated, or missing?
 
 ### 2026-04-26 -- April Update + Qwen3.6 + Qwen3-Next 80B Benchmarks
 
-- **Qwen3.6-35B-A3B benchmark:** **64 t/s** tg via Vulkan RADV (b8460). Drop-in replacement for Qwen3.5 with better coding/reasoning quality, identical speed. Use Q4_K_M -- UD-Q4_K_M costs 13% speed (56.6 t/s)
-- **Qwen3-Next 80B-A3B benchmark:** **53.7 t/s** tg, 486 pp512 via Vulkan RADV (b8933). 80B MoE (3B active) with 256K context window. Faster than the 51B dense Qwen3-Coder-Next (38 t/s). No pp regression between b8460 and b8933
-- **Gemma 4 26B-A4B benchmark:** 47.6 t/s tg, 745 pp512 via Vulkan RADV (b8933). First Strix Halo benchmark for this model. Includes KV cache quantization warning (3.5x worse quality degradation vs Qwen at q8_0)
-- **Llama 4 Scout 109B benchmark:** 18.2 t/s tg, 154 pp512 via Vulkan RADV (b8933). 109B parameter model running on a mini PC -- RTX 4090 can't load this
-- **Vulkan pp regression found:** b8933 has -32% to -39% prompt processing regression vs b8460 on MoE models. tg is unaffected. Guide continues to recommend b8460 for existing models. Reported as [llama.cpp #22375](https://github.com/ggml-org/llama.cpp/issues/22375)
+- **AMDVLK ICD hijacking discovered:** All "pp regression" findings (b8460 vs b8933, Mesa 26.0.2 vs 26.0.5) were caused by AMDVLK's `/etc/vulkan/icd.d/amd_icd64.json` silently overriding RADV. No actual regression exists. [Corrected on #22375](https://github.com/ggml-org/llama.cpp/issues/22375). All benchmarks re-verified on actual RADV
+- **Qwen3.6-35B-A3B benchmark:** **64 t/s** tg, 1064 pp512 via Vulkan RADV. Drop-in replacement for Qwen3.5 with better coding/reasoning quality, identical speed. Use Q4_K_M -- UD-Q4_K_M costs 13% speed (56.6 t/s)
+- **Qwen3-Next 80B-A3B benchmark:** **55 t/s** tg, 657 pp512 via Vulkan RADV (b8933). 80B MoE (3B active) with 256K context window. Faster than the 51B dense Qwen3-Coder-Next (38 t/s)
+- **Gemma 4 26B-A4B benchmark:** 48.5 t/s tg, 1142 pp512 via Vulkan RADV (b8933). First Strix Halo benchmark for this model. Includes KV cache quantization warning (3.5x worse quality degradation vs Qwen at q8_0)
+- **Llama 4 Scout 109B benchmark:** 18.3 t/s tg, 331 pp512 via Vulkan RADV (b8933). 109B parameter model running on a mini PC -- RTX 4090 can't load this
 - Merged PR #1: vulkan-tools install check in setup.sh (thanks @ignasivt)
 - Updated all prices: Beelink $2,999 to $3,299, Corsair $2,700 to $3,399, GMKtec $2,199 to ~$2,349
 - Added linux-firmware-20251125 source attribution and downgrade instructions
