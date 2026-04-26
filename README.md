@@ -133,7 +133,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (RADV Mesa 26.0.2)
 | Llama 3.1 70B (Q4_K_M) | 42 GB | Dense | **4.7-4.9 t/s** | 70B intelligence, doesn't fit on RTX 4090 |
 | Llama 4 Scout 109B (Q4_K_M) | 61 GB | MoE | **18.2 t/s** * | 109B params on a mini PC -- RTX 4090 can't even load this |
 | gpt-oss-120b | ~70 GB | MoE | ~34-38 t/s | Largest practical model |
-| Qwen3-Next 80B-A3B (GPTQ) | ~45 GB | MoE | ~40 t/s | via vLLM, 256K context |
+| Qwen3-Next 80B-A3B (UD-Q4_K_XL) | 42.9 GB | MoE | **53.7 t/s** * | 80B model, 256K context -- faster than dense 51B |
 | Kimi K2.5 1T (4-node cluster) | ~500 GB | MoE | distributed | [AMD technical article](https://www.amd.com/en/developer/resources/technical-articles/2026/how-to-run-a-one-trillion-parameter-llm-locally-an-amd.html) |
 
 ---
@@ -194,7 +194,7 @@ All benchmarks run on 2026-03-20 and 2026-03-21. System: Beelink GTR9 Pro, kerne
 > **Important caveats:**
 > - The +25% improvement is specific to **MoE models on Vulkan** due to the Wave32 FA refactor and graphics queue change. Dense models (Llama 2 7B, Llama 3.1 70B) showed minimal change (<2%) because they were already at the memory bandwidth ceiling.
 > - If you use [kyuz0's containers](https://github.com/kyuz0/amd-strix-halo-toolboxes), you get these updates automatically -- the containers rebuild on every llama.cpp master update. kyuz0's toolboxes remain the easiest way to stay current. Our finding here validates the importance of their approach.
-> - **WARNING (April 2026):** Builds after b8460 (tested up to b8933) have a [Vulkan prompt processing regression](https://github.com/ggml-org/llama.cpp/issues/22375) of -32% to -39% on MoE models. Token generation (tg) is unaffected. We recommend **b8460** until this is fixed. Newer builds are required for newer models (Gemma 4, Llama 4 Scout).
+> - **WARNING (April 2026):** Builds after b8460 (tested up to b8933) have a [Vulkan prompt processing regression](https://github.com/ggml-org/llama.cpp/issues/22375) of -32% to -39% on MoE models. Token generation (tg) is unaffected. **Use b8460 for Qwen3/Qwen3.5 models.** Newer architectures (Gemma 4, Llama 4 Scout, Qwen3-Next) require b8933+ despite the pp regression -- their tg speeds are still accurate.
 
 **Qwen3.5-35B-A3B** (Q4_K_M, 19.9GB, MoE) -- the biggest improvement:
 
@@ -241,6 +241,15 @@ Extended context scaling (latest build, RADV):
 | **b8933** | **RADV** | **154** | **18.22** | 109B model running on a mini PC |
 
 > A 109 billion parameter model running at 18 t/s on a $3,299 mini PC. An RTX 4090 (24GB VRAM) cannot even load this model. The speed is bandwidth-limited at 17B active parameters -- theoretical max is ~25 t/s at 215 GB/s, we hit 73% of that ceiling.
+
+**Qwen3-Next 80B-A3B** (UD-Q4_K_XL, 42.9GB, MoE -- 80B total params, 3B active, 256K context):
+
+| Build | Driver | pp512 | tg128 | Notes |
+|-------|--------|-------|-------|-------|
+| **b8933** | **RADV** | **486** | **53.73** | 80B model at 54 t/s |
+| b8460 | RADV | 481 | 53.61 | No pp regression on this model |
+
+> 80 billion parameters running at 54 t/s on a mini PC. This is the largest Qwen3-family MoE model -- 80B total with only 3B active parameters and a 256K context window. Despite being 42.9 GB on disk, the MoE routing keeps only 3B params active per token, making it faster than the 51B dense Qwen3-Coder-Next (38 t/s). No prompt processing regression between b8460 and b8933, unlike Qwen3.5.
 
 **ROCm HIP -- now working on kernel 6.19.4!**
 
@@ -671,8 +680,8 @@ sudo systemctl restart ollama
 
 | Variable | Purpose |
 |----------|---------|
-| `OLLAMA_VULKAN=1` | Force Vulkan backend (Ollama's bundled HIP/ROCm crashes on gfx1151) |
-| `HIP_VISIBLE_DEVICES=-1` | Disable HIP device enumeration (prevents crash) |
+| `OLLAMA_VULKAN=1` | Force Vulkan backend (9% faster than ROCm on Strix Halo) |
+| `HIP_VISIBLE_DEVICES=-1` | Disable HIP device enumeration (avoids ROCm fallback) |
 | `OLLAMA_FLASH_ATTENTION=1` | Enable flash attention (+13% prompt processing) |
 | `OLLAMA_CONTEXT_LENGTH=8192` | Limit context to prevent OOM (increase if needed) |
 | `AMD_VULKAN_ICD=RADV` | Force RADV driver (faster than AMDVLK for general use) |
@@ -1237,7 +1246,7 @@ Not sure which model to run? Here's what we recommend based on use case:
 | **Code** (best quality) | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | 51 t/s | Same model, higher fidelity quantization |
 | **Chat** (general) | Qwen3.5 35B-A3B | 23 GB | 48-56 t/s | Great all-rounder, thinking capable |
 | **Chat** (no thinking) | Qwen3.5 35B-A3B (no-think) | 23 GB | 47 t/s | Same speed, direct answers |
-| **Code** (best quality, 256K ctx) | Qwen3-Next 80B-A3B | ~46 GB | ~37 t/s | 80B MoE, only 3B active, 256K context |
+| **Code** (best quality, 256K ctx) | Qwen3-Next 80B-A3B | 42.9 GB | **54 t/s** | 80B MoE, only 3B active, 256K context |
 | **Chat** (smartest possible) | Qwen3-Coder-Next | 51 GB | 38 t/s | Dense 51B model, slower but smarter |
 | **Reasoning** | Gemma 4 26B-A4B | 15.7 GB | 47.6 t/s | Google's latest MoE, strong reasoning |
 | **Analyze images** | Qwen2.5-VL 7B | 6 GB | 21 t/s | Vision-language model |
@@ -1588,8 +1597,9 @@ Found something that's wrong, outdated, or missing?
 
 ## Changelog
 
-### 2026-04-25 -- April Update + Gemma 4 Benchmark
+### 2026-04-26 -- April Update + Qwen3-Next 80B Benchmark
 
+- **Qwen3-Next 80B-A3B benchmark:** **53.7 t/s** tg, 486 pp512 via Vulkan RADV (b8933). 80B MoE (3B active) with 256K context window. Faster than the 51B dense Qwen3-Coder-Next (38 t/s). No pp regression between b8460 and b8933
 - **Gemma 4 26B-A4B benchmark:** 47.6 t/s tg, 745 pp512 via Vulkan RADV (b8933). First Strix Halo benchmark for this model. Includes KV cache quantization warning (3.5x worse quality degradation vs Qwen at q8_0)
 - **Llama 4 Scout 109B benchmark:** 18.2 t/s tg, 154 pp512 via Vulkan RADV (b8933). 109B parameter model running on a mini PC -- RTX 4090 can't load this
 - **Vulkan pp regression found:** b8933 has -32% to -39% prompt processing regression vs b8460 on MoE models. tg is unaffected. Guide continues to recommend b8460 for existing models. Reported as [llama.cpp #22375](https://github.com/ggml-org/llama.cpp/issues/22375)
