@@ -56,7 +56,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 - [Hardware](#hardware)
 - [What You Can Run](#what-you-can-run)
 - [Benchmark Results](#benchmark-results)
-  - [Ollama Vulkan (RADV)](#ollama-vulkan-radv-mesa-2602)
+  - [Ollama Vulkan (RADV)](#ollama-vulkan-radv-ollama-0212)
   - [ROCm HIP (llama.cpp)](#rocm-hip-llamacpp)
   - [Backend Comparison](#backend-comparison-table)
   - [Hardware Comparison](#hardware-comparison)
@@ -141,7 +141,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (Vulkan RADV). Spe
 
 ## Benchmark Results
 
-All benchmarks run on 2026-03-20 and 2026-03-21. System: Beelink GTR9 Pro, kernel 6.19.4, tuned accelerator-performance active.
+All benchmarks run on 2026-03-20, 2026-03-21, and 2026-04-26. System: Beelink GTR9 Pro, kernel 6.19.4, tuned accelerator-performance active.
 
 ### Ollama Vulkan (RADV, Ollama 0.21.2)
 
@@ -436,7 +436,7 @@ At extreme context (130K tokens, from [strixhalo.wiki](https://strixhalo.wiki/AI
                |             |
           "It just      llama-server +
            works"       Vulkan RADV
-           48 t/s        65 t/s
+           46 t/s        65 t/s
 ```
 
 ---
@@ -450,7 +450,7 @@ For those who want to get running as fast as possible:
 3. **Kernel params:** Add `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280` to GRUB
 4. **Performance:** Install tuned, set `accelerator-performance` profile, upgrade Mesa via kisak PPA
 5. **Ollama:** Install, configure Vulkan backend with `OLLAMA_VULKAN=1` and `HIP_VISIBLE_DEVICES=-1`
-6. **Test:** `ollama run qwen3.5:35b-a3b` -- expect ~48 t/s generation
+6. **Test:** `ollama run qwen3.6:35b-a3b` -- expect ~46 t/s generation
 
 Each step is detailed in the phases below.
 
@@ -620,7 +620,7 @@ Verify:
 
 ```bash
 vulkaninfo --summary 2>&1 | grep driverInfo
-# Expected: driverInfo = Mesa 26.0.2 - kisak-mesa PPA
+# Expected: driverInfo = Mesa 26.0.5 - kisak-mesa PPA
 ```
 
 > **Impact:** Mesa 25.2.8 to 26.0.1 gave **+9% prompt eval** (87 to 96 t/s). Mesa 26.0.1 to 26.0.2 gave an additional small improvement.
@@ -708,8 +708,8 @@ sudo systemctl restart ollama
 ### Step 5.3: Pull Models
 
 ```bash
-# Fast MoE model, great for general use and coding (~23GB)
-ollama pull qwen3.5:35b-a3b
+# Fast MoE model, great for general use and coding (~20GB)
+ollama pull qwen3.6:35b-a3b
 
 # Higher quality MoE, Q8_0 quantization (~32GB)
 ollama pull qwen3-coder:30b-a3b-q8_0
@@ -724,10 +724,10 @@ ollama pull qwen3-coder-next
 ### Step 5.4: Test
 
 ```bash
-ollama run qwen3.5:35b-a3b
+ollama run qwen3.6:35b-a3b
 ```
 
-You should see responses generating at ~48 t/s.
+You should see responses generating at ~46 t/s.
 
 ---
 
@@ -738,7 +738,7 @@ You should see responses generating at ~48 t/s.
 ```bash
 tee ~/bench-ollama.sh > /dev/null << 'SCRIPT'
 #!/bin/bash
-MODEL="${1:-qwen3.5:35b-a3b}"
+MODEL="${1:-qwen3.6:35b-a3b}"
 PROMPT="${2:-hello how are you}"
 echo "Model: $MODEL"
 echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
@@ -758,7 +758,7 @@ chmod +x ~/bench-ollama.sh
 Usage:
 
 ```bash
-# Default (qwen3.5:35b-a3b, short prompt)
+# Default (qwen3.6:35b-a3b, short prompt)
 bash ~/bench-ollama.sh
 
 # Specific model with custom prompt
@@ -770,7 +770,7 @@ bash ~/bench-ollama.sh qwen3-coder-next "explain backpropagation in simple terms
 ```bash
 tee ~/bench-ollama-long.sh > /dev/null << 'SCRIPT'
 #!/bin/bash
-MODEL="${1:-qwen3.5:35b-a3b}"
+MODEL="${1:-qwen3.6:35b-a3b}"
 echo "Model: $MODEL (long prompt)"
 echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 curl -s http://localhost:11434/api/generate -d "{\"model\":\"$MODEL\",\"prompt\":\"You are an expert software architect. I need you to review and refactor the following Python code for a web application that handles user authentication, session management, database connections, API rate limiting, error handling, logging, caching with Redis, background job processing with Celery, WebSocket connections for real-time updates, file upload handling with S3 integration, email notification service, payment processing with Stripe, and search functionality with Elasticsearch. Please provide a comprehensive architecture review covering separation of concerns, SOLID principles, design patterns, security best practices, performance optimization, and scalability considerations.\",\"stream\":false}" | python3 -c "
@@ -976,7 +976,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | **RADV** | Qwen3.5-35B-A3B | **1080** | **64.85** |
 | AMDVLK | Qwen3.5-35B-A3B | 663 | 64.10 |
 
-> AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416). **Uninstall it** -- even inactive, its ICD file silently hijacks Vulkan and halves your pp speed. See [AMDVLK warning above](#things-that-dont-work-yet).
+> AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416). **Uninstall it** -- even inactive, its ICD file silently hijacks Vulkan and halves your pp speed. See [AMDVLK warning above](#things-that-dont-work-dont-waste-your-time).
 
 > **Our recommendation:** Use **RADV**. AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025) -- RADV is now AMD's only supported open-source Vulkan driver. Even before discontinuation, RADV won on both pp and tg with latest llama.cpp. AMDVLK also had a 2 GiB buffer limit that caused 3-4X slower pp on dense models. Don't install AMDVLK.
 
@@ -1223,7 +1223,7 @@ After completing setup, verify each item:
 - [ ] `cat /sys/class/drm/card*/device/pp_dpm_sclk` shows 2900Mhz with asterisk
 - [ ] `cat /sys/module/ttm/parameters/pages_limit` shows 31457280
 - [ ] `ollama --version` returns without error
-- [ ] `ollama run qwen3.5:35b-a3b "hello"` generates at 45+ t/s
+- [ ] `ollama run qwen3.6:35b-a3b "hello"` generates at 45+ t/s
 - [ ] `systemctl show ollama | grep Environment` includes `OLLAMA_VULKAN=1`
 - [ ] `cat /etc/default/grub | grep CMDLINE` includes `amd_iommu=off`
 - [ ] `uname -r` shows 6.18.x+ (ROCm on 6.19.x requires HSA override -- see Known Issues)
@@ -1304,7 +1304,7 @@ ollama pull qwen3.6:35b-a3b
 | **Claude Pro** | $20/mo | Fast | No | No |
 | **OpenAI API** (gpt-4o, 50 queries/day) | ~$15/mo | Fast | No | No |
 | **Anthropic API** (Claude Sonnet, 50 queries/day) | ~$12/mo | Fast | No | No |
-| **Strix Halo** (after purchase) | **~$8/mo electricity** | 48-87 t/s | **Yes** | **Yes** |
+| **Strix Halo** (after purchase) | **~$8/mo electricity** | 46-87 t/s | **Yes** | **Yes** |
 
 **Break-even calculation:**
 
@@ -1332,17 +1332,17 @@ Ollama provides an OpenAI-compatible API. Point any coding tool at it:
 ```bash
 # For Cursor, Continue.dev, or any OpenAI-compatible client:
 # Base URL: http://localhost:11434/v1
-# Model: qwen3.5:35b-a3b (or qwen3-coder-next for max quality)
+# Model: qwen3.6:35b-a3b (or qwen3-coder-next for max quality)
 # API Key: ollama (or leave empty)
 ```
 
 For Claude Code specifically:
 
 ```bash
-ANTHROPIC_BASE_URL=http://localhost:11434 claude --model qwen3.5:35b-a3b
+ANTHROPIC_BASE_URL=http://localhost:11434 claude --model qwen3.6:35b-a3b
 ```
 
-At 48-87 t/s, local inference feels instant for code completion and review.
+At 46-87 t/s, local inference feels instant for code completion and review.
 
 ### ChatGPT-like Web Interface (Open WebUI)
 
@@ -1489,7 +1489,7 @@ So why is llama.cpp direct 35% faster? Two reasons:
 
 | Use case | Recommendation |
 |----------|---------------|
-| Just want it to work | **Ollama** -- install and go, 48 t/s is still fast |
+| Just want it to work | **Ollama** -- install and go, 46 t/s is still fast |
 | Want maximum speed | **llama-server** (from latest llama.cpp) -- 65 t/s, same API as Ollama |
 | Using kyuz0 containers | **kyuz0** -- they auto-rebuild on llama.cpp updates, best of both worlds |
 | Benchmarking | **llama-bench** -- eliminates all overhead, pure GPU measurement |
@@ -1558,11 +1558,11 @@ Yes. Ollama provides an OpenAI-compatible API at `http://localhost:11434/v1`. Yo
 ```bash
 # In Continue.dev, Cursor, or any OpenAI-compatible client:
 # Base URL: http://localhost:11434/v1
-# Model: qwen3.5:35b-a3b
+# Model: qwen3.6:35b-a3b
 # API Key: (leave empty or use "ollama")
 ```
 
-At 48 t/s, local inference feels instant for code completion and review tasks.
+At 46 t/s, local inference feels instant for code completion and review tasks.
 
 </details>
 
