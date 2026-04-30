@@ -218,12 +218,12 @@ echo ""
 info "Phase 5.3: Pulling recommended model"
 echo "---------------------------------------------"
 
-if ! ollama list 2>/dev/null | grep -q "qwen3.5:35b-a3b"; then
-    info "Pulling qwen3.5:35b-a3b (~23GB, this may take a while)..."
-    ollama pull qwen3.5:35b-a3b
+if ! ollama list 2>/dev/null | grep -q "qwen3.6:35b-a3b"; then
+    info "Pulling qwen3.6:35b-a3b (~23GB, this may take a while)..."
+    ollama pull qwen3.6:35b-a3b
     log "Model pulled successfully."
 else
-    log "qwen3.5:35b-a3b already available."
+    log "qwen3.6:35b-a3b already available."
 fi
 
 # Phase 6: Benchmark
@@ -231,8 +231,8 @@ echo ""
 info "Phase 6: Running benchmark"
 echo "---------------------------------------------"
 
-info "Benchmarking qwen3.5:35b-a3b..."
-BENCH_RESULT=$(curl -s http://localhost:11434/api/generate -d '{"model":"qwen3.5:35b-a3b","prompt":"hello how are you","stream":false}' 2>/dev/null | python3 -c "
+info "Benchmarking qwen3.6:35b-a3b..."
+BENCH_RESULT=$(curl -s http://localhost:11434/api/generate -d '{"model":"qwen3.6:35b-a3b","prompt":"hello how are you","stream":false}' 2>/dev/null | python3 -c "
 import sys,json
 try:
     d=json.load(sys.stdin)
@@ -261,7 +261,7 @@ fi
 # Create benchmark script
 tee ~/bench-ollama.sh > /dev/null << 'SCRIPT'
 #!/bin/bash
-MODEL="${1:-qwen3.5:35b-a3b}"
+MODEL="${1:-qwen3.6:35b-a3b}"
 PROMPT="${2:-hello how are you}"
 echo "Model: $MODEL | $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 curl -s http://localhost:11434/api/generate -d "{\"model\":\"$MODEL\",\"prompt\":\"$PROMPT\",\"stream\":false}" | python3 -c "
@@ -289,7 +289,7 @@ echo "  tuned:  $(tuned-adm active 2>/dev/null | grep -o 'accelerator-performanc
 echo "  RAM:    $(free -h | awk '/^Mem:/{print $2}')"
 echo ""
 echo "  Quick start:"
-echo "    ollama run qwen3.5:35b-a3b"
+echo "    ollama run qwen3.6:35b-a3b"
 echo ""
 echo "  Benchmark:"
 echo "    bash ~/bench-ollama.sh"
