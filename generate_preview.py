@@ -67,7 +67,7 @@ bbox = draw.textbbox((0, 0), title, font=title_font)
 draw.text(((W - bbox[2] + bbox[0]) // 2, 380), title, fill=WHITE, font=title_font)
 
 # Punchline
-punch = "Beats DGX Spark for $1,400 less"
+punch = "Measured setup, backends, and failure cases"
 punch_font = font_reg(26)
 bbox = draw.textbbox((0, 0), punch, font=punch_font)
 draw.text(((W - bbox[2] + bbox[0]) // 2, 435), punch, fill=ACCENT, font=punch_font)
