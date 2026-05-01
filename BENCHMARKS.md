@@ -1,101 +1,104 @@
-# Benchmark Results — 2026-03-20
+# Benchmark Results - Current Snapshot
 
-## System Configuration
-- Kernel: 6.19.4-061904-generic
-- Mesa RADV: 26.0.2 (kisak-mesa PPA)
-- Ollama: 0.18.2
-- tuned: accelerator-performance (active)
-- GPU clock: 2900 MHz (stable, no clock bug)
-- Backend: Vulkan (RADV) via Ollama
+This file is the compact benchmark source-of-truth for numbers already published in the README. It does not add new tests; it reconciles the March and April measurements so old ROCm and driver notes do not contradict the current guide.
 
-## Ollama Vulkan (RADV Mesa 26.0.2)
+## Current System Snapshot
 
-### qwen3.5:35b-a3b (~23GB, MoE)
+Live audit on 2026-05-01:
 
-| Prompt | Tokens | pp (t/s) | tg (t/s) | Gen Tokens | Prev pp | Prev tg | Delta tg |
-|--------|--------|----------|----------|------------|---------|---------|----------|
-| "hello how are you" | 14 | 121.3 | 48.0 | 390 | ~267 @56t | 45.8 | **+4.8%** |
-| "explain backpropagation..." | 23 | 182.3 | 47.5 | 1963 | - | 45.5 | **+4.4%** |
-| Long arch review prompt | 122 | 456.7 | 47.4 | 2498 | 467 @201t | 45.5 | **+4.2%** |
+| Component | Current State |
+|-----------|---------------|
+| System | Beelink GTR9 Pro |
+| CPU | AMD Ryzen AI MAX+ 395, 16C/32T |
+| GPU | Radeon 8060S, gfx1151, RADV STRIX_HALO |
+| RAM | 124GiB OS-visible unified memory |
+| Kernel | 6.19.4-061904-generic |
+| Mesa RADV | 26.0.6, kisak-mesa PPA |
+| Ollama | 0.21.2 |
+| AMDVLK | Removed |
+| linux-firmware | 20240318.git3b128b60-0ubuntu2.27 |
+| GPU clock | 2900 MHz selected |
+| tuned | `accelerator-performance` active |
 
-**Analysis:** Token generation improved ~4-5% across all prompt lengths. Likely from Mesa 26.0.1→26.0.2 + tuned being active. Prompt processing scales linearly with token count as expected.
+Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 2026-04-26 with `tuned accelerator-performance` active. The 2026-05-01 readiness check now also confirms `tuned accelerator-performance` active, Mesa RADV 26.0.6, AMDVLK absent, linux-firmware safe, and GPU clock at 2900 MHz.
 
-### qwen3-coder-next (~51GB, dense)
+## Top-Line Model Results
 
-| Prompt | Tokens | pp (t/s) | tg (t/s) | Gen Tokens | Prev pp | Prev tg | Delta tg |
-|--------|--------|----------|----------|------------|---------|---------|----------|
-| "hello how are you" | 12 | 90.7 | 39.1 | 60 | 96 @12t | 38 | **+2.9%** |
-| "explain backpropagation..." | 21 | 129.5 | 38.4 | 631 | 136 @54t | 37 | **+3.8%** |
-| Long arch review prompt | 120 | 301.2 | 37.9 | 3549 | - | - | NEW |
+| Model | Backend / Build | Quant | pp512 | tg128 | Notes |
+|-------|-----------------|-------|-------|-------|-------|
+| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b8460 | UD-Q4_K_XL | 1342 | **87.11** | Fastest coding MoE result |
+| Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1064 | **63.76** | Recommended all-rounder |
+| Qwen3.5 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1080 | **64.85** | Used for backend/build comparison |
+| Qwen3-Next 80B-A3B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_XL | 657 | **54.92** | 80B MoE, 256K context capable |
+| Gemma 4 26B-A4B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_M | 1142 | **48.46** | Slower than Qwen MoE at similar active params |
+| Llama 4 Scout 109B | Vulkan RADV, llama.cpp b8933 | Q4_K_M | 331 | **18.32** | 109B params on one mini PC |
+| Llama 3.1 70B | Ollama Vulkan RADV | Q4_K_M | 22-80 | **4.7-4.9** | Dense 70B, bandwidth-bound |
+| Qwen3 0.6B | Vulkan RADV, llama.cpp | Q8_0 | 13112 | **266** | Small-model speed ceiling |
 
-**Analysis:** pp slightly lower (-5%), tg slightly higher (+3%). The pp drop may be measurement variance due to different prompt tokenization.
+## Ollama Vulkan
 
-### qwen3-coder:30b-a3b-q8_0 (~32GB, MoE, Q8_0)
+### Qwen3.6-35B-A3B, Ollama 0.21.2, Vulkan RADV
 
-| Prompt | Tokens | pp (t/s) | tg (t/s) | Gen Tokens |
-|--------|--------|----------|----------|------------|
-| "hello how are you" | 12 | 118.3 | **51.4** | 38 |
-| "explain backpropagation..." | 21 | 205.2 | **51.3** | 344 |
+| Prompt Tokens | Prompt Eval | Generation | Notes |
+|---------------|-------------|------------|-------|
+| 20 | 163 t/s | **45.6 t/s** | ~30% slower than llama-bench direct |
+| 22 | 174 t/s | **45.4 t/s** | Current easy path |
 
-**Analysis:** NEW model, not previously tested. Fastest generation speed at 51.3-51.4 t/s. The Q8_0 quantization trades size (32GB vs 23GB) for higher quality while maintaining excellent speed.
+### Historical March Ollama Results
 
-### llama2:latest (~3.8GB, dense 7B)
+These remain useful as historical data, but they are not the current headline numbers.
 
-| Prompt | Tokens | pp (t/s) | tg (t/s) | Gen Tokens |
-|--------|--------|----------|----------|------------|
-| "hello how are you" | 24 | 384.6 | **52.0** | 66 |
+| Model | Prompt Tokens | pp (t/s) | tg (t/s) | Notes |
+|-------|---------------|----------|----------|-------|
+| Qwen3.5 35B-A3B, Ollama 0.20.4 | 14 | 121.3 | **48.0** | Mesa 26.0.2 era |
+| Qwen3.5 35B-A3B, Ollama 0.20.4 | 23 | 182.3 | **47.5** | Mesa 26.0.2 era |
+| Qwen3.5 35B-A3B, Ollama 0.20.4 | 122 | 456.7 | **47.4** | Mesa 26.0.2 era |
+| Qwen3-Coder 30B-A3B Q8_0 | 12 | 118.3 | **51.4** | Ollama path |
+| Qwen3-Coder-Next | 120 | 301.2 | **37.9** | Dense 51GB model |
+| Qwen2.5-VL 7B | 23 | 81.7 | **21.4** | Vision-language model |
 
-### qwen3.5-nothinker (~23GB, MoE, no-think variant)
+## Backend and Build Comparison
 
-| Prompt | Tokens | pp (t/s) | tg (t/s) | Gen Tokens |
-|--------|--------|----------|----------|------------|
-| "hello how are you" | 14 | 127.1 | 47.4 | 1110 |
+### Qwen3.5-35B-A3B Q4_K_M
 
-**Analysis:** Same speed as thinking variant — expected since it's the same model architecture.
+| Backend / Build | pp512 | tg128 | Takeaway |
+|-----------------|-------|-------|----------|
+| Ollama Vulkan RADV, bundled older llama.cpp | ~457 | 47.4 | Easy, but slower |
+| Vulkan RADV, b8298 | 868 | 52.06 | Baseline kyuz0-era direct path |
+| Vulkan RADV, b8460 | **1080** | **64.85** | Best short-context result |
+| ROCm HIP, b8301, HSA fix | 1059 | 47.87 | Old self-compiled ROCm build |
+| ROCm HIP, b8460, HSA fix | 1047 | 54.67 | ROCm improved, still slower tg than RADV |
 
-### qwen2.5vl:7b (~6GB, vision model)
+### AMDVLK Correction
 
-| Prompt | Tokens | pp (t/s) | tg (t/s) | Gen Tokens |
-|--------|--------|----------|----------|------------|
-| "hello how are you" | 23 | 81.7 | 21.4 | 26 |
+AMDVLK is not recommended. It was installed during earlier testing and its ICD file silently overrode RADV for some direct `llama-bench` commands. That caused false "RADV regression" conclusions. Corrected current state:
 
-**Analysis:** Vision models have additional overhead from image encoder components, even on text-only prompts.
+- RADV wins on pp and tg with latest tested llama.cpp.
+- AMDVLK should be uninstalled, not just ignored.
+- Verify RADV in output: `(RADV STRIX_HALO) (radv)` and `shared memory: 65536`.
+- AMDVLK output shows `(AMD open-source driver)` and `shared memory: 32768`.
 
-## ROCm HIP (llama.cpp via Distrobox)
+## ROCm Status
 
-### Status: ALL BROKEN on Kernel 6.19.4
+ROCm is no longer "all broken" on kernel 6.19.x. It works when both environment variables are set before running ROCm/HIP binaries:
 
-Every ROCm container segfaults immediately:
-- kyuz0 pre-built (rocm-7.2): Segfault
-- kyuz0 pre-built (rocm-6.4.4): ROCm error in ggml_cuda_mul_mat_q
-- Self-compiled (b8301): Segfault
-- Build-opt: Segfault
+```bash
+export HSA_OVERRIDE_GFX_VERSION=11.5.1
+export HSA_ENABLE_SDMA=0
+```
 
-**Root cause:** GPU detected as "gfx1100 (0x1100)" instead of "gfx1151". Kernel 6.19.4 appears to have changed GPU identification, breaking ROCm compatibility.
+| Build | Kernel | pp128 | pp512 | tg128 | Notes |
+|-------|--------|-------|-------|-------|-------|
+| b8460 | 6.19.4 | **547** | **1047** | **54.67** | Current fair ROCm comparison |
+| b8301 | 6.19.4 | 542 | 1059 | 47.87 | Old build, HSA fix |
+| b8301 | 6.18.14 | 488 | 996 | 48.80 | Previous reference |
 
-**Previous results (kernel 6.18.14, for reference):**
+ROCm remains relevant for batch processing, hipBLASLt, vLLM experiments, and long-context/rocWMMA work. For current short-context MoE inference, Vulkan RADV is faster on the measured data.
 
-| Build | Model | pp128 | pp512 | tg128 |
-|-------|-------|-------|-------|-------|
-| Self-compiled b8301 FA on | Qwen3.5-35B-A3B Q4_K_M | 488 | 996 | 48.8 |
-| kyuz0 b8298 FA on | Qwen3.5-35B-A3B Q4_K_M | 306 | 520 | 55.3 |
-| kyuz0 b8298 FA off | Qwen3.5-35B-A3B Q4_K_M | 352 | 524 | 53.8 |
-| kyuz0 b8189 FA+hipBLASLt | Llama 2 7B Q4_K_M | 1163 | 1261 | 45.07 |
+## Current Takeaways
 
-## Summary of Changes vs Previous
-
-| Metric | Previous | Current | Change |
-|--------|----------|---------|--------|
-| Vulkan tg (qwen3.5:35b-a3b) | 45.5-45.8 | 47.4-48.0 | **+4-5%** |
-| Vulkan tg (qwen3-coder-next) | 37-38 | 37.9-39.1 | **+3%** |
-| Mesa version | 26.0.1 | 26.0.2 | Updated |
-| Kernel | 6.18.14 | 6.19.4 | **Breaks ROCm** |
-| ROCm HIP | Working | **BROKEN** | Regression |
-| tuned | Not running | Active | Fixed |
-| GPU clock bug | Intermittent | Not present | Fixed/stable |
-
-## Key Takeaways
-1. Vulkan performance improved ~4% (Mesa update + tuned)
-2. Kernel 6.19.4 breaks ALL ROCm containers — stay on 6.18.x for ROCm
-3. qwen3-coder:30b-a3b-q8_0 is the fastest model at 51+ t/s
-4. GPU clock is stable at 2900 MHz (no more stuck at 900 MHz bug)
+1. Direct llama.cpp with Vulkan RADV is the fastest measured short-context path for Qwen MoE models.
+2. Updating llama.cpp from b8298 to b8460 produced the largest improvement: +24% pp and +25% tg on Qwen3.5-35B-A3B.
+3. AMDVLK caused false regression reports through ICD hijacking; keep it removed.
+4. ROCm works on kernel 6.19.4 with HSA overrides, but the latest measured short-context tg is still behind Vulkan RADV.
+5. Before any new benchmark campaign, keep `tuned accelerator-performance` active and log raw commands/results into a single dataset.
