@@ -1,74 +1,99 @@
-# System Audit — 2026-03-20
+# System Audit - 2026-05-01
+
+This file records the current live system state. It is separate from historical benchmark state: older benchmark numbers were measured with the same `tuned accelerator-performance` profile active.
 
 ## Hardware
+
 | Component | Value |
 |-----------|-------|
 | System | Beelink GTR9 Pro |
-| CPU | AMD Ryzen AI MAX+ 395 (32C/64T, Zen 5) |
+| CPU | AMD Ryzen AI MAX+ 395 (16C/32T, Zen 5) |
 | GPU | Radeon 8060S (gfx1151, RDNA 3.5 iGPU) |
-| RAM | 128GB LPDDR5X-8000 (unified) |
-| Device ID | 0x1586 |
+| RAM | 128GB LPDDR5X-8000 unified, 124GiB OS-visible |
+| Vulkan device | Radeon 8060S Graphics (RADV STRIX_HALO) |
 
-## Software
-| Parameter | Value | Previous | Changed? |
-|-----------|-------|----------|----------|
-| Kernel | 6.19.4-061904-generic | 6.18.14 | YES - major upgrade |
-| Mesa (RADV) | 26.0.2 (kisak PPA) | 26.0.1 | YES - minor upgrade |
-| AMDVLK | 2025.Q2.1 | 2025.Q2.1 | No |
-| Ollama | 0.18.2 | unknown | Unknown |
-| tuned profile | accelerator-performance | was not running | YES - fixed |
-| linux-firmware | 20240318 | same | No (safe, not broken 20251125) |
-| THP | always | unknown | - |
+## Live Software State
 
-## Kernel Parameters
-```
-GRUB_CMDLINE_LINUX_DEFAULT="quiet splash amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0 amdgpu.cwsr_enable=0 amdgpu.cwsr_enable=0"
-```
-Note: `amdgpu.cwsr_enable=0` is duplicated 3x (cosmetic issue, no functional impact).
+| Parameter | Current Value | Status |
+|-----------|---------------|--------|
+| Kernel | 6.19.4-061904-generic | Current tested kernel |
+| Mesa RADV | 26.0.6, kisak-mesa PPA | Current Vulkan driver |
+| AMDVLK | Not installed | Correct; avoids ICD hijacking |
+| Ollama | 0.21.2 | Current easy path |
+| linux-firmware | 20240318.git3b128b60-0ubuntu2.27 | Safe; not broken 20251125 |
+| tuned | `accelerator-performance` active | Correct |
+| GPU clock | 2900 MHz selected | Correct |
 
-## Memory
-```
-              total        used        free      shared  buff/cache   available
-Mem:          124Gi        13Gi       105Gi        44Mi       6.8Gi       110Gi
-Swap:          8.0Gi          0B       8.0Gi
+## CPU and Memory
+
+Live `lscpu` summary:
+
+```text
+CPU(s): 32
+Model name: AMD RYZEN AI MAX+ 395 w/ Radeon 8060S
+Thread(s) per core: 2
+Core(s) per socket: 16
+Socket(s): 1
 ```
 
-## GPU
-- Clock: 2900 MHz (highest DPM state, no clock bug)
-- TTM pages_limit: 31457280
-- GTT size: configured via GRUB (131072 = 128GB)
+Live memory:
+
+```text
+Mem: 124Gi total, 111Gi available
+Swap: 8.0Gi total, 0B used
+```
 
 ## Vulkan Drivers
-- RADV: Mesa 26.0.2 (kisak-mesa PPA)
-- AMDVLK: 2025.Q2.1
-- Ollama configured: RADV (via AMD_VULKAN_ICD=RADV + VK_ICD_FILENAMES)
 
-## Ollama Configuration
-```
-OLLAMA_HOST=0.0.0.0:11434
-OLLAMA_VULKAN=1
-HIP_VISIBLE_DEVICES=-1
-OLLAMA_FLASH_ATTENTION=1
-OLLAMA_CONTEXT_LENGTH=8192
-AMD_VULKAN_ICD=RADV
-VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json
-OLLAMA_NUM_BATCH=512
-OLLAMA_NUM_PARALLEL=1
+Live `vulkaninfo --summary` reports:
+
+```text
+deviceName = Radeon 8060S Graphics (RADV STRIX_HALO)
+driverName = radv
+driverInfo = Mesa 26.0.6 - kisak-mesa PPA
 ```
 
-## ROCm Containers (Distrobox)
-| Container | Image | Status |
-|-----------|-------|--------|
-| rocm | rocm/dev-ubuntu-24.04:7.1-complete | Exited |
-| llama-rocm-7rc-rocwmma | kyuz0:rocm-7rc-rocwmma | Created |
-| llama-rocm-72 | kyuz0:rocm-7.2 | Exited |
-| llama-rocm-72-new | kyuz0:rocm-7.2 | Exited |
-| llama-rocm-644 | kyuz0:rocm-6.4.4 | Exited |
-| vllm-gfx1151 | kyuz0/vllm-therock-gfx1151 | Exited |
-| llama-vulkan-amdvlk | kyuz0:vulkan-amdvlk | Exited |
-| llama-vulkan-radv | kyuz0:vulkan-radv | Exited |
+No `amdvlk` package is installed. This is intentional. Earlier test sessions found that AMDVLK's ICD file could silently override RADV and create false pp-regression results.
 
-## Critical Finding
-ALL ROCm containers segfault on kernel 6.19.4. GPU is detected as "gfx1100 (0x1100)" instead of "gfx1151". This is a kernel 6.19.x regression affecting ROCm/HIP compatibility.
+## Benchmark Readiness
 
-Previously working on kernel 6.18.14.
+Before running or publishing new benchmarks, verify:
+
+```bash
+sudo systemctl enable --now tuned
+sudo tuned-adm profile accelerator-performance
+tuned-adm active
+vulkaninfo --summary 2>&1 | grep driverInfo
+cat /sys/class/drm/card*/device/pp_dpm_sclk
+dpkg -l | grep -E 'amdvlk|linux-firmware'
+```
+
+Expected state:
+
+- `tuned-adm active` shows `accelerator-performance`
+- RADV Mesa is 26.0.2+; current live system is 26.0.6
+- AMDVLK is absent
+- GPU clock has the asterisk on `2900Mhz`
+- linux-firmware is not `20251125`
+
+## ROCm Status
+
+ROCm is not "all broken" on kernel 6.19.x anymore. It works when these variables are set before ROCm/HIP commands:
+
+```bash
+export HSA_OVERRIDE_GFX_VERSION=11.5.1
+export HSA_ENABLE_SDMA=0
+```
+
+Current measured comparison from the guide:
+
+| Backend / Build | pp512 | tg128 | Notes |
+|-----------------|-------|-------|-------|
+| Vulkan RADV, llama.cpp b8460 | 1080 | 64.85 | Fastest measured short-context MoE path |
+| ROCm HIP, llama.cpp b8460, HSA fix | 1047 | 54.67 | Works, but slower tg on this workload |
+
+## Action Items Before New Tests
+
+1. Keep `tuned accelerator-performance` active before every benchmark run.
+2. Create a single benchmark dataset file before adding more runs.
+3. Treat existing March/April numbers as historical snapshots unless the same command is re-run under the verified May 2026 state.

@@ -107,7 +107,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 
 | Component | Spec |
 |-----------|------|
-| CPU | AMD Ryzen AI MAX+ 395 (32 cores / 64 threads, Zen 5) |
+| CPU | AMD Ryzen AI MAX+ 395 (16 cores / 32 threads, Zen 5) |
 | GPU | Radeon 8060S (gfx1151, RDNA 3.5, 40 CUs) |
 | RAM | 128GB unified LPDDR5X-8000 (~215 GB/s measured, 256 GB/s theoretical) |
 | NPU | RyzenAI-npu5 (XDNA 2) |
@@ -141,7 +141,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (Vulkan RADV). Spe
 
 ## Benchmark Results
 
-All benchmarks run on 2026-03-20, 2026-03-21, and 2026-04-26. System: Beelink GTR9 Pro, kernel 6.19.4, tuned accelerator-performance active.
+Benchmarks below were run on 2026-03-20, 2026-03-21, and 2026-04-26. Benchmark system: Beelink GTR9 Pro, kernel 6.19.4, Mesa RADV 26.0.2-26.0.6, AMDVLK removed, tuned `accelerator-performance` active for measured runs. Before running new benchmarks, verify `tuned-adm active`; the daemon can stop after reboot on some systems.
 
 ### Ollama Vulkan (RADV, Ollama 0.21.2)
 
@@ -608,7 +608,7 @@ tuned-adm active
 
 ### Step 4.2: Upgrade Mesa Vulkan Drivers
 
-The default Mesa on Ubuntu 24.04 is significantly slower. Upgrade to 26.0.2+:
+The default Mesa on Ubuntu 24.04 is significantly slower. Upgrade to Mesa 26.0.2 or newer. Current tested system: Mesa 26.0.6 from kisak-mesa PPA.
 
 ```bash
 sudo add-apt-repository ppa:kisak/kisak-mesa
@@ -620,7 +620,7 @@ Verify:
 
 ```bash
 vulkaninfo --summary 2>&1 | grep driverInfo
-# Expected: driverInfo = Mesa 26.0.5 - kisak-mesa PPA
+# Expected: driverInfo = Mesa 26.0.6 - kisak-mesa PPA
 ```
 
 > **Impact:** Mesa 25.2.8 to 26.0.1 gave **+9% prompt eval** (87 to 96 t/s). Mesa 26.0.1 to 26.0.2 gave an additional small improvement.
@@ -800,7 +800,7 @@ Prompt processing speed scales with prompt length due to GPU parallelism:
 
 ## Phase 7: ROCm with llama.cpp (Containers)
 
-For maximum prompt processing performance, use llama.cpp with ROCm via [kyuz0 containers](https://github.com/kyuz0/amd-strix-halo-toolboxes).
+For ROCm-specific workloads, batch processing, and long-context experiments, use llama.cpp with ROCm via [kyuz0 containers](https://github.com/kyuz0/amd-strix-halo-toolboxes). For short-context MoE inference, current measured results still favor Vulkan RADV.
 
 > **NOTE:** On kernel 6.19.x, ROCm requires `HSA_OVERRIDE_GFX_VERSION=11.5.1` and `HSA_ENABLE_SDMA=0` to work. Without these, it segfaults. See [ROCm on kernel 6.19.x](#rocm-on-kernel-619x-the-fix).
 
@@ -1204,12 +1204,12 @@ Based on community testing and our own findings:
 | **6.19.4** | **Works (HSA fix)** | **Works (HSA fix)** | **Unknown** | **Works** |
 
 **Key rules:**
-- Kernel 6.18.4+ has a fix that breaks ALL older ROCm versions
+- Kernel 6.18.4+ changed gfx1151 handling; use current ROCm builds/containers instead of old ROCm RC builds
 - Kernel 6.19.x misidentifies gfx1151 as gfx1100, fixable with `HSA_OVERRIDE_GFX_VERSION=11.5.1`
 - linux-firmware-20251125 breaks ROCm regardless of kernel
 - linux-firmware-20260110+ is safe
 
-> **Our current recommendation (March 2026):** Kernel 6.19.x works for both Vulkan and ROCm (ROCm requires `HSA_OVERRIDE_GFX_VERSION=11.5.1`). Kernel 6.18.6-6.18.14 works without the HSA workaround.
+> **Current recommendation (May 2026):** Kernel 6.19.x works for both Vulkan and ROCm (ROCm requires `HSA_OVERRIDE_GFX_VERSION=11.5.1`). Kernel 6.18.6-6.18.14 works without the HSA workaround. Before publishing benchmark numbers, also verify Mesa, AMDVLK removal, GPU clock, and `tuned` status.
 
 ---
 
@@ -1218,7 +1218,7 @@ Based on community testing and our own findings:
 After completing setup, verify each item:
 
 - [ ] `free -h` shows ~124GB total RAM
-- [ ] `vulkaninfo --summary` shows RADV Mesa 26.0.2+
+- [ ] `vulkaninfo --summary` shows RADV Mesa 26.0.2+ (current tested: 26.0.6)
 - [ ] `tuned-adm active` shows `accelerator-performance`
 - [ ] `cat /sys/class/drm/card*/device/pp_dpm_sclk` shows 2900Mhz with asterisk
 - [ ] `cat /sys/module/ttm/parameters/pages_limit` shows 31457280
@@ -1408,14 +1408,14 @@ All current Strix Halo mini PCs use the same AMD Ryzen AI MAX+ 395 APU with 128G
 
 | Feature | Linux (recommended) | Windows |
 |---------|-------------------|---------|
-| LLM performance | Baseline (fastest) | ~20-40% slower |
-| Max model size | ~120 GB | ~64 GB (known limitation) |
-| ROCm/HIP | Supported (kernel 6.18.x) | Very limited |
+| LLM performance | Baseline (fastest) | Usually lower; exact delta still needs same-machine testing |
+| Max model size | ~120 GB usable GPU memory via GTT | Up to 96GB VGM on 128GB systems; 109B/128B demos exist, not yet tested here |
+| ROCm/HIP | Supported (6.19.x requires HSA override) | Very limited; Vulkan/Ollama/LM Studio path is more practical |
 | vLLM serving | Works | Not supported |
 | Image generation | Works (ComfyUI) | Limited |
 | Setup effort | Higher (this guide helps) | Lower (but slower) |
 
-> Linux is strongly recommended for Strix Halo LLM work. Windows works for casual use with Ollama but leaves significant performance on the table.
+> Linux is strongly recommended for Strix Halo LLM work because it is the only path we have measured deeply and it unlocks ROCm/vLLM. Windows works for casual Vulkan-based use with Ollama or LM Studio, but this guide has not yet measured a same-machine Windows vs Linux comparison.
 
 ---
 
@@ -1519,7 +1519,7 @@ Yes. Qwen3.6-35B-A3B runs at 64 t/s via llama-server and is comparable to GPT-4o
 <details>
 <summary><strong>Do I need Linux? Can I use Windows?</strong></summary>
 
-Linux (Ubuntu 24.04) gives the best performance and is the only way to use ROCm. Windows works for basic inference via Ollama with Vulkan, and AMD's Adrenalin 25.8.1+ drivers added Variable Graphics Memory support for up to 96GB VGM. However, Windows performance is typically 10-20% lower and community tooling is less mature.
+Linux (Ubuntu 24.04) gives the best-tested performance and is the only practical path for ROCm/vLLM today. Windows works for Vulkan-based inference via Ollama/LM Studio, and AMD's Adrenalin 25.8.1+ drivers added Variable Graphics Memory support for up to 96GB VGM. We have not yet run a same-machine Windows vs Linux head-to-head, so treat Windows performance deltas as unverified until that test is done.
 
 </details>
 
@@ -1542,8 +1542,8 @@ The Mac Studio M4 Max (128GB) costs $3,699 and gets ~100 t/s via MLX with ~546 G
 
 Common causes:
 1. **tuned not running** -- Run `tuned-adm active`. Should show `accelerator-performance`. This alone is worth +5-8%.
-2. **Old Mesa drivers** -- Check `vulkaninfo --summary | grep driverInfo`. Should be Mesa 26.0.2+.
-3. **Using Ollama instead of llama-bench** -- Ollama has ~8% overhead. The 87 t/s number is via llama-bench direct.
+2. **Old Mesa drivers** -- Check `vulkaninfo --summary | grep driverInfo`. Should be Mesa 26.0.2+; current tested system is Mesa 26.0.6.
+3. **Using Ollama instead of llama-bench** -- Qwen3.6 is ~30% slower through Ollama 0.21.2 than direct llama-bench on the current data. The 87 t/s number is via llama-bench direct.
 4. **GPU clock stuck low** -- Check `cat /sys/class/drm/card*/device/pp_dpm_sclk`. Should show 2900Mhz with asterisk.
 5. **Wrong BIOS VRAM setting** -- Check `free -h`. Should show ~124GB. If only 31GB, set UMA Frame Buffer to 512MB in BIOS.
 6. **Different model/quantization** -- The 87 t/s is specifically Qwen3-Coder-30B-A3B UD-Q4_K_XL via RADV. Larger or denser models are slower.
@@ -1591,7 +1591,7 @@ Yes, with limitations. QLoRA fine-tuning of 7B-30B models works via kyuz0's [fin
 - [AMD](https://www.amd.com/en/developer/resources/technical-articles/2026/how-to-run-a-one-trillion-parameter-llm-locally-an-amd.html) -- Trillion-parameter LLM clustering article
 - [Lychee-Technology](https://github.com/Lychee-Technology/llama-cpp-for-strix-halo) -- Pre-built llama.cpp binaries for gfx1151
 - [kisak-mesa PPA](https://launchpad.net/~kisak/+archive/ubuntu/kisak-mesa) -- Latest Mesa drivers for Ubuntu
-- [GPUOpen-Drivers/AMDVLK](https://github.com/GPUOpen-Drivers/AMDVLK) -- AMD open-source Vulkan driver
+- [GPUOpen-Drivers/AMDVLK](https://github.com/GPUOpen-Drivers/AMDVLK) -- Discontinued AMD Vulkan driver; kept here only as context for the ICD hijacking issue
 
 ---
 
