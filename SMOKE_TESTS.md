@@ -4,6 +4,40 @@ This file records short validation runs before larger benchmark campaigns. Smoke
 
 ## 2026-05-02 Smoke Test
 
+### Clean Rerun Verdict
+
+**The clean rerun is valid as smoke-test evidence. Do not promote it to headline benchmark data until the same commands are run as part of a controlled benchmark campaign.**
+
+After stopping background media/ffmpeg, Zoom, the `ubuntu-zoom` VM, and pausing RustDesk user processes, the same direct llama-bench checks recovered from the polluted 76-52 t/s range to the expected 95-62 t/s range.
+
+This confirms that the earlier low results were caused by background load, not a RADV, Mesa, or llama.cpp regression.
+
+### Clean Rerun Results
+
+| Build | Model | Quant | pp512 | tg128 | Interpretation |
+|-------|-------|-------|-------|-------|----------------|
+| b8460 / b1c70e2e5 | Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1303.32 | 95.39 | Above the current 87 t/s headline; needs controlled rerun before updating public claims |
+| b8933 / dcad77cc3 | Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1317.84 | 95.46 | Matches b8460 on tg and slightly improves pp |
+| b8933 / dcad77cc3 | Qwen3.6 35B-A3B | UD-Q4_K_M | 1068.15 | 62.11 | Restores expected UD performance after polluted run |
+| b8460 / b1c70e2e5 | Qwen3.6 35B-A3B | UD-Q4_K_M | 1098.13 | 62.02 | b8460 and b8933 align on tg |
+
+Ollama clean smoke:
+
+| Tool | Model | Prompt Tokens | Prompt Eval | Generation | Interpretation |
+|------|-------|---------------|-------------|------------|----------------|
+| Ollama 0.21.2 | Qwen3.6 35B-A3B | 24 | 174.82 t/s | 49.08 t/s | Functional easy-path smoke; not a controlled benchmark because the model still emitted thinking text |
+
+### What Was Stopped
+
+- `background-media.service`: stopped via user systemd. This removed the high-CPU `ffmpeg` virtual webcam process and host Zoom process.
+- `ubuntu-zoom`: shut down cleanly via libvirt. This removed the 16GB / 8-vCPU VM load.
+- RustDesk user processes: paused with `SIGSTOP` because the root system service respawned them and system-level stop needs sudo. Resume with `kill -CONT <pid>` or restart the RustDesk service.
+- GNOME System Monitor: closed to remove extra desktop load.
+
+### Polluted First Run Verdict
+
+The first run below is retained as a useful warning.
+
 ### Verdict
 
 **Do not publish these numbers as benchmark results.**
