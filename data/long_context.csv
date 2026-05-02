@@ -1,0 +1,16 @@
+date,status,source,system,backend,driver,tool,model,quant,context_tokens,metric,tps,notes
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,Vulkan,AMDVLK,llama.cpp,gpt-oss-120b,,2048,tg32,50.05,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,Vulkan,AMDVLK,llama.cpp,gpt-oss-120b,,4096,tg32,46.11,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,Vulkan,AMDVLK,llama.cpp,gpt-oss-120b,,8192,tg32,43.15,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,Vulkan,AMDVLK,llama.cpp,gpt-oss-120b,,16384,tg32,38.46,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,Vulkan,AMDVLK,llama.cpp,gpt-oss-120b,,32768,tg32,31.54,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,ROCm,HIP,llama.cpp,gpt-oss-120b,,2048,tg32,46.56,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,ROCm,HIP,llama.cpp,gpt-oss-120b,,4096,tg32,38.25,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,ROCm,HIP,llama.cpp,gpt-oss-120b,,8192,tg32,32.65,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,ROCm,HIP,llama.cpp,gpt-oss-120b,,16384,tg32,25.50,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,ROCm,HIP,llama.cpp,gpt-oss-120b,,32768,tg32,17.82,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,ROCm,rocWMMA-tuned,llama.cpp,gpt-oss-120b,,2048,tg32,48.97,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,ROCm,rocWMMA-tuned,llama.cpp,gpt-oss-120b,,4096,tg32,45.42,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,ROCm,rocWMMA-tuned,llama.cpp,gpt-oss-120b,,8192,tg32,43.55,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,ROCm,rocWMMA-tuned,llama.cpp,gpt-oss-120b,,16384,tg32,40.91,lhl reference data
+2026-03-20,external-reference,lhl/strix-halo-testing,Framework Desktop 13,ROCm,rocWMMA-tuned,llama.cpp,gpt-oss-120b,,32768,tg32,36.43,lhl reference data
