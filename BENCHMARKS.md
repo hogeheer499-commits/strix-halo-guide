@@ -167,6 +167,15 @@ export HSA_ENABLE_SDMA=0
 
 ROCm remains relevant for batch processing, hipBLASLt, vLLM experiments, and long-context/rocWMMA work. For current short-context MoE inference, Vulkan RADV is faster on the measured data.
 
+### 2026-05-03 ROCm HIP Spot Check
+
+| Model | Quant | ROCm pp512 | ROCm tg128 | Vulkan Reference |
+|-------|-------|------------|------------|------------------|
+| Qwen3.6 35B-A3B | UD-Q4_K_M | 1186.19 | 52.69 | Vulkan b9010: 1108.93 pp, 63.06 tg |
+| Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1285.32 | 73.69 | Vulkan b9010: 1346.27 pp, 97.24 tg |
+
+The local HIP build is b8460 and requires `LD_LIBRARY_PATH=/usr/local/lib/ollama/rocm` plus the HSA override. It emitted a missing `TensileLibrary_lazy_gfx1151.dat` warning, so treat this as a ROCm HIP baseline, not a tuned rocBLASLt/rocWMMA result.
+
 ## Current Takeaways
 
 1. Direct llama.cpp with Vulkan RADV is the fastest measured short-context path for Qwen MoE models.

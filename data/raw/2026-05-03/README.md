@@ -152,3 +152,14 @@ Detailed raw output is under `filled-kv-decode-real-corpus/`.
 | Qwen3-Next 80B-A3B | 63,507 | 504.53 t/s | 37.75 t/s | 129.40 s | no |
 
 Verdict: real guide/documentation text slows prompt ingest versus synthetic repeated-token prompts, but decode speed after the cache is filled stays nearly unchanged.
+
+## ROCm HIP Spot Check
+
+Detailed raw output is under `rocm-b8460-current/`.
+
+| Model | Quant | pp512 | tg128 | Vulkan Reference |
+|-------|-------|-------|-------|------------------|
+| Qwen3.6 35B-A3B | UD-Q4_K_M | 1186.19 | 52.69 | Vulkan b9010: 1108.93 pp, 63.06 tg |
+| Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1285.32 | 73.69 | Vulkan b9010: 1346.27 pp, 97.24 tg |
+
+Verdict: ROCm HIP is usable with the HSA override and local ROCm runtime path, but it remains behind Vulkan RADV for short-context generation on these MoE models.
