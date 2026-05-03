@@ -454,6 +454,17 @@ Filled-KV decode through `llama-server` on the same stack:
 
 > **KV-cache takeaway:** q4_0/q8_0 KV improves Qwen3.6 decode speed after the context is filled, but slows prompt ingestion enough that full first-turn wall time is worse than f16 in this benchmark. Use f16 for first-turn long prompts. Consider q4_0/q8_0 only when memory pressure or long continued generation matters more than prompt-ingest speed. The 128K f16 rows completed without truncation. Raw data: `data/filled_kv_decode.csv`, `data/raw/2026-05-03/filled-kv-decode/`, and `data/raw/2026-05-03/filled-kv-decode-128k/`.
 
+Real-corpus 64K check using this guide's own documentation files:
+
+| Model | Prompt Type | Tokens | Prompt Eval | Decode After Fill | Wall Time |
+|-------|-------------|--------|-------------|-------------------|-----------|
+| Qwen3.6 35B-A3B | synthetic repeated token | 65,533 | 932 t/s | 41.4 t/s | 73.5 s |
+| Qwen3.6 35B-A3B | real guide corpus | 65,120 | 706 t/s | 40.8 t/s | 95.4 s |
+| Qwen3-Next 80B-A3B | synthetic repeated token | 65,532 | 753 t/s | 38.2 t/s | 90.5 s |
+| Qwen3-Next 80B-A3B | real guide corpus | 63,507 | 505 t/s | 37.8 t/s | 129.4 s |
+
+> **Real-corpus takeaway:** synthetic repeated-token prompts are optimistic for prompt ingest. Real documentation text slowed prompt eval by 24-33%, while decode-after-fill barely changed. Raw data: `data/raw/2026-05-03/filled-kv-decode-real-corpus/`.
+
 Based on [lhl's measurements](https://github.com/lhl/strix-halo-testing) with gpt-oss-120b (tg32):
 
 | Context | Vulkan AMDVLK | ROCm Standard | ROCm rocWMMA-tuned |
@@ -1675,6 +1686,7 @@ Found something that's wrong, outdated, or missing?
 - **Local long-context prompt scaling:** Qwen3.6 processed 64K prompts at **740 t/s** and Qwen3-Next 80B processed 64K prompts at **544 t/s** on Vulkan RADV.
 - **Filled-KV decode:** Qwen3.6 generated **41.4 t/s after a 64K f16 prompt**; q4_0 KV raised decode to **51.3 t/s** but increased total request time from 73.5 s to 90.0 s because prompt ingest slowed.
 - **128K filled-KV decode:** Qwen3.6 generated **32.2 t/s after 128K** and Qwen3-Next 80B generated **29.1 t/s after 128K**, both without truncation.
+- **Real-corpus 64K check:** using this guide's own documentation as the prompt, Qwen3.6 decoded at **40.8 t/s after ~65K tokens** and Qwen3-Next 80B at **37.8 t/s after ~64K tokens**. Prompt ingest was slower than synthetic prompts, but decode-after-fill barely changed.
 - Updated headline range from **65-87 t/s** to **65-97 t/s**. The previous 87.11 t/s result remains in `data/benchmarks.csv` as historical-local data.
 - Added raw benchmark output under `data/raw/2026-05-03/` so the new headline can be audited.
 

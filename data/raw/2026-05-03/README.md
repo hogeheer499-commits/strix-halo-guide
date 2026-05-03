@@ -141,3 +141,14 @@ Detailed raw output is under `filled-kv-decode-128k/`.
 | Qwen3-Next 80B-A3B | 128K | f16 | 497.79 t/s | 29.12 t/s | 268.54 s | no |
 
 Verdict: both tested MoE models complete a 128K prompt plus 128 generated tokens without truncation on the current Vulkan RADV stack.
+
+### Real-Corpus 64K Follow-Up
+
+Detailed raw output is under `filled-kv-decode-real-corpus/`.
+
+| Model | Tokens Evaluated | Prompt Eval | Decode After Fill | Wall Time | Truncated |
+|-------|------------------|-------------|-------------------|-----------|-----------|
+| Qwen3.6 35B-A3B | 65,120 | 706.21 t/s | 40.84 t/s | 95.41 s | no |
+| Qwen3-Next 80B-A3B | 63,507 | 504.53 t/s | 37.75 t/s | 129.40 s | no |
+
+Verdict: real guide/documentation text slows prompt ingest versus synthetic repeated-token prompts, but decode speed after the cache is filled stays nearly unchanged.
