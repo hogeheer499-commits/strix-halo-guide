@@ -79,14 +79,15 @@ export HSA_ENABLE_SDMA=0
 6. **Continuous batching changes the serving story:** the 2026-05-03 `llama-server` Qwen3.6 test reached 162 t/s aggregate at `-np 8` with ~0.31 s TTFT. `-np 16` plateaued at 166 t/s while per-request speed fell to 10.4 t/s.
 7. **Qwen3-Coder serving has a hard sweet spot:** the 2026-05-03 `llama-server` Qwen3-Coder test reached 173 t/s aggregate at `-np 8`, then regressed to 130 t/s at `-np 16`.
 8. **Local long-prompt ingestion is strong through 64K:** Qwen3.6 processed 64K prompts at 740 t/s; Qwen3-Next 80B processed 64K prompts at 544 t/s. This is prompt-processing scaling, not filled-KV decode speed.
-9. **KV quantization is not a free speed win:** on Qwen3.6 64K filled-context requests, q4_0 KV raised decode from 41.4 to 51.3 t/s but slowed prompt ingestion enough that wall time rose from 73.5 s to 90.0 s.
-10. **Power still needs proper instrumentation:** the available powercap energy fields were empty in this environment, so do not publish tokens-per-watt until a reliable wall meter, AMD SVI telemetry, or another validated source is available.
-11. **Live system readiness matters:** The 2026-05-01 audit now confirms Mesa 26.0.6, Ollama 0.21.2, AMDVLK removed, GPU clock correct, linux-firmware safe, and `tuned accelerator-performance` active. Keep those checks in the benchmark preflight.
+9. **128K filled-context requests work:** Qwen3.6 generated 32.2 t/s after a 128K f16 prompt; Qwen3-Next 80B generated 29.1 t/s after a 128K f16 prompt. Neither truncated.
+10. **KV quantization is not a free speed win:** on Qwen3.6 64K filled-context requests, q4_0 KV raised decode from 41.4 to 51.3 t/s but slowed prompt ingestion enough that wall time rose from 73.5 s to 90.0 s.
+11. **Power still needs proper instrumentation:** the available powercap energy fields were empty in this environment, so do not publish tokens-per-watt until a reliable wall meter, AMD SVI telemetry, or another validated source is available.
+12. **Live system readiness matters:** The 2026-05-01 audit now confirms Mesa 26.0.6, Ollama 0.21.2, AMDVLK removed, GPU clock correct, linux-firmware safe, and `tuned accelerator-performance` active. Keep those checks in the benchmark preflight.
 
 ## Next Research Tasks
 
 1. Build a single CSV/JSON benchmark corpus for all existing data.
 2. Re-run a small smoke benchmark under the verified May 2026 state to confirm Mesa 26.0.6 did not change headline numbers.
 3. Extend the new multi-user `llama-server` baseline with reliable power draw and a vLLM comparison.
-4. Extend filled-KV decode tests to 128K and compare RADV against ROCm HIP / rocWMMA where practical.
+4. Compare filled-KV decode against ROCm HIP / rocWMMA where practical, and add a real-corpus long-prompt check.
 5. Run same-model comparisons against Mac Studio, DGX Spark, and RTX cards only when exact model/quant/backend details are available.

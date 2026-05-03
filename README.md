@@ -447,10 +447,12 @@ Filled-KV decode through `llama-server` on the same stack:
 | Qwen3.6 35B-A3B | 32K | q4_0 | 1049 t/s | 56.0 t/s | 33.6 s |
 | Qwen3.6 35B-A3B | 64K | f16 | 932 t/s | 41.4 t/s | 73.5 s |
 | Qwen3.6 35B-A3B | 64K | q4_0 | 750 t/s | 51.3 t/s | 90.0 s |
+| Qwen3.6 35B-A3B | 128K | f16 | 617 t/s | 32.2 t/s | 216.7 s |
 | Qwen3-Next 80B-A3B | 32K | f16 | 973 t/s | 46.2 t/s | 36.5 s |
 | Qwen3-Next 80B-A3B | 64K | f16 | 753 t/s | 38.2 t/s | 90.5 s |
+| Qwen3-Next 80B-A3B | 128K | f16 | 498 t/s | 29.1 t/s | 268.5 s |
 
-> **KV-cache takeaway:** q4_0/q8_0 KV improves Qwen3.6 decode speed after the context is filled, but slows prompt ingestion enough that full first-turn wall time is worse than f16 in this benchmark. Use f16 for first-turn long prompts. Consider q4_0/q8_0 only when memory pressure or long continued generation matters more than prompt-ingest speed. Raw data: `data/filled_kv_decode.csv` and `data/raw/2026-05-03/filled-kv-decode/`.
+> **KV-cache takeaway:** q4_0/q8_0 KV improves Qwen3.6 decode speed after the context is filled, but slows prompt ingestion enough that full first-turn wall time is worse than f16 in this benchmark. Use f16 for first-turn long prompts. Consider q4_0/q8_0 only when memory pressure or long continued generation matters more than prompt-ingest speed. The 128K f16 rows completed without truncation. Raw data: `data/filled_kv_decode.csv`, `data/raw/2026-05-03/filled-kv-decode/`, and `data/raw/2026-05-03/filled-kv-decode-128k/`.
 
 Based on [lhl's measurements](https://github.com/lhl/strix-halo-testing) with gpt-oss-120b (tg32):
 
@@ -1672,6 +1674,7 @@ Found something that's wrong, outdated, or missing?
 - **Multi-user Qwen3-Coder serving:** `llama-server` continuous batching reached **173 t/s aggregate** at `-np 8`; `-np 16` regressed to 130 t/s aggregate.
 - **Local long-context prompt scaling:** Qwen3.6 processed 64K prompts at **740 t/s** and Qwen3-Next 80B processed 64K prompts at **544 t/s** on Vulkan RADV.
 - **Filled-KV decode:** Qwen3.6 generated **41.4 t/s after a 64K f16 prompt**; q4_0 KV raised decode to **51.3 t/s** but increased total request time from 73.5 s to 90.0 s because prompt ingest slowed.
+- **128K filled-KV decode:** Qwen3.6 generated **32.2 t/s after 128K** and Qwen3-Next 80B generated **29.1 t/s after 128K**, both without truncation.
 - Updated headline range from **65-87 t/s** to **65-97 t/s**. The previous 87.11 t/s result remains in `data/benchmarks.csv` as historical-local data.
 - Added raw benchmark output under `data/raw/2026-05-03/` so the new headline can be audited.
 
