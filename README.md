@@ -213,7 +213,19 @@ Single-user `llama-bench` tells you the ceiling for one stream. For a real local
 
 > **Takeaway:** continuous batching makes Strix Halo look much stronger as a local API server than single-user tg numbers suggest. `-np 8` delivers about **2.7x** the `-np 1` aggregate throughput while keeping TTFT around 0.3 seconds. `-np 16` works with no errors in this test, but aggregate throughput barely improves while per-user speed drops sharply.
 
-Raw data: `data/multi_user.csv` and `data/raw/2026-05-03/multi-user/`.
+**Qwen3-Coder 30B-A3B** (UD-Q4_K_XL, Vulkan RADV, llama.cpp b9010, continuous batching, 4096 context tokens per slot):
+
+| `-np` | Concurrent Requests | Aggregate Generation | Avg per Request | Mean TTFT | Mean ITL | Notes |
+|-------|---------------------|----------------------|-----------------|-----------|----------|-------|
+| 1 | 1 | 90.20 t/s | 90.20 t/s | 0.079 s | 10.6 ms | Server/API baseline |
+| 2 | 2 | 121.65 t/s | 60.83 t/s | 0.133 s | 15.5 ms | Good scaling |
+| 4 | 4 | 157.41 t/s | 39.36 t/s | 0.207 s | 24.0 ms | Strong batching gain |
+| 8 | 8 | **173.16 t/s** | 21.65 t/s | 0.382 s | 43.5 ms | Practical sweet spot |
+| 16 | 16 | 129.56 t/s | 8.10 t/s | 0.571 s | 119.9 ms | Regression |
+
+> **Coding server takeaway:** `-np 8` is also the best measured setting for Qwen3-Coder, but here `-np 16` is actively worse. More parallel slots are not automatically better.
+
+Raw data: `data/multi_user.csv`, `data/raw/2026-05-03/multi-user/`, and `data/raw/2026-05-03/multi-user-coder/`.
 
 ### llama-bench Direct -- Latest llama.cpp (b9010 and b8460) vs kyuz0 Containers (b8298)
 
@@ -417,6 +429,15 @@ Based on our measurements and [lhl's detailed testing](https://github.com/lhl/st
 > **Apples-to-apples (gpt-oss-120b, same model, both platforms):** Strix Halo gets 50-53 t/s vs DGX Spark's 52-56 t/s -- **within 5-10%** on the same workload. At Beelink's current official price, the price gap to DGX Spark is now only about $300 ($4,399 vs $4,699), although other Strix Halo systems remain cheaper. On smaller MoE models (Qwen3-30B), Strix Halo hits 97 t/s. The DGX Spark wins on prompt processing (3-5X faster) and long context (23%+ faster at 32K). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
 
 ### Long Context Performance
+
+Local prompt-processing scaling on the current b9010 Vulkan RADV stack:
+
+| Model | 4K pp | 8K pp | 16K pp | 32K pp | 64K pp | Notes |
+|-------|-------|-------|--------|--------|--------|-------|
+| Qwen3.6 35B-A3B UD-Q4_K_M | 1082 | 1089 | 1025 | 909 | 740 | 68% of 4K speed retained at 64K |
+| Qwen3-Next 80B-A3B UD-Q4_K_XL | 742 | 736 | 700 | 645 | 544 | 73% of 4K speed retained at 64K |
+
+> **Local result:** long-prompt ingestion remains usable through 64K on both tested MoE models. This table measures prompt processing, not generation after a fully occupied KV cache. Raw data: `data/long_context.csv` and `data/raw/2026-05-03/long-context/`.
 
 Based on [lhl's measurements](https://github.com/lhl/strix-halo-testing) with gpt-oss-120b (tg32):
 
@@ -1635,6 +1656,8 @@ Found something that's wrong, outdated, or missing?
 - **Qwen3.6 UD rerun:** controlled b9010 Vulkan RADV rerun averaged **63.06 t/s** generation and 1109 pp512 across two separate `-r 20` runs. The old "UD costs 13%" warning was not reproduced on the current stack.
 - **Ollama Qwen3.6 rerun:** controlled API test averaged **50.5 t/s** warm generation across 10 runs, replacing the older 45-46 t/s easy-path claim. Current Qwen3.6 Ollama overhead is about 20-21%, not ~30%.
 - **Multi-user Qwen3.6 serving:** `llama-server` continuous batching reached **162 t/s aggregate** at `-np 8` with ~0.31 s TTFT, then plateaued at 166 t/s at `-np 16`.
+- **Multi-user Qwen3-Coder serving:** `llama-server` continuous batching reached **173 t/s aggregate** at `-np 8`; `-np 16` regressed to 130 t/s aggregate.
+- **Local long-context prompt scaling:** Qwen3.6 processed 64K prompts at **740 t/s** and Qwen3-Next 80B processed 64K prompts at **544 t/s** on Vulkan RADV.
 - Updated headline range from **65-87 t/s** to **65-97 t/s**. The previous 87.11 t/s result remains in `data/benchmarks.csv` as historical-local data.
 - Added raw benchmark output under `data/raw/2026-05-03/` so the new headline can be audited.
 

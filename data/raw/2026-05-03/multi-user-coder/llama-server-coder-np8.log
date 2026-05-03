@@ -1,0 +1,829 @@
+build_info: b9010-d05fe1d7d
+system_info: n_threads = 16 (n_threads_batch = 16) / 32 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX_VNNI = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | AVX512 = 1 | AVX512_VBMI = 1 | AVX512_VNNI = 1 | AVX512_BF16 = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 |
+Running without SSL
+init: using 31 threads for HTTP server
+start: binding port with default address family
+main: loading model
+srv    load_model: loading model '/home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf'
+common_init_result: fitting params to device memory, for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on
+common_params_fit_impl: getting device memory data for initial parameters:
+common_memory_breakdown_print: | memory breakdown [MiB]                         |  total     free     self   model   context   compute    unaccounted |
+common_memory_breakdown_print: |   - Vulkan0 (8060S Graphics (RADV STRIX_HALO)) | 131584 = 129919 + (20051 = 16674 +    3072 +     304) +      -18386 |
+common_memory_breakdown_print: |   - Host                                       |                      182 =   166 +       0 +      16                |
+common_params_fit_impl: projected to use 20051 MiB of device memory vs. 129919 MiB of free device memory
+common_params_fit_impl: will leave 109868 >= 1024 MiB of free device memory, no changes needed
+common_fit_params: successfully fit params to free device memory
+common_fit_params: fitting params to free memory took 0.14 seconds
+llama_model_load_from_file_impl: using device Vulkan0 (Radeon 8060S Graphics (RADV STRIX_HALO)) (0000:c6:00.0) - 129924 MiB free
+llama_model_loader: loaded meta data with 44 key-value pairs and 579 tensors from /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf (version GGUF V3 (latest))
+llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+llama_model_loader: - kv   0:                       general.architecture str              = qwen3moe
+llama_model_loader: - kv   1:                               general.type str              = model
+llama_model_loader: - kv   2:                               general.name str              = Qwen3-Coder-30B-A3B-Instruct
+llama_model_loader: - kv   3:                           general.finetune str              = Instruct
+llama_model_loader: - kv   4:                           general.basename str              = Qwen3-Coder-30B-A3B-Instruct
+llama_model_loader: - kv   5:                       general.quantized_by str              = Unsloth
+llama_model_loader: - kv   6:                         general.size_label str              = 30B-A3B
+llama_model_loader: - kv   7:                            general.license str              = apache-2.0
+llama_model_loader: - kv   8:                       general.license.link str              = https://huggingface.co/Qwen/Qwen3-Cod...
+llama_model_loader: - kv   9:                           general.repo_url str              = https://huggingface.co/unsloth
+llama_model_loader: - kv  10:                   general.base_model.count u32              = 1
+llama_model_loader: - kv  11:                  general.base_model.0.name str              = Qwen3 Coder 30B A3B Instruct
+llama_model_loader: - kv  12:          general.base_model.0.organization str              = Qwen
+llama_model_loader: - kv  13:              general.base_model.0.repo_url str              = https://huggingface.co/Qwen/Qwen3-Cod...
+llama_model_loader: - kv  14:                               general.tags arr[str,2]       = ["unsloth", "text-generation"]
+llama_model_loader: - kv  15:                       qwen3moe.block_count u32              = 48
+llama_model_loader: - kv  16:                    qwen3moe.context_length u32              = 262144
+llama_model_loader: - kv  17:                  qwen3moe.embedding_length u32              = 2048
+llama_model_loader: - kv  18:               qwen3moe.feed_forward_length u32              = 5472
+llama_model_loader: - kv  19:              qwen3moe.attention.head_count u32              = 32
+llama_model_loader: - kv  20:           qwen3moe.attention.head_count_kv u32              = 4
+llama_model_loader: - kv  21:                    qwen3moe.rope.freq_base f32              = 10000000.000000
+llama_model_loader: - kv  22:  qwen3moe.attention.layer_norm_rms_epsilon f32              = 0.000001
+llama_model_loader: - kv  23:                 qwen3moe.expert_used_count u32              = 8
+llama_model_loader: - kv  24:              qwen3moe.attention.key_length u32              = 128
+llama_model_loader: - kv  25:            qwen3moe.attention.value_length u32              = 128
+llama_model_loader: - kv  26:                      qwen3moe.expert_count u32              = 128
+llama_model_loader: - kv  27:        qwen3moe.expert_feed_forward_length u32              = 768
+llama_model_loader: - kv  28: qwen3moe.expert_shared_feed_forward_length u32              = 0
+llama_model_loader: - kv  29:                       tokenizer.ggml.model str              = gpt2
+llama_model_loader: - kv  30:                         tokenizer.ggml.pre str              = qwen2
+llama_model_loader: - kv  31:                      tokenizer.ggml.tokens arr[str,151936]  = ["!", "\"", "#", "$", "%", "&", "'", ...
+llama_model_loader: - kv  32:                  tokenizer.ggml.token_type arr[i32,151936]  = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+llama_model_loader: - kv  33:                      tokenizer.ggml.merges arr[str,151387]  = ["Ġ Ġ", "ĠĠ ĠĠ", "i n", "Ġ t",...
+llama_model_loader: - kv  34:                tokenizer.ggml.eos_token_id u32              = 151645
+llama_model_loader: - kv  35:            tokenizer.ggml.padding_token_id u32              = 151654
+llama_model_loader: - kv  36:               tokenizer.ggml.add_bos_token bool             = false
+llama_model_loader: - kv  37:                    tokenizer.chat_template str              = {# Copyright 2025-present Unsloth. Ap...
+llama_model_loader: - kv  38:               general.quantization_version u32              = 2
+llama_model_loader: - kv  39:                          general.file_type u32              = 15
+llama_model_loader: - kv  40:                      quantize.imatrix.file str              = Qwen3-Coder-30B-A3B-Instruct-GGUF/ima...
+llama_model_loader: - kv  41:                   quantize.imatrix.dataset str              = unsloth_calibration_Qwen3-Coder-30B-A...
+llama_model_loader: - kv  42:             quantize.imatrix.entries_count u32              = 384
+llama_model_loader: - kv  43:              quantize.imatrix.chunks_count u32              = 154
+llama_model_loader: - type  f32:  241 tensors
+llama_model_loader: - type q4_K:  292 tensors
+llama_model_loader: - type q5_K:   35 tensors
+llama_model_loader: - type q6_K:   11 tensors
+print_info: file format = GGUF V3 (latest)
+print_info: file type   = Q4_K - Medium
+print_info: file size   = 16.45 GiB (4.63 BPW)
+load: 0 unused tokens
+load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+load: printing all EOG tokens:
+load:   - 128247 ('</s>')
+load:   - 151643 ('<|endoftext|>')
+load:   - 151645 ('<|im_end|>')
+load:   - 151662 ('<|fim_pad|>')
+load:   - 151663 ('<|repo_name|>')
+load:   - 151664 ('<|file_sep|>')
+load: special tokens cache size = 27
+load: token to piece cache size = 0.9311 MB
+print_info: arch                  = qwen3moe
+print_info: vocab_only            = 0
+print_info: no_alloc              = 0
+print_info: n_ctx_train           = 262144
+print_info: n_embd                = 2048
+print_info: n_embd_inp            = 2048
+print_info: n_layer               = 48
+print_info: n_head                = 32
+print_info: n_head_kv             = 4
+print_info: n_rot                 = 128
+print_info: n_swa                 = 0
+print_info: is_swa_any            = 0
+print_info: n_embd_head_k         = 128
+print_info: n_embd_head_v         = 128
+print_info: n_gqa                 = 8
+print_info: n_embd_k_gqa          = 512
+print_info: n_embd_v_gqa          = 512
+print_info: f_norm_eps            = 0.0e+00
+print_info: f_norm_rms_eps        = 1.0e-06
+print_info: f_clamp_kqv           = 0.0e+00
+print_info: f_max_alibi_bias      = 0.0e+00
+print_info: f_logit_scale         = 0.0e+00
+print_info: f_attn_scale          = 0.0e+00
+print_info: n_ff                  = 5472
+print_info: n_expert              = 128
+print_info: n_expert_used         = 8
+print_info: n_expert_groups       = 0
+print_info: n_group_used          = 0
+print_info: causal attn           = 1
+print_info: pooling type          = -1
+print_info: rope type             = 2
+print_info: rope scaling          = linear
+print_info: freq_base_train       = 10000000.0
+print_info: freq_scale_train      = 1
+print_info: n_ctx_orig_yarn       = 262144
+print_info: rope_yarn_log_mul     = 0.0000
+print_info: rope_finetuned        = unknown
+print_info: model type            = 30B.A3B
+print_info: model params          = 30.53 B
+print_info: general.name          = Qwen3-Coder-30B-A3B-Instruct
+print_info: n_ff_exp              = 768
+print_info: vocab type            = BPE
+print_info: n_vocab               = 151936
+print_info: n_merges              = 151387
+print_info: BOS token             = 11 ','
+print_info: EOS token             = 151645 '<|im_end|>'
+print_info: EOT token             = 151645 '<|im_end|>'
+print_info: PAD token             = 151654 '<|vision_pad|>'
+print_info: LF token              = 198 'Ċ'
+print_info: FIM PRE token         = 151659 '<|fim_prefix|>'
+print_info: FIM SUF token         = 151661 '<|fim_suffix|>'
+print_info: FIM MID token         = 151660 '<|fim_middle|>'
+print_info: FIM PAD token         = 151662 '<|fim_pad|>'
+print_info: FIM REP token         = 151663 '<|repo_name|>'
+print_info: FIM SEP token         = 151664 '<|file_sep|>'
+print_info: EOG token             = 128247 '</s>'
+print_info: EOG token             = 151643 '<|endoftext|>'
+print_info: EOG token             = 151645 '<|im_end|>'
+print_info: EOG token             = 151662 '<|fim_pad|>'
+print_info: EOG token             = 151663 '<|repo_name|>'
+print_info: EOG token             = 151664 '<|file_sep|>'
+print_info: max token length      = 256
+load_tensors: loading model tensors, this can take a while... (mmap = false, direct_io = false)
+load_tensors: offloading output layer to GPU
+load_tensors: offloading 47 repeating layers to GPU
+load_tensors: offloaded 49/49 layers to GPU
+load_tensors:      Vulkan0 model buffer size = 16674.36 MiB
+load_tensors:  Vulkan_Host model buffer size =   166.92 MiB
+....................................................................................................
+common_init_result: added </s> logit bias = -inf
+common_init_result: added <|endoftext|> logit bias = -inf
+common_init_result: added <|im_end|> logit bias = -inf
+common_init_result: added <|fim_pad|> logit bias = -inf
+common_init_result: added <|repo_name|> logit bias = -inf
+common_init_result: added <|file_sep|> logit bias = -inf
+llama_context: constructing llama_context
+llama_context: n_seq_max     = 8
+llama_context: n_ctx         = 32768
+llama_context: n_ctx_seq     = 4096
+llama_context: n_batch       = 2048
+llama_context: n_ubatch      = 512
+llama_context: causal_attn   = 1
+llama_context: flash_attn    = enabled
+llama_context: kv_unified    = false
+llama_context: freq_base     = 10000000.0
+llama_context: freq_scale    = 1
+llama_context: n_ctx_seq (4096) < n_ctx_train (262144) -- the full capacity of the model will not be utilized
+llama_context: Vulkan_Host  output buffer size =     4.64 MiB
+llama_kv_cache:    Vulkan0 KV buffer size =  3072.00 MiB
+llama_kv_cache: size = 3072.00 MiB (  4096 cells,  48 layers,  8/8 seqs), K (f16): 1536.00 MiB, V (f16): 1536.00 MiB
+llama_kv_cache: attn_rot_k = 0, n_embd_head_k_all = 128
+llama_kv_cache: attn_rot_v = 0, n_embd_head_k_all = 128
+sched_reserve: reserving ...
+sched_reserve: resolving fused Gated Delta Net support:
+sched_reserve: fused Gated Delta Net (autoregressive) enabled
+sched_reserve: fused Gated Delta Net (chunked) enabled
+sched_reserve:    Vulkan0 compute buffer size =   304.75 MiB
+sched_reserve: Vulkan_Host compute buffer size =    16.02 MiB
+sched_reserve: graph nodes  = 3127
+sched_reserve: graph splits = 2
+sched_reserve: reserve took 20.03 ms, sched copies = 1
+common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+srv    load_model: initializing slots, n_slots = 8
+no implementations specified for speculative decoding
+slot   load_model: id  0 | task -1 | new slot, n_ctx = 4096
+no implementations specified for speculative decoding
+slot   load_model: id  1 | task -1 | new slot, n_ctx = 4096
+no implementations specified for speculative decoding
+slot   load_model: id  2 | task -1 | new slot, n_ctx = 4096
+no implementations specified for speculative decoding
+slot   load_model: id  3 | task -1 | new slot, n_ctx = 4096
+no implementations specified for speculative decoding
+slot   load_model: id  4 | task -1 | new slot, n_ctx = 4096
+no implementations specified for speculative decoding
+slot   load_model: id  5 | task -1 | new slot, n_ctx = 4096
+no implementations specified for speculative decoding
+slot   load_model: id  6 | task -1 | new slot, n_ctx = 4096
+no implementations specified for speculative decoding
+slot   load_model: id  7 | task -1 | new slot, n_ctx = 4096
+srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+srv    load_model: use `--cache-ram 0` to disable the prompt cache
+srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+srv          init: init: --cache-idle-slots requires --kv-unified, disabling
+init: chat template, example_format: '<|im_start|>system
+You are a helpful assistant<|im_end|>
+<|im_start|>user
+Hello<|im_end|>
+<|im_start|>assistant
+Hi there<|im_end|>
+<|im_start|>user
+How are you?<|im_end|>
+<|im_start|>assistant
+'
+srv          init: init: chat template, thinking = 0
+main: model loaded
+main: server is listening on http://127.0.0.1:18208
+main: starting the main loop...
+srv  update_slots: all slots are idle
+slot get_availabl: id  7 | task -1 | selected slot by LRU, t_last = -1
+srv  get_availabl: updating prompt cache
+srv          load:  - looking for better prompt, base f_keep = -1.000, sim = 0.000
+srv        update:  - cache state: 0 prompts, 0.000 MiB (limits: 8192.000 MiB, 32768 tokens, 8589934592 est)
+srv  get_availabl: prompt cache update took 0.01 ms
+slot launch_slot_: id  7 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  7 | task 0 | processing task, is_child = 0
+slot update_slots: id  7 | task 0 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 16
+slot update_slots: id  7 | task 0 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  7 | task 0 | init sampler, took 0.01 ms, tokens: text = 16, total = 16
+slot update_slots: id  7 | task 0 | prompt processing done, n_tokens = 16, batch.n_tokens = 16
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+slot print_timing: id  7 | task 0 |
+prompt eval time =      94.95 ms /    16 tokens (    5.93 ms per token,   168.50 tokens per second)
+       eval time =    1504.03 ms /   128 tokens (   11.75 ms per token,    85.10 tokens per second)
+      total time =    1598.98 ms /   144 tokens
+slot      release: id  7 | task 0 | stop processing: n_tokens = 143, truncated = 0
+srv  update_slots: all slots are idle
+slot get_availabl: id  7 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.112
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 143, total state size = 13.409 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.112, sim = 1.000
+srv        update:  - cache state: 1 prompts, 13.409 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv  get_availabl: prompt cache update took 2.79 ms
+slot launch_slot_: id  7 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  7 | task 129 | processing task, is_child = 0
+slot get_availabl: id  6 | task -1 | selected slot by LRU, t_last = -1
+srv  get_availabl: updating prompt cache
+srv          load:  - looking for better prompt, base f_keep = -1.000, sim = 0.000
+srv        update:  - cache state: 1 prompts, 13.409 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv  get_availabl: prompt cache update took 0.00 ms
+slot launch_slot_: id  6 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  6 | task 130 | processing task, is_child = 0
+slot get_availabl: id  5 | task -1 | selected slot by LRU, t_last = -1
+srv  get_availabl: updating prompt cache
+srv          load:  - looking for better prompt, base f_keep = -1.000, sim = 0.000
+srv        update:  - cache state: 1 prompts, 13.409 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv  get_availabl: prompt cache update took 0.00 ms
+slot launch_slot_: id  5 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  5 | task 131 | processing task, is_child = 0
+slot get_availabl: id  4 | task -1 | selected slot by LRU, t_last = -1
+srv  get_availabl: updating prompt cache
+srv          load:  - looking for better prompt, base f_keep = -1.000, sim = 0.000
+srv        update:  - cache state: 1 prompts, 13.409 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv  get_availabl: prompt cache update took 0.00 ms
+slot launch_slot_: id  4 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  4 | task 132 | processing task, is_child = 0
+slot get_availabl: id  3 | task -1 | selected slot by LRU, t_last = -1
+srv  get_availabl: updating prompt cache
+srv          load:  - looking for better prompt, base f_keep = -1.000, sim = 0.000
+srv        update:  - cache state: 1 prompts, 13.409 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv  get_availabl: prompt cache update took 0.00 ms
+slot launch_slot_: id  3 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  3 | task 133 | processing task, is_child = 0
+slot get_availabl: id  2 | task -1 | selected slot by LRU, t_last = -1
+srv  get_availabl: updating prompt cache
+srv          load:  - looking for better prompt, base f_keep = -1.000, sim = 0.000
+srv        update:  - cache state: 1 prompts, 13.409 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv  get_availabl: prompt cache update took 0.00 ms
+slot launch_slot_: id  2 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  2 | task 134 | processing task, is_child = 0
+slot get_availabl: id  1 | task -1 | selected slot by LRU, t_last = -1
+srv  get_availabl: updating prompt cache
+srv          load:  - looking for better prompt, base f_keep = -1.000, sim = 0.000
+srv        update:  - cache state: 1 prompts, 13.409 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv  get_availabl: prompt cache update took 0.00 ms
+slot launch_slot_: id  1 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  1 | task 135 | processing task, is_child = 0
+slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = -1
+srv  get_availabl: updating prompt cache
+srv          load:  - looking for better prompt, base f_keep = -1.000, sim = 0.000
+srv        update:  - cache state: 1 prompts, 13.409 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv  get_availabl: prompt cache update took 0.00 ms
+slot launch_slot_: id  0 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  0 | task 136 | processing task, is_child = 0
+slot update_slots: id  0 | task 136 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 15
+slot update_slots: id  0 | task 136 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  0 | task 136 | init sampler, took 0.00 ms, tokens: text = 15, total = 15
+slot update_slots: id  0 | task 136 | prompt processing done, n_tokens = 15, batch.n_tokens = 15
+slot update_slots: id  1 | task 135 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 16
+slot update_slots: id  1 | task 135 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  1 | task 135 | init sampler, took 0.00 ms, tokens: text = 16, total = 16
+slot update_slots: id  1 | task 135 | prompt processing done, n_tokens = 16, batch.n_tokens = 31
+slot update_slots: id  2 | task 134 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 14
+slot update_slots: id  2 | task 134 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  2 | task 134 | init sampler, took 0.00 ms, tokens: text = 14, total = 14
+slot update_slots: id  2 | task 134 | prompt processing done, n_tokens = 14, batch.n_tokens = 45
+slot update_slots: id  3 | task 133 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 14
+slot update_slots: id  3 | task 133 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  3 | task 133 | init sampler, took 0.00 ms, tokens: text = 14, total = 14
+slot update_slots: id  3 | task 133 | prompt processing done, n_tokens = 14, batch.n_tokens = 59
+slot update_slots: id  4 | task 132 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 12
+slot update_slots: id  4 | task 132 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  4 | task 132 | init sampler, took 0.00 ms, tokens: text = 12, total = 12
+slot update_slots: id  4 | task 132 | prompt processing done, n_tokens = 12, batch.n_tokens = 71
+slot update_slots: id  5 | task 131 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 13
+slot update_slots: id  5 | task 131 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  5 | task 131 | init sampler, took 0.00 ms, tokens: text = 13, total = 13
+slot update_slots: id  5 | task 131 | prompt processing done, n_tokens = 13, batch.n_tokens = 84
+slot update_slots: id  6 | task 130 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 14
+slot update_slots: id  6 | task 130 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  6 | task 130 | init sampler, took 0.00 ms, tokens: text = 14, total = 14
+slot update_slots: id  6 | task 130 | prompt processing done, n_tokens = 14, batch.n_tokens = 98
+slot update_slots: id  7 | task 129 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 16
+slot update_slots: id  7 | task 129 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  7 | task 129 | init sampler, took 0.00 ms, tokens: text = 16, total = 16
+slot update_slots: id  7 | task 129 | prompt processing done, n_tokens = 16, batch.n_tokens = 114
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+slot print_timing: id  0 | task 136 |
+prompt eval time =     376.52 ms /    15 tokens (   25.10 ms per token,    39.84 tokens per second)
+       eval time =    5515.42 ms /   128 tokens (   43.09 ms per token,    23.21 tokens per second)
+      total time =    5891.95 ms /   143 tokens
+slot      release: id  0 | task 136 | stop processing: n_tokens = 142, truncated = 0
+slot print_timing: id  1 | task 135 |
+prompt eval time =     376.71 ms /    16 tokens (   23.54 ms per token,    42.47 tokens per second)
+       eval time =    5516.08 ms /   128 tokens (   43.09 ms per token,    23.20 tokens per second)
+      total time =    5892.79 ms /   144 tokens
+slot      release: id  1 | task 135 | stop processing: n_tokens = 143, truncated = 0
+slot print_timing: id  2 | task 134 |
+prompt eval time =     376.88 ms /    14 tokens (   26.92 ms per token,    37.15 tokens per second)
+       eval time =    5516.55 ms /   128 tokens (   43.10 ms per token,    23.20 tokens per second)
+      total time =    5893.42 ms /   142 tokens
+slot      release: id  2 | task 134 | stop processing: n_tokens = 141, truncated = 0
+slot print_timing: id  3 | task 133 |
+prompt eval time =     377.04 ms /    14 tokens (   26.93 ms per token,    37.13 tokens per second)
+       eval time =    5516.77 ms /   128 tokens (   43.10 ms per token,    23.20 tokens per second)
+      total time =    5893.81 ms /   142 tokens
+slot      release: id  3 | task 133 | stop processing: n_tokens = 141, truncated = 0
+slot print_timing: id  4 | task 132 |
+prompt eval time =     377.22 ms /    12 tokens (   31.44 ms per token,    31.81 tokens per second)
+       eval time =    5516.95 ms /   128 tokens (   43.10 ms per token,    23.20 tokens per second)
+      total time =    5894.17 ms /   140 tokens
+slot      release: id  4 | task 132 | stop processing: n_tokens = 139, truncated = 0
+slot print_timing: id  5 | task 131 |
+prompt eval time =     377.39 ms /    13 tokens (   29.03 ms per token,    34.45 tokens per second)
+       eval time =    5517.11 ms /   128 tokens (   43.10 ms per token,    23.20 tokens per second)
+      total time =    5894.50 ms /   141 tokens
+slot      release: id  5 | task 131 | stop processing: n_tokens = 140, truncated = 0
+slot print_timing: id  6 | task 130 |
+prompt eval time =     377.56 ms /    14 tokens (   26.97 ms per token,    37.08 tokens per second)
+       eval time =    5517.30 ms /   128 tokens (   43.10 ms per token,    23.20 tokens per second)
+      total time =    5894.86 ms /   142 tokens
+slot      release: id  6 | task 130 | stop processing: n_tokens = 141, truncated = 0
+slot print_timing: id  7 | task 129 |
+prompt eval time =     377.73 ms /    16 tokens (   23.61 ms per token,    42.36 tokens per second)
+       eval time =    5517.44 ms /   128 tokens (   43.11 ms per token,    23.20 tokens per second)
+      total time =    5895.17 ms /   144 tokens
+slot      release: id  7 | task 129 | stop processing: n_tokens = 143, truncated = 0
+srv  update_slots: all slots are idle
+slot get_availabl: id  6 | task -1 | selected slot by LCP similarity, sim_best = 0.133 (> 0.100 thold), f_keep = 0.014
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 141, total state size = 13.222 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.014, sim = 0.133
+srv        update:  - cache state: 2 prompts, 26.631 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv  get_availabl: prompt cache update took 4.67 ms
+slot launch_slot_: id  6 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  6 | task 266 | processing task, is_child = 0
+slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 197892405418
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 142, total state size = 13.315 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.000, sim = 0.000
+srv        update:  - cache state: 3 prompts, 39.946 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv  get_availabl: prompt cache update took 4.41 ms
+slot launch_slot_: id  0 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  0 | task 265 | processing task, is_child = 0
+slot get_availabl: id  1 | task -1 | selected slot by LRU, t_last = 197892406209
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 143, total state size = 13.409 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.000, sim = 0.000
+srv        update:  - cache state: 4 prompts, 53.355 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv  get_availabl: prompt cache update took 2.89 ms
+slot launch_slot_: id  1 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  1 | task 267 | processing task, is_child = 0
+slot get_availabl: id  2 | task -1 | selected slot by LRU, t_last = 197892406826
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 141, total state size = 13.222 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.000, sim = 0.000
+srv        update:  - cache state: 5 prompts, 66.576 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d1c20:     141 tokens, checkpoints:  0,    13.222 MiB
+srv  get_availabl: prompt cache update took 2.54 ms
+slot launch_slot_: id  2 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  2 | task 268 | processing task, is_child = 0
+slot get_availabl: id  3 | task -1 | selected slot by LRU, t_last = 197892407204
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 141, total state size = 13.222 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.000, sim = 0.000
+srv        update:  - cache state: 6 prompts, 79.798 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d1c20:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78eadb0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv  get_availabl: prompt cache update took 2.38 ms
+slot launch_slot_: id  3 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  3 | task 269 | processing task, is_child = 0
+slot get_availabl: id  7 | task -1 | selected slot by LCP similarity, sim_best = 0.154 (> 0.100 thold), f_keep = 0.014
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 143, total state size = 13.409 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.014, sim = 0.154
+srv        update:  - cache state: 7 prompts, 93.207 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d1c20:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78eadb0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78e3fc0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv  get_availabl: prompt cache update took 2.37 ms
+slot launch_slot_: id  7 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  7 | task 270 | processing task, is_child = 0
+slot get_availabl: id  4 | task -1 | selected slot by LRU, t_last = 197892407569
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 139, total state size = 13.034 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.000, sim = 0.000
+srv        update:  - cache state: 8 prompts, 106.241 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d1c20:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78eadb0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78e3fc0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78e3b10:     139 tokens, checkpoints:  0,    13.034 MiB
+srv  get_availabl: prompt cache update took 2.33 ms
+slot launch_slot_: id  4 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  4 | task 271 | processing task, is_child = 0
+slot get_availabl: id  5 | task -1 | selected slot by LRU, t_last = 197892407904
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 140, total state size = 13.128 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.000, sim = 0.000
+srv        update:  - cache state: 9 prompts, 119.369 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d1c20:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78eadb0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78e3fc0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78e3b10:     139 tokens, checkpoints:  0,    13.034 MiB
+srv        update:    - prompt 0x5f1cb78eb970:     140 tokens, checkpoints:  0,    13.128 MiB
+srv  get_availabl: prompt cache update took 2.37 ms
+slot launch_slot_: id  5 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  5 | task 272 | processing task, is_child = 0
+slot update_slots: id  0 | task 265 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 13
+slot update_slots: id  0 | task 265 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  0 | task 265 | init sampler, took 0.00 ms, tokens: text = 13, total = 13
+slot update_slots: id  0 | task 265 | prompt processing done, n_tokens = 13, batch.n_tokens = 13
+slot update_slots: id  1 | task 267 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 14
+slot update_slots: id  1 | task 267 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  1 | task 267 | init sampler, took 0.00 ms, tokens: text = 14, total = 14
+slot update_slots: id  1 | task 267 | prompt processing done, n_tokens = 14, batch.n_tokens = 27
+slot update_slots: id  2 | task 268 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 16
+slot update_slots: id  2 | task 268 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  2 | task 268 | init sampler, took 0.00 ms, tokens: text = 16, total = 16
+slot update_slots: id  2 | task 268 | prompt processing done, n_tokens = 16, batch.n_tokens = 43
+slot update_slots: id  3 | task 269 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 15
+slot update_slots: id  3 | task 269 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  3 | task 269 | init sampler, took 0.00 ms, tokens: text = 15, total = 15
+slot update_slots: id  3 | task 269 | prompt processing done, n_tokens = 15, batch.n_tokens = 58
+slot update_slots: id  4 | task 271 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 16
+slot update_slots: id  4 | task 271 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  4 | task 271 | init sampler, took 0.00 ms, tokens: text = 16, total = 16
+slot update_slots: id  4 | task 271 | prompt processing done, n_tokens = 16, batch.n_tokens = 74
+slot update_slots: id  5 | task 272 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 15
+slot update_slots: id  5 | task 272 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  5 | task 272 | init sampler, took 0.00 ms, tokens: text = 15, total = 15
+slot update_slots: id  5 | task 272 | prompt processing done, n_tokens = 15, batch.n_tokens = 89
+slot update_slots: id  6 | task 266 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 15
+slot update_slots: id  6 | task 266 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  6 | task 266 | init sampler, took 0.00 ms, tokens: text = 15, total = 15
+slot update_slots: id  6 | task 266 | prompt processing done, n_tokens = 15, batch.n_tokens = 104
+slot update_slots: id  7 | task 270 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 13
+slot update_slots: id  7 | task 270 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  7 | task 270 | init sampler, took 0.00 ms, tokens: text = 13, total = 13
+slot update_slots: id  7 | task 270 | prompt processing done, n_tokens = 13, batch.n_tokens = 117
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+slot print_timing: id  0 | task 265 |
+prompt eval time =     409.74 ms /    13 tokens (   31.52 ms per token,    31.73 tokens per second)
+       eval time =    5523.52 ms /   128 tokens (   43.15 ms per token,    23.17 tokens per second)
+      total time =    5933.26 ms /   141 tokens
+slot      release: id  0 | task 265 | stop processing: n_tokens = 140, truncated = 0
+slot print_timing: id  1 | task 267 |
+prompt eval time =     409.90 ms /    14 tokens (   29.28 ms per token,    34.15 tokens per second)
+       eval time =    5523.77 ms /   128 tokens (   43.15 ms per token,    23.17 tokens per second)
+      total time =    5933.68 ms /   142 tokens
+slot      release: id  1 | task 267 | stop processing: n_tokens = 141, truncated = 0
+slot print_timing: id  2 | task 268 |
+prompt eval time =     410.07 ms /    16 tokens (   25.63 ms per token,    39.02 tokens per second)
+       eval time =    5524.13 ms /   128 tokens (   43.16 ms per token,    23.17 tokens per second)
+      total time =    5934.19 ms /   144 tokens
+slot      release: id  2 | task 268 | stop processing: n_tokens = 143, truncated = 0
+slot print_timing: id  3 | task 269 |
+prompt eval time =     410.24 ms /    15 tokens (   27.35 ms per token,    36.56 tokens per second)
+       eval time =    5524.39 ms /   128 tokens (   43.16 ms per token,    23.17 tokens per second)
+      total time =    5934.63 ms /   143 tokens
+slot      release: id  3 | task 269 | stop processing: n_tokens = 142, truncated = 0
+slot print_timing: id  4 | task 271 |
+prompt eval time =     410.43 ms /    16 tokens (   25.65 ms per token,    38.98 tokens per second)
+       eval time =    5524.53 ms /   128 tokens (   43.16 ms per token,    23.17 tokens per second)
+      total time =    5934.96 ms /   144 tokens
+slot      release: id  4 | task 271 | stop processing: n_tokens = 143, truncated = 0
+slot print_timing: id  5 | task 272 |
+prompt eval time =     410.60 ms /    15 tokens (   27.37 ms per token,    36.53 tokens per second)
+       eval time =    5524.69 ms /   128 tokens (   43.16 ms per token,    23.17 tokens per second)
+      total time =    5935.28 ms /   143 tokens
+slot      release: id  5 | task 272 | stop processing: n_tokens = 142, truncated = 0
+slot print_timing: id  6 | task 266 |
+prompt eval time =     410.75 ms /    15 tokens (   27.38 ms per token,    36.52 tokens per second)
+       eval time =    5524.85 ms /   128 tokens (   43.16 ms per token,    23.17 tokens per second)
+      total time =    5935.60 ms /   143 tokens
+slot      release: id  6 | task 266 | stop processing: n_tokens = 142, truncated = 0
+slot print_timing: id  7 | task 270 |
+prompt eval time =     410.92 ms /    13 tokens (   31.61 ms per token,    31.64 tokens per second)
+       eval time =    5524.97 ms /   128 tokens (   43.16 ms per token,    23.17 tokens per second)
+      total time =    5935.89 ms /   141 tokens
+slot      release: id  7 | task 270 | stop processing: n_tokens = 140, truncated = 0
+srv  update_slots: all slots are idle
+slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 197898368996
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 140, total state size = 13.128 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.000, sim = 0.000
+srv        update:  - cache state: 10 prompts, 132.496 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d1c20:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78eadb0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78e3fc0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78e3b10:     139 tokens, checkpoints:  0,    13.034 MiB
+srv        update:    - prompt 0x5f1cb78eb970:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1c9b100710:     140 tokens, checkpoints:  0,    13.128 MiB
+srv  get_availabl: prompt cache update took 5.51 ms
+slot launch_slot_: id  0 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  0 | task 401 | processing task, is_child = 0
+slot get_availabl: id  7 | task -1 | selected slot by LCP similarity, sim_best = 0.125 (> 0.100 thold), f_keep = 0.014
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 140, total state size = 13.128 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.014, sim = 0.125
+srv        update:  - cache state: 11 prompts, 145.624 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d1c20:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78eadb0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78e3fc0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78e3b10:     139 tokens, checkpoints:  0,    13.034 MiB
+srv        update:    - prompt 0x5f1cb78eb970:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1c9b100710:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1cb78d9070:     140 tokens, checkpoints:  0,    13.128 MiB
+srv  get_availabl: prompt cache update took 4.92 ms
+slot launch_slot_: id  7 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  7 | task 402 | processing task, is_child = 0
+slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, sim_best = 0.286 (> 0.100 thold), f_keep = 0.028
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 142, total state size = 13.315 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.028, sim = 0.286
+srv        update:  - cache state: 12 prompts, 158.939 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d1c20:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78eadb0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78e3fc0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78e3b10:     139 tokens, checkpoints:  0,    13.034 MiB
+srv        update:    - prompt 0x5f1cb78eb970:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1c9b100710:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1cb78d9070:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1cb78ba840:     142 tokens, checkpoints:  0,    13.315 MiB
+srv  get_availabl: prompt cache update took 3.52 ms
+slot launch_slot_: id  3 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  3 | task 403 | processing task, is_child = 0
+slot get_availabl: id  1 | task -1 | selected slot by LRU, t_last = 197898369402
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 141, total state size = 13.222 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.000, sim = 0.000
+srv        update:  - cache state: 13 prompts, 172.161 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d1c20:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78eadb0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78e3fc0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78e3b10:     139 tokens, checkpoints:  0,    13.034 MiB
+srv        update:    - prompt 0x5f1cb78eb970:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1c9b100710:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1cb78d9070:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1cb78ba840:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1c9b0fcc60:     141 tokens, checkpoints:  0,    13.222 MiB
+srv  get_availabl: prompt cache update took 3.27 ms
+slot launch_slot_: id  1 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  1 | task 404 | processing task, is_child = 0
+slot get_availabl: id  2 | task -1 | selected slot by LRU, t_last = 197898369945
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 143, total state size = 13.409 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.000, sim = 0.000
+srv        update:  - cache state: 14 prompts, 185.570 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d1c20:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78eadb0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78e3fc0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78e3b10:     139 tokens, checkpoints:  0,    13.034 MiB
+srv        update:    - prompt 0x5f1cb78eb970:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1c9b100710:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1cb78d9070:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1cb78ba840:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1c9b0fcc60:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1c9b0f4140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv  get_availabl: prompt cache update took 3.00 ms
+slot launch_slot_: id  2 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  2 | task 405 | processing task, is_child = 0
+slot get_availabl: id  4 | task -1 | selected slot by LRU, t_last = 197898370731
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 143, total state size = 13.409 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.000, sim = 0.000
+srv        update:  - cache state: 15 prompts, 198.979 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d1c20:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78eadb0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78e3fc0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78e3b10:     139 tokens, checkpoints:  0,    13.034 MiB
+srv        update:    - prompt 0x5f1cb78eb970:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1c9b100710:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1cb78d9070:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1cb78ba840:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1c9b0fcc60:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1c9b0f4140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d8190:     143 tokens, checkpoints:  0,    13.409 MiB
+srv  get_availabl: prompt cache update took 3.03 ms
+slot launch_slot_: id  4 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  4 | task 406 | processing task, is_child = 0
+slot get_availabl: id  5 | task -1 | selected slot by LRU, t_last = 197898371069
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 142, total state size = 13.315 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.000, sim = 0.000
+srv        update:  - cache state: 16 prompts, 212.294 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d1c20:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78eadb0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78e3fc0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78e3b10:     139 tokens, checkpoints:  0,    13.034 MiB
+srv        update:    - prompt 0x5f1cb78eb970:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1c9b100710:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1cb78d9070:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1cb78ba840:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1c9b0fcc60:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1c9b0f4140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d8190:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d7520:     142 tokens, checkpoints:  0,    13.315 MiB
+srv  get_availabl: prompt cache update took 2.66 ms
+slot launch_slot_: id  5 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  5 | task 407 | processing task, is_child = 0
+slot get_availabl: id  6 | task -1 | selected slot by LRU, t_last = 197898371404
+srv  get_availabl: updating prompt cache
+srv   prompt_save:  - saving prompt with length 142, total state size = 13.315 MiB
+srv          load:  - looking for better prompt, base f_keep = 0.000, sim = 0.000
+srv        update:  - cache state: 17 prompts, 225.609 MiB (limits: 8192.000 MiB, 32768 tokens, 87363 est)
+srv        update:    - prompt 0x5f1cb78c7fa0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1c9b1026b0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78b54a0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1cb78b6140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d1c20:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78eadb0:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1cb78e3fc0:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78e3b10:     139 tokens, checkpoints:  0,    13.034 MiB
+srv        update:    - prompt 0x5f1cb78eb970:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1c9b100710:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1cb78d9070:     140 tokens, checkpoints:  0,    13.128 MiB
+srv        update:    - prompt 0x5f1cb78ba840:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1c9b0fcc60:     141 tokens, checkpoints:  0,    13.222 MiB
+srv        update:    - prompt 0x5f1c9b0f4140:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d8190:     143 tokens, checkpoints:  0,    13.409 MiB
+srv        update:    - prompt 0x5f1cb78d7520:     142 tokens, checkpoints:  0,    13.315 MiB
+srv        update:    - prompt 0x5f1c9d0c8ee0:     142 tokens, checkpoints:  0,    13.315 MiB
+srv  get_availabl: prompt cache update took 3.23 ms
+slot launch_slot_: id  6 | task -1 | sampler chain: logits -> logit-bias -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist
+slot launch_slot_: id  6 | task 408 | processing task, is_child = 0
+slot update_slots: id  0 | task 401 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 13
+slot update_slots: id  0 | task 401 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  0 | task 401 | init sampler, took 0.00 ms, tokens: text = 13, total = 13
+slot update_slots: id  0 | task 401 | prompt processing done, n_tokens = 13, batch.n_tokens = 13
+slot update_slots: id  1 | task 404 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 12
+slot update_slots: id  1 | task 404 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  1 | task 404 | init sampler, took 0.00 ms, tokens: text = 12, total = 12
+slot update_slots: id  1 | task 404 | prompt processing done, n_tokens = 12, batch.n_tokens = 25
+slot update_slots: id  2 | task 405 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 16
+slot update_slots: id  2 | task 405 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  2 | task 405 | init sampler, took 0.00 ms, tokens: text = 16, total = 16
+slot update_slots: id  2 | task 405 | prompt processing done, n_tokens = 16, batch.n_tokens = 41
+slot update_slots: id  3 | task 403 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 14
+slot update_slots: id  3 | task 403 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  3 | task 403 | init sampler, took 0.00 ms, tokens: text = 14, total = 14
+slot update_slots: id  3 | task 403 | prompt processing done, n_tokens = 14, batch.n_tokens = 55
+slot update_slots: id  4 | task 406 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 14
+slot update_slots: id  4 | task 406 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  4 | task 406 | init sampler, took 0.00 ms, tokens: text = 14, total = 14
+slot update_slots: id  4 | task 406 | prompt processing done, n_tokens = 14, batch.n_tokens = 69
+slot update_slots: id  5 | task 407 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 14
+slot update_slots: id  5 | task 407 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  5 | task 407 | init sampler, took 0.00 ms, tokens: text = 14, total = 14
+slot update_slots: id  5 | task 407 | prompt processing done, n_tokens = 14, batch.n_tokens = 83
+slot update_slots: id  6 | task 408 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 15
+slot update_slots: id  6 | task 408 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  6 | task 408 | init sampler, took 0.00 ms, tokens: text = 15, total = 15
+slot update_slots: id  6 | task 408 | prompt processing done, n_tokens = 15, batch.n_tokens = 98
+slot update_slots: id  7 | task 402 | new prompt, n_ctx_slot = 4096, n_keep = 0, task.n_tokens = 16
+slot update_slots: id  7 | task 402 | n_tokens = 0, memory_seq_rm [0, end)
+slot init_sampler: id  7 | task 402 | init sampler, took 0.00 ms, tokens: text = 16, total = 16
+slot update_slots: id  7 | task 402 | prompt processing done, n_tokens = 16, batch.n_tokens = 114
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+srv  log_server_r: done request: POST /completion 127.0.0.1 200
+slot print_timing: id  0 | task 401 |
+prompt eval time =     297.72 ms /    13 tokens (   22.90 ms per token,    43.66 tokens per second)
+       eval time =    5547.01 ms /   128 tokens (   43.34 ms per token,    23.08 tokens per second)
+      total time =    5844.73 ms /   141 tokens
+slot      release: id  0 | task 401 | stop processing: n_tokens = 140, truncated = 0
+slot print_timing: id  1 | task 404 |
+prompt eval time =     298.25 ms /    12 tokens (   24.85 ms per token,    40.23 tokens per second)
+       eval time =    5547.35 ms /   128 tokens (   43.34 ms per token,    23.07 tokens per second)
+      total time =    5845.61 ms /   140 tokens
+slot      release: id  1 | task 404 | stop processing: n_tokens = 139, truncated = 0
+slot print_timing: id  2 | task 405 |
+prompt eval time =     298.75 ms /    16 tokens (   18.67 ms per token,    53.56 tokens per second)
+       eval time =    5547.62 ms /   128 tokens (   43.34 ms per token,    23.07 tokens per second)
+      total time =    5846.38 ms /   144 tokens
+slot      release: id  2 | task 405 | stop processing: n_tokens = 143, truncated = 0
+slot print_timing: id  3 | task 403 |
+prompt eval time =     299.15 ms /    14 tokens (   21.37 ms per token,    46.80 tokens per second)
+       eval time =    5547.61 ms /   128 tokens (   43.34 ms per token,    23.07 tokens per second)
+      total time =    5846.76 ms /   142 tokens
+slot      release: id  3 | task 403 | stop processing: n_tokens = 141, truncated = 0
+slot print_timing: id  4 | task 406 |
+prompt eval time =     299.64 ms /    14 tokens (   21.40 ms per token,    46.72 tokens per second)
+       eval time =    5547.46 ms /   128 tokens (   43.34 ms per token,    23.07 tokens per second)
+      total time =    5847.10 ms /   142 tokens
+slot      release: id  4 | task 406 | stop processing: n_tokens = 141, truncated = 0
+slot print_timing: id  5 | task 407 |
+prompt eval time =     300.03 ms /    14 tokens (   21.43 ms per token,    46.66 tokens per second)
+       eval time =    5547.41 ms /   128 tokens (   43.34 ms per token,    23.07 tokens per second)
+      total time =    5847.44 ms /   142 tokens
+slot      release: id  5 | task 407 | stop processing: n_tokens = 141, truncated = 0
+slot print_timing: id  6 | task 408 |
+prompt eval time =     300.45 ms /    15 tokens (   20.03 ms per token,    49.93 tokens per second)
+       eval time =    5547.30 ms /   128 tokens (   43.34 ms per token,    23.07 tokens per second)
+      total time =    5847.74 ms /   143 tokens
+slot      release: id  6 | task 408 | stop processing: n_tokens = 142, truncated = 0
+slot print_timing: id  7 | task 402 |
+prompt eval time =     300.82 ms /    16 tokens (   18.80 ms per token,    53.19 tokens per second)
+       eval time =    5547.24 ms /   128 tokens (   43.34 ms per token,    23.07 tokens per second)
+      total time =    5848.06 ms /   144 tokens
+slot      release: id  7 | task 402 | stop processing: n_tokens = 143, truncated = 0
+srv  update_slots: all slots are idle
+srv    operator(): operator(): cleaning up before exit...
+common_memory_breakdown_print: | memory breakdown [MiB]                         |  total     free     self   model   context   compute    unaccounted |
+common_memory_breakdown_print: |   - Vulkan0 (8060S Graphics (RADV STRIX_HALO)) | 131584 = 109676 + (20051 = 16674 +    3072 +     304) +        1856 |
+common_memory_breakdown_print: |   - Host                                       |                      182 =   166 +       0 +      16                |
