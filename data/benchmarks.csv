@@ -1,5 +1,7 @@
 date,status,source,system,kernel,mesa_or_driver,backend,driver,tool,build_or_version,model,quant,model_size_gb,prompt_tokens,context_tokens,pp_tps,tg_tps,notes
 2026-05-03,measured-local,data/raw/2026-05-03,Beelink GTR9 Pro,6.19.4-061904-generic,Mesa 26.0.6,Vulkan,RADV,llama-bench,b9010 d05fe1d7d,Qwen3-Coder 30B-A3B,UD-Q4_K_XL,17.7,,512,1346.27,97.24,Controlled two-run r20 average; raw CSV included
+2026-05-03,measured-local,data/raw/2026-05-03,Beelink GTR9 Pro,6.19.4-061904-generic,Mesa 26.0.6,Vulkan,RADV,llama-bench,b9010 d05fe1d7d,Qwen3.6 35B-A3B,UD-Q4_K_M,22.1,,512,1108.93,63.06,Controlled two-run r20 average; current UD penalty not reproduced
+2026-05-03,measured-local,data/raw/2026-05-03,Beelink GTR9 Pro,6.19.4-061904-generic,Mesa 26.0.6,Ollama Vulkan,RADV,Ollama,0.21.2,Qwen3.6 35B-A3B,Q4_K_M,23,19,65536,157.90,50.51,Controlled API warm average across 10 runs
 2026-03-21,historical-local,BENCHMARKS.md,Beelink GTR9 Pro,6.19.4,26.0.2-26.0.6,Vulkan,RADV,llama-bench,b8460,Qwen3-Coder 30B-A3B,UD-Q4_K_XL,16.5,,512,1342,87.11,Previous coding MoE headline result
 2026-04-26,measured-local,BENCHMARKS.md,Beelink GTR9 Pro,6.19.4,26.0.2-26.0.6,Vulkan,RADV,llama-bench,b8460,Qwen3.6 35B-A3B,Q4_K_M,19.9,,512,1064,63.76,Recommended all-rounder
 2026-03-21,measured-local,BENCHMARKS.md,Beelink GTR9 Pro,6.19.4,26.0.2-26.0.6,Vulkan,RADV,llama-bench,b8460,Qwen3.5 35B-A3B,Q4_K_M,19.9,,512,1080,64.85,Backend and build comparison baseline
@@ -7,8 +9,8 @@ date,status,source,system,kernel,mesa_or_driver,backend,driver,tool,build_or_ver
 2026-04-26,measured-local,BENCHMARKS.md,Beelink GTR9 Pro,6.19.4,26.0.2-26.0.6,Vulkan,RADV,llama-bench,b8933,Gemma 4 26B-A4B,UD-Q4_K_M,15.7,,512,1142,48.46,Slower than Qwen MoE at similar active parameters
 2026-04-26,measured-local,BENCHMARKS.md,Beelink GTR9 Pro,6.19.4,26.0.2-26.0.6,Vulkan,RADV,llama-bench,b8933,Llama 4 Scout 109B,Q4_K_M,60.9,,512,331,18.32,109B parameters on one mini PC
 2026-03-21,measured-local,BENCHMARKS.md,Beelink GTR9 Pro,6.19.4,26.0.2-26.0.6,Vulkan,RADV,llama-bench,,Qwen3 0.6B,Q8_0,0.8,,512,13112,266,Small-model speed ceiling
-2026-04-26,measured-local,README.md,Beelink GTR9 Pro,6.19.4,26.0.2-26.0.6,Ollama Vulkan,RADV,Ollama,0.21.2,Qwen3.6 35B-A3B,Q4_K_M,23,20,,163,45.6,Easy-path result
-2026-04-26,measured-local,README.md,Beelink GTR9 Pro,6.19.4,26.0.2-26.0.6,Ollama Vulkan,RADV,Ollama,0.21.2,Qwen3.6 35B-A3B,Q4_K_M,23,22,,174,45.4,Easy-path result
+2026-04-26,historical-local,README.md,Beelink GTR9 Pro,6.19.4,26.0.2-26.0.6,Ollama Vulkan,RADV,Ollama,0.21.2,Qwen3.6 35B-A3B,Q4_K_M,23,20,,163,45.6,Older easy-path result; superseded by 2026-05-03 controlled API run
+2026-04-26,historical-local,README.md,Beelink GTR9 Pro,6.19.4,26.0.2-26.0.6,Ollama Vulkan,RADV,Ollama,0.21.2,Qwen3.6 35B-A3B,Q4_K_M,23,22,,174,45.4,Older easy-path result; superseded by 2026-05-03 controlled API run
 2026-03-20,historical-local,BENCHMARKS.md,Beelink GTR9 Pro,6.19.4,26.0.2,Ollama Vulkan,RADV,Ollama,0.20.4,Qwen3.5 35B-A3B,Q4_K_M,23,14,,121.3,48.0,Mesa 26.0.2 era
 2026-03-20,historical-local,BENCHMARKS.md,Beelink GTR9 Pro,6.19.4,26.0.2,Ollama Vulkan,RADV,Ollama,0.20.4,Qwen3.5 35B-A3B,Q4_K_M,23,23,,182.3,47.5,Mesa 26.0.2 era
 2026-03-20,historical-local,BENCHMARKS.md,Beelink GTR9 Pro,6.19.4,26.0.2,Ollama Vulkan,RADV,Ollama,0.20.4,Qwen3.5 35B-A3B,Q4_K_M,23,122,,456.7,47.4,Mesa 26.0.2 era

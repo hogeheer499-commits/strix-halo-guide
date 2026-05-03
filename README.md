@@ -149,8 +149,9 @@ Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, and 2026-05-03.
 
 | Prompt Tokens | Prompt Eval | Generation | Notes |
 |---------------|-------------|------------|-------|
-| 20 | 163 t/s | **45.6 t/s** | ~30% slower than llama-bench direct (64 t/s) |
-| 22 | 174 t/s | **45.4 t/s** | Ollama overhead is real but acceptable |
+| 19 | 158 t/s | **50.5 t/s** | Controlled 2026-05-03 API warm average across 10 runs |
+| 20 | 163 t/s | 45.6 t/s | Older result, superseded by controlled API run |
+| 22 | 174 t/s | 45.4 t/s | Older result, superseded by controlled API run |
 
 **Qwen3.5-35B-A3B** (Q4_K_M, ~23GB, MoE -- Ollama 0.20.4):
 
@@ -264,9 +265,10 @@ Extended context scaling (latest build, RADV):
 | Build | Driver | pp512 | tg128 | Notes |
 |-------|--------|-------|-------|-------|
 | **b8460** | **RADV** | **1064** | **63.76** | Same speed as Qwen3.5 |
+| **b9010** | **RADV** | **1109** | **63.06** | UD-Q4_K_M controlled rerun; plain Q4 blob not loadable by upstream b9010 |
 | b8933 | RADV | 1040 | 63.66 | No regression between builds |
 
-> Qwen3.6 is a drop-in replacement for Qwen3.5 with significantly improved coding and reasoning quality (same architecture, same active parameters, identical speed). **Use Q4_K_M, not UD-Q4_K_M** -- Unsloth Dynamic quantization costs 13% tg speed (56.6 vs 64.1 t/s) due to mixed-precision layers, with minimal quality benefit at this quant level.
+> Qwen3.6 is a drop-in replacement for Qwen3.5 with significantly improved coding and reasoning quality (same architecture, same active parameters, identical speed). Older April data showed a 13% UD-Q4_K_M penalty, but the controlled May b9010 rerun did **not** reproduce that large gap: UD-Q4_K_M reached 63.06 t/s, effectively matching the historical plain Q4_K_M result. Prefer plain Q4_K_M when you have a direct-compatible GGUF, but treat the old "UD is always 13% slower" warning as superseded until same-build plain-vs-UD is rerun.
 
 **ROCm HIP -- now working on kernel 6.19.4!**
 
@@ -368,7 +370,7 @@ export ROCBLAS_USE_HIPBLASLT=1
 | pp512 | ~457 | **1080** | 1047 | **Vulkan RADV** |
 | tg128 | 47.4 | **64.85** | 54.67 | **Vulkan RADV** |
 
-> **Vulkan RADV wins on both pp and tg** with the latest llama.cpp build. ROCm works on kernel 6.19.x with the HSA override fix but is no longer the fastest backend for MoE models. Use `llama-bench` or `llama-server` directly instead of Ollama to avoid the ~35% overhead.
+> **Vulkan RADV wins on both pp and tg** with the latest llama.cpp build. ROCm works on kernel 6.19.x with the HSA override fix but is no longer the fastest backend for MoE models. Use `llama-bench` or `llama-server` directly instead of Ollama to avoid the current ~20-25% short-context overhead on Qwen3.6.
 
 ### Backend Comparison Table
 
@@ -437,7 +439,7 @@ At extreme context (130K tokens, from [strixhalo.wiki](https://strixhalo.wiki/AI
                |             |
           "It just      llama-server +
            works"       Vulkan RADV
-           46 t/s        65 t/s
+           50 t/s        64 t/s
 ```
 
 ---
@@ -451,7 +453,7 @@ For those who want to get running as fast as possible:
 3. **Kernel params:** Add `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280` to GRUB
 4. **Performance:** Install tuned, set `accelerator-performance` profile, upgrade Mesa via kisak PPA
 5. **Ollama:** Install, configure Vulkan backend with `OLLAMA_VULKAN=1` and `HIP_VISIBLE_DEVICES=-1`
-6. **Test:** `ollama run qwen3.6:35b-a3b` -- expect ~46 t/s generation
+6. **Test:** `ollama run qwen3.6:35b-a3b` -- expect ~50 t/s generation
 
 Each step is detailed in the phases below.
 
@@ -728,7 +730,7 @@ ollama pull qwen3-coder-next
 ollama run qwen3.6:35b-a3b
 ```
 
-You should see responses generating at ~46 t/s.
+You should see responses generating at ~50 t/s.
 
 ---
 
@@ -1224,7 +1226,7 @@ After completing setup, verify each item:
 - [ ] `cat /sys/class/drm/card*/device/pp_dpm_sclk` shows 2900Mhz with asterisk
 - [ ] `cat /sys/module/ttm/parameters/pages_limit` shows 31457280
 - [ ] `ollama --version` returns without error
-- [ ] `ollama run qwen3.6:35b-a3b "hello"` generates at 45+ t/s
+- [ ] `ollama run qwen3.6:35b-a3b "hello"` generates at 50+ t/s
 - [ ] `systemctl show ollama | grep Environment` includes `OLLAMA_VULKAN=1`
 - [ ] `cat /etc/default/grub | grep CMDLINE` includes `amd_iommu=off`
 - [ ] `uname -r` shows 6.18.x+ (ROCm on 6.19.x requires HSA override -- see Known Issues)
@@ -1478,7 +1480,7 @@ New to local LLMs? Here's what the technical terms mean.
 
 They are not two different programs. **Ollama is a wrapper around llama.cpp.** It adds model management (`ollama pull`), a simple API, and easy commands (`ollama run`). Under the hood, it runs the same llama.cpp inference engine.
 
-So why is llama.cpp direct 35% faster? Two reasons:
+So why is llama.cpp direct about 25% faster on Qwen3.6? Two reasons:
 
 1. **Wrapper overhead.** Ollama adds layers between you and the GPU: model loading, API translation, memory management. This costs ~8-15% on token generation.
 
@@ -1490,8 +1492,8 @@ So why is llama.cpp direct 35% faster? Two reasons:
 
 | Use case | Recommendation |
 |----------|---------------|
-| Just want it to work | **Ollama** -- install and go, 46 t/s is still fast |
-| Want maximum speed | **llama-server** (from latest llama.cpp) -- 65 t/s, same API as Ollama |
+| Just want it to work | **Ollama** -- install and go, 50 t/s is still fast |
+| Want maximum speed | **llama-server** (from latest llama.cpp) -- 64-97 t/s depending on model, same API as Ollama |
 | Using kyuz0 containers | **kyuz0** -- they auto-rebuild on llama.cpp updates, best of both worlds |
 | Benchmarking | **llama-bench** -- eliminates all overhead, pure GPU measurement |
 
@@ -1506,7 +1508,7 @@ AMD_VULKAN_ICD=RADV ./build-vulkan/bin/llama-server \
   --host 0.0.0.0 --port 8080
 ```
 
-Then point your tools at `http://localhost:8080/v1` instead of `http://localhost:11434/v1`. Same API, 35% faster.
+Then point your tools at `http://localhost:8080/v1` instead of `http://localhost:11434/v1`. Same API, about 25% faster on Qwen3.6 short-context generation.
 
 </details>
 
@@ -1544,7 +1546,7 @@ The Mac Studio M4 Max (128GB) costs $3,699 and gets ~100 t/s via MLX with ~546 G
 Common causes:
 1. **tuned not running** -- Run `tuned-adm active`. Should show `accelerator-performance`. This alone is worth +5-8%.
 2. **Old Mesa drivers** -- Check `vulkaninfo --summary | grep driverInfo`. Should be Mesa 26.0.2+; current tested system is Mesa 26.0.6.
-3. **Using Ollama instead of llama-bench** -- Qwen3.6 is ~30% slower through Ollama 0.21.2 than direct llama-bench on the current data. The 97 t/s number is via llama-bench direct.
+3. **Using Ollama instead of llama-bench** -- Qwen3.6 is about 20-21% slower through Ollama 0.21.2 than direct llama-bench on the current data. The 97 t/s number is via llama-bench direct on Qwen3-Coder 30B, not Ollama.
 4. **GPU clock stuck low** -- Check `cat /sys/class/drm/card*/device/pp_dpm_sclk`. Should show 2900Mhz with asterisk.
 5. **Wrong BIOS VRAM setting** -- Check `free -h`. Should show ~124GB. If only 31GB, set UMA Frame Buffer to 512MB in BIOS.
 6. **Different model/quantization** -- The 97 t/s is specifically Qwen3-Coder-30B-A3B UD-Q4_K_XL via RADV. Larger or denser models are slower.
@@ -1563,7 +1565,7 @@ Yes. Ollama provides an OpenAI-compatible API at `http://localhost:11434/v1`. Yo
 # API Key: (leave empty or use "ollama")
 ```
 
-At 46 t/s, local inference feels instant for code completion and review tasks.
+At 50 t/s, local inference feels instant for code completion and review tasks.
 
 </details>
 
@@ -1611,6 +1613,8 @@ Found something that's wrong, outdated, or missing?
 ### 2026-05-03 -- Controlled Qwen3-Coder Headline Rerun
 
 - **Qwen3-Coder 30B-A3B benchmark updated:** controlled b9010 Vulkan RADV rerun averaged **97.24 t/s** generation and 1346 pp512 across two separate `-r 20` runs.
+- **Qwen3.6 UD rerun:** controlled b9010 Vulkan RADV rerun averaged **63.06 t/s** generation and 1109 pp512 across two separate `-r 20` runs. The old "UD costs 13%" warning was not reproduced on the current stack.
+- **Ollama Qwen3.6 rerun:** controlled API test averaged **50.5 t/s** warm generation across 10 runs, replacing the older 45-46 t/s easy-path claim. Current Qwen3.6 Ollama overhead is about 20-21%, not ~30%.
 - Updated headline range from **65-87 t/s** to **65-97 t/s**. The previous 87.11 t/s result remains in `data/benchmarks.csv` as historical-local data.
 - Added raw benchmark output under `data/raw/2026-05-03/` so the new headline can be audited.
 
@@ -1623,7 +1627,7 @@ Found something that's wrong, outdated, or missing?
 ### 2026-04-26 -- April Update + Qwen3.6 + Qwen3-Next 80B Benchmarks
 
 - **AMDVLK ICD hijacking discovered:** All "pp regression" findings (b8460 vs b8933, Mesa 26.0.2 vs 26.0.5) were caused by AMDVLK's `/etc/vulkan/icd.d/amd_icd64.json` silently overriding RADV. No actual regression exists. [Corrected on #22375](https://github.com/ggml-org/llama.cpp/issues/22375). All benchmarks re-verified on actual RADV
-- **Qwen3.6-35B-A3B benchmark:** **64 t/s** tg, 1064 pp512 via Vulkan RADV. Drop-in replacement for Qwen3.5 with better coding/reasoning quality, identical speed. Use Q4_K_M -- UD-Q4_K_M costs 13% speed (56.6 t/s)
+- **Qwen3.6-35B-A3B benchmark:** **64 t/s** tg, 1064 pp512 via Vulkan RADV. Drop-in replacement for Qwen3.5 with better coding/reasoning quality, identical speed. The old UD-Q4_K_M penalty note is superseded by the May 2026 controlled rerun.
 - **Qwen3-Next 80B-A3B benchmark:** **55 t/s** tg, 657 pp512 via Vulkan RADV (b8933). 80B MoE (3B active) with 256K context window. Faster than the 51B dense Qwen3-Coder-Next (38 t/s)
 - **Gemma 4 26B-A4B benchmark:** 48.5 t/s tg, 1142 pp512 via Vulkan RADV (b8933). First Strix Halo benchmark for this model. Includes KV cache quantization warning (3.5x worse quality degradation vs Qwen at q8_0)
 - **Llama 4 Scout 109B benchmark:** 18.3 t/s tg, 331 pp512 via Vulkan RADV (b8933). 109B parameter model running on a mini PC -- RTX 4090 can't load this
@@ -1631,7 +1635,7 @@ Found something that's wrong, outdated, or missing?
 - Updated April price snapshot for Beelink, Corsair, and GMKtec; superseded by the May 1 price audit above
 - Added linux-firmware-20251125 source attribution and downgrade instructions
 - Added Ubuntu 26.04 LTS note (Wayland-only, testing in progress)
-- **Ollama upgraded to 0.21.2:** FA now enabled by default. Qwen3.6 via Ollama: 45.5 t/s (vs 64 t/s llama-bench direct, ~30% overhead)
+- **Ollama upgraded to 0.21.2:** FA now enabled by default. Original Qwen3.6 via Ollama result was 45.5 t/s; superseded by the May 2026 controlled 50.5 t/s rerun.
 - **Ollama ROCm confirmed working** on gfx1151 with `HSA_OVERRIDE_GFX_VERSION=11.5.1` (Ollama 0.20.4). Benchmarked: 42.4 t/s tg vs Vulkan's 46.6 t/s (-9%). Vulkan still recommended for speed
 
 ### 2026-03-21 -- Performance Breakthrough + Beginner Content

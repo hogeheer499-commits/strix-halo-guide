@@ -26,7 +26,9 @@ Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 202
 
 | Model | Backend / Build | Quant | pp512 | tg128 | Notes |
 |-------|-----------------|-------|-------|-------|-------|
-| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b8460 | UD-Q4_K_XL | 1342 | **87.11** | Fastest coding MoE result |
+| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9010 | UD-Q4_K_XL | 1346 | **97.24** | Controlled May headline rerun |
+| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b8460 | UD-Q4_K_XL | 1342 | **87.11** | Previous coding MoE headline |
+| Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b9010 | UD-Q4_K_M | 1109 | **63.06** | Controlled May UD rerun |
 | Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1064 | **63.76** | Recommended all-rounder |
 | Qwen3.5 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1080 | **64.85** | Used for backend/build comparison |
 | Qwen3-Next 80B-A3B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_XL | 657 | **54.92** | 80B MoE, 256K context capable |
@@ -41,8 +43,9 @@ Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 202
 
 | Prompt Tokens | Prompt Eval | Generation | Notes |
 |---------------|-------------|------------|-------|
-| 20 | 163 t/s | **45.6 t/s** | ~30% slower than llama-bench direct |
-| 22 | 174 t/s | **45.4 t/s** | Current easy path |
+| 19 | 158 t/s | **50.5 t/s** | Controlled 2026-05-03 API warm average across 10 runs |
+| 20 | 163 t/s | 45.6 t/s | Older result, superseded by controlled API run |
+| 22 | 174 t/s | 45.4 t/s | Older result, superseded by controlled API run |
 
 ### Historical March Ollama Results
 
