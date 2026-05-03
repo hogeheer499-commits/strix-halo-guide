@@ -32,7 +32,7 @@ A complete guide for running local LLMs on AMD Ryzen AI MAX+ 395 (Strix Halo) wi
 1. **Every number is measured on this machine.** No theoretical estimates, no copy-pasted specs. Every benchmark was run on a Beelink GTR9 Pro with timestamps.
 2. **We document what does NOT work.** Most guides only tell you what to enable. We tested optimizations that turned out to be regressions, driver versions that crash, and parameters that do nothing. That info is harder to find and more valuable.
 3. **We track the moving target.** Strix Halo support changes rapidly. This guide is updated with each change, noting what broke and what improved.
-4. **We compare backends with data.** Vulkan (RADV vs AMDVLK) vs ROCm HIP vs vLLM -- each has strengths. We measured them all.
+4. **We compare backends with data.** Vulkan (RADV vs AMDVLK) and ROCm HIP are measured directly; vLLM is documented as a harder serving path that still needs a controlled local benchmark.
 5. **We explain everything.** New to local LLMs? See the [Glossary](#glossary). Not sure which model to pick? See the [Model Guide](#model-recommendation-guide).
 
 > **Built on findings from:** [kyuz0/amd-strix-halo-toolboxes](https://github.com/kyuz0/amd-strix-halo-toolboxes) (1.2k stars, community standard), [lhl/strix-halo-testing](https://github.com/lhl/strix-halo-testing) (deepest research), and our own extensive testing.
