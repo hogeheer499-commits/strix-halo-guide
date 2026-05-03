@@ -75,7 +75,7 @@ export HSA_ENABLE_SDMA=0
 2. **llama.cpp build age matters:** b8298 to b8460 gave +24% pp and +25% tg on Qwen3.5-35B-A3B MoE via Vulkan RADV.
 3. **Vulkan RADV is current short-context winner:** On the measured Qwen MoE workloads, RADV beats ROCm HIP on both pp and tg with the same b8460 source.
 4. **ROCm still matters:** Use ROCm for hipBLASLt, vLLM, batch/concurrency testing, and long-context/rocWMMA experiments.
-5. **Ollama remains the easy path:** Ollama 0.21.2 runs Qwen3.6-35B-A3B around 45.5 t/s, roughly 30% below direct llama-bench on current data.
+5. **Ollama remains the easy path:** the controlled 2026-05-03 API run measured Ollama 0.21.2 on Qwen3.6-35B-A3B at 50.5 t/s warm average, about 20-21% below direct llama-bench on current short-context data.
 6. **Live system readiness matters:** The 2026-05-01 audit now confirms Mesa 26.0.6, Ollama 0.21.2, AMDVLK removed, GPU clock correct, linux-firmware safe, and `tuned accelerator-performance` active. Keep those checks in the benchmark preflight.
 
 ## Next Research Tasks
