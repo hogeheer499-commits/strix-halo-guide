@@ -111,7 +111,7 @@ This confirms that the earlier low results were caused by background load, not a
 
 | Build | Model | Quant | pp512 | tg128 | Interpretation |
 |-------|-------|-------|-------|-------|----------------|
-| b8460 / b1c70e2e5 | Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1303.32 | 95.39 | Above the current 87 t/s headline; needs controlled rerun before updating public claims |
+| b8460 / b1c70e2e5 | Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1303.32 | 95.39 | Early signal later superseded by the controlled 97.24 t/s rerun |
 | b8933 / dcad77cc3 | Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1317.84 | 95.46 | Matches b8460 on tg and slightly improves pp |
 | b8933 / dcad77cc3 | Qwen3.6 35B-A3B | UD-Q4_K_M | 1068.15 | 62.11 | Restores expected UD performance after polluted run |
 | b8460 / b1c70e2e5 | Qwen3.6 35B-A3B | UD-Q4_K_M | 1098.13 | 62.02 | b8460 and b8933 align on tg |
@@ -182,7 +182,7 @@ AMD_VULKAN_ICD=RADV
 |-------|-------|-------|-------|-------|----------------|
 | b8933 / dcad77cc3 | Qwen3.6 35B-A3B | UD-Q4_K_M | 1062.02 | 51.68 | Functional, but not publishable under load |
 | b8460 / b1c70e2e5 | Qwen3.6 35B-A3B | UD-Q4_K_M | 1061.37 | 51.58 | Matches b8933; not a b8933-only regression |
-| b8933 / dcad77cc3 | Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1327.72 | 76.75 | Below published 87 t/s; environment not clean |
+| b8933 / dcad77cc3 | Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1327.72 | 76.75 | Below the old headline; environment not clean |
 | b8460 / b1c70e2e5 | Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1324.51 | 76.70 | Matches b8933; not a b8933-only regression |
 
 ### Ollama Result
