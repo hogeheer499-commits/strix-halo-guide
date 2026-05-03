@@ -130,3 +130,14 @@ Detailed raw output is under `filled-kv-decode/`.
 | Qwen3-Next 80B-A3B | 64K | f16 | 753.26 t/s | 38.18 t/s | 90.45 s |
 
 Verdict: KV quantization helps Qwen3.6 decode speed after the cache is filled, but slows prompt ingestion enough that total request wall time is worse in this first-turn long-prompt benchmark. Use f16 for first-turn speed; consider q4_0/q8_0 only when memory pressure or long continued generation dominates.
+
+### 128K f16 Follow-Up
+
+Detailed raw output is under `filled-kv-decode-128k/`.
+
+| Model | Prompt | KV | Prompt Eval | Decode After Fill | Wall Time | Truncated |
+|-------|--------|----|-------------|-------------------|-----------|-----------|
+| Qwen3.6 35B-A3B | 128K | f16 | 616.77 t/s | 32.23 t/s | 216.69 s | no |
+| Qwen3-Next 80B-A3B | 128K | f16 | 497.79 t/s | 29.12 t/s | 268.54 s | no |
+
+Verdict: both tested MoE models complete a 128K prompt plus 128 generated tokens without truncation on the current Vulkan RADV stack.
