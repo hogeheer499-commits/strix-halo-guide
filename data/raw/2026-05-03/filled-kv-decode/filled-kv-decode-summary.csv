@@ -1,0 +1,9 @@
+date,model,quant,target_prompt_tokens,cache_type_k,cache_type_v,reps,tokens_evaluated_mean,prompt_eval_tps_mean,eval_tps_mean,request_wall_s_mean,truncated_any,notes
+2026-05-03,Qwen3-Next 80B-A3B,UD-Q4_K_XL,32768,f16,f16,2,32764,972.57,46.17,36.51,False,server API request with long synthetic prompt; prompt cache disabled; measures generation after prompt eval
+2026-05-03,Qwen3-Next 80B-A3B,UD-Q4_K_XL,65536,f16,f16,2,65532,753.26,38.18,90.45,False,server API request with long synthetic prompt; prompt cache disabled; measures generation after prompt eval
+2026-05-03,Qwen3.6 35B-A3B,UD-Q4_K_M,32768,f16,f16,2,32765,1216.64,51.00,29.50,False,server API request with long synthetic prompt; prompt cache disabled; measures generation after prompt eval
+2026-05-03,Qwen3.6 35B-A3B,UD-Q4_K_M,32768,q4_0,q4_0,2,32765,1048.70,56.03,33.58,False,server API request with long synthetic prompt; prompt cache disabled; measures generation after prompt eval
+2026-05-03,Qwen3.6 35B-A3B,UD-Q4_K_M,32768,q8_0,q8_0,2,32765,1023.43,54.59,34.46,False,server API request with long synthetic prompt; prompt cache disabled; measures generation after prompt eval
+2026-05-03,Qwen3.6 35B-A3B,UD-Q4_K_M,65536,f16,f16,2,65533,931.89,41.44,73.52,False,server API request with long synthetic prompt; prompt cache disabled; measures generation after prompt eval
+2026-05-03,Qwen3.6 35B-A3B,UD-Q4_K_M,65536,q4_0,q4_0,2,65533,750.04,51.33,89.97,False,server API request with long synthetic prompt; prompt cache disabled; measures generation after prompt eval
+2026-05-03,Qwen3.6 35B-A3B,UD-Q4_K_M,65536,q8_0,q8_0,2,65533,731.22,49.13,92.33,False,server API request with long synthetic prompt; prompt cache disabled; measures generation after prompt eval
