@@ -4,6 +4,12 @@ This directory contains structured benchmark data used by the guide.
 
 The README remains the human-facing guide. These files are the machine-readable source for future charts, dashboards, comparisons, and social images.
 
+Generated SVG summaries live in `../charts/`. Regenerate them after changing CSV data:
+
+```bash
+python3 scripts/generate_charts.py
+```
+
 ## Files
 
 - `benchmarks.csv`: existing short-context and backend benchmark rows already published in the guide.
@@ -13,6 +19,7 @@ The README remains the human-facing guide. These files are the machine-readable 
 - `smoke_tests.csv`: short validation runs that prove the current stack is healthy before larger benchmark campaigns.
 - `raw/`: raw command output for controlled benchmark runs used by current claims.
 - `../SMOKE_TESTS.md`: human-readable smoke-test notes and verdicts.
+- `../charts/`: generated SVG charts derived from the CSV files.
 
 ## Status Values
 

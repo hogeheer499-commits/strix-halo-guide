@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560" viewBox="0 0 980 560" role="img">
+<style>
+text{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#17202a}
+.title{font-size:26px;font-weight:700}
+.subtitle{font-size:14px;fill:#52616f}
+.axis{font-size:12px;fill:#52616f}
+.tick{font-size:11px;fill:#52616f}
+.legend{font-size:13px;fill:#17202a}
+.note{font-size:12px;fill:#52616f}
+.grid{stroke:#dce3ea;stroke-width:1}
+.axis-line{stroke:#6b7a89;stroke-width:1.2}
+</style>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="82" y="40" class="title">Decode speed after 32K-128K filled KV cache</text>
+<text x="82" y="64" class="subtitle">llama-server full request, f16 KV, synthetic prompt, prompt cache disabled</text>
+<line x1="82" y1="468.0" x2="938" y2="468.0" class="grid"/>
+<text x="72" y="472.0" text-anchor="end" class="tick">0</text>
+<line x1="82" y1="392.8" x2="938" y2="392.8" class="grid"/>
+<text x="72" y="396.8" text-anchor="end" class="tick">20</text>
+<line x1="82" y1="317.6" x2="938" y2="317.6" class="grid"/>
+<text x="72" y="321.6" text-anchor="end" class="tick">40</text>
+<line x1="82" y1="242.4" x2="938" y2="242.4" class="grid"/>
+<text x="72" y="246.4" text-anchor="end" class="tick">60</text>
+<line x1="82" y1="167.2" x2="938" y2="167.2" class="grid"/>
+<text x="72" y="171.2" text-anchor="end" class="tick">80</text>
+<line x1="82" y1="92.0" x2="938" y2="92.0" class="grid"/>
+<text x="72" y="96.0" text-anchor="end" class="tick">100</text>
+<line x1="82" y1="92" x2="82" y2="468" class="axis-line"/>
+<line x1="82" y1="468" x2="938" y2="468" class="axis-line"/>
+<text x="20" y="280.0" class="axis" transform="rotate(-90 20 280.0)">decode tokens/s after fill</text>
+<text x="82.0" y="494" text-anchor="middle" class="tick">32K</text>
+<text x="510.0" y="494" text-anchor="middle" class="tick">64K</text>
+<text x="938.0" y="494" text-anchor="middle" class="tick">128K</text>
+<polyline fill="none" stroke="#1f77b4" stroke-width="3" points="82.0,294.4 510.0,324.4 938.0,358.5"/>
+<circle cx="82.0" cy="294.4" r="4.5" fill="#1f77b4"/>
+<text x="82.0" y="285.4" text-anchor="middle" class="tick">46.2</text>
+<circle cx="510.0" cy="324.4" r="4.5" fill="#1f77b4"/>
+<text x="510.0" y="315.4" text-anchor="middle" class="tick">38.2</text>
+<circle cx="938.0" cy="358.5" r="4.5" fill="#1f77b4"/>
+<text x="938.0" y="349.5" text-anchor="middle" class="tick">29.1</text>
+<rect x="82" y="514" width="18" height="4" fill="#1f77b4"/>
+<text x="108" y="520" class="legend">Qwen3-Next 80B-A3B</text>
+<polyline fill="none" stroke="#d62728" stroke-width="3" points="82.0,276.2 510.0,312.2 938.0,346.8"/>
+<circle cx="82.0" cy="276.2" r="4.5" fill="#d62728"/>
+<text x="82.0" y="267.2" text-anchor="middle" class="tick">51.0</text>
+<circle cx="510.0" cy="312.2" r="4.5" fill="#d62728"/>
+<text x="510.0" y="303.2" text-anchor="middle" class="tick">41.4</text>
+<circle cx="938.0" cy="346.8" r="4.5" fill="#d62728"/>
+<text x="938.0" y="337.8" text-anchor="middle" class="tick">32.2</text>
+<rect x="302" y="514" width="18" height="4" fill="#d62728"/>
+<text x="328" y="520" class="legend">Qwen3.6 35B-A3B</text>
+<text x="82" y="548" class="note">Source: data/filled_kv_decode.csv</text>
+</svg>

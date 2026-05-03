@@ -56,6 +56,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 - [Hardware](#hardware)
 - [What You Can Run](#what-you-can-run)
 - [Benchmark Results](#benchmark-results)
+  - [Benchmark Charts](#benchmark-charts)
   - [Ollama Vulkan (RADV)](#ollama-vulkan-radv-ollama-0212)
   - [llama-server Multi-User Serving](#llama-server-multi-user-serving-b9010)
   - [ROCm HIP (llama.cpp)](#rocm-hip-llamacpp)
@@ -143,6 +144,22 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (Vulkan RADV). Spe
 ## Benchmark Results
 
 Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, and 2026-05-03. Benchmark system: Beelink GTR9 Pro, kernel 6.19.4, Mesa RADV 26.0.2-26.0.6, AMDVLK removed, tuned `accelerator-performance` active for measured runs. Before running new benchmarks, verify `tuned-adm active`; the daemon can stop after reboot on some systems.
+
+### Benchmark Charts
+
+These generated SVGs summarize the current structured benchmark data. The CSV files in `data/` and raw logs in `data/raw/` remain the source of truth; regenerate charts with `python3 scripts/generate_charts.py`.
+
+| Multi-user serving | Long-context prompt scaling |
+|--------------------|-----------------------------|
+| <img src="charts/multi_user_aggregate.svg" alt="llama-server multi-user aggregate throughput chart" width="455"> | <img src="charts/long_context_prompt.svg" alt="long-context prompt processing chart" width="455"> |
+
+| Filled-KV decode | KV-cache quantization tradeoff |
+|------------------|-------------------------------|
+| <img src="charts/filled_kv_decode.svg" alt="decode speed after filled KV cache chart" width="455"> | <img src="charts/kv_cache_tradeoff.svg" alt="Qwen3.6 KV-cache quantization tradeoff chart" width="455"> |
+
+| Real versus synthetic prompts | Backend spot check |
+|-------------------------------|--------------------|
+| <img src="charts/real_vs_synthetic.svg" alt="real documentation corpus versus synthetic prompt chart" width="455"> | <img src="charts/backend_spot_check.svg" alt="Vulkan RADV versus ROCm HIP spot check chart" width="455"> |
 
 ### Ollama Vulkan (RADV, Ollama 0.21.2)
 
@@ -959,13 +976,21 @@ cmake --build build -j$(nproc)
 
 ## Phase 8: vLLM Serving
 
-[kyuz0's vLLM toolboxes](https://github.com/kyuz0/amd-strix-halo-vllm-toolboxes) enable API serving on gfx1151.
+[kyuz0's vLLM toolboxes](https://github.com/kyuz0/amd-strix-halo-vllm-toolboxes) enable API serving on gfx1151. Treat vLLM as a separate serving benchmark path, not as something to install into the host Python environment.
+
+On Ubuntu, use Distrobox. Prefer `:stable` for measured runs; use `:latest` only for an explicit update/regression test.
 
 ```bash
 distrobox create vllm-gfx1151 \
-  --image docker.io/kyuz0/vllm-therock-gfx1151:latest \
-  --additional-flags "--device /dev/dri --device /dev/kfd --group-add video --group-add render --security-opt seccomp=unconfined"
+  --image docker.io/kyuz0/vllm-therock-gfx1151:stable \
+  --additional-flags "--device /dev/kfd --device /dev/dri --group-add video --group-add render --security-opt seccomp=unconfined"
+
+distrobox enter vllm-gfx1151
+rocm-smi
+start-vllm
 ```
+
+Record vLLM results separately from llama.cpp server results. At minimum, capture image tag, ROCm/TheRock build, model, quant, max context, concurrency, aggregate throughput, TTFT, p50/p95 latency, memory use, and any kernel compile/cache warmup behavior.
 
 **Known vLLM issues on gfx1151:**
 
