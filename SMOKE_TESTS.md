@@ -2,6 +2,63 @@
 
 This file records short validation runs before larger benchmark campaigns. Smoke tests are not headline benchmark data. They are used to decide whether the system is clean enough to collect publishable results.
 
+## 2026-05-03 Before/After llama.cpp Update
+
+### Verdict
+
+**The machine is clean enough for direct llama-bench smoke testing, and updating llama.cpp from b8933 to b9010 did not materially change short-context Qwen MoE token generation.**
+
+This is useful negative data: unlike the b8298 to b8460 jump, the b8933 to b9010 update is not a new speed breakthrough for these two short-context Vulkan RADV smoke tests.
+
+### Cleanup Before Testing
+
+The machine had become polluted again since the previous day:
+
+- background media service had restarted and spawned high-CPU `ffmpeg` for a virtual webcam.
+- Zoom was active.
+- RustDesk user processes had respawned.
+- No `ubuntu-zoom` VM was running by the time the baseline was taken.
+
+Before testing:
+
+- `background-media.service` was stopped.
+- `ffmpeg` and Zoom processes were stopped.
+- RustDesk user processes were paused with `SIGSTOP`.
+- `tuned accelerator-performance`, RADV, Mesa 26.0.6, AMDVLK absence, and 2900 MHz GPU clock were verified.
+
+### Update Applied
+
+Only llama.cpp was changed.
+
+| Component | Before | After |
+|-----------|--------|-------|
+| llama.cpp | b8933 / `dcad77cc3` | b9010 / `d05fe1d7d` |
+| Commits advanced | - | 77 commits |
+| Vulkan build | `~/llama-cpp-latest/build-vulkan` | rebuilt successfully |
+| Preserved old build | - | `~/llama-cpp-latest/build-vulkan-b8933-20260503` |
+
+Ollama was not upgraded during this run.
+
+### Results
+
+All direct runs used:
+
+```bash
+AMD_VULKAN_ICD=RADV
+-fa 1 -ngl 999 -mmp 0 -p 512 -n 128 -r 5 -o csv
+```
+
+| Phase | Build | Model | Quant | pp512 | tg128 | Delta vs before |
+|-------|-------|-------|-------|-------|-------|-----------------|
+| before update | b8933 / dcad77cc3 | Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1354.67 | 95.81 | baseline |
+| after update | b9010 / d05fe1d7d | Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1334.31 | 95.73 | tg -0.1%, pp -1.5% |
+| before update | b8933 / dcad77cc3 | Qwen3.6 35B-A3B | UD-Q4_K_M | 1098.80 | 62.16 | baseline |
+| after update | b9010 / d05fe1d7d | Qwen3.6 35B-A3B | UD-Q4_K_M | 1102.46 | 62.07 | tg -0.1%, pp +0.3% |
+
+### Takeaway
+
+Current short-context Vulkan RADV performance is stable across b8933 and b9010 for these two smoke models. The guide should not claim a new update-driven speedup from this llama.cpp update.
+
 ## 2026-05-02 Smoke Test
 
 ### Clean Rerun Verdict
