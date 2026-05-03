@@ -76,6 +76,29 @@ This is a serving benchmark, not a single-user `llama-bench` headline. Each row 
 
 Takeaway: continuous batching makes Strix Halo much more useful as a local API box than single-user numbers imply. `-np 8` gives about 2.7x the `-np 1` aggregate throughput while keeping TTFT near 0.3 seconds. `-np 16` is viable for many low-rate clients, but not faster overall.
 
+### Qwen3-Coder 30B-A3B UD-Q4_K_XL, llama.cpp b9010, Vulkan RADV
+
+| `-np` | Concurrent Requests | Aggregate tg | Avg per Request | Mean TTFT | Mean ITL | Notes |
+|-------|---------------------|--------------|-----------------|-----------|----------|-------|
+| 1 | 1 | 90.20 t/s | 90.20 t/s | 0.079 s | 10.6 ms | Server/API path baseline |
+| 2 | 2 | 121.65 t/s | 60.83 t/s | 0.133 s | 15.5 ms | Good scaling |
+| 4 | 4 | 157.41 t/s | 39.36 t/s | 0.207 s | 24.0 ms | Strong batching gain |
+| 8 | 8 | **173.16 t/s** | 21.65 t/s | 0.382 s | 43.5 ms | Practical sweet spot |
+| 16 | 16 | 129.56 t/s | 8.10 t/s | 0.571 s | 119.9 ms | Regression |
+
+Takeaway: `-np 8` is the best measured setting for Qwen3-Coder serving. `-np 16` regresses, so avoid it for throughput-focused coding workloads.
+
+## Long-Context Prompt Scaling
+
+These rows measure prompt processing at the listed prompt lengths. They do not measure decode speed after a fully occupied KV cache.
+
+| Model | Quant | 4K pp | 8K pp | 16K pp | 32K pp | 64K pp | tg128 row |
+|-------|-------|-------|-------|--------|--------|--------|-----------|
+| Qwen3.6 35B-A3B | UD-Q4_K_M | 1081.93 | 1089.48 | 1024.58 | 908.61 | 740.25 | 57.84 |
+| Qwen3-Next 80B-A3B | UD-Q4_K_XL | 741.68 | 735.50 | 700.49 | 644.82 | 543.89 | 55.58 |
+
+Takeaway: Qwen3.6 retains 68% of its 4K prompt-processing speed at 64K. Qwen3-Next 80B retains 73%, which is a strong result for a 46GB-on-disk 80B MoE model.
+
 ## Backend and Build Comparison
 
 ### Qwen3.5-35B-A3B Q4_K_M

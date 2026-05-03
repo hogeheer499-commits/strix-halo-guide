@@ -126,6 +126,8 @@ This is likely the highest-value missing benchmark category because most public 
 
 Purpose: show where backend choice changes at 32K, 64K, and 128K context.
 
+Status: initial local RADV prompt-processing baseline completed on 2026-05-03 for Qwen3.6 35B and Qwen3-Next 80B through 64K. Filled-KV decode, KV-cache quantization, 128K, ROCm HIP, and rocWMMA remain open.
+
 Targets:
 
 - RADV Vulkan direct.

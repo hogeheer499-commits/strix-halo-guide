@@ -88,3 +88,28 @@ The same b9010 RADV stack was also tested with `llama-server`, continuous batchi
 | 16 | 16 | 165.98 t/s | 10.38 t/s | 0.547 s | 92.9 ms |
 
 Verdict: the practical sweet spot for this Qwen3.6 local API workload is `-np 8`: about **162 t/s aggregate** with ~0.31 s TTFT. `-np 16` confirms the server can keep 16 simultaneous streams alive, but aggregate throughput plateaus while per-user speed drops sharply.
+
+## Qwen3-Coder Multi-User llama-server
+
+The same serving harness was repeated with Qwen3-Coder 30B-A3B UD-Q4_K_XL. Detailed raw output is under `multi-user-coder/`.
+
+| `-np` | Concurrent Requests | Aggregate tg | Avg per Request | Mean TTFT | Mean ITL |
+|-------|---------------------|--------------|-----------------|-----------|----------|
+| 1 | 1 | 90.20 t/s | 90.20 t/s | 0.079 s | 10.6 ms |
+| 2 | 2 | 121.65 t/s | 60.83 t/s | 0.133 s | 15.5 ms |
+| 4 | 4 | 157.41 t/s | 39.36 t/s | 0.207 s | 24.0 ms |
+| 8 | 8 | 173.16 t/s | 21.65 t/s | 0.382 s | 43.5 ms |
+| 16 | 16 | 129.56 t/s | 8.10 t/s | 0.571 s | 119.9 ms |
+
+Verdict: `-np 8` is the best measured setting for Qwen3-Coder serving. `-np 16` regresses and should not be used for throughput-focused coding workloads.
+
+## Long-Context Prompt Scaling
+
+Detailed raw output is under `long-context/`.
+
+| Model | 4K pp | 8K pp | 16K pp | 32K pp | 64K pp | tg128 row |
+|-------|-------|-------|--------|--------|--------|-----------|
+| Qwen3.6 35B-A3B UD-Q4_K_M | 1081.93 | 1089.48 | 1024.58 | 908.61 | 740.25 | 57.84 |
+| Qwen3-Next 80B-A3B UD-Q4_K_XL | 741.68 | 735.50 | 700.49 | 644.82 | 543.89 | 55.58 |
+
+Verdict: both MoE models keep strong prompt-ingestion speed through 64K. This is prompt-processing data, not decode speed after a filled KV cache.
