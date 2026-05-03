@@ -99,6 +99,23 @@ These rows measure prompt processing at the listed prompt lengths. They do not m
 
 Takeaway: Qwen3.6 retains 68% of its 4K prompt-processing speed at 64K. Qwen3-Next 80B retains 73%, which is a strong result for a 46GB-on-disk 80B MoE model.
 
+## Filled-KV Decode
+
+These rows measure a full `llama-server` request: long prompt ingestion plus 128 generated tokens after the KV cache is filled. Prompt cache was disabled. Prompt content was synthetic and repetitive, so compare within this table rather than against arbitrary real-world documents.
+
+| Model | Prompt | KV | Prompt Eval | Decode After Fill | Wall Time |
+|-------|--------|----|-------------|-------------------|-----------|
+| Qwen3.6 35B-A3B | 32K | f16 | 1216.64 t/s | 51.00 t/s | 29.50 s |
+| Qwen3.6 35B-A3B | 32K | q8_0 | 1023.43 t/s | 54.59 t/s | 34.46 s |
+| Qwen3.6 35B-A3B | 32K | q4_0 | 1048.70 t/s | 56.03 t/s | 33.58 s |
+| Qwen3.6 35B-A3B | 64K | f16 | 931.89 t/s | 41.44 t/s | 73.52 s |
+| Qwen3.6 35B-A3B | 64K | q8_0 | 731.22 t/s | 49.13 t/s | 92.33 s |
+| Qwen3.6 35B-A3B | 64K | q4_0 | 750.04 t/s | 51.33 t/s | 89.97 s |
+| Qwen3-Next 80B-A3B | 32K | f16 | 972.57 t/s | 46.17 t/s | 36.51 s |
+| Qwen3-Next 80B-A3B | 64K | f16 | 753.26 t/s | 38.18 t/s | 90.45 s |
+
+Takeaway: q4_0/q8_0 KV cache improves Qwen3.6 decode speed after a filled context, but slows prompt ingestion enough that full first-turn wall time is worse than f16. Use f16 for first-turn long prompts; use q4_0/q8_0 only when memory pressure or long continued generation matters more than ingest speed.
+
 ## Backend and Build Comparison
 
 ### Qwen3.5-35B-A3B Q4_K_M

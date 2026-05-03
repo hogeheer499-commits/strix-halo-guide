@@ -113,3 +113,20 @@ Detailed raw output is under `long-context/`.
 | Qwen3-Next 80B-A3B UD-Q4_K_XL | 741.68 | 735.50 | 700.49 | 644.82 | 543.89 | 55.58 |
 
 Verdict: both MoE models keep strong prompt-ingestion speed through 64K. This is prompt-processing data, not decode speed after a filled KV cache.
+
+## Filled-KV Decode
+
+Detailed raw output is under `filled-kv-decode/`.
+
+| Model | Prompt | KV | Prompt Eval | Decode After Fill | Wall Time |
+|-------|--------|----|-------------|-------------------|-----------|
+| Qwen3.6 35B-A3B | 32K | f16 | 1216.64 t/s | 51.00 t/s | 29.50 s |
+| Qwen3.6 35B-A3B | 32K | q8_0 | 1023.43 t/s | 54.59 t/s | 34.46 s |
+| Qwen3.6 35B-A3B | 32K | q4_0 | 1048.70 t/s | 56.03 t/s | 33.58 s |
+| Qwen3.6 35B-A3B | 64K | f16 | 931.89 t/s | 41.44 t/s | 73.52 s |
+| Qwen3.6 35B-A3B | 64K | q8_0 | 731.22 t/s | 49.13 t/s | 92.33 s |
+| Qwen3.6 35B-A3B | 64K | q4_0 | 750.04 t/s | 51.33 t/s | 89.97 s |
+| Qwen3-Next 80B-A3B | 32K | f16 | 972.57 t/s | 46.17 t/s | 36.51 s |
+| Qwen3-Next 80B-A3B | 64K | f16 | 753.26 t/s | 38.18 t/s | 90.45 s |
+
+Verdict: KV quantization helps Qwen3.6 decode speed after the cache is filled, but slows prompt ingestion enough that total request wall time is worse in this first-turn long-prompt benchmark. Use f16 for first-turn speed; consider q4_0/q8_0 only when memory pressure or long continued generation dominates.
