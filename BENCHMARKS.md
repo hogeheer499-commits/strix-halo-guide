@@ -118,6 +118,17 @@ These rows measure a full `llama-server` request: long prompt ingestion plus 128
 
 Takeaway: q4_0/q8_0 KV cache improves Qwen3.6 decode speed after a filled context, but slows prompt ingestion enough that full first-turn wall time is worse than f16. Use f16 for first-turn long prompts; use q4_0/q8_0 only when memory pressure or long continued generation matters more than ingest speed. The 128K f16 rows completed without truncation.
 
+### Real-Corpus 64K Check
+
+| Model | Prompt Type | Tokens | Prompt Eval | Decode After Fill | Wall Time |
+|-------|-------------|--------|-------------|-------------------|-----------|
+| Qwen3.6 35B-A3B | synthetic repeated token | 65,533 | 931.89 t/s | 41.44 t/s | 73.52 s |
+| Qwen3.6 35B-A3B | real guide corpus | 65,120 | 706.21 t/s | 40.84 t/s | 95.41 s |
+| Qwen3-Next 80B-A3B | synthetic repeated token | 65,532 | 753.26 t/s | 38.18 t/s | 90.45 s |
+| Qwen3-Next 80B-A3B | real guide corpus | 63,507 | 504.53 t/s | 37.75 t/s | 129.40 s |
+
+Takeaway: synthetic repeated-token prompts are optimistic for prompt-ingest speed. Real guide/documentation text slowed prompt eval by 24-33%, while decode-after-fill barely changed.
+
 ## Backend and Build Comparison
 
 ### Qwen3.5-35B-A3B Q4_K_M

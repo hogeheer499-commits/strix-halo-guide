@@ -1,0 +1,3 @@
+date,model,quant,prompt_type,target_prompt_tokens,cache_type_k,cache_type_v,reps,tokens_evaluated_mean,prompt_eval_tps_mean,eval_tps_mean,request_wall_s_mean,truncated_any,notes
+2026-05-03,Qwen3-Next 80B-A3B,UD-Q4_K_XL,real-corpus-guide-files,65536,f16,f16,2,63507,504.53,37.75,129.40,False,real guide/documentation corpus prompt; prompt cache disabled; f16 KV
+2026-05-03,Qwen3.6 35B-A3B,UD-Q4_K_M,real-corpus-guide-files,65536,f16,f16,2,65120,706.21,40.84,95.41,False,real guide/documentation corpus prompt; prompt cache disabled; f16 KV
