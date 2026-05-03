@@ -57,6 +57,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 - [What You Can Run](#what-you-can-run)
 - [Benchmark Results](#benchmark-results)
   - [Ollama Vulkan (RADV)](#ollama-vulkan-radv-ollama-0212)
+  - [llama-server Multi-User Serving](#llama-server-multi-user-serving-b9010)
   - [ROCm HIP (llama.cpp)](#rocm-hip-llamacpp)
   - [Backend Comparison](#backend-comparison-table)
   - [Hardware Comparison](#hardware-comparison)
@@ -195,6 +196,24 @@ Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, and 2026-05-03.
 > **Why so slow?** This is a 42GB dense model -- every token reads all 42GB of weights. At ~215 GB/s bandwidth, the theoretical maximum is 215/42 = 5.1 t/s. We hit 4.8 t/s = **94% of the theoretical ceiling**. The model is slow not because of poor optimization, but because it's massive. An RTX 4090 (24GB VRAM) cannot run this model at all. This is the Strix Halo advantage: running models that don't fit on consumer GPUs.
 
 > **What improved?** Mesa 26.0.1 to 26.0.2 plus enabling the `tuned accelerator-performance` profile gave a consistent **+4-5% generation speed improvement** across all models.
+
+### llama-server Multi-User Serving (b9010)
+
+Single-user `llama-bench` tells you the ceiling for one stream. For a real local API box, the more practical question is what happens when multiple tools or users hit `llama-server` at the same time.
+
+**Qwen3.6-35B-A3B** (UD-Q4_K_M, Vulkan RADV, llama.cpp b9010, continuous batching, 4096 context tokens per slot):
+
+| `-np` | Concurrent Requests | Aggregate Generation | Avg per Request | Mean TTFT | Mean ITL | Notes |
+|-------|---------------------|----------------------|-----------------|-----------|----------|-------|
+| 1 | 1 | 59.21 t/s | 59.21 t/s | 0.117 s | 16.1 ms | Server/API baseline |
+| 2 | 2 | 92.21 t/s | 46.11 t/s | 0.198 s | 20.3 ms | Good scaling |
+| 4 | 4 | 130.81 t/s | 32.71 t/s | 0.237 s | 29.0 ms | Strong batching gain |
+| 8 | 8 | **161.98 t/s** | 20.25 t/s | 0.307 s | 47.4 ms | Practical sweet spot |
+| 16 | 16 | 165.98 t/s | 10.38 t/s | 0.547 s | 92.9 ms | Throughput plateau |
+
+> **Takeaway:** continuous batching makes Strix Halo look much stronger as a local API server than single-user tg numbers suggest. `-np 8` delivers about **2.7x** the `-np 1` aggregate throughput while keeping TTFT around 0.3 seconds. `-np 16` works with no errors in this test, but aggregate throughput barely improves while per-user speed drops sharply.
+
+Raw data: `data/multi_user.csv` and `data/raw/2026-05-03/multi-user/`.
 
 ### llama-bench Direct -- Latest llama.cpp (b9010 and b8460) vs kyuz0 Containers (b8298)
 
@@ -1615,6 +1634,7 @@ Found something that's wrong, outdated, or missing?
 - **Qwen3-Coder 30B-A3B benchmark updated:** controlled b9010 Vulkan RADV rerun averaged **97.24 t/s** generation and 1346 pp512 across two separate `-r 20` runs.
 - **Qwen3.6 UD rerun:** controlled b9010 Vulkan RADV rerun averaged **63.06 t/s** generation and 1109 pp512 across two separate `-r 20` runs. The old "UD costs 13%" warning was not reproduced on the current stack.
 - **Ollama Qwen3.6 rerun:** controlled API test averaged **50.5 t/s** warm generation across 10 runs, replacing the older 45-46 t/s easy-path claim. Current Qwen3.6 Ollama overhead is about 20-21%, not ~30%.
+- **Multi-user Qwen3.6 serving:** `llama-server` continuous batching reached **162 t/s aggregate** at `-np 8` with ~0.31 s TTFT, then plateaued at 166 t/s at `-np 16`.
 - Updated headline range from **65-87 t/s** to **65-97 t/s**. The previous 87.11 t/s result remains in `data/benchmarks.csv` as historical-local data.
 - Added raw benchmark output under `data/raw/2026-05-03/` so the new headline can be audited.
 

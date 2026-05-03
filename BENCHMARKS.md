@@ -60,6 +60,22 @@ These remain useful as historical data, but they are not the current headline nu
 | Qwen3-Coder-Next | 120 | 301.2 | **37.9** | Dense 51GB model |
 | Qwen2.5-VL 7B | 23 | 81.7 | **21.4** | Vision-language model |
 
+## Multi-User llama-server
+
+### Qwen3.6-35B-A3B UD-Q4_K_M, llama.cpp b9010, Vulkan RADV
+
+This is a serving benchmark, not a single-user `llama-bench` headline. Each row is the average of 3 measured repetitions with streaming `/completion`, 128 generated tokens per request, prompt cache disabled, continuous batching enabled, and about 4096 context tokens per slot.
+
+| `-np` | Concurrent Requests | Aggregate tg | Avg per Request | Mean TTFT | Mean ITL | Notes |
+|-------|---------------------|--------------|-----------------|-----------|----------|-------|
+| 1 | 1 | 59.21 t/s | 59.21 t/s | 0.117 s | 16.1 ms | Server/API path baseline |
+| 2 | 2 | 92.21 t/s | 46.11 t/s | 0.198 s | 20.3 ms | Good scaling |
+| 4 | 4 | 130.81 t/s | 32.71 t/s | 0.237 s | 29.0 ms | Strong batching gain |
+| 8 | 8 | **161.98 t/s** | 20.25 t/s | 0.307 s | 47.4 ms | Practical sweet spot |
+| 16 | 16 | 165.98 t/s | 10.38 t/s | 0.547 s | 92.9 ms | Throughput plateau |
+
+Takeaway: continuous batching makes Strix Halo much more useful as a local API box than single-user numbers imply. `-np 8` gives about 2.7x the `-np 1` aggregate throughput while keeping TTFT near 0.3 seconds. `-np 16` is viable for many low-rate clients, but not faster overall.
+
 ## Backend and Build Comparison
 
 ### Qwen3.5-35B-A3B Q4_K_M

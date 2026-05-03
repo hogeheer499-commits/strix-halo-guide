@@ -74,3 +74,17 @@ Ollama 0.21.2 was tested through `POST /api/generate` using `qwen3.6:35b-a3b`, `
 | warm | 10 | 157.90 t/s avg | 50.51 t/s avg | 50.23-50.75 t/s range, 0.15 t/s stddev |
 
 Verdict: the old 45-46 t/s easy-path claim is superseded. Current Ollama Qwen3.6 generation is **50.5 t/s** warm, about 20-21% below direct llama-bench on this short-context workload.
+
+## Qwen3.6 Multi-User llama-server
+
+The same b9010 RADV stack was also tested with `llama-server`, continuous batching, and `-np 1/2/4/8/16`. Detailed raw output is under `multi-user/`.
+
+| `-np` | Concurrent Requests | Aggregate tg | Avg per Request | Mean TTFT | Mean ITL |
+|-------|---------------------|--------------|-----------------|-----------|----------|
+| 1 | 1 | 59.21 t/s | 59.21 t/s | 0.117 s | 16.1 ms |
+| 2 | 2 | 92.21 t/s | 46.11 t/s | 0.198 s | 20.3 ms |
+| 4 | 4 | 130.81 t/s | 32.71 t/s | 0.237 s | 29.0 ms |
+| 8 | 8 | 161.98 t/s | 20.25 t/s | 0.307 s | 47.4 ms |
+| 16 | 16 | 165.98 t/s | 10.38 t/s | 0.547 s | 92.9 ms |
+
+Verdict: the practical sweet spot for this Qwen3.6 local API workload is `-np 8`: about **162 t/s aggregate** with ~0.31 s TTFT. `-np 16` confirms the server can keep 16 simultaneous streams alive, but aggregate throughput plateaus while per-user speed drops sharply.
