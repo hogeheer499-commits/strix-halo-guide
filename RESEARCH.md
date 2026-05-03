@@ -83,7 +83,8 @@ export HSA_ENABLE_SDMA=0
 10. **Prompt content matters for ingest, not much for decode:** the real-corpus 64K run slowed prompt eval by 24-33% versus synthetic repeated-token prompts, while decode-after-fill stayed within about 1 t/s.
 11. **KV quantization is not a free speed win:** on Qwen3.6 64K filled-context requests, q4_0 KV raised decode from 41.4 to 51.3 t/s but slowed prompt ingestion enough that wall time rose from 73.5 s to 90.0 s.
 12. **Power still needs proper instrumentation:** the available powercap energy fields were empty in this environment, so do not publish tokens-per-watt until a reliable wall meter, AMD SVI telemetry, or another validated source is available.
-13. **Live system readiness matters:** The 2026-05-01 audit now confirms Mesa 26.0.6, Ollama 0.21.2, AMDVLK removed, GPU clock correct, linux-firmware safe, and `tuned accelerator-performance` active. Keep those checks in the benchmark preflight.
+13. **ROCm HIP is usable but not the short-context winner:** the local b8460 HIP path ran with `LD_LIBRARY_PATH=/usr/local/lib/ollama/rocm` plus HSA override. Qwen3.6 reached 52.7 t/s and Qwen3-Coder 73.7 t/s, both behind Vulkan RADV on tg.
+14. **Live system readiness matters:** The 2026-05-01 audit now confirms Mesa 26.0.6, Ollama 0.21.2, AMDVLK removed, GPU clock correct, linux-firmware safe, and `tuned accelerator-performance` active. Keep those checks in the benchmark preflight.
 
 ## Next Research Tasks
 

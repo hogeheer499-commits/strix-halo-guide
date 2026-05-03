@@ -313,6 +313,15 @@ We discovered that `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0` fixes
 
 > ROCm also improved with the latest build: tg went from 47.87 to **54.67** (+14%) thanks to generic llama.cpp optimizations. But **Vulkan RADV is still faster on both pp and tg**: RADV 1080 vs ROCm 1047 pp512 (+3%), RADV 64.85 vs ROCm 54.67 tg128 (+19%). The +25% Vulkan improvement was ~14% generic (ROCm got this too) plus ~11% Vulkan-specific (FA refactor, graphics queue). ROCm's remaining advantage is hipBLASLt and rocWMMA at very long context (32K+).
 
+**ROCm HIP spot check (2026-05-03, b8460 HIP build):**
+
+| Model | Quant | ROCm pp512 | ROCm tg128 | Vulkan Reference |
+|-------|-------|------------|------------|------------------|
+| Qwen3.6 35B-A3B | UD-Q4_K_M | 1186 | 52.7 | Vulkan b9010: 1109 pp, 63.1 tg |
+| Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1285 | 73.7 | Vulkan b9010: 1346 pp, 97.2 tg |
+
+> This HIP run required `LD_LIBRARY_PATH=/usr/local/lib/ollama/rocm` plus the HSA override and emitted a missing `TensileLibrary_lazy_gfx1151.dat` warning. Treat it as a ROCm HIP baseline, not a tuned rocBLASLt/rocWMMA result. Vulkan RADV remains the recommended short-context generation backend.
+
 **Build version matters enormously:**
 
 | What we tested | pp512 | tg128 | Lesson |
@@ -1687,6 +1696,7 @@ Found something that's wrong, outdated, or missing?
 - **Filled-KV decode:** Qwen3.6 generated **41.4 t/s after a 64K f16 prompt**; q4_0 KV raised decode to **51.3 t/s** but increased total request time from 73.5 s to 90.0 s because prompt ingest slowed.
 - **128K filled-KV decode:** Qwen3.6 generated **32.2 t/s after 128K** and Qwen3-Next 80B generated **29.1 t/s after 128K**, both without truncation.
 - **Real-corpus 64K check:** using this guide's own documentation as the prompt, Qwen3.6 decoded at **40.8 t/s after ~65K tokens** and Qwen3-Next 80B at **37.8 t/s after ~64K tokens**. Prompt ingest was slower than synthetic prompts, but decode-after-fill barely changed.
+- **ROCm HIP spot check:** current local HIP b8460 path is usable with the HSA override, but remains behind Vulkan for short-context tg: Qwen3.6 **52.7 t/s** and Qwen3-Coder **73.7 t/s**.
 - Updated headline range from **65-87 t/s** to **65-97 t/s**. The previous 87.11 t/s result remains in `data/benchmarks.csv` as historical-local data.
 - Added raw benchmark output under `data/raw/2026-05-03/` so the new headline can be audited.
 
