@@ -128,9 +128,9 @@ This is likely the highest-value missing benchmark category because most public 
 
 Purpose: show where backend choice changes at 32K, 64K, and 128K context.
 
-Status: initial local RADV prompt-processing baseline completed on 2026-05-03 for Qwen3.6 35B and Qwen3-Next 80B through 64K. Filled-KV decode at 32K/64K/128K is also complete for f16, with Qwen3.6 q8_0/q4_0 KV-cache comparisons at 32K/64K. A 64K real-corpus prompt using the guide documentation is complete. ROCm HIP, rocWMMA, and broader real-corpus prompts remain open.
+Status: initial local RADV prompt-processing baseline completed on 2026-05-03 for Qwen3.6 35B and Qwen3-Next 80B through 64K. Filled-KV decode at 32K/64K/128K is also complete for f16, with Qwen3.6 q8_0/q4_0 KV-cache comparisons at 32K/64K. A 64K real-corpus prompt using the guide documentation is complete. ROCm HIP spot-checking exists, but no tuned local rocWMMA build is available yet. Broader real-corpus prompts remain open.
 
-ROCm/rocWMMA gate: do not publish upstream rocWMMA numbers unless the build is explicitly the tuned branch or container being tested. Upstream `GGML_HIP_ROCWMMA_FATTN=ON` has known regression risk, so the next ROCm long-context campaign needs its own build log, ROCm version, llama.cpp commit/branch, compiler flags, `rocblaslt` warning state, and raw output directory.
+ROCm/rocWMMA gate: do not publish upstream rocWMMA numbers unless the build is explicitly the tuned branch or container being tested. Upstream `GGML_HIP_ROCWMMA_FATTN=ON` has known regression risk, and the current local HIP build caches all have `GGML_HIP_ROCWMMA_FATTN=OFF`. The next ROCm long-context campaign needs its own build log, ROCm version, llama.cpp commit/branch, compiler flags, `rocblaslt` warning state, and raw output directory.
 
 Targets:
 
@@ -162,7 +162,7 @@ Metrics:
 
 Purpose: add ownership-cost and always-on self-hosting data.
 
-Status: blocked until power telemetry is reliable. Current sysfs powercap data is empty on this system, so do not publish tokens-per-watt from it.
+Status: blocked from public tokens-per-watt claims until power telemetry is validated. `powercap` is empty, but `amdgpu` exposes `power1_average` / `power1_input` with label `PPT`; treat this as candidate GPU/APU telemetry, not wall power. See `POWER_BASELINE.md`.
 
 Metrics:
 
@@ -182,6 +182,8 @@ Record power in a separate dataset, not in the existing throughput CSVs, until t
 ### P6: vLLM and ROCm Serving
 
 Purpose: test whether Strix Halo can be a real local API appliance, not just a chat box.
+
+Status: clean vLLM container preflight completed on 2026-05-03. The `vllm-gfx1151` Distrobox uses `docker.io/kyuz0/vllm-therock-gfx1151:stable`, exposes gfx1151 through `rocm-smi`, and passed a small `Qwen/Qwen3-0.6B` OpenAI-compatible smoke test. This is not yet a throughput benchmark.
 
 Targets:
 

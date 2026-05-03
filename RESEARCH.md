@@ -86,10 +86,12 @@ export HSA_ENABLE_SDMA=0
 9. **128K filled-context requests work:** Qwen3.6 generated 32.2 t/s after a 128K f16 prompt; Qwen3-Next 80B generated 29.1 t/s after a 128K f16 prompt. Neither truncated.
 10. **Prompt content matters for ingest, not much for decode:** the real-corpus 64K run slowed prompt eval by 24-33% versus synthetic repeated-token prompts, while decode-after-fill stayed within about 1 t/s.
 11. **KV quantization is not a free speed win:** on Qwen3.6 64K filled-context requests, q4_0 KV raised decode from 41.4 to 51.3 t/s but slowed prompt ingestion enough that wall time rose from 73.5 s to 90.0 s.
-12. **Power still needs proper instrumentation:** the available powercap energy fields were empty in this environment, so do not publish tokens-per-watt until a reliable wall meter, AMD SVI telemetry, or another validated source is available.
+12. **Power still needs proper instrumentation:** `powercap` is empty, but `amdgpu` exposes `PPT` power telemetry. Do not publish wall-power tokens-per-watt until a wall meter or validated AMD telemetry protocol is available; if using `amdgpu` PPT, label it separately.
 13. **ROCm HIP is usable but not the short-context winner:** the local b8460 HIP path ran with `LD_LIBRARY_PATH=/usr/local/lib/ollama/rocm` plus HSA override. Qwen3.6 reached 52.7 t/s and Qwen3-Coder 73.7 t/s, both behind Vulkan RADV on tg.
 14. **Live system readiness matters:** The 2026-05-01 audit now confirms Mesa 26.0.6, Ollama 0.21.2, AMDVLK removed, GPU clock correct, linux-firmware safe, and `tuned accelerator-performance` active. Keep those checks in the benchmark preflight.
 15. **The chart layer is now reproducible:** current CSV data generates SVG summaries for multi-user serving, long-context prompt scaling, filled-KV decode, KV-cache tradeoffs, real-vs-synthetic prompt behavior, and Vulkan-vs-ROCm spot checks.
+16. **vLLM is now isolated cleanly:** the `vllm-gfx1151` Distrobox was created from kyuz0's `:stable` image and passed a small OpenAI-compatible smoke test. Treat this as setup evidence only; throughput still needs a controlled model/quant/concurrency campaign.
+17. **rocWMMA remains gated:** local HIP builds currently have `GGML_HIP_ROCWMMA_FATTN=OFF`, and the host lacks a full ROCm SDK. The tuned source to use next is lhl's `rocm-wmma-tune` branch, not upstream rocWMMA enabled blindly.
 
 ## Next Research Tasks
 

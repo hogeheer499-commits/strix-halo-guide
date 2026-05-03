@@ -80,6 +80,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 - [Known Issues](#known-issues)
 - [Troubleshooting](#troubleshooting)
 - [Kernel and ROCm Compatibility](#kernel-and-rocm-compatibility)
+- [Power Measurement Status](#power-measurement-status)
 - [Testing Checklist](#testing-checklist)
 - [Model Recommendation Guide](#model-recommendation-guide)
 - [Cost: Local vs Cloud](#cost-local-vs-cloud)
@@ -971,6 +972,8 @@ cmake --build build -j$(nproc)
 ```
 
 > **WARNING:** Do NOT enable `GGML_HIP_ROCWMMA_FATTN=ON` on upstream llama.cpp without lhl's patches. ROCm 7.2 has a [73% performance regression](https://github.com/ggml-org/llama.cpp/issues/19984) with rocWMMA FA enabled. lhl's custom [rocm-wmma-tune branch](https://github.com/lhl/strix-halo-testing) fixes this and delivers 2X better performance at 32K context.
+>
+> **Local status (2026-05-03):** the current machine has ROCm HIP evidence but no tuned local rocWMMA build yet. All local HIP build caches checked so far have `GGML_HIP_ROCWMMA_FATTN=OFF`. See [`ROCM_ROCWMMA_BASELINE.md`](ROCM_ROCWMMA_BASELINE.md) before adding any rocWMMA benchmark claims.
 
 ---
 
@@ -979,6 +982,8 @@ cmake --build build -j$(nproc)
 [kyuz0's vLLM toolboxes](https://github.com/kyuz0/amd-strix-halo-vllm-toolboxes) enable API serving on gfx1151. Treat vLLM as a separate serving benchmark path, not as something to install into the host Python environment.
 
 On Ubuntu, use Distrobox. Prefer `:stable` for measured runs; use `:latest` only for an explicit update/regression test.
+
+Local preflight status: `vllm-gfx1151` was created and smoke-tested on 2026-05-03 with the `:stable` image. See [`VLLM_BASELINE.md`](VLLM_BASELINE.md). This is setup evidence, not a throughput benchmark.
 
 ```bash
 distrobox create vllm-gfx1151 \
@@ -1313,6 +1318,12 @@ Based on community testing and our own findings:
 - linux-firmware-20260110+ is safe
 
 > **Current recommendation (May 2026):** Kernel 6.19.x works for both Vulkan and ROCm (ROCm requires `HSA_OVERRIDE_GFX_VERSION=11.5.1`). Kernel 6.18.6-6.18.14 works without the HSA workaround. Before publishing benchmark numbers, also verify Mesa, AMDVLK removal, GPU clock, and `tuned` status.
+
+---
+
+## Power Measurement Status
+
+Power efficiency is not published yet. `powercap` is empty on this system, but `amdgpu` exposes `PPT` telemetry through `power1_average` / `power1_input`. Treat that as GPU/APU telemetry, not wall power. See [`POWER_BASELINE.md`](POWER_BASELINE.md) and `scripts/sample_power.py` before adding tokens-per-watt claims.
 
 ---
 
