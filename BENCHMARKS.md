@@ -1,6 +1,6 @@
 # Benchmark Results - Current Snapshot
 
-This file is the compact benchmark source-of-truth for numbers already published in the README. It does not add new tests; it reconciles the March and April measurements so old ROCm and driver notes do not contradict the current guide.
+This file is the compact benchmark source-of-truth for numbers already published in the README. It reconciles historical and current measurements so old ROCm, driver, serving, and long-context notes do not contradict the current guide.
 
 ## Current System Snapshot
 
