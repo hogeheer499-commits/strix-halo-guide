@@ -42,10 +42,14 @@ This file tracks external Strix Halo research and how it relates to this guide. 
 
 **Known areas:**
 - vLLM works but is harder to set up than Ollama or direct llama.cpp
+- The toolbox is built around TheRock nightly ROCm builds and exposes a `start-vllm` launcher
+- The repository distinguishes `:stable` as the last verified working image and `:latest` as the bleeding-edge image that may regress
+- Ubuntu users should use Distrobox rather than host Python installation
+- Their benchmark framing is peak multi-user throughput under high concurrency, so local comparisons should use the same concurrency framing
 - Some vision models need MIOpen profiling workarounds
 - RDMA clustering has been demonstrated with multiple Framework Desktop systems
 
-**Open follow-up for this guide:** vLLM should be treated as a serving/concurrency benchmark target, not as the first easy setup path.
+**Open follow-up for this guide:** vLLM should be treated as a serving/concurrency benchmark target, not as the first easy setup path. First establish a clean `:stable` container baseline, then test `:latest` only as a separate update/regression experiment.
 
 ## Source 4: ROCm/ROCm and llama.cpp issues
 
@@ -85,11 +89,12 @@ export HSA_ENABLE_SDMA=0
 12. **Power still needs proper instrumentation:** the available powercap energy fields were empty in this environment, so do not publish tokens-per-watt until a reliable wall meter, AMD SVI telemetry, or another validated source is available.
 13. **ROCm HIP is usable but not the short-context winner:** the local b8460 HIP path ran with `LD_LIBRARY_PATH=/usr/local/lib/ollama/rocm` plus HSA override. Qwen3.6 reached 52.7 t/s and Qwen3-Coder 73.7 t/s, both behind Vulkan RADV on tg.
 14. **Live system readiness matters:** The 2026-05-01 audit now confirms Mesa 26.0.6, Ollama 0.21.2, AMDVLK removed, GPU clock correct, linux-firmware safe, and `tuned accelerator-performance` active. Keep those checks in the benchmark preflight.
+15. **The chart layer is now reproducible:** current CSV data generates SVG summaries for multi-user serving, long-context prompt scaling, filled-KV decode, KV-cache tradeoffs, real-vs-synthetic prompt behavior, and Vulkan-vs-ROCm spot checks.
 
 ## Next Research Tasks
 
-1. Build a single CSV/JSON benchmark corpus for all existing data.
-2. Re-run a small smoke benchmark under the verified May 2026 state to confirm Mesa 26.0.6 did not change headline numbers.
-3. Extend the new multi-user `llama-server` baseline with reliable power draw and a vLLM comparison.
-4. Compare filled-KV decode against ROCm HIP / rocWMMA where practical, and expand real-corpus tests beyond guide documentation.
+1. Establish a clean vLLM `:stable` container baseline and compare it with the existing `llama-server` concurrency data.
+2. Build or obtain a known-good tuned ROCm/rocWMMA path before running long-context ROCm claims.
+3. Add reliable power measurement only after a validated wall-meter or telemetry source is available.
+4. Expand real-corpus long-context prompts beyond guide documentation.
 5. Run same-model comparisons against Mac Studio, DGX Spark, and RTX cards only when exact model/quant/backend details are available.

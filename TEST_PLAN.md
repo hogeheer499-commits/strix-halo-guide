@@ -31,7 +31,7 @@ The README, `BENCHMARKS.md`, `SYSTEM_AUDIT.md`, and `RESEARCH.md` must not conta
 
 ### Phase 1: Data Foundation
 
-Status: in progress.
+Status: initial CSV and chart layer complete.
 
 Create structured data files under `data/` before adding more benchmark rows. The README can stay human-readable, but charts, comparisons, and future posts should come from structured data.
 
@@ -41,6 +41,8 @@ Required files:
 - `data/benchmarks.csv`: existing measured benchmark rows.
 - `data/long_context.csv`: long-context reference rows.
 - `data/smoke_tests.csv`: short validation runs before bigger benchmark campaigns.
+- `charts/*.svg`: generated summaries from the CSV corpus.
+- `scripts/generate_charts.py`: dependency-free chart generator.
 
 ### Phase 2: Smoke Test
 
@@ -128,6 +130,8 @@ Purpose: show where backend choice changes at 32K, 64K, and 128K context.
 
 Status: initial local RADV prompt-processing baseline completed on 2026-05-03 for Qwen3.6 35B and Qwen3-Next 80B through 64K. Filled-KV decode at 32K/64K/128K is also complete for f16, with Qwen3.6 q8_0/q4_0 KV-cache comparisons at 32K/64K. A 64K real-corpus prompt using the guide documentation is complete. ROCm HIP, rocWMMA, and broader real-corpus prompts remain open.
 
+ROCm/rocWMMA gate: do not publish upstream rocWMMA numbers unless the build is explicitly the tuned branch or container being tested. Upstream `GGML_HIP_ROCWMMA_FATTN=ON` has known regression risk, so the next ROCm long-context campaign needs its own build log, ROCm version, llama.cpp commit/branch, compiler flags, `rocblaslt` warning state, and raw output directory.
+
 Targets:
 
 - RADV Vulkan direct.
@@ -158,12 +162,22 @@ Metrics:
 
 Purpose: add ownership-cost and always-on self-hosting data.
 
+Status: blocked until power telemetry is reliable. Current sysfs powercap data is empty on this system, so do not publish tokens-per-watt from it.
+
 Metrics:
 
 - Idle watts.
 - Load watts.
 - tokens per watt.
 - cost per million local tokens under realistic power prices.
+
+Acceptable measurement sources:
+
+- wall meter or smart plug with timestamped export;
+- validated AMD telemetry that reports package/APU power during the exact run;
+- repeatable idle/load protocol with at least 3 runs and the same benchmark command.
+
+Record power in a separate dataset, not in the existing throughput CSVs, until the source is validated.
 
 ### P6: vLLM and ROCm Serving
 
@@ -174,6 +188,18 @@ Targets:
 - kyuz0 vLLM toolbox.
 - OpenAI-compatible serving.
 - Batch/concurrency comparison against llama.cpp server.
+
+Clean setup rule: vLLM must run in a dedicated Distrobox/Toolbx/Podman container. Do not install vLLM, PyTorch, ROCm, or TheRock packages into the host Python environment.
+
+Recommended first pass:
+
+1. Create `vllm-gfx1151` from `docker.io/kyuz0/vllm-therock-gfx1151:stable`.
+2. Verify GPU access with `rocm-smi` inside the container.
+3. Start one known-supported model with `start-vllm`.
+4. Run the same concurrency levels as `llama-server`: 1, 2, 4, 8, 16.
+5. Store image tag, model, quant, context, TTFT, p50/p95 latency, aggregate throughput, memory use, and warmup/compile notes.
+
+Only test `:latest` after `:stable` has a clean baseline, because latest images may include upstream regressions.
 
 ### P7: Cross-Platform Comparisons
 

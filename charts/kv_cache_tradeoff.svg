@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="590" viewBox="0 0 1060 590" role="img">
+<style>
+text{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#17202a}
+.title{font-size:26px;font-weight:700}
+.subtitle{font-size:14px;fill:#52616f}
+.axis{font-size:12px;fill:#52616f}
+.tick{font-size:11px;fill:#52616f}
+.legend{font-size:13px;fill:#17202a}
+.note{font-size:12px;fill:#52616f}
+.grid{stroke:#dce3ea;stroke-width:1}
+.axis-line{stroke:#6b7a89;stroke-width:1.2}
+</style>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="88" y="40" class="title">Qwen3.6 KV-cache quantization tradeoff</text>
+<text x="88" y="64" class="subtitle">Relative to f16 KV at the same context. Higher prompt/decode is faster; higher wall time is worse.</text>
+<line x1="88" y1="468.0" x2="1018" y2="468.0" class="grid"/>
+<text x="78" y="472.0" text-anchor="end" class="tick">0</text>
+<line x1="88" y1="392.8" x2="1018" y2="392.8" class="grid"/>
+<text x="78" y="396.8" text-anchor="end" class="tick">40</text>
+<line x1="88" y1="317.6" x2="1018" y2="317.6" class="grid"/>
+<text x="78" y="321.6" text-anchor="end" class="tick">80</text>
+<line x1="88" y1="242.4" x2="1018" y2="242.4" class="grid"/>
+<text x="78" y="246.4" text-anchor="end" class="tick">120</text>
+<line x1="88" y1="167.2" x2="1018" y2="167.2" class="grid"/>
+<text x="78" y="171.2" text-anchor="end" class="tick">160</text>
+<line x1="88" y1="92.0" x2="1018" y2="92.0" class="grid"/>
+<text x="78" y="96.0" text-anchor="end" class="tick">200</text>
+<line x1="88" y1="92" x2="88" y2="468" class="axis-line"/>
+<line x1="88" y1="468" x2="1018" y2="468" class="axis-line"/>
+<text x="22" y="280.0" class="axis" transform="rotate(-90 22 280.0)">relative to f16 (%)</text>
+<text x="204.2" y="496" text-anchor="middle" class="tick">32K q8_0</text>
+<rect x="133.2" y="309.9" width="42.0" height="158.1" fill="#1f77b4"/>
+<text x="154.2" y="302.9" text-anchor="middle" class="tick">84</text>
+<rect x="183.2" y="266.8" width="42.0" height="201.2" fill="#d62728"/>
+<text x="204.2" y="259.8" text-anchor="middle" class="tick">107</text>
+<rect x="233.2" y="248.4" width="42.0" height="219.6" fill="#2ca02c"/>
+<text x="254.2" y="241.4" text-anchor="middle" class="tick">117</text>
+<text x="436.8" y="496" text-anchor="middle" class="tick">32K q4_0</text>
+<rect x="365.8" y="306.0" width="42.0" height="162.0" fill="#1f77b4"/>
+<text x="386.8" y="299.0" text-anchor="middle" class="tick">86</text>
+<rect x="415.8" y="261.5" width="42.0" height="206.5" fill="#d62728"/>
+<text x="436.8" y="254.5" text-anchor="middle" class="tick">110</text>
+<rect x="465.8" y="254.0" width="42.0" height="214.0" fill="#2ca02c"/>
+<text x="486.8" y="247.0" text-anchor="middle" class="tick">114</text>
+<text x="669.2" y="496" text-anchor="middle" class="tick">64K q8_0</text>
+<rect x="598.2" y="320.5" width="42.0" height="147.5" fill="#1f77b4"/>
+<text x="619.2" y="313.5" text-anchor="middle" class="tick">78</text>
+<rect x="648.2" y="245.1" width="42.0" height="222.9" fill="#d62728"/>
+<text x="669.2" y="238.1" text-anchor="middle" class="tick">119</text>
+<rect x="698.2" y="231.9" width="42.0" height="236.1" fill="#2ca02c"/>
+<text x="719.2" y="224.9" text-anchor="middle" class="tick">126</text>
+<text x="901.8" y="496" text-anchor="middle" class="tick">64K q4_0</text>
+<rect x="830.8" y="316.7" width="42.0" height="151.3" fill="#1f77b4"/>
+<text x="851.8" y="309.7" text-anchor="middle" class="tick">80</text>
+<rect x="880.8" y="235.1" width="42.0" height="232.9" fill="#d62728"/>
+<text x="901.8" y="228.1" text-anchor="middle" class="tick">124</text>
+<rect x="930.8" y="237.9" width="42.0" height="230.1" fill="#2ca02c"/>
+<text x="951.8" y="230.9" text-anchor="middle" class="tick">122</text>
+<rect x="88" y="534" width="14" height="14" fill="#1f77b4"/>
+<text x="110" y="546" class="legend">prompt eval % of f16</text>
+<rect x="302" y="534" width="14" height="14" fill="#d62728"/>
+<text x="324" y="546" class="legend">decode % of f16</text>
+<rect x="492" y="534" width="14" height="14" fill="#2ca02c"/>
+<text x="514" y="546" class="legend">wall time % of f16</text>
+<text x="88" y="576" class="note">Source: data/filled_kv_decode.csv</text>
+</svg>
