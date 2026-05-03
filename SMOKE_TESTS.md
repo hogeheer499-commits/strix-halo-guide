@@ -14,16 +14,16 @@ This is useful negative data: unlike the b8298 to b8460 jump, the b8933 to b9010
 
 The machine had become polluted again since the previous day:
 
-- background media service had restarted and spawned high-CPU `ffmpeg` for a virtual webcam.
-- Zoom was active.
-- RustDesk user processes had respawned.
-- No `ubuntu-zoom` VM was running by the time the baseline was taken.
+- A background media service had restarted and spawned a high-CPU `ffmpeg` virtual-camera workload.
+- A video-conferencing process was active.
+- Remote-desktop user processes had respawned.
+- No benchmark-relevant VM was running by the time the baseline was taken.
 
 Before testing:
 
-- `background-media.service` was stopped.
-- `ffmpeg` and Zoom processes were stopped.
-- RustDesk user processes were paused with `SIGSTOP`.
+- The background media service was stopped.
+- `ffmpeg` and video-conferencing processes were stopped.
+- Remote-desktop user processes were paused with `SIGSTOP`.
 - `tuned accelerator-performance`, RADV, Mesa 26.0.6, AMDVLK absence, and 2900 MHz GPU clock were verified.
 
 ### Update Applied
@@ -59,13 +59,51 @@ AMD_VULKAN_ICD=RADV
 
 Current short-context Vulkan RADV performance is stable across b8933 and b9010 for these two smoke models. The guide should not claim a new update-driven speedup from this llama.cpp update.
 
+## 2026-05-03 Ollama v0.21.2 vs v0.22.1 Smoke
+
+### Verdict
+
+**Ollama v0.22.1 does not change short-context Qwen3.6 35B generation speed in this smoke test.**
+
+The system install was left on Ollama 0.21.2. Ollama 0.22.1 was tested as a temporary verified release tarball on `127.0.0.1:11435`, using the same model store and RADV/Vulkan environment as the system service.
+
+### Release Checked
+
+| Component | Baseline | Checked Update |
+|-----------|----------|----------------|
+| Ollama | 0.21.2 system service | 0.22.1 temporary binary |
+| Release asset | - | `ollama-linux-amd64.tar.zst` |
+| Asset SHA256 | - | `e27c0fe8f60a824162f81ce07b4bfda767dce4f357d762e149b3d0de0abad9fb` |
+| Server port | `127.0.0.1:11434` | `127.0.0.1:11435` |
+| Backend | Vulkan RADV | Vulkan RADV |
+| Global install changed | no | no |
+
+### Results
+
+Both runs used `POST /api/generate` with `num_predict=128`, `temperature=0`, `top_k=1`, and the same prompt:
+
+```text
+Write one short sentence about local AI benchmarks.
+```
+
+| Tool | Run | Prompt tokens | Prompt eval | Generation | Load duration | Interpretation |
+|------|-----|---------------|-------------|------------|---------------|----------------|
+| Ollama 0.21.2 | cold | 19 | 154.42 t/s | 50.87 t/s | 7.08 s | baseline system service |
+| Ollama 0.21.2 | warm | 19 | 156.05 t/s | 50.49 t/s | 0.11 s | stable baseline |
+| Ollama 0.22.1 | cold | 19 | 35.71 t/s | 50.19 t/s | 6.60 s | temporary binary; prompt eval affected by cold startup |
+| Ollama 0.22.1 | warm | 19 | 159.58 t/s | 50.49 t/s | 0.11 s | matches 0.21.2 |
+
+### Takeaway
+
+Do not update the guide's Ollama performance claim based on v0.22.1. The update may still matter for model support and app behavior, but it does not produce a measurable Qwen3.6 35B short-context generation gain in this smoke test.
+
 ## 2026-05-02 Smoke Test
 
 ### Clean Rerun Verdict
 
 **The clean rerun is valid as smoke-test evidence. Do not promote it to headline benchmark data until the same commands are run as part of a controlled benchmark campaign.**
 
-After stopping background media/ffmpeg, Zoom, the `ubuntu-zoom` VM, and pausing RustDesk user processes, the same direct llama-bench checks recovered from the polluted 76-52 t/s range to the expected 95-62 t/s range.
+After stopping background media, video-conferencing, VM, and remote-desktop load, the same direct llama-bench checks recovered from the polluted 76-52 t/s range to the expected 95-62 t/s range.
 
 This confirms that the earlier low results were caused by background load, not a RADV, Mesa, or llama.cpp regression.
 
@@ -86,9 +124,9 @@ Ollama clean smoke:
 
 ### What Was Stopped
 
-- `background-media.service`: stopped via user systemd. This removed the high-CPU `ffmpeg` virtual webcam process and host Zoom process.
-- `ubuntu-zoom`: shut down cleanly via libvirt. This removed the 16GB / 8-vCPU VM load.
-- RustDesk user processes: paused with `SIGSTOP` because the root system service respawned them and system-level stop needs sudo. Resume with `kill -CONT <pid>` or restart the RustDesk service.
+- Background media service: stopped via user systemd. This removed the high-CPU `ffmpeg` virtual-camera workload and related desktop capture load.
+- Benchmark-irrelevant VM: shut down cleanly via libvirt. This removed the 16GB / 8-vCPU VM load.
+- Remote-desktop user processes: paused with `SIGSTOP` because the root system service respawned them and system-level stop needs sudo. Resume with `kill -CONT <pid>` or restart the remote-desktop service.
 - GNOME System Monitor: closed to remove extra desktop load.
 
 ### Polluted First Run Verdict
@@ -102,8 +140,8 @@ The first run below is retained as a useful warning.
 The stack is functional, but the environment was not clean enough for publishable performance data. The smoke test found heavy background load during the run:
 
 - `ffmpeg` using roughly 1000% CPU
-- Zoom running
-- RustDesk running
+- video-conferencing process running
+- remote-desktop process running
 - a QEMU/KVM VM using CPU and 16GB RAM
 
 No background processes were stopped. The numbers below are useful as a warning and as a functional check only.
