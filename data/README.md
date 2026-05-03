@@ -7,6 +7,7 @@ The README remains the human-facing guide. These files are the machine-readable 
 ## Files
 
 - `benchmarks.csv`: existing short-context and backend benchmark rows already published in the guide.
+- `multi_user.csv`: controlled `llama-server` concurrency results with aggregate throughput, per-request throughput, TTFT, and ITL.
 - `long_context.csv`: long-context reference measurements.
 - `smoke_tests.csv`: short validation runs that prove the current stack is healthy before larger benchmark campaigns.
 - `raw/`: raw command output for controlled benchmark runs used by current claims.

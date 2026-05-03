@@ -76,12 +76,13 @@ export HSA_ENABLE_SDMA=0
 3. **Vulkan RADV is current short-context winner:** On the measured Qwen MoE workloads, RADV beats ROCm HIP on both pp and tg with the same b8460 source.
 4. **ROCm still matters:** Use ROCm for hipBLASLt, vLLM, batch/concurrency testing, and long-context/rocWMMA experiments.
 5. **Ollama remains the easy path:** the controlled 2026-05-03 API run measured Ollama 0.21.2 on Qwen3.6-35B-A3B at 50.5 t/s warm average, about 20-21% below direct llama-bench on current short-context data.
-6. **Live system readiness matters:** The 2026-05-01 audit now confirms Mesa 26.0.6, Ollama 0.21.2, AMDVLK removed, GPU clock correct, linux-firmware safe, and `tuned accelerator-performance` active. Keep those checks in the benchmark preflight.
+6. **Continuous batching changes the serving story:** the 2026-05-03 `llama-server` Qwen3.6 test reached 162 t/s aggregate at `-np 8` with ~0.31 s TTFT. `-np 16` plateaued at 166 t/s while per-request speed fell to 10.4 t/s.
+7. **Live system readiness matters:** The 2026-05-01 audit now confirms Mesa 26.0.6, Ollama 0.21.2, AMDVLK removed, GPU clock correct, linux-firmware safe, and `tuned accelerator-performance` active. Keep those checks in the benchmark preflight.
 
 ## Next Research Tasks
 
 1. Build a single CSV/JSON benchmark corpus for all existing data.
 2. Re-run a small smoke benchmark under the verified May 2026 state to confirm Mesa 26.0.6 did not change headline numbers.
-3. Add multi-user `llama-server` / vLLM tests with TTFT, ITL, throughput, and power.
+3. Extend the new multi-user `llama-server` baseline with power draw and a vLLM comparison.
 4. Add local long-context tests at 32K, 64K, and 128K with RADV, ROCm HIP, and rocWMMA where practical.
 5. Run same-model comparisons against Mac Studio, DGX Spark, and RTX cards only when exact model/quant/backend details are available.

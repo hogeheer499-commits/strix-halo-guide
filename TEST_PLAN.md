@@ -111,6 +111,8 @@ Initial targets:
 
 Purpose: answer the practical question: "Can this box serve more than one user or tool at once?"
 
+Status: initial `llama-server` baseline completed on 2026-05-03. Qwen3.6 35B-A3B UD-Q4_K_M reached 162 t/s aggregate at `-np 8` and plateaued at 166 t/s at `-np 16`. Power draw and vLLM are still open.
+
 Targets:
 
 - `llama-server` with `--parallel` / slot tests where applicable.
