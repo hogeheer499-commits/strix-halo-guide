@@ -113,14 +113,17 @@ Initial targets:
 
 Purpose: answer the practical question: "Can this box serve more than one user or tool at once?"
 
-Status: initial `llama-server` baseline completed on 2026-05-03. Qwen3.6 35B-A3B UD-Q4_K_M reached 162 t/s aggregate at `-np 8` and plateaued at 166 t/s at `-np 16`. Power draw and vLLM are still open.
+Status: initial `llama-server` baseline completed on 2026-05-03. Qwen3.6 35B-A3B UD-Q4_K_M reached 162 t/s aggregate at `-np 8` and plateaued at 166 t/s at `-np 16`. Qwen3-Coder 30B-A3B reached 173 t/s aggregate at `-np 8`; `-np 16` regressed. Power draw and vLLM are still open.
+
+This track is now expanded into the [Server Shootout](SERVER_SHOOTOUT.md): a practical local-AI-PC comparison of Ollama, `llama-server`, ROCm/Lemonade builds, and vLLM containers.
 
 Targets:
 
 - `llama-server` with `--parallel` / slot tests where applicable.
 - vLLM where practical.
+- Lemonade `llamacpp-rocm` and `vllm-rocm` gfx1151 builds where practical.
 - Concurrency levels: 1, 2, 4, 8, 16.
-- Metrics: total throughput, per-user throughput, TTFT, ITL, p50/p95 latency, memory use, power if available.
+- Metrics: total throughput, per-user throughput, TTFT, ITL, p50/p95 latency, API compatibility, tool-call behavior, setup friction, memory use, power if available.
 
 This is likely the highest-value missing benchmark category because most public Strix Halo data is single-user tg/pp.
 
@@ -224,3 +227,13 @@ The strongest differentiator is a combination of:
 - Multi-user, long-context, and easy-path-vs-fast-path measurements that are still thinly documented elsewhere.
 
 The guide should not be positioned as "buy this box." It should be positioned as: "Here is what Strix Halo can actually do, how to reproduce it, where it wins, where it loses, and how to avoid wasting days on bad assumptions."
+
+## Benchmark Cleanliness
+
+Before any publishable benchmark run, run the read-only cleanliness check:
+
+```bash
+scripts/check_benchmark_cleanliness.sh
+```
+
+The goal is "clean enough", not "everything disabled forever." Daily-use services can run outside benchmark windows, but publishable numbers should not be collected while remote desktop sessions, T3 fixes, video conferencing, VMs, unrelated containers, or inactive `tuned` profiles are adding measurement noise.
