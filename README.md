@@ -10,6 +10,9 @@
 **65-97 t/s local LLM inference on 128GB Strix Halo mini PCs. 70B+ and 109B models locally. No cloud, no subscription.**
 
 > If this guide saves you time, consider giving it a star -- it helps others find it.
+> Official source: https://github.com/hogeheer499-commits/strix-halo-guide
+>
+> This project publishes documentation, scripts, benchmark data, charts, and source archives only. It does not publish Windows installers, `.exe` files, binary `.zip` downloads, browser extensions, or model weights. Repos or sites using this name to promote executable downloads are unofficial and should not be treated as this guide.
 
 ```
    You are here                  What you'll get
@@ -21,7 +24,28 @@
                                  +---------------------------+
 ```
 
-[One-Command Setup](#one-command-setup) | [Quick Start](#quick-start-6-steps) | [Benchmarks](#benchmark-results) | [Which Model?](#model-recommendation-guide) | [Which Backend?](#backend-decision-guide) | [What NOT To Do](#things-that-dont-work-dont-waste-your-time) | [Glossary](#glossary)
+[One-Command Setup](#one-command-setup) | [Quick Start](#quick-start-6-steps) | [Benchmarks](#benchmark-results) | [Which Model?](#model-recommendation-guide) | [Which Backend?](#backend-decision-guide) | [What NOT To Do](#things-that-dont-work-dont-waste-your-time) | [Official Source](#official-source-and-security) | [Glossary](#glossary)
+
+---
+
+## Official Source and Security
+
+This is the canonical repository for this guide:
+
+```text
+https://github.com/hogeheer499-commits/strix-halo-guide
+```
+
+The MIT license allows forks, mirrors, translations, and reuse of the data. That is welcome. But third-party copies are not validated by this project, and they must not be treated as the canonical source for measured claims, setup scripts, or downloads.
+
+Safety rules:
+
+- Verify the GitHub owner before copying commands.
+- Prefer the source files in this repository over third-party ZIP mirrors.
+- Do not run `.exe`, installer, or binary ZIP files from repos using this guide's name.
+- Report impersonation, malware-style download pages, or false "official" claims in this repository's issue tracker.
+
+See [SECURITY.md](SECURITY.md) for the reporting policy.
 
 ---
 
@@ -53,6 +77,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 
 ## Table of Contents
 
+- [Official Source and Security](#official-source-and-security)
 - [Hardware](#hardware)
 - [What You Can Run](#what-you-can-run)
 - [Benchmark Results](#benchmark-results)
@@ -1845,7 +1870,7 @@ Found something that's wrong, outdated, or missing?
 
 ## License
 
-MIT
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
 
 ---
 
