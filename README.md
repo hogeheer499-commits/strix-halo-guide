@@ -24,7 +24,7 @@
                                  +---------------------------+
 ```
 
-[One-Command Setup](#one-command-setup) | [Quick Start](#quick-start-6-steps) | [Benchmarks](#benchmark-results) | [Which Model?](#model-recommendation-guide) | [Which Backend?](#backend-decision-guide) | [What NOT To Do](#things-that-dont-work-dont-waste-your-time) | [Official Source](#official-source-and-security) | [Glossary](#glossary)
+[One-Command Setup](#one-command-setup) | [Quick Start](#quick-start-6-steps) | [Benchmarks](#benchmark-results) | [Local AI PC Uses](#what-to-use-this-local-ai-pc-for) | [Server Shootout](SERVER_SHOOTOUT.md) | [Which Model?](#model-recommendation-guide) | [What NOT To Do](#things-that-dont-work-dont-waste-your-time) | [Official Source](#official-source-and-security) | [Glossary](#glossary)
 
 ---
 
@@ -46,6 +46,32 @@ Safety rules:
 - Report impersonation, malware-style download pages, or false "official" claims in this repository's issue tracker.
 
 See [SECURITY.md](SECURITY.md) for the reporting policy.
+
+---
+
+## What To Use This Local AI PC For
+
+Strix Halo is most useful when it acts as a private local AI service, not just a benchmark box. The practical question is: which server should run which job?
+
+| Job | Start with | Why |
+|-----|------------|-----|
+| Local chat | Ollama Vulkan/RADV | easiest install, model pulling, and Open WebUI path |
+| Private docs / RAG | Ollama + Open WebUI first | simplest local document workflow |
+| Coding assistant | `llama-server` Vulkan/RADV | fastest measured local OpenAI-compatible path |
+| Multiple tools/users | `llama-server --parallel 8` | current measured sweet spot: 162-173 aggregate t/s depending on model |
+| Agent/API appliance | vLLM ROCm container | serving-oriented stack; local throughput benchmark still pending |
+| Long-context research | backend-specific long-context path | backend choice changes at 32K+ context |
+| Image/video generation | kyuz0 ComfyUI toolboxes | separate ROCm container path, not the text-server path |
+
+The new [Server Shootout](SERVER_SHOOTOUT.md) tracks this as a reproducible benchmark campaign: API compatibility, tool calling, latency, concurrency, setup friction, and failure modes.
+
+Before publishing new numbers, run:
+
+```bash
+scripts/check_benchmark_cleanliness.sh
+```
+
+That check is read-only. It does not stop RustDesk, T3, Docker, Ollama, or VMs; it only reports whether the system is clean enough for publishable measurements.
 
 ---
 
@@ -78,6 +104,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 ## Table of Contents
 
 - [Official Source and Security](#official-source-and-security)
+- [What To Use This Local AI PC For](#what-to-use-this-local-ai-pc-for)
 - [Hardware](#hardware)
 - [What You Can Run](#what-you-can-run)
 - [Benchmark Results](#benchmark-results)
@@ -89,6 +116,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
   - [Hardware Comparison](#hardware-comparison)
   - [Long Context Performance](#long-context-performance)
 - [Backend Decision Guide](#backend-decision-guide)
+- [Server Shootout](SERVER_SHOOTOUT.md)
 - [Quick Start (6 Steps)](#quick-start-6-steps)
 - [Phase 1: BIOS Configuration](#phase-1-bios-configuration)
 - [Phase 2: Ubuntu 24.04 Installation](#phase-2-ubuntu-2404-installation)
