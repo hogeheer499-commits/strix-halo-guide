@@ -117,6 +117,8 @@ scripts/run_with_t3_guard.py \
 
 For heavy vLLM experiments, use stricter memory headroom explicitly, for example `--min-mem-available-gib 24 --min-swap-free-gib 4`. Cleanup commands are for benchmark targets only; they must not reference T3, `3773`, or `3777`.
 
+Hermes bots are out of scope for Server Shootout work. Do not stop, restart, remove, or otherwise manage `hermes-*` Docker containers from this project. Docker may be inspected read-only for noise/status, but Hermes recovery belongs in its own chat/workspace.
+
 1. Record host state:
    - kernel
    - Mesa/RADV or ROCm version
