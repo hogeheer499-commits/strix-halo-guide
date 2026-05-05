@@ -1,0 +1,5 @@
+ok   /v1/models                       status=200 elapsed=0.012s 1 models: Qwen3.6-35B-A3B-UD-Q4_K_M.gguf
+ok   /v1/completions                  status=200 elapsed=0.313s text chars=51
+ok   /v1/chat/completions             status=200 elapsed=0.387s content chars=0; reasoning chars=55
+ok   /v1/chat/completions stream      status=200 elapsed=0.378s 18 SSE chunks; first chunk 0.112s
+ok   /v1/chat/completions tools       status=200 elapsed=1.597s no tool_calls; content chars=0; reasoning chars=260

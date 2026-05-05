@@ -90,8 +90,15 @@ if command -v virsh >/dev/null 2>&1 && virsh list --state-running --name 2>/dev/
 fi
 
 section "Local AI and Containers"
-if pgrep -f -i 'ollama|llama-server|vllm|open_webui|comfy|webui' >/dev/null; then
-  pgrep -f -i 'ollama|llama-server|vllm|open_webui|comfy|webui' | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
+ai_pids="$(
+  {
+    pgrep -x ollama 2>/dev/null || true
+    pgrep -x llama-server 2>/dev/null || true
+    pgrep -f -i 'vllm|open_webui|comfy|webui' 2>/dev/null || true
+  } | sort -nu
+)"
+if [ -n "$ai_pids" ]; then
+  printf '%s\n' "$ai_pids" | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
   warn "local AI services are already running; confirm they are part of the test"
 fi
 if command -v docker >/dev/null 2>&1; then
