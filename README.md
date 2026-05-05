@@ -73,7 +73,15 @@ scripts/check_benchmark_cleanliness.sh
 
 That check is read-only. It does not stop RustDesk, T3, Docker, Ollama, or VMs; it only reports whether the system is clean enough for publishable measurements.
 
-T3 Code is treated as a protected workflow dependency on this workstation. Leave it running for routine Strix Halo benchmarks; record it as background state instead of stopping it.
+T3 Code is a hard workflow dependency on this workstation: Strix Halo work is operated from T3. Routine benchmark prep must keep both the T3 backend on `3773` and the current semantic proxy on `3777` reachable. If either route fails, stop the Strix run and fix T3 first.
+
+For long or memory-risky runs, wrap the command with the T3 guard:
+
+```bash
+scripts/run_with_t3_guard.py --cleanup-cmd "podman stop vllm-gfx1151" -- <benchmark command>
+```
+
+The guard may stop the benchmark command and its cleanup target. It must not stop T3, the `3773` backend, or the `3777` proxy.
 
 ---
 

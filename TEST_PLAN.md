@@ -236,4 +236,14 @@ Before any publishable benchmark run, run the read-only cleanliness check:
 scripts/check_benchmark_cleanliness.sh
 ```
 
-The goal is "clean enough", not "everything disabled forever." Daily-use services can run outside benchmark windows, but publishable numbers should not be collected while remote desktop sessions, T3 fixes, video conferencing, VMs, unrelated containers, or inactive `tuned` profiles are adding measurement noise.
+The goal is "clean enough", not "everything disabled forever." Daily-use services can run outside benchmark windows, but publishable numbers should not be collected while remote desktop sessions, video conferencing, VMs, unrelated containers, or inactive `tuned` profiles are adding measurement noise.
+
+T3 is not optional noise for this workstation. The Strix Halo workflow is operated from T3, so the `3773` backend and `3777` semantic proxy must remain reachable before and during tests. If T3 is broken, pause Strix testing and restore T3 first.
+
+For long or memory-risky runs:
+
+```bash
+scripts/run_with_t3_guard.py --cleanup-cmd "podman stop vllm-gfx1151" -- <benchmark command>
+```
+
+The guard is allowed to stop only the benchmark command and explicit benchmark cleanup targets. It must not stop T3, `3773`, or `3777`.

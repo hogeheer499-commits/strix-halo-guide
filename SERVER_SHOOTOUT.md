@@ -105,7 +105,17 @@ scripts/check_benchmark_cleanliness.sh
 
 This script is read-only. It does not stop RustDesk, T3, Docker, Ollama, or VMs. It only reports whether the system is clean enough for measurements.
 
-T3 Code is a protected workflow dependency for this workstation. Leave T3 and the T3 proxy running for routine benchmarks; record them as background state. Only test without T3 when that is explicitly requested for a narrow A/B comparison.
+T3 Code is a hard workflow dependency for this workstation. This project is operated from T3, so routine Server Shootout work must keep the T3 backend on `3773` and the semantic proxy on `3777` alive. If `3777` reports `Upstream request failed: connect ECONNREFUSED 127.0.0.1:3773`, the proxy is alive but the real T3 backend is down; stop Strix testing and restore T3 before doing anything else.
+
+For long or memory-risky server runs, start the benchmark through the T3 guard:
+
+```bash
+scripts/run_with_t3_guard.py \
+  --cleanup-cmd "podman stop vllm-gfx1151" \
+  -- <benchmark command>
+```
+
+For heavy vLLM experiments, use stricter memory headroom explicitly, for example `--min-mem-available-gib 24 --min-swap-free-gib 4`. Cleanup commands are for benchmark targets only; they must not reference T3, `3773`, or `3777`.
 
 1. Record host state:
    - kernel
