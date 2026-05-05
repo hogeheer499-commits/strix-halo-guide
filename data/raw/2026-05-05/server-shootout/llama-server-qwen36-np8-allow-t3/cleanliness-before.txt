@@ -1,0 +1,105 @@
+
+== Host Load ==
+2026-05-05T04:04:47+02:00
+ 04:04:47 up  6:41,  1 user,  load average: 0.45, 0.33, 0.20
+               total        used        free      shared  buff/cache   available
+Mem:           124Gi        10Gi       100Gi       3.9Gi        18Gi       114Gi
+Swap:          8.0Gi          0B       8.0Gi
+
+== tuned ==
+Current active profile: accelerator-performance
+
+== GPU Clock ==
+/sys/class/drm/card1/device/pp_dpm_sclk
+0: 2900Mhz 
+1: 1100Mhz 
+2: 2900Mhz *
+
+== Vulkan Device ==
+Devices:
+========
+GPU0:
+	apiVersion         = 1.4.335
+	driverVersion      = 26.0.6
+	vendorID           = 0x1002
+	deviceID           = 0x1586
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = Radeon 8060S Graphics (RADV STRIX_HALO)
+	driverID           = DRIVER_ID_MESA_RADV
+	driverName         = radv
+	driverInfo         = Mesa 26.0.6 - kisak-mesa PPA
+	conformanceVersion = 1.4.0.0
+	deviceUUID         = 00000000-c600-0000-0000-000000000000
+	driverUUID         = 414d442d-4d45-5341-2d44-525600000000
+GPU1:
+	apiVersion         = 1.4.335
+	driverVersion      = 26.0.6
+	vendorID           = 0x10005
+	deviceID           = 0x0000
+	deviceType         = PHYSICAL_DEVICE_TYPE_CPU
+	deviceName         = llvmpipe (LLVM 20.1.8, 256 bits)
+	driverID           = DRIVER_ID_MESA_LLVMPIPE
+	driverName         = llvmpipe
+	driverInfo         = Mesa 26.0.6 - kisak-mesa PPA (LLVM 20.1.8)
+	conformanceVersion = 1.3.1.1
+	deviceUUID         = 6d657361-3236-2e30-2e36-202d206b6900
+	driverUUID         = 6c6c766d-7069-7065-5555-494400000000
+
+== Known Benchmark Noise ==
+  47552  0.0  0.1 t3code
+  47557  0.0  0.0 t3code
+  47608  0.0  0.0 t3code
+  47609  0.0  0.0 t3code
+  47611  0.0  0.0 t3code
+  47888  1.8  0.1 t3code
+  47896  0.0  0.0 t3code
+  47906  2.0  0.3 t3code
+  48417  3.0  0.2 t3code
+ 187958  0.0  0.0 node
+ 537968  0.2  0.4 firefox
+WARN: T3 Code or T3 proxy is running; allowed by ALLOW_T3=1
+
+== Local AI and Containers ==
+ 656925  0.0  0.0 bash
+WARN: local AI services are already running; confirm they are part of the test
+NAMES     STATUS    PORTS     IMAGE
+NAMES       STATUS      PORTS       IMAGE
+
+== Listening Ports ==
+tcp   LISTEN 0      100                               127.0.0.1:22620      0.0.0.0:*    users:(("nxrunner.bin",pid=11487,fd=31),("nxnode.bin",pid=11441,fd=31))
+tcp   LISTEN 0      100                               127.0.0.1:22619      0.0.0.0:*                                                                           
+tcp   LISTEN 0      128                               127.0.0.1:7001       0.0.0.0:*    users:(("nxnode.bin",pid=11441,fd=23))                                 
+tcp   LISTEN 0      100                               127.0.0.1:12001      0.0.0.0:*    users:(("nxnode.bin",pid=11441,fd=17))                                 
+tcp   LISTEN 0      511                                 0.0.0.0:3773       0.0.0.0:*    users:(("t3code",pid=47906,fd=3))                                      
+tcp   LISTEN 0      511                                 0.0.0.0:3776       0.0.0.0:*    users:(("node",pid=187958,fd=21))                                      
+tcp   LISTEN 0      4096                                0.0.0.0:22         0.0.0.0:*                                                                           
+tcp   LISTEN 0      2048                              127.0.0.1:8910       0.0.0.0:*    users:(("python",pid=136155,fd=13))                                    
+tcp   LISTEN 0      128                                   [::1]:7001          [::]:*    users:(("nxnode.bin",pid=11441,fd=20))                                 
+tcp   LISTEN 0      4096                                   [::]:22            [::]:*                                                                           
+
+== Top CPU Processes ==
+    PID    PPID STAT %CPU %MEM COMMAND
+   2922       1 S<l   6.4  3.2 qemu-system-x86
+  48417   47611 Sl    3.0  0.2 t3code
+   9946    9944 Sl+   2.8  0.0 Xorg
+ 655058  655050 Sl    2.1  0.0 codex
+  47906   47552 Sl    2.0  0.3 t3code
+  47888   47608 Sl    1.8  0.1 t3code
+  10306    2310 Ssl   1.2  0.2 gnome-shell
+   1408       1 Ss    0.6  0.0 dbus-daemon
+  11528   10306 Sl    0.3  0.0 gjs
+ 537968    2310 Sl    0.2  0.4 firefox
+   2607    2310 Ssl   0.2  0.0 pipewire
+   2630    2310 SLsl  0.1  0.0 pipewire-pulse
+   1417       1 Ssl   0.1  0.0 polkitd
+ 656268       1 Ssl   0.1  0.0 tuned
+   1127       2 S     0.1  0.0 napi/phy0-0
+ 136155    2310 Ssl   0.1  0.0 python
+   3433       1 Ssl   0.1  0.0 nxserver.bin
+   3429       1 Ssl   0.0  0.0 cloudflared
+  10071       1 S     0.0  0.0 autocutsel
+
+== Verdict ==
+Blockers: 0
+Warnings: 2
+USABLE FOR SMOKE TESTS, but review warnings before publishing numbers.

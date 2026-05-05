@@ -52,6 +52,14 @@ Current measured/pending summary:
 | Lemonade `llamacpp-rocm` b1259 | ROCm 7.13 | pending | pending | candidate | needs measured comparison |
 | Lemonade `vllm-rocm` 0.20.1 gfx1151 | ROCm 7.12 | pending | pending | candidate | needs measured comparison |
 
+## Smoke Runs
+
+These runs validate the workflow and server behavior, but they are not headline benchmark claims.
+
+| Date | Server | Model | Condition | Result |
+|------|--------|-------|-----------|--------|
+| 2026-05-05 | `llama-server` Vulkan/RADV | Qwen3.6 35B-A3B UD-Q4_K_M | `ALLOW_T3=1`, T3 left open, VM paused | OpenAI-compatible `/v1/completions` at `-np 8`: 173.36 aggregate t/s, 0 errors; feature probe returned HTTP 200 for models, completions, chat, streaming chat, and tools schema |
+
 ## Benchmark Protocol
 
 Keep this boring and reproducible.
