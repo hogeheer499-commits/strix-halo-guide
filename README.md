@@ -83,6 +83,8 @@ scripts/run_with_t3_guard.py --cleanup-cmd "podman stop vllm-gfx1151" -- <benchm
 
 The guard may stop the benchmark command and its cleanup target. It must not stop T3, the `3773` backend, or the `3777` proxy.
 
+Hermes bots are outside the Strix Halo workflow. Do not stop, restart, remove, or otherwise manage `hermes-*` Docker containers from this project.
+
 ---
 
 ## Why This Guide Exists

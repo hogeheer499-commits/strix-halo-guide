@@ -28,7 +28,10 @@ DEFAULT_URLS = [
 ]
 
 PROTECTED_CLEANUP_PATTERN = re.compile(
-    r"(t3code|t3-react185|t3_react185|:3773\b|:3777\b|pkill\s+.*node|killall\s+node)",
+    r"("
+    r"t3code|t3-react185|t3_react185|:3773\b|:3777\b|pkill\s+.*node|killall\s+node|"
+    r"hermes|docker\s+(stop|restart|kill|rm)|docker\s+compose\s+down"
+    r")",
     re.IGNORECASE,
 )
 
@@ -59,7 +62,7 @@ def url_ok(url: str, timeout: float) -> bool:
 def validate_cleanup(commands: list[str]) -> None:
     for command in commands:
         if PROTECTED_CLEANUP_PATTERN.search(command):
-            raise SystemExit(f"refusing cleanup command that could affect T3: {command}")
+            raise SystemExit(f"refusing cleanup command that could affect protected workflow services: {command}")
 
 
 def run_cleanup(commands: list[str]) -> None:
