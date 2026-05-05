@@ -66,6 +66,24 @@ Measured 2026-05-05 on the Beelink GTR9 Pro with T3 kept on as the protected wor
 
 Raw data: `data/raw/2026-05-05/server-shootout/full-sweep-qwen36-t3-baseline/`.
 
+Repeat validation after T3 connection work:
+
+| Server | Parallel | Baseline aggregate t/s | Repeat aggregate t/s | Delta |
+|--------|---------:|-----------------------:|---------------------:|------:|
+| `llama-server` Vulkan/RADV | 1 | 58.80 | 59.56 | +1.3% |
+| `llama-server` Vulkan/RADV | 2 | 96.08 | 97.34 | +1.3% |
+| `llama-server` Vulkan/RADV | 4 | 138.83 | 138.12 | -0.5% |
+| `llama-server` Vulkan/RADV | 8 | 170.87 | 172.96 | +1.2% |
+| `llama-server` Vulkan/RADV | 16 | 189.72 | 190.77 | +0.6% |
+| Lemonade `llamacpp-rocm` | 1 | 48.62 | 51.40 | +5.7% |
+| Lemonade `llamacpp-rocm` | 2 | 82.19 | 84.72 | +3.1% |
+| Lemonade `llamacpp-rocm` | 4 | 127.03 | 125.75 | -1.0% |
+| Lemonade `llamacpp-rocm` | 8 | 177.17 | 181.95 | +2.7% |
+| Lemonade `llamacpp-rocm` | 16 | 207.81 | 212.38 | +2.2% |
+
+The repeat did not change the recommendation: Vulkan/RADV remains better at
+1-4 parallel requests, and Lemonade ROCm remains better at 8-16.
+
 ## Smoke Runs
 
 These runs validate the workflow and server behavior, but they are not headline benchmark claims.

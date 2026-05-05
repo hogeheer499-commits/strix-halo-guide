@@ -1,0 +1,41 @@
+{
+  "url": "http://127.0.0.1:18280",
+  "model": "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf",
+  "probes": [
+    {
+      "name": "/v1/models",
+      "ok": true,
+      "status": 200,
+      "elapsed_s": 0.012535908001154894,
+      "detail": "1 models: Qwen3.6-35B-A3B-UD-Q4_K_M.gguf"
+    },
+    {
+      "name": "/v1/completions",
+      "ok": true,
+      "status": 200,
+      "elapsed_s": 0.31240319100106717,
+      "detail": "text chars=51"
+    },
+    {
+      "name": "/v1/chat/completions",
+      "ok": true,
+      "status": 200,
+      "elapsed_s": 0.38919492900095065,
+      "detail": "content chars=0; reasoning chars=55"
+    },
+    {
+      "name": "/v1/chat/completions stream",
+      "ok": true,
+      "status": 200,
+      "elapsed_s": 0.3797806309994485,
+      "detail": "18 SSE chunks; first chunk 0.116s"
+    },
+    {
+      "name": "/v1/chat/completions tools",
+      "ok": true,
+      "status": 200,
+      "elapsed_s": 1.5821404620000976,
+      "detail": "no tool_calls; content chars=0; reasoning chars=260"
+    }
+  ]
+}
