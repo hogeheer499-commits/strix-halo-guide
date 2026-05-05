@@ -16,13 +16,13 @@ As of the May 2026 baseline:
 |----------|------------|-----|--------|
 | Beginner local chat | Ollama Vulkan/RADV | easiest model management and setup | measured single-user baseline |
 | Open WebUI private chat/docs | Ollama first, then `llama-server` if you need speed | lowest friction, OpenAI-compatible clients work | measured Ollama baseline; RAG not yet benchmarked |
-| Coding assistant or local scripts | `llama-server` Vulkan/RADV | fastest measured local OpenAI-compatible path today | measured |
-| Multiple local tools/users | `llama-server --parallel 8` Vulkan/RADV | best measured throughput/latency balance so far | measured |
+| Coding assistant or local scripts | `llama-server` Vulkan/RADV | best measured Qwen3.6 path at 1-4 parallel requests | measured |
+| Multiple local tools/users | Lemonade `llamacpp-rocm` b1259 | best measured Qwen3.6 aggregate throughput at 8-16 parallel requests | measured |
 | vLLM/API appliance | kyuz0 or Lemonade vLLM ROCm container | serving-oriented stack with batching and production APIs | small smoke test only; throughput pending |
 | Long-context research | follow the long-context section, do not assume one backend wins | backend choice changes after 32K context | partially measured |
 | Image/video generation | kyuz0 ComfyUI toolboxes | separate ROCm container path for diffusion/video workloads | outside this LLM server shootout |
 
-The best fully measured local text API point is still `llama-server` on Vulkan/RADV, especially at `--parallel 8`. A T3-baseline smoke run of Lemonade `llamacpp-rocm` b1259 was slightly faster on the same Qwen3.6 shape, so it is now a serious candidate for a full sweep. The open question is whether current vLLM/ROCm builds are better for agent-serving, batching, tool APIs, or long-running server workloads.
+The practical split is now clear for Qwen3.6 35B-A3B UD-Q4_K_M: use Vulkan/RADV `llama-server` for single-user and small parallel workloads, and use Lemonade `llamacpp-rocm` b1259 when the box is serving many simultaneous local requests. The open question is whether current vLLM/ROCm builds are better for agent-serving, batching, tool APIs, or long-running server workloads.
 
 ## What Counts As A Server
 
@@ -31,8 +31,8 @@ A server is anything that exposes a model to other tools through an HTTP API.
 | Server | What it is good for | Main tradeoff |
 |--------|---------------------|---------------|
 | Ollama | easy setup, model pulling, local chat, Open WebUI | lower short-context speed than direct `llama-server` in current tests |
-| `llama-server` Vulkan/RADV | fastest measured local OpenAI-compatible llama.cpp path | manual model files and flags |
-| `llama-server` ROCm/Lemonade | packaged ROCm llama.cpp builds for gfx1151 | needs controlled local benchmark on this machine |
+| `llama-server` Vulkan/RADV | fastest measured Qwen3.6 path at 1-4 parallel requests | manual model files and flags |
+| `llama-server` ROCm/Lemonade | strongest measured Qwen3.6 aggregate throughput at 8-16 parallel requests | packaged build, more setup than Vulkan |
 | kyuz0 vLLM toolbox | isolated Strix Halo vLLM container path | heavier stack, throughput still unmeasured here |
 | Lemonade `vllm-rocm` | portable gfx1151 vLLM build | candidate, not yet measured here |
 | Experimental AWQ/DFlash repos | bleeding-edge vLLM experiments | not canonical until reproduced locally |
@@ -45,12 +45,26 @@ Current measured/pending summary:
 
 | Server | Backend | Model | Concurrency | Result | Verdict |
 |--------|---------|-------|-------------|--------|---------|
-| `llama-server` | Vulkan/RADV | Qwen3.6 35B-A3B UD-Q4_K_M | 8 | 161.98 aggregate t/s, 0.307 s mean TTFT | best measured general local API point |
+| `llama-server` | Vulkan/RADV | Qwen3.6 35B-A3B UD-Q4_K_M | 1-16 sweep | 58.80 to 189.72 aggregate t/s | best low-concurrency path |
 | `llama-server` | Vulkan/RADV | Qwen3-Coder 30B-A3B UD-Q4_K_XL | 8 | 173.16 aggregate t/s, 0.382 s mean TTFT | best measured coding API point |
 | Ollama | Vulkan/RADV | Qwen3.6 35B-A3B Q4_K_M | 1 | 50.51 t/s controlled API warm average | easiest useful path |
 | kyuz0 vLLM toolbox | ROCm/TheRock | Qwen3-0.6B | 1 | OpenAI-compatible smoke test passed | serving works, throughput not proven |
-| Lemonade `llamacpp-rocm` b1259 | ROCm 7.13 | Qwen3.6 35B-A3B UD-Q4_K_M | 8 | 176.43 aggregate t/s, 0.269 s mean TTFT smoke | ROCm llama.cpp path works; needs full sweep |
+| Lemonade `llamacpp-rocm` b1259 | ROCm 7.13 | Qwen3.6 35B-A3B UD-Q4_K_M | 1-16 sweep | 48.62 to 207.81 aggregate t/s | best high-concurrency path |
 | Lemonade `vllm-rocm` 0.20.1 gfx1151 | ROCm 7.12 | pending | pending | candidate | needs measured comparison |
+
+## Qwen3.6 Full Sweep
+
+Measured 2026-05-05 on the Beelink GTR9 Pro with T3 kept on as the protected workstation baseline. Each row is a 5-rep streaming `/v1/completions` run, 128 generated tokens per request, 4096 context tokens per slot, and 0 throughput errors.
+
+| Parallel requests | Vulkan/RADV aggregate t/s | Vulkan p95 ITL | Lemonade ROCm aggregate t/s | Lemonade p95 ITL | Read |
+|------------------:|--------------------------:|---------------:|----------------------------:|-----------------:|------|
+| 1 | 58.80 | 16.2 ms | 48.62 | 20.0 ms | Vulkan wins for single-user chat/scripts |
+| 2 | 96.08 | 19.8 ms | 82.19 | 23.6 ms | Vulkan still wins |
+| 4 | 138.83 | 27.4 ms | 127.03 | 30.4 ms | Vulkan still wins |
+| 8 | 170.87 | 45.2 ms | 177.17 | 43.5 ms | Lemonade starts winning aggregate and ITL |
+| 16 | 189.72 | 81.9 ms | 207.81 | 74.3 ms | Lemonade is the high-concurrency winner |
+
+Raw data: `data/raw/2026-05-05/server-shootout/full-sweep-qwen36-t3-baseline/`.
 
 ## Smoke Runs
 
@@ -162,9 +176,9 @@ Tool calling is model-dependent, so failures must be described carefully. A serv
 
 ## Next Run Order
 
-1. Done as smoke: current `llama-server` Vulkan/RADV baseline through the new feature probe.
-2. Done as smoke: Lemonade `llamacpp-rocm` b1259 with the same model/concurrency shape.
-3. Run a full sweep for the two best llama.cpp paths with T3 kept on and recorded.
+1. Done: current `llama-server` Vulkan/RADV baseline through the new feature probe.
+2. Done: Lemonade `llamacpp-rocm` b1259 with the same model/concurrency shape.
+3. Done: full sweep for the two best llama.cpp paths with T3 kept on and recorded.
 4. Test kyuz0 vLLM stable with a supported AWQ model.
 5. Test Lemonade `vllm-rocm` gfx1151 if it can serve the same or a clearly comparable model.
 6. Only then evaluate experimental AWQ/DFlash repos, clearly labeled as advanced.

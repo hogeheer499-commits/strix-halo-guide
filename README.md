@@ -57,8 +57,8 @@ Strix Halo is most useful when it acts as a private local AI service, not just a
 |-----|------------|-----|
 | Local chat | Ollama Vulkan/RADV | easiest install, model pulling, and Open WebUI path |
 | Private docs / RAG | Ollama + Open WebUI first | simplest local document workflow |
-| Coding assistant | `llama-server` Vulkan/RADV | fastest measured local OpenAI-compatible path |
-| Multiple tools/users | `llama-server --parallel 8` | current measured sweet spot: 162-173 aggregate t/s depending on model |
+| Coding assistant | `llama-server` Vulkan/RADV | fastest measured Qwen3.6 path at 1-4 parallel requests |
+| Multiple tools/users | Lemonade `llamacpp-rocm` b1259 at `--parallel 8` or `16` | strongest measured Qwen3.6 aggregate throughput once the box is serving several requests |
 | Agent/API appliance | vLLM ROCm container | serving-oriented stack; local throughput benchmark still pending |
 | Long-context research | backend-specific long-context path | backend choice changes at 32K+ context |
 | Image/video generation | kyuz0 ComfyUI toolboxes | separate ROCm container path, not the text-server path |
