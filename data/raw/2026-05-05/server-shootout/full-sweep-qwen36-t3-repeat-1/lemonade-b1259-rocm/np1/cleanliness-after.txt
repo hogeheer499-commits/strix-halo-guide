@@ -1,0 +1,106 @@
+
+== Host Load ==
+2026-05-05T05:47:36+02:00
+ 05:47:36 up  8:24,  1 user,  load average: 50.44, 83.06, 39.67
+               total        used        free      shared  buff/cache   available
+Mem:           124Gi        12Gi        69Gi       3.9Gi        47Gi       112Gi
+Swap:          8.0Gi          0B       8.0Gi
+
+== tuned ==
+Current active profile: accelerator-performance
+
+== GPU Clock ==
+/sys/class/drm/card1/device/pp_dpm_sclk
+0: 2900Mhz 
+1: 1100Mhz 
+2: 2900Mhz *
+
+== Vulkan Device ==
+Devices:
+========
+GPU0:
+	apiVersion         = 1.4.335
+	driverVersion      = 26.0.6
+	vendorID           = 0x1002
+	deviceID           = 0x1586
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = Radeon 8060S Graphics (RADV STRIX_HALO)
+	driverID           = DRIVER_ID_MESA_RADV
+	driverName         = radv
+	driverInfo         = Mesa 26.0.6 - kisak-mesa PPA
+	conformanceVersion = 1.4.0.0
+	deviceUUID         = 00000000-c600-0000-0000-000000000000
+	driverUUID         = 414d442d-4d45-5341-2d44-525600000000
+GPU1:
+	apiVersion         = 1.4.335
+	driverVersion      = 26.0.6
+	vendorID           = 0x10005
+	deviceID           = 0x0000
+	deviceType         = PHYSICAL_DEVICE_TYPE_CPU
+	deviceName         = llvmpipe (LLVM 20.1.8, 256 bits)
+	driverID           = DRIVER_ID_MESA_LLVMPIPE
+	driverName         = llvmpipe
+	driverInfo         = Mesa 26.0.6 - kisak-mesa PPA (LLVM 20.1.8)
+	conformanceVersion = 1.3.1.1
+	deviceUUID         = 6d657361-3236-2e30-2e36-202d206b6900
+	driverUUID         = 6c6c766d-7069-7065-5555-494400000000
+
+== Known Benchmark Noise ==
+ 537968  0.2  0.4 firefox
+ 668282  0.0  0.1 t3code
+ 668287  0.0  0.0 t3code
+ 668292  0.0  0.0 t3code
+ 668293  0.0  0.0 t3code
+ 668295  0.0  0.0 t3code
+ 668553  0.8  0.1 t3code
+ 668560  0.0  0.0 t3code
+ 668564  4.8  0.3 t3code
+ 669027  1.7  0.2 t3code
+ 670900  0.0  0.0 node
+ 695636  0.4  0.0 node
+ 751440  0.0  0.0 gh
+INFO: T3 Code or T3 proxy is running; protected and allowed by default
+
+== Local AI and Containers ==
+NAMES     STATUS    PORTS     IMAGE
+NAMES       STATUS      PORTS       IMAGE
+
+== Listening Ports ==
+tcp   LISTEN 0      100                               127.0.0.1:22620      0.0.0.0:*    users:(("nxrunner.bin",pid=11487,fd=31),("nxnode.bin",pid=11441,fd=31))
+tcp   LISTEN 0      100                               127.0.0.1:22619      0.0.0.0:*                                                                           
+tcp   LISTEN 0      128                               127.0.0.1:7001       0.0.0.0:*    users:(("nxnode.bin",pid=11441,fd=23))                                 
+tcp   LISTEN 0      100                               127.0.0.1:12001      0.0.0.0:*    users:(("nxnode.bin",pid=11441,fd=17))                                 
+tcp   LISTEN 0      511                                 0.0.0.0:3773       0.0.0.0:*    users:(("t3code",pid=668564,fd=3))                                     
+tcp   LISTEN 0      511                                 0.0.0.0:3777       0.0.0.0:*    users:(("node",pid=695636,fd=21))                                      
+tcp   LISTEN 0      511                                 0.0.0.0:3776       0.0.0.0:*    users:(("node",pid=670900,fd=21))                                      
+tcp   LISTEN 0      4096                                0.0.0.0:22         0.0.0.0:*                                                                           
+tcp   LISTEN 0      2048                              127.0.0.1:8910       0.0.0.0:*    users:(("python",pid=136155,fd=13))                                    
+tcp   LISTEN 0      128                                   [::1]:7001          [::]:*    users:(("nxnode.bin",pid=11441,fd=20))                                 
+tcp   LISTEN 0      4096                                   [::]:22            [::]:*                                                                           
+
+== Top CPU Processes ==
+    PID    PPID STAT %CPU %MEM COMMAND
+   2922       1 S<l   5.1  3.2 qemu-system-x86
+ 668564  668282 Sl    4.8  0.3 t3code
+   9946    9944 Sl+   2.3  0.0 Xorg
+ 669027  668295 Sl    1.7  0.2 t3code
+ 672315  672308 Sl    1.4  0.1 codex
+  10306    2310 Ssl   1.1  0.2 gnome-shell
+ 668553  668292 Sl    0.8  0.1 t3code
+ 765173       2 I     0.8  0.0 kworker/26:40-events
+ 758675       2 I     0.8  0.0 kworker/31:99-events
+ 669767  669759 Sl    0.7  0.0 codex
+ 765498       2 I     0.7  0.0 kworker/12:132-events
+ 765320       2 I     0.7  0.0 kworker/14:114-events
+ 758984       2 I     0.5  0.0 kworker/10:151-events
+ 761451       2 I     0.5  0.0 kworker/15:213-events
+ 762472       2 I     0.5  0.0 kworker/13:146-mm_percpu_wq
+ 756864       2 I     0.5  0.0 kworker/16:101-mm_percpu_wq
+ 758019       2 I     0.5  0.0 kworker/30:109-events
+ 757709       2 I     0.4  0.0 kworker/29:99-events
+ 761583       2 I     0.4  0.0 kworker/15:241-events
+
+== Verdict ==
+Blockers: 0
+Warnings: 0
+CLEAN ENOUGH for benchmark runs.
