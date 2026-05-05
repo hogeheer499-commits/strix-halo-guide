@@ -2,11 +2,11 @@
 # Read-only benchmark hygiene check. This script does not stop services.
 #
 # Optional:
-#   ALLOW_T3=1 scripts/check_benchmark_cleanliness.sh
+#   STRICT_T3=1 scripts/check_benchmark_cleanliness.sh
 #
-# Use ALLOW_T3=1 only when T3 Code must stay open for active work. Results from
-# that state are useful for smoke tests and workflow validation, but should not
-# be treated as fully publishable benchmark numbers.
+# T3 Code is a protected workflow dependency for this workstation. It stays on
+# by default and is reported as informational background state, not benchmark
+# noise. Use STRICT_T3=1 only after an explicit request for a no-T3 A/B run.
 
 set -u
 
@@ -25,6 +25,10 @@ blocker() {
 warn() {
   warnings=$((warnings + 1))
   printf 'WARN: %s\n' "$1"
+}
+
+info() {
+  printf 'INFO: %s\n' "$1"
 }
 
 section "Host Load"
@@ -70,10 +74,10 @@ if pgrep -i rustdesk >/dev/null; then
 fi
 if pgrep -f -i 't3code|t3_react185' >/dev/null; then
   pgrep -f -i 't3code|t3_react185' | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
-  if [ "${ALLOW_T3:-0}" = "1" ]; then
-    warn "T3 Code or T3 proxy is running; allowed by ALLOW_T3=1"
+  if [ "${STRICT_T3:-0}" = "1" ]; then
+    blocker "T3 Code or T3 proxy is running and STRICT_T3=1 was requested"
   else
-    blocker "T3 Code or T3 proxy is running"
+    info "T3 Code or T3 proxy is running; protected and allowed by default"
   fi
 fi
 if pgrep -i 'zoom|ZoomClips' >/dev/null; then

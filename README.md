@@ -73,6 +73,8 @@ scripts/check_benchmark_cleanliness.sh
 
 That check is read-only. It does not stop RustDesk, T3, Docker, Ollama, or VMs; it only reports whether the system is clean enough for publishable measurements.
 
+T3 Code is treated as a protected workflow dependency on this workstation. Leave it running for routine Strix Halo benchmarks; record it as background state instead of stopping it.
+
 ---
 
 ## Why This Guide Exists
