@@ -151,7 +151,10 @@ def chat_probe(payload: Any) -> str:
         return "no choices"
     message = choices[0].get("message") or {}
     content = message.get("content") if isinstance(message, dict) else ""
-    return f"content chars={len(content or '')}"
+    reasoning = ""
+    if isinstance(message, dict):
+        reasoning = message.get("reasoning_content") or message.get("reasoning") or ""
+    return f"content chars={len(content or '')}; reasoning chars={len(reasoning or '')}"
 
 
 def tool_probe(payload: Any) -> str:
@@ -165,7 +168,10 @@ def tool_probe(payload: Any) -> str:
     if tool_calls:
         return f"tool_calls={len(tool_calls)}"
     content = message.get("content") if isinstance(message, dict) else ""
-    return f"no tool_calls; content chars={len(content or '')}"
+    reasoning = ""
+    if isinstance(message, dict):
+        reasoning = message.get("reasoning_content") or message.get("reasoning") or ""
+    return f"no tool_calls; content chars={len(content or '')}; reasoning chars={len(reasoning or '')}"
 
 
 def main() -> None:
