@@ -22,7 +22,7 @@ As of the May 2026 baseline:
 | Long-context research | follow the long-context section, do not assume one backend wins | backend choice changes after 32K context | partially measured |
 | Image/video generation | kyuz0 ComfyUI toolboxes | separate ROCm container path for diffusion/video workloads | outside this LLM server shootout |
 
-The current measured winner for a local text API is still `llama-server` on Vulkan/RADV, especially at `--parallel 8`. The open question is whether current vLLM/ROCm builds are better for agent-serving, batching, tool APIs, or long-running server workloads.
+The best fully measured local text API point is still `llama-server` on Vulkan/RADV, especially at `--parallel 8`. A T3-baseline smoke run of Lemonade `llamacpp-rocm` b1259 was slightly faster on the same Qwen3.6 shape, so it is now a serious candidate for a full sweep. The open question is whether current vLLM/ROCm builds are better for agent-serving, batching, tool APIs, or long-running server workloads.
 
 ## What Counts As A Server
 
@@ -49,7 +49,7 @@ Current measured/pending summary:
 | `llama-server` | Vulkan/RADV | Qwen3-Coder 30B-A3B UD-Q4_K_XL | 8 | 173.16 aggregate t/s, 0.382 s mean TTFT | best measured coding API point |
 | Ollama | Vulkan/RADV | Qwen3.6 35B-A3B Q4_K_M | 1 | 50.51 t/s controlled API warm average | easiest useful path |
 | kyuz0 vLLM toolbox | ROCm/TheRock | Qwen3-0.6B | 1 | OpenAI-compatible smoke test passed | serving works, throughput not proven |
-| Lemonade `llamacpp-rocm` b1259 | ROCm 7.13 | pending | pending | candidate | needs measured comparison |
+| Lemonade `llamacpp-rocm` b1259 | ROCm 7.13 | Qwen3.6 35B-A3B UD-Q4_K_M | 8 | 176.43 aggregate t/s, 0.269 s mean TTFT smoke | ROCm llama.cpp path works; needs full sweep |
 | Lemonade `vllm-rocm` 0.20.1 gfx1151 | ROCm 7.12 | pending | pending | candidate | needs measured comparison |
 
 ## Smoke Runs
@@ -58,7 +58,8 @@ These runs validate the workflow and server behavior, but they are not headline 
 
 | Date | Server | Model | Condition | Result |
 |------|--------|-------|-----------|--------|
-| 2026-05-05 | `llama-server` Vulkan/RADV | Qwen3.6 35B-A3B UD-Q4_K_M | `ALLOW_T3=1`, T3 left open, VM paused | OpenAI-compatible `/v1/completions` at `-np 8`: 173.36 aggregate t/s, 0 errors; feature probe returned HTTP 200 for models, completions, chat, streaming chat, and tools schema |
+| 2026-05-05 | `llama-server` Vulkan/RADV | Qwen3.6 35B-A3B UD-Q4_K_M | T3 kept on by workstation policy, VM paused | OpenAI-compatible `/v1/completions` at `-np 8`: 173.36 aggregate t/s, 0 errors; feature probe returned HTTP 200 for models, completions, chat, streaming chat, and tools schema |
+| 2026-05-05 | Lemonade `llamacpp-rocm` b1259 | Qwen3.6 35B-A3B UD-Q4_K_M | T3 kept on by workstation policy, VM paused | OpenAI-compatible `/v1/completions` at `-np 8`: 176.43 aggregate t/s, 0 errors; feature probe returned HTTP 200 for models, completions, chat, streaming chat, and tools schema |
 
 ## Benchmark Protocol
 
@@ -70,7 +71,9 @@ Keep this boring and reproducible.
 scripts/check_benchmark_cleanliness.sh
 ```
 
-This script is read-only. It does not stop RustDesk, T3, Docker, Ollama, or VMs. It only reports whether the system is clean enough for publishable measurements.
+This script is read-only. It does not stop RustDesk, T3, Docker, Ollama, or VMs. It only reports whether the system is clean enough for measurements.
+
+T3 Code is a protected workflow dependency for this workstation. Leave T3 and the T3 proxy running for routine benchmarks; record them as background state. Only test without T3 when that is explicitly requested for a narrow A/B comparison.
 
 1. Record host state:
    - kernel
@@ -151,15 +154,17 @@ Tool calling is model-dependent, so failures must be described carefully. A serv
 
 - Do not install vLLM, PyTorch, ROCm, or TheRock packages into the host Python environment.
 - Test stable container/builds before nightly/latest builds.
-- Do not run publishable numbers while RustDesk, T3 Code, Zoom, unrelated VMs, or unrelated local AI services are active.
+- Do not run publishable numbers while RustDesk, Zoom, unrelated VMs, or unrelated local AI services are active.
+- Keep T3 Code and the T3 proxy running by default; do not stop them for routine Strix Halo benchmarks.
 - Treat external vLLM/DFlash claims as leads until reproduced locally.
 - Do not publish tokens-per-watt until power telemetry is validated.
 - Keep failed starts, OOMs, compile hangs, and missing endpoints in the notes. Failure cases are part of the value.
 
 ## Next Run Order
 
-1. Re-run the current `llama-server` Vulkan/RADV baseline through the new feature probe.
-2. Test Lemonade `llamacpp-rocm` b1259 with the same model/concurrency shape.
-3. Test kyuz0 vLLM stable with a supported AWQ model.
-4. Test Lemonade `vllm-rocm` gfx1151 if it can serve the same or a clearly comparable model.
-5. Only then evaluate experimental AWQ/DFlash repos, clearly labeled as advanced.
+1. Done as smoke: current `llama-server` Vulkan/RADV baseline through the new feature probe.
+2. Done as smoke: Lemonade `llamacpp-rocm` b1259 with the same model/concurrency shape.
+3. Run a full sweep for the two best llama.cpp paths with T3 kept on and recorded.
+4. Test kyuz0 vLLM stable with a supported AWQ model.
+5. Test Lemonade `vllm-rocm` gfx1151 if it can serve the same or a clearly comparable model.
+6. Only then evaluate experimental AWQ/DFlash repos, clearly labeled as advanced.
