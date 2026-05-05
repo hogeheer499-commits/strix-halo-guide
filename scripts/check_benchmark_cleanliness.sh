@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 # Read-only benchmark hygiene check. This script does not stop services.
 #
-# Optional:
-#   STRICT_T3=1 scripts/check_benchmark_cleanliness.sh
-#
-# T3 Code is a protected workflow dependency for this workstation. It stays on
-# by default and is reported as informational background state, not benchmark
-# noise. Use STRICT_T3=1 only after an explicit request for a no-T3 A/B run.
+# T3 Code is a hard workflow dependency for this workstation. Strix Halo work is
+# operated from T3, so T3 must remain running and reachable during all routine
+# benchmark work. This script never stops services; it only reports readiness.
 
 set -u
 
@@ -29,6 +26,27 @@ warn() {
 
 info() {
   printf 'INFO: %s\n' "$1"
+}
+
+check_http() {
+  label="$1"
+  url="$2"
+  if curl -fsSIL --max-time 5 "$url" >/dev/null 2>&1; then
+    info "$label is reachable: $url"
+  else
+    blocker "$label is not reachable: $url"
+  fi
+}
+
+check_json_ok() {
+  label="$1"
+  url="$2"
+  body="$(curl -fsS --max-time 5 "$url" 2>/dev/null || true)"
+  if printf '%s\n' "$body" | grep -q '"ok"[[:space:]]*:[[:space:]]*true'; then
+    info "$label is healthy: $url"
+  else
+    blocker "$label is not healthy: $url"
+  fi
 }
 
 section "Host Load"
@@ -72,14 +90,6 @@ if pgrep -i rustdesk >/dev/null; then
   pgrep -i rustdesk | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
   blocker "RustDesk is running"
 fi
-if pgrep -f -i 't3code|t3_react185' >/dev/null; then
-  pgrep -f -i 't3code|t3_react185' | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
-  if [ "${STRICT_T3:-0}" = "1" ]; then
-    blocker "T3 Code or T3 proxy is running and STRICT_T3=1 was requested"
-  else
-    info "T3 Code or T3 proxy is running; protected and allowed by default"
-  fi
-fi
 if pgrep -i 'zoom|ZoomClips' >/dev/null; then
   pgrep -i 'zoom|ZoomClips' | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
   blocker "Zoom is running"
@@ -88,6 +98,26 @@ if command -v virsh >/dev/null 2>&1 && virsh list --state-running --name 2>/dev/
   virsh list --state-running
   blocker "one or more libvirt VMs are running"
 fi
+
+section "T3 Workstation Dependency"
+T3_LOCAL_BASE="${T3_LOCAL_BASE:-http://127.0.0.1}"
+T3_LAN_BASE="${T3_LAN_BASE:-http://192.168.2.13}"
+if pgrep -f -i 't3code' >/dev/null; then
+  pgrep -f -i 't3code' | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
+  info "T3 Code process is running and protected"
+else
+  blocker "T3 Code process is not running"
+fi
+if pgrep -f -i 't3_react185_semantic_proxy|t3-react185-semantic-proxy' >/dev/null; then
+  pgrep -f -i 't3_react185_semantic_proxy|t3-react185-semantic-proxy' | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
+  info "T3 semantic proxy is running and protected"
+else
+  blocker "T3 semantic proxy is not running"
+fi
+check_http "T3 local backend" "${T3_LOCAL_BASE}:3773/"
+check_http "T3 LAN backend" "${T3_LAN_BASE}:3773/"
+check_json_ok "T3 local semantic proxy" "${T3_LOCAL_BASE}:3777/__t3react185/health"
+check_http "T3 LAN semantic proxy" "${T3_LAN_BASE}:3777/"
 
 section "Local AI and Containers"
 ai_pids="$(
@@ -109,7 +139,7 @@ if command -v podman >/dev/null 2>&1; then
 fi
 
 section "Listening Ports"
-ss -tulpn | grep -E '(:11434|:8080|:18001|:3000|:3773|:3774|:3776|:22|ollama|llama|vllm|node|rustdesk|python)' || true
+ss -tulpn | grep -E '(:11434|:8080|:18001|:3000|:3773|:3774|:3776|:3777|:22|ollama|llama|vllm|node|rustdesk|python)' || true
 
 section "Top CPU Processes"
 ps -eo pid,ppid,stat,pcpu,pmem,comm --sort=-pcpu | head -20
