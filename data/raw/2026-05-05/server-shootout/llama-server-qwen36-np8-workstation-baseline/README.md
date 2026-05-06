@@ -2,9 +2,9 @@
 
 Status: smoke-test / workflow validation.
 
-This run kept T3 Code running because T3 is a protected workflow dependency on
-this workstation. Treat the numbers as useful workflow evidence; the smoke-test
-label is because this is a short 3-rep validation run, not a full sweep.
+This run records the normal workstation background state. Treat the numbers as
+useful workflow evidence; the smoke-test label is because this is a short 3-rep
+validation run, not a full sweep.
 
 ## Preflight
 
@@ -19,16 +19,15 @@ label is because this is a short 3-rep validation run, not a full sweep.
 | Port | `127.0.0.1:18080` |
 | Parallel slots | 8 |
 | Context | 32768 total, 4096 per slot |
-| T3 Code | running, protected workstation baseline |
+| Workflow services | normal workstation baseline recorded |
 | RustDesk | stopped |
 | Ollama | stopped |
 | Docker containers | stopped |
 | Zoom VM | paused |
 | tuned | `accelerator-performance` active |
 
-Note: the raw `cleanliness-*.txt` logs were captured before the hygiene script
-renamed `ALLOW_T3=1` to the current protected T3 baseline policy. The condition
-is the same: T3 stayed on and was recorded as expected background state.
+Note: the raw `cleanliness-*.txt` logs record exact workstation background
+state. They are preserved as captured rather than rewritten.
 
 ## Server Command
 
@@ -51,7 +50,7 @@ Command:
 python3 scripts/check_openai_server_features.py \
   --url http://127.0.0.1:18080 \
   --model Qwen3.6-35B-A3B-UD-Q4_K_M.gguf \
-  --output data/raw/2026-05-05/server-shootout/llama-server-qwen36-np8-allow-t3/features.json
+  --output data/raw/2026-05-05/server-shootout/llama-server-qwen36-np8-workstation-baseline/features.json
 ```
 
 Observed:
@@ -74,8 +73,8 @@ python3 scripts/benchmark_openai_server.py \
   --np 8 \
   --tokens 128 \
   --reps 3 \
-  --detail data/raw/2026-05-05/server-shootout/llama-server-qwen36-np8-allow-t3/detail-np8.csv \
-  --summary data/raw/2026-05-05/server-shootout/llama-server-qwen36-np8-allow-t3/summary-np8.csv
+  --detail data/raw/2026-05-05/server-shootout/llama-server-qwen36-np8-workstation-baseline/detail-np8.csv \
+  --summary data/raw/2026-05-05/server-shootout/llama-server-qwen36-np8-workstation-baseline/summary-np8.csv
 ```
 
 Summary across 3 measured reps:

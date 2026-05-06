@@ -12,6 +12,7 @@ python3 scripts/generate_charts.py
 
 ## Files
 
+- `headline_claims.csv`: machine-readable map from public README headline claims to structured CSVs, raw evidence, charts, and notes.
 - `benchmarks.csv`: existing short-context and backend benchmark rows already published in the guide.
 - `multi_user.csv`: controlled `llama-server` concurrency results with aggregate throughput, per-request throughput, TTFT, and ITL.
 - `server_shootout.csv`: practical local-AI-server comparison rows across Ollama, `llama-server`, ROCm builds, and vLLM candidates.
@@ -57,3 +58,9 @@ For server shootout rows, also include:
 - limitations
 
 If any of those are unknown, leave the cell blank rather than guessing.
+
+## Headline Claim Rows
+
+Every row in `headline_claims.csv` should point to evidence that already exists
+in this repository. Do not add a new headline row until the supporting CSV, raw
+evidence path, and chart or explicit `n/a` chart value are known.

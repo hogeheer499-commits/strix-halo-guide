@@ -64,7 +64,7 @@ Measured 2026-05-05 on the Beelink GTR9 Pro with the normal workstation baseline
 | 8 | 170.87 | 45.2 ms | 177.17 | 43.5 ms | Lemonade starts winning aggregate and ITL |
 | 16 | 189.72 | 81.9 ms | 207.81 | 74.3 ms | Lemonade is the high-concurrency winner |
 
-Raw data: `data/raw/2026-05-05/server-shootout/full-sweep-qwen36-t3-baseline/`.
+Raw data: `data/raw/2026-05-05/server-shootout/full-sweep-qwen36-workstation-baseline/`.
 
 Repeat validation after workstation connection work:
 

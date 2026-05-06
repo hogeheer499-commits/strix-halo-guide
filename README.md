@@ -14,7 +14,7 @@
 >
 > This project publishes documentation, scripts, benchmark data, charts, and source archives only. It does not publish Windows installers, `.exe` files, binary `.zip` downloads, browser extensions, or model weights. Repos or sites using this name to promote executable downloads are unofficial and should not be treated as this guide.
 
-[Best Setup](#best-current-setup) | [Evidence](#headline-evidence) | [Reproducibility](REPRODUCIBILITY.md) | [Server Shootout](SERVER_SHOOTOUT.md) | [Quick Start](#quick-start-6-steps) | [Raw Data](data/README.md) | [Charts](charts/README.md) | [Security](SECURITY.md)
+[Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup) | [Evidence](#headline-evidence) | [Reproduce](#reproduce-one-headline-result) | [Reproducibility](REPRODUCIBILITY.md) | [Server Shootout](SERVER_SHOOTOUT.md) | [Raw Data](data/README.md) | [Security](SECURITY.md)
 
 ---
 
@@ -27,7 +27,18 @@
 | Best easy path | Ollama 0.21.2 with Vulkan/RADV for chat, model pulling, and Open WebUI. |
 | Fastest measured short-context path | Direct llama.cpp / `llama-server` with Vulkan/RADV. Qwen3-Coder 30B-A3B reached 97.24 t/s; Qwen3.6 35B-A3B reached 63.06 t/s. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
+| Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
 | Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
+
+## Use This If You Want
+
+| Goal | Start with | Why | Evidence |
+|------|------------|-----|----------|
+| Easiest private local chat | Ollama Vulkan/RADV | easiest model pulling and Open WebUI path | 50.51 t/s warm Qwen3.6 API average, [`data/benchmarks.csv`](data/benchmarks.csv) |
+| Fast coding or scripts on one machine | `llama-server` Vulkan/RADV | fastest measured Qwen3.6 path at 1-4 parallel requests | [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md) |
+| Several local tools or users hitting one API | Lemonade `llamacpp-rocm` b1259 | best measured Qwen3.6 aggregate throughput at 8-16 parallel requests | [`data/server_shootout.csv`](data/server_shootout.csv) |
+| Long local documents or codebase context | `llama-server` Vulkan/RADV, f16 KV first | 128K prompt plus generation completed without truncation | [`data/filled_kv_decode.csv`](data/filled_kv_decode.csv) |
+| vLLM-style serving experiments | ROCm vLLM containers only as experiments | smoke-tested, but no 35B throughput claim yet | [`VLLM_BASELINE.md`](VLLM_BASELINE.md) |
 
 ## Best Current Setup
 
@@ -45,19 +56,41 @@ Best current setup for most users who want a practical local AI box:
 - Lemonade `llamacpp-rocm` b1259 for the best measured Qwen3.6 aggregate throughput at 8-16 parallel requests.
 - ROCm/HIP for specific experiments, vLLM, batching, and future long-context work, not as the current default short-context path.
 
-Not yet proven here: vLLM throughput on the 35B AWQ path, same-machine Windows versus Linux performance, reliable tokens-per-watt, and a local tuned rocWMMA long-context comparison.
-
 ## Headline Evidence
 
-| Claim | Date | Evidence |
-|-------|------|----------|
-| Qwen3-Coder 30B-A3B UD-Q4_K_XL reached 97.24 t/s on Vulkan/RADV llama.cpp b9010. | 2026-05-03 | [`data/benchmarks.csv`](data/benchmarks.csv), [`run 1`](data/raw/2026-05-03/qwen3-coder-30b-a3b-ud-q4-k-xl-b9010-r20.csv), [`run 2`](data/raw/2026-05-03/qwen3-coder-30b-a3b-ud-q4-k-xl-b9010-r20-run2.csv) |
-| Qwen3.6 35B-A3B UD-Q4_K_M reached 63.06 t/s on Vulkan/RADV llama.cpp b9010. | 2026-05-03 | [`data/benchmarks.csv`](data/benchmarks.csv), [`run 1`](data/raw/2026-05-03/qwen3.6-35b-a3b-ud-q4-k-m-b9010-r20.csv), [`run 2`](data/raw/2026-05-03/qwen3.6-35b-a3b-ud-q4-k-m-b9010-r20-run2.csv) |
-| Ollama 0.21.2 Vulkan/RADV averaged 50.51 t/s on Qwen3.6 35B-A3B Q4_K_M through the API. | 2026-05-03 | [`data/benchmarks.csv`](data/benchmarks.csv), [`raw API run`](data/raw/2026-05-03/ollama-qwen3.6-35b-a3b-0.21.2-api-r10.csv) |
-| Qwen3.6 server sweep: Vulkan/RADV wins at 1-4 parallel requests; Lemonade ROCm wins at 8-16. | 2026-05-05 | [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md), [`data/server_shootout.csv`](data/server_shootout.csv), [`raw sweep`](data/raw/2026-05-05/server-shootout/full-sweep-qwen36-t3-baseline/summary.csv) |
-| `llama-server` continuous batching reached 173.16 aggregate t/s on Qwen3-Coder at `-np 8`. | 2026-05-03 | [`data/multi_user.csv`](data/multi_user.csv), [`raw summary`](data/raw/2026-05-03/multi-user-coder/qwen3-coder-30b-ud-llama-server-multi-user-summary.csv), [`chart`](charts/multi_user_aggregate.svg) |
-| Qwen3.6 long-context filled-KV decode completed 128K f16 without truncation and decoded at 32.23 t/s after fill. | 2026-05-03 | [`data/filled_kv_decode.csv`](data/filled_kv_decode.csv), [`raw 128K summary`](data/raw/2026-05-03/filled-kv-decode-128k/filled-kv-decode-128k-summary.csv), [`chart`](charts/filled_kv_decode.svg) |
-| Synthetic repeated prompts overstate long-prompt ingest speed versus real documentation text. | 2026-05-03 | [`real-corpus raw summary`](data/raw/2026-05-03/filled-kv-decode-real-corpus/filled-kv-decode-real-corpus-summary.csv), [`chart`](charts/real_vs_synthetic.svg) |
+The machine-readable index for these rows is [`data/headline_claims.csv`](data/headline_claims.csv).
+
+| Claim | Date | Backend | Model | Result | CSV | Raw | Chart | Notes |
+|-------|------|---------|-------|--------|-----|-----|-------|-------|
+| Fastest measured short-context coding MoE | 2026-05-03 | llama.cpp Vulkan/RADV b9010 | Qwen3-Coder 30B-A3B UD-Q4_K_XL | 97.24 tg128, 1346.27 pp512 | [`benchmarks`](data/benchmarks.csv) | [`run 1`](data/raw/2026-05-03/qwen3-coder-30b-a3b-ud-q4-k-xl-b9010-r20.csv), [`run 2`](data/raw/2026-05-03/qwen3-coder-30b-a3b-ud-q4-k-xl-b9010-r20-run2.csv) | [`chart`](charts/backend_spot_check.svg) | two-run r20 average |
+| Fastest measured short-context Qwen3.6 direct path | 2026-05-03 | llama.cpp Vulkan/RADV b9010 | Qwen3.6 35B-A3B UD-Q4_K_M | 63.06 tg128, 1108.93 pp512 | [`benchmarks`](data/benchmarks.csv) | [`run 1`](data/raw/2026-05-03/qwen3.6-35b-a3b-ud-q4-k-m-b9010-r20.csv), [`run 2`](data/raw/2026-05-03/qwen3.6-35b-a3b-ud-q4-k-m-b9010-r20-run2.csv) | [`chart`](charts/backend_spot_check.svg) | two-run r20 average |
+| Easiest useful Qwen3.6 chat path | 2026-05-03 | Ollama 0.21.2 Vulkan/RADV | Qwen3.6 35B-A3B Q4_K_M | 50.51 t/s warm API generation average | [`benchmarks`](data/benchmarks.csv) | [`raw API run`](data/raw/2026-05-03/ollama-qwen3.6-35b-a3b-0.21.2-api-r10.csv) | n/a | 10 warm API runs |
+| Best measured Qwen3.6 server split | 2026-05-05 | Vulkan/RADV and Lemonade ROCm | Qwen3.6 35B-A3B UD-Q4_K_M | Vulkan wins 1-4 parallel; Lemonade ROCm wins 8-16 | [`server data`](data/server_shootout.csv) | [`raw sweep`](data/raw/2026-05-05/server-shootout/full-sweep-qwen36-workstation-baseline/summary.csv) | n/a | 5 reps per concurrency, 0 errors |
+| Best measured Qwen3-Coder local API point | 2026-05-03 | `llama-server` Vulkan/RADV b9010 | Qwen3-Coder 30B-A3B UD-Q4_K_XL | 173.16 aggregate t/s at `-np 8` | [`multi-user`](data/multi_user.csv) | [`raw summary`](data/raw/2026-05-03/multi-user-coder/qwen3-coder-30b-ud-llama-server-multi-user-summary.csv) | [`chart`](charts/multi_user_aggregate.svg) | `-np 16` regressed |
+| 128K filled-context Qwen3.6 decode completed | 2026-05-03 | `llama-server` Vulkan/RADV b9010 | Qwen3.6 35B-A3B UD-Q4_K_M | 32.23 t/s decode after 128K fill, no truncation | [`filled KV`](data/filled_kv_decode.csv) | [`raw 128K summary`](data/raw/2026-05-03/filled-kv-decode-128k/filled-kv-decode-128k-summary.csv) | [`chart`](charts/filled_kv_decode.svg) | f16 KV, synthetic long prompt |
+| Real documents are slower than synthetic repeated prompts | 2026-05-03 | `llama-server` Vulkan/RADV b9010 | Qwen3.6 35B-A3B and Qwen3-Next 80B-A3B | real 64K prompt ingest was 24-33% slower; decode barely changed | [`filled KV`](data/filled_kv_decode.csv) | [`real-corpus summary`](data/raw/2026-05-03/filled-kv-decode-real-corpus/filled-kv-decode-real-corpus-summary.csv) | [`chart`](charts/real_vs_synthetic.svg) | avoids overclaiming synthetic prompt speed |
+
+## Reproduce One Headline Result
+
+This reproduces the 97.24 t/s Qwen3-Coder headline if your machine, model file, driver stack, and power state match the measured setup in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
+
+```bash
+AMD_VULKAN_ICD=RADV \
+VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
+~/llama-cpp-latest/build-vulkan/bin/llama-bench \
+  -m ~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf \
+  -fa 1 -ngl 999 -mmp 0 -p 512 -n 128 -r 20 -o csv
+```
+
+Measured local result: 97.24 tg128 average across [`run 1`](data/raw/2026-05-03/qwen3-coder-30b-a3b-ud-q4-k-xl-b9010-r20.csv) and [`run 2`](data/raw/2026-05-03/qwen3-coder-30b-a3b-ud-q4-k-xl-b9010-r20-run2.csv).
+
+## Not Yet Proven Here
+
+- vLLM throughput on a comparable 35B AWQ or GGUF-equivalent path.
+- Same-machine Windows versus Linux performance.
+- Reliable tokens-per-watt under validated wall or board power telemetry.
+- A local tuned rocWMMA long-context comparison against the current Vulkan/RADV path.
+- Multi-machine clustering numbers from this guide's own hardware.
 
 ## Do Not Copy These Claims Without Matching Setup
 
@@ -74,6 +107,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) | Exact machine, BIOS/software state, commands, raw data paths, and chart generation. |
 | [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md) | Practical local-AI-server comparison: Ollama, `llama-server`, Lemonade ROCm, and vLLM candidates. |
 | [`BENCHMARKS.md`](BENCHMARKS.md) | Compact benchmark source-of-truth for current README numbers. |
+| [`data/headline_claims.csv`](data/headline_claims.csv) | Machine-readable map from public headline claims to data, raw evidence, charts, and notes. |
 | [`data/README.md`](data/README.md) | Structured CSV schema and raw-data conventions. |
 | [`charts/README.md`](charts/README.md) | Generated chart inventory and regeneration command. |
 | [`SECURITY.md`](SECURITY.md) | Official-source and impersonation reporting policy. |
@@ -95,8 +129,11 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 ## Table of Contents
 
 - [20-Second Summary](#20-second-summary)
+- [Use This If You Want](#use-this-if-you-want)
 - [Best Current Setup](#best-current-setup)
 - [Headline Evidence](#headline-evidence)
+- [Reproduce One Headline Result](#reproduce-one-headline-result)
+- [Not Yet Proven Here](#not-yet-proven-here)
 - [Do Not Copy These Claims Without Matching Setup](#do-not-copy-these-claims-without-matching-setup)
 - [Documentation Map](#documentation-map)
 - [Hardware](#hardware)

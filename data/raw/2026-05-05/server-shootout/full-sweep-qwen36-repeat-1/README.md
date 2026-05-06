@@ -1,14 +1,13 @@
-# 2026-05-05 Server Shootout Repeat: Qwen3.6 T3 Baseline
+# 2026-05-05 Server Shootout Repeat: Qwen3.6 Workstation Baseline
 
 Status: repeat validation run.
 
-This rerun checks whether active T3 connection work during the previous full
-sweep materially changed the result. T3 Code and the T3 proxies stayed running
-as the protected workstation baseline.
+This rerun checks whether the normal workstation background state materially
+changed the previous full-sweep result.
 
 ## Protocol
 
-Same protocol as `../full-sweep-qwen36-t3-baseline/`:
+Same protocol as `../full-sweep-qwen36-workstation-baseline/`:
 
 - Qwen3.6 35B-A3B UD-Q4_K_M
 - OpenAI-compatible streaming `/v1/completions`
@@ -16,7 +15,7 @@ Same protocol as `../full-sweep-qwen36-t3-baseline/`:
 - 5 measured reps plus warmup
 - parallel requests: 1, 2, 4, 8, 16
 - 4096 context tokens per slot
-- T3 kept on
+- normal workstation baseline recorded
 
 The hygiene check reported 0 blockers and 0 warnings before and after the rerun.
 
@@ -41,8 +40,8 @@ The rerun does not change the recommendation. Vulkan/RADV remains better for
 1-4 parallel requests. Lemonade ROCm b1259 remains better for 8-16 parallel
 requests.
 
-The changes are consistent with normal run-to-run variance. The active T3 work
-did not invalidate the earlier split.
+The changes are consistent with normal run-to-run variance and do not invalidate
+the earlier split.
 
 ## Files
 
