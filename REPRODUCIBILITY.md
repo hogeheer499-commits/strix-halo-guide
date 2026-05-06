@@ -6,6 +6,8 @@ This file is the checklist for copying, rerunning, or challenging benchmark clai
 
 Current headline numbers were measured on one primary Strix Halo machine unless a row says otherwise. Treat them as local measurements, not universal hardware guarantees.
 
+The public claim index is [`data/headline_claims.csv`](data/headline_claims.csv). Each row maps a README headline claim to structured data, raw evidence, chart path, and notes.
+
 ## Primary Machine
 
 | Component | Measured state |
@@ -52,11 +54,11 @@ The hygiene script is read-only. On the maintainer workstation it also checks lo
 Direct Vulkan/RADV `llama-bench` shape used for the short-context headline rows:
 
 ```bash
+AMD_VULKAN_ICD=RADV \
+VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
 ~/llama-cpp-latest/build-vulkan/bin/llama-bench \
   -m ~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf \
-  -p 512 \
-  -n 128 \
-  -r 20
+  -fa 1 -ngl 999 -mmp 0 -p 512 -n 128 -r 20 -o csv
 ```
 
 OpenAI-compatible server feature probe:
@@ -91,8 +93,9 @@ python3 scripts/generate_charts.py
 
 | Claim family | Structured data | Raw logs | Charts / notes |
 |--------------|-----------------|----------|----------------|
+| Public headline claim index | [`data/headline_claims.csv`](data/headline_claims.csv) | Row-specific raw paths | Row-specific chart paths or `n/a` |
 | Short-context Vulkan/RADV and Ollama headline rows | [`data/benchmarks.csv`](data/benchmarks.csv) | [`data/raw/2026-05-03/`](data/raw/2026-05-03/) | [`BENCHMARKS.md`](BENCHMARKS.md), [`charts/backend_spot_check.svg`](charts/backend_spot_check.svg) |
-| Server shootout and concurrency sweeps | [`data/server_shootout.csv`](data/server_shootout.csv) | [`data/raw/2026-05-05/server-shootout/full-sweep-qwen36-t3-baseline/`](data/raw/2026-05-05/server-shootout/full-sweep-qwen36-t3-baseline/) | [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md) |
+| Server shootout and concurrency sweeps | [`data/server_shootout.csv`](data/server_shootout.csv) | [`data/raw/2026-05-05/server-shootout/full-sweep-qwen36-workstation-baseline/`](data/raw/2026-05-05/server-shootout/full-sweep-qwen36-workstation-baseline/) | [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md) |
 | `llama-server` multi-user behavior | [`data/multi_user.csv`](data/multi_user.csv) | [`data/raw/2026-05-03/multi-user/`](data/raw/2026-05-03/multi-user/), [`data/raw/2026-05-03/multi-user-coder/`](data/raw/2026-05-03/multi-user-coder/) | [`charts/multi_user_aggregate.svg`](charts/multi_user_aggregate.svg) |
 | Long-context prompt scaling | [`data/long_context.csv`](data/long_context.csv) | [`data/raw/2026-05-03/long-context/`](data/raw/2026-05-03/long-context/) | [`charts/long_context_prompt.svg`](charts/long_context_prompt.svg) |
 | Filled-KV decode and KV-cache tradeoffs | [`data/filled_kv_decode.csv`](data/filled_kv_decode.csv) | [`data/raw/2026-05-03/filled-kv-decode/`](data/raw/2026-05-03/filled-kv-decode/), [`data/raw/2026-05-03/filled-kv-decode-128k/`](data/raw/2026-05-03/filled-kv-decode-128k/), [`data/raw/2026-05-03/filled-kv-decode-real-corpus/`](data/raw/2026-05-03/filled-kv-decode-real-corpus/) | [`charts/filled_kv_decode.svg`](charts/filled_kv_decode.svg), [`charts/kv_cache_tradeoff.svg`](charts/kv_cache_tradeoff.svg), [`charts/real_vs_synthetic.svg`](charts/real_vs_synthetic.svg) |

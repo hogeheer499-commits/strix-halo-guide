@@ -1,10 +1,10 @@
-# 2026-05-05 Server Shootout Full Sweep: Qwen3.6 T3 Baseline
+# 2026-05-05 Server Shootout Full Sweep: Qwen3.6 Workstation Baseline
 
 Status: measured-local full sweep.
 
-This run keeps T3 Code and the T3 proxies running because they are part of the
-protected workstation baseline. The hygiene check reported 0 blockers and 0
-warnings before and after the full run.
+This run records the normal workstation background state used for the measured
+server sweep. The hygiene check reported 0 blockers and 0 warnings before and
+after the full run.
 
 ## Protocol
 
@@ -18,7 +18,7 @@ warnings before and after the full run.
 | Reps | 5 measured reps plus warmup |
 | Parallel sweep | 1, 2, 4, 8, 16 |
 | Context | 4096 tokens per slot |
-| T3 Code | running, protected workstation baseline |
+| Workflow services | normal workstation baseline recorded |
 | RustDesk | stopped |
 | Ollama | stopped |
 | Docker containers | none running |
