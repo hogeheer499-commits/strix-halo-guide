@@ -14,7 +14,7 @@
 >
 > Measured primarily on one Beelink GTR9 Pro. Every headline claim below links to CSVs, raw logs, charts, or explicit notes. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights.
 
-[Model Snapshot](#model-snapshot) | [Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup) | [Evidence](#headline-evidence) | [Reproduce](#reproduce-one-headline-result) | [Reproducibility](REPRODUCIBILITY.md) | [Server Shootout](SERVER_SHOOTOUT.md) | [Raw Data](data/README.md) | [Security](SECURITY.md)
+[Model Snapshot](#model-snapshot) | [Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Reproduce](#reproduce-one-headline-result) | [Reproducibility](REPRODUCIBILITY.md) | [Server Shootout](SERVER_SHOOTOUT.md) | [Raw Data](data/README.md) | [Security](SECURITY.md)
 
 ---
 
@@ -24,7 +24,7 @@
 |-------------------|------------|
 | See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
 | Decide what to run on your Strix Halo machine | [Model Snapshot](#model-snapshot), then [Use This If You Want](#use-this-if-you-want): practical model and backend choices for a local AI PC. |
-| Apply the setup without reading everything | [Best Current Setup](#best-current-setup), then [Quick Start](#quick-start-6-steps). |
+| Apply the setup without reading everything | [Best Current Setup Tested Here](#best-current-setup-tested-here), then [Quick Start](#quick-start-6-steps). |
 | Check whether the numbers are real | [Reproduce One Headline Result](#reproduce-one-headline-result), [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md), and [`data/headline_claims.csv`](data/headline_claims.csv). |
 
 ## 20-Second Summary
@@ -62,9 +62,9 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 | Long local documents or codebase context | `llama-server` Vulkan/RADV, f16 KV first | 128K prompt plus generation completed without truncation | [`data/filled_kv_decode.csv`](data/filled_kv_decode.csv) |
 | vLLM-style serving experiments | ROCm vLLM containers only as experiments | smoke-tested, but no 35B throughput claim yet | [`VLLM_BASELINE.md`](VLLM_BASELINE.md) |
 
-## Best Current Setup
+## Best Current Setup Tested Here
 
-Best current setup for most users who want a practical local AI box:
+Best current setup from this guide's measured local runs:
 
 - Ubuntu 24.04.
 - BIOS UMA set to 512MB.
@@ -136,9 +136,18 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 
 ---
 
-## One-Command Setup
+## Setup Script
 
 If you've already set your BIOS (UMA = 512MB, IOMMU = off) and installed Ubuntu 24.04:
+
+```bash
+git clone https://github.com/hogeheer499-commits/strix-halo-guide
+cd strix-halo-guide
+less setup.sh
+bash setup.sh
+```
+
+For unattended copy/paste installs, the same script can also be run as:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/setup.sh | bash
@@ -153,7 +162,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 - [20-Second Summary](#20-second-summary)
 - [Model Snapshot](#model-snapshot)
 - [Use This If You Want](#use-this-if-you-want)
-- [Best Current Setup](#best-current-setup)
+- [Best Current Setup Tested Here](#best-current-setup-tested-here)
 - [Headline Evidence](#headline-evidence)
 - [Reproduce One Headline Result](#reproduce-one-headline-result)
 - [Not Yet Proven Here](#not-yet-proven-here)
@@ -237,7 +246,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (Vulkan RADV). Spe
 | Qwen2.5-VL 7B | 6.0 GB | Vision | 21.4 t/s | Image understanding |
 | Gemma 4 26B-A4B (UD-Q4_K_M) | 15.7 GB | MoE | **48.5 t/s** * | Google's latest MoE, strong reasoning |
 | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | MoE | **97 t/s** * | Best speed/quality ratio |
-| Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | MoE | **64 t/s** * | Best all-rounder, drop-in upgrade from 3.5 |
+| Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | MoE | **63 t/s** * | Best all-rounder, drop-in upgrade from 3.5 |
 | Qwen3.5 35B-A3B | 23 GB | MoE | 48-**65 t/s** | General purpose, coding (65 with latest llama.cpp) |
 | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | 51 t/s | Coding (highest quality MoE) |
 | Qwen3-Coder-Next | 51 GB | Dense | 38-39 t/s | Large dense model |
@@ -557,7 +566,7 @@ Based on our measurements and [lhl's detailed testing](https://github.com/lhl/st
 | RTX 4090 | ~1008 GB/s | 100-122 t/s | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$800 used |
 | Apple Mac Studio M4 Max 128GB | ~546 GB/s | ~100 t/s (MLX) | 128 GB | $3,699 |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **65-97 t/s** | **120+ GB** | **$4,399 official (May 1, 2026)** |
+| **Beelink GTR9 Pro** | **~215 GB/s** | **63-97 t/s** | **120+ GB** | **$4,399 official (May 1, 2026)** |
 | NVIDIA DGX Spark | ~273 GB/s | 52-56 t/s (120B) | 128 GB | $4,699 |
 
 > **Apples-to-apples (gpt-oss-120b, same model, both platforms):** Strix Halo gets 50-53 t/s vs DGX Spark's 52-56 t/s -- **within 5-10%** on the same workload. At Beelink's current official price, the price gap to DGX Spark is now only about $300 ($4,399 vs $4,699), although other Strix Halo systems remain cheaper. On smaller MoE models (Qwen3-30B), Strix Halo hits 97 t/s. The DGX Spark wins on prompt processing (3-5X faster) and long context (23%+ faster at 32K). Source: [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
@@ -639,7 +648,7 @@ At extreme context (130K tokens, from [strixhalo.wiki](https://strixhalo.wiki/AI
                |             |
           "It just      llama-server +
            works"       Vulkan RADV
-           50 t/s        64 t/s
+           50 t/s        63 t/s
 ```
 
 ---
@@ -707,10 +716,10 @@ EOF
 
 ### Step 3.1: Kernel Version
 
-> **CRITICAL:** Kernel version matters enormously for Strix Halo.
-> - **Kernel 6.18.4+** is the minimum stable version (older kernels have gfx1151 stability bugs)
-> - **Kernel 6.19.x** misidentifies gfx1151 as gfx1100 for ROCm -- fixable with `HSA_OVERRIDE_GFX_VERSION=11.5.1` (see [Known Issues](#known-issues))
-> - **Recommended:** Kernel 6.18.6+ or 6.19.x (6.19.x needs HSA override for ROCm)
+> **Measured setup:** This guide's primary system uses kernel 6.19.4.
+> - Older kernels may have gfx1151 stability or ROCm issues.
+> - Kernel 6.19.x works here with the documented HSA override for ROCm because it can report gfx1151 as gfx1100.
+> - Treat kernel guidance here as this guide's tested state, not a universal support matrix.
 
 Check your kernel:
 
@@ -1475,15 +1484,15 @@ Not sure which model to run? Here's what we recommend based on use case:
 |--------------|-------|------|-------|-----|
 | **Code** (best speed) | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | 97 t/s | Fastest coding model, MoE architecture |
 | **Code** (best quality) | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | 51 t/s | Same model, higher fidelity quantization |
-| **Chat** (general) | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | **64 t/s** | Best all-rounder, successor to 3.5 |
-| **Chat** (no thinking) | Qwen3.6 35B-A3B (no-think) | 20 GB | 64 t/s | Same speed, direct answers |
+| **Chat** (general) | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | **63 t/s** | Best all-rounder, successor to 3.5 |
+| **Chat** (no thinking) | Qwen3.6 35B-A3B (no-think) | 20 GB | 63 t/s | Same speed, direct answers |
 | **Code** (best quality, 256K ctx) | Qwen3-Next 80B-A3B | 42.9 GB | **55 t/s** | 80B MoE, only 3B active, 256K context |
 | **Chat** (smartest possible) | Qwen3-Coder-Next | 51 GB | 38 t/s | Dense 51B model, slower but smarter |
 | **Reasoning** | Gemma 4 26B-A4B | 15.7 GB | 48.5 t/s | Google's latest MoE, strong reasoning |
 | **Analyze images** | Qwen2.5-VL 7B | 6 GB | 21 t/s | Vision-language model |
 | **Maximum intelligence** | Llama 3.3 70B (Q4) | ~40 GB | ~5 t/s | Slow but very capable |
 | **"Can it run?"** | Llama 4 Scout 109B | 61 GB | 18 t/s | 109B model on a mini PC. RTX 4090 can't |
-| **Process documents** | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | 64 t/s | Fast enough for RAG pipelines |
+| **Process documents** | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | 63 t/s | Fast enough for RAG pipelines |
 | **Learn / experiment** | Llama 2 7B | 3.8 GB | 52 t/s | Small, fast, well-documented |
 | **Throughput testing** | Qwen3-0.6B (Q8_0) | 0.8 GB | 266 t/s | Speed ceiling benchmark |
 
@@ -1731,9 +1740,9 @@ Then point your tools at `http://localhost:8080/v1` instead of `http://localhost
 </details>
 
 <details>
-<summary><strong>Can I run ChatGPT-level intelligence locally?</strong></summary>
+<summary><strong>Can I run useful coding and chat models locally?</strong></summary>
 
-Yes. Qwen3.6-35B-A3B runs at 64 t/s via llama-server and is comparable to GPT-4o-mini for most tasks. For coding, Qwen3-Coder 30B-A3B runs at 97 t/s and is competitive with commercial coding assistants. For maximum intelligence, you can run 70B+ dense models at ~5 t/s -- slower but very capable.
+Yes. Qwen3.6-35B-A3B and Qwen3-Coder 30B-A3B are fast enough here for practical local chat, coding, scripts, and tool use. This guide measures local performance, not model quality against hosted systems.
 
 </details>
 
@@ -1754,7 +1763,7 @@ Linux (Ubuntu 24.04) gives the best-tested performance and is the only practical
 <details>
 <summary><strong>How does this compare to a Mac Studio?</strong></summary>
 
-The Mac Studio M4 Max (128GB) costs $3,699 and gets ~100 t/s via MLX with ~546 GB/s bandwidth. Beelink's current official GTR9 Pro price is $4,399 and gets 50-97 t/s via Vulkan (model-dependent) with ~215 GB/s bandwidth. The Mac is cheaper than the current Beelink snapshot and faster per-model due to higher bandwidth. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
+Prices and external benchmark numbers change quickly; treat this as a dated comparison snapshot. As of May 2026, the Mac Studio M4 Max (128GB) costs $3,699 and gets ~100 t/s via MLX with ~546 GB/s bandwidth. Beelink's official GTR9 Pro price snapshot is $4,399 and this guide measures 50.51-97.24 t/s via Vulkan/Ollama paths, depending on model and backend, with ~215 GB/s bandwidth. The Mac is cheaper than the current Beelink snapshot and faster per-model due to higher bandwidth. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
 
 </details>
 
