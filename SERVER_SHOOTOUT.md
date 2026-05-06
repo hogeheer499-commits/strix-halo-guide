@@ -184,7 +184,7 @@ Tool calling is model-dependent, so failures must be described carefully. A serv
 
 - Do not install vLLM, PyTorch, ROCm, or TheRock packages into the host Python environment.
 - Test stable container/builds before nightly/latest builds.
-- Do not run publishable numbers while RustDesk, Zoom, unrelated VMs, or unrelated local AI services are active.
+- Do not run publishable numbers while remote desktop streaming, video calls, unrelated VMs, or unrelated local AI services are active.
 - Record any required local workflow services separately from the benchmark server under test.
 - Treat external vLLM/DFlash claims as leads until reproduced locally.
 - Do not publish tokens-per-watt until power telemetry is validated.
