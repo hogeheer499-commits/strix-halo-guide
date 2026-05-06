@@ -54,7 +54,7 @@ Current measured/pending summary:
 
 ## Qwen3.6 Full Sweep
 
-Measured 2026-05-05 on the Beelink GTR9 Pro with T3 kept on as the protected workstation baseline. Each row is a 5-rep streaming `/v1/completions` run, 128 generated tokens per request, 4096 context tokens per slot, and 0 throughput errors.
+Measured 2026-05-05 on the Beelink GTR9 Pro with the normal workstation baseline recorded. Each row is a 5-rep streaming `/v1/completions` run, 128 generated tokens per request, 4096 context tokens per slot, and 0 throughput errors.
 
 | Parallel requests | Vulkan/RADV aggregate t/s | Vulkan p95 ITL | Lemonade ROCm aggregate t/s | Lemonade p95 ITL | Read |
 |------------------:|--------------------------:|---------------:|----------------------------:|-----------------:|------|
@@ -66,7 +66,7 @@ Measured 2026-05-05 on the Beelink GTR9 Pro with T3 kept on as the protected wor
 
 Raw data: `data/raw/2026-05-05/server-shootout/full-sweep-qwen36-t3-baseline/`.
 
-Repeat validation after T3 connection work:
+Repeat validation after workstation connection work:
 
 | Server | Parallel | Baseline aggregate t/s | Repeat aggregate t/s | Delta |
 |--------|---------:|-----------------------:|---------------------:|------:|
@@ -90,8 +90,8 @@ These runs validate the workflow and server behavior, but they are not headline 
 
 | Date | Server | Model | Condition | Result |
 |------|--------|-------|-----------|--------|
-| 2026-05-05 | `llama-server` Vulkan/RADV | Qwen3.6 35B-A3B UD-Q4_K_M | T3 kept on by workstation policy, VM paused | OpenAI-compatible `/v1/completions` at `-np 8`: 173.36 aggregate t/s, 0 errors; feature probe returned HTTP 200 for models, completions, chat, streaming chat, and tools schema |
-| 2026-05-05 | Lemonade `llamacpp-rocm` b1259 | Qwen3.6 35B-A3B UD-Q4_K_M | T3 kept on by workstation policy, VM paused | OpenAI-compatible `/v1/completions` at `-np 8`: 176.43 aggregate t/s, 0 errors; feature probe returned HTTP 200 for models, completions, chat, streaming chat, and tools schema |
+| 2026-05-05 | `llama-server` Vulkan/RADV | Qwen3.6 35B-A3B UD-Q4_K_M | Normal workstation baseline recorded, VM paused | OpenAI-compatible `/v1/completions` at `-np 8`: 173.36 aggregate t/s, 0 errors; feature probe returned HTTP 200 for models, completions, chat, streaming chat, and tools schema |
+| 2026-05-05 | Lemonade `llamacpp-rocm` b1259 | Qwen3.6 35B-A3B UD-Q4_K_M | Normal workstation baseline recorded, VM paused | OpenAI-compatible `/v1/completions` at `-np 8`: 176.43 aggregate t/s, 0 errors; feature probe returned HTTP 200 for models, completions, chat, streaming chat, and tools schema |
 
 ## Benchmark Protocol
 
@@ -103,21 +103,7 @@ Keep this boring and reproducible.
 scripts/check_benchmark_cleanliness.sh
 ```
 
-This script is read-only. It does not stop RustDesk, T3, Docker, Ollama, or VMs. It only reports whether the system is clean enough for measurements.
-
-T3 Code is a hard workflow dependency for this workstation. This project is operated from T3, so routine Server Shootout work must keep the T3 backend on `3773` and the semantic proxy on `3777` alive. If `3777` reports `Upstream request failed: connect ECONNREFUSED 127.0.0.1:3773`, the proxy is alive but the real T3 backend is down; stop Strix testing and restore T3 before doing anything else.
-
-For long or memory-risky server runs, start the benchmark through the T3 guard:
-
-```bash
-scripts/run_with_t3_guard.py \
-  --cleanup-cmd "podman stop vllm-gfx1151" \
-  -- <benchmark command>
-```
-
-For heavy vLLM experiments, use stricter memory headroom explicitly, for example `--min-mem-available-gib 24 --min-swap-free-gib 4`. Cleanup commands are for benchmark targets only; they must not reference T3, `3773`, or `3777`.
-
-Hermes bots are out of scope for Server Shootout work. Do not stop, restart, remove, or otherwise manage `hermes-*` Docker containers from this project. Docker may be inspected read-only for noise/status, but Hermes recovery belongs in its own chat/workspace.
+This script is read-only. It does not stop local services or mutate benchmark state. On the maintainer workstation it also reports protected local workflow dependencies; third-party replicators should record equivalent background state rather than treating those services as part of the public benchmark requirement. Maintainer-only guardrails live in [`MAINTAINER_NOTES.md`](MAINTAINER_NOTES.md).
 
 1. Record host state:
    - kernel
@@ -199,7 +185,7 @@ Tool calling is model-dependent, so failures must be described carefully. A serv
 - Do not install vLLM, PyTorch, ROCm, or TheRock packages into the host Python environment.
 - Test stable container/builds before nightly/latest builds.
 - Do not run publishable numbers while RustDesk, Zoom, unrelated VMs, or unrelated local AI services are active.
-- Keep T3 Code and the T3 proxy running by default; do not stop them for routine Strix Halo benchmarks.
+- Record any required local workflow services separately from the benchmark server under test.
 - Treat external vLLM/DFlash claims as leads until reproduced locally.
 - Do not publish tokens-per-watt until power telemetry is validated.
 - Keep failed starts, OOMs, compile hangs, and missing endpoints in the notes. Failure cases are part of the value.
@@ -208,7 +194,7 @@ Tool calling is model-dependent, so failures must be described carefully. A serv
 
 1. Done: current `llama-server` Vulkan/RADV baseline through the new feature probe.
 2. Done: Lemonade `llamacpp-rocm` b1259 with the same model/concurrency shape.
-3. Done: full sweep for the two best llama.cpp paths with T3 kept on and recorded.
+3. Done: full sweep for the two best llama.cpp paths with the workstation baseline recorded.
 4. Test kyuz0 vLLM stable with a supported AWQ model.
 5. Test Lemonade `vllm-rocm` gfx1151 if it can serve the same or a clearly comparable model.
 6. Only then evaluate experimental AWQ/DFlash repos, clearly labeled as advanced.
