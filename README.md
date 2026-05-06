@@ -28,6 +28,16 @@
 
 ---
 
+## Do Not Copy These Claims Without Matching Setup
+
+These numbers are local measurements from one primary machine: a Beelink GTR9 Pro with Ryzen AI MAX+ 395 and 128GB LPDDR5X-8000. Treat the headline results as directional unless your setup matches the measured run closely.
+
+Performance depends on the exact hardware SKU, RAM configuration, BIOS UMA setting, IOMMU setting, firmware, kernel, Mesa/RADV version, ROCm version, Vulkan ICD selection, power profile, GPU clocks, thermal state, backend commit/build flags/container image, model file, quant type, model hash/path, context length, prompt length, generated token count, batch size, parallel slots, request concurrency, API endpoint, environment variables, and background system load.
+
+If your setup differs, rerun the benchmark scripts and cite the date, command, CSV, raw log, chart, model file, and backend version with any copied claim.
+
+---
+
 ## Official Source and Security
 
 This is the canonical repository for this guide:
