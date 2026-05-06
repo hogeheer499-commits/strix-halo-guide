@@ -14,7 +14,7 @@
 >
 > Measured primarily on one Beelink GTR9 Pro. Every headline claim below links to CSVs, raw logs, charts, or explicit notes. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights.
 
-[Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup) | [Evidence](#headline-evidence) | [Reproduce](#reproduce-one-headline-result) | [Reproducibility](REPRODUCIBILITY.md) | [Server Shootout](SERVER_SHOOTOUT.md) | [Raw Data](data/README.md) | [Security](SECURITY.md)
+[Model Snapshot](#model-snapshot) | [Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup) | [Evidence](#headline-evidence) | [Reproduce](#reproduce-one-headline-result) | [Reproducibility](REPRODUCIBILITY.md) | [Server Shootout](SERVER_SHOOTOUT.md) | [Raw Data](data/README.md) | [Security](SECURITY.md)
 
 ---
 
@@ -23,7 +23,7 @@
 | If you want to... | Start here |
 |-------------------|------------|
 | See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
-| Decide what to run on your Strix Halo machine | [Use This If You Want](#use-this-if-you-want): Ollama, `llama-server`, Lemonade ROCm, long-context, and vLLM guidance by use case. |
+| Decide what to run on your Strix Halo machine | [Model Snapshot](#model-snapshot), then [Use This If You Want](#use-this-if-you-want): practical model and backend choices for a local AI PC. |
 | Apply the setup without reading everything | [Best Current Setup](#best-current-setup), then [Quick Start](#quick-start-6-steps). |
 | Check whether the numbers are real | [Reproduce One Headline Result](#reproduce-one-headline-result), [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md), and [`data/headline_claims.csv`](data/headline_claims.csv). |
 
@@ -38,6 +38,19 @@
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
 | Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
+
+## Model Snapshot
+
+This is the quick "what can I actually run on my AI PC?" view. It is not the full benchmark list; see [What You Can Run](#what-you-can-run) for more models and [Headline Evidence](#headline-evidence) for the audit trail.
+
+| What you want to do | Measured local result | Practical takeaway | Evidence |
+|---------------------|-----------------------|--------------------|----------|
+| Fast local coding model | Qwen3-Coder 30B-A3B UD-Q4_K_XL: 97.24 t/s direct llama.cpp Vulkan/RADV | Strong first model for coding scripts, editors, and agent loops. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-03/qwen3-coder-30b-a3b-ud-q4-k-xl-b9010-r20.csv) |
+| Easy private chat setup | Qwen3.6 35B-A3B Q4_K_M: 50.51 t/s through Ollama API | Good default if you want model pulling, Open WebUI, and simple local chat. | [`headline claims`](data/headline_claims.csv), [`raw API run`](data/raw/2026-05-03/ollama-qwen3.6-35b-a3b-0.21.2-api-r10.csv) |
+| Fast all-rounder direct path | Qwen3.6 35B-A3B UD-Q4_K_M: 63.06 t/s direct llama.cpp Vulkan/RADV | Use this when you care more about speed and control than the easiest UI. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-03/qwen3.6-35b-a3b-ud-q4-k-m-b9010-r20.csv) |
+| Local API for tools or several clients | Qwen3-Coder 30B-A3B: 173.16 aggregate t/s at `-np 8` | A small AI server can feed multiple local workflows without cloud APIs. | [`multi-user CSV`](data/multi_user.csv), [`chart`](charts/multi_user_aggregate.svg) |
+| Long documents or codebase context | Qwen3.6 35B-A3B: 32.23 t/s decode after a filled 128K KV cache | Long-context use is possible, but prompt ingestion cost matters. | [`filled KV CSV`](data/filled_kv_decode.csv), [`chart`](charts/filled_kv_decode.svg) |
+| Large-model proof point | Llama 4 Scout 109B Q4_K_M: 18.32 t/s direct llama.cpp Vulkan/RADV | 128GB unified memory makes very large local models practical on one compact PC. | [`benchmarks CSV`](data/benchmarks.csv) |
 
 ## Use This If You Want
 
@@ -138,6 +151,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 ## Table of Contents
 
 - [20-Second Summary](#20-second-summary)
+- [Model Snapshot](#model-snapshot)
 - [Use This If You Want](#use-this-if-you-want)
 - [Best Current Setup](#best-current-setup)
 - [Headline Evidence](#headline-evidence)
@@ -412,7 +426,7 @@ Extended context scaling (latest build, RADV):
 
 > Qwen3.6 is a drop-in replacement for Qwen3.5 with significantly improved coding and reasoning quality (same architecture, same active parameters, identical speed). Older April data showed a 13% UD-Q4_K_M penalty, but the controlled May b9010 rerun did **not** reproduce that large gap: UD-Q4_K_M reached 63.06 t/s, effectively matching the historical plain Q4_K_M result. Prefer plain Q4_K_M when you have a direct-compatible GGUF, but treat the old "UD is always 13% slower" warning as superseded until same-build plain-vs-UD is rerun.
 
-**ROCm HIP -- now working on kernel 6.19.4!**
+### ROCm HIP -- now working on kernel 6.19.4!
 
 We discovered that `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0` fixes the ROCm segfault on kernel 6.19.x. We also rebuilt ROCm with the same b8460 source to make the comparison fair:
 
@@ -466,7 +480,7 @@ AMD_VULKAN_ICD=RADV ./build/bin/llama-bench \
   -fa 1 -ngl 999 -mmp 0 -p 512 -n 128
 ```
 
-**ROCm on kernel 6.19.x (the fix):**
+### ROCm on kernel 6.19.x (the fix)
 
 ```bash
 # Add these environment variables before running llama-bench:
@@ -675,7 +689,7 @@ sudo apt update && sudo apt upgrade -y
 
 ### Step 2.2: Switch to X11
 
-Wayland causes issues with RustDesk, Zoom screen sharing, and some GPU monitoring tools.
+Wayland can cause issues with remote desktop, screen sharing, and some GPU monitoring tools.
 
 ```bash
 sudo tee -a /etc/gdm3/custom.conf > /dev/null << 'EOF'
