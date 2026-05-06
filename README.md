@@ -14,7 +14,7 @@
 >
 > Measured primarily on one Beelink GTR9 Pro. Every headline claim below links to CSVs, raw logs, charts, or explicit notes. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights.
 
-[Model Snapshot](#model-snapshot) | [Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Reproduce](#reproduce-one-headline-result) | [Reproducibility](REPRODUCIBILITY.md) | [Server Shootout](SERVER_SHOOTOUT.md) | [Raw Data](data/README.md) | [Security](SECURITY.md)
+[What Runs](#what-you-can-run-quick-snapshot) | [Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Reproduce](#reproduce-one-headline-result) | [Reproducibility](REPRODUCIBILITY.md) | [Server Shootout](SERVER_SHOOTOUT.md) | [Raw Data](data/README.md) | [Security](SECURITY.md)
 
 ---
 
@@ -23,7 +23,7 @@
 | If you want to... | Start here |
 |-------------------|------------|
 | See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
-| Decide what to run on your Strix Halo machine | [Model Snapshot](#model-snapshot), then [Use This If You Want](#use-this-if-you-want): practical model and backend choices for a local AI PC. |
+| Decide what to run on your Strix Halo machine | [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot), then [Use This If You Want](#use-this-if-you-want): practical model and backend choices for a local AI PC. |
 | Apply the setup without reading everything | [Best Current Setup Tested Here](#best-current-setup-tested-here), then [Quick Start](#quick-start-6-steps). |
 | Check whether the numbers are real | [Reproduce One Headline Result](#reproduce-one-headline-result), [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md), and [`data/headline_claims.csv`](data/headline_claims.csv). |
 
@@ -39,7 +39,7 @@
 | Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
 | Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
 
-## Model Snapshot
+## What You Can Run: Quick Snapshot
 
 This is the quick "what can I actually run on my AI PC?" view. It is not the full benchmark list; see [What You Can Run](#what-you-can-run) for more models and [Headline Evidence](#headline-evidence) for the audit trail.
 
@@ -160,7 +160,7 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
 ## Table of Contents
 
 - [20-Second Summary](#20-second-summary)
-- [Model Snapshot](#model-snapshot)
+- [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot)
 - [Use This If You Want](#use-this-if-you-want)
 - [Best Current Setup Tested Here](#best-current-setup-tested-here)
 - [Headline Evidence](#headline-evidence)
