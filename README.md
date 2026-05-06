@@ -1,5 +1,5 @@
 ![AMD](https://img.shields.io/badge/AMD-Ryzen_AI_MAX+_395-ED1C24?style=for-the-badge&logo=amd&logoColor=white)
-![Speed](https://img.shields.io/badge/65--97_t/s_generation-brightgreen?style=for-the-badge)
+![Speed](https://img.shields.io/badge/63--97_t/s_direct_MoE-brightgreen?style=for-the-badge)
 ![RAM](https://img.shields.io/badge/128GB_unified-blue?style=for-the-badge)
 ![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
 ![Last commit](https://img.shields.io/github/last-commit/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
@@ -7,16 +7,25 @@
 
 # AMD Strix Halo Local LLM Guide
 
-**Measured local LLM inference on AMD Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory, primarily on one Beelink GTR9 Pro.**
+**63-97 t/s direct local MoE inference on AMD Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory. 50.5 t/s through Ollama, 128K context tested.**
 
 > If this guide saves you time, consider giving it a star -- it helps others find it.
 > Official source: https://github.com/hogeheer499-commits/strix-halo-guide
 >
-> This project publishes documentation, scripts, benchmark data, charts, and source archives only. It does not publish Windows installers, `.exe` files, binary `.zip` downloads, browser extensions, or model weights. Repos or sites using this name to promote executable downloads are unofficial and should not be treated as this guide.
+> Measured primarily on one Beelink GTR9 Pro. Every headline claim below links to CSVs, raw logs, charts, or explicit notes. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights.
 
 [Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup) | [Evidence](#headline-evidence) | [Reproduce](#reproduce-one-headline-result) | [Reproducibility](REPRODUCIBILITY.md) | [Server Shootout](SERVER_SHOOTOUT.md) | [Raw Data](data/README.md) | [Security](SECURITY.md)
 
 ---
+
+## What This Gives You
+
+| If you want to... | Start here |
+|-------------------|------------|
+| See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
+| Decide what to run on your Strix Halo machine | [Use This If You Want](#use-this-if-you-want): Ollama, `llama-server`, Lemonade ROCm, long-context, and vLLM guidance by use case. |
+| Apply the setup without reading everything | [Best Current Setup](#best-current-setup), then [Quick Start](#quick-start-6-steps). |
+| Check whether the numbers are real | [Reproduce One Headline Result](#reproduce-one-headline-result), [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md), and [`data/headline_claims.csv`](data/headline_claims.csv). |
 
 ## 20-Second Summary
 
