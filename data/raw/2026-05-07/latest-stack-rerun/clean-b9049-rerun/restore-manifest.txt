@@ -1,0 +1,20 @@
+# Service Restore Manifest
+
+Timestamp: 2026-05-07T04:11:35+02:00
+
+For the clean latest-stack rerun, non-essential remote, meeting, and
+screen-share services were paused so the benchmark window was cleaner. A
+lightweight maintainer workstation dependency stayed running by design.
+
+After the benchmarks:
+
+- Remote desktop service was restarted.
+- Meeting UI tooling was restarted.
+- Screen-share/backend service was restarted and returned a healthy local API
+  status.
+- The local editor/proxy dependency was checked and stayed healthy.
+- Ollama remained installed at 0.23.1; the benchmark model was unloaded after
+  measurement.
+
+Private process lists, LAN ports, command lines, local IDs, and meeting details
+are intentionally omitted from this public raw evidence file.

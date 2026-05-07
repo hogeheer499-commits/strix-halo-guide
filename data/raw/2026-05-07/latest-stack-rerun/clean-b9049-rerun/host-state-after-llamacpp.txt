@@ -1,0 +1,30 @@
+# Host State After llama.cpp Direct Rerun
+
+Timestamp: 2026-05-07, after the b9049 direct Vulkan/RADV `llama-bench` runs.
+
+## System
+
+- Machine: Beelink GTR9 Pro, AMD Ryzen AI MAX+ 395, Radeon 8060S.
+- Kernel: `6.19.4-061904-generic`.
+- OS-visible memory: 124 GiB unified memory.
+- Power profile: `accelerator-performance`.
+- GPU clock state: 2900 MHz selected.
+- Vulkan device: Radeon 8060S Graphics, RADV STRIX_HALO.
+- Vulkan driver: Mesa 26.0.6 from kisak-mesa PPA.
+
+## Benchmark Stack
+
+- llama.cpp commit: `2496f9c14965c39589f53eea31bdb6d762b1d360`.
+- llama.cpp tag/build: `b9049`.
+- Backend: Vulkan/RADV.
+- Workloads completed:
+  - Qwen3-Coder 30B-A3B UD-Q4_K_XL, pp512 and tg128, `-r 20`.
+  - Qwen3.6 35B-A3B UD-Q4_K_M, pp512 and tg128, `-r 20`.
+
+## Cleanliness Notes
+
+- Non-essential remote, meeting, and screen-share services remained paused for
+  the direct benchmark window.
+- One lightweight maintainer workstation dependency stayed running by design.
+- Private process lists, LAN ports, meeting IDs, and local service details are
+  intentionally omitted from this public raw evidence file.
