@@ -19,13 +19,21 @@ For a new Strix Halo chat, start by reading:
 
 The guide is share-ready. The latest completed work:
 
+- 2026-05-07 max-performance campaign added:
+  - Qwen3.6 Q4_0 reached 81.30 t/s as a speed-first row
+  - Qwen3-Coder b9049 guide-flags confirmation reached 96.76 t/s, no stable 100 t/s result
+  - gpt-oss-120b clean rerun reached 55.57 t/s and prompt processing through 65K tokens
+  - same-source b9049 HIP/Vulkan matrix confirmed HIP wins prompt processing and Vulkan wins generation
+  - vLLM AWQ without DFlash worked as a smoke test but only reached about 25 t/s
+  - lhl rocWMMA branch built but failed to load current Qwen3.6 GGUFs
 - latest-stack rerun with llama.cpp b9049 and Ollama 0.23.1
-- local gpt-oss-120b MXFP4 check: 50.59 t/s tg128, 725.03 t/s pp512, 707.29 t/s pp2048
+- first local gpt-oss-120b MXFP4 check: 50.59 t/s tg128, 725.03 t/s pp512, 707.29 t/s pp2048; superseded by the 55.57 t/s paused-system rerun above
 - HIP/Vulkan crossover evidence: Vulkan wins measured generation; HIP can win prompt processing
 - hec-ovi vLLM AWQ/DFlash tracked as an important candidate, not a local claim
 - ROCm/vLLM bugwatch added
 - README, SHARE, social preview, CSVs, raw logs, and charts updated
 - `MAX_PERFORMANCE_PLAN.md` added as the focused "can we push the Beelink further?" roadmap
+- `MAX_PERFORMANCE_RESULTS_2026-05-07.md` and `data/max_performance_campaign.csv` hold the latest campaign summary
 
 Current local-only handoff details live in `CONTEXT.md`. That file is intentionally ignored by git and should be used for local continuity, not public claims.
 
@@ -94,6 +102,8 @@ Do not stop, restart, remove, or otherwise manage `hermes-*` Docker containers f
 ## Remote Desktop And Other Noise
 
 RustDesk, Zoom, unrelated VMs, Open WebUI, ComfyUI, and unrelated local AI servers can affect publishable numbers. Prefer pausing them for benchmark campaigns, but do not manage them from this project unless explicitly requested for that run. Record the state in raw notes.
+
+Default restore rule for future Strix Halo benchmark chats: when the user asks to pause benchmark noise, automatically restore everything that was paused before ending the task. The user should not need to repeat this. T3 must stay on the whole time, Hermes stays out of scope, and restore should cover the paused local services such as DocFlock, RustDesk, Ollama, Zoom, and suspended benchmark-noise VMs.
 
 ## Scratch Data
 

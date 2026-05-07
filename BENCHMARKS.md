@@ -26,34 +26,56 @@ Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 202
 
 | Model | Backend / Build | Quant | pp512 | tg128 | Notes |
 |-------|-----------------|-------|-------|-------|-------|
-| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9049 | UD-Q4_K_XL | 1397 | **96.15** | Clean latest-stack rerun |
+| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9049 | UD-Q4_K_XL | 1321 | **96.76** | Max-performance guide-flags r20 confirmation |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9010 | UD-Q4_K_XL | 1346 | **97.24** | Previous May peak |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b8460 | UD-Q4_K_XL | 1342 | **87.11** | Previous coding MoE headline |
+| Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b9049 | Q4_0 | 1244 | **81.30** | Fastest measured speed-first quant; lower-quality tradeoff |
+| Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b9049 | Q4_K_M | 1106 | **76.94** | Fast balanced Strix quant candidate |
 | Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b9049 | UD-Q4_K_M | 1059 | **62.56** | Clean latest-stack rerun |
 | Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b9010 | UD-Q4_K_M | 1109 | **63.06** | Previous May UD rerun |
 | Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1064 | **63.76** | Recommended all-rounder |
 | Qwen3.5 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1080 | **64.85** | Used for backend/build comparison |
-| gpt-oss-120b | Vulkan RADV, llama.cpp b9049 | MXFP4 MoE | 725 | **50.59** | 117B-parameter open-weight MoE loaded from split GGUF |
+| gpt-oss-120b | Vulkan RADV, llama.cpp b9049 | MXFP4 MoE | 727 | **55.57** | 117B-parameter open-weight MoE loaded from split GGUF |
 | Qwen3-Next 80B-A3B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_XL | 657 | **54.92** | 80B MoE, 256K context capable |
 | Gemma 4 26B-A4B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_M | 1142 | **48.46** | Slower than Qwen MoE at similar active params |
 | Llama 4 Scout 109B | Vulkan RADV, llama.cpp b8933 | Q4_K_M | 331 | **18.32** | 109B params on one mini PC |
 | Llama 3.1 70B | Ollama Vulkan RADV | Q4_K_M | 22-80 | **4.7-4.9** | Dense 70B, bandwidth-bound |
 | Qwen3 0.6B | Vulkan RADV, llama.cpp | Q8_0 | 13112 | **266** | Small-model speed ceiling |
 
+## Qwen3.6 Quant Sweep
+
+Measured 2026-05-07 with llama.cpp b9049 Vulkan/RADV on the Beelink GTR9 Pro. Raw data: [`data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen36-top-confirm-r20/`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen36-top-confirm-r20/).
+
+| Quant | pp512 | tg128 | Use |
+|-------|------:|------:|-----|
+| Q4_0 | 1243.51 | **81.30** | Fastest measured Qwen3.6 row; speed-first, lower-quality tradeoff. |
+| Q4_0 with q8 KV | 1229.97 | 79.90 | Slightly slower decode; q8 KV may be useful for some context/memory tradeoffs. |
+| IQ4_NL | 1199.41 | 77.29 | Fast candidate; quality sanity needed before recommending broadly. |
+| Q4_K_M | 1105.78 | 76.94 | Balanced Strix quant candidate; likely more practical than Q4_0 if quality matters. |
+| UD-Q4_K_M | 1059.45 | 62.56 | Older default headline row from the clean latest-stack rerun. |
+
+Takeaway: Qwen3.6 can be pushed well past the old 63 t/s row, but the guide should not hide the quant tradeoff. For beginners, keep "use Qwen3.6 Q4_K_M/UD-Q4_K_M as the all-rounder" and add "use Q4_0 when you want maximum speed and have accepted the quality tradeoff."
+
 ## gpt-oss-120b Local Check
 
 Measured 2026-05-07 with llama.cpp b9049 Vulkan/RADV and the `ggml-org/gpt-oss-120b-GGUF` MXFP4 split GGUF. This is a performance/loadability check, not a quality evaluation.
 
-Raw data: [`data/raw/2026-05-07/gpt-oss-120b-local-attempt/`](data/raw/2026-05-07/gpt-oss-120b-local-attempt/).
+Raw data:
+
+- first load/speed check: [`data/raw/2026-05-07/gpt-oss-120b-local-attempt/`](data/raw/2026-05-07/gpt-oss-120b-local-attempt/)
+- clean paused-system long-context rerun: [`data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/)
 
 | Workload | Result | Raw CSV |
 |----------|-------:|---------|
-| pp512 | 725.03 t/s | [`pp512`](data/raw/2026-05-07/gpt-oss-120b-local-attempt/gpt-oss-120b-mxfp4-b9049-vulkan-pp512-r3.csv) |
-| pp2048 | 707.29 t/s | [`pp2048`](data/raw/2026-05-07/gpt-oss-120b-local-attempt/gpt-oss-120b-mxfp4-b9049-vulkan-pp2048-r3.csv) |
-| tg32 | 51.02 t/s | [`tg32`](data/raw/2026-05-07/gpt-oss-120b-local-attempt/gpt-oss-120b-mxfp4-b9049-vulkan-tg32-r3.csv) |
-| tg128 | 50.59 t/s | [`tg128`](data/raw/2026-05-07/gpt-oss-120b-local-attempt/gpt-oss-120b-mxfp4-b9049-vulkan-tg128-r3.csv) |
+| pp512 | 726.99 t/s | [`long-context rerun`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/gpt-oss-120b-prefill-512-32768-r3.csv) |
+| pp2048 | 728.60 t/s | [`long-context rerun`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/gpt-oss-120b-prefill-512-32768-r3.csv) |
+| pp8192 | 678.59 t/s | [`long-context rerun`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/gpt-oss-120b-prefill-512-32768-r3.csv) |
+| pp16384 | 605.21 t/s | [`long-context rerun`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/gpt-oss-120b-prefill-512-32768-r3.csv) |
+| pp32768 | 478.25 t/s | [`long-context rerun`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/gpt-oss-120b-prefill-512-32768-r3.csv) |
+| pp65536 | 293.73 t/s | [`pp65536 r1`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/gpt-oss-120b-pp65536-r1.csv) |
+| tg128 | 55.57 t/s | [`tg128 r20`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/gpt-oss-120b-tg128-r20.csv) |
 
-Takeaway: the 128GB Strix Halo setup can load and run a 117B-parameter open-weight MoE locally at about 50 t/s generation on the measured direct Vulkan path. The first tg32 attempt was correctly aborted by the benchmark guard when swap-free dropped under 2 GiB; after clearing swap with ample free RAM, tg32 and tg128 completed.
+Takeaway: the 128GB Strix Halo setup can load and run a 117B-parameter open-weight MoE locally at about 55-56 t/s generation on the measured direct Vulkan path. The first tg32 attempt was correctly aborted by the benchmark guard when swap-free dropped under 2 GiB; after clearing swap with ample free RAM, tg32 and tg128 completed. The later paused-system rerun also proves prompt processing through 65K tokens, but the 65K row is one repeat.
 
 ## Ollama Vulkan
 

@@ -1,0 +1,1 @@
+sensors command not available or no output

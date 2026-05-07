@@ -1,0 +1,4 @@
+name,exit_code,notes
+baseline,terminated,console output runaway; route not used for headline
+ngram-cache,not_rerun,skipped after baseline output runaway
+draft-qwen3-0.6b,not_rerun,skipped after baseline output runaway

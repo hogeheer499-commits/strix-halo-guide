@@ -1,0 +1,3 @@
+common_memory_breakdown_print: | memory breakdown [MiB]                         |  total     free     self   model   context   compute    unaccounted |
+common_memory_breakdown_print: |   - Vulkan0 (8060S Graphics (RADV STRIX_HALO)) | 131584 = 110146 + (19174 = 18518 +     102 +     553) +        2263 |
+common_memory_breakdown_print: |   - Host                                       |                      284 =   272 +       0 +      12                |
