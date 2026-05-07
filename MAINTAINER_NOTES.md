@@ -4,17 +4,18 @@ These notes are for the local Hoge Heer workstation workflow. They are intention
 
 ## Current Handoff
 
-Current as of 2026-05-07. Latest pushed commit: `c689bb9 Add Strix Halo crossover and gpt-oss evidence`.
+Current as of 2026-05-07. For the latest pushed commit, run `git log -1 --oneline`.
 
 For a new Strix Halo chat, start by reading:
 
 1. `README.md`
 2. `BENCHMARKS.md`
-3. `BACKEND_CROSSOVER.md`
-4. `ROCM_VLLM_BUGWATCH.md`
-5. `SERVER_SHOOTOUT.md`
-6. `REPRODUCIBILITY.md`
-7. this file
+3. `MAX_PERFORMANCE_PLAN.md`
+4. `BACKEND_CROSSOVER.md`
+5. `ROCM_VLLM_BUGWATCH.md`
+6. `SERVER_SHOOTOUT.md`
+7. `REPRODUCIBILITY.md`
+8. this file
 
 The guide is share-ready. The latest completed work:
 
@@ -24,6 +25,7 @@ The guide is share-ready. The latest completed work:
 - hec-ovi vLLM AWQ/DFlash tracked as an important candidate, not a local claim
 - ROCm/vLLM bugwatch added
 - README, SHARE, social preview, CSVs, raw logs, and charts updated
+- `MAX_PERFORMANCE_PLAN.md` added as the focused "can we push the Beelink further?" roadmap
 
 Current local-only handoff details live in `CONTEXT.md`. That file is intentionally ignored by git and should be used for local continuity, not public claims.
 
