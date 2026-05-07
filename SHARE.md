@@ -16,7 +16,7 @@ social-preview.png
 
 ## One-Line Summary
 
-Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory: setup, model choices, 63-96 t/s current direct MoE results, 50.5 t/s Ollama, 128K context, CSVs, raw logs, and reproducibility notes.
+Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory: setup, model choices, 63-96 t/s current direct Qwen MoE results, 50.6 t/s gpt-oss-120b, 128K context, CSVs, raw logs, and reproducibility notes.
 
 ## Short Share Text
 
@@ -26,6 +26,7 @@ Highlights:
 
 - Qwen3-Coder 30B-A3B: 96.15 t/s direct llama.cpp Vulkan/RADV on current b9049; previous b9010 peak was 97.24 t/s.
 - Qwen3.6 35B-A3B: 62.56 t/s direct llama.cpp Vulkan/RADV on current b9049.
+- gpt-oss-120b MXFP4: 50.59 t/s direct llama.cpp Vulkan/RADV on current b9049.
 - Qwen3.6 through Ollama 0.23.1 API: 50.51 t/s warm average.
 - 128K context tested on Qwen3.6 without truncation.
 - Includes setup steps, backend choices, raw data, charts, and reproducibility notes.
@@ -38,7 +39,7 @@ Corrections, other Strix Halo results, and failed experiments are welcome.
 
 Title options:
 
-- I benchmarked local LLMs on AMD Strix Halo 128GB: 96 t/s Qwen3-Coder, 50 t/s Ollama, 128K context
+- I benchmarked local LLMs on AMD Strix Halo 128GB: 96 t/s Qwen3-Coder, 50.6 t/s gpt-oss-120b, 128K context
 - Strix Halo local LLM guide with raw CSVs/logs: what works, what does not, and what to run
 - AMD Ryzen AI MAX+ 395 local LLM guide: Ollama, llama.cpp, Vulkan/RADV, ROCm, 128K context
 
@@ -54,9 +55,11 @@ This is measured primarily on a Beelink GTR9 Pro with Ryzen AI MAX+ 395, Radeon 
 Headline results:
 - Qwen3-Coder 30B-A3B UD-Q4_K_XL: 96.15 t/s direct llama.cpp Vulkan/RADV on current b9049
 - Qwen3.6 35B-A3B UD-Q4_K_M: 62.56 t/s direct llama.cpp Vulkan/RADV on current b9049
+- gpt-oss-120b MXFP4 split GGUF: 50.59 t/s direct llama.cpp Vulkan/RADV on current b9049
 - Qwen3.6 35B-A3B through Ollama 0.23.1 API: 50.51 t/s warm average
 - Qwen3.6 128K filled-context decode completed at 32.23 t/s without truncation
 - Server/concurrency testing included: Vulkan/RADV wins at 1-4 parallel requests; Lemonade ROCm wins aggregate throughput at 8-16 in the measured Qwen3.6 sweep
+- HIP/Vulkan crossover testing included: HIP can win prompt processing while Vulkan still wins token generation in local Qwen rows
 
 The guide includes:
 - BIOS / Ubuntu / Mesa / Vulkan setup
@@ -93,7 +96,7 @@ Repo: https://github.com/hogeheer499-commits/strix-halo-guide
 Strix Halo local LLM guide with measured setup + raw benchmark evidence:
 https://github.com/hogeheer499-commits/strix-halo-guide
 
-Highlights: 96.15 t/s Qwen3-Coder direct llama.cpp Vulkan/RADV on current b9049, 50.51 t/s Qwen3.6 via Ollama 0.23.1, 128K context tested, server shootout included.
+Highlights: 96.15 t/s Qwen3-Coder direct llama.cpp Vulkan/RADV on current b9049, 50.59 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included.
 ```
 
 ## Links To Include

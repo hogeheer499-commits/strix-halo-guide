@@ -1,0 +1,4 @@
+# pause manifest
+2026-05-07T04:43:27+02:00
+Paused remote desktop UI, a local docs service, and Ollama for the benchmark window.
+One lightweight workstation dependency and one unrelated container remained running.

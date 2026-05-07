@@ -1,0 +1,3 @@
+gpt-oss-120b-mxfp4-00001-of-00003.gguf 12980384 bytes
+gpt-oss-120b-mxfp4-00002-of-00003.gguf 31738487200 bytes
+gpt-oss-120b-mxfp4-00003-of-00003.gguf 31635878880 bytes

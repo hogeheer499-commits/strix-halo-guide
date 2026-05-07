@@ -1,0 +1,5 @@
+A new version of huggingface_hub (1.14.0) is available! You are using version 1.6.0.
+To update, run: pip install -U huggingface_hub
+
+Fetching 3 files:   0%|          | 0/3 [00:00<?, ?it/s]Fetching 3 files:  33%|███▎      | 1/3 [00:02<00:04,  2.08s/it]Fetching 3 files:  67%|██████▋   | 2/3 [17:50<10:29, 629.30s/it]Fetching 3 files: 100%|██████████| 3/3 [17:53<00:00, 343.18s/it]Fetching 3 files: 100%|██████████| 3/3 [17:53<00:00, 357.71s/it]
+/home/hoge-heer/models/gpt-oss-120b-GGUF

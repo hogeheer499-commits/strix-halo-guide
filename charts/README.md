@@ -16,5 +16,7 @@ python3 scripts/generate_charts.py
 - `kv_cache_tradeoff.svg`: Qwen3.6 q8_0/q4_0 KV-cache tradeoff relative to f16.
 - `real_vs_synthetic.svg`: 64K real documentation corpus versus synthetic repeated-token prompt.
 - `backend_spot_check.svg`: May 2026 Vulkan RADV versus ROCm HIP short-context tg spot check.
+- `backend_crossover_prefill.svg`: HIP versus Vulkan prompt-processing spot check at pp16384.
+- `backend_crossover_generation.svg`: HIP versus Vulkan token-generation spot check at tg128.
 
 The SVGs are publishable summaries. The CSVs and raw logs remain the source of truth.
