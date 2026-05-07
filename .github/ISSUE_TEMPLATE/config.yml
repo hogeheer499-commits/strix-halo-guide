@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Discussions
+    url: https://github.com/hogeheer499-commits/strix-halo-guide/discussions
+    about: Setup questions, early results, comparisons, and general Strix Halo local AI discussion.
+  - name: Share pack
+    url: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SHARE.md
+    about: Copyable Reddit, Hacker News, forum, Discord, and Slack text for sharing the guide.

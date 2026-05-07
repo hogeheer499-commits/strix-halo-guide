@@ -19,8 +19,8 @@ draw.rectangle([0, 0, W, 4], fill=ACCENT)
 
 # Three big numbers side by side
 stats = [
-    ("87", "t/s", "MoE inference"),
-    ("70B+", "", "parameter models"),
+    ("97", "t/s", "Qwen3-Coder"),
+    ("50.5", "t/s", "Ollama Qwen3.6"),
     ("128", "GB", "unified memory"),
 ]
 
@@ -61,13 +61,13 @@ y_div = 340
 draw.rectangle([140, y_div, W - 140, y_div + 1], fill="#21262d")
 
 # Title
-title = "The definitive Strix Halo LLM guide"
+title = "AMD Strix Halo Local LLM Guide"
 title_font = font_bold(36)
 bbox = draw.textbbox((0, 0), title, font=title_font)
 draw.text(((W - bbox[2] + bbox[0]) // 2, 380), title, fill=WHITE, font=title_font)
 
 # Punchline
-punch = "Measured setup, backends, and failure cases"
+punch = "63-97 t/s direct MoE · 128K context tested · raw CSV/log evidence"
 punch_font = font_reg(26)
 bbox = draw.textbbox((0, 0), punch, font=punch_font)
 draw.text(((W - bbox[2] + bbox[0]) // 2, 435), punch, fill=ACCENT, font=punch_font)
