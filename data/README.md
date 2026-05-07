@@ -13,6 +13,7 @@ python3 scripts/generate_charts.py
 ## Files
 
 - `headline_claims.csv`: machine-readable map from public README headline claims to structured CSVs, raw evidence, charts, and notes.
+- `community_results.csv`: benchmark reports from other Strix Halo systems. These rows are useful external validation but are kept separate from public headline claims.
 - `benchmarks.csv`: existing short-context and backend benchmark rows already published in the guide.
 - `max_performance_campaign.csv`: 2026-05-07 "push the Beelink further" campaign summary, including quant sweeps, same-source HIP/Vulkan, gpt-oss long-context, vLLM AWQ smoke, and negative results.
 - `multi_user.csv`: controlled `llama-server` concurrency results with aggregate throughput, per-request throughput, TTFT, and ITL.
@@ -28,6 +29,7 @@ python3 scripts/generate_charts.py
 ## Status Values
 
 - `measured-local`: measured on this guide's Beelink GTR9 Pro and suitable for current claims.
+- `community-reported`: reported by another Strix Halo user through an issue, discussion, or PR; useful validation, but not a headline claim unless explicitly promoted with scope.
 - `historical-local`: measured locally in an older stack state; useful context, not the current headline.
 - `external-reference`: measured by another source and cited for comparison.
 - `smoke-test`: short validation run, not a full benchmark campaign.

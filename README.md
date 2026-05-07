@@ -16,7 +16,7 @@
 >
 > Measured primarily on one Beelink GTR9 Pro. Every headline claim below links to CSVs, raw logs, charts, or explicit notes. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights.
 
-[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [What Runs](#what-you-can-run-quick-snapshot) | [Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
+[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [What Runs](#what-you-can-run-quick-snapshot) | [Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Community](COMMUNITY_RESULTS.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
 
 ---
 
@@ -35,6 +35,7 @@
 | Decide what to run on your Strix Halo machine | [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot), then [Use This If You Want](#use-this-if-you-want): practical model and backend choices for a local AI PC. |
 | See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
 | Check whether the numbers are real | [Reproduce One Headline Result](#reproduce-one-headline-result), [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md), and [`data/headline_claims.csv`](data/headline_claims.csv). |
+| Compare against other Strix Halo systems | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md): independent benchmark reports kept separate from headline claims. |
 
 ## 20-Second Summary
 
@@ -47,6 +48,7 @@
 | Largest new local model check | gpt-oss-120b MXFP4 split GGUF loaded locally with llama.cpp Vulkan/RADV b9049: 55.57 t/s tg128, 726.99 t/s pp512, and prompt processing tested through 65K tokens. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Backend split | Vulkan/RADV still wins measured generation; ROCm/HIP can win prompt-processing-heavy work. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md). |
+| Community validation | A Corsair AI Workstation 300 report reproduced the Qwen3-Coder Vulkan/RADV path at 95.31-95.46 t/s across two sessions on Fedora 43, kernel 7.0-rc6, Mesa 25.3.6, and a kyuz0 container. See [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md). |
 | Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
 | Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
 
@@ -114,6 +116,7 @@ Have a Strix Halo / Ryzen AI MAX system? Please share results, even if they are 
 - Open a [benchmark report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md) with your system, BIOS UMA setting, kernel, Mesa/ROCm versions, backend, model, command, CSV/raw output, and notes.
 - Open a [model request](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=model-request.md) if there is a model/backend combination that should be tested.
 - Use [Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discussions) for setup questions, comparisons, and early results that are not ready for a benchmark issue yet.
+- Current community reports live in [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md) and [`data/community_results.csv`](data/community_results.csv).
 - See [`SHARE.md`](SHARE.md) for short Reddit/HN/forum text and the current social preview image if you want to share the guide.
 
 ## Best Current Setup Tested Here
@@ -189,6 +192,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) | HIP versus Vulkan workload split: prompt processing versus token generation. |
 | [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md) | Fast-moving ROCm/vLLM upstream issue and release watchlist. |
 | [`BENCHMARKS.md`](BENCHMARKS.md) | Compact benchmark source-of-truth for current README numbers. |
+| [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md) | Independent benchmark reports from other Strix Halo systems, kept separate from headline claims. |
 | [`data/headline_claims.csv`](data/headline_claims.csv) | Machine-readable map from public headline claims to data, raw evidence, charts, and notes. |
 | [`data/README.md`](data/README.md) | Structured CSV schema and raw-data conventions. |
 | [`charts/README.md`](charts/README.md) | Generated chart inventory and regeneration command. |
@@ -204,6 +208,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 - [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot)
 - [Use This If You Want](#use-this-if-you-want)
 - [Results Wanted](#results-wanted)
+- [Community Results](COMMUNITY_RESULTS.md)
 - [Best Current Setup Tested Here](#best-current-setup-tested-here)
 - [Headline Evidence](#headline-evidence)
 - [Reproduce One Headline Result](#reproduce-one-headline-result)
