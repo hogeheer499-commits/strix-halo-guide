@@ -14,17 +14,24 @@
 >
 > Measured primarily on one Beelink GTR9 Pro. Every headline claim below links to CSVs, raw logs, charts, or explicit notes. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights.
 
-[What Runs](#what-you-can-run-quick-snapshot) | [Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Reproduce](#reproduce-one-headline-result) | [Reproducibility](REPRODUCIBILITY.md) | [Server Shootout](SERVER_SHOOTOUT.md) | [Raw Data](data/README.md) | [Security](SECURITY.md)
+[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [What Runs](#what-you-can-run-quick-snapshot) | [Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
 
 ---
+
+## Use This Guide If
+
+- You have, ordered, or are evaluating a Strix Halo / Ryzen AI MAX+ 395 system for local AI.
+- You want a copyable Ubuntu local-LLM setup instead of piecing together scattered posts.
+- You need practical model/backend choices for Ollama, llama.cpp Vulkan/RADV, ROCm, server use, and long context.
+- You want benchmark claims that point to CSVs, raw logs, charts, and reproducibility notes.
 
 ## What This Gives You
 
 | If you want to... | Start here |
 |-------------------|------------|
-| See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
+| Apply the setup without reading everything | [Quick Start](#quick-start-6-steps), then [Setup Script](#setup-script). |
 | Decide what to run on your Strix Halo machine | [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot), then [Use This If You Want](#use-this-if-you-want): practical model and backend choices for a local AI PC. |
-| Apply the setup without reading everything | [Best Current Setup Tested Here](#best-current-setup-tested-here), then [Quick Start](#quick-start-6-steps). |
+| See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
 | Check whether the numbers are real | [Reproduce One Headline Result](#reproduce-one-headline-result), [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md), and [`data/headline_claims.csv`](data/headline_claims.csv). |
 
 ## 20-Second Summary
@@ -38,6 +45,38 @@
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
 | Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
+
+## Quick Start (6 Steps)
+
+For those who want to get running as fast as possible:
+
+1. **BIOS:** Set UMA Frame Buffer to 512MB, disable IOMMU.
+2. **Install Ubuntu 24.04 LTS**, switch to X11.
+3. **Kernel params:** Add `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280` to GRUB.
+4. **Performance:** Install tuned, set `accelerator-performance` profile, upgrade Mesa via kisak PPA.
+5. **Ollama:** Install, configure Vulkan backend with `OLLAMA_VULKAN=1` and `HIP_VISIBLE_DEVICES=-1`.
+6. **Test:** `ollama run qwen3.6:35b-a3b` -- expect ~50 t/s generation.
+
+Each step is detailed in the phases below.
+
+## Setup Script
+
+If you've already set your BIOS (UMA = 512MB, IOMMU = off) and installed Ubuntu 24.04:
+
+```bash
+git clone https://github.com/hogeheer499-commits/strix-halo-guide
+cd strix-halo-guide
+less setup.sh
+bash setup.sh
+```
+
+For unattended copy/paste installs, the same script can also be run as:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/setup.sh | bash
+```
+
+This installs everything, configures Ollama with Vulkan, pulls a model, and runs a benchmark. Takes ~10 minutes plus model download time.
 
 ## What You Can Run: Quick Snapshot
 
@@ -134,32 +173,12 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`charts/README.md`](charts/README.md) | Generated chart inventory and regeneration command. |
 | [`SECURITY.md`](SECURITY.md) | Official-source and impersonation reporting policy. |
 
----
-
-## Setup Script
-
-If you've already set your BIOS (UMA = 512MB, IOMMU = off) and installed Ubuntu 24.04:
-
-```bash
-git clone https://github.com/hogeheer499-commits/strix-halo-guide
-cd strix-halo-guide
-less setup.sh
-bash setup.sh
-```
-
-For unattended copy/paste installs, the same script can also be run as:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/setup.sh | bash
-```
-
-This installs everything, configures Ollama with Vulkan, pulls a model, and runs a benchmark. Takes ~10 minutes (plus model download time). For manual step-by-step setup, see [Quick Start](#quick-start-6-steps).
-
----
-
 ## Table of Contents
 
 - [20-Second Summary](#20-second-summary)
+- [Use This Guide If](#use-this-guide-if)
+- [Quick Start (6 Steps)](#quick-start-6-steps)
+- [Setup Script](#setup-script)
 - [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot)
 - [Use This If You Want](#use-this-if-you-want)
 - [Best Current Setup Tested Here](#best-current-setup-tested-here)
@@ -180,7 +199,6 @@ This installs everything, configures Ollama with Vulkan, pulls a model, and runs
   - [Long Context Performance](#long-context-performance)
 - [Backend Decision Guide](#backend-decision-guide)
 - [Server Shootout](SERVER_SHOOTOUT.md)
-- [Quick Start (6 Steps)](#quick-start-6-steps)
 - [Phase 1: BIOS Configuration](#phase-1-bios-configuration)
 - [Phase 2: Ubuntu 24.04 Installation](#phase-2-ubuntu-2404-installation)
 - [Phase 3: Kernel Configuration](#phase-3-kernel-configuration)
@@ -650,23 +668,6 @@ At extreme context (130K tokens, from [strixhalo.wiki](https://strixhalo.wiki/AI
            works"       Vulkan RADV
            50 t/s        63 t/s
 ```
-
----
-
-## Quick Start (6 Steps)
-
-For those who want to get running as fast as possible:
-
-1. **BIOS:** Set UMA Frame Buffer to 512MB, disable IOMMU
-2. **Install Ubuntu 24.04 LTS**, switch to X11
-3. **Kernel params:** Add `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280` to GRUB
-4. **Performance:** Install tuned, set `accelerator-performance` profile, upgrade Mesa via kisak PPA
-5. **Ollama:** Install, configure Vulkan backend with `OLLAMA_VULKAN=1` and `HIP_VISIBLE_DEVICES=-1`
-6. **Test:** `ollama run qwen3.6:35b-a3b` -- expect ~50 t/s generation
-
-Each step is detailed in the phases below.
-
----
 
 ## Phase 1: BIOS Configuration
 
