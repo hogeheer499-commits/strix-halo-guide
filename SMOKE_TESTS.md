@@ -2,6 +2,45 @@
 
 This file records short validation runs before larger benchmark campaigns. Smoke tests are not headline benchmark data. They are used to decide whether the system is clean enough to collect publishable results.
 
+## 2026-05-07 llama.cpp b9010 vs b9049 Spot Check
+
+### Verdict
+
+**Updating from llama.cpp b9010 to upstream b9049 does not materially change the short-context Vulkan RADV results for the two headline Qwen MoE models.**
+
+This is useful negative data. b9049 is current upstream as of 2026-05-07, but it is not a new Strix Halo speed breakthrough for this direct `llama-bench` path.
+
+### Cleanup Before Testing
+
+Before testing:
+
+- The high-CPU DocFlock `ffmpeg` virtual-camera process was paused with `SIGSTOP`.
+- Zoom processes were paused with `SIGSTOP`.
+- RustDesk user processes were paused with `SIGSTOP`; the system service remained present.
+- T3 and Hermes were left running.
+- `tuned accelerator-performance`, RADV, Mesa 26.0.6, and 2900 MHz GPU clock were verified.
+
+### Results
+
+All direct runs used:
+
+```bash
+AMD_VULKAN_ICD=RADV
+VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json
+-fa 1 -ngl 999 -mmp 0 -p 512 -n 128 -r 20 -o csv
+```
+
+| Build | Model | Quant | pp512 | tg128 | Delta vs b9010 |
+|-------|-------|-------|-------|-------|----------------|
+| b9010 / d05fe1d7d | Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1376.68 | 94.12 | baseline |
+| b9049 / 2496f9c14 | Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1381.55 | 95.04 | tg +1.0%, pp +0.4% |
+| b9010 / d05fe1d7d | Qwen3.6 35B-A3B | UD-Q4_K_M | 1093.07 | 61.82 | baseline |
+| b9049 / 2496f9c14 | Qwen3.6 35B-A3B | UD-Q4_K_M | 1094.19 | 61.65 | tg -0.3%, pp +0.1% |
+
+### Takeaway
+
+Do not update the guide's headline performance claim based on b9049. The short-context direct Vulkan/RADV conclusion is stable. Move next to the HIP vs Vulkan long-prompt crossover and vLLM AWQ/DFlash reproduction, where new conclusions are more likely.
+
 ## 2026-05-03 Before/After llama.cpp Update
 
 ### Verdict
