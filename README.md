@@ -417,7 +417,7 @@ Raw data: `data/multi_user.csv`, `data/raw/2026-05-03/multi-user/`, and `data/ra
 | b8298 (kyuz0) | RADV | 583 | 868 | 52.06 | baseline |
 | b8298 (kyuz0) | AMDVLK | 479 | 576 | 56.08 | |
 
-> **RADV now wins on EVERYTHING.** The old AMDVLK tg advantage (+7.7%) is gone. With the latest build, RADV is faster on both pp (+63% over AMDVLK) and tg (+1.2% over AMDVLK). Use RADV. AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) -- uninstall it to avoid silent ICD hijacking.
+> **RADV now wins the Vulkan-driver comparison.** The old AMDVLK tg advantage (+7.7%) is gone. With the latest tested Vulkan build, RADV is faster on both pp (+63% over AMDVLK) and tg (+1.2% over AMDVLK). Use RADV for Vulkan. AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) -- uninstall it to avoid silent ICD hijacking. This is separate from the ROCm/HIP comparison: HIP can still win prompt-processing-heavy workloads.
 
 Extended context scaling (latest build, RADV):
 
