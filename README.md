@@ -2,6 +2,7 @@
 ![Speed](https://img.shields.io/badge/63--97_t/s_current_direct_Qwen_MoE-brightgreen?style=for-the-badge)
 ![Qwen3.6](https://img.shields.io/badge/Qwen3.6_speed--first-81.3_t/s-2563eb?style=for-the-badge)
 ![gpt-oss](https://img.shields.io/badge/gpt--oss--120b-55.6_t/s_MXFP4-0b7285?style=for-the-badge)
+[![Independent Repro](https://img.shields.io/badge/independent_repro-Corsair_95.5_t/s-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
 ![RAM](https://img.shields.io/badge/128GB_unified-blue?style=for-the-badge)
 ![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
 ![Last commit](https://img.shields.io/github/last-commit/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
@@ -15,6 +16,8 @@
 > Official source: https://github.com/hogeheer499-commits/strix-halo-guide
 >
 > Measured primarily on one Beelink GTR9 Pro. Every headline claim below links to CSVs, raw logs, charts, or explicit notes. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights.
+>
+> Independent reproduction: a Corsair AI Workstation 300 reproduced the Qwen3-Coder Vulkan/RADV path at 95.31-95.46 t/s across two sessions on Fedora 43, kernel 7.0-rc6, Mesa 25.3.6, and a kyuz0 container. See [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md).
 
 [Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [What Runs](#what-you-can-run-quick-snapshot) | [Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Community](COMMUNITY_RESULTS.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
 

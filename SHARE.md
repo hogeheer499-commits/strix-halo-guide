@@ -16,7 +16,7 @@ social-preview.png
 
 ## One-Line Summary
 
-Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory: setup, model choices, 63-96 t/s current direct Qwen MoE results, 50.6 t/s gpt-oss-120b, 128K context, CSVs, raw logs, and reproducibility notes.
+Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory: setup, model choices, 63-97 t/s current direct Qwen MoE results, 81.3 t/s Qwen3.6 speed-first, 55.6 t/s gpt-oss-120b, 128K context, CSVs, raw logs, reproducibility notes, and independent community validation.
 
 ## Short Share Text
 
@@ -24,11 +24,13 @@ I could not find one complete, copyable Strix Halo local LLM guide, so I made on
 
 Highlights:
 
-- Qwen3-Coder 30B-A3B: 96.15 t/s direct llama.cpp Vulkan/RADV on current b9049; previous b9010 peak was 97.24 t/s.
+- Qwen3-Coder 30B-A3B: 96.76 t/s direct llama.cpp Vulkan/RADV on current b9049; previous b9010 peak was 97.24 t/s.
 - Qwen3.6 35B-A3B: 62.56 t/s direct llama.cpp Vulkan/RADV on current b9049.
-- gpt-oss-120b MXFP4: 50.59 t/s direct llama.cpp Vulkan/RADV on current b9049.
+- Qwen3.6 35B-A3B Q4_0: 81.30 t/s direct llama.cpp Vulkan/RADV as a speed-first quant row.
+- gpt-oss-120b MXFP4: 55.57 t/s direct llama.cpp Vulkan/RADV on current b9049.
 - Qwen3.6 through Ollama 0.23.1 API: 50.51 t/s warm average.
 - 128K context tested on Qwen3.6 without truncation.
+- Independent community reproduction: Corsair AI Workstation 300 measured 95.31-95.46 t/s Qwen3-Coder across two sessions on Fedora 43 / kernel 7.0-rc6 / Mesa 25.3.6.
 - Includes setup steps, backend choices, raw data, charts, and reproducibility notes.
 
 Repo: https://github.com/hogeheer499-commits/strix-halo-guide
@@ -39,7 +41,7 @@ Corrections, other Strix Halo results, and failed experiments are welcome.
 
 Title options:
 
-- I benchmarked local LLMs on AMD Strix Halo 128GB: 96 t/s Qwen3-Coder, 50.6 t/s gpt-oss-120b, 128K context
+- I benchmarked local LLMs on AMD Strix Halo 128GB: 97 t/s Qwen3-Coder, 55.6 t/s gpt-oss-120b, 128K context
 - Strix Halo local LLM guide with raw CSVs/logs: what works, what does not, and what to run
 - AMD Ryzen AI MAX+ 395 local LLM guide: Ollama, llama.cpp, Vulkan/RADV, ROCm, 128K context
 
@@ -53,13 +55,15 @@ https://github.com/hogeheer499-commits/strix-halo-guide
 This is measured primarily on a Beelink GTR9 Pro with Ryzen AI MAX+ 395, Radeon 8060S, and 128GB unified memory.
 
 Headline results:
-- Qwen3-Coder 30B-A3B UD-Q4_K_XL: 96.15 t/s direct llama.cpp Vulkan/RADV on current b9049
+- Qwen3-Coder 30B-A3B UD-Q4_K_XL: 96.76 t/s direct llama.cpp Vulkan/RADV on current b9049
 - Qwen3.6 35B-A3B UD-Q4_K_M: 62.56 t/s direct llama.cpp Vulkan/RADV on current b9049
-- gpt-oss-120b MXFP4 split GGUF: 50.59 t/s direct llama.cpp Vulkan/RADV on current b9049
+- Qwen3.6 35B-A3B Q4_0: 81.30 t/s direct llama.cpp Vulkan/RADV as a speed-first quant row
+- gpt-oss-120b MXFP4 split GGUF: 55.57 t/s direct llama.cpp Vulkan/RADV on current b9049
 - Qwen3.6 35B-A3B through Ollama 0.23.1 API: 50.51 t/s warm average
 - Qwen3.6 128K filled-context decode completed at 32.23 t/s without truncation
 - Server/concurrency testing included: Vulkan/RADV wins at 1-4 parallel requests; Lemonade ROCm wins aggregate throughput at 8-16 in the measured Qwen3.6 sweep
 - HIP/Vulkan crossover testing included: HIP can win prompt processing while Vulkan still wins token generation in local Qwen rows
+- Independent community reproduction included: a Corsair AI Workstation 300 measured 95.31-95.46 t/s Qwen3-Coder across two sessions on Fedora 43 / kernel 7.0-rc6 / Mesa 25.3.6
 
 The guide includes:
 - BIOS / Ubuntu / Mesa / Vulkan setup
@@ -85,7 +89,7 @@ I made a Strix Halo local LLM guide after finding that the useful information wa
 
 It covers a measured Ubuntu setup for Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory, with Ollama, llama.cpp Vulkan/RADV, ROCm notes, server/concurrency testing, long-context tests, and raw benchmark evidence.
 
-I tried to keep claims bounded: the main numbers are from one primary Beelink GTR9 Pro, and each headline points to CSVs/raw logs/charts or notes.
+I tried to keep claims bounded: the main numbers are from one primary Beelink GTR9 Pro, each headline points to CSVs/raw logs/charts or notes, and community reproductions are kept in a separate results table.
 
 Repo: https://github.com/hogeheer499-commits/strix-halo-guide
 ```
@@ -96,7 +100,7 @@ Repo: https://github.com/hogeheer499-commits/strix-halo-guide
 Strix Halo local LLM guide with measured setup + raw benchmark evidence:
 https://github.com/hogeheer499-commits/strix-halo-guide
 
-Highlights: 96.15 t/s Qwen3-Coder direct llama.cpp Vulkan/RADV on current b9049, 50.59 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included.
+Highlights: 96.76 t/s Qwen3-Coder direct llama.cpp Vulkan/RADV on current b9049, 55.57 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included, and an independent Corsair AI Workstation 300 reproduction at 95.31-95.46 t/s.
 ```
 
 ## Links To Include
@@ -105,6 +109,7 @@ Highlights: 96.15 t/s Qwen3-Coder direct llama.cpp Vulkan/RADV on current b9049,
 - Reproducibility: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/REPRODUCIBILITY.md
 - Server shootout: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SERVER_SHOOTOUT.md
 - Headline claim index: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv
+- Community results: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/COMMUNITY_RESULTS.md
 - Raw data map: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/README.md
 
 ## What To Ask For
