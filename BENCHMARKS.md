@@ -33,11 +33,27 @@ Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 202
 | Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b9010 | UD-Q4_K_M | 1109 | **63.06** | Previous May UD rerun |
 | Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1064 | **63.76** | Recommended all-rounder |
 | Qwen3.5 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1080 | **64.85** | Used for backend/build comparison |
+| gpt-oss-120b | Vulkan RADV, llama.cpp b9049 | MXFP4 MoE | 725 | **50.59** | 117B-parameter open-weight MoE loaded from split GGUF |
 | Qwen3-Next 80B-A3B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_XL | 657 | **54.92** | 80B MoE, 256K context capable |
 | Gemma 4 26B-A4B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_M | 1142 | **48.46** | Slower than Qwen MoE at similar active params |
 | Llama 4 Scout 109B | Vulkan RADV, llama.cpp b8933 | Q4_K_M | 331 | **18.32** | 109B params on one mini PC |
 | Llama 3.1 70B | Ollama Vulkan RADV | Q4_K_M | 22-80 | **4.7-4.9** | Dense 70B, bandwidth-bound |
 | Qwen3 0.6B | Vulkan RADV, llama.cpp | Q8_0 | 13112 | **266** | Small-model speed ceiling |
+
+## gpt-oss-120b Local Check
+
+Measured 2026-05-07 with llama.cpp b9049 Vulkan/RADV and the `ggml-org/gpt-oss-120b-GGUF` MXFP4 split GGUF. This is a performance/loadability check, not a quality evaluation.
+
+Raw data: [`data/raw/2026-05-07/gpt-oss-120b-local-attempt/`](data/raw/2026-05-07/gpt-oss-120b-local-attempt/).
+
+| Workload | Result | Raw CSV |
+|----------|-------:|---------|
+| pp512 | 725.03 t/s | [`pp512`](data/raw/2026-05-07/gpt-oss-120b-local-attempt/gpt-oss-120b-mxfp4-b9049-vulkan-pp512-r3.csv) |
+| pp2048 | 707.29 t/s | [`pp2048`](data/raw/2026-05-07/gpt-oss-120b-local-attempt/gpt-oss-120b-mxfp4-b9049-vulkan-pp2048-r3.csv) |
+| tg32 | 51.02 t/s | [`tg32`](data/raw/2026-05-07/gpt-oss-120b-local-attempt/gpt-oss-120b-mxfp4-b9049-vulkan-tg32-r3.csv) |
+| tg128 | 50.59 t/s | [`tg128`](data/raw/2026-05-07/gpt-oss-120b-local-attempt/gpt-oss-120b-mxfp4-b9049-vulkan-tg128-r3.csv) |
+
+Takeaway: the 128GB Strix Halo setup can load and run a 117B-parameter open-weight MoE locally at about 50 t/s generation on the measured direct Vulkan path. The first tg32 attempt was correctly aborted by the benchmark guard when swap-free dropped under 2 GiB; after clearing swap with ample free RAM, tg32 and tg128 completed.
 
 ## Ollama Vulkan
 
@@ -178,10 +194,25 @@ ROCm remains relevant for batch processing, hipBLASLt, vLLM experiments, and lon
 
 The local HIP build is b8460 and requires `LD_LIBRARY_PATH=/usr/local/lib/ollama/rocm` plus the HSA override. It emitted a missing `TensileLibrary_lazy_gfx1151.dat` warning, so treat this as a ROCm HIP baseline, not a tuned rocBLASLt/rocWMMA result.
 
+### 2026-05-07 HIP vs Vulkan Crossover Spot Check
+
+The new local spot check separates prompt processing from token generation. It is not a perfect same-build fairness claim: Vulkan rows use b9010, while HIP rows use the available local b8460 HIP build. The result is still useful because it matches the direction of the independent same-build Strix Halo study in [`nabe2030/hip-vs-vulkan-evo-x2`](https://github.com/nabe2030/hip-vs-vulkan-evo-x2).
+
+Structured data: [`data/backend_crossover.csv`](data/backend_crossover.csv). Full notes: [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md).
+
+| Model | Vulkan pp16384 | HIP pp16384 | Prompt-processing read | Vulkan tg128 | HIP tg128 | Generation read |
+|-------|---------------:|------------:|------------------------|-------------:|----------:|-----------------|
+| Qwen3.6 35B-A3B UD-Q4_K_M | 1038.14 | **1295.38** | HIP +24.8% | **62.24** | 52.72 | Vulkan +18.1% |
+| Qwen3-Coder 30B-A3B UD-Q4_K_XL | 564.68 | **756.16** | HIP +33.9% | **93.67** | 72.19 | Vulkan +29.8% |
+
+Takeaway: keep Vulkan/RADV as the default for generation-heavy chat/coding and low-concurrency API use, but keep ROCm/HIP available for prompt-heavy experiments such as RAG ingestion, long prompts, summarization, and future vLLM/AWQ/DFlash work.
+
+Gemma 4 26B-A4B is a negative result on the local HIP path: Vulkan loaded and ran, but HIP b8460 failed to load the local GGUF. No local Gemma 4 HIP speed claim is made.
+
 ## Current Takeaways
 
 1. Direct llama.cpp with Vulkan RADV is the fastest measured short-context path for Qwen MoE models.
 2. Updating llama.cpp from b8298 to b8460 produced the largest improvement: +24% pp and +25% tg on Qwen3.5-35B-A3B.
 3. AMDVLK caused false regression reports through ICD hijacking; keep it removed.
-4. ROCm works on kernel 6.19.4 with HSA overrides, but the latest measured short-context tg is still behind Vulkan RADV.
+4. ROCm works on kernel 6.19.4 with HSA overrides. The latest measured generation rows are still behind Vulkan RADV, but HIP can win prompt processing.
 5. Before any new benchmark campaign, keep `tuned accelerator-performance` active and log raw commands/results into a single dataset.

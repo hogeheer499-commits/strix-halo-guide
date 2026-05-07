@@ -18,8 +18,8 @@ As of the May 2026 baseline:
 | Open WebUI private chat/docs | Ollama first, then `llama-server` if you need speed | lowest friction, OpenAI-compatible clients work | measured Ollama baseline; RAG not yet benchmarked |
 | Coding assistant or local scripts | `llama-server` Vulkan/RADV | best measured Qwen3.6 path at 1-4 parallel requests | measured |
 | Multiple local tools/users | Lemonade `llamacpp-rocm` b1259 | best measured Qwen3.6 aggregate throughput at 8-16 parallel requests | measured |
-| vLLM/API appliance | kyuz0 or Lemonade vLLM ROCm container | serving-oriented stack with batching and production APIs | small smoke test only; throughput pending |
-| Long-context research | follow the long-context section, do not assume one backend wins | backend choice changes after 32K context | partially measured |
+| vLLM/API appliance | kyuz0, Lemonade vLLM, or AWQ/DFlash ROCm containers | serving-oriented stack with batching and production APIs | small smoke test only; 27B/35B throughput pending locally |
+| Long-context and RAG ingestion | keep both Vulkan/RADV and ROCm/HIP paths available | HIP can win prompt processing while Vulkan still wins generation | partially measured |
 | Image/video generation | kyuz0 ComfyUI toolboxes | separate ROCm container path for diffusion/video workloads | outside this LLM server shootout |
 
 The practical split is now clear for Qwen3.6 35B-A3B UD-Q4_K_M: use Vulkan/RADV `llama-server` for single-user and small parallel workloads, and use Lemonade `llamacpp-rocm` b1259 when the box is serving many simultaneous local requests. The open question is whether current vLLM/ROCm builds are better for agent-serving, batching, tool APIs, or long-running server workloads.
@@ -35,7 +35,7 @@ A server is anything that exposes a model to other tools through an HTTP API.
 | `llama-server` ROCm/Lemonade | strongest measured Qwen3.6 aggregate throughput at 8-16 parallel requests | packaged build, more setup than Vulkan |
 | kyuz0 vLLM toolbox | isolated Strix Halo vLLM container path | heavier stack, throughput still unmeasured here |
 | Lemonade `vllm-rocm` | portable gfx1151 vLLM build | candidate, not yet measured here |
-| Experimental AWQ/DFlash repos | bleeding-edge vLLM experiments | not canonical until reproduced locally |
+| Experimental AWQ/DFlash repos | promising vLLM speculative decoding experiments | not canonical until reproduced locally |
 
 ## Shootout Matrix
 
@@ -51,6 +51,18 @@ Current measured/pending summary:
 | kyuz0 vLLM toolbox | ROCm/TheRock | Qwen3-0.6B | 1 | OpenAI-compatible smoke test passed | serving works, throughput not proven |
 | Lemonade `llamacpp-rocm` b1259 | ROCm 7.13 | Qwen3.6 35B-A3B UD-Q4_K_M | 1-16 sweep | 48.62 to 207.81 aggregate t/s | best high-concurrency path |
 | Lemonade `vllm-rocm` 0.20.1 gfx1151 | ROCm 7.12 | pending | pending | candidate | needs measured comparison |
+| hec-ovi `vllm-awq4-qwen` | ROCm/TheRock | Qwen3.6-27B AWQ-INT4 | pending locally | candidate | important AWQ/DFlash lead; not reproduced here |
+
+## Backend Workload Split
+
+The server recommendation now has an important nuance: Vulkan/RADV is not the universal winner. A local HIP/Vulkan spot check and an independent same-build Strix Halo study both point to the same workload split:
+
+- Vulkan/RADV remains better for token generation, short responses, coding loops, and low-concurrency chat.
+- ROCm/HIP can be better for prompt-processing-heavy work, including long prompts, RAG ingestion, summarization, and some batch/server workloads.
+
+Local evidence: [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md), [`data/backend_crossover.csv`](data/backend_crossover.csv), [`charts/backend_crossover_prefill.svg`](charts/backend_crossover_prefill.svg), [`charts/backend_crossover_generation.svg`](charts/backend_crossover_generation.svg).
+
+Upstream watchlist: [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md).
 
 ## Qwen3.6 Full Sweep
 
@@ -195,6 +207,6 @@ Tool calling is model-dependent, so failures must be described carefully. A serv
 1. Done: current `llama-server` Vulkan/RADV baseline through the new feature probe.
 2. Done: Lemonade `llamacpp-rocm` b1259 with the same model/concurrency shape.
 3. Done: full sweep for the two best llama.cpp paths with the workstation baseline recorded.
-4. Test kyuz0 vLLM stable with a supported AWQ model.
-5. Test Lemonade `vllm-rocm` gfx1151 if it can serve the same or a clearly comparable model.
-6. Only then evaluate experimental AWQ/DFlash repos, clearly labeled as advanced.
+4. Test a comparable vLLM path in a container only: kyuz0 stable, Lemonade `vllm-rocm`, or hec-ovi AWQ/DFlash if model access and build time are available.
+5. Run a true same-build HIP versus Vulkan comparison before promoting backend-crossover claims beyond "spot check".
+6. Keep experimental AWQ/DFlash rows clearly labeled until locally reproduced.

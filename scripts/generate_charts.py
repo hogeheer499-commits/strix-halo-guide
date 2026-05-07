@@ -413,6 +413,55 @@ def chart_backend_spot_check() -> None:
     )
 
 
+def chart_backend_crossover() -> None:
+    rows = [
+        r
+        for r in read_csv("backend_crossover.csv")
+        if r["status"] == "measured-local"
+        and r["model"] in ("Qwen3.6 35B-A3B", "Qwen3-Coder 30B-A3B")
+    ]
+    models = ("Qwen3.6 35B-A3B", "Qwen3-Coder 30B-A3B")
+    groups = [m.replace(" 35B-A3B", "").replace(" 30B-A3B", "") for m in models]
+
+    def value(model: str, backend: str, workload: str) -> float | None:
+        row = next(
+            (
+                r
+                for r in rows
+                if r["model"] == model
+                and r["backend"] == backend
+                and r["workload"] == workload
+            ),
+            None,
+        )
+        return as_float(row, "tps") if row else None
+
+    grouped_bar_chart(
+        "backend_crossover_prefill.svg",
+        "HIP vs Vulkan prompt processing",
+        "Local existing-build spot check at pp16384. Treat as direction, not a same-build fairness claim.",
+        groups,
+        [
+            {"name": "Vulkan RADV pp16384", "values": [value(model, "Vulkan", "pp16384") for model in models]},
+            {"name": "ROCm HIP pp16384", "values": [value(model, "ROCm HIP", "pp16384") for model in models]},
+        ],
+        "prompt tokens/s",
+        note="Source: data/backend_crossover.csv",
+    )
+    grouped_bar_chart(
+        "backend_crossover_generation.svg",
+        "HIP vs Vulkan token generation",
+        "Local existing-build spot check at tg128. Vulkan remains the faster generation path here.",
+        groups,
+        [
+            {"name": "Vulkan RADV tg128", "values": [value(model, "Vulkan", "tg128") for model in models]},
+            {"name": "ROCm HIP tg128", "values": [value(model, "ROCm HIP", "tg128") for model in models]},
+        ],
+        "generation tokens/s",
+        note="Source: data/backend_crossover.csv",
+    )
+
+
 def main() -> None:
     chart_multi_user()
     chart_long_context_prompt()
@@ -420,6 +469,7 @@ def main() -> None:
     chart_kv_cache_tradeoff()
     chart_real_vs_synthetic()
     chart_backend_spot_check()
+    chart_backend_crossover()
 
 
 if __name__ == "__main__":

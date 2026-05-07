@@ -1,0 +1,8 @@
+benchmark_start=2026-05-07T05:20:59+02:00
+model=/home/hoge-heer/models/gpt-oss-120b-GGUF/gpt-oss-120b-mxfp4-00001-of-00003.gguf
+bench=/home/hoge-heer/llama-cpp-upstream-2026-05-07/build-vulkan/bin/llama-bench
+benchmark_end=2026-05-07T05:21:50+02:00
+tg32_retry_start=2026-05-07T05:23:18+02:00
+tg32_retry_end=2026-05-07T05:23:48+02:00
+pp2048_tg128_start=2026-05-07T05:24:19+02:00
+pp2048_tg128_end=2026-05-07T05:25:44+02:00
