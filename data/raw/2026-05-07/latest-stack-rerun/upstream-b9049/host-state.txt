@@ -1,0 +1,461 @@
+2026-05-07T04:06:40+02:00
+Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+ 04:06:40 up 2 days,  6:43,  1 user,  load average: 5.57, 11.34, 18.51
+               total        used        free      shared  buff/cache   available
+Mem:           124Gi        16Gi        24Gi       195Mi        84Gi       108Gi
+Swap:          8.0Gi       4.6Gi       3.4Gi
+Current active profile: accelerator-performance
+2496f9c14965c39589f53eea31bdb6d762b1d360
+b9049
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 0 | matrix cores: KHR_coopmat
+Available devices:
+  Vulkan0: Radeon 8060S Graphics (RADV STRIX_HALO) (131584 MiB, 129783 MiB free)
+WARNING: [Loader Message] Code 0 : terminator_CreateInstance: Received return code -9 from call to vkCreateInstance in ICD libvulkan_dzn.so. Skipping this driver.
+Devices:
+========
+GPU0:
+	apiVersion         = 1.4.335
+	driverVersion      = 26.0.6
+	vendorID           = 0x1002
+	deviceID           = 0x1586
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = Radeon 8060S Graphics (RADV STRIX_HALO)
+	driverID           = DRIVER_ID_MESA_RADV
+	driverName         = radv
+	driverInfo         = Mesa 26.0.6 - kisak-mesa PPA
+	conformanceVersion = 1.4.0.0
+	deviceUUID         = 00000000-c600-0000-0000-000000000000
+	driverUUID         = 414d442d-4d45-5341-2d44-525600000000
+GPU1:
+	apiVersion         = 1.4.335
+	driverVersion      = 26.0.6
+	vendorID           = 0x10005
+	deviceID           = 0x0000
+	deviceType         = PHYSICAL_DEVICE_TYPE_CPU
+	deviceName         = llvmpipe (LLVM 20.1.8, 256 bits)
+	driverID           = DRIVER_ID_MESA_LLVMPIPE
+	driverName         = llvmpipe
+	driverInfo         = Mesa 26.0.6 - kisak-mesa PPA (LLVM 20.1.8)
+	conformanceVersion = 1.3.1.1
+	deviceUUID         = 6d657361-3236-2e30-2e36-202d206b6900
+	driverUUID         = 6c6c766d-7069-7065-5555-494400000000
+0: 2900Mhz 
+1: 1100Mhz 
+2: 2900Mhz *
+    PID    PPID STAT %CPU %MEM COMMAND         COMMAND
+1426194 1426183 TLl  1929  0.2 ffmpeg          ffmpeg -y -loop 1 -framerate 1 -i /home/hoge-heer/docflock-sharer/backend/idle_placeholder.png -vf scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720,format=yuv420p -f v4l2 -video_size 1280x720 -pix_fmt yuv420p /dev/video2
+1950988 1950987 Tl   62.5  0.3 rustdesk        /usr/share/rustdesk/rustdesk --server
+1750431 1749371 Sl   10.1  0.3 t3code          /tmp/.mount_t3code13utoU/t3code --type=zygote
+1946110 1946108 TLl   8.6  0.8 zoom            /opt/zoom/zoom
+1749667 1749368 Sl    5.6  0.1 t3code          /tmp/.mount_t3code13utoU/t3code --type=zygote --no-zygote-sandbox
+   9946    9944 Sl+   4.0  0.0 Xorg            /usr/lib/xorg/Xorg vt2 -displayfd 3 -auth /run/user/1000/gdm/Xauthority -nolisten tcp -background none -noreset -keeptty -novtswitch -verbose 3
+ 798478  797542 Sl    3.6  0.2 t3code          /tmp/.mount_t3codeVFxj2v/t3code --type=zygote
+1926588 1926575 Sl    3.4  0.0 codex           /home/hoge-heer/.nvm/versions/node/v22.22.1/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex/codex app-server
+1948141 1947857 Sl    2.5  0.6 t3code          /tmp/.mount_t3codebSJZfV/t3code /tmp/.mount_t3codebSJZfV/resources/app.asar/apps/server/dist/bin.mjs --bootstrap-fd 3
+1948769 1947870 Sl    2.3  0.3 t3code          /tmp/.mount_t3codebSJZfV/t3code --type=zygote
+  10306    2310 Ssl   1.9  0.1 gnome-shell     /usr/bin/gnome-shell
+1749683 1749350 Rl    1.8  0.3 t3code          /tmp/.mount_t3code13utoU/t3code /tmp/.mount_t3code13utoU/resources/app.asar/apps/server/dist/bin.mjs --bootstrap-fd 3
+1494740 1494730 Sl    1.8  0.1 codex           /home/hoge-heer/.nvm/versions/node/v22.22.1/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex/codex app-server
+ 797823  797538 Sl    1.7  0.1 t3code          /tmp/.mount_t3codeVFxj2v/t3code --type=zygote --no-zygote-sandbox
+1948129 1947867 Sl    1.7  0.1 t3code          /tmp/.mount_t3codebSJZfV/t3code --type=zygote --no-zygote-sandbox
+1946444 1946155 Tl    1.6  0.1 ZoomWebviewHost /opt/zoom/ZoomWebviewHost --type=renderer --enable-crash-reporter=, --user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.7339.185 Safari/537.36 Zoom/6.7.5 (6891) --change-stack-guard-on-fork=enable --user-data-dir=/home/hoge-heer/.zoom/data/cefcache/140.0.7339.185 --locales-dir-path=/opt/zoom/cef/locales --log-severity=fatal --resources-dir-path=/opt/zoom/cef --force-gpu-mem-available-mb=4096 --ozone-platform=x11 --lang=en-US --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=5 --time-ticks-at-unix-epoch=-1777922605823909 --launch-time-ticks=76853323760 --shared-files=v8_context_snapshot_data:100 --metrics-shmem-handle=4,i,6374458519050429243,1272476187844506345,2097152 --field-trial-handle=3,i,2419857068098615469,8862950719934401409,262144 --disable-features=NetworkService --variations-seed-version --log-file=/home/hoge-heer/.zoom/logs/cef.log
+ 797846  797520 Sl    0.9  0.2 t3code          /tmp/.mount_t3codeVFxj2v/t3code /tmp/.mount_t3codeVFxj2v/resources/app.asar/apps/server/dist/bin.mjs --bootstrap-fd 3
+1491188 1491177 Sl    0.9  0.1 codex           /home/hoge-heer/.nvm/versions/node/v22.22.1/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex/codex app-server
+1402179 1402166 Sl    0.9  0.0 codex           /home/hoge-heer/.nvm/versions/node/v22.22.1/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex/codex app-server
+1946810 1946152 Tl    0.9  0.1 ZoomWebviewHost /opt/zoom/ZoomWebviewHost --type=gpu-process --ozone-platform=x11 --enable-crash-reporter=, --user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.7339.185 Safari/537.36 Zoom/6.7.5 (6891) --change-stack-guard-on-fork=enable --user-data-dir=/home/hoge-heer/.zoom/data/cefcache/140.0.7339.185 --locales-dir-path=/opt/zoom/cef/locales --log-severity=fatal --resources-dir-path=/opt/zoom/cef --gpu-preferences=UAAAAAAAAAAgAAAIAAAAAAAAAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAABgAAAAAAAAAAQAAAAAAAAAIAAAAAAAAAAgAAAAAAAAA --use-gl=angle --use-angle=swiftshader-webgl --shared-files --metrics-shmem-handle=4,i,6824508116576272018,4065997819146326194,262144 --field-trial-handle=3,i,2419857068098615469,8862950719934401409,262144 --disable-features=NetworkService --variations-seed-version --log-file=/home/hoge-heer/.zoom/logs/cef.log
+   2922       1 S<l   0.8  0.0 qemu-system-x86 /usr/bin/qemu-system-x86_64 -name guest=ubuntu-zoom,debug-threads=on -S -object {"qom-type":"secret","id":"masterKey0","format":"raw","file":"/var/lib/libvirt/qemu/domain-1-ubuntu-zoom/master-key.aes"} -blockdev {"driver":"file","filename":"/usr/share/OVMF/OVMF_CODE_4M.ms.fd","node-name":"libvirt-pflash0-storage","auto-read-only":true,"discard":"unmap"} -blockdev {"node-name":"libvirt-pflash0-format","read-only":true,"driver":"raw","file":"libvirt-pflash0-storage"} -blockdev {"driver":"file","filename":"/var/lib/libvirt/qemu/nvram/ubuntu-zoom_VARS.fd","node-name":"libvirt-pflash1-storage","auto-read-only":true,"discard":"unmap"} -blockdev {"node-name":"libvirt-pflash1-format","read-only":false,"driver":"raw","file":"libvirt-pflash1-storage"} -machine pc-q35-noble,usb=off,vmport=off,smm=on,dump-guest-core=off,memory-backend=pc.ram,pflash0=libvirt-pflash0-format,pflash1=libvirt-pflash1-format,hpet=off,acpi=on -accel kvm -cpu host,migratable=on -global driver=cfi.pflash01,property=secure,value=on -m size=16777216k -object {"qom-type":"memory-backend-memfd","id":"pc.ram","x-use-canonical-path-for-ramblock-id":false,"size":17179869184} -overcommit mem-lock=off -smp 8,sockets=1,dies=1,cores=8,threads=1 -uuid a144b174-affb-422f-88dc-14e7a9d65524 -no-user-config -nodefaults -chardev socket,id=charmonitor,fd=33,server=on,wait=off -mon chardev=charmonitor,id=monitor,mode=control -rtc base=utc,driftfix=slew -global kvm-pit.lost_tick_policy=delay -no-shutdown -global ICH9-LPC.disable_s3=1 -global ICH9-LPC.disable_s4=1 -boot strict=on -device {"driver":"pcie-root-port","port":16,"chassis":1,"id":"pci.1","bus":"pcie.0","multifunction":true,"addr":"0x2"} -device {"driver":"pcie-root-port","port":17,"chassis":2,"id":"pci.2","bus":"pcie.0","addr":"0x2.0x1"} -device {"driver":"pcie-root-port","port":18,"chassis":3,"id":"pci.3","bus":"pcie.0","addr":"0x2.0x2"} -device {"driver":"pcie-root-port","port":19,"chassis":4,"id":"pci.4","bus":"pcie.0","addr":"0x2.0x3"} -device {"driver":"pcie-root-port","port":20,"chassis":5,"id":"pci.5","bus":"pcie.0","addr":"0x2.0x4"} -device {"driver":"pcie-root-port","port":21,"chassis":6,"id":"pci.6","bus":"pcie.0","addr":"0x2.0x5"} -device {"driver":"pcie-root-port","port":22,"chassis":7,"id":"pci.7","bus":"pcie.0","addr":"0x2.0x6"} -device {"driver":"pcie-root-port","port":23,"chassis":8,"id":"pci.8","bus":"pcie.0","addr":"0x2.0x7"} -device {"driver":"pcie-root-port","port":24,"chassis":9,"id":"pci.9","bus":"pcie.0","multifunction":true,"addr":"0x3"} -device {"driver":"pcie-root-port","port":25,"chassis":10,"id":"pci.10","bus":"pcie.0","addr":"0x3.0x1"} -device {"driver":"pcie-root-port","port":26,"chassis":11,"id":"pci.11","bus":"pcie.0","addr":"0x3.0x2"} -device {"driver":"pcie-root-port","port":27,"chassis":12,"id":"pci.12","bus":"pcie.0","addr":"0x3.0x3"} -device {"driver":"pcie-root-port","port":28,"chassis":13,"id":"pci.13","bus":"pcie.0","addr":"0x3.0x4"} -device {"driver":"pcie-root-port","port":29,"chassis":14,"id":"pci.14","bus":"pcie.0","addr":"0x3.0x5"} -device {"driver":"qemu-xhci","p2":15,"p3":15,"id":"usb","bus":"pci.2","addr":"0x0"} -device {"driver":"virtio-serial-pci","id":"virtio-serial0","bus":"pci.3","addr":"0x0"} -blockdev {"driver":"file","filename":"/var/lib/libvirt/images/ubuntu-zoom.qcow2","node-name":"libvirt-2-storage","auto-read-only":true,"discard":"unmap"} -blockdev {"node-name":"libvirt-2-format","read-only":false,"driver":"qcow2","file":"libvirt-2-storage","backing":null} -device {"driver":"virtio-blk-pci","bus":"pci.4","addr":"0x0","drive":"libvirt-2-format","id":"virtio-disk0","bootindex":1} -device {"driver":"ide-cd","bus":"ide.0","id":"sata0-0-0"} -netdev {"type":"tap","fd":"34","vhost":true,"vhostfd":"36","id":"hostnet0"} -device {"driver":"virtio-net-pci","netdev":"hostnet0","id":"net0","mac":"52:54:00:78:91:06","bus":"pci.1","addr":"0x0"} -chardev pty,id=charserial0 -device {"driver":"isa-serial","chardev":"charserial0","id":"serial0","index":0} -chardev socket,id=charchannel0,fd=32,server=on,wait=off -device {"driver":"virtserialport","bus":"virtio-serial0.0","nr":1,"chardev":"charchannel0","id":"channel0","name":"org.qemu.guest_agent.0"} -chardev spicevmc,id=charchannel1,name=vdagent -device {"driver":"virtserialport","bus":"virtio-serial0.0","nr":2,"chardev":"charchannel1","id":"channel1","name":"com.redhat.spice.0"} -chardev socket,id=chrtpm,path=/run/libvirt/qemu/swtpm/1-ubuntu-zoom-swtpm.sock -tpmdev emulator,id=tpm-tpm0,chardev=chrtpm -device {"driver":"tpm-crb","tpmdev":"tpm-tpm0","id":"tpm0"} -device {"driver":"usb-tablet","id":"input0","bus":"usb.0","port":"1"} -audiodev {"id":"audio1","driver":"spice"} -spice port=0,disable-ticketing=on,image-compression=off,gl=on,rendernode=/dev/dri/renderD128,seamless-migration=on -device {"driver":"virtio-vga-gl","id":"video0","max_outputs":1,"bus":"pcie.0","addr":"0x1"} -device {"driver":"ich9-intel-hda","id":"sound0","bus":"pcie.0","addr":"0x1b"} -device {"driver":"hda-duplex","id":"sound0-codec0","bus":"sound0.0","cad":0,"audiodev":"audio1"} -global ICH9-LPC.noreboot=off -watchdog-action reset -chardev spicevmc,id=charredir0,name=usbredir -device {"driver":"usb-redir","chardev":"charredir0","id":"redir0","bus":"usb.0","port":"2"} -chardev spicevmc,id=charredir1,name=usbredir -device {"driver":"usb-redir","chardev":"charredir1","id":"redir1","bus":"usb.0","port":"3"} -device {"driver":"virtio-balloon-pci","id":"balloon0","bus":"pci.5","addr":"0x0"} -object {"qom-type":"rng-random","id":"objrng0","filename":"/dev/urandom"} -device {"driver":"virtio-rng-pci","rng":"objrng0","id":"rng0","bus":"pci.6","addr":"0x0"} -sandbox on,obsolete=deny,elevateprivileges=deny,spawn=deny,resourcecontrol=deny -msg timestamp=on
+ 727638  727631 Sl    0.6  0.0 codex           /home/hoge-heer/.nvm/versions/node/v22.22.1/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex/codex app-server
+   1408       1 Ss    0.6  0.0 dbus-daemon     @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+   2607    2310 Ssl   0.5  0.0 pipewire        /usr/bin/pipewire
+1919927       2 I     0.4  0.0 kworker/u128:0- [kworker/u128:0-comp_1.0.1]
+   2630    2310 SLsl  0.4  0.0 pipewire-pulse  /usr/bin/pipewire-pulse
+1946481 1946110 TLl   0.3  0.2 ZoomClips       /opt/zoom/ZoomClips --action=preload --runasps=TRUE --ClipsRecordingType=Unknown
+1848921       2 I     0.3  0.0 kworker/u128:2- [kworker/u128:2-gfx_0.0.0]
+ 537968    2310 Sl    0.3  0.4 firefox         /snap/firefox/8191/usr/lib/firefox/firefox https://github.com/pingdotgg/t3code/pull/2506
+  11528   10306 Sl    0.3  0.0 gjs             gjs /usr/share/gnome-shell/extensions/ding@rastersoft.com/app/ding.js -E -P /usr/share/gnome-shell/extensions/ding@rastersoft.com/app
+1896293       2 I     0.3  0.0 kworker/u128:3- [kworker/u128:3-sdma0]
+1933599       2 I     0.2  0.0 kworker/u128:4- [kworker/u128:4-comp_1.1.1]
+   1127       2 S     0.2  0.0 napi/phy0-0     [napi/phy0-0]
+3538108    2310 Ssl   0.2  0.0 node            /home/hoge-heer/.nvm/versions/node/v22.22.1/bin/node /home/hoge-heer/t3-code-ops/scripts/t3_react185_semantic_proxy.mjs --listen 0.0.0.0:3777 --upstream http://127.0.0.1:3773 --server-origin http://192.168.2.13:3773
+1950843       1 Ssl   0.1  0.0 rustdesk        /usr/bin/rustdesk --service
+  81484  538278 Sl    0.1  0.4 Isolated Web Co /snap/firefox/8191/usr/lib/firefox/firefox -contentproc -isForBrowser -prefsHandle 0:45038 -prefMapHandle 1:286085 -jsInitHandle 2:156120 -parentBuildID 20260420172056 -sandboxReporter 3 -chrootClient 4 -ipcHandle 5 -initialChannelId {704982a2-198c-45d0-b754-ec0cef5ec0e3} -parentPid 537968 -crashReporter 6 -crashHelper 7 -greomni /snap/firefox/8191/usr/lib/firefox/omni.ja -appomni /snap/firefox/8191/usr/lib/firefox/browser/omni.ja -appDir /snap/firefox/8191/usr/lib/firefox/browser 171 tab
+   1417       1 Ssl   0.1  0.0 polkitd         /usr/lib/polkit-1/polkitd --no-debug
+1749350   10306 Sl    0.1  0.1 t3code          /tmp/.mount_t3code13utoU/t3code
+1426183 1426179 Sl    0.1  0.0 python          .venv/bin/python main.py
+{
+  "ok": true,
+  "service": "t3-react185-semantic-proxy",
+  "version": "react185-semantic-proxy-2026-05-05",
+  "timestamp": "2026-05-07T02:06:40.702Z",
+  "listenPatchTargets": [
+    "pass-completedAt-to-markThreadVisited",
+    "preserve-threadLastVisitedAtById-across-syncThreads"
+  ],
+  "upstream": {
+    "durationMs": 1,
+    "ok": true,
+    "statusCode": 200,
+    "timeoutMs": 3000
+  },
+  "websocket": {
+    "accepted": 19,
+    "active": 2,
+    "upstreamConnected": 19,
+    "upstreamConnectTimeout": 0,
+    "clientClosedFirst": 3,
+    "upstreamClosedFirst": 14,
+    "error": 0,
+    "lastEvents": [
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T16:25:39.520Z",
+        "id": "mou9qtof-3",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T16:25:39.520Z",
+        "id": "mou9qtof-3",
+        "path": "/ws"
+      },
+      {
+        "type": "upstream_closed_first",
+        "timestamp": "2026-05-06T16:29:38.873Z",
+        "hadError": false,
+        "id": "mou9qtof-3",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T16:29:38.909Z",
+        "id": "mou9vye5-4",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T16:29:38.909Z",
+        "id": "mou9vye5-4",
+        "path": "/ws"
+      },
+      {
+        "type": "upstream_closed_first",
+        "timestamp": "2026-05-06T16:32:46.474Z",
+        "hadError": false,
+        "id": "mou9vye5-4",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T16:32:46.539Z",
+        "id": "mou9zz63-5",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T16:32:46.539Z",
+        "id": "mou9zz63-5",
+        "path": "/ws"
+      },
+      {
+        "type": "upstream_closed_first",
+        "timestamp": "2026-05-06T16:33:37.977Z",
+        "hadError": false,
+        "id": "mou9zz63-5",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T16:33:38.042Z",
+        "id": "moua12wq-6",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T16:33:38.043Z",
+        "id": "moua12wq-6",
+        "path": "/ws"
+      },
+      {
+        "type": "upstream_closed_first",
+        "timestamp": "2026-05-06T16:52:23.880Z",
+        "hadError": false,
+        "id": "moua12wq-6",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T16:52:23.902Z",
+        "id": "mouap7mm-7",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T16:52:23.902Z",
+        "id": "mouap7mm-7",
+        "path": "/ws"
+      },
+      {
+        "type": "client_closed_first",
+        "timestamp": "2026-05-06T16:52:23.929Z",
+        "hadError": false,
+        "id": "mouap7mm-7",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T16:52:23.931Z",
+        "id": "mouap7nf-8",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T16:52:23.932Z",
+        "id": "mouap7nf-8",
+        "path": "/ws"
+      },
+      {
+        "type": "upstream_closed_first",
+        "timestamp": "2026-05-06T16:55:37.663Z",
+        "hadError": false,
+        "id": "mou1hzrg-2",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T16:55:37.673Z",
+        "id": "mouatd55-9",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T16:55:37.673Z",
+        "id": "mouatd55-9",
+        "path": "/ws"
+      },
+      {
+        "type": "client_closed_first",
+        "timestamp": "2026-05-06T16:55:42.201Z",
+        "hadError": false,
+        "id": "mouatd55-9",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "upstream_closed_first",
+        "timestamp": "2026-05-06T17:22:00.120Z",
+        "hadError": false,
+        "id": "mouap7nf-8",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T17:22:00.256Z",
+        "id": "moubra9s-10",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T17:22:00.257Z",
+        "id": "moubra9s-10",
+        "path": "/ws"
+      },
+      {
+        "type": "upstream_closed_first",
+        "timestamp": "2026-05-06T17:31:13.485Z",
+        "hadError": false,
+        "id": "moubra9s-10",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T17:31:13.544Z",
+        "id": "mouc356w-11",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T17:31:13.544Z",
+        "id": "mouc356w-11",
+        "path": "/ws"
+      },
+      {
+        "type": "upstream_closed_first",
+        "timestamp": "2026-05-06T17:33:09.732Z",
+        "hadError": false,
+        "id": "mouc356w-11",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T17:33:09.809Z",
+        "id": "mouc5mwh-12",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T17:33:09.809Z",
+        "id": "mouc5mwh-12",
+        "path": "/ws"
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T17:40:36.423Z",
+        "id": "moucf7if-13",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T17:40:36.424Z",
+        "id": "moucf7if-13",
+        "path": "/ws"
+      },
+      {
+        "type": "upstream_closed_first",
+        "timestamp": "2026-05-06T17:40:38.809Z",
+        "hadError": false,
+        "id": "mouc5mwh-12",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T17:40:38.823Z",
+        "id": "moucf9d3-14",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T17:40:38.823Z",
+        "id": "moucf9d3-14",
+        "path": "/ws"
+      },
+      {
+        "type": "client_closed_first",
+        "timestamp": "2026-05-06T17:40:38.827Z",
+        "hadError": false,
+        "id": "moucf9d3-14",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T17:40:38.847Z",
+        "id": "moucf9dr-15",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T17:40:38.847Z",
+        "id": "moucf9dr-15",
+        "path": "/ws"
+      },
+      {
+        "type": "upstream_closed_first",
+        "timestamp": "2026-05-06T17:43:17.624Z",
+        "hadError": false,
+        "id": "moucf9dr-15",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T17:43:17.661Z",
+        "id": "moucinx9-16",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T17:43:17.661Z",
+        "id": "moucinx9-16",
+        "path": "/ws"
+      },
+      {
+        "type": "upstream_closed_first",
+        "timestamp": "2026-05-06T17:43:32.883Z",
+        "hadError": false,
+        "id": "moucinx9-16",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T17:43:32.901Z",
+        "id": "moucizol-17",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T17:43:32.901Z",
+        "id": "moucizol-17",
+        "path": "/ws"
+      },
+      {
+        "type": "upstream_closed_first",
+        "timestamp": "2026-05-06T17:43:40.824Z",
+        "hadError": false,
+        "id": "moucizol-17",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T17:43:40.839Z",
+        "id": "moucj5t3-18",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T17:43:40.839Z",
+        "id": "moucj5t3-18",
+        "path": "/ws"
+      },
+      {
+        "type": "upstream_closed_first",
+        "timestamp": "2026-05-06T17:44:55.525Z",
+        "hadError": false,
+        "id": "moucj5t3-18",
+        "path": "/ws",
+        "upstreamConnected": true
+      },
+      {
+        "type": "accepted",
+        "timestamp": "2026-05-06T17:44:55.546Z",
+        "id": "mouckrga-19",
+        "path": "/ws",
+        "remoteAddress": "192.168.2.1"
+      },
+      {
+        "type": "upstream_connected",
+        "timestamp": "2026-05-06T17:44:55.547Z",
+        "id": "mouckrga-19",
+        "path": "/ws"
+      }
+    ]
+  }
+}
