@@ -101,6 +101,15 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 | Long local documents or codebase context | `llama-server` Vulkan/RADV, f16 KV first | 128K prompt plus generation completed without truncation | [`data/filled_kv_decode.csv`](data/filled_kv_decode.csv) |
 | vLLM-style serving experiments | ROCm vLLM containers only as experiments | smoke-tested, but no 35B throughput claim yet | [`VLLM_BASELINE.md`](VLLM_BASELINE.md) |
 
+## Results Wanted
+
+Have a Strix Halo / Ryzen AI MAX system? Please share results, even if they are slower, failed, or contradict this guide.
+
+- Open a [benchmark report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md) with your system, BIOS UMA setting, kernel, Mesa/ROCm versions, backend, model, command, CSV/raw output, and notes.
+- Open a [model request](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=model-request.md) if there is a model/backend combination that should be tested.
+- Use [Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discussions) for setup questions, comparisons, and early results that are not ready for a benchmark issue yet.
+- See [`SHARE.md`](SHARE.md) for short Reddit/HN/forum text and the current social preview image if you want to share the guide.
+
 ## Best Current Setup Tested Here
 
 Best current setup from this guide's measured local runs:
@@ -171,6 +180,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`data/headline_claims.csv`](data/headline_claims.csv) | Machine-readable map from public headline claims to data, raw evidence, charts, and notes. |
 | [`data/README.md`](data/README.md) | Structured CSV schema and raw-data conventions. |
 | [`charts/README.md`](charts/README.md) | Generated chart inventory and regeneration command. |
+| [`SHARE.md`](SHARE.md) | Copyable Reddit/HN/forum/Discord text and share links. |
 | [`SECURITY.md`](SECURITY.md) | Official-source and impersonation reporting policy. |
 
 ## Table of Contents
@@ -181,6 +191,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 - [Setup Script](#setup-script)
 - [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot)
 - [Use This If You Want](#use-this-if-you-want)
+- [Results Wanted](#results-wanted)
 - [Best Current Setup Tested Here](#best-current-setup-tested-here)
 - [Headline Evidence](#headline-evidence)
 - [Reproduce One Headline Result](#reproduce-one-headline-result)
@@ -1830,9 +1841,10 @@ Yes, with limitations. QLoRA fine-tuning of 7B-30B models works via kyuz0's [fin
 
 Found something that's wrong, outdated, or missing?
 
-1. Open an issue with your hardware, kernel version, and benchmark results
-2. PRs welcome -- especially from other Strix Halo systems (Framework, GMKtec, HP ZBook)
-3. If you find a new optimization, include before/after benchmarks
+1. Open a [benchmark report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md) with hardware, BIOS, kernel, driver, model, backend, command, and raw output.
+2. Use [Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discussions) for setup questions, early results, and comparisons.
+3. PRs welcome -- especially from other Strix Halo systems (Framework, GMKtec, HP ZBook).
+4. If you find a new optimization, include before/after benchmarks.
 
 ---
 
