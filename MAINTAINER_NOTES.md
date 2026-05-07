@@ -2,6 +2,39 @@
 
 These notes are for the local Hoge Heer workstation workflow. They are intentionally separate from the public README because they are not required to reproduce Strix Halo performance on another machine.
 
+## Current Handoff
+
+Current as of 2026-05-07. Latest pushed commit: `c689bb9 Add Strix Halo crossover and gpt-oss evidence`.
+
+For a new Strix Halo chat, start by reading:
+
+1. `README.md`
+2. `BENCHMARKS.md`
+3. `BACKEND_CROSSOVER.md`
+4. `ROCM_VLLM_BUGWATCH.md`
+5. `SERVER_SHOOTOUT.md`
+6. `REPRODUCIBILITY.md`
+7. this file
+
+The guide is share-ready. The latest completed work:
+
+- latest-stack rerun with llama.cpp b9049 and Ollama 0.23.1
+- local gpt-oss-120b MXFP4 check: 50.59 t/s tg128, 725.03 t/s pp512, 707.29 t/s pp2048
+- HIP/Vulkan crossover evidence: Vulkan wins measured generation; HIP can win prompt processing
+- hec-ovi vLLM AWQ/DFlash tracked as an important candidate, not a local claim
+- ROCm/vLLM bugwatch added
+- README, SHARE, social preview, CSVs, raw logs, and charts updated
+
+Current local-only handoff details live in `CONTEXT.md`. That file is intentionally ignored by git and should be used for local continuity, not public claims.
+
+Known local untracked scratch directory:
+
+```text
+data/raw/2026-05-05/server-shootout/kyuz0-vllm-awq-qwen36-t3-baseline/
+```
+
+Keep it untracked until the vLLM AWQ run is either completed and documented or deliberately discarded.
+
 ## Keep Public Docs Separate
 
 The README should answer, within one screen:
