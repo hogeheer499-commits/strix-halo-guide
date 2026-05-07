@@ -4,7 +4,7 @@ This file is the compact benchmark source-of-truth for numbers already published
 
 ## Current System Snapshot
 
-Live audit on 2026-05-01:
+Live audit on 2026-05-07:
 
 | Component | Current State |
 |-----------|---------------|
@@ -14,21 +14,23 @@ Live audit on 2026-05-01:
 | RAM | 124GiB OS-visible unified memory |
 | Kernel | 6.19.4-061904-generic |
 | Mesa RADV | 26.0.6, kisak-mesa PPA |
-| Ollama | 0.21.2 |
+| Ollama | 0.23.1 |
 | AMDVLK | Removed |
 | linux-firmware | 20240318.git3b128b60-0ubuntu2.27 |
 | GPU clock | 2900 MHz selected |
 | tuned | `accelerator-performance` active |
 
-Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 2026-04-26 with `tuned accelerator-performance` active. The 2026-05-01 readiness check now also confirms `tuned accelerator-performance` active, Mesa RADV 26.0.6, AMDVLK absent, linux-firmware safe, and GPU clock at 2900 MHz.
+Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 2026-04-26 with `tuned accelerator-performance` active. The 2026-05-07 latest-stack rerun confirms `tuned accelerator-performance` active, Mesa RADV 26.0.6, AMDVLK absent, linux-firmware safe, GPU clock at 2900 MHz, llama.cpp b9049, and Ollama 0.23.1.
 
 ## Top-Line Model Results
 
 | Model | Backend / Build | Quant | pp512 | tg128 | Notes |
 |-------|-----------------|-------|-------|-------|-------|
-| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9010 | UD-Q4_K_XL | 1346 | **97.24** | Controlled May headline rerun |
+| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9049 | UD-Q4_K_XL | 1397 | **96.15** | Clean latest-stack rerun |
+| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9010 | UD-Q4_K_XL | 1346 | **97.24** | Previous May peak |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b8460 | UD-Q4_K_XL | 1342 | **87.11** | Previous coding MoE headline |
-| Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b9010 | UD-Q4_K_M | 1109 | **63.06** | Controlled May UD rerun |
+| Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b9049 | UD-Q4_K_M | 1059 | **62.56** | Clean latest-stack rerun |
+| Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b9010 | UD-Q4_K_M | 1109 | **63.06** | Previous May UD rerun |
 | Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1064 | **63.76** | Recommended all-rounder |
 | Qwen3.5 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1080 | **64.85** | Used for backend/build comparison |
 | Qwen3-Next 80B-A3B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_XL | 657 | **54.92** | 80B MoE, 256K context capable |
@@ -39,11 +41,11 @@ Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 202
 
 ## Ollama Vulkan
 
-### Qwen3.6-35B-A3B, Ollama 0.21.2, Vulkan RADV
+### Qwen3.6-35B-A3B, Ollama 0.23.1, Vulkan RADV
 
 | Prompt Tokens | Prompt Eval | Generation | Notes |
 |---------------|-------------|------------|-------|
-| 19 | 158 t/s | **50.5 t/s** | Controlled 2026-05-03 API warm average across 10 runs |
+| 19 | 158 t/s | **50.5 t/s** | Controlled 2026-05-07 API warm average across 10 runs; matches 0.21.2 |
 | 20 | 163 t/s | 45.6 t/s | Older result, superseded by controlled API run |
 | 22 | 174 t/s | 45.4 t/s | Older result, superseded by controlled API run |
 

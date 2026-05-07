@@ -1,0 +1,11 @@
+# Ollama Update Log
+
+Date: 2026-05-07
+
+- Previous local version: 0.21.2.
+- Latest release checked before install: 0.23.1.
+- Install method: official Ollama installer.
+- Post-install API version check: `{"version":"0.23.1"}`.
+- Existing Vulkan/RADV service configuration was preserved.
+
+Private sudo prompt output is intentionally omitted.

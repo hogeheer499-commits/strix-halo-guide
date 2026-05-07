@@ -1,0 +1,28 @@
+# Host State Before Clean Rerun
+
+Timestamp: 2026-05-07T04:12:44+02:00
+
+## System
+
+- Machine: Beelink GTR9 Pro, AMD Ryzen AI MAX+ 395, Radeon 8060S.
+- Kernel: `6.19.4-061904-generic`.
+- OS-visible memory: 124 GiB unified memory.
+- Power profile: `accelerator-performance`.
+- GPU clock state: 2900 MHz selected.
+- Vulkan device: Radeon 8060S Graphics, RADV STRIX_HALO.
+- Vulkan driver: Mesa 26.0.6 from kisak-mesa PPA.
+
+## Benchmark Stack
+
+- llama.cpp commit: `2496f9c14965c39589f53eea31bdb6d762b1d360`.
+- llama.cpp tag/build: `b9049`.
+- AMDVLK: absent for this run; RADV selected through `VK_ICD_FILENAMES`.
+
+## Cleanliness Notes
+
+- Benchmark cleanliness check reported 0 blockers and 0 warnings.
+- One lightweight maintainer workstation dependency stayed running by design.
+- Non-essential remote, meeting, and screen-share services were paused during the
+  benchmark window and restored afterward.
+- Private process lists, LAN ports, meeting IDs, and local service details are
+  intentionally omitted from this public raw evidence file.

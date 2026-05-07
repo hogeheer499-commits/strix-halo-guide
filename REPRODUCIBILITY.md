@@ -19,7 +19,8 @@ The public claim index is [`data/headline_claims.csv`](data/headline_claims.csv)
 | OS | Ubuntu 24.04 |
 | Kernel | `6.19.4-061904-generic` |
 | Mesa/RADV | Mesa 26.0.6 from kisak-mesa PPA |
-| Ollama | 0.21.2 for the current Ollama API baseline |
+| llama.cpp | b9049 `2496f9c14` for the current direct Vulkan/RADV headline rerun; b9010 `d05fe1d7d` kept as previous peak evidence |
+| Ollama | 0.23.1 for the current Ollama API baseline |
 | BIOS UMA | 512MB for the measured local setup |
 | IOMMU | Disabled for the measured local setup |
 | AMDVLK | Removed; RADV should be the selected Vulkan ICD |
@@ -56,9 +57,9 @@ Direct Vulkan/RADV `llama-bench` shape used for the short-context headline rows:
 ```bash
 AMD_VULKAN_ICD=RADV \
 VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
-~/llama-cpp-latest/build-vulkan/bin/llama-bench \
+~/llama-cpp-upstream-2026-05-07/build-vulkan/bin/llama-bench \
   -m ~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf \
-  -fa 1 -ngl 999 -mmp 0 -p 512 -n 128 -r 20 -o csv
+  -fa 1 -ngl 999 -mmp 0 -p 0 -n 128 -r 20 -o csv
 ```
 
 OpenAI-compatible server feature probe:
@@ -94,7 +95,7 @@ python3 scripts/generate_charts.py
 | Claim family | Structured data | Raw logs | Charts / notes |
 |--------------|-----------------|----------|----------------|
 | Public headline claim index | [`data/headline_claims.csv`](data/headline_claims.csv) | Row-specific raw paths | Row-specific chart paths or `n/a` |
-| Short-context Vulkan/RADV and Ollama headline rows | [`data/benchmarks.csv`](data/benchmarks.csv) | [`data/raw/2026-05-03/`](data/raw/2026-05-03/) | [`BENCHMARKS.md`](BENCHMARKS.md), [`charts/backend_spot_check.svg`](charts/backend_spot_check.svg) |
+| Short-context Vulkan/RADV and Ollama headline rows | [`data/benchmarks.csv`](data/benchmarks.csv) | [`data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/), [`data/raw/2026-05-03/`](data/raw/2026-05-03/) | [`BENCHMARKS.md`](BENCHMARKS.md), [`charts/backend_spot_check.svg`](charts/backend_spot_check.svg) |
 | Server shootout and concurrency sweeps | [`data/server_shootout.csv`](data/server_shootout.csv) | [`data/raw/2026-05-05/server-shootout/full-sweep-qwen36-workstation-baseline/`](data/raw/2026-05-05/server-shootout/full-sweep-qwen36-workstation-baseline/) | [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md) |
 | `llama-server` multi-user behavior | [`data/multi_user.csv`](data/multi_user.csv) | [`data/raw/2026-05-03/multi-user/`](data/raw/2026-05-03/multi-user/), [`data/raw/2026-05-03/multi-user-coder/`](data/raw/2026-05-03/multi-user-coder/) | [`charts/multi_user_aggregate.svg`](charts/multi_user_aggregate.svg) |
 | Long-context prompt scaling | [`data/long_context.csv`](data/long_context.csv) | [`data/raw/2026-05-03/long-context/`](data/raw/2026-05-03/long-context/) | [`charts/long_context_prompt.svg`](charts/long_context_prompt.svg) |

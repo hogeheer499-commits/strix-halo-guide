@@ -1,0 +1,29 @@
+# Host State After Ollama 0.23.1 API Rerun
+
+Timestamp: 2026-05-07, after the Ollama 0.23.1 warm API benchmark.
+
+## System
+
+- Machine: Beelink GTR9 Pro, AMD Ryzen AI MAX+ 395, Radeon 8060S.
+- Kernel: `6.19.4-061904-generic`.
+- OS-visible memory: 124 GiB unified memory.
+- Power profile: `accelerator-performance`.
+- GPU clock state: 2900 MHz selected.
+- Vulkan device: Radeon 8060S Graphics, RADV STRIX_HALO.
+- Vulkan driver: Mesa 26.0.6 from kisak-mesa PPA.
+
+## Benchmark Stack
+
+- Ollama version: `0.23.1`.
+- Backend: Vulkan/RADV.
+- Model: `qwen3.6:35b-a3b`.
+- Workload: `/api/generate`, one cold run followed by 10 warm runs,
+  `num_predict=128`, `temperature=0`, `top_k=1`.
+
+## Cleanliness Notes
+
+- Non-essential remote, meeting, and screen-share services remained paused for
+  the Ollama benchmark window.
+- One lightweight maintainer workstation dependency stayed running by design.
+- Private process lists, LAN ports, meeting IDs, and local service details are
+  intentionally omitted from this public raw evidence file.
