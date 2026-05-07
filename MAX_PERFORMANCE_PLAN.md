@@ -19,13 +19,30 @@ Current measured recommendation:
 
 Current fastest local headline:
 
-- Current latest-stack direct path: Qwen3-Coder 30B-A3B at 96.15 t/s on llama.cpp b9049, Vulkan/RADV.
+- Current latest-stack direct path: Qwen3-Coder 30B-A3B at 96.76 t/s on llama.cpp b9049, Vulkan/RADV.
 - Historical peak: Qwen3-Coder 30B-A3B at 97.24 t/s on b9010.
 - Treat 96-97 t/s as the current stable ceiling for the measured Qwen3-Coder path until a new build, quant, or decode method beats it with raw logs.
+- Current fastest measured Qwen3.6 path: Q4_0 at 81.30 t/s on llama.cpp b9049, Vulkan/RADV. Label this as speed-first, not the default all-round quality recommendation.
 
-## Highest-Value Open Tests
+## 2026-05-07 Campaign Results
 
-### P0: Qwen3.6 Quant Sweep
+Detailed results: [`MAX_PERFORMANCE_RESULTS_2026-05-07.md`](MAX_PERFORMANCE_RESULTS_2026-05-07.md). Structured summary: [`data/max_performance_campaign.csv`](data/max_performance_campaign.csv).
+
+| Route | Status | Result |
+|-------|--------|--------|
+| Qwen3.6 quant sweep | done | Q4_0 reached 81.30 t/s; Q4_K_M reached 76.94 t/s; old UD row remains 62.56 t/s. |
+| Same-source HIP vs Vulkan | done | HIP wins prompt processing at pp16384; Vulkan wins tg128. |
+| Qwen3-Coder max-speed sweep | done | No stable 100 t/s result; current ceiling remains 96-97 t/s. |
+| gpt-oss-120b long-context sweep | done | 55.57 t/s tg128 and prompt processing through 65K tokens. |
+| Tuned rocWMMA path | attempted | lhl branch built, but failed to load current Qwen3.6 GGUFs. |
+| vLLM AWQ/DFlash | partially blocked | Plain AWQ smoke works at about 25 t/s; exact DFlash route blocked by gated drafter access. |
+| Speculative decoding sanity | attempted | Optional `llama-cli` sanity produced runaway output and was excluded from claims. |
+
+## Route Details And Remaining Work
+
+The highest-value routes below now include their 2026-05-07 campaign status. Keep the old pass conditions because they define what a future rerun must still capture.
+
+### P0: Qwen3.6 Quant Sweep - Done
 
 Why: this is the most likely route to a better immediately useful number for normal Strix Halo users. External Strix-optimized GGUFs report Qwen3.6 35B-A3B decode in the 70-76 t/s range for some quant variants, while this guide currently reports 62.56 t/s for the local UD-Q4 path.
 
@@ -44,9 +61,9 @@ Pass condition:
 - Record model file, source repo, file size, hash, pp512, pp4096, tg128, and at least one real chat/API run.
 - If a faster quant is lower quality, label it as "fastest measured quant", not "best model".
 
-### P0: Same-Build HIP vs Vulkan
+### P0: Same-Source HIP vs Vulkan - Done
 
-Why: our local crossover result is directionally useful but not a perfect same-build comparison. A clean same-commit b9049+ Vulkan/HIP build would make the backend recommendation much harder to argue against.
+Why: our first local crossover result was directionally useful but not a perfect same-build comparison. The 2026-05-07 campaign built Vulkan and HIP from the same b9049 source checkout. The HIP binary reports an unknown build id because the container did not trust the git directory, so call it same-source rather than perfect same-build.
 
 Test matrix:
 
@@ -60,7 +77,7 @@ Expected outcome:
 - HIP may win long-prompt prefill.
 - The guide becomes stronger because it explains the split instead of pretending there is one universal winner.
 
-### P1: Qwen3-Coder Max-Speed Sweep
+### P1: Qwen3-Coder Max-Speed Sweep - Done
 
 Why: this directly targets the 96-97 t/s headline. The next useful question is whether the Beelink can cross 100 t/s on a still-useful coding model.
 
@@ -76,9 +93,9 @@ Pass condition:
 
 - Any "over 100 t/s" claim needs raw logs, repeat count, exact model hash, and a note if the quant is lower quality than the current headline quant.
 
-### P1: gpt-oss-120b Long-Context Sweep
+### P1: gpt-oss-120b Long-Context Sweep - Partly Done
 
-Why: 120B on 128GB unified memory is the kind of result people share. The current guide proves it loads and generates around 50.59 t/s, but not how far context can be pushed before wall time becomes painful.
+Why: 120B on 128GB unified memory is the kind of result people share. The current guide proves it loads and generates around 55.57 t/s and can process prompts through 65K tokens, but filled-context decode and real-document wall time still need a cleaner API-style run.
 
 Test rows:
 

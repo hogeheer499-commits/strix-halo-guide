@@ -1,0 +1,73 @@
+[0/2] Re-checking globbed directories...
+[1/70] Performing build step for 'vulkan-shaders-gen'
+ninja: no work to do.
+[2/70] Performing install step for 'vulkan-shaders-gen'
+-- Up-to-date: /home/hoge-heer/llama-cpp-upstream-2026-05-07/build-vulkan/Release/./vulkan-shaders-gen
+[3/70] Completed 'vulkan-shaders-gen'
+[4/70] Generate vulkan shaders for mul_mm_cm2.comp
+[5/70] Generate vulkan shaders for flash_attn_cm2.comp
+[6/70] Generate vulkan shaders for mul_mat_vecq.comp
+[7/70] Generate vulkan shaders for mul_mmq.comp
+[8/70] Building CXX object ggml/src/ggml-vulkan/CMakeFiles/ggml-vulkan.dir/flash_attn_cm2.comp.cpp.o
+[9/70] Building CXX object ggml/src/ggml-vulkan/CMakeFiles/ggml-vulkan.dir/mul_mmq.comp.cpp.o
+[10/70] Building CXX object ggml/src/ggml-vulkan/CMakeFiles/ggml-vulkan.dir/mul_mat_vecq.comp.cpp.o
+[11/70] Building CXX object ggml/src/ggml-vulkan/CMakeFiles/ggml-vulkan.dir/mul_mm_cm2.comp.cpp.o
+[12/70] Linking CXX shared library bin/libggml-vulkan.so.0.11.0
+[13/70] Creating library symlink bin/libggml-vulkan.so.0 bin/libggml-vulkan.so
+[14/70] Linking CXX shared library bin/libggml.so.0.11.0
+[15/70] Creating library symlink bin/libggml.so.0 bin/libggml.so
+[16/70] Linking CXX shared library bin/libllama.so.0.0.9049
+[17/70] Creating library symlink bin/libllama.so.0 bin/libllama.so
+[18/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/internvl.cpp.o
+[19/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/pixtral.cpp.o
+[20/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/paddleocr.cpp.o
+[21/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/dotsocr.cpp.o
+[22/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/cogvlm.cpp.o
+[23/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/conformer.cpp.o
+[24/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/kimik25.cpp.o
+[25/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/hunyuanocr.cpp.o
+[26/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/gemma4v.cpp.o
+[27/70] Linking CXX shared library bin/libllama-common.so.0.0.9049
+[28/70] Creating library symlink bin/libllama-common.so.0 bin/libllama-common.so
+[29/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/granite-speech.cpp.o
+[30/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen2vl.cpp.o
+[31/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen3vl.cpp.o
+[32/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/llama4.cpp.o
+[33/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/nemotron-v2-vl.cpp.o
+[34/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/gemma4a.cpp.o
+[35/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/kimivl.cpp.o
+[36/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/llava.cpp.o
+[37/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/minicpmv.cpp.o
+[38/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/glm4v.cpp.o
+[39/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/siglip.cpp.o
+[40/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/qwen3a.cpp.o
+[41/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/whisper-enc.cpp.o
+[42/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/mobilenetv5.cpp.o
+[43/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/step3vl.cpp.o
+[44/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/yasa2.cpp.o
+[45/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/deepseekocr.cpp.o
+[46/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/models/youtuvl.cpp.o
+[47/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-image.cpp.o
+[48/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-audio.cpp.o
+[49/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd.cpp.o
+[50/70] Building CXX object tools/server/CMakeFiles/server-context.dir/server-queue.cpp.o
+[51/70] Building CXX object tools/server/CMakeFiles/server-context.dir/server-chat.cpp.o
+[52/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/clip.cpp.o
+[53/70] Building CXX object tools/cli/CMakeFiles/llama-cli.dir/cli.cpp.o
+[54/70] Building CXX object tools/server/CMakeFiles/server-context.dir/server-common.cpp.o
+[55/70] Building CXX object tools/mtmd/CMakeFiles/mtmd.dir/mtmd-helper.cpp.o
+[56/70] Linking CXX shared library bin/libmtmd.so.0.0.9049
+[57/70] Creating library symlink bin/libmtmd.so.0 bin/libmtmd.so
+[58/70] Building CXX object tools/server/CMakeFiles/server-context.dir/server-tools.cpp.o
+[59/70] Building CXX object tools/server/CMakeFiles/server-context.dir/server-task.cpp.o
+[60/70] Building CXX object tools/server/CMakeFiles/server-context.dir/server-context.cpp.o
+[61/70] Linking CXX static library tools/server/libserver-context.a
+[62/70] Generating loading.html.hpp
+[63/70] Generating index.html.hpp
+[64/70] Linking CXX executable bin/llama-cli
+[65/70] Generating bundle.css.hpp
+[66/70] Generating bundle.js.hpp
+[67/70] Building CXX object tools/server/CMakeFiles/llama-server.dir/server.cpp.o
+[68/70] Building CXX object tools/server/CMakeFiles/llama-server.dir/server-models.cpp.o
+[69/70] Building CXX object tools/server/CMakeFiles/llama-server.dir/server-http.cpp.o
+[70/70] Linking CXX executable bin/llama-server

@@ -1,0 +1,4 @@
+q4-0|/home/hoge-heer/models/qwen36-strix/Qwen3.6-35B-A3B-Q4_0.gguf
+iq4-nl|/home/hoge-heer/models/qwen36-strix/Qwen3.6-35B-A3B-IQ4_NL.gguf
+dynamic|/home/hoge-heer/models/qwen36-strix/Qwen3.6-35B-A3B-DYNAMIC.gguf
+q4-k-m|/home/hoge-heer/models/qwen36-strix/Qwen3.6-35B-A3B-Q4_K_M.gguf

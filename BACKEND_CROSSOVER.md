@@ -8,11 +8,25 @@ This page answers a narrower question than the main guide:
 
 Current answer: there is no single backend winner. Vulkan/RADV is still the best measured local path for short-context generation, chat, and coding-agent loops. ROCm/HIP can be better for prompt-processing-heavy work such as long prompts, RAG ingestion, summarization, and some batch/server shapes.
 
+## Same-Source b9049 Matrix
+
+Canonical 2026-05-07 data: [`data/max_performance_campaign.csv`](data/max_performance_campaign.csv) and [`data/raw/2026-05-07/max-performance-campaign/benchmarks/same-build-hip-vulkan-b9049/`](data/raw/2026-05-07/max-performance-campaign/benchmarks/same-build-hip-vulkan-b9049/).
+
+Important caveat: Vulkan and HIP were built from the same b9049 source checkout, but the HIP binary reports `build_commit=unknown` because the container did not trust the git directory. Treat this as a same-source matrix, not a perfectly embedded-build-id matrix.
+
+| Model | Vulkan pp16384 | HIP pp16384 | Prompt winner | Vulkan tg128 | HIP tg128 | Generation winner |
+|-------|---------------:|------------:|---------------|-------------:|----------:|-------------------|
+| Qwen3.6 35B-A3B Q4_0 | 1088.91 | **1331.28** | HIP +22.3% | **79.54** | 62.16 | Vulkan +28.0% |
+| Qwen3.6 35B-A3B UD-Q4_K_M | 1037.43 | **1302.76** | HIP +25.6% | **60.03** | 53.30 | Vulkan +12.6% |
+| Qwen3-Coder 30B-A3B UD-Q4_K_XL | 564.47 | **747.00** | HIP +32.3% | **85.20** | 68.33 | Vulkan +24.7% |
+
+Takeaway: the beginner rule is still simple: use RADV/Vulkan first. The advanced rule is also clearer now: if your workload spends most of its time ingesting long prompts, RAG chunks, or documents, test HIP instead of assuming Vulkan wins that shape too.
+
 ## Local Spot Check
 
 Canonical local data: [`data/backend_crossover.csv`](data/backend_crossover.csv).
 
-Important caveat: this is a local existing-build spot check, not a perfect same-build fairness claim. Vulkan rows use llama.cpp b9010; HIP rows use the available local HIP b8460 build and Ollama-bundled ROCm 7.2 libraries. The value is directional: it checks whether our machine shows the same workload split that newer external Strix Halo HIP/Vulkan work reports.
+This older local existing-build spot check is kept as supporting history. Vulkan rows use llama.cpp b9010; HIP rows use the available local HIP b8460 build and Ollama-bundled ROCm 7.2 libraries. The value is directional: it checks whether our machine shows the same workload split that newer external Strix Halo HIP/Vulkan work reports.
 
 | Model | Vulkan pp16384 | HIP pp16384 | Prompt winner | Vulkan tg128 | HIP tg128 | Generation winner |
 |-------|---------------:|------------:|---------------|-------------:|----------:|-------------------|
@@ -46,7 +60,7 @@ This does not replace local measurements because their system differs: EVO-X2, U
 
 ## Practical Recommendation
 
-Use this split until a newer same-build local comparison replaces it:
+Use this split until a newer polished same-build local comparison replaces it:
 
 | Workload | Start with | Why |
 |----------|------------|-----|
@@ -58,9 +72,10 @@ Use this split until a newer same-build local comparison replaces it:
 
 ## Next Clean Test
 
-The next publishable upgrade is a true same-build comparison:
+The next publishable upgrade is not another broad argument; it is a more polished repeat of the same-source result:
 
 1. Build current llama.cpp with both Vulkan and HIP from the same commit.
 2. Use the same model files, flags, batch sizes, KV types, and repetition counts.
-3. Test pp512, pp2048, pp8192, pp16384, tg128, and at least one real long-prompt request.
-4. Keep Gemma 4 as a load/support check, not a speed claim unless HIP loads cleanly.
+3. Ensure both binaries embed the correct build id.
+4. Test pp512, pp2048, pp8192, pp16384, tg128, and at least one real long-prompt request.
+5. Keep Gemma 4 as a load/support check, not a speed claim unless HIP loads cleanly.
