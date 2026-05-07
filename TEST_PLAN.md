@@ -2,6 +2,8 @@
 
 This guide should spread because it contains useful, reproducible data that other Strix Halo owners can use immediately. The goal is not to make louder claims. The goal is to keep the guide current, measured, practical, and hard to replace.
 
+For the focused "how far can this Beelink be pushed?" track, see [`MAX_PERFORMANCE_PLAN.md`](MAX_PERFORMANCE_PLAN.md). That file records the current max-performance truth, open test routes, and claim rules for future benchmark campaigns.
+
 ## Principles
 
 1. **Data first.** Every performance claim should map back to a command, version, model, quant, backend, and date.
@@ -238,14 +240,4 @@ scripts/check_benchmark_cleanliness.sh
 
 The goal is "clean enough", not "everything disabled forever." Daily-use services can run outside benchmark windows, but publishable numbers should not be collected while remote desktop sessions, video conferencing, VMs, unrelated containers, or inactive `tuned` profiles are adding measurement noise.
 
-T3 is not optional noise for this workstation. The Strix Halo workflow is operated from T3, so the `3773` backend and `3777` semantic proxy must remain reachable before and during tests. If T3 is broken, pause Strix testing and restore T3 first.
-
-For long or memory-risky runs:
-
-```bash
-scripts/run_with_t3_guard.py --cleanup-cmd "podman stop vllm-gfx1151" -- <benchmark command>
-```
-
-The guard is allowed to stop only the benchmark command and explicit benchmark cleanup targets. It must not stop T3, `3773`, or `3777`.
-
-Hermes bots are separate production-ish services, not Strix Halo benchmark targets. Do not stop, restart, remove, or otherwise manage `hermes-*` Docker containers from this project.
+Local maintainer guardrails for this workstation live in [`MAINTAINER_NOTES.md`](MAINTAINER_NOTES.md). They are intentionally separate from the public benchmark plan.
