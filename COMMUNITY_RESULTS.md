@@ -46,7 +46,7 @@ Power data source: [comment](https://github.com/hogeheer499-commits/strix-halo-g
 
 ## Open Community Lead
 
-Fail-Safe has a three-node Corsair AI Workstation 300 setup connected through a USB4 Ethernet ring and offered to run 2-node or 3-node `llama.cpp` RPC benchmarks. That would be a separate evidence track from single-machine inference, but it could answer a useful question for owners with multiple Strix Halo boxes: when does model sharding over USB4 Ethernet help, and when does network/RPC overhead dominate?
+Fail-Safe has a three-node Corsair AI Workstation 300 setup connected through a USB4 Ethernet ring and offered to run 2-node or 3-node `llama.cpp` RPC benchmarks. That would be a separate evidence track from single-machine inference, but it could answer a useful question for owners with multiple Strix Halo boxes: when does model sharding over USB4 Ethernet help, and when does network/RPC overhead dominate? Tracking issue: [#12](https://github.com/hogeheer499-commits/strix-halo-guide/issues/12).
 
 ## Interpretation
 
