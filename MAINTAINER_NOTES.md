@@ -4,7 +4,7 @@ These notes are for the local Hoge Heer workstation workflow. They are intention
 
 ## Current Handoff
 
-Current as of 2026-05-07. For the latest pushed commit, run `git log -1 --oneline`.
+Current as of 2026-05-09. For the latest pushed commit, run `git log -1 --oneline`.
 
 For a new Strix Halo chat, start by reading:
 
@@ -19,6 +19,12 @@ For a new Strix Halo chat, start by reading:
 
 The guide is share-ready. The latest completed work:
 
+- 2026-05-09 community/trust work:
+  - first independent benchmark report incorporated into `COMMUNITY_RESULTS.md`
+  - three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128
+  - same report added a same-SKU variance envelope and about 150 W sustained generation / about 1.6 J per generated token
+  - `data/community_results.csv`, `data/community_power.csv`, README community badge, and SHARE text updated
+  - GitHub issues #8 and #9 closed as completed; #3, #4, #5, #6, #10, and #12 intentionally left open for real follow-up work
 - 2026-05-07 max-performance campaign added:
   - Qwen3.6 Q4_0 reached 81.30 t/s as a speed-first row
   - Qwen3-Coder b9049 guide-flags confirmation reached 96.76 t/s, no stable 100 t/s result
@@ -56,6 +62,22 @@ The README should answer, within one screen:
 - where reproducibility and security context live
 
 Keep local workflow details here unless they directly affect public reproducibility.
+
+## Community And Support Strategy
+
+Keep community activity real and technical:
+
+- Thank contributors clearly and credit their systems/results.
+- Ask for exact next useful data: hardware, BIOS, kernel, Mesa/ROCm, backend, model, command, CSV/raw logs, power method, and failure notes.
+- Leave open issues open only when they represent real unanswered benchmark questions.
+- Treat slower, failed, or contradictory reports as useful evidence, not a branding problem.
+
+Buy Me a Coffee or a similar support link is acceptable, but keep it secondary:
+
+- Do not place a donation CTA before the technical TL;DR, benchmark table, or reproducibility links.
+- Keep the primary CTA as starring the repo, sharing it, or contributing benchmark results.
+- If a support link is added, use one restrained sentence near the existing star/share sentence or in `SHARE.md`.
+- Do not add `.github/FUNDING.yml` or a README support link until the real support URL exists.
 
 ## T3 Is Required Locally
 
