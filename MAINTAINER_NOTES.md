@@ -24,6 +24,8 @@ The guide is share-ready. The latest completed work:
   - three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128
   - same report added a same-SKU variance envelope and about 150 W sustained generation / about 1.6 J per generated token
   - `data/community_results.csv`, `data/community_power.csv`, README community badge, and SHARE text updated
+  - Fail-Safe also contributed a 3-node USB4 `llama.cpp` RPC matrix; `COMMUNITY_RPC.md`, `data/community_rpc.csv`, and imported raw CSVs under `data/raw/2026-05-09/community-rpc-issue12/` document it
+  - Fail-Safe followed up with USB4 latency tuning data in #13; `USB4_CLUSTER_TUNING.md` and `data/community_usb4_latency.csv` document the recommended `pm_qos_resume_latency_us=100` cluster step
   - GitHub issues #8 and #9 closed as completed; #3, #4, #5, #6, #10, and #12 intentionally left open for real follow-up work
 - 2026-05-07 max-performance campaign added:
   - Qwen3.6 Q4_0 reached 81.30 t/s as a speed-first row

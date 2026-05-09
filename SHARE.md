@@ -100,7 +100,7 @@ Repo: https://github.com/hogeheer499-commits/strix-halo-guide
 Strix Halo local LLM guide with measured setup + raw benchmark evidence:
 https://github.com/hogeheer499-commits/strix-halo-guide
 
-Highlights: 96.76 t/s Qwen3-Coder direct llama.cpp Vulkan/RADV on current b9049, 55.57 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included, and N=3 Corsair community validation at 93.55-95.50 t/s.
+Highlights: 96.76 t/s Qwen3-Coder direct llama.cpp Vulkan/RADV on current b9049, 55.57 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included, N=3 Corsair community validation at 93.55-95.50 t/s, a community 3-node USB4 llama.cpp RPC matrix, and USB4 latency tuning data.
 ```
 
 ## Links To Include
@@ -110,6 +110,8 @@ Highlights: 96.76 t/s Qwen3-Coder direct llama.cpp Vulkan/RADV on current b9049,
 - Server shootout: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SERVER_SHOOTOUT.md
 - Headline claim index: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv
 - Community results: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/COMMUNITY_RESULTS.md
+- Community RPC results: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/COMMUNITY_RPC.md
+- USB4 cluster tuning: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/USB4_CLUSTER_TUNING.md
 - Raw data map: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/README.md
 
 ## What To Ask For

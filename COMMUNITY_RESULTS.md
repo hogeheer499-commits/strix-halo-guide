@@ -6,18 +6,24 @@ Structured data:
 
 - [`data/community_results.csv`](data/community_results.csv)
 - [`data/community_power.csv`](data/community_power.csv)
+- [`data/community_rpc.csv`](data/community_rpc.csv)
+- [`data/community_usb4_latency.csv`](data/community_usb4_latency.csv)
 
 Short version: this report adds three trust signals the primary Beelink results cannot provide alone:
 
 - independent portability across a different Strix Halo chassis, distro, kernel, Mesa version, and container setup
 - same-SKU variance across three Corsair systems with matched software and model files
 - first community whole-system power and energy-per-token baseline for the Qwen3-Coder Vulkan/RADV row
+- first community multi-node `llama.cpp` RPC matrix over a 3-node USB4 mesh
+- first community USB4 latency tuning result tied to a real RPC benchmark cell
 
 ## Current Reports
 
 | Date | Contributor | System | Stack | Model | Result | Why It Matters | Source |
 |------|-------------|--------|-------|-------|--------|----------------|--------|
 | 2026-05-07 | Fail-Safe | Corsair AI Workstation 300, Ryzen AI MAX+ 395, 128GB | Fedora 43, kernel 7.0-rc6, Mesa RADV 25.3.6, kyuz0 Vulkan container, llama.cpp b9049 | Qwen3-Coder 30B-A3B UD-Q4_K_XL | Session 1: 1393.00 pp512, 95.31 tg128. Session 2: 1393.47 pp512, 95.46 tg128. | Independent system, different chassis, different distro, newer RC kernel, older Mesa, no tuned daemon, and still within a few percent of the guide's Qwen3-Coder headline. The second session confirms the result is stable. | [#10](https://github.com/hogeheer499-commits/strix-halo-guide/issues/10) |
+| 2026-05-09 | Fail-Safe | 3x Corsair AI Workstation 300 over USB4 `thunderbolt-net` mesh | Fedora 43, kernel 7.0-rc6, Mesa RADV 25.3.6, kyuz0 Vulkan/RADV and ROCm 7.2 containers | Qwen3-Coder 30B, Qwen3-Coder-Next 80B, MiniMax-M2.7 230B | RPC loses on fits-on-one models; 2-node ROCm runs MiniMax-M2.7 at 238.62 pp512 / 21.41 tg128; 3-node ROCm is slower at 19.74 tg128. | Answers the practical multi-box question: RPC is not a free speedup, but ROCm RPC can make >single-box models usable. | [#12](https://github.com/hogeheer499-commits/strix-halo-guide/issues/12), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) |
+| 2026-05-09 | Fail-Safe | 2-node Corsair USB4 RPC cell from the same fleet | Fedora 43, kernel 7.0-rc6, kyuz0 Vulkan/RADV container | Qwen3-Coder 30B-A3B UD-Q4_K_XL | `pm_qos_resume_latency_us=100` reduced USB4 ping RTT from about 600-700 us to 134 us and improved 2-node Vulkan/RADV tg128 from 75.27 to 76.79 t/s. | Gives a simple, reversible tuning step for active Strix Halo cluster nodes; the kernel-module patch remains experimental. | [#13](https://github.com/hogeheer499-commits/strix-halo-guide/issues/13), [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md) |
 
 ## Cross-Box Variance
 
@@ -44,9 +50,19 @@ Fail-Safe also captured whole-system wall power during the same Corsair Qwen3-Co
 
 Power data source: [comment](https://github.com/hogeheer499-commits/strix-halo-guide/issues/10#issuecomment-4401438242). Structured rows: [`data/community_power.csv`](data/community_power.csv).
 
-## Open Community Lead
+## Community RPC Result
 
-Fail-Safe has a three-node Corsair AI Workstation 300 setup connected through a USB4 Ethernet ring and offered to run 2-node or 3-node `llama.cpp` RPC benchmarks. That would be a separate evidence track from single-machine inference, but it could answer a useful question for owners with multiple Strix Halo boxes: when does model sharding over USB4 Ethernet help, and when does network/RPC overhead dominate? Tracking issue: [#12](https://github.com/hogeheer499-commits/strix-halo-guide/issues/12).
+Fail-Safe also ran the three-node USB4 `llama.cpp` RPC matrix tracked in [#12](https://github.com/hogeheer499-commits/strix-halo-guide/issues/12). This is now documented separately in [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), with the imported raw CSV attachment under [`data/raw/2026-05-09/community-rpc-issue12/`](data/raw/2026-05-09/community-rpc-issue12/).
+
+Short practical read:
+
+- if the model fits on one Strix Halo box, one box is faster for raw single-stream throughput
+- 2-node RPC costs about 14-22% tg128 on the measured fits-on-one models
+- 3-node RPC costs more than 2-node RPC in the measured rows
+- for the 140.8 GB MiniMax-M2.7 model that does not fit on one box, ROCm RPC worked and Vulkan/RADV failed to load
+- for huge models, use the smallest ROCm node count that fits
+
+Follow-up tuning from [#13](https://github.com/hogeheer499-commits/strix-halo-guide/issues/13): for active USB4 cluster nodes, `pm_qos_resume_latency_us=100` is now documented as the recommended simple tuning step in [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md). It improved the same Vulkan/RADV 2-node Qwen3-Coder RPC cell by about 2%. The thunderbolt IRQ-throttle patch is documented as experimental, not a default recommendation.
 
 ## Interpretation
 
@@ -56,6 +72,8 @@ This is strong independent validation for the Vulkan/RADV Qwen3-Coder path. It d
 - The Qwen3-Coder 30B-A3B direct `llama-bench` result stays around 95-97 t/s even with a different distro/kernel/Mesa/container stack.
 - N=3 community data suggests same-SKU Qwen3-Coder tg128 variance can be around 2% even when software and model files match.
 - The first community whole-system power baseline is around 150 W sustained generation and about 1.6 J/token for this Qwen3-Coder Vulkan/RADV row.
+- The first community RPC matrix says multi-box Strix Halo is useful for capacity, not automatic speed. Shard only when the model does not fit or when the capacity tradeoff is worth the RPC tax.
+- The first community USB4 tuning result gives cluster operators a low-friction step for lower latency and tighter benchmark variance, with an idle-power tradeoff.
 - `RADV GFX1151` on older Mesa and `RADV STRIX_HALO` on newer Mesa refer to the same Strix Halo iGPU class; the name changed with Mesa/device-string updates.
 - Community rows should stay out of `data/headline_claims.csv` unless they are reproduced locally or promoted with clear scope.
 
