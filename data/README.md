@@ -14,6 +14,7 @@ python3 scripts/generate_charts.py
 
 - `headline_claims.csv`: machine-readable map from public README headline claims to structured CSVs, raw evidence, charts, and notes.
 - `community_results.csv`: benchmark reports from other Strix Halo systems. These rows are useful external validation but are kept separate from public headline claims.
+- `community_power.csv`: community-reported whole-system wall-power and energy-per-token rows. These are useful external validation and tokens-per-watt baselines, but are not local headline claims.
 - `benchmarks.csv`: existing short-context and backend benchmark rows already published in the guide.
 - `max_performance_campaign.csv`: 2026-05-07 "push the Beelink further" campaign summary, including quant sweeps, same-source HIP/Vulkan, gpt-oss long-context, vLLM AWQ smoke, and negative results.
 - `multi_user.csv`: controlled `llama-server` concurrency results with aggregate throughput, per-request throughput, TTFT, and ITL.

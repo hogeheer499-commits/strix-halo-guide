@@ -16,7 +16,7 @@ social-preview.png
 
 ## One-Line Summary
 
-Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory: setup, model choices, 63-97 t/s current direct Qwen MoE results, 81.3 t/s Qwen3.6 speed-first, 55.6 t/s gpt-oss-120b, 128K context, CSVs, raw logs, reproducibility notes, and independent community validation.
+Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory: setup, model choices, 63-97 t/s current direct Qwen MoE results, 81.3 t/s Qwen3.6 speed-first, 55.6 t/s gpt-oss-120b, 128K context, CSVs, raw logs, reproducibility notes, and N=3 community validation.
 
 ## Short Share Text
 
@@ -30,7 +30,7 @@ Highlights:
 - gpt-oss-120b MXFP4: 55.57 t/s direct llama.cpp Vulkan/RADV on current b9049.
 - Qwen3.6 through Ollama 0.23.1 API: 50.51 t/s warm average.
 - 128K context tested on Qwen3.6 without truncation.
-- Independent community reproduction: Corsair AI Workstation 300 measured 95.31-95.46 t/s Qwen3-Coder across two sessions on Fedora 43 / kernel 7.0-rc6 / Mesa 25.3.6.
+- Independent community validation: three Corsair AI Workstation 300 systems measured 93.55-95.50 t/s Qwen3-Coder, with 0.11% pp512 spread, 2.05% tg128 spread, and about 150 W sustained generation.
 - Includes setup steps, backend choices, raw data, charts, and reproducibility notes.
 
 Repo: https://github.com/hogeheer499-commits/strix-halo-guide
@@ -63,7 +63,7 @@ Headline results:
 - Qwen3.6 128K filled-context decode completed at 32.23 t/s without truncation
 - Server/concurrency testing included: Vulkan/RADV wins at 1-4 parallel requests; Lemonade ROCm wins aggregate throughput at 8-16 in the measured Qwen3.6 sweep
 - HIP/Vulkan crossover testing included: HIP can win prompt processing while Vulkan still wins token generation in local Qwen rows
-- Independent community reproduction included: a Corsair AI Workstation 300 measured 95.31-95.46 t/s Qwen3-Coder across two sessions on Fedora 43 / kernel 7.0-rc6 / Mesa 25.3.6
+- Independent community validation included: three Corsair AI Workstation 300 systems measured 93.55-95.50 t/s Qwen3-Coder, with 0.11% pp512 spread, 2.05% tg128 spread, and about 150 W sustained generation / 1.6 J per token
 
 The guide includes:
 - BIOS / Ubuntu / Mesa / Vulkan setup
@@ -100,7 +100,7 @@ Repo: https://github.com/hogeheer499-commits/strix-halo-guide
 Strix Halo local LLM guide with measured setup + raw benchmark evidence:
 https://github.com/hogeheer499-commits/strix-halo-guide
 
-Highlights: 96.76 t/s Qwen3-Coder direct llama.cpp Vulkan/RADV on current b9049, 55.57 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included, and an independent Corsair AI Workstation 300 reproduction at 95.31-95.46 t/s.
+Highlights: 96.76 t/s Qwen3-Coder direct llama.cpp Vulkan/RADV on current b9049, 55.57 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included, and N=3 Corsair community validation at 93.55-95.50 t/s.
 ```
 
 ## Links To Include

@@ -2,7 +2,7 @@
 ![Speed](https://img.shields.io/badge/63--97_t/s_current_direct_Qwen_MoE-brightgreen?style=for-the-badge)
 ![Qwen3.6](https://img.shields.io/badge/Qwen3.6_speed--first-81.3_t/s-2563eb?style=for-the-badge)
 ![gpt-oss](https://img.shields.io/badge/gpt--oss--120b-55.6_t/s_MXFP4-0b7285?style=for-the-badge)
-[![Independent Repro](https://img.shields.io/badge/independent_repro-Corsair_95.5_t/s-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
+[![Community N3](https://img.shields.io/badge/community_N3-Corsair_93.5--95.5_tps-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
 ![RAM](https://img.shields.io/badge/128GB_unified-blue?style=for-the-badge)
 ![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
 ![Last commit](https://img.shields.io/github/last-commit/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
@@ -17,7 +17,7 @@
 >
 > Measured primarily on one Beelink GTR9 Pro. Every headline claim below links to CSVs, raw logs, charts, or explicit notes. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights.
 >
-> Independent reproduction: a Corsair AI Workstation 300 reproduced the Qwen3-Coder Vulkan/RADV path at 95.31-95.46 t/s across two sessions on Fedora 43, kernel 7.0-rc6, Mesa 25.3.6, and a kyuz0 container. See [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md).
+> Independent reproduction: three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128, with 0.11% pp512 spread, 2.05% tg128 spread, and about 150 W sustained generation / 1.6 J per generated token. See [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md).
 
 [Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [What Runs](#what-you-can-run-quick-snapshot) | [Use Cases](#use-this-if-you-want) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Community](COMMUNITY_RESULTS.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
 
@@ -51,7 +51,7 @@
 | Largest new local model check | gpt-oss-120b MXFP4 split GGUF loaded locally with llama.cpp Vulkan/RADV b9049: 55.57 t/s tg128, 726.99 t/s pp512, and prompt processing tested through 65K tokens. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Backend split | Vulkan/RADV still wins measured generation; ROCm/HIP can win prompt-processing-heavy work. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md). |
-| Community validation | A Corsair AI Workstation 300 report reproduced the Qwen3-Coder Vulkan/RADV path at 95.31-95.46 t/s across two sessions on Fedora 43, kernel 7.0-rc6, Mesa 25.3.6, and a kyuz0 container. See [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md). |
+| Community validation | Three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128. The same report adds a same-SKU variance envelope and whole-system power baseline. See [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md). |
 | Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
 | Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
 
@@ -119,7 +119,8 @@ Have a Strix Halo / Ryzen AI MAX system? Please share results, even if they are 
 - Open a [benchmark report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md) with your system, BIOS UMA setting, kernel, Mesa/ROCm versions, backend, model, command, CSV/raw output, and notes.
 - Open a [model request](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=model-request.md) if there is a model/backend combination that should be tested.
 - Use [Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discussions) for setup questions, comparisons, and early results that are not ready for a benchmark issue yet.
-- Current community reports live in [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md) and [`data/community_results.csv`](data/community_results.csv).
+- Power telemetry is useful too if you have reliable wall-power data; it helps turn raw tokens/sec into tokens-per-watt context.
+- Current community reports live in [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`data/community_results.csv`](data/community_results.csv), and [`data/community_power.csv`](data/community_power.csv).
 - See [`SHARE.md`](SHARE.md) for short Reddit/HN/forum text and the current social preview image if you want to share the guide.
 
 ## Best Current Setup Tested Here
