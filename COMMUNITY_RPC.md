@@ -5,6 +5,9 @@ These results are community-reported by [Fail-Safe](https://github.com/Fail-Safe
 Structured data:
 
 - structured summary: [`data/community_rpc.csv`](data/community_rpc.csv)
+- server/TTFT rows: [`data/community_rpc_server.csv`](data/community_rpc_server.csv)
+- failure rows: [`data/community_rpc_failures.csv`](data/community_rpc_failures.csv)
+- model hashes: [`data/community_rpc_model_hashes.csv`](data/community_rpc_model_hashes.csv)
 - raw imported attachment, including the contributor's combined `llama-bench` CSV: [`data/raw/2026-05-09/community-rpc-issue12/`](data/raw/2026-05-09/community-rpc-issue12/)
 
 ## Why This Matters
@@ -26,6 +29,8 @@ Fail-Safe provided:
 - matched software across the fleet: Fedora 43, kernel 7.0-rc6, Mesa RADV 25.3.6, kyuz0 Vulkan/RADV and ROCm 7.2 containers
 - raw `llama-bench -o csv` outputs for 14 successful cells
 - clear negative results for failed cells
+- exact model sources and SHA256 hashes
+- `llama-server` TTFT and streaming generation measurements for 1-node versus 2-node RPC
 - practical interpretation of what this means for owners of more than one Strix Halo machine
 
 ## Setup
@@ -105,6 +110,48 @@ Interpretation: when sharding is required, use the smallest node count that fits
 
 The Vulkan/RADV failure is also useful. The report hit a single allocation failure around 792 MiB even in the 2-node RPC case. That suggests layer sharding does not rescue a tensor-level Vulkan allocation limit. ROCm handled the same MiniMax path.
 
+## Failure Provenance
+
+Fail-Safe followed up with the stderr details for the failed MiniMax cells.
+
+| Backend | Nodes | Failure | Why it matters |
+|---------|-------|---------|----------------|
+| Vulkan/RADV | 1 | `radv/amdgpu` failed to allocate `830472192` bytes, about 792 MiB, in GTT (`domains: 4`). | This is not simple total-GTT exhaustion; it points to a per-buffer allocation ceiling or contiguous-allocation issue. |
+| Vulkan/RADV RPC | 2 | RPC follower hit the same 830472192-byte allocation failure, then the leader saw the remote server crash/disconnect. | Layer sharding does not split individual tensor allocations, so RPC cannot rescue this RADV failure mode. |
+| ROCm 7.2 | 1 | Generic model-load failure. | Distinct from Vulkan: ROCm 2-node and 3-node worked, so ROCm 1-node appears to be a true capacity failure for the 140.8 GB model. |
+
+Structured rows: [`data/community_rpc_failures.csv`](data/community_rpc_failures.csv).
+
+## Model Provenance
+
+The RPC matrix used Unsloth Dynamic GGUFs:
+
+| Model | Source repo | Quant | Files |
+|-------|-------------|-------|-------|
+| Qwen3-Coder-30B-A3B-Instruct | `unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF` | UD-Q4_K_XL | 1 GGUF |
+| Qwen3-Coder-Next | `unsloth/Qwen3-Coder-Next-GGUF` | UD-Q8_K_XL | 3 shards |
+| MiniMax-M2.7 | `unsloth/MiniMax-M2.7-GGUF` | UD-Q4_K_XL | 4 shards |
+
+SHA256 rows: [`data/community_rpc_model_hashes.csv`](data/community_rpc_model_hashes.csv).
+
+## API Serving And TTFT
+
+Fail-Safe also ran the Qwen3-Coder 30B UD-Q4_K_XL path through `llama-server` instead of `llama-bench`, using `/completion` streaming, `cache_prompt: false`, `temperature: 0`, an 83-token prompt, 128 generated tokens, 2 warmups discarded, and 5 measured requests.
+
+| Setup | TTFT mean | Total time mean | Streaming gen rate | Compared with `llama-bench` |
+|-------|-----------|-----------------|--------------------|------------------------------|
+| 1-node Vulkan/RADV | 201.4 ms | 1584.9 ms | 92.52 t/s | 2.6% below 95.0 t/s `llama-bench` |
+| 2-node Vulkan/RADV RPC | 300.8 ms | 2143.1 ms | 69.51 t/s | 8.2% below 75.7 t/s `llama-bench` |
+
+This turns the RPC result from a synthetic benchmark into practical serving evidence:
+
+- single-box `llama-server` overhead is small enough for normal chat/tool use
+- RPC adds about 100 ms TTFT on this short prompt
+- TTFT variance is much higher under RPC: about 2 ms stdev on 1-node versus about 19 ms on 2-node
+- for interactive UX, single-box Strix Halo is the cleaner path when the model fits; RPC remains mainly a capacity tool
+
+Structured rows: [`data/community_rpc_server.csv`](data/community_rpc_server.csv).
+
 ## Practical Recommendation
 
 For most Strix Halo users:
@@ -119,4 +166,7 @@ For most Strix Halo users:
 - GitHub issue: [#12](https://github.com/hogeheer499-commits/strix-halo-guide/issues/12)
 - Raw attachment imported here: [`data/raw/2026-05-09/community-rpc-issue12/`](data/raw/2026-05-09/community-rpc-issue12/)
 - Structured summary CSV: [`data/community_rpc.csv`](data/community_rpc.csv)
+- Server/TTFT CSV: [`data/community_rpc_server.csv`](data/community_rpc_server.csv)
+- Failure CSV: [`data/community_rpc_failures.csv`](data/community_rpc_failures.csv)
+- Model-hash CSV: [`data/community_rpc_model_hashes.csv`](data/community_rpc_model_hashes.csv)
 - Contributor raw combined CSV: [`data/raw/2026-05-09/community-rpc-issue12/csv-combined-rpc-bench.csv`](data/raw/2026-05-09/community-rpc-issue12/csv-combined-rpc-bench.csv)

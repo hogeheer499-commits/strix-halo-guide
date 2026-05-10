@@ -7,6 +7,7 @@ This is advanced Strix Halo cluster material. It is not needed for a normal one-
 Structured data:
 
 - [`data/community_usb4_latency.csv`](data/community_usb4_latency.csv)
+- [`data/community_usb4_idle_power.csv`](data/community_usb4_idle_power.csv)
 - related RPC results: [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md)
 
 ## Practical Recommendation
@@ -20,6 +21,8 @@ done
 ```
 
 Run it on every box that participates in the USB4 link.
+
+Use MTU 9000 for the `thunderbolt-net` link unless you have a reason to retest. In this community RPC cell, MTU 9000 beat both MTU 1500 and MTU 65520.
 
 To revert:
 
@@ -45,6 +48,20 @@ Fail-Safe tested the same Qwen3-Coder 30B Vulkan/RADV 2-node RPC cell from issue
 
 The recommended `pm_qos` step reduced ping RTT from about 600-700 us to about 134 us and improved tg128 by about 2%.
 
+Follow-up idle-power testing corrected the initial worst-case estimate. On two toggled Corsair nodes, `pm_qos_resume_latency_us=100` raised idle power by about 1.4-1.6 W per box, not 5-15 W.
+
+## MTU Check
+
+The raw follow-up rows also tested MTU size on the same 2-node Vulkan/RADV RPC cell.
+
+| MTU | Vulkan 2-node tg128 | Interpretation |
+|-----|---------------------|----------------|
+| 1500 | 73.89 t/s | slower than jumbo frames |
+| 9000 | 75.27 t/s | best stock setting in this report |
+| 65520 | 74.65 t/s | did not beat MTU 9000 |
+
+Practical read: use MTU 9000 for this `thunderbolt-net` RPC path before spending time on larger jumbo settings.
+
 ## Measured Tuning Ladder
 
 | Configuration | Ping RTT avg | Vulkan 2-node tg128 | Change vs stock | Per-rep stddev | Recommendation |
@@ -63,9 +80,17 @@ Interpretation:
 
 ## Tradeoff
 
-`pm_qos_resume_latency_us=100` keeps CPUs out of deeper sleep states. Fail-Safe reports an expected idle-power cost around 5-15 W per box.
+`pm_qos_resume_latency_us=100` keeps CPUs out of deeper sleep states, but the measured Strix Halo idle-power cost was small in this report.
 
-Use it for active cluster nodes, benchmark windows, or services that stay hot. It may not be worth enabling full-time on a workstation that idles most of the day.
+| Box | Role | Baseline idle | `pm_qos=100` idle | Reverted idle | Delta |
+|-----|------|---------------|-------------------|---------------|-------|
+| ai-1 | untouched control | 33.94 W | 34.03 W | 34.30 W | -0.09 W |
+| ai-2 | toggled | 29.29 W | 30.50 W | 28.50 W | +1.60 W |
+| ai-3 | toggled | 33.04 W | 34.10 W | 32.43 W | +1.36 W |
+
+The control box staying flat makes the roughly 1.5 W rise on the toggled boxes credible. For a three-box cluster, that is about 4-5 W total idle increase, which is a much more comfortable tradeoff than the original worst-case estimate. Still, measure your own system if idle power matters.
+
+Structured rows: [`data/community_usb4_idle_power.csv`](data/community_usb4_idle_power.csv).
 
 ## Experimental Thunderbolt Patch
 

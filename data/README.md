@@ -16,7 +16,11 @@ python3 scripts/generate_charts.py
 - `community_results.csv`: benchmark reports from other Strix Halo systems. These rows are useful external validation but are kept separate from public headline claims.
 - `community_power.csv`: community-reported whole-system wall-power and energy-per-token rows. These are useful external validation and tokens-per-watt baselines, but are not local headline claims.
 - `community_rpc.csv`: community-reported multi-node `llama.cpp` RPC rows over USB4 Ethernet. These are advanced capacity/scaling results and are not single-machine headline claims.
+- `community_rpc_server.csv`: community-reported `llama-server` TTFT and generation-rate rows for single-box and RPC serving.
+- `community_rpc_failures.csv`: community-reported RPC failure rows, including allocator/capacity failure interpretation.
+- `community_rpc_model_hashes.csv`: community-reported model source and SHA256 provenance for RPC rows.
 - `community_usb4_latency.csv`: community-reported USB4 latency tuning rows for Strix Halo clusters. These are advanced cluster-tuning results and are not relevant to the default single-machine setup.
+- `community_usb4_idle_power.csv`: community-reported idle-power measurements for the USB4 `pm_qos` tuning step.
 - `benchmarks.csv`: existing short-context and backend benchmark rows already published in the guide.
 - `max_performance_campaign.csv`: 2026-05-07 "push the Beelink further" campaign summary, including quant sweeps, same-source HIP/Vulkan, gpt-oss long-context, vLLM AWQ smoke, and negative results.
 - `multi_user.csv`: controlled `llama-server` concurrency results with aggregate throughput, per-request throughput, TTFT, and ITL.
