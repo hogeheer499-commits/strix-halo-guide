@@ -80,6 +80,14 @@ Before committing raw host-state or benchmark-environment captures, redact anyth
 
 Keep benchmark-relevant facts such as timestamp, kernel, memory, tuned profile, driver, GPU device string, llama.cpp commit, model hash, command, and raw benchmark output.
 
+Run the lightweight repo checks before publishing docs/data updates:
+
+```bash
+python3 scripts/validate_repo.py
+```
+
+GitHub Actions runs the same validation on `main` pushes and pull requests.
+
 ## Community And Support Strategy
 
 Keep community activity real and technical:
