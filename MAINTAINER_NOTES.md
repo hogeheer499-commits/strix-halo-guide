@@ -4,7 +4,7 @@ These notes are for the local Hoge Heer workstation workflow. They are intention
 
 ## Current Handoff
 
-Current as of 2026-05-09. For the latest pushed commit, run `git log -1 --oneline`.
+Current as of 2026-05-10. For the latest pushed commit, run `git log -1 --oneline`.
 
 For a new Strix Halo chat, start by reading:
 
@@ -27,8 +27,10 @@ The guide is share-ready. The latest completed work:
   - Fail-Safe also contributed a 3-node USB4 `llama.cpp` RPC matrix; `COMMUNITY_RPC.md`, `data/community_rpc.csv`, and imported raw CSVs under `data/raw/2026-05-09/community-rpc-issue12/` document it
   - Fail-Safe followed up with USB4 latency tuning data in #13; `USB4_CLUSTER_TUNING.md` and `data/community_usb4_latency.csv` document the recommended `pm_qos_resume_latency_us=100` cluster step
   - 2026-05-10 follow-ups added Qwen3.6 community quant checks, RPC model hashes/failure rows, `llama-server` TTFT rows, and measured `pm_qos` idle-power cost around 1.5 W per toggled box
+  - Raw follow-up artifacts are now stored under `data/raw/2026-05-09/community-qwen36-issue10/`, `data/raw/2026-05-10/community-rpc-followup-issue12/`, and `data/raw/2026-05-10/community-usb4-tuning-issue13/`
+  - README now has `Community-Tested Rules Of Thumb`, turning the community data into practical decisions for visitors
   - `CONTRIBUTORS.md` credits Fail-Safe as the first major community benchmark contributor
-  - GitHub issues #8 and #9 closed as completed; #3, #4, #5, #6, #10, and #12 intentionally left open for real follow-up work
+  - GitHub issues #8 and #9 closed as completed; #3, #4, #5, #6, #10, #12, and #13 intentionally left open for real follow-up work
 - 2026-05-07 max-performance campaign added:
   - Qwen3.6 Q4_0 reached 81.30 t/s as a speed-first row
   - Qwen3-Coder b9049 guide-flags confirmation reached 96.76 t/s, no stable 100 t/s result
@@ -47,13 +49,13 @@ The guide is share-ready. The latest completed work:
 
 Current local-only handoff details live in `CONTEXT.md`. That file is intentionally ignored by git and should be used for local continuity, not public claims.
 
-Known local untracked scratch directory:
+Known local scratch directory:
 
 ```text
-data/raw/2026-05-05/server-shootout/kyuz0-vllm-awq-qwen36-t3-baseline/
+local-scratch/server-shootout/kyuz0-vllm-awq-qwen36-t3-baseline/
 ```
 
-Keep it untracked until the vLLM AWQ run is either completed and documented or deliberately discarded.
+This contains the old incomplete vLLM AWQ startup artifact. It is ignored by git and intentionally kept out of `data/raw/`, which should contain only public evidence used by the guide.
 
 ## Keep Public Docs Separate
 

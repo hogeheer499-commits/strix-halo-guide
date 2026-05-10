@@ -8,6 +8,7 @@ Structured data:
 
 - [`data/community_usb4_latency.csv`](data/community_usb4_latency.csv)
 - [`data/community_usb4_idle_power.csv`](data/community_usb4_idle_power.csv)
+- raw tuning CSVs and patch files: [`data/raw/2026-05-10/community-usb4-tuning-issue13/`](data/raw/2026-05-10/community-usb4-tuning-issue13/)
 - related RPC results: [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md)
 
 ## Practical Recommendation
@@ -106,7 +107,8 @@ echo "drivers/thunderbolt/*" > .git/info/sparse-checkout
 git fetch --depth=1 origin tag v7.0-rc6
 git checkout FETCH_HEAD
 
-# apply yann's patch from the Level1Techs thread, then build out-of-tree
+# apply yann's patch from data/raw/2026-05-10/community-usb4-tuning-issue13/yann-thunderbolt-throttle.patch,
+# use the Makefile from that same directory, then build out-of-tree
 make -C /lib/modules/$(uname -r)/build M=$(pwd) modules
 
 sudo modprobe -r thunderbolt_net thunderbolt
@@ -121,6 +123,11 @@ Do not treat this as the default guide path:
 - `throttle=0` has been reported to risk CPU saturation during bandwidth-heavy tests on other hardware
 - local gains over `pm_qos` were small in this specific Strix Halo RPC benchmark
 
+Raw patch and Makefile:
+
+- [`data/raw/2026-05-10/community-usb4-tuning-issue13/yann-thunderbolt-throttle.patch`](data/raw/2026-05-10/community-usb4-tuning-issue13/yann-thunderbolt-throttle.patch)
+- [`data/raw/2026-05-10/community-usb4-tuning-issue13/Makefile`](data/raw/2026-05-10/community-usb4-tuning-issue13/Makefile)
+
 ## Forward Pointer
 
 The same Level1Techs thread also discusses `mgeppert`'s zero-copy DMA work, which bypasses the IP stack and reports much higher USB4 throughput and much lower latency than `thunderbolt-net`.
@@ -131,4 +138,5 @@ That is a kernel-driver/research path, not a copy-paste setup step. It is releva
 
 - Fail-Safe issue: [#13](https://github.com/hogeheer499-commits/strix-halo-guide/issues/13)
 - Related RPC matrix: [#12](https://github.com/hogeheer499-commits/strix-halo-guide/issues/12)
+- Raw USB4 tuning artifacts: [`data/raw/2026-05-10/community-usb4-tuning-issue13/`](data/raw/2026-05-10/community-usb4-tuning-issue13/)
 - Level1Techs USB4 thread: <https://forum.level1techs.com/t/benchmarking-usb4-performance-on-strix-halo/245299>

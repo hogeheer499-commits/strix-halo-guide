@@ -7,8 +7,18 @@ Structured data:
 - [`data/community_results.csv`](data/community_results.csv)
 - [`data/community_power.csv`](data/community_power.csv)
 - [`data/community_rpc.csv`](data/community_rpc.csv)
+- [`data/community_rpc_server.csv`](data/community_rpc_server.csv)
+- [`data/community_rpc_failures.csv`](data/community_rpc_failures.csv)
+- [`data/community_rpc_model_hashes.csv`](data/community_rpc_model_hashes.csv)
 - [`data/community_usb4_latency.csv`](data/community_usb4_latency.csv)
+- [`data/community_usb4_idle_power.csv`](data/community_usb4_idle_power.csv)
 - [`CONTRIBUTORS.md`](CONTRIBUTORS.md)
+
+Raw community follow-up artifacts:
+
+- Qwen3.6 raw rows: [`data/raw/2026-05-09/community-qwen36-issue10/`](data/raw/2026-05-09/community-qwen36-issue10/)
+- RPC failure snippets: [`data/raw/2026-05-10/community-rpc-followup-issue12/`](data/raw/2026-05-10/community-rpc-followup-issue12/)
+- USB4 tuning CSVs and patch notes: [`data/raw/2026-05-10/community-usb4-tuning-issue13/`](data/raw/2026-05-10/community-usb4-tuning-issue13/)
 
 Short version: these reports add trust signals the primary Beelink results cannot provide alone:
 
@@ -18,6 +28,8 @@ Short version: these reports add trust signals the primary Beelink results canno
 - first community multi-node `llama.cpp` RPC matrix over a 3-node USB4 mesh
 - first community USB4 latency tuning result tied to a real RPC benchmark cell
 - first community Qwen3.6 Q4_0/Q4_K_M comparison on a second Strix Halo chassis
+
+For the shortest practical decision layer, see the README section [Community-Tested Rules Of Thumb](README.md#community-tested-rules-of-thumb).
 
 ## Current Reports
 

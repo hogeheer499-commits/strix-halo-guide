@@ -33,6 +33,12 @@ python3 scripts/generate_charts.py
 - `../SMOKE_TESTS.md`: human-readable smoke-test notes and verdicts.
 - `../charts/`: generated SVG charts derived from the CSV files.
 
+## Raw Community Artifacts
+
+- `raw/2026-05-09/community-qwen36-issue10/`: raw Qwen3.6 Q4_0/Q4_K_M community rows from issue #10.
+- `raw/2026-05-10/community-rpc-followup-issue12/`: raw MiniMax failure snippets from issue #12.
+- `raw/2026-05-10/community-usb4-tuning-issue13/`: raw USB4 tuning CSVs plus the experimental thunderbolt patch and Makefile from issue #13.
+
 ## Status Values
 
 - `measured-local`: measured on this guide's Beelink GTR9 Pro and suitable for current claims.

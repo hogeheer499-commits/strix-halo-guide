@@ -9,6 +9,7 @@ Structured data:
 - failure rows: [`data/community_rpc_failures.csv`](data/community_rpc_failures.csv)
 - model hashes: [`data/community_rpc_model_hashes.csv`](data/community_rpc_model_hashes.csv)
 - raw imported attachment, including the contributor's combined `llama-bench` CSV: [`data/raw/2026-05-09/community-rpc-issue12/`](data/raw/2026-05-09/community-rpc-issue12/)
+- raw follow-up failure snippets: [`data/raw/2026-05-10/community-rpc-followup-issue12/`](data/raw/2026-05-10/community-rpc-followup-issue12/)
 
 ## Why This Matters
 
@@ -120,7 +121,7 @@ Fail-Safe followed up with the stderr details for the failed MiniMax cells.
 | Vulkan/RADV RPC | 2 | RPC follower hit the same 830472192-byte allocation failure, then the leader saw the remote server crash/disconnect. | Layer sharding does not split individual tensor allocations, so RPC cannot rescue this RADV failure mode. |
 | ROCm 7.2 | 1 | Generic model-load failure. | Distinct from Vulkan: ROCm 2-node and 3-node worked, so ROCm 1-node appears to be a true capacity failure for the 140.8 GB model. |
 
-Structured rows: [`data/community_rpc_failures.csv`](data/community_rpc_failures.csv).
+Structured rows: [`data/community_rpc_failures.csv`](data/community_rpc_failures.csv). Raw stderr snippets: [`data/raw/2026-05-10/community-rpc-followup-issue12/`](data/raw/2026-05-10/community-rpc-followup-issue12/).
 
 ## Model Provenance
 
@@ -169,4 +170,5 @@ For most Strix Halo users:
 - Server/TTFT CSV: [`data/community_rpc_server.csv`](data/community_rpc_server.csv)
 - Failure CSV: [`data/community_rpc_failures.csv`](data/community_rpc_failures.csv)
 - Model-hash CSV: [`data/community_rpc_model_hashes.csv`](data/community_rpc_model_hashes.csv)
+- Raw follow-up failure snippets: [`data/raw/2026-05-10/community-rpc-followup-issue12/`](data/raw/2026-05-10/community-rpc-followup-issue12/)
 - Contributor raw combined CSV: [`data/raw/2026-05-09/community-rpc-issue12/csv-combined-rpc-bench.csv`](data/raw/2026-05-09/community-rpc-issue12/csv-combined-rpc-bench.csv)

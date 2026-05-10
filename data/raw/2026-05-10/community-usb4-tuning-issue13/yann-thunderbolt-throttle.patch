@@ -1,0 +1,22 @@
+--- a/nhi.c
++++ b/nhi.c
+@@ -50,6 +50,10 @@
+ module_param(host_reset, bool, 0444);
+ MODULE_PARM_DESC(host_reset, "reset USB4 host router (default: true)");
+ 
++static int throttle = DIV_ROUND_UP(3 * NSEC_PER_USEC, 256);
++module_param(throttle, int, 0444);
++MODULE_PARM_DESC(throttle, "Interrupt throttling in 256ns increments");
++
+ static int ring_interrupt_index(const struct tb_ring *ring)
+ {
+ 	int bit = ring->hop;
+@@ -1038,7 +1042,7 @@
+ static void nhi_enable_int_throttling(struct tb_nhi *nhi)
+ {
+ 	/* Throttling is specified in 256ns increments */
+-	u32 throttle = DIV_ROUND_UP(128 * NSEC_PER_USEC, 256);
++	//u32 throttle = DIV_ROUND_UP(3 * NSEC_PER_USEC, 256);
+ 	unsigned int i;
+ 
+ 	/*
