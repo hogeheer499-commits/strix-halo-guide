@@ -35,7 +35,9 @@ python3 scripts/generate_charts.py
 
 ## Raw Community Artifacts
 
+- `raw/2026-05-07/community-qwen-coder-issue10/`: provenance note mapping the original Qwen3-Coder issue #10 comments to structured community CSV rows.
 - `raw/2026-05-09/community-qwen36-issue10/`: raw Qwen3.6 Q4_0/Q4_K_M community rows from issue #10.
+- `raw/2026-05-09/community-rpc-issue12/`: raw RPC matrix CSVs from issue #12.
 - `raw/2026-05-10/community-rpc-followup-issue12/`: raw MiniMax failure snippets from issue #12.
 - `raw/2026-05-10/community-usb4-tuning-issue13/`: raw USB4 tuning CSVs plus the experimental thunderbolt patch and Makefile from issue #13.
 

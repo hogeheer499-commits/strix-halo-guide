@@ -10,7 +10,7 @@
 
 # AMD Strix Halo Local LLM Guide
 
-**Current direct Vulkan/RADV results on AMD Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory: Qwen3-Coder 30B at 96.8 t/s, Qwen3.6 default-quality path at 62.6 t/s, Qwen3.6 speed-first Q4_0 at 81.3 t/s, and gpt-oss-120b MXFP4 at 55.6 t/s.**
+**Current direct Vulkan/RADV results on AMD Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory: Qwen3-Coder 30B at 96.8 t/s, Qwen3.6 balanced UD-Q4_K_M path at 62.6 t/s, Qwen3.6 speed-first Q4_0 at 81.3 t/s, and gpt-oss-120b MXFP4 at 55.6 t/s.**
 
 > If this guide saves you time, consider giving it a star -- it helps others find it.
 > Official source: https://github.com/hogeheer499-commits/strix-halo-guide
@@ -48,10 +48,10 @@
 | What was tested? | Local LLM inference and local API serving on Strix Halo, mainly Vulkan/RADV llama.cpp, Ollama, ROCm/HIP, Lemonade `llamacpp-rocm`, and early vLLM smoke tests. |
 | Primary hardware | Beelink GTR9 Pro, Ryzen AI MAX+ 395, Radeon 8060S `gfx1151`, 128GB LPDDR5X-8000 unified memory. |
 | Best easy path | Ollama 0.23.1 with Vulkan/RADV for chat, model pulling, and Open WebUI. |
-| Fastest measured short-context path | Direct llama.cpp / `llama-server` with Vulkan/RADV. Current b9049 campaign: Qwen3-Coder 30B-A3B reached 96.76 t/s; Qwen3.6 35B-A3B reached 62.56 t/s on the default-quality UD row and 81.30 t/s on the speed-first Q4_0 row. Previous b9010 Qwen3-Coder peak was 97.24 t/s. |
+| Fastest measured short-context path | Direct llama.cpp / `llama-server` with Vulkan/RADV. Current b9049 campaign: Qwen3-Coder 30B-A3B reached 96.76 t/s; Qwen3.6 35B-A3B reached 62.56 t/s on the balanced UD row and 81.30 t/s on the speed-first Q4_0 row. Previous b9010 Qwen3-Coder peak was 97.24 t/s. |
 | Largest new local model check | gpt-oss-120b MXFP4 split GGUF loaded locally with llama.cpp Vulkan/RADV b9049: 55.57 t/s tg128, 726.99 t/s pp512, and prompt processing tested through 65K tokens. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
-| Backend split | Vulkan/RADV still wins measured generation; ROCm/HIP can win prompt-processing-heavy work. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md). |
+| Backend split | Vulkan/RADV wins measured generation on the current single-box Qwen rows; ROCm/HIP can win prompt-processing-heavy work, and ROCm RPC is required for the tested MiniMax capacity case. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) and [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md). |
 | Community validation | Three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128. The same contributor added Qwen3.6 quant checks, same-SKU variance, whole-system power, a 3-node USB4 RPC matrix, RPC serving/TTFT data, and USB4 latency tuning. See [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), and [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md). |
 | Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
 | Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
@@ -121,7 +121,7 @@ These are the practical decisions extracted from the primary Beelink runs plus F
 |-----------|---------------|-----|----------|
 | One Strix Halo AI PC | Use Vulkan/RADV for GGUF chat, coding, and generation-heavy inference. | It is the fastest measured practical path for the main Qwen MoE rows. | [`headline claims`](data/headline_claims.csv), [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md) |
 | The model fits in 128GB unified memory | Do not use `llama.cpp` RPC for raw single-stream speed. | 2-node RPC lost about 14-22% tg128 on fits-on-one models; 3-node was slower again. | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`data/community_rpc.csv`](data/community_rpc.csv) |
-| The model does not fit on one box | Use ROCm RPC with the smallest node count that fits. | MiniMax-M2.7 140.8GB failed on one box, worked on 2-node ROCm, and slowed down on 3-node ROCm. | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) |
+| A huge GGUF does not fit on one box | Try ROCm RPC first, starting with the smallest node count that fits. | In the tested MiniMax-M2.7 140.8GB case, one box failed, 2-node ROCm worked, and 3-node ROCm was slower. This is a capacity rule from that case, not a universal speedup rule. | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) |
 | Building a USB4 Strix Halo cluster | Start with MTU 9000 and `pm_qos_resume_latency_us=100`. | MTU 9000 beat 1500 and 65520; `pm_qos` added about +2% tg128 with only about 1.5 W idle cost per toggled box in the community report. | [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md) |
 | Choosing Qwen3.6 quantization | Use Q4_K_M/UD-Q4_K_M for balanced defaults; use Q4_0 only when speed matters more than quality. | Q4_0 was faster locally and in the Corsair report, but this guide has not made a model-quality claim for it. | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`data/community_results.csv`](data/community_results.csv) |
 | Serving an interactive local API | Prefer single-box `llama-server` when the model fits. | Community `llama-server` TTFT was about 201 ms on 1 node versus about 301 ms on 2-node RPC, with higher RPC variance. | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`data/community_rpc_server.csv`](data/community_rpc_server.csv) |
@@ -243,7 +243,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 - [What You Can Run](#what-you-can-run)
 - [Benchmark Results](#benchmark-results)
   - [Benchmark Charts](#benchmark-charts)
-  - [Ollama Vulkan (RADV)](#ollama-vulkan-radv-ollama-0212)
+  - [Ollama Vulkan (RADV)](#ollama-vulkan-radv-ollama-0231)
   - [llama-server Multi-User Serving](#llama-server-multi-user-serving-b9010)
   - [ROCm HIP (llama.cpp)](#rocm-hip-llamacpp)
   - [Backend Comparison](#backend-comparison-table)
@@ -439,7 +439,7 @@ Raw data: `data/multi_user.csv`, `data/raw/2026-05-03/multi-user/`, and `data/ra
 > **Important caveats:**
 > - The +25% improvement is specific to **MoE models on Vulkan** due to the Wave32 FA refactor and graphics queue change. Dense models (Llama 2 7B, Llama 3.1 70B) showed minimal change (<2%) because they were already at the memory bandwidth ceiling.
 > - If you use [kyuz0's containers](https://github.com/kyuz0/amd-strix-halo-toolboxes), you get these updates automatically -- the containers rebuild on every llama.cpp master update. kyuz0's toolboxes remain the easiest way to stay current. Our finding here validates the importance of their approach.
-> - **WARNING: AMDVLK silently overrides RADV.** If AMDVLK is installed, its `/etc/vulkan/icd.d/amd_icd64.json` takes priority over RADV. This halves your pp speed (1080 → 660 pp512) without any visible error. Always set `AMD_VULKAN_ICD=RADV` or uninstall AMDVLK entirely: `sudo dpkg -r amdvlk && sudo rm -f /etc/vulkan/icd.d/amd_icd64.json`. Check your driver: RADV shows `(RADV STRIX_HALO) (radv)` with `shared memory: 65536` in llama-bench output. AMDVLK shows `(AMD open-source driver)` with `shared memory: 32768`. We [originally reported this as a llama.cpp regression](https://github.com/ggml-org/llama.cpp/issues/22375) -- it wasn't.
+> - **WARNING: AMDVLK silently overrides RADV.** If AMDVLK is installed, its `/etc/vulkan/icd.d/amd_icd64.json` takes priority over RADV. This halves your pp speed (1080 -> 660 pp512) without any visible error. Always set `AMD_VULKAN_ICD=RADV` or uninstall AMDVLK entirely: `sudo dpkg -r amdvlk && sudo rm -f /etc/vulkan/icd.d/amd_icd64.json`. Check your driver: RADV shows `(RADV STRIX_HALO) (radv)` with `shared memory: 65536` in llama-bench output. AMDVLK shows `(AMD open-source driver)` with `shared memory: 32768`. We [originally reported this as a llama.cpp regression](https://github.com/ggml-org/llama.cpp/issues/22375) -- it wasn't.
 
 **Qwen3.5-35B-A3B** (Q4_K_M, 19.9GB, MoE) -- the biggest improvement:
 
@@ -608,7 +608,7 @@ export ROCBLAS_USE_HIPBLASLT=1
 | **RADV** | Llama 2 7B Q4_K_M | **1153.53** | **1364.45** | **1377.18** | **1355.88** | 48.12 |
 | **AMDVLK** | Llama 2 7B Q4_K_M | 334.50 | 337.96 | 327.35 | 325.33 | 48.02 |
 
-> **Critical finding (b8298):** AMDVLK has a 2 GiB single buffer allocation limit that cripples pp on dense models (3-4X slower on Llama 2 7B). On MoE models, AMDVLK was slightly faster on tg (+6.5%) with b8298, but **this advantage disappeared with b8460** -- see the [latest benchmarks](#llama-bench-direct----latest-llamacpp-b9049-b9010-and-b8460-vs-kyuz0-containers-b8298) where RADV wins on both pp and tg.
+> **Critical finding (b8298):** AMDVLK has a 2 GiB single buffer allocation limit that cripples pp on dense models (3-4X slower on Llama 2 7B). On MoE models, AMDVLK was slightly faster on tg (+6.5%) with b8298, but **this advantage disappeared with b8460** -- see the [latest benchmarks](#llama-bench-direct-latest-llamacpp-b9049-b9010-and-b8460-vs-kyuz0-containers-b8298) where RADV wins on both pp and tg.
 
 **Vulkan RADV vs ROCm HIP (same build b8460, Qwen3.5-35B-A3B):**
 
@@ -1318,7 +1318,7 @@ export HSA_OVERRIDE_GFX_VERSION=11.5.1
 export HSA_ENABLE_SDMA=0
 ```
 
-With this fix, ROCm works on kernel 6.19.4 and actually performs **+6% better on pp** than it did on kernel 6.18.14. See [benchmarks](#rocm-hip----now-working-on-kernel-6194) for numbers.
+With this fix, ROCm worked on the measured kernel 6.19.4 setup and improved prompt-processing throughput versus the older measured 6.18.14 row. See [benchmarks](#rocm-hip-now-working-on-kernel-6194) for numbers.
 
 ### Qwen3.5 ROCm Hang Bug ([ROCm #6027](https://github.com/ROCm/ROCm/issues/6027))
 
@@ -1778,7 +1778,7 @@ So why is llama.cpp direct about 25% faster on Qwen3.6? Two reasons:
 | Use case | Recommendation |
 |----------|---------------|
 | Just want it to work | **Ollama** -- install and go, 50 t/s is still fast |
-| Want maximum speed | **llama-server** (from latest llama.cpp) -- 63-97 t/s on the default headline rows; 81 t/s Qwen3.6 speed-first quant, same API as Ollama |
+| Want maximum speed | **llama-server** (from latest llama.cpp) -- 63-97 t/s on the current direct headline rows; 81 t/s Qwen3.6 speed-first quant, same API as Ollama |
 | Using kyuz0 containers | **kyuz0** -- they auto-rebuild on llama.cpp updates, best of both worlds |
 | Benchmarking | **llama-bench** -- eliminates all overhead, pure GPU measurement |
 
@@ -1898,7 +1898,7 @@ Found something that's wrong, outdated, or missing?
 
 ### 2026-05-07 -- Latest-Stack Rerun
 
-- **llama.cpp b9049 rerun:** Qwen3-Coder 30B-A3B measured **96.76 t/s** generation in the max-performance guide-flags confirmation; Qwen3.6 35B-A3B measured **62.56 t/s** on the default UD row and **81.30 t/s** on the speed-first Q4_0 row.
+- **llama.cpp b9049 rerun:** Qwen3-Coder 30B-A3B measured **96.76 t/s** generation in the max-performance guide-flags confirmation; Qwen3.6 35B-A3B measured **62.56 t/s** on the balanced UD row and **81.30 t/s** on the speed-first Q4_0 row.
 - **Ollama upgraded to 0.23.1:** Qwen3.6 API warm average remained **50.51 t/s**, matching the 0.21.2 baseline.
 - **gpt-oss-120b local check:** ggml-org MXFP4 split GGUF loaded locally and measured **55.57 t/s** tg128, **726.99 t/s** pp512, and prompt processing through 65K tokens via llama.cpp b9049 Vulkan/RADV.
 - **HIP/Vulkan workload split added:** local spot check shows HIP winning pp16384 and Vulkan winning tg128 on both Qwen3.6 and Qwen3-Coder rows; see [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md).
@@ -1918,7 +1918,7 @@ Found something that's wrong, outdated, or missing?
 - **128K filled-KV decode:** Qwen3.6 generated **32.2 t/s after 128K** and Qwen3-Next 80B generated **29.1 t/s after 128K**, both without truncation.
 - **Real-corpus 64K check:** using this guide's own documentation as the prompt, Qwen3.6 decoded at **40.8 t/s after ~65K tokens** and Qwen3-Next 80B at **37.8 t/s after ~64K tokens**. Prompt ingest was slower than synthetic prompts, but decode-after-fill barely changed.
 - **ROCm HIP spot check:** current local HIP b8460 path is usable with the HSA override, but remains behind Vulkan for short-context tg: Qwen3.6 **52.7 t/s** and Qwen3-Coder **73.7 t/s**.
-- Updated headline range from **65-87 t/s** to **65-97 t/s**. The previous 87.11 t/s result remains in `data/benchmarks.csv` as historical-local data.
+- At that point, the headline range moved from **65-87 t/s** to **65-97 t/s**. This was later tightened to the current **63-97 t/s** range in the 2026-05-07 rerun. The previous 87.11 t/s result remains in `data/benchmarks.csv` as historical-local data.
 - Added raw benchmark output under `data/raw/2026-05-03/` so the new headline can be audited.
 
 ### 2026-05-01 -- Price Audit + Documentation Reconciliation

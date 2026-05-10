@@ -69,6 +69,17 @@ The README should answer, within one screen:
 
 Keep local workflow details here unless they directly affect public reproducibility.
 
+## Raw Evidence Hygiene
+
+Before committing raw host-state or benchmark-environment captures, redact anything that is not needed to reproduce the benchmark:
+
+- full process lists and command lines
+- local home-directory paths
+- service health JSON from T3, Hermes, RustDesk, browsers, or unrelated local apps
+- VM UUIDs, MAC addresses, libvirt secret paths, and browser profile paths
+
+Keep benchmark-relevant facts such as timestamp, kernel, memory, tuned profile, driver, GPU device string, llama.cpp commit, model hash, command, and raw benchmark output.
+
 ## Community And Support Strategy
 
 Keep community activity real and technical:

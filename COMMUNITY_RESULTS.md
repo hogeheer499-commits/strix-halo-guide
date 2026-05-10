@@ -16,7 +16,9 @@ Structured data:
 
 Raw community follow-up artifacts:
 
+- Qwen3-Coder issue-comment provenance: [`data/raw/2026-05-07/community-qwen-coder-issue10/`](data/raw/2026-05-07/community-qwen-coder-issue10/)
 - Qwen3.6 raw rows: [`data/raw/2026-05-09/community-qwen36-issue10/`](data/raw/2026-05-09/community-qwen36-issue10/)
+- RPC matrix CSVs: [`data/raw/2026-05-09/community-rpc-issue12/`](data/raw/2026-05-09/community-rpc-issue12/)
 - RPC failure snippets: [`data/raw/2026-05-10/community-rpc-followup-issue12/`](data/raw/2026-05-10/community-rpc-followup-issue12/)
 - USB4 tuning CSVs and patch notes: [`data/raw/2026-05-10/community-usb4-tuning-issue13/`](data/raw/2026-05-10/community-usb4-tuning-issue13/)
 

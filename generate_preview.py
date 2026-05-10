@@ -19,8 +19,8 @@ draw.rectangle([0, 0, W, 4], fill=ACCENT)
 
 # Three big numbers side by side
 stats = [
-    ("96", "t/s", "Qwen3-Coder"),
-    ("50.6", "t/s", "gpt-oss-120b"),
+    ("96.8", "t/s", "Qwen3-Coder"),
+    ("55.6", "t/s", "gpt-oss-120b"),
     ("128", "GB", "unified memory"),
 ]
 
@@ -67,7 +67,7 @@ bbox = draw.textbbox((0, 0), title, font=title_font)
 draw.text(((W - bbox[2] + bbox[0]) // 2, 380), title, fill=WHITE, font=title_font)
 
 # Punchline
-punch = "96 t/s Qwen-Coder · 50.6 t/s gpt-oss-120b · raw CSV/log evidence"
+punch = "96.8 t/s Qwen-Coder · 55.6 t/s gpt-oss-120b · raw CSV/log evidence"
 punch_font = font_reg(26)
 bbox = draw.textbbox((0, 0), punch, font=punch_font)
 draw.text(((W - bbox[2] + bbox[0]) // 2, 435), punch, fill=ACCENT, font=punch_font)
