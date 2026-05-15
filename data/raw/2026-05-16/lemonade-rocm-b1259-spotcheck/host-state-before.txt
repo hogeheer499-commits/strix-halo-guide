@@ -1,0 +1,6 @@
+timestamp=2026-05-16T01:39:44+02:00
+tool=/home/hoge-heer/strix-halo-bench-tools/lemonade-llamacpp-rocm-b1259-gfx1151/extracted
+usage: /home/hoge-heer/strix-halo-bench-tools/lemonade-llamacpp-rocm-b1259-gfx1151/extracted/llama-bench [options]
+State  Recv-Q Send-Q Local Address:Port Peer Address:PortProcess
+LISTEN 0      511          0.0.0.0:3773      0.0.0.0:*    users:(("t3code",pid=1948141,fd=3))
+LISTEN 0      511          0.0.0.0:3777      0.0.0.0:*    users:(("node",pid=3538108,fd=21))

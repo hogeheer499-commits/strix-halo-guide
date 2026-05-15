@@ -1,0 +1,10 @@
+/home/hoge-heer/strix-halo-guide/data/raw/2026-05-16/latest-stack-b9172/qwen3-coder-30b-b9172-guide-r20.csv row=1 n_prompt=0 n_gen=0 avg_ts=1864536 stddev_ts=1371.687161
+/home/hoge-heer/strix-halo-guide/data/raw/2026-05-16/latest-stack-b9172/qwen3-coder-30b-b9172-guide-r20.csv row=2 n_prompt=128 n_gen=0 avg_ts=31263846 stddev_ts=94.432584
+/home/hoge-heer/strix-halo-guide/data/raw/2026-05-16/latest-stack-b9172/qwen3-coder-30b-b9172-b4096-ub4096-r20.csv row=1 n_prompt=0 n_gen=0 avg_ts=2150544 stddev_ts=1377.306020
+/home/hoge-heer/strix-halo-guide/data/raw/2026-05-16/latest-stack-b9172/qwen3-coder-30b-b9172-b4096-ub4096-r20.csv row=2 n_prompt=128 n_gen=0 avg_ts=4822666 stddev_ts=95.052163
+/home/hoge-heer/strix-halo-guide/data/raw/2026-05-16/latest-stack-b9172/qwen36-35b-ud-q4-k-m-b9172-guide-r20.csv row=1 n_prompt=0 n_gen=0 avg_ts=3134741 stddev_ts=1094.521917
+/home/hoge-heer/strix-halo-guide/data/raw/2026-05-16/latest-stack-b9172/qwen36-35b-ud-q4-k-m-b9172-guide-r20.csv row=2 n_prompt=128 n_gen=0 avg_ts=33669697 stddev_ts=61.520712
+/home/hoge-heer/strix-halo-guide/data/raw/2026-05-16/latest-stack-b9172/qwen36-35b-q4-k-m-b9172-ub1024-r20.csv row=1 n_prompt=0 n_gen=0 avg_ts=4500957 stddev_ts=1118.087823
+/home/hoge-heer/strix-halo-guide/data/raw/2026-05-16/latest-stack-b9172/qwen36-35b-q4-k-m-b9172-ub1024-r20.csv row=2 n_prompt=128 n_gen=0 avg_ts=11192348 stddev_ts=75.089172
+/home/hoge-heer/strix-halo-guide/data/raw/2026-05-16/latest-stack-b9172/qwen36-35b-q4-0-b9172-ub2048-r20.csv row=1 n_prompt=0 n_gen=0 avg_ts=2711166 stddev_ts=1242.632754
+/home/hoge-heer/strix-halo-guide/data/raw/2026-05-16/latest-stack-b9172/qwen36-35b-q4-0-b9172-ub2048-r20.csv row=2 n_prompt=128 n_gen=0 avg_ts=27445018 stddev_ts=79.141988

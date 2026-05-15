@@ -1,0 +1,4 @@
+qwen3-next-80b-b9172-r5.csv n_prompt=512 n_gen=0 avg_ts=758.613816 stddev_ts=20.819652
+qwen3-next-80b-b9172-r5.csv n_prompt=0 n_gen=128 avg_ts=58.835371 stddev_ts=0.420357
+gpt-oss-120b-mxfp4-b9172-r5.csv n_prompt=512 n_gen=0 avg_ts=718.606806 stddev_ts=4.846552
+gpt-oss-120b-mxfp4-b9172-r5.csv n_prompt=0 n_gen=128 avg_ts=54.694677 stddev_ts=0.189320

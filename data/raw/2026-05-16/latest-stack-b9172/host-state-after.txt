@@ -1,0 +1,10 @@
+timestamp=2026-05-16T01:24:20+02:00
+               total        used        free      shared  buff/cache   available
+Mem:           124Gi        17Gi        29Gi       110Mi        78Gi       107Gi
+Swap:          8.0Gi       8.0Gi        41Mi
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6  1.4T  1.3T   37G  98% /
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      511          0.0.0.0:3773       0.0.0.0:*    users:(("t3code",pid=1948141,fd=3))
+LISTEN 0      511          0.0.0.0:3777       0.0.0.0:*    users:(("node",pid=3538108,fd=21))
+LISTEN 0      4096               *:11434            *:*

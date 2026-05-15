@@ -20,7 +20,7 @@ Live audit on 2026-05-07:
 | GPU clock | 2900 MHz selected |
 | tuned | `accelerator-performance` active |
 
-Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 2026-04-26 with `tuned accelerator-performance` active. The 2026-05-07 latest-stack rerun confirms `tuned accelerator-performance` active, Mesa RADV 26.0.6, AMDVLK absent, linux-firmware safe, GPU clock at 2900 MHz, llama.cpp b9049, and Ollama 0.23.1.
+Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 2026-04-26 with `tuned accelerator-performance` active. The 2026-05-07 latest-stack rerun confirms `tuned accelerator-performance` active, Mesa RADV 26.0.6, AMDVLK absent, linux-firmware safe, GPU clock at 2900 MHz, llama.cpp b9049, and Ollama 0.23.1. The 2026-05-16 spot check tested llama.cpp b9172 and an isolated Ollama 0.24.0 binary without changing the installed Ollama service.
 
 ## Top-Line Model Results
 
@@ -36,11 +36,27 @@ Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 202
 | Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1064 | **63.76** | Recommended all-rounder |
 | Qwen3.5 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1080 | **64.85** | Used for backend/build comparison |
 | gpt-oss-120b | Vulkan RADV, llama.cpp b9049 | MXFP4 MoE | 727 | **55.57** | 117B-parameter open-weight MoE loaded from split GGUF |
+| Qwen3-Next 80B-A3B | Vulkan RADV, llama.cpp b9172 | UD-Q4_K_XL | 752 | **59.06** | Latest-stack r20 confirmation; best current 80B Qwen-family path |
 | Qwen3-Next 80B-A3B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_XL | 657 | **54.92** | 80B MoE, 256K context capable |
 | Gemma 4 26B-A4B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_M | 1142 | **48.46** | Slower than Qwen MoE at similar active params |
 | Llama 4 Scout 109B | Vulkan RADV, llama.cpp b8933 | Q4_K_M | 331 | **18.32** | 109B params on one mini PC |
 | Llama 3.1 70B | Ollama Vulkan RADV | Q4_K_M | 22-80 | **4.7-4.9** | Dense 70B, bandwidth-bound |
 | Qwen3 0.6B | Vulkan RADV, llama.cpp | Q8_0 | 13112 | **266** | Small-model speed ceiling |
+
+## 2026-05-16 Latest-Stack Spot Check
+
+Measured on the same Beelink GTR9 Pro after pausing non-essential GUI/noise processes while keeping the T3 workspace alive. Raw data lives under [`data/raw/2026-05-16/`](data/raw/2026-05-16/).
+
+| Route | Result | Read |
+|-------|--------|------|
+| llama.cpp b9172, Qwen3-Coder 30B UD-Q4_K_XL | 94.43-95.05 tg128 depending on batch flags | No new headline; b9049/b9010 remain faster at about 96-97 t/s. |
+| llama.cpp b9172, Qwen3.6 UD-Q4_K_M | 61.52 tg128 | No new headline; current b9049/b9010 rows remain stronger. |
+| llama.cpp b9172, Qwen3.6 Q4_0 | 79.14 tg128 | No new headline; current b9049 Q4_0 row remains 81.30 t/s. |
+| llama.cpp b9172, Qwen3-Next 80B UD-Q4_K_XL | **59.06 tg128**, 751.70 pp512 | New best 80B Qwen-family row; replaces the old 54.92 t/s b8933 headline for this model. |
+| llama.cpp b9172, gpt-oss-120b MXFP4 | 54.69 tg128, 718.61 pp512 | No new headline; b9049 remains slightly better at 55.57 t/s. |
+| Ollama 0.24.0 isolated binary, Qwen3.6 API | 49.05 t/s warm generation average | No speedup versus the same-prompt Ollama 0.23.1 control at 49.09 t/s. |
+
+Takeaway: upgrading blindly is not always faster. b9172 is worthwhile for Qwen3-Next 80B on this machine, but the existing b9049/b9010 rows remain the stronger current evidence for Qwen3-Coder, Qwen3.6, and gpt-oss.
 
 ## Qwen3.6 Quant Sweep
 
@@ -79,11 +95,13 @@ Takeaway: the 128GB Strix Halo setup can load and run a 117B-parameter open-weig
 
 ## Ollama Vulkan
 
-### Qwen3.6-35B-A3B, Ollama 0.23.1, Vulkan RADV
+### Qwen3.6-35B-A3B, Ollama 0.23.1 and isolated 0.24.0, Vulkan RADV
 
 | Prompt Tokens | Prompt Eval | Generation | Notes |
 |---------------|-------------|------------|-------|
 | 19 | 158 t/s | **50.5 t/s** | Controlled 2026-05-07 API warm average across 10 runs; matches 0.21.2 |
+| 25 | 188 t/s | 49.1 t/s | 2026-05-16 same-prompt Ollama 0.23.1 control |
+| 25 | 188 t/s | 49.1 t/s | 2026-05-16 isolated Ollama 0.24.0 check; no speedup |
 | 20 | 163 t/s | 45.6 t/s | Older result, superseded by controlled API run |
 | 22 | 174 t/s | 45.4 t/s | Older result, superseded by controlled API run |
 
@@ -185,7 +203,8 @@ Takeaway: synthetic repeated-token prompts are optimistic for prompt-ingest spee
 
 AMDVLK is not recommended. It was installed during earlier testing and its ICD file silently overrode RADV for some direct `llama-bench` commands. That caused false "RADV regression" conclusions. Corrected current state:
 
-- RADV wins on pp and tg with latest tested llama.cpp.
+- RADV is the default Vulkan path and wins the measured generation-heavy GGUF rows used for this guide's beginner recommendation.
+- ROCm/HIP is not a Vulkan driver and can win prompt-processing-heavy rows, so compare pp and tg separately instead of reducing every backend to one winner.
 - AMDVLK should be uninstalled, not just ignored.
 - Verify RADV in output: `(RADV STRIX_HALO) (radv)` and `shared memory: 65536`.
 - AMDVLK output shows `(AMD open-source driver)` and `shared memory: 32768`.
@@ -205,7 +224,7 @@ export HSA_ENABLE_SDMA=0
 | b8301 | 6.19.4 | 542 | 1059 | 47.87 | Old build, HSA fix |
 | b8301 | 6.18.14 | 488 | 996 | 48.80 | Previous reference |
 
-ROCm remains relevant for batch processing, hipBLASLt, vLLM experiments, and long-context/rocWMMA work. For current short-context MoE inference, Vulkan RADV is faster on the measured data.
+ROCm remains relevant for batch processing, hipBLASLt, vLLM experiments, and long-context/rocWMMA work. For current generation-heavy MoE chat/coding rows, Vulkan RADV is faster on the measured data; for prompt-processing-heavy work, HIP can win and should be tested separately.
 
 ### 2026-05-03 ROCm HIP Spot Check
 
@@ -228,6 +247,18 @@ Structured data: [`data/backend_crossover.csv`](data/backend_crossover.csv). Ful
 | Qwen3-Coder 30B-A3B UD-Q4_K_XL | 564.68 | **756.16** | HIP +33.9% | **93.67** | 72.19 | Vulkan +29.8% |
 
 Takeaway: keep Vulkan/RADV as the default for generation-heavy chat/coding and low-concurrency API use, but keep ROCm/HIP available for prompt-heavy experiments such as RAG ingestion, long prompts, summarization, and future vLLM/AWQ/DFlash work.
+
+### 2026-05-16 Qwen3-Next 80B HIP vs Vulkan Spot Check
+
+This spot check used the current b9172 Vulkan/RADV build against the existing Lemonade `llamacpp-rocm` b1259/gfx1151 bundle. It is a small r3/r20 comparison, not a final same-build backend shootout, but it is useful because it repeats the same workload split: HIP can help prefill, while Vulkan remains better for decode/generation.
+
+Structured data: [`data/backend_crossover.csv`](data/backend_crossover.csv).
+
+| Model | Vulkan pp512 | HIP pp512 | Prompt-processing read | Vulkan tg128 | HIP tg128 | Generation read |
+|-------|-------------:|----------:|------------------------|-------------:|----------:|-----------------|
+| Qwen3-Next 80B-A3B UD-Q4_K_XL | 751.70 | **800.38** | HIP +6.5% | **59.06** | 49.57 | Vulkan +19.1% |
+
+Takeaway: do not phrase the guide as "RADV wins everything." For beginners, the practical rule is still simple: use Vulkan/RADV for chat, coding, and generation-heavy GGUF inference. Advanced users doing RAG ingest, long-prompt summarization, or server/batch experiments should test HIP/ROCm too.
 
 Gemma 4 26B-A4B is a negative result on the local HIP path: Vulkan loaded and ran, but HIP b8460 failed to load the local GGUF. No local Gemma 4 HIP speed claim is made.
 

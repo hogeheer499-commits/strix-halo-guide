@@ -1,0 +1,6 @@
+timestamp=2026-05-16T01:37:29+02:00
+{"version":"0.23.1"}
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      511          0.0.0.0:3773       0.0.0.0:*    users:(("t3code",pid=1948141,fd=3))
+LISTEN 0      511          0.0.0.0:3777       0.0.0.0:*    users:(("node",pid=3538108,fd=21))
+LISTEN 0      4096               *:11434            *:*

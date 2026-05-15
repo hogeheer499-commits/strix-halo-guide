@@ -1,0 +1,27 @@
+timestamp=2026-05-16T01:20:05+02:00
+llama_cpp_tag=b9172
+llama_cpp_commit=1348f67c58f561808136e8a152a9eddec168f221
+kernel=6.19.4-061904-generic
+ollama=ollama version is 0.23.1
+disk=/dev/nvme0n1p6  1.4T  1.3T   37G  98% /
+memory=               total        used        free      shared  buff/cache   available Mem:           124Gi        17Gi        14Gi       122Mi        93Gi       107Gi Swap:          8.0Gi       7.5Gi       536Mi
+ports=
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      511          0.0.0.0:3773       0.0.0.0:*    users:(("t3code",pid=1948141,fd=3))
+LISTEN 0      511          0.0.0.0:3777       0.0.0.0:*    users:(("node",pid=3538108,fd=21))
+LISTEN 0      4096               *:11434            *:*
+vulkan_device=
+GPU0:
+	apiVersion         = 1.4.335
+	driverVersion      = 26.0.6
+	vendorID           = 0x1002
+	deviceID           = 0x1586
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = Radeon 8060S Graphics (RADV STRIX_HALO)
+	driverID           = DRIVER_ID_MESA_RADV
+	driverName         = radv
+	driverInfo         = Mesa 26.0.6 - kisak-mesa PPA
+	conformanceVersion = 1.4.0.0
+	deviceUUID         = 00000000-c600-0000-0000-000000000000
+	driverUUID         = 414d442d-4d45-5341-2d44-525600000000
+GPU1:

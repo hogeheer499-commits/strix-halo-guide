@@ -42,6 +42,18 @@ Raw logs:
 
 - [`data/raw/2026-05-07/hip-vs-vulkan-crossover/`](data/raw/2026-05-07/hip-vs-vulkan-crossover/)
 
+## Qwen3-Next 80B 2026-05-16 Spot Check
+
+Canonical local data: [`data/backend_crossover.csv`](data/backend_crossover.csv), [`data/raw/2026-05-16/latest-stack-b9172/`](data/raw/2026-05-16/latest-stack-b9172/), and [`data/raw/2026-05-16/lemonade-rocm-b1259-spotcheck/`](data/raw/2026-05-16/lemonade-rocm-b1259-spotcheck/).
+
+This is not a final same-build backend shootout: Vulkan uses llama.cpp b9172, while HIP uses the existing Lemonade `llamacpp-rocm` b1259/gfx1151 bundle. It is still valuable because it repeats the same practical split on the largest current Qwen-family model in the guide.
+
+| Model | Vulkan pp512 | HIP pp512 | Prompt winner | Vulkan tg128 | HIP tg128 | Generation winner |
+|-------|-------------:|----------:|---------------|-------------:|----------:|-------------------|
+| Qwen3-Next 80B-A3B UD-Q4_K_XL | 751.70 | **800.38** | HIP +6.5% | **59.06** | 49.57 | Vulkan +19.1% |
+
+Takeaway: Qwen3-Next strengthens the same rule rather than replacing it. Vulkan/RADV stays the practical default for generation-heavy chat/coding on GGUF models, while HIP remains worth testing for prompt-processing-heavy work.
+
 ## Negative Result
 
 Gemma 4 26B-A4B loaded and ran on Vulkan/RADV, but the local HIP b8460 path failed to load the GGUF:

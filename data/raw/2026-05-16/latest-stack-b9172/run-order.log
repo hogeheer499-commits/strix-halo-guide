@@ -1,0 +1,16 @@
+2026-05-16T01:20:05+02:00 START qwen3-coder-30b-b9172-guide-r20 b=2048 ub=512 ctk=f16 ctv=f16 r=20
+2026-05-16T01:20:50+02:00 DONE qwen3-coder-30b-b9172-guide-r20
+2026-05-16T01:20:50+02:00 START qwen3-coder-30b-b9172-b4096-ub4096-r20 b=4096 ub=4096 ctk=f16 ctv=f16 r=20
+2026-05-16T01:21:31+02:00 DONE qwen3-coder-30b-b9172-b4096-ub4096-r20
+2026-05-16T01:21:31+02:00 START qwen36-35b-ud-q4-k-m-b9172-guide-r20 b=2048 ub=512 ctk=f16 ctv=f16 r=20
+2026-05-16T01:22:34+02:00 DONE qwen36-35b-ud-q4-k-m-b9172-guide-r20
+2026-05-16T01:22:34+02:00 START qwen36-35b-q4-k-m-b9172-ub1024-r20 b=2048 ub=1024 ctk=f16 ctv=f16 r=20
+2026-05-16T01:23:28+02:00 DONE qwen36-35b-q4-k-m-b9172-ub1024-r20
+2026-05-16T01:23:28+02:00 START qwen36-35b-q4-0-b9172-ub2048-r20 b=2048 ub=2048 ctk=f16 ctv=f16 r=20
+2026-05-16T01:24:20+02:00 DONE qwen36-35b-q4-0-b9172-ub2048-r20
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6  1.4T  1.3T   37G  98% /
+2026-05-16T01:25:24+02:00 START qwen3-next-80b-b9172-r5 b=2048 ub=512 r=5
+2026-05-16T01:26:08+02:00 DONE qwen3-next-80b-b9172-r5
+2026-05-16T01:26:08+02:00 START gpt-oss-120b-mxfp4-b9172-r5 b=2048 ub=512 r=5
+2026-05-16T01:27:03+02:00 DONE gpt-oss-120b-mxfp4-b9172-r5
