@@ -37,9 +37,12 @@ python3 scripts/generate_charts.py
 
 - `raw/2026-05-07/community-qwen-coder-issue10/`: provenance note mapping the original Qwen3-Coder issue #10 comments to structured community CSV rows.
 - `raw/2026-05-09/community-qwen36-issue10/`: raw Qwen3.6 Q4_0/Q4_K_M community rows from issue #10.
+- `raw/2026-05-10/community-qwen36-source-build-issue10/`: summary and provenance for Fail-Safe's Qwen3.6 source/build/quant follow-up from issue #10.
 - `raw/2026-05-09/community-rpc-issue12/`: raw RPC matrix CSVs from issue #12.
 - `raw/2026-05-10/community-rpc-followup-issue12/`: raw MiniMax failure snippets from issue #12.
 - `raw/2026-05-10/community-usb4-tuning-issue13/`: raw USB4 tuning CSVs plus the experimental thunderbolt patch and Makefile from issue #13.
+- `raw/2026-05-13/community-gmktec-wsl2-issue15/`: issue-comment provenance and TG512 raw CSV row for mottledMantis' GMKtec EVO-X2 WSL2/HIP baseline.
+- `raw/2026-05-14/community-gmktec-native-issue16/`: raw native Ubuntu Vulkan/RADV CSV attachments for mottledMantis' GMKtec EVO-X2 reproduction.
 
 ## Status Values
 
