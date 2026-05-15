@@ -290,8 +290,9 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | System | CPU | GPU | RAM | Notes |
 |--------|-----|-----|-----|-------|
 | **Beelink GTR9 Pro** | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | This guide's primary test system |
-| Framework Desktop 13 | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | Used by kyuz0, lhl |
-| GMKtec EVO-X2 | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | [pablo-ross guide](https://github.com/pablo-ross/strix-halo-gmktec-evo-x2) |
+| Corsair AI Workstation 300 | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | Three community systems reproduced the Qwen3-Coder path |
+| Framework Desktop | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | Used by kyuz0, lhl |
+| GMKtec EVO-X2 | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 96GB or 128GB LPDDR5X-8000 | Native 96GB community run reproduced the Qwen3.6 row; [pablo-ross guide](https://github.com/pablo-ross/strix-halo-gmktec-evo-x2) |
 | HP ZBook Ultra G1a | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | Workstation laptop |
 
 ### Strix Halo Specs
@@ -300,10 +301,10 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 |-----------|------|
 | CPU | AMD Ryzen AI MAX+ 395 (16 cores / 32 threads, Zen 5) |
 | GPU | Radeon 8060S (gfx1151, RDNA 3.5, 40 CUs) |
-| RAM | 128GB unified LPDDR5X-8000 (~215 GB/s measured, 256 GB/s theoretical) |
+| RAM | 96GB or 128GB unified LPDDR5X-8000 depending on vendor; primary measured system is 128GB (~215 GB/s measured, 256 GB/s theoretical) |
 | NPU | RyzenAI-npu5 (XDNA 2) |
 
-> **Why this hardware?** 128GB unified memory shared between CPU and GPU means you can run **70B+ models entirely on the GPU** -- something an RTX 4090 (24GB VRAM) cannot do. You trade raw bandwidth (~215 GB/s vs ~1 TB/s) for the ability to run much larger, smarter models on one compact machine. Price changes quickly by vendor; check the [Buying Guide](#buying-guide) before making a purchase decision.
+> **Why this hardware?** 96GB/128GB unified memory shared between CPU and GPU means you can run **70B+ models entirely on the GPU** -- something an RTX 4090 (24GB VRAM) cannot do. You trade raw bandwidth (~215 GB/s vs ~1 TB/s on this Beelink) for the ability to run much larger, smarter models on one compact machine. Price changes quickly by vendor; check the [Buying Guide](#buying-guide) before making a purchase decision.
 
 ---
 
@@ -640,11 +641,11 @@ Based on our measurements and [lhl's detailed testing](https://github.com/lhl/st
 |----------|-----------|---------------|----------------|-------|
 | RTX 4090 | ~1008 GB/s | 100-122 t/s | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$800 used |
-| Apple Mac Studio M4 Max 128GB | ~546 GB/s | ~100 t/s (MLX) | 128 GB | $3,699 |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **63-97 t/s current; 81 t/s speed-first Qwen3.6** | **120+ GB** | **$4,399 official (May 1, 2026)** |
+| Apple Mac Studio M4 Max high-memory | ~546 GB/s | ~100 t/s (MLX) | 96-128 GB depending on availability | verify current Apple config |
+| **Beelink GTR9 Pro** | **~215 GB/s** | **63-97 t/s current; 81 t/s speed-first Qwen3.6** | **120+ GB** | **$4,399 official (May 16, 2026)** |
 | NVIDIA DGX Spark | ~273 GB/s | 52-56 t/s (120B) | 128 GB | $4,699 |
 
-> **Apples-to-apples (gpt-oss-120b, same model family):** this guide now measures Strix Halo at 55.57 t/s tg128 locally via llama.cpp Vulkan/RADV b9049. External DGX Spark reports are around 52-56 t/s on comparable generation rows. At Beelink's May 2026 official price snapshot, the price gap to DGX Spark is about $300 ($4,399 vs $4,699), although other Strix Halo systems remain cheaper. On smaller MoE models (Qwen3-30B), Strix Halo measures 96.76 t/s on the current b9049 campaign and previously peaked at 97.24 t/s on b9010. The DGX Spark wins on prompt processing and long-context rows in external reports. Source: [local raw data](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/), [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
+> **Apples-to-apples (gpt-oss-120b, same model family):** this guide now measures Strix Halo at 55.57 t/s tg128 locally via llama.cpp Vulkan/RADV b9049. External DGX Spark reports are around 52-56 t/s on comparable generation rows. At Beelink's May 2026 official price snapshot, the price gap to DGX Spark is about $300 ($4,399 vs $4,699), although other Strix Halo systems remain cheaper. On smaller MoE models (Qwen3-30B), Strix Halo measures 96.76 t/s on the current b9049 campaign and previously peaked at 97.24 t/s on b9010. The DGX Spark wins on prompt processing and long-context rows in external reports. High-memory Mac Studio pricing/availability changed quickly in May 2026, so verify current Apple configs before using it as a purchase comparison. Source: [local raw data](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/), [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
 
 ### Long Context Performance
 
@@ -734,13 +735,13 @@ Do this BEFORE installing the OS.
 
 Navigate to `Integrated Graphics` then `UMA Frame Buffer Size` and set to **512MB**.
 
-> **Why?** By default, the BIOS reserves ~97GB for GPU VRAM, leaving only ~31GB visible to the OS. Setting it to 512MB lets the OS see ~125GB RAM. This does NOT reduce GPU performance -- Vulkan uses GTT (system memory) anyway, so the GPU still has access to all 128GB for LLM inference. We benchmarked before and after: **zero speed difference**.
+> **Why?** On the primary Beelink 128GB system, the default BIOS setting reserved ~97GB for GPU VRAM and left only ~31GB visible to the OS. Setting UMA to 512MB lets Linux see almost all system RAM. This does NOT reduce Vulkan LLM performance -- Vulkan uses GTT (system memory), so the GPU still has access to the unified memory pool. We benchmarked before and after: **zero speed difference**.
 
 ### Step 1.2: Disable IOMMU in BIOS
 
 Find the IOMMU setting and set to **Disabled**.
 
-> **Why?** [lhl's memory bandwidth testing](https://github.com/lhl/strix-halo-testing) shows `amd_iommu=off` gives ~6% better memory reads compared to default (234 vs 221 GB/s). `iommu=pt` (pass-through, recommended by some guides) gives **no benefit** over default. We use `amd_iommu=off` in the kernel command line as well, but disabling in BIOS ensures it's completely off. Only re-enable if you need VFIO/GPU passthrough or RDMA clustering.
+> **Why?** [lhl's memory bandwidth testing](https://github.com/lhl/strix-halo-testing) shows `amd_iommu=off` gives ~6% better memory reads compared to default (234 vs 221 GB/s). `iommu=pt` (pass-through, recommended by some guides) gives **no benefit** over default. We use `amd_iommu=off` in the kernel command line as well, but disabling in BIOS ensures it's completely off. Only re-enable if you need VFIO/GPU passthrough or RDMA clustering. A GMKtec EVO-X2 community Vulkan/RADV run matched the guide within about 2% with IOMMU translated mode, so this is a primary-Beelink reproducibility setting rather than a universal requirement.
 
 ---
 
@@ -1505,7 +1506,7 @@ Power efficiency is not published yet. `powercap` is empty on this system, but `
 
 After completing setup, verify each item:
 
-- [ ] `free -h` shows ~124GB total RAM
+- [ ] `free -h` shows most of your installed memory, not ~31GB (~124GiB on 128GB systems; lower on 96GB systems)
 - [ ] `vulkaninfo --summary` shows RADV Mesa 26.0.2+ (current tested: 26.0.6)
 - [ ] `tuned-adm active` shows `accelerator-performance`
 - [ ] `cat /sys/class/drm/card*/device/pp_dpm_sclk` shows 2900Mhz with asterisk
@@ -1594,7 +1595,7 @@ ollama pull qwen3.6:35b-a3b
 | **Claude Pro** | $20/mo | Fast | No | No |
 | **OpenAI API** (gpt-4o, 50 queries/day) | ~$15/mo | Fast | No | No |
 | **Anthropic API** (Claude Sonnet, 50 queries/day) | ~$12/mo | Fast | No | No |
-| **Strix Halo** (after purchase) | **~$8/mo electricity** | 46-96 t/s | **Yes** | **Yes** |
+| **Strix Halo** (after purchase) | **~$8/mo electricity** | 50-97 t/s on current measured paths | **Yes** | **Yes** |
 
 **Break-even calculation:**
 
@@ -1632,7 +1633,7 @@ For Claude Code specifically:
 ANTHROPIC_BASE_URL=http://localhost:11434 claude --model qwen3.6:35b-a3b
 ```
 
-At 46-96 t/s on current measured paths, local inference feels instant for code completion and review.
+At 50-97 t/s on current measured paths, local inference feels fast enough for code completion and review workflows.
 
 ### ChatGPT-like Web Interface (Open WebUI)
 
@@ -1670,26 +1671,29 @@ Qwen3-TTS and Chatterbox TTS both run on Strix Halo with GPU acceleration. lhl's
 
 ## Buying Guide
 
-Current Strix Halo mini PCs use the same AMD Ryzen AI MAX+ 395 APU with 96GB or 128GB LPDDR5X-8000. The differentiators are memory size, form factor, cooling, ports, and price.
+Current Strix Halo mini PCs use the same AMD Ryzen AI MAX+ 395 APU with 96GB or 128GB LPDDR5X-8000. The differentiators are memory size, form factor, cooling, ports, support, stock status, and price.
 
-| System | Price (May 2026 snapshot) | Cooling | Networking | Key Differentiator |
+| System | Price (May 16, 2026 snapshot) | Cooling | Networking | Key Differentiator |
 |--------|-----------------|---------|------------|-------------------|
-| **GMKtec EVO-X2** | ~$2,349+ | Air (blower) | 2.5GbE | Best value; 96GB and 128GB configs exist |
-| **Bosgame M5** | $2,399 | Air (blower) | 2.5GbE | Budget option |
-| **Framework Desktop 13** | ~$2,599 | Air (optimized) | Modular | Best community/support, quietest, DIY kit (no SSD/OS) |
+| **GMKtec EVO-X2** | varies by variant/cart; official page showed ~$2,000 listing and $2,674.99 selected 96GB+1TB US variant | Air (blower) | 2.5GbE | Best value candidate; 96GB and 128GB configs exist |
+| **Bosgame M5** | $2,799 official | Air (blower) | 2.5GbE | Similar platform, current official snapshot above old preorder pricing |
+| **Framework Desktop** | ~$2,459+ desktop snapshot; regional mainboard-only pricing varies | Air (optimized) | Modular | Best community/support, quietest, repairable DIY ecosystem |
 | **Beelink GTR9 Pro** | $4,399 official | Air (Mac Studio) | Dual 10GbE | Dual 10GbE, this guide's test system |
-| **Corsair AI Workstation 300** | $3,399 | Liquid cooled | 2.5GbE | Brand reputation, quiet under load |
-| **Minisforum MS-S1 MAX** | $3,039 | Air | Dual 10GbE, USB4 v2 | PCIe x16 slot (x4 speed) |
+| **Corsair AI Workstation 300** | $3,399.99 official | Liquid cooled | 2.5GbE | Brand reputation; three community systems validated this guide's Qwen3-Coder path |
+| **Minisforum MS-S1 MAX** | $3,199 official, sold out at snapshot | Air | Dual 10GbE, USB4 v2 | PCIe x16 slot (x4 speed), 2U rack option |
 | **HP ZBook Ultra G1a** | ~$4,049+ | Air (laptop) | WiFi/1GbE | Only portable option, 14" OLED |
 
-> **Note:** Prices have increased significantly since launch due to global LPDDR5X memory shortages and tariffs. Beelink's official GTR9 Pro page listed the 128GB+2TB variant at $4,399 on May 1, 2026, after earlier lower pre-order snapshots. The DGX Spark went from $3,999 to $4,699 in Feb 2026. Check current availability before buying; price is now one of the least stable parts of this market.
+> **Note:** Prices have increased significantly since launch due to global LPDDR5X memory shortages, tariffs, and local-AI demand. Beelink's official GTR9 Pro page listed the 128GB+2TB variant at $4,399 on May 16, 2026, after earlier lower pre-order snapshots. GMKtec, Bosgame, Framework, Corsair, and Minisforum pricing also moved. Check vendor pages and cart totals before buying; price and stock are now among the least stable parts of this market.
+>
+> Snapshot sources checked May 16, 2026: [GMKtec](https://www.gmktec.com/products/amd-ryzen%E2%84%A2-ai-max-395-evo-x2-ai-mini-pc-ckio), [Bosgame](https://www.bosgame.com/products/bosgame-m5-ai-mini-desktop-ryzen-ai-max-395-96gb-128gb-2tb), [Framework mainboard](https://frame.work/products/desktop-mainboard-amd-ai-max300?v=FRAMBM0004), [Framework price coverage](https://www.tomshardware.com/desktops/gaming-pcs/diy-pc-maker-framework-finally-succumbs-to-ram-apocalypse-is-raising-prices-on-its-desktops-now-starts-at-usd1-139-with-32gb-128gb-up-usd450), [Beelink](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395), [Corsair](https://www.corsair.com/us/en/p/gaming-computers/cs-9080003-na/corsair-ai-workstation-300-amd-ryzen-ai-max-395-processor-amd-radeon-8060s-igpu-up-to-96gb-vram-128gb-lpddr5x-memory-4tb-2tb-2tb-m2-ssd-win11-home-cs-9080003-na), [Minisforum](https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc). HP and Apple configs change often enough that you should verify them directly at checkout.
 
 > **WARNING (Beelink GTR9 Pro):** The v1 motherboard has a fatal NIC stability issue that cannot be fixed in software. Verify you are getting board revision **v2.2** (with Realtek NICs) before purchasing. Beelink offers free replacement for v1 boards. Contact their support with your serial number.
 
 **Recommendation tiers:**
-- **Best value:** GMKtec EVO-X2 (~$2,349)
-- **Best overall:** Framework Desktop 13 (~$2,599) -- best cooling, community, repairability, used by kyuz0 and lhl
-- **Best for clustering:** Minisforum MS-S1 MAX ($3,039) or Beelink GTR9 Pro v2.2 ($4,399 official) -- dual 10GbE for RDMA
+- **Best value candidate:** GMKtec EVO-X2, if the cart price and memory config are favorable.
+- **Best ecosystem/support:** Framework Desktop -- best community, repairability, and third-party testing.
+- **Best already community-validated vendor fleet:** Corsair AI Workstation 300 -- three systems reproduced the Qwen3-Coder Vulkan/RADV path.
+- **Best for clustering:** Minisforum MS-S1 MAX or Beelink GTR9 Pro v2.2 -- dual 10GbE for RDMA/cluster experiments, but verify stock and board revision.
 - **Only if you need portability:** HP ZBook Ultra G1a ($4,049+)
 
 > **Important:** many Chinese mini PCs in this class, including Bosgame, GMKtec, and Beelink, appear to use closely related Sixunited platform designs. Do not assume every config is literally identical, but the first native GMKtec EVO-X2 community run reproduced the guide's Qwen3.6 Vulkan/RADV row within about 2%. Pick based on price, memory size, ports, cooling, and support.
@@ -1823,7 +1827,7 @@ Linux gives the best-tested performance and the strongest native Vulkan/RADV evi
 <details>
 <summary><strong>How does this compare to a Mac Studio?</strong></summary>
 
-Prices and external benchmark numbers change quickly; treat this as a dated comparison snapshot. As of May 2026, the Mac Studio M4 Max (128GB) costs $3,699 and gets ~100 t/s via MLX with ~546 GB/s bandwidth. Beelink's official GTR9 Pro price snapshot is $4,399 and this guide measures 50.51-96.76 t/s on the current Vulkan/Ollama headline paths, depending on model and backend, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row. The Mac is cheaper than the current Beelink snapshot and faster per-model due to higher bandwidth. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
+Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro price snapshot is $4,399 and this guide measures 50.51-96.76 t/s on the current Vulkan/Ollama headline paths, depending on model and backend, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row. Apple Silicon usually wins per-model bandwidth-sensitive inference. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
 
 </details>
 
@@ -1835,7 +1839,7 @@ Common causes:
 2. **Old Mesa drivers** -- Check `vulkaninfo --summary | grep driverInfo`. Should be Mesa 26.0.2+; current tested system is Mesa 26.0.6.
 3. **Using Ollama instead of llama-bench** -- Qwen3.6 is about 19-20% slower through Ollama 0.23.1 than direct llama-bench on the current data. The 96 t/s number is via llama-bench direct on Qwen3-Coder 30B, not Ollama.
 4. **GPU clock stuck low** -- Check `cat /sys/class/drm/card*/device/pp_dpm_sclk`. Should show 2900Mhz with asterisk.
-5. **Wrong BIOS VRAM setting** -- Check `free -h`. Should show ~124GB. If only 31GB, set UMA Frame Buffer to 512MB in BIOS.
+5. **Wrong BIOS VRAM setting** -- Check `free -h`. On a 128GB system it should show roughly ~124GiB OS-visible memory; a 96GB system will be lower. If a 128GB box only shows ~31GiB, set UMA Frame Buffer to 512MB in BIOS.
 6. **Different model/quantization** -- The 96 t/s current result is specifically Qwen3-Coder-30B-A3B UD-Q4_K_XL via RADV. Larger or denser models are slower.
 
 </details>
@@ -1967,7 +1971,7 @@ Found something that's wrong, outdated, or missing?
 - Ollama vs llama.cpp FAQ with browser analogy and llama-server setup
 - Model recommendation guide (10 use cases)
 - Cost comparison (local vs cloud with break-even analysis)
-- Buying guide (7 systems with March 2026 verified prices, Beelink v1 board warning)
+- Buying guide (7 systems with a historical March 2026 price snapshot, Beelink v1 board warning)
 - Glossary (20+ terms for beginners)
 - FAQ (8 common questions)
 - Use cases (Claude Code, Cursor, RAG, image gen, TTS)
@@ -1982,7 +1986,7 @@ Found something that's wrong, outdated, or missing?
 - GitHub stars + last-commit badges
 
 **Fixes:**
-- All prices verified against current retail (March 2026 snapshot)
+- At that time, prices were verified against current retail (March 2026 snapshot)
 - DGX Spark comparison is now apples-to-apples (same model, same context)
 - Fixed 12 outdated "ROCm broken on 6.19.x" references
 - BIOS VRAM 512MB is mandatory, not just speed-neutral
@@ -2021,12 +2025,16 @@ Found something that's wrong, outdated, or missing?
 
 ---
 
-## Upcoming
+## Next Useful Tests
 
-- **Gorgon Halo** (Ryzen AI Max 400, Q4 2026): Same architecture, higher clocks
-- **Medusa Halo** (Ryzen AI Max 500): LPDDR6, ~80% more memory bandwidth
-- **Lemonade 10.0** (March 2026): First Linux NPU support for LLM inference via FastFlowLM
-- **AMD Variable Graphics Memory** (Windows): Up to 128B parameter models in Vulkan llama.cpp
+These are the highest-value tests to add next, because they answer practical buyer/setup questions that current evidence only partially covers:
+
+- **Lemonade/FastFlowLM NPU on Linux:** Lemonade 10.x and FastFlowLM now make Linux NPU LLM inference a real path. Test small Qwen/Gemma rows for speed, power, and whether it is useful beside the GPU path.
+- **Same-machine Windows native Vulkan/Ollama/LM Studio vs Linux:** WSL2/HIP now has a community baseline, but the most useful beginner answer is still native Windows app performance versus native Linux Vulkan/RADV.
+- **More GMKtec/Bosgame/Framework native Linux reproductions:** The first GMKtec native result matched within about 2%; more vendors turn the guide from one-machine evidence into a platform map.
+- **Tokens per watt with wall-power data:** Fail-Safe supplied valuable Corsair power telemetry. A Beelink wall-meter run would make the efficiency story much stronger.
+- **vLLM/AWQ/DFlash throughput:** Keep this experimental until it has a reproducible OpenAI-compatible server row that competes with `llama-server`/Ollama for a real use case.
+- **Future Strix Halo successors:** Gorgon Halo / Ryzen AI Max 400 and later Medusa Halo / Ryzen AI Max 500 should be treated as future comparison targets, not current setup advice.
 
 ---
 
