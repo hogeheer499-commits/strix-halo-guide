@@ -64,6 +64,16 @@ if command -v tuned-adm >/dev/null 2>&1; then
 else
   blocker "tuned-adm is not installed"
 fi
+if systemctl is-active --quiet power-profiles-daemon 2>/dev/null; then
+  blocker "power-profiles-daemon is active; it conflicts with tuned and can reduce benchmark performance"
+else
+  info "power-profiles-daemon is inactive"
+fi
+gov_summary="$(for file in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do [ -e "$file" ] && cat "$file"; done | sort | uniq -c)"
+printf '%s\n' "$gov_summary"
+if printf '%s\n' "$gov_summary" | grep -vq 'performance'; then
+  warn "not all CPU governors report performance"
+fi
 
 section "GPU Clock"
 for file in /sys/class/drm/card*/device/pp_dpm_sclk; do

@@ -1,0 +1,15 @@
+2026-05-16T16:26:14+02:00
+active
+Current active profile: accelerator-performance
+governors
+     32 performance
+epp
+     32 performance
+gpu
+high
+0: 2900Mhz 
+1: 1100Mhz 
+2: 2900Mhz *
+0: 400Mhz 
+1: 800Mhz 
+2: 1000Mhz *

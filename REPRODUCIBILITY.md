@@ -19,12 +19,12 @@ The public claim index is [`data/headline_claims.csv`](data/headline_claims.csv)
 | OS | Ubuntu 24.04 |
 | Kernel | `6.19.4-061904-generic` |
 | Mesa/RADV | Mesa 26.0.6 from kisak-mesa PPA |
-| llama.cpp | b9049 `2496f9c14` for the current direct Vulkan/RADV headline rerun; b9010 `d05fe1d7d` kept as previous peak evidence |
+| llama.cpp | b9179 `b81c2cdd7` for the current Qwen3-Coder speed-first peak; b9049 `2496f9c14` for the current balanced UD headline rerun; b9010 `d05fe1d7d` kept as previous peak evidence |
 | Ollama | 0.23.1 for the current Ollama API baseline |
 | BIOS UMA | 512MB for the measured local setup |
 | IOMMU | Disabled for the measured local setup |
 | AMDVLK | Removed; RADV should be the selected Vulkan ICD |
-| Power profile | `tuned` profile `accelerator-performance` active |
+| Power profile | `tuned` profile `accelerator-performance` active; `power-profiles-daemon` inactive for publishable runs |
 | GPU clock | 2900 MHz selected during current readiness checks |
 | Firmware | `linux-firmware` 20240318.git3b128b60-0ubuntu2.27 |
 
@@ -36,6 +36,8 @@ Record the host state before every publishable run:
 date -Is
 uname -a
 tuned-adm active
+systemctl is-active tuned
+systemctl is-active power-profiles-daemon || true
 free -h
 vulkaninfo --summary | sed -n '/Devices:/,$p' | sed -n '1,40p'
 cat /sys/class/drm/card*/device/pp_dpm_sclk
@@ -49,6 +51,8 @@ scripts/check_benchmark_cleanliness.sh
 ```
 
 The hygiene script is read-only. On the maintainer workstation it also checks local workflow dependencies. If you are reproducing on another machine, record equivalent background load, remote desktop state, VMs, local AI servers, power profile, GPU clock, and selected Vulkan ICD.
+
+On Ubuntu, `tuned` conflicts with `power-profiles-daemon`. If `power-profiles-daemon` starts, it can stop `tuned` and leave the machine in a desktop power profile. For publishable numbers, verify `tuned` is active and `power-profiles-daemon` is inactive before running `llama-bench`. Avoid running `powerprofilesctl` during benchmark prep unless you intentionally want to test that path.
 
 ## Benchmark Commands
 

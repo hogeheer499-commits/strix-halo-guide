@@ -1,5 +1,5 @@
 ![AMD](https://img.shields.io/badge/AMD-Ryzen_AI_MAX+_395-ED1C24?style=for-the-badge&logo=amd&logoColor=white)
-![Speed](https://img.shields.io/badge/63--97_t/s_current_30B--35B_Qwen_MoE-brightgreen?style=for-the-badge)
+![Speed](https://img.shields.io/badge/63--98.5_t/s_current_30B--35B_Qwen_MoE-brightgreen?style=for-the-badge)
 ![Qwen3.6](https://img.shields.io/badge/Qwen3.6_speed--first-81.3_t/s-2563eb?style=for-the-badge)
 ![Qwen3-Next](https://img.shields.io/badge/Qwen3--Next_80B-59.1_t/s-16a34a?style=for-the-badge)
 ![gpt-oss](https://img.shields.io/badge/gpt--oss--120b-55.6_t/s_MXFP4-0b7285?style=for-the-badge)
@@ -12,7 +12,7 @@
 
 # AMD Strix Halo Local LLM Guide
 
-**Current direct Vulkan/RADV results on AMD Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory: Qwen3-Coder 30B at 96.8 t/s, Qwen3.6 balanced UD-Q4_K_M path at 62.6 t/s, Qwen3.6 speed-first Q4_0 at 81.3 t/s, Qwen3-Next 80B at 59.1 t/s, and gpt-oss-120b MXFP4 at 55.6 t/s.**
+**Current direct Vulkan/RADV results on AMD Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory: Qwen3-Coder 30B speed-first Q4_K_S at 98.5 t/s, Qwen3-Coder balanced UD-Q4_K_XL at 96.8 t/s, Qwen3.6 balanced UD-Q4_K_M at 62.6 t/s, Qwen3.6 speed-first Q4_0 at 81.3 t/s, Qwen3-Next 80B at 59.1 t/s, and gpt-oss-120b MXFP4 at 55.6 t/s.**
 
 > If this guide saves you time, consider giving it a star -- it helps others find it.
 > Official source: https://github.com/hogeheer499-commits/strix-halo-guide
@@ -50,7 +50,7 @@
 | What was tested? | Local LLM inference and local API serving on Strix Halo, mainly Vulkan/RADV llama.cpp, Ollama, ROCm/HIP, Lemonade `llamacpp-rocm`, and early vLLM smoke tests. |
 | Primary hardware | Beelink GTR9 Pro, Ryzen AI MAX+ 395, Radeon 8060S `gfx1151`, 128GB LPDDR5X-8000 unified memory. |
 | Best easy path | Ollama 0.23.1 with Vulkan/RADV for chat, model pulling, and Open WebUI. |
-| Fastest measured short-context path | Direct llama.cpp / `llama-server` with Vulkan/RADV. Current b9049 campaign: Qwen3-Coder 30B-A3B reached 96.76 t/s; Qwen3.6 35B-A3B reached 62.56 t/s on the balanced UD row and 81.30 t/s on the speed-first Q4_0 row. Previous b9010 Qwen3-Coder peak was 97.24 t/s. |
+| Fastest measured short-context path | Direct llama.cpp / `llama-server` with Vulkan/RADV. Current strict-clean b9179 speed-first Qwen3-Coder Q4_K_S row reached 98.51 t/s r50. The balanced Qwen3-Coder UD row remains 96.76 t/s on the current b9049 campaign; Qwen3.6 reached 62.56 t/s balanced UD and 81.30 t/s speed-first Q4_0. |
 | Latest-stack delta | llama.cpp b9172 did not improve the current Qwen3-Coder, Qwen3.6, or gpt-oss headline rows, but it did improve Qwen3-Next 80B to 59.06 t/s tg128 on the same Beelink. |
 | Largest new local model check | gpt-oss-120b MXFP4 split GGUF loaded locally with llama.cpp Vulkan/RADV b9049: 55.57 t/s tg128, 726.99 t/s pp512, and prompt processing tested through 65K tokens. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
@@ -97,7 +97,8 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 
 | What you want to do | Measured local result | Practical takeaway | Evidence |
 |---------------------|-----------------------|--------------------|----------|
-| Fast local coding model | Qwen3-Coder 30B-A3B UD-Q4_K_XL: 96.76 t/s direct llama.cpp Vulkan/RADV on current b9049 | Strong first model for coding scripts, editors, and agent loops. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv) |
+| Fastest local coding speed | Qwen3-Coder 30B-A3B Q4_K_S: 98.51 t/s direct llama.cpp Vulkan/RADV on b9179 | Speed-first quant candidate. Use it when raw t/s matters and you accept the quality tradeoff. | [`headline claims`](data/headline_claims.csv), [`raw r50`](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv) |
+| Fast balanced local coding model | Qwen3-Coder 30B-A3B UD-Q4_K_XL: 96.76 t/s direct llama.cpp Vulkan/RADV on current b9049 | Strong first model for coding scripts, editors, and agent loops. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv) |
 | Easy private chat setup | Qwen3.6 35B-A3B Q4_K_M: 50.51 t/s through Ollama 0.23.1 API | Good default if you want model pulling, Open WebUI, and simple local chat. | [`headline claims`](data/headline_claims.csv), [`raw API run`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/ollama-qwen3.6-35b-a3b-0.23.1-api-r10.csv) |
 | Fast all-rounder direct path | Qwen3.6 35B-A3B UD-Q4_K_M: 62.56 t/s direct llama.cpp Vulkan/RADV on current b9049 | Use this when you care more about speed and control than the easiest UI. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/qwen36-35b-b9049-clean-r20.csv) |
 | Fastest Qwen3.6 direct path | Qwen3.6 35B-A3B Q4_0: 81.30 t/s direct llama.cpp Vulkan/RADV on current b9049 | Speed-first option. Use the default/balanced quant if quality matters more than raw t/s. | [`max campaign`](data/max_performance_campaign.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen36-top-confirm-r20/q4-0-ub2048.csv) |
@@ -166,7 +167,8 @@ The machine-readable index for these rows is [`data/headline_claims.csv`](data/h
 
 | Claim | Date | Backend | Model | Result | CSV | Raw | Chart | Notes |
 |-------|------|---------|-------|--------|-----|-----|-------|-------|
-| Fastest current short-context coding MoE | 2026-05-07 | llama.cpp Vulkan/RADV b9049 | Qwen3-Coder 30B-A3B UD-Q4_K_XL | 96.76 tg128, 1320.52 pp512 | [`max campaign`](data/max_performance_campaign.csv) | [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv) | n/a | max-performance r20 confirmation; previous b9010 peak was 97.24 t/s |
+| Fastest measured short-context coding MoE speed-first quant | 2026-05-16 | llama.cpp Vulkan/RADV b9179 | Qwen3-Coder 30B-A3B Q4_K_S | 98.51 tg128 r50, 1396.11 pp512 | [`benchmarks`](data/benchmarks.csv) | [`raw r50`](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv) | n/a | speed-first lower-quality quant; strict-clean host state; not the balanced UD default |
+| Fast balanced short-context coding MoE | 2026-05-07 | llama.cpp Vulkan/RADV b9049 | Qwen3-Coder 30B-A3B UD-Q4_K_XL | 96.76 tg128, 1320.52 pp512 | [`max campaign`](data/max_performance_campaign.csv) | [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv) | n/a | max-performance r20 confirmation; previous b9010 peak was 97.24 t/s |
 | Default Qwen3.6 direct path | 2026-05-07 | llama.cpp Vulkan/RADV b9049 | Qwen3.6 35B-A3B UD-Q4_K_M | 62.56 tg128, 1059.45 pp512 | [`benchmarks`](data/benchmarks.csv) | [`raw run`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/qwen36-35b-b9049-clean-r20.csv) | [`chart`](charts/backend_spot_check.svg) | clean latest-stack r20 rerun; rounds to 63 t/s |
 | Fastest measured Qwen3.6 speed-first quant | 2026-05-07 | llama.cpp Vulkan/RADV b9049 | Qwen3.6 35B-A3B Q4_0 | 81.30 tg128, 1243.51 pp512 | [`max campaign`](data/max_performance_campaign.csv) | [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen36-top-confirm-r20/q4-0-ub2048.csv) | n/a | speed-first lower-quality quant; not the default all-round recommendation without a quality sanity check |
 | Best current 80B Qwen-family path | 2026-05-16 | llama.cpp Vulkan/RADV b9172 | Qwen3-Next 80B-A3B UD-Q4_K_XL | 59.06 tg128, 751.70 pp512 | [`benchmarks`](data/benchmarks.csv) | [`raw r20`](data/raw/2026-05-16/latest-stack-b9172/qwen3-next-confirm-r20/qwen3-next-80b-b9172-ub1024-r20.csv) | n/a | b9172 improved this 80B MoE path versus the older 54.92 t/s b8933 row |
@@ -180,7 +182,7 @@ The machine-readable index for these rows is [`data/headline_claims.csv`](data/h
 
 ## Reproduce One Headline Result
 
-This reproduces the current 96-97 t/s Qwen3-Coder headline if your machine, model file, driver stack, and power state match the measured setup in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md). The previous b9010 run reached 97.24 t/s; the current b9049 campaign measured 96.76 t/s with guide flags.
+This reproduces the balanced UD Qwen3-Coder 96-97 t/s row if your machine, model file, driver stack, and power state match the measured setup in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md). The speed-first Q4_K_S row is faster at 98.51 t/s r50, but it uses a lower-quality speed quant and a stricter host state.
 
 ```bash
 AMD_VULKAN_ICD=RADV \
@@ -190,7 +192,7 @@ VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
   -fa 1 -ngl 999 -mmp 0 -p 0 -n 128 -r 20 -o csv
 ```
 
-Measured local result: 96.76 tg128 in the max-performance b9049 campaign: [`raw CSV`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv).
+Measured local result: 96.76 tg128 in the max-performance b9049 campaign: [`raw CSV`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv). Fastest speed-first result: 98.51 tg128 with Q4_K_S on b9179: [`raw r50`](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv).
 
 ## Not Yet Proven Here
 
@@ -325,6 +327,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (Vulkan RADV). Spe
 | Llama 2 7B | 3.8 GB | Dense | 48-52 t/s | Testing, lightweight tasks |
 | Qwen2.5-VL 7B | 6.0 GB | Vision | 21.4 t/s | Image understanding |
 | Gemma 4 26B-A4B (UD-Q4_K_M) | 15.7 GB | MoE | **48.5 t/s** * | Google's latest MoE, strong reasoning |
+| Qwen3-Coder 30B-A3B (Q4_K_S) | 17.5 GB | MoE | **98.5 t/s** * | Fastest measured coding speed; speed-first quant, not the balanced default |
 | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | MoE | **97 t/s** * | Best coding-model speed/quality ratio; current b9049 measured 96.76 t/s and previous b9010 peak was 97.24 t/s |
 | Qwen3.6 35B-A3B (Q4_0) | 19.7 GB | MoE | **81 t/s** * | Fastest measured Qwen3.6 speed-first quant; use a balanced quant if quality matters more than raw speed |
 | Qwen3.6 35B-A3B (Q4_K_M / UD-Q4_K_M) | 20-22 GB | MoE | **63-77 t/s** * | Best all-rounder family; current UD row is 63 t/s and Strix Q4_K_M candidate reached 77 t/s |
@@ -341,7 +344,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (Vulkan RADV). Spe
 
 ## Benchmark Results
 
-Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, and 2026-05-07. Benchmark system: Beelink GTR9 Pro, kernel 6.19.4, Mesa RADV 26.0.2-26.0.6, AMDVLK removed, tuned `accelerator-performance` active for measured runs. Before running new benchmarks, verify `tuned-adm active`; the daemon can stop after reboot on some systems.
+Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, 2026-05-07, and 2026-05-16. Benchmark system: Beelink GTR9 Pro, kernel 6.19.4, Mesa RADV 26.0.2-26.0.6, AMDVLK removed, tuned `accelerator-performance` active for measured runs. Before running new benchmarks, verify `tuned-adm active` and keep `power-profiles-daemon` inactive; it can conflict with `tuned`.
 
 ### Benchmark Charts
 
@@ -470,16 +473,17 @@ Extended context scaling (latest build, RADV):
 
 > pp is virtually flat from 512 to 8192 tokens. Only 3% drop at 8K context.
 
-**Qwen3-Coder 30B-A3B** (UD-Q4_K_XL, 17.7GB file / 16.5GiB, MoE):
+**Qwen3-Coder 30B-A3B** (Q4_K_S speed-first and UD-Q4_K_XL balanced, MoE):
 
 | Build | Driver | pp512 | tg128 | Notes |
 |-------|--------|-------|-------|-------|
+| **b9179** | **RADV** | **1396** | **98.51** | Q4_K_S speed-first quant, strict-clean r50 confirmation |
 | **b9049** | **RADV** | **1321** | **96.76** | 2026-05-07 max-performance guide-flags r20 confirmation |
 | **b9010** | **RADV** | **1346** | **97.24** | Controlled 2026-05-03 two-run r20 average |
 | b8460 | RADV | 1342 | 87.11 | Previous headline |
 | b8298 (kyuz0) | RADV | 1350 | 86.81 | ~same (model was already at ceiling) |
 
-> A controlled May 2026 rerun moved the Qwen3-Coder 30B headline from 87 t/s to 97 t/s on b9010 Vulkan RADV. The 2026-05-07 b9049 max-performance campaign measured 96.76 t/s, so the current public range is 63-97 t/s while the previous 97.24 t/s b9010 peak remains historical evidence.
+> A controlled May 2026 rerun moved the balanced Qwen3-Coder 30B headline from 87 t/s to 97 t/s on b9010 Vulkan RADV. The 2026-05-07 b9049 max-performance campaign measured 96.76 t/s on UD-Q4_K_XL. A later strict-clean b9179 run measured 98.51 t/s with Q4_K_S, which is a speed-first quant rather than the default balanced row.
 
 **Gemma 4 26B-A4B** (UD-Q4_K_M, 15.7GB, MoE) -- tested on b8933 (earliest build with Gemma 4 support):
 
@@ -650,10 +654,10 @@ Based on our measurements and [lhl's detailed testing](https://github.com/lhl/st
 | RTX 4090 | ~1008 GB/s | 100-122 t/s | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$800 used |
 | Apple Mac Studio M4 Max high-memory | ~546 GB/s | ~100 t/s (MLX) | 96-128 GB depending on availability | verify current Apple config |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **63-97 t/s current; 81 t/s speed-first Qwen3.6** | **120+ GB** | **$4,399 official (May 16, 2026)** |
+| **Beelink GTR9 Pro** | **~215 GB/s** | **63-98.5 t/s current; 81 t/s speed-first Qwen3.6** | **120+ GB** | **$4,399 official (May 16, 2026)** |
 | NVIDIA DGX Spark | ~273 GB/s | 52-56 t/s (120B) | 128 GB | $4,699 |
 
-> **Apples-to-apples (gpt-oss-120b, same model family):** this guide now measures Strix Halo at 55.57 t/s tg128 locally via llama.cpp Vulkan/RADV b9049. External DGX Spark reports are around 52-56 t/s on comparable generation rows. At Beelink's May 2026 official price snapshot, the price gap to DGX Spark is about $300 ($4,399 vs $4,699), although other Strix Halo systems remain cheaper. On smaller MoE models (Qwen3-30B), Strix Halo measures 96.76 t/s on the current b9049 campaign and previously peaked at 97.24 t/s on b9010. The DGX Spark wins on prompt processing and long-context rows in external reports. High-memory Mac Studio pricing/availability changed quickly in May 2026, so verify current Apple configs before using it as a purchase comparison. Source: [local raw data](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/), [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
+> **Apples-to-apples (gpt-oss-120b, same model family):** this guide now measures Strix Halo at 55.57 t/s tg128 locally via llama.cpp Vulkan/RADV b9049. External DGX Spark reports are around 52-56 t/s on comparable generation rows. At Beelink's May 2026 official price snapshot, the price gap to DGX Spark is about $300 ($4,399 vs $4,699), although other Strix Halo systems remain cheaper. On smaller MoE models (Qwen3-30B), Strix Halo measures 96.76 t/s on the balanced current b9049 campaign, previously peaked at 97.24 t/s on b9010, and reaches 98.51 t/s with a b9179 speed-first Q4_K_S quant. The DGX Spark wins on prompt processing and long-context rows in external reports. High-memory Mac Studio pricing/availability changed quickly in May 2026, so verify current Apple configs before using it as a purchase comparison. Source: [local raw data](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/), [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
 
 ### Long Context Performance
 
@@ -870,6 +874,7 @@ sudo reboot
 
 ```bash
 sudo apt install tuned -y
+sudo systemctl disable --now power-profiles-daemon || true
 sudo systemctl enable --now tuned
 sudo tuned-adm profile accelerator-performance
 ```
@@ -879,11 +884,13 @@ Verify:
 ```bash
 tuned-adm active
 # Expected: Current active profile: accelerator-performance
+systemctl is-active power-profiles-daemon
+# Expected: inactive
 ```
 
 > **Impact:** +5-8% overall performance improvement. Memory bandwidth improves from ~221 GB/s to ~234 GB/s write. We measured +4-5% token generation improvement when tuned was running vs not running.
 
-> **WARNING:** tuned may not survive reboots on some systems. Add a check to your `.bashrc` or create a systemd service to verify it's running after boot.
+> **WARNING:** tuned conflicts with Ubuntu's `power-profiles-daemon`. If `power-profiles-daemon` starts, it can stop `tuned` and cost several percent on benchmark rows. For publishable runs, keep `tuned` active and `power-profiles-daemon` inactive.
 
 ### Step 4.2: Upgrade Mesa Vulkan Drivers
 
@@ -1458,11 +1465,13 @@ For APUs with unified memory, `mem_info_vram_total` showing ~1GB is **normal**. 
 tuned-adm active
 
 # If not running:
+sudo systemctl disable --now power-profiles-daemon || true
 sudo systemctl enable --now tuned
 sudo tuned-adm profile accelerator-performance
 
 # Verify it persists
 tuned-adm active
+systemctl is-active power-profiles-daemon
 ```
 
 </details>
@@ -1517,6 +1526,7 @@ After completing setup, verify each item:
 - [ ] `free -h` shows most of your installed memory, not ~31GB (~124GiB on 128GB systems; lower on 96GB systems)
 - [ ] `vulkaninfo --summary` shows RADV Mesa 26.0.2+ (current tested: 26.0.6)
 - [ ] `tuned-adm active` shows `accelerator-performance`
+- [ ] `systemctl is-active power-profiles-daemon` shows `inactive`
 - [ ] `cat /sys/class/drm/card*/device/pp_dpm_sclk` shows 2900Mhz with asterisk
 - [ ] `cat /sys/module/ttm/parameters/pages_limit` shows 31457280
 - [ ] `ollama --version` returns without error
@@ -1551,7 +1561,8 @@ Not sure which model to run? Here's what we recommend based on use case:
 
 | I want to... | Model | Size | Speed | Why |
 |--------------|-------|------|-------|-----|
-| **Code** (best speed) | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | 96 t/s | Fastest coding model, MoE architecture |
+| **Code** (best speed) | Qwen3-Coder 30B-A3B (Q4_K_S) | 17.5 GB | 98.5 t/s | Fastest measured coding speed; speed-first quant |
+| **Code** (balanced speed/quality) | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | 96-97 t/s | Strong coding default, MoE architecture |
 | **Code** (best quality) | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | 51 t/s | Same model, higher fidelity quantization |
 | **Chat** (general) | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | **63 t/s** | Best all-rounder, successor to 3.5 |
 | **Chat** (no thinking) | Qwen3.6 35B-A3B (no-think) | 20 GB | 63 t/s | Same speed, direct answers |
@@ -1792,7 +1803,7 @@ So why is llama.cpp direct about 25% faster on Qwen3.6? Two reasons:
 | Use case | Recommendation |
 |----------|---------------|
 | Just want it to work | **Ollama** -- install and go, 50 t/s is still fast |
-| Want maximum speed | **llama-server** direct Vulkan/RADV -- 96-97 t/s on Qwen3-Coder, 63-81 t/s on Qwen3.6 depending on quant, and 59 t/s on Qwen3-Next 80B, with the same API style as Ollama |
+| Want maximum speed | **llama-server** direct Vulkan/RADV -- 98.5 t/s on speed-first Qwen3-Coder, 96-97 t/s on balanced Qwen3-Coder, 63-81 t/s on Qwen3.6 depending on quant, and 59 t/s on Qwen3-Next 80B, with the same API style as Ollama |
 | Using kyuz0 containers | **kyuz0** -- they auto-rebuild on llama.cpp updates, best of both worlds |
 | Benchmarking | **llama-bench** -- eliminates all overhead, pure GPU measurement |
 
@@ -1835,7 +1846,7 @@ Linux gives the best-tested performance and the strongest native Vulkan/RADV evi
 <details>
 <summary><strong>How does this compare to a Mac Studio?</strong></summary>
 
-Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro price snapshot is $4,399 and this guide measures 50.51-96.76 t/s on the current Vulkan/Ollama headline paths, depending on model and backend, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row. Apple Silicon usually wins per-model bandwidth-sensitive inference. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
+Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro price snapshot is $4,399 and this guide measures 50.51-98.51 t/s on the current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row. Apple Silicon usually wins per-model bandwidth-sensitive inference. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
 
 </details>
 
@@ -1843,12 +1854,12 @@ Prices, availability, and external benchmark numbers change quickly; treat this 
 <summary><strong>Why is my speed lower than the guide says?</strong></summary>
 
 Common causes:
-1. **tuned not running** -- Run `tuned-adm active`. Should show `accelerator-performance`. This alone is worth +5-8%.
+1. **tuned not running or power-profiles-daemon active** -- Run `tuned-adm active` and `systemctl is-active power-profiles-daemon`. `tuned` should show `accelerator-performance`; `power-profiles-daemon` should be inactive. This alone is worth several percent.
 2. **Old Mesa drivers** -- Check `vulkaninfo --summary | grep driverInfo`. Should be Mesa 26.0.2+; current tested system is Mesa 26.0.6.
-3. **Using Ollama instead of llama-bench** -- Qwen3.6 is about 19-20% slower through Ollama 0.23.1 than direct llama-bench on the current data. The 96 t/s number is via llama-bench direct on Qwen3-Coder 30B, not Ollama.
+3. **Using Ollama instead of llama-bench** -- Qwen3.6 is about 19-20% slower through Ollama 0.23.1 than direct llama-bench on the current data. The 96-98.5 t/s Qwen3-Coder numbers are via llama-bench direct, not Ollama.
 4. **GPU clock stuck low** -- Check `cat /sys/class/drm/card*/device/pp_dpm_sclk`. Should show 2900Mhz with asterisk.
 5. **Wrong BIOS VRAM setting** -- Check `free -h`. On a 128GB system it should show roughly ~124GiB OS-visible memory; a 96GB system will be lower. If a 128GB box only shows ~31GiB, set UMA Frame Buffer to 512MB in BIOS.
-6. **Different model/quantization** -- The 96 t/s current result is specifically Qwen3-Coder-30B-A3B UD-Q4_K_XL via RADV. Larger or denser models are slower.
+6. **Different model/quantization** -- The 98.51 t/s result is specifically Qwen3-Coder-30B-A3B Q4_K_S via RADV in a strict-clean host state. The balanced UD-Q4_K_XL row is 96-97 t/s. Larger or denser models are slower.
 
 </details>
 
@@ -1913,7 +1924,8 @@ Found something that's wrong, outdated, or missing?
 ### 2026-05-16 -- Latest-Stack b9172 Spot Check
 
 - **Qwen3-Next 80B improved:** llama.cpp b9172 with Vulkan/RADV confirmed **59.06 t/s** tg128 and **751.70 pp512**, replacing the old 54.92 t/s b8933 row as the best current 80B Qwen-family result.
-- **No main headline speedup from b9172:** Qwen3-Coder 30B, Qwen3.6, and gpt-oss-120b did not beat the current b9049/b9010 headline rows.
+- **Qwen3-Coder speed-first peak:** b9179 plus Q4_K_S confirmed **98.51 t/s** r50 after fixing the `tuned`/`power-profiles-daemon` conflict and pausing benchmark noise. This is a speed-first quant row, not the balanced UD default.
+- **No main headline speedup from b9172:** Qwen3-Coder UD, Qwen3.6, and gpt-oss-120b did not beat the current b9049/b9010 balanced headline rows.
 - **Ollama 0.24.0 isolated check:** Qwen3.6 measured **49.05 t/s** warm generation, effectively identical to the same-prompt Ollama 0.23.1 control at **49.09 t/s**.
 - **ROCm nuance confirmed again:** Lemonade ROCm b1259 won Qwen3-Next pp512 (**800.38** vs Vulkan **751.70**), but Vulkan/RADV won tg128 (**59.06** vs ROCm **49.57**). The guide now avoids "RADV wins everything" wording and keeps the beginner rule focused on generation-heavy GGUF chat/coding.
 - Added raw evidence under `data/raw/2026-05-16/`.
@@ -1925,7 +1937,7 @@ Found something that's wrong, outdated, or missing?
 - **gpt-oss-120b local check:** ggml-org MXFP4 split GGUF loaded locally and measured **55.57 t/s** tg128, **726.99 t/s** pp512, and prompt processing through 65K tokens via llama.cpp b9049 Vulkan/RADV.
 - **HIP/Vulkan workload split added:** local spot check shows HIP winning pp16384 and Vulkan winning tg128 on both Qwen3.6 and Qwen3-Coder rows; see [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md).
 - **ROCm/vLLM bugwatch added:** current upstream ROCm/vLLM release and issue status moved to [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md).
-- **Headline range tightened:** current direct llama.cpp headline range is **63-97 t/s**. The previous b9010 Qwen3-Coder peak of **97.24 t/s** remains in the data as historical evidence, and Qwen3.6 now has an **81.30 t/s** speed-first quant row.
+- **Headline range tightened:** current direct llama.cpp headline range became **63-97 t/s** for the balanced rows. The previous b9010 Qwen3-Coder peak of **97.24 t/s** remains in the data as historical evidence, and Qwen3.6 added an **81.30 t/s** speed-first quant row.
 - Added clean raw evidence under `data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/`.
 
 ### 2026-05-03 -- Controlled Qwen3-Coder Headline Rerun
@@ -1940,7 +1952,7 @@ Found something that's wrong, outdated, or missing?
 - **128K filled-KV decode:** Qwen3.6 generated **32.2 t/s after 128K** and Qwen3-Next 80B generated **29.1 t/s after 128K**, both without truncation.
 - **Real-corpus 64K check:** using this guide's own documentation as the prompt, Qwen3.6 decoded at **40.8 t/s after ~65K tokens** and Qwen3-Next 80B at **37.8 t/s after ~64K tokens**. Prompt ingest was slower than synthetic prompts, but decode-after-fill barely changed.
 - **ROCm HIP spot check:** current local HIP b8460 path is usable with the HSA override, but remains behind Vulkan for short-context tg: Qwen3.6 **52.7 t/s** and Qwen3-Coder **73.7 t/s**.
-- At that point, the headline range moved from **65-87 t/s** to **65-97 t/s**. This was later tightened to the current **63-97 t/s** range in the 2026-05-07 rerun. The previous 87.11 t/s result remains in `data/benchmarks.csv` as historical-local data.
+- At that point, the headline range moved from **65-87 t/s** to **65-97 t/s**. This was later tightened to **63-97 t/s** for balanced rows in the 2026-05-07 rerun, then extended to **63-98.5 t/s** by the 2026-05-16 speed-first Q4_K_S row. The previous 87.11 t/s result remains in `data/benchmarks.csv` as historical-local data.
 - Added raw benchmark output under `data/raw/2026-05-03/` so the new headline can be audited.
 
 ### 2026-05-01 -- Price Audit + Documentation Reconciliation

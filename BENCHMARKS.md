@@ -26,8 +26,9 @@ Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 202
 
 | Model | Backend / Build | Quant | pp512 | tg128 | Notes |
 |-------|-----------------|-------|-------|-------|-------|
-| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9049 | UD-Q4_K_XL | 1321 | **96.76** | Max-performance guide-flags r20 confirmation |
-| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9179 | Q4_K_S | 1387 | **97.22** | 2026-05-16 speed-first quant sweep; no stable 100 t/s result |
+| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9179 | Q4_K_S | 1396 | **98.51** | 2026-05-16 strict-clean r50 speed-first quant confirmation |
+| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9049 | UD-Q4_K_XL | 1321 | **96.76** | Max-performance guide-flags r20 confirmation; balanced UD default |
+| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9179 | Q4_K_S | 1387 | **97.22** | Earlier 2026-05-16 speed-first quant sweep before strict host-state fix |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9010 | UD-Q4_K_XL | 1346 | **97.24** | Previous May peak |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b8460 | UD-Q4_K_XL | 1342 | **87.11** | Previous coding MoE headline |
 | Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b9049 | Q4_0 | 1244 | **81.30** | Fastest measured speed-first quant; lower-quality tradeoff |
@@ -50,15 +51,16 @@ Measured on the same Beelink GTR9 Pro after pausing non-essential GUI/noise proc
 
 | Route | Result | Read |
 |-------|--------|------|
-| llama.cpp b9172, Qwen3-Coder 30B UD-Q4_K_XL | 94.43-95.05 tg128 depending on batch flags | No new headline; b9049/b9010 remain faster at about 96-97 t/s. |
+| llama.cpp b9172, Qwen3-Coder 30B UD-Q4_K_XL | 94.43-95.05 tg128 depending on batch flags | No new balanced-UD headline; b9049/b9010 remain faster at about 96-97 t/s. |
 | llama.cpp b9172, Qwen3.6 UD-Q4_K_M | 61.52 tg128 | No new headline; current b9049/b9010 rows remain stronger. |
 | llama.cpp b9172, Qwen3.6 Q4_0 | 79.14 tg128 | No new headline; current b9049 Q4_0 row remains 81.30 t/s. |
 | llama.cpp b9172, Qwen3-Next 80B UD-Q4_K_XL | **59.06 tg128**, 751.70 pp512 | New best 80B Qwen-family row; replaces the old 54.92 t/s b8933 headline for this model. |
 | llama.cpp b9172, gpt-oss-120b MXFP4 | 54.69 tg128, 718.61 pp512 | No new headline; b9049 remains slightly better at 55.57 t/s. |
 | Ollama 0.24.0 isolated binary, Qwen3.6 API | 49.05 t/s warm generation average | No speedup versus the same-prompt Ollama 0.23.1 control at 49.09 t/s. |
-| llama.cpp b9179, Qwen3-Coder 30B Q4_K_S/Q4_0/IQ4_NL/Q4_K_M sweep | Best confirmed row: Q4_K_S at **97.22 tg128**, 1387.22 pp512 | Useful negative result: current master plus smaller Qwen3-Coder quants still did not produce a stable 100 t/s path. Raw data: [`qwen3-coder-break100-master`](data/raw/2026-05-16/qwen3-coder-break100-master/). |
+| llama.cpp b9179, Qwen3-Coder 30B Q4_K_S/Q4_0/IQ4_NL/Q4_K_M sweep | Initial best row: Q4_K_S at **97.22 tg128**, 1387.22 pp512 | Useful negative result: current master plus smaller Qwen3-Coder quants did not produce a stable 100 t/s path. Raw data: [`qwen3-coder-break100-master`](data/raw/2026-05-16/qwen3-coder-break100-master/). |
+| llama.cpp b9179, Qwen3-Coder 30B Q4_K_S strict-clean confirmation | **98.51 tg128 r50**, 1396.11 pp512 | New speed-first peak after fixing `tuned`/`power-profiles-daemon` conflict and pausing RustDesk/Firefox/Zoom/ffmpeg noise. Raw data: [`break-97-24-strict-noise-settings`](data/raw/2026-05-16/break-97-24-strict-noise-settings/). |
 
-Takeaway: upgrading blindly is not always faster. b9172 is worthwhile for Qwen3-Next 80B on this machine. Current master b9179 plus Qwen3-Coder speed-first quants can match the 97 t/s ceiling, but still did not produce a reliable 100 t/s result.
+Takeaway: upgrading blindly is not always faster. b9172 is worthwhile for Qwen3-Next 80B on this machine. Current master b9179 plus the Qwen3-Coder Q4_K_S speed-first quant can beat the old 97.24 t/s peak under a strict benchmark host state, but still did not produce a reliable 100 t/s result. Keep the balanced UD row separate from the speed-first quant row.
 
 ## Qwen3.6 Quant Sweep
 
