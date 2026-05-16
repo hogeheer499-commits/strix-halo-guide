@@ -16,8 +16,8 @@ Before testing:
 
 - The high-CPU DocFlock `ffmpeg` virtual-camera process was paused with `SIGSTOP`.
 - Zoom processes were paused with `SIGSTOP`.
-- RustDesk user processes were paused with `SIGSTOP`; the system service remained present.
-- T3 and Hermes were left running.
+- remote-desktop user processes were paused with `SIGSTOP`; the system service remained present.
+- Normal workspace services were left running.
 - `tuned accelerator-performance`, RADV, Mesa 26.0.6, and 2900 MHz GPU clock were verified.
 
 ### Results

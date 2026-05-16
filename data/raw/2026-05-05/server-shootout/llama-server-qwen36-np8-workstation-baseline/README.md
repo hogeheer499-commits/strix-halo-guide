@@ -20,7 +20,7 @@ validation run, not a full sweep.
 | Parallel slots | 8 |
 | Context | 32768 total, 4096 per slot |
 | Workflow services | normal workstation baseline recorded |
-| RustDesk | stopped |
+| Remote desktop | stopped |
 | Ollama | stopped |
 | Docker containers | stopped |
 | Zoom VM | paused |

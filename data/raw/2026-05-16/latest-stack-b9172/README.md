@@ -1,13 +1,13 @@
 # 2026-05-16 latest-stack b9172 check
 
-Purpose: test whether llama.cpp b9172 improved the current public headline rows on the Beelink GTR9 Pro while keeping the T3 workspace running.
+Purpose: test whether llama.cpp b9172 improved the current public headline rows on the Beelink GTR9 Pro while leaving the normal workspace session active.
 
 Host state:
 
 - Kernel: `6.19.4-061904-generic`
 - Mesa/RADV: `26.0.6`
 - llama.cpp: `b9172`, commit `1348f67c5`
-- T3 ports `3773` and `3777` stayed up
+- Normal workspace connectivity stayed up during the run
 - Non-essential GUI/noise processes were paused during the run
 
 Main results:

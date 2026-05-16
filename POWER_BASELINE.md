@@ -74,7 +74,7 @@ Environment:
 - Kernel 6.19.4.
 - Mesa/RADV 26.0.6.
 - `tuned` profile: `accelerator-performance`.
-- Benchmark-noise services paused; T3 stayed running.
+- Benchmark-noise services paused; the normal workspace session stayed active.
 - GPU clock remained in the high-performance state, so the idle PPT sample is not a whole-machine idle-power claim.
 
 Measured rows:

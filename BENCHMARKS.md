@@ -45,7 +45,7 @@ Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 202
 
 ## 2026-05-16 Latest-Stack Spot Check
 
-Measured on the same Beelink GTR9 Pro after pausing non-essential GUI/noise processes while keeping the T3 workspace alive. Raw data lives under [`data/raw/2026-05-16/`](data/raw/2026-05-16/).
+Measured on the same Beelink GTR9 Pro after pausing non-essential GUI/noise processes while leaving the normal workspace session active. Raw data lives under [`data/raw/2026-05-16/`](data/raw/2026-05-16/).
 
 | Route | Result | Read |
 |-------|--------|------|

@@ -19,7 +19,7 @@ after the full run.
 | Parallel sweep | 1, 2, 4, 8, 16 |
 | Context | 4096 tokens per slot |
 | Workflow services | normal workstation baseline recorded |
-| RustDesk | stopped |
+| Remote desktop | stopped |
 | Ollama | stopped |
 | Docker containers | none running |
 | Zoom VM | paused |

@@ -2,7 +2,7 @@
 
 Purpose: check whether current upstream llama.cpp changes after b9010 materially change the short-context Vulkan/RADV headline path on the primary Beelink GTR9 Pro.
 
-This is smoke/spot-check evidence, not a replacement for the public headline rows. The run used one `-r 20` pass per model per build. T3 and Hermes were left running. High-noise `ffmpeg`, Zoom, and RustDesk user processes were paused with `SIGSTOP` during the measurements.
+This is smoke/spot-check evidence, not a replacement for the public headline rows. The run used one `-r 20` pass per model per build. Normal workspace services were left running. High-noise `ffmpeg`, Zoom, and remote-desktop user processes were paused with `SIGSTOP` during the measurements.
 
 ## Builds
 

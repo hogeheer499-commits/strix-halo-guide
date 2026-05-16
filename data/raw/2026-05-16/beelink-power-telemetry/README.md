@@ -7,7 +7,7 @@ Important scope:
 - This is kernel-exposed amdgpu/APU telemetry, not wall power.
 - Use it for same-machine relative comparisons only.
 - Do not mix these watts with community smart-plug wall-power rows as if they measure the same thing.
-- The services that normally add benchmark noise were paused, but T3 stayed running.
+- The services that normally add benchmark noise were paused, but the normal workspace session stayed active.
 
 Structured summary:
 
