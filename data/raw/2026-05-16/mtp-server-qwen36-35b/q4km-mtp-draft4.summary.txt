@@ -1,0 +1,3 @@
+mean_predicted_per_second=80.494
+max_predicted_per_second=98.991
+min_predicted_per_second=71.453

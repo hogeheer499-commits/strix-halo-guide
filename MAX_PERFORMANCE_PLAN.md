@@ -15,6 +15,7 @@ Current measured recommendation:
 - Vulkan/RADV remains the best measured local default for short-context generation, chat, coding, and direct `llama-server` work.
 - ROCm/HIP can win prompt-processing-heavy work. The local crossover spot check showed HIP ahead at pp16384, while Vulkan stayed ahead at tg128.
 - Lemonade ROCm is still relevant for aggregate server throughput at higher Qwen3.6 concurrency.
+- MTP speculative decoding is now measured as a separate `llama-server` route. It can improve practical server generation and reached a repeatable 100 t/s best-prompt result, but it did not produce a broad 100 t/s average and does not replace the direct `llama-bench` headline.
 - Plain vLLM/AWQ serves locally but is not competitive for single-user generation without DFlash or another serving-specific win.
 - Lucebox DFlash/PFlash is now the highest-upside experimental decode/prefill route, but local reproduction is blocked until an isolated ROCm/HIP dev toolchain with `hipcc` and rocWMMA is available.
 - FastFlowLM/NPU is visible at the kernel level on this Beelink (`amdxdna` + `/dev/accel/accel0`), but XRT/FastFlowLM user-space is not installed yet.
@@ -27,6 +28,7 @@ Current fastest local headline:
 - Treat 98.51 t/s as the current measured speed-first Qwen3-Coder peak, not a 100 t/s result and not the default balanced-quality recommendation.
 - Additional break-100 route testing reached 99.11 t/s in an r5 scout and 98.96 t/s in an r20 confirmation, but still did not produce a stable 100 t/s result.
 - Current fastest measured Qwen3.6 path: Q4_0 at 81.30 t/s on llama.cpp b9049, Vulkan/RADV. Label this as speed-first, not the default all-round quality recommendation.
+- Current fastest measured Qwen3.6 MTP server prompt: 100.74 t/s on a local MTP Q4_K_M requant with `draft-n=3`, `-t 16`, and `--poll 10`; the same route averaged about 83-84 t/s across six prompts, while the best average MTP setting was `draft-n=2` at 87.53 t/s.
 
 ## 2026-05-07 Campaign Results
 
@@ -40,7 +42,7 @@ Detailed results: [`MAX_PERFORMANCE_RESULTS_2026-05-07.md`](MAX_PERFORMANCE_RESU
 | gpt-oss-120b long-context sweep | done | 55.57 t/s tg128 and prompt processing through 65K tokens. |
 | Tuned rocWMMA path | attempted | lhl branch built, but failed to load current Qwen3.6 GGUFs. |
 | vLLM AWQ/DFlash | partially blocked | Plain AWQ smoke works at about 25 t/s; exact DFlash route blocked by gated drafter access. |
-| Speculative decoding sanity | attempted | Optional `llama-cli` sanity produced runaway output and was excluded from claims. |
+| MTP speculative decoding | done | `llama-server` MTP works on b9187; Qwen3.6 MTP Q4_K_M averaged 87.53 t/s with `draft-n=2`, and `draft-n=3` repeated a 100.74 t/s best-prompt result. |
 
 ## 2026-05-16 Follow-Up
 
@@ -57,6 +59,7 @@ Raw evidence:
 - [`data/raw/2026-05-16/break-100-amdvlk-isolated/`](data/raw/2026-05-16/break-100-amdvlk-isolated/)
 - [`data/raw/2026-05-16/break-100-pr22970-vulkan/`](data/raw/2026-05-16/break-100-pr22970-vulkan/)
 - [`data/raw/2026-05-16/break-100-master-0253-vulkan/`](data/raw/2026-05-16/break-100-master-0253-vulkan/)
+- [`data/raw/2026-05-16/mtp-server-qwen36-35b/`](data/raw/2026-05-16/mtp-server-qwen36-35b/)
 
 Findings:
 
@@ -68,7 +71,8 @@ Findings:
 - Qwen3-Coder current-master break-100 sweep tested UD-Q4_K_XL plus Q4_0, Q4_K_S, IQ4_NL, and Q4_K_M. Q4_K_S was fastest in the first pass at 97.22 t/s r20; r5-only 97.7 t/s flag wins did not hold under r20 confirmation. No stable 100 t/s path found.
 - A stricter follow-up found the missing host-state factor: `power-profiles-daemon` can stop/conflict with `tuned`. With `tuned accelerator-performance` active, `power-profiles-daemon` inactive, CPU/EPP on performance, GPU high, and RustDesk/Firefox/Zoom/ffmpeg paused, Qwen3-Coder Q4_K_S on b9179 confirmed 98.51 t/s r50. Raw data: [`data/raw/2026-05-16/break-97-24-strict-noise-settings/`](data/raw/2026-05-16/break-97-24-strict-noise-settings/).
 - Follow-up break-100 routes tested threads, poll settings, batch/ubatch, CPU masks, no-host, mmap, direct I/O, KV q8/q4, Flash Attention off, no-op/no-KV variants, root RustDesk/qemu pausing, and temporary T3 renice while keeping T3 running. Best r5 scout was 99.11 t/s; best r20 confirmation was 98.96 t/s with 1382.12 pp512. No stable 100 t/s path found.
-- Additional high-upside break-100 checks did not change the conclusion. AMDVLK via kyuz0's isolated toolbox measured 93.28 t/s r5, llama.cpp PR #22970 measured 98.74 t/s r20, and latest upstream master b9187 measured 98.64 t/s r20. MTP support landed in master and remains interesting for a separate `llama-server` speculative-decoding route, but it does not change the direct non-speculative `llama-bench` ceiling.
+- Additional high-upside break-100 checks did not change the direct `llama-bench` conclusion. AMDVLK via kyuz0's isolated toolbox measured 93.28 t/s r5, llama.cpp PR #22970 measured 98.74 t/s r20, and latest upstream master b9187 measured 98.64 t/s r20.
+- MTP was then tested as the separate route it actually is: `llama-server` speculative decoding. Official Qwen3.6 MTP Q8_0 improved from 56.20 to 67.04 t/s average with `draft-n=2`. A local Q4_K_M requant improved from 74.13 to 87.53 t/s average with `draft-n=2`. The tuned `draft-n=3`, `-t 16`, `--poll 10` route repeated 99.86-100.74 t/s on the best prompt, but only averaged about 83-84 t/s across six prompts. Raw data: [`data/raw/2026-05-16/mtp-server-qwen36-35b/`](data/raw/2026-05-16/mtp-server-qwen36-35b/), summary: [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md).
 
 ## Route Details And Remaining Work
 
@@ -113,7 +117,7 @@ Expected outcome:
 
 Why: this directly targets the 96-98.5 t/s Qwen3-Coder headline. The next useful question is whether the Beelink can cross 100 t/s on a still-useful coding model.
 
-2026-05-16 update: current llama.cpp master b9179 and Unsloth Qwen3-Coder Q4_0/Q4_K_S/IQ4_NL/Q4_K_M quants were tested. Q4_K_S reached 97.22 t/s r20 in the first sweep. After fixing the `tuned`/`power-profiles-daemon` host-state conflict and pausing benchmark noise, Q4_K_S confirmed 98.51 t/s r50. A later break-100 pass reached 99.11 t/s in r5 and 98.96 t/s in r20. AMDVLK isolated, PR #22970, and latest master b9187 also failed to produce a stable 100 t/s path.
+2026-05-16 update: current llama.cpp master b9179 and Unsloth Qwen3-Coder Q4_0/Q4_K_S/IQ4_NL/Q4_K_M quants were tested. Q4_K_S reached 97.22 t/s r20 in the first sweep. After fixing the `tuned`/`power-profiles-daemon` host-state conflict and pausing benchmark noise, Q4_K_S confirmed 98.51 t/s r50. A later break-100 pass reached 99.11 t/s in r5 and 98.96 t/s in r20. AMDVLK isolated, PR #22970, and latest master b9187 also failed to produce a stable direct 100 t/s path. MTP did produce a 100.74 t/s best-prompt `llama-server` result, but that is a separate speculative server claim, not this direct Qwen3-Coder `llama-bench` target.
 
 Levers:
 
