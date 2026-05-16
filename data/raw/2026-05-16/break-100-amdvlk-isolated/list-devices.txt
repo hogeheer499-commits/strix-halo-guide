@@ -1,0 +1,2 @@
+Available devices:
+  Vulkan0: AMD Radeon 8060S Graphics (128450 MiB, 122027 MiB free)

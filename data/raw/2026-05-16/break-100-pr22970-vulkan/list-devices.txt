@@ -1,0 +1,2 @@
+Available devices:
+  Vulkan0: Radeon 8060S Graphics (RADV STRIX_HALO) (131584 MiB, 129472 MiB free)

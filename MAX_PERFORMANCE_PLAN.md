@@ -54,6 +54,9 @@ Raw evidence:
 - [`data/raw/2026-05-16/qwen3-coder-break100-master/`](data/raw/2026-05-16/qwen3-coder-break100-master/)
 - [`data/raw/2026-05-16/break-100-routes/`](data/raw/2026-05-16/break-100-routes/)
 - [`data/raw/2026-05-16/break-100-routes-strict2/`](data/raw/2026-05-16/break-100-routes-strict2/)
+- [`data/raw/2026-05-16/break-100-amdvlk-isolated/`](data/raw/2026-05-16/break-100-amdvlk-isolated/)
+- [`data/raw/2026-05-16/break-100-pr22970-vulkan/`](data/raw/2026-05-16/break-100-pr22970-vulkan/)
+- [`data/raw/2026-05-16/break-100-master-0253-vulkan/`](data/raw/2026-05-16/break-100-master-0253-vulkan/)
 
 Findings:
 
@@ -65,6 +68,7 @@ Findings:
 - Qwen3-Coder current-master break-100 sweep tested UD-Q4_K_XL plus Q4_0, Q4_K_S, IQ4_NL, and Q4_K_M. Q4_K_S was fastest in the first pass at 97.22 t/s r20; r5-only 97.7 t/s flag wins did not hold under r20 confirmation. No stable 100 t/s path found.
 - A stricter follow-up found the missing host-state factor: `power-profiles-daemon` can stop/conflict with `tuned`. With `tuned accelerator-performance` active, `power-profiles-daemon` inactive, CPU/EPP on performance, GPU high, and RustDesk/Firefox/Zoom/ffmpeg paused, Qwen3-Coder Q4_K_S on b9179 confirmed 98.51 t/s r50. Raw data: [`data/raw/2026-05-16/break-97-24-strict-noise-settings/`](data/raw/2026-05-16/break-97-24-strict-noise-settings/).
 - Follow-up break-100 routes tested threads, poll settings, batch/ubatch, CPU masks, no-host, mmap, direct I/O, KV q8/q4, Flash Attention off, no-op/no-KV variants, root RustDesk/qemu pausing, and temporary T3 renice while keeping T3 running. Best r5 scout was 99.11 t/s; best r20 confirmation was 98.96 t/s with 1382.12 pp512. No stable 100 t/s path found.
+- Additional high-upside break-100 checks did not change the conclusion. AMDVLK via kyuz0's isolated toolbox measured 93.28 t/s r5, llama.cpp PR #22970 measured 98.74 t/s r20, and latest upstream master b9187 measured 98.64 t/s r20. MTP support landed in master and remains interesting for a separate `llama-server` speculative-decoding route, but it does not change the direct non-speculative `llama-bench` ceiling.
 
 ## Route Details And Remaining Work
 
@@ -109,7 +113,7 @@ Expected outcome:
 
 Why: this directly targets the 96-98.5 t/s Qwen3-Coder headline. The next useful question is whether the Beelink can cross 100 t/s on a still-useful coding model.
 
-2026-05-16 update: current llama.cpp master b9179 and Unsloth Qwen3-Coder Q4_0/Q4_K_S/IQ4_NL/Q4_K_M quants were tested. Q4_K_S reached 97.22 t/s r20 in the first sweep. After fixing the `tuned`/`power-profiles-daemon` host-state conflict and pausing benchmark noise, Q4_K_S confirmed 98.51 t/s r50. A later break-100 pass reached 99.11 t/s in r5 and 98.96 t/s in r20, but still did not prove a stable 100 t/s path.
+2026-05-16 update: current llama.cpp master b9179 and Unsloth Qwen3-Coder Q4_0/Q4_K_S/IQ4_NL/Q4_K_M quants were tested. Q4_K_S reached 97.22 t/s r20 in the first sweep. After fixing the `tuned`/`power-profiles-daemon` host-state conflict and pausing benchmark noise, Q4_K_S confirmed 98.51 t/s r50. A later break-100 pass reached 99.11 t/s in r5 and 98.96 t/s in r20. AMDVLK isolated, PR #22970, and latest master b9187 also failed to produce a stable 100 t/s path.
 
 Levers:
 
