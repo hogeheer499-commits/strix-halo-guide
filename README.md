@@ -194,10 +194,12 @@ Measured local result: 96.76 tg128 in the max-performance b9049 campaign: [`raw 
 
 ## Not Yet Proven Here
 
-- vLLM DFlash throughput on a comparable 35B path; plain AWQ without the gated DFlash drafter was only a smoke test here.
+- Lucebox/DFlash throughput on a comparable Strix Halo workload; local preflight is blocked until an isolated ROCm/HIP dev toolchain with `hipcc` and rocWMMA is available.
+- vLLM DFlash throughput on a comparable 35B path; plain AWQ without the gated DFlash drafter was only a smoke test here at about 25 t/s.
 - Fully polished same-build HIP versus Vulkan comparison with build IDs embedded correctly; the b9049 source-matched matrix is already enough for workload-split guidance.
 - Same-machine Windows versus Linux performance.
-- Reliable tokens-per-watt under validated wall or board power telemetry.
+- Reliable wall-power tokens-per-watt on the Beelink. Local amdgpu `PPT` telemetry now exists, but it is not a wall-power claim.
+- FastFlowLM/NPU inference. The kernel sees `amdxdna` and `/dev/accel/accel0`, but XRT/FastFlowLM user-space is not installed yet.
 - A local tuned rocWMMA long-context comparison against the current Vulkan/RADV path; the lhl branch built but failed to load current Qwen3.6 GGUFs.
 - Multi-machine clustering numbers from this guide's own hardware. Community RPC data exists in [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), but it is not a local Beelink headline claim.
 
@@ -216,6 +218,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) | Exact machine, BIOS/software state, commands, raw data paths, and chart generation. |
 | [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md) | Practical local-AI-server comparison: Ollama, `llama-server`, Lemonade ROCm, and vLLM candidates. |
 | [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) | HIP versus Vulkan workload split: prompt processing versus token generation. |
+| [`POWER_BASELINE.md`](POWER_BASELINE.md) | Local amdgpu `PPT` telemetry status and Beelink power-sampling caveats. |
 | [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md) | Fast-moving ROCm/vLLM upstream issue and release watchlist. |
 | [`BENCHMARKS.md`](BENCHMARKS.md) | Compact benchmark source-of-truth for current README numbers. |
 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md) | Independent benchmark reports from other Strix Halo systems, kept separate from headline claims. |
@@ -1503,7 +1506,7 @@ Based on community testing and our own findings:
 
 ## Power Measurement Status
 
-Power efficiency is not published yet. `powercap` is empty on this system, but `amdgpu` exposes `PPT` telemetry through `power1_average` / `power1_input`. Treat that as GPU/APU telemetry, not wall power. See [`POWER_BASELINE.md`](POWER_BASELINE.md) and `scripts/sample_power.py` before adding tokens-per-watt claims.
+Beelink wall-power efficiency is not published yet. `powercap` is empty on this system, but `amdgpu` exposes `PPT` telemetry through `power1_average` / `power1_input`. A 2026-05-16 local PPT run measured roughly 111-113 W during Qwen3-Coder/Qwen3.6 Vulkan workloads, but this is GPU/APU telemetry, not wall power. See [`POWER_BASELINE.md`](POWER_BASELINE.md), [`data/beelink_power_telemetry.csv`](data/beelink_power_telemetry.csv), and `scripts/sample_power.py` before adding tokens-per-watt claims.
 
 ---
 
@@ -2042,11 +2045,12 @@ Found something that's wrong, outdated, or missing?
 
 These are the highest-value tests to add next, because they answer practical buyer/setup questions that current evidence only partially covers:
 
-- **Lemonade/FastFlowLM NPU on Linux:** Lemonade 10.x and FastFlowLM now make Linux NPU LLM inference a real path. Test small Qwen/Gemma rows for speed, power, and whether it is useful beside the GPU path.
+- **Lemonade/FastFlowLM NPU on Linux:** local preflight shows `amdxdna` and `/dev/accel/accel0`, but XRT/FastFlowLM are not installed. Next step is a separate NPU lane: install XRT/FastFlowLM, reboot, run `flm validate`, then test small Qwen/Gemma rows for speed and power.
 - **Same-machine Windows native Vulkan/Ollama/LM Studio vs Linux:** WSL2/HIP now has a community baseline, but the most useful beginner answer is still native Windows app performance versus native Linux Vulkan/RADV.
 - **More GMKtec/Bosgame/Framework native Linux reproductions:** The first GMKtec native result matched within about 2%; more vendors turn the guide from one-machine evidence into a platform map.
-- **Tokens per watt with wall-power data:** Fail-Safe supplied valuable Corsair power telemetry. A Beelink wall-meter run would make the efficiency story much stronger.
-- **vLLM/AWQ/DFlash throughput:** Keep this experimental until it has a reproducible OpenAI-compatible server row that competes with `llama-server`/Ollama for a real use case.
+- **Tokens per watt with wall-power data:** Fail-Safe supplied valuable Corsair wall-power telemetry, and this guide now has Beelink amdgpu PPT telemetry. A Beelink wall-meter run would make the efficiency story publishable.
+- **Lucebox / DFlash / PFlash:** highest-upside experimental route for 27B long-prompt + generation workloads, but local preflight currently needs an isolated ROCm/HIP dev toolchain with `hipcc` and rocWMMA.
+- **vLLM/AWQ/DFlash throughput:** keep this experimental until it has a reproducible OpenAI-compatible server row that competes with `llama-server`/Ollama for a real use case. Plain AWQ smoke works, but it is not the fastest default.
 - **Future Strix Halo successors:** Gorgon Halo / Ryzen AI Max 400 and later Medusa Halo / Ryzen AI Max 500 should be treated as future comparison targets, not current setup advice.
 
 ---

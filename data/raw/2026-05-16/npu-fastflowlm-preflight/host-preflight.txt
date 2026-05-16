@@ -1,0 +1,59 @@
+2026-05-16T12:49:59+02:00
+Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+drwxr-xr-x  2 root root         60 May  4 21:23 /dev/accel
+drwxr-xr-x  2 root root         80 May  4 21:23 /dev/dri/by-path
+crw-rw-rw-+ 1 root render 226,   1 May 16 11:43 /dev/dri/card1
+crw-rw-rw-+ 1 root render 226, 128 May  4 21:23 /dev/dri/renderD128
+amdgpu              20914176  145
+amdxcp                 12288  1 amdgpu
+drm_panel_backlight_quirks    12288  1 amdgpu
+drm_buddy              28672  1 amdgpu
+drm_ttm_helper         20480  2 amdgpu
+ttm                   135168  2 amdgpu,drm_ttm_helper
+drm_exec               12288  1 amdgpu
+drm_suballoc_helper    24576  1 amdgpu
+drm_display_helper    299008  1 amdgpu
+cec                   106496  2 drm_display_helper,amdgpu
+amdxdna               167936  0
+i2c_algo_bit           16384  1 amdgpu
+gpu_sched              69632  2 amdxdna,amdgpu
+video                  77824  1 amdgpu
+00:00.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Device [1022:1507] (rev 02)
+00:00.2 IOMMU [0806]: Advanced Micro Devices, Inc. [AMD] Device [1022:1508] (rev 02)
+00:01.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Device [1022:1509]
+00:01.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:150a] (rev 02)
+00:01.2 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:150a] (rev 02)
+00:02.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Device [1022:1509]
+00:02.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:150b]
+00:02.2 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:150b] (rev 02)
+00:02.3 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:150b] (rev 02)
+00:02.5 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:150b] (rev 02)
+00:03.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Device [1022:1509]
+00:03.2 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:150b] (rev 02)
+00:08.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Device [1022:1509]
+00:08.1 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:150c]
+00:08.2 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:150c]
+00:08.3 PCI bridge [0604]: Advanced Micro Devices, Inc. [AMD] Device [1022:150c]
+00:14.0 SMBus [0c05]: Advanced Micro Devices, Inc. [AMD] FCH SMBus Controller [1022:790b] (rev 71)
+00:14.3 ISA bridge [0601]: Advanced Micro Devices, Inc. [AMD] FCH LPC Bridge [1022:790e] (rev 51)
+00:18.0 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Device [1022:12b8]
+00:18.1 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Device [1022:12b9]
+00:18.2 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Device [1022:12ba]
+00:18.3 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Device [1022:12bb]
+00:18.4 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Device [1022:12bc]
+00:18.5 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Device [1022:12bd]
+00:18.6 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Device [1022:12be]
+00:18.7 Host bridge [0600]: Advanced Micro Devices, Inc. [AMD] Device [1022:12bf]
+c6:00.0 Display controller [0380]: Advanced Micro Devices, Inc. [AMD/ATI] Device [1002:1586] (rev c1)
+c6:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Rembrandt Radeon High Definition Audio Controller [1002:1640]
+c6:00.2 Encryption controller [1080]: Advanced Micro Devices, Inc. [AMD] Device [1022:17e0]
+c6:00.4 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Device [1022:1587]
+c6:00.5 Multimedia controller [0480]: Advanced Micro Devices, Inc. [AMD] ACP/ACP3X/ACP6x Audio Coprocessor [1022:15e2] (rev 70)
+c6:00.6 Audio device [0403]: Advanced Micro Devices, Inc. [AMD] Family 17h/19h HD Audio Controller [1022:15e3]
+c7:00.0 Non-Essential Instrumentation [1300]: Advanced Micro Devices, Inc. [AMD] Device [1022:150d]
+c7:00.1 Signal processing controller [1180]: Advanced Micro Devices, Inc. [AMD] Device [1022:17f0] (rev 11)
+c8:00.0 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Device [1022:1588]
+c8:00.3 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Device [1022:1589]
+c8:00.4 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Device [1022:158b]
+c8:00.5 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Device [1022:158d]
+c8:00.6 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Device [1022:158e]

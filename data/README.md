@@ -15,6 +15,7 @@ python3 scripts/generate_charts.py
 - `headline_claims.csv`: machine-readable map from public README headline claims to structured CSVs, raw evidence, charts, and notes.
 - `community_results.csv`: benchmark reports from other Strix Halo systems. These rows are useful external validation but are kept separate from public headline claims.
 - `community_power.csv`: community-reported whole-system wall-power and energy-per-token rows. These are useful external validation and tokens-per-watt baselines, but are not local headline claims.
+- `beelink_power_telemetry.csv`: local Beelink amdgpu `PPT` telemetry rows. These are useful same-machine power/load context, but they are not wall-power rows.
 - `community_rpc.csv`: community-reported multi-node `llama.cpp` RPC rows over USB4 Ethernet. These are advanced capacity/scaling results and are not single-machine headline claims.
 - `community_rpc_server.csv`: community-reported `llama-server` TTFT and generation-rate rows for single-box and RPC serving.
 - `community_rpc_failures.csv`: community-reported RPC failure rows, including allocator/capacity failure interpretation.
@@ -46,6 +47,11 @@ python3 scripts/generate_charts.py
 - `raw/2026-05-16/latest-stack-b9172/`: local llama.cpp b9172 rerun; Qwen3-Next 80B improved to 59.06 t/s while Qwen3-Coder, Qwen3.6, and gpt-oss did not improve.
 - `raw/2026-05-16/ollama-0.24.0-api/`: isolated Ollama 0.24.0 API check plus same-prompt 0.23.1 control; no speedup found.
 - `raw/2026-05-16/lemonade-rocm-b1259-spotcheck/`: Qwen3-Next 80B ROCm spot check; HIP won pp512, Vulkan/RADV won tg128.
+- `raw/2026-05-16/post-migration-smoke/`: confirms the Windows-partition-to-model-partition migration did not break `/home/hoge-heer/models`.
+- `raw/2026-05-16/beelink-power-telemetry/`: local amdgpu `PPT` telemetry during idle, Qwen3-Coder, and Qwen3.6 runs.
+- `raw/2026-05-16/lucebox-dflash-preflight/`: Lucebox DFlash/PFlash clone and CMake HIP preflight; blocked locally by missing host ROCm dev toolchain.
+- `raw/2026-05-16/npu-fastflowlm-preflight/`: non-invasive NPU visibility check; `amdxdna` and `/dev/accel/accel0` exist, but XRT/FastFlowLM are not installed.
+- `raw/2026-05-16/vllm-preflight-refresh/`: refreshed kyuz0 vLLM container version/GPU visibility check.
 
 ## Status Values
 
@@ -56,6 +62,7 @@ python3 scripts/generate_charts.py
 - `smoke-test`: short validation run, not a full benchmark campaign.
 - `candidate-not-measured`: tracked candidate for the next campaign; no local performance claim yet.
 - `failed-local`: local attempt failed; retained as a negative result so the guide does not imply unsupported combinations work.
+- `measured-local-ppt`: measured on this guide's Beelink using amdgpu `PPT` telemetry. This is not wall power.
 
 ## Required Metadata for New Rows
 

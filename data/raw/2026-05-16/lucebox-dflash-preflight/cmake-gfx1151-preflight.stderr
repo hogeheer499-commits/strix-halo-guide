@@ -1,0 +1,4 @@
+CMake Error at /usr/share/cmake-3.28/Modules/CMakeDetermineHIPCompiler.cmake:174 (message):
+  Failed to find ROCm root directory.
+Call Stack (most recent call first):
+  CMakeLists.txt:9 (project)

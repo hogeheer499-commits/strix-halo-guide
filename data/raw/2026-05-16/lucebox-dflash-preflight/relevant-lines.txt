@@ -1,0 +1,431 @@
+local-scratch/lucebox-hub/README.md:14:  <a href="https://rocm.docs.amd.com/projects/HIP/en/latest/"><img src="https://img.shields.io/badge/HIP-7%2B-ed1c24?style=for-the-badge&logo=amd&logoColor=ed1c24&labelColor=090909" alt="HIP 7+"></a>
+local-scratch/lucebox-hub/README.md:52:| Ryzen AI MAX+ 395 (gfx1151) | Qwen 3.5-27B Q4_K_M (DFlash + PFlash, HIP) | **2.24×** @ 16K | **3.08×** vs llama.cpp HIP AR (37 tok/s) |
+local-scratch/lucebox-hub/README.md:54:## 01 · Megakernel Qwen3.5 0.8B on RTX 3090
+local-scratch/lucebox-hub/README.md:86:## 02 · DFlash DDtree Qwen3.5 & Qwen3.6 27B GGUF on RTX 3090
+local-scratch/lucebox-hub/README.md:88:DFlash speculative decoding for Qwen3.5/Qwen3.6 27B GGUF targets on a single GPU. The default setup uses Qwen3.6-27B Q4_K_M plus the Lucebox Q8_0 GGUF DFlash draft.
+local-scratch/lucebox-hub/README.md:108:hf download unsloth/Qwen3.6-27B-GGUF Qwen3.6-27B-Q4_K_M.gguf --local-dir models/
+local-scratch/lucebox-hub/README.md:109:hf download Lucebox/Qwen3.6-27B-DFlash-GGUF dflash-draft-3.6-q8_0.gguf --local-dir models/draft/
+local-scratch/lucebox-hub/README.md:124:**Why GGUF/Q4_K_M:** on 24 GB GPUs, the target, draft, DDTree verify state, and KV cache need to fit together. The default Qwen3.6 setup uses a ~16 GB Q4_K_M target and a 1.84 GB GGUF draft.
+local-scratch/lucebox-hub/README.md:197:                    -DDFLASH27B_ENABLE_BSA=ON
+local-scratch/lucebox-hub/README.md:198:cmake --build build --target test_dflash test_flashprefill_kernels -j
+local-scratch/lucebox-hub/README.md:201:hf download unsloth/Qwen3.6-27B-GGUF Qwen3.6-27B-Q4_K_M.gguf --local-dir models/
+local-scratch/lucebox-hub/README.md:203:hf download Lucebox/Qwen3.6-27B-DFlash-GGUF dflash-draft-3.6-q8_0.gguf --local-dir models/draft/
+local-scratch/lucebox-hub/README.md:207:./build/test_dflash models/Qwen3.6-27B-Q4_K_M.gguf models/draft/dflash-draft-3.6-q8_0.gguf --daemon
+local-scratch/lucebox-hub/README.md:220:**Runtime tunables** (full list in [`dflash/src/flashprefill.h`](dflash/src/flashprefill.h)):
+local-scratch/lucebox-hub/README.md:231:- 4 CUDA kernels (`flashprefill_kernels.cu`) for the FlashPrefill `mean_K / score / select / sparse_fwd` algorithm.
+local-scratch/lucebox-hub/README.md:237:## AMD Strix Halo (HIP backend)
+local-scratch/lucebox-hub/README.md:239:**Same DFlash + PFlash stack on an AMD iGPU.** PR #119 ports the Phase 2 rocWMMA flashprefill kernels to HIP. End-to-end on a single Ryzen AI MAX+ 395 box (Radeon 8060S iGPU, gfx1151, 128 GiB LPDDR5X-8000 unified): **37.0 tok/s** DFlash decode on Qwen3.5-27B Q4_K_M, **27.6 s** TTFT at 16K context with NIAH retrieval intact. That is **3.08×** decode and **2.24×** prefill over llama.cpp HIP AR on the same iGPU. End-to-end wall clock at a realistic 16K prompt + 1K generation workload: **2.66×** faster than vanilla llama.cpp.
+local-scratch/lucebox-hub/README.md:244:# Build for gfx1151 (Strix Halo). Swap the arch for gfx1100 / gfx1201.
+local-scratch/lucebox-hub/README.md:247:  -DDFLASH27B_GPU_BACKEND=hip \
+local-scratch/lucebox-hub/README.md:248:  -DDFLASH27B_HIP_ARCHITECTURES=gfx1151 \
+local-scratch/lucebox-hub/README.md:249:  -DDFLASH27B_HIP_SM80_EQUIV=ON
+local-scratch/lucebox-hub/README.md:253:`DFLASH27B_HIP_SM80_EQUIV=ON` enables the rocWMMA Phase 2 flashprefill kernels (the path that delivers the prefill speedup). `OFF` falls back to ggml's `flash_attn_ext` (slower but no rocwmma headers needed).
+local-scratch/lucebox-hub/README.md:255:**Per-arch DDTree tuning**: gfx1151 (Strix Halo iGPU, bandwidth-bound on LPDDR5X) peaks at `--ddtree-budget=22`. gfx1100 (7900 XTX, GDDR6) prefers `budget=8` per the [PR #156 cross-arch perf plan](https://github.com/Luce-Org/lucebox-hub/pull/156). Run `scripts/bench_he.py --ddtree-budget N` to verify on your card.
+local-scratch/lucebox-hub/README.md:257:**Drafter recipe for max decode**: target = Qwen3.5-27B Q4_K_M, drafter = same gen quantized to Q8_0 via `dflash/scripts/quantize_draft_q8.py`. The matching Q8_0 GGUF on the unsloth Qwen3.6 target needs `DFLASH27B_DRAFT_SWA=2048` for sliding-window correctness.
+local-scratch/lucebox-hub/README.md:334:- [z-lab/DFlash](https://arxiv.org/abs/2602.06036) (Wang et al., 2026): block-diffusion speculative decoding algorithm. We use their published Qwen3.5/Qwen3.6-27B-DFlash draft weights as-is.
+local-scratch/lucebox-hub/README.md:335:- [DDTree](https://arxiv.org/abs/2604.12989) (Ringel & Romano, 2026): tree-structured verify that DFlash 27B uses for its 3.5× speedup over chain spec decoding. [liranringel/ddtree](https://github.com/liranringel/ddtree).
+local-scratch/lucebox-hub/dflash/CODEX.md:30:  --draft models/draft/draft-Qwen3.6-27B.gguf \
+local-scratch/lucebox-hub/dflash/CODEX.md:152:  --target PATH         Target model GGUF (default: models/Qwen3.6-27B-Q4_K_M.gguf)
+local-scratch/lucebox-hub/dflash/README.md:12:  <strong>GGUF DFlash speculative decoding for Qwen3.5/Qwen3.6 27B.</strong><br/>
+local-scratch/lucebox-hub/dflash/README.md:13:  C++/CUDA runtime on top of ggml. Default path: Qwen3.6-27B Q4_K_M target + Lucebox Q8_0 GGUF DFlash draft.<br/>
+local-scratch/lucebox-hub/dflash/README.md:14:  Qwen3.5 reference: 129.5 tok/s mean on HumanEval (3.43x vs AR); best demo run: 207.6 tok/s vs 38.0 tok/s AR (5.46x).<br/><br/>
+local-scratch/lucebox-hub/dflash/README.md:38:- Qwen3.5/Qwen3.6 `qwen35` GGUF target support.
+local-scratch/lucebox-hub/dflash/README.md:47:Qwen3.5-27B Q4_K_M, concurrency=1, n_gen=256, 10 prompts/dataset:
+local-scratch/lucebox-hub/dflash/README.md:68:HE 10-prompt bench mean in 128K mode (ctx=131072, ddtree-budget=16, FA window=2048): **134.78 tok/s** at AL 8.33.
+local-scratch/lucebox-hub/dflash/README.md:72:Set `DFLASH27B_KV_TQ3=1` (TQ3_0, 3.5 bpv, default) or `DFLASH27B_KV_Q4=1` (Q4_0, 4.5 bpv, legacy) to enable. Full sweep in [RESULTS.md](RESULTS.md).
+local-scratch/lucebox-hub/dflash/README.md:76:The cache now supports independent quantization types for keys and values, optimizing memory-asymmetric workloads. Set `DFLASH27B_KV_K=<type>` and `DFLASH27B_KV_V=<type>` via environment or CLI flags. Supported types (case-insensitive): `f16`, `bf16`, `q4_0`, `q4_1`, `q5_0`, `q5_1`, `q8_0`, `tq3_0`.
+local-scratch/lucebox-hub/dflash/README.md:86:DFLASH27B_KV_K=q8_0 DFLASH27B_KV_V=q4_0 ./test_dflash …
+local-scratch/lucebox-hub/dflash/README.md:129:## Qwen3.6-27B Target
+local-scratch/lucebox-hub/dflash/README.md:131:Qwen3.6-27B is the default integration path. It uses the same `qwen35` target architecture as Qwen3.5, and the docs use the Lucebox GGUF DFlash draft by default.
+local-scratch/lucebox-hub/dflash/README.md:135:hf download unsloth/Qwen3.6-27B-GGUF Qwen3.6-27B-Q4_K_M.gguf --local-dir models/
+local-scratch/lucebox-hub/dflash/README.md:138:hf download Lucebox/Qwen3.6-27B-DFlash-GGUF dflash-draft-3.6-q8_0.gguf --local-dir models/draft/
+local-scratch/lucebox-hub/dflash/README.md:141:DFLASH_TARGET=models/Qwen3.6-27B-Q4_K_M.gguf python3 scripts/bench_he.py --n-gen 128
+local-scratch/lucebox-hub/dflash/README.md:146:Reference measurements from the Qwen3.6 bring-up on RTX 3090:
+local-scratch/lucebox-hub/dflash/README.md:150:| Qwen3.5-27B Q4_K_M | z-lab/Qwen3.5-27B-DFlash | HumanEval (README config) | 8.33 | ~65% | 134.78 |
+local-scratch/lucebox-hub/dflash/README.md:151:| Qwen3.6-27B Q4_K_M | z-lab/Qwen3.5-27B-DFlash (mismatch) | HumanEval (10 prompts, n_gen=128) | 4.74 | 30.6% | 73.67 |
+local-scratch/lucebox-hub/dflash/README.md:152:| Qwen3.6-27B Q4_K_M | z-lab/Qwen3.6-27B-DFlash safetensors | HumanEval (10 prompts, n_gen=128) | 5.05 | 32.3% | 77.77 |
+local-scratch/lucebox-hub/dflash/README.md:153:| Qwen3.6-27B Q4_K_M | z-lab/Qwen3.5-27B-DFlash (mismatch) | Math (10 prompts, n_gen=128) | 3.63 | 23.7% | 57.00 |
+local-scratch/lucebox-hub/dflash/README.md:155:Full `bench_llm.py` suite on Qwen3.6-27B UD-Q4_K_XL, 10 prompts, n_gen=256, RTX 3090 24 GB, auto-fit `--max-ctx`:
+local-scratch/lucebox-hub/dflash/README.md:278:#   60;61 = Pascal P100/P40 (scalar flashprefill fallback, no WMMA)
+local-scratch/lucebox-hub/dflash/README.md:288:# flashprefill paths.
+local-scratch/lucebox-hub/dflash/README.md:293:# Quickstart pins to Qwen3.6-27B (latest release). For Qwen3.5-27B swap in
+local-scratch/lucebox-hub/dflash/README.md:294:# unsloth/Qwen3.5-27B-GGUF + z-lab/Qwen3.5-27B-DFlash; arch is identical so
+local-scratch/lucebox-hub/dflash/README.md:296:hf download unsloth/Qwen3.6-27B-GGUF Qwen3.6-27B-Q4_K_M.gguf --local-dir models/
+local-scratch/lucebox-hub/dflash/README.md:297:hf download Lucebox/Qwen3.6-27B-DFlash-GGUF dflash-draft-3.6-q8_0.gguf --local-dir models/draft/
+local-scratch/lucebox-hub/dflash/README.md:299:# Streaming one-shot generate (run.py defaults to models/Qwen3.6-27B-Q4_K_M.gguf;
+local-scratch/lucebox-hub/dflash/README.md:313:python3 scripts/bench_he.py --n-gen 256 --ddtree-budget 22   # minimal HE bench
+local-scratch/lucebox-hub/dflash/README.md:318:DFLASH27B_KV_TQ3=1 DFLASH27B_PREFILL_UBATCH=16 \
+local-scratch/lucebox-hub/dflash/README.md:319:  build/test_dflash models/Qwen3.6-27B-Q4_K_M.gguf \
+local-scratch/lucebox-hub/dflash/README.md:321:  --fast-rollback --ddtree --ddtree-budget=16 --max-ctx=4096   # align_up(prompt + n_gen + 64, 256); raise up to 262144 for long prompts
+local-scratch/lucebox-hub/dflash/README.md:324:**Requirements:** NVIDIA sm_60+ GPU (Pascal P40 24GB, V100 32GB, 2080 Ti, 3090, A10, A40, 4090) or Jetson AGX Thor sm_110, CUDA 12+ (CUDA 13+ required for Thor), 22+ GB VRAM, ~80 GB disk. Pascal GPUs use the scalar flashprefill fallback (no WMMA); P100 (12/16 GB) cannot fit the 27B target + draft under the 22 GB minimum. On Volta (SM 7.0) and Turing (SM 7.5), BF16 draft weights are auto-converted to FP16 at load time for tensor core acceleration.
+local-scratch/lucebox-hub/dflash/README.md:330:**DDTree tree verify.** Instead of one chain of 16 candidates, a best-first tree of up to 22 nodes spans the top-K branches at each position. One target forward verifies the whole tree via a causal mask derived from parent pointers. Budget=22 is the sweet spot where draft accuracy plateaus. Chain pre-seed matters: pure best-first construction with greedy verify on a quantized target can rescue an inferior suffix; the `chain_seed=true` flag in `build_ddtree` recovered AL from ~4 to ~9.
+local-scratch/lucebox-hub/dflash/README.md:344:Qwen3.5-27B is **not** a dense transformer. llama.cpp calls the arch `qwen35`:
+local-scratch/lucebox-hub/dflash/README.md:355:- **llama.cpp**: runs Qwen3.5-27B via GGUF but has no DFlash integration. Chain EAGLE isn't enough; block diffusion + DDTree needs a custom decode loop that bypasses `llama_decode`.
+local-scratch/lucebox-hub/dflash/README.md:356:- **vLLM / SGLang**: Qwen3.5-27B in BF16 is 54 GB, so a single 24 GB card forces a quantized path. GGUF for this arch is broken on SGLang as of 2026-04 and vLLM is dropping GGUF support. AWQ runs on SGLang as plain autoregressive at 46.6 tok/s but can't host the BF16 draft + DDTree tree state alongside it on 24 GB. Q4_K_M GGUF is the only format that fits the full spec-decode stack, this repo runs it at 129.5 tok/s mean on HumanEval, **2.8× faster** than SGLang AWQ autoregressive on the same hardware.
+local-scratch/lucebox-hub/dflash/README.md:364:- **Target family**: Qwen3.5/Qwen3.6 `qwen35` GGUF targets. Other architectures need their own graph builder.
+local-scratch/lucebox-hub/dflash/README.md:367:- **Backends**: CUDA is the primary path. CUDA sm_60+ is supported: Pascal (sm_60-69) uses scalar F16 fallback, Volta/Turing (sm_70-75) use F16 WMMA kernels, and Ampere+ use native BF16 WMMA. HIP support exists for the documented AMD path. No Metal.
+local-scratch/lucebox-hub/dflash/README.md:383:  title  = {Luce DFlash: GGUF port of block-diffusion speculative decoding for Qwen3.5-27B on consumer GPUs},
+local-scratch/lucebox-hub/dflash/README.md:396:@article{ddtree2026,
+local-scratch/lucebox-hub/dflash/README.md:408:Inspired by [z-lab/DFlash](https://arxiv.org/abs/2602.06036), [liranringel/ddtree](https://github.com/liranringel/ddtree), [ggml-org/llama.cpp](https://github.com/ggml-org/llama.cpp).
+local-scratch/lucebox-hub/dflash/README.md:421:  --target models/Qwen3.5-27B-Q4_K_M.gguf \
+local-scratch/lucebox-hub/dflash/README.md:422:  --draft models/Qwen3.5-3B-f16.safetensors \
+local-scratch/lucebox-hub/dflash/DEVELOPER.md:81:| `DFLASH27B_FA_ALL_QUANTS` | `ON` | Build all FA KV-quant pairs (3× longer compile) |
+local-scratch/lucebox-hub/dflash/DEVELOPER.md:82:| `DFLASH27B_ENABLE_BSA` | `ON` | Block-Sparse Attention for spec-prefill (needs sm_80+) |
+local-scratch/lucebox-hub/dflash/DEVELOPER.md:83:| `DFLASH27B_TESTS` | `ON` | Build C++ numerics tests |
+local-scratch/lucebox-hub/dflash/DEVELOPER.md:92:# Target model (Q4_K_M quantized Qwen3.6-27B)
+local-scratch/lucebox-hub/dflash/DEVELOPER.md:95:# Draft model (1.84 GB default Qwen3.6 GGUF draft)
+local-scratch/lucebox-hub/dflash/DEVELOPER.md:96:hf download Lucebox/Qwen3.6-27B-DFlash-GGUF dflash-draft-3.6-q8_0.gguf --local-dir dflash/models/draft/
+local-scratch/lucebox-hub/dflash/DEVELOPER.md:103:├── Qwen3.6-27B-Q4_K_M.gguf          # --target (GGUF)
+local-scratch/lucebox-hub/dflash/DEVELOPER.md:125:| `--target` | `models/Qwen3.6-27B-Q4_K_M.gguf` | Target GGUF model |
+local-scratch/lucebox-hub/dflash/DEVELOPER.md:192:./test_vs_oracle --target ../models/Qwen3.6-27B-Q4_K_M.gguf \
+local-scratch/lucebox-hub/dflash/DEVELOPER.md:196:./smoke_load_target --target ../models/Qwen3.6-27B-Q4_K_M.gguf
+local-scratch/lucebox-hub/dflash/DEVELOPER.md:226:│   ├── Qwen3.6-27B-Q4_K_M.gguf
+local-scratch/lucebox-hub/dflash/RESULTS.md:4:Target: `unsloth/Qwen3.5-27B-GGUF` (Q4_K_M, ~16 GB).
+local-scratch/lucebox-hub/dflash/RESULTS.md:5:Draft:  `z-lab/Qwen3.5-27B-DFlash` (BF16, 3.46 GB).
+local-scratch/lucebox-hub/dflash/RESULTS.md:92:`max_ctx = 131072` + `DFLASH27B_KV_Q4=1` (Q4_0 K+V cache, 8× compression vs F16).
+local-scratch/lucebox-hub/dflash/RESULTS.md:94:`--ddtree-budget=16` keeps per-layer `ssm_intermediate` under 1.3 GB.
+local-scratch/lucebox-hub/dflash/RESULTS.md:129:| Chain pre-seed in `build_ddtree`                | —       | +~5  | Fixes top-1 chain coverage under Q4 noise (prior AL ~4) |
+local-scratch/lucebox-hub/dflash/RESULTS.md:236:Target: `unsloth/Qwen3.6-27B-GGUF` (`Qwen3.6-27B-UD-Q5_K_XL.gguf`, ~19 GB).
+local-scratch/lucebox-hub/dflash/RESULTS.md:237:Draft:  local Qwen3.6-27B DFlash safetensors (`model.safetensors`, ~3.3 GB).
+local-scratch/lucebox-hub/dflash/RESULTS.md:240:Build: `cmake -B build-luce-sm120 -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_CUDA_ARCHITECTURES=120 -DDFLASH27B_USER_CUDA_ARCHITECTURES=120 -DDFLASH27B_ENABLE_BSA=ON`
+local-scratch/lucebox-hub/dflash/RESULTS.md:243:These numbers use a newer Qwen3.6 Q5_K_XL target, so they are not an
+local-scratch/lucebox-hub/dflash/RESULTS.md:244:apples-to-apples hardware comparison with the RTX 3090 Qwen3.5 Q4_K_M run
+local-scratch/lucebox-hub/dflash/RESULTS.md:333:Target: `unsloth/Qwen3.6-27B-GGUF` (`Qwen3.6-27B-Q4_K_M.gguf`, ~15.7 GB).
+local-scratch/lucebox-hub/dflash/RESULTS.md:334:Draft:  `z-lab/Qwen3.6-27B-DFlash` safetensors (~3.2 GB).
+local-scratch/lucebox-hub/dflash/RESULTS.md:345:the DFlash drafter was trained on Qwen3.5 output with thinking disabled; `<think>` tokens
+local-scratch/lucebox-hub/dflash/RESULTS.md:433:on Qwen3.5 output with thinking disabled). The 3090 run also used Qwen3.5 with
+local-scratch/lucebox-hub/dflash/RESULTS.md:573:Target: `unsloth/Qwen3.6-27B-GGUF` (`Qwen3.6-27B-Q4_K_M.gguf`, ~16.8 GB).
+local-scratch/lucebox-hub/dflash/RESULTS.md:576:Draft: local Qwen3.6-27B DFlash safetensors + Qwen3-0.6B-BF16 PFlash drafter.
+local-scratch/lucebox-hub/dflash/RESULTS.md:578:Build: `cmake -B build-luce-sm120 -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_CUDA_ARCHITECTURES=120 -DDFLASH27B_USER_CUDA_ARCHITECTURES=120 -DDFLASH27B_ENABLE_BSA=ON`
+local-scratch/lucebox-hub/dflash/RESULTS.md:586:- `--ddtree-budget=22`
+local-scratch/lucebox-hub/dflash/RESULTS.md:587:- `--fa-window=4096` (also settable via `DFLASH27B_FA_WINDOW=4096`)
+local-scratch/lucebox-hub/dflash/RESULTS.md:591:Test set: 10 NIAH prompts at 117K tokens (margin under Qwen3.6-27B's 131K
+local-scratch/lucebox-hub/dflash/RESULTS.md:614:### Phase 1 — `DFLASH_FP_ALPHA` sweep (held: `--keep-ratio=0.08`, `--ddtree-budget=28`)
+local-scratch/lucebox-hub/dflash/RESULTS.md:623:setup. This may be specific to long context, Qwen3.6, or Blackwell — I
+local-scratch/lucebox-hub/dflash/RESULTS.md:630:| `--ddtree-budget` | NIAH | Decode tok/s |
+local-scratch/lucebox-hub/dflash/RESULTS.md:638:**budget=22 is a stable default for Qwen3.6-27B on Blackwell across
+local-scratch/lucebox-hub/dflash/RESULTS.md:642:### Phase 3 — keep-ratio sweep (held: `DFLASH_FP_ALPHA=0.70`, `--ddtree-budget=22`)
+local-scratch/lucebox-hub/dflash/RESULTS.md:658:(no `DFLASH27B_KV_K`/`DFLASH27B_KV_V` overrides). The 3-bit TQ3_0 cache
+local-scratch/lucebox-hub/dflash/RESULTS.md:663:`DFLASH27B_KV_K=<type> DFLASH27B_KV_V=<type>`.
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:1:cmake_minimum_required(VERSION 3.21)  # 3.21 adds first-class HIP language support (project(LANGUAGES ... HIP))
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:2:set(DFLASH27B_GPU_BACKEND "cuda" CACHE STRING "GPU backend to build: cuda or hip")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:3:set_property(CACHE DFLASH27B_GPU_BACKEND PROPERTY STRINGS cuda hip)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:4:string(TOLOWER "${DFLASH27B_GPU_BACKEND}" DFLASH27B_GPU_BACKEND)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:5:if(DFLASH27B_GPU_BACKEND STREQUAL "cuda")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:6:    set(DFLASH27B_USER_CUDA_ARCHITECTURES "${CMAKE_CUDA_ARCHITECTURES}")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:8:elseif(DFLASH27B_GPU_BACKEND STREQUAL "hip")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:9:    project(dflash27b LANGUAGES C CXX HIP)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:11:    message(FATAL_ERROR "DFLASH27B_GPU_BACKEND must be 'cuda' or 'hip', got '${DFLASH27B_GPU_BACKEND}'")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:20:# ROCm root for HIP builds (rpath + rocwmma header discovery).
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:21:if(DFLASH27B_GPU_BACKEND STREQUAL "hip")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:35:if(DFLASH27B_GPU_BACKEND STREQUAL "hip" AND _dflash27b_rocm_root)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:54:if(DFLASH27B_GPU_BACKEND STREQUAL "cuda")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:56:    set(GGML_HIP  OFF CACHE BOOL "" FORCE)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:57:    set(DFLASH27B_GGML_BACKEND_TARGET ggml-cuda)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:58:elseif(DFLASH27B_GPU_BACKEND STREQUAL "hip")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:60:    set(GGML_HIP  ON  CACHE BOOL "" FORCE)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:61:    set(GGML_HIP_RCCL OFF CACHE BOOL "" FORCE)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:62:    set(DFLASH27B_GGML_BACKEND_TARGET ggml-hip)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:63:    set(DFLASH27B_HIP_ARCHITECTURES "" CACHE STRING "HIP GPU targets, e.g. gfx906;gfx1100")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:64:    if(DFLASH27B_HIP_ARCHITECTURES AND NOT CMAKE_HIP_ARCHITECTURES)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:65:        set(CMAKE_HIP_ARCHITECTURES "${DFLASH27B_HIP_ARCHITECTURES}" CACHE STRING "" FORCE)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:82:# Build time grows ~3x. Set DFLASH27B_FA_ALL_QUANTS=OFF if you only run
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:84:option(DFLASH27B_FA_ALL_QUANTS "Compile ggml-cuda fattn kernels for all KV-quant pairs" ON)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:85:set(GGML_CUDA_FA_ALL_QUANTS ${DFLASH27B_FA_ALL_QUANTS} CACHE BOOL "" FORCE)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:87:# HIP Phase 2 — opt-in rocWMMA flashprefill kernels (Strix Halo / gfx1151).
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:91:option(DFLASH27B_HIP_SM80_EQUIV
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:92:    "HIP: build the rocWMMA flashprefill kernels (Phase 2). Requires rocwmma."
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:97:# nvcc will compile for. HIP builds resolve their own GPU architecture list
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:98:# (defaulting to gfx1151 / Strix Halo) and pass it through to the HIP
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:100:if(DFLASH27B_GPU_BACKEND STREQUAL "cuda")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:105:    if(DFLASH27B_USER_CUDA_ARCHITECTURES)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:106:        set(_dflash27b_archs "${DFLASH27B_USER_CUDA_ARCHITECTURES}")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:119:elseif(DFLASH27B_GPU_BACKEND STREQUAL "hip")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:120:    # User override precedence: -DDFLASH27B_HIP_ARCHITECTURES → -DAMDGPU_TARGETS
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:121:    # → gfx1151 default (Strix Halo).
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:122:    if(DFLASH27B_HIP_ARCHITECTURES)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:123:        set(_dflash27b_archs "${DFLASH27B_HIP_ARCHITECTURES}")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:127:        set(_dflash27b_archs "gfx1151")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:129:    # Make sure the HIP language picks up the resolved arch list.
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:130:    set(CMAKE_HIP_ARCHITECTURES "${_dflash27b_archs}" CACHE STRING "" FORCE)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:138:# entry. Set DFLASH27B_USE_BLACKWELL_CONSUMER_FIX=ON to force this behavior
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:140:option(DFLASH27B_USE_BLACKWELL_CONSUMER_FIX
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:142:if(DFLASH27B_USE_BLACKWELL_CONSUMER_FIX)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:146:if(DFLASH27B_GPU_BACKEND STREQUAL "cuda" AND NOT DEFINED _dflash_is_consumer_blackwell)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:159:if(DFLASH27B_GPU_BACKEND STREQUAL "cuda" AND _dflash_is_consumer_blackwell)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:166:if(DFLASH27B_GPU_BACKEND STREQUAL "hip")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:167:    # The vendored ggml HIP shim still uses a few CUDA spellings that are not
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:180:if(DFLASH27B_GPU_BACKEND STREQUAL "cuda")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:184:elseif(DFLASH27B_GPU_BACKEND STREQUAL "hip")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:190:set(DFLASH27B_SRC_INCLUDE_DIRS
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:216:    src/flashprefill_q8.cpp
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:243:    src/common/ddtree.cpp
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:251:if(NOT DEFINED DFLASH27B_ENABLE_BSA)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:252:    set(DFLASH27B_ENABLE_BSA ON)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:254:if(DFLASH27B_GPU_BACKEND STREQUAL "hip" AND DFLASH27B_ENABLE_BSA AND NOT DFLASH27B_HIP_SM80_EQUIV)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:256:        "BSA on HIP is backed by the rocWMMA sparse-FA kernel (Phase 2). "
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:257:        "Build with -DDFLASH27B_HIP_SM80_EQUIV=ON to enable; disabling BSA for this Phase 1 HIP build.")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:258:    set(DFLASH27B_ENABLE_BSA OFF)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:261:# Apply the arch list to local sources. HIP builds pass CMAKE_HIP_ARCHITECTURES
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:262:# through to the HIP toolchain/ggml backend and optionally build rocWMMA kernels.
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:263:if(DFLASH27B_GPU_BACKEND STREQUAL "cuda")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:270:        DFLASH27B_BACKEND_CUDA=1
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:271:        DFLASH27B_CUDA_MIN_SM=${_dflash27b_cuda_min_sm}
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:272:        DFLASH27B_MIN_SM=${_dflash27b_cuda_min_sm})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:273:elseif(DFLASH27B_GPU_BACKEND STREQUAL "hip")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:274:    set_target_properties(dflash27b PROPERTIES HIP_ARCHITECTURES "${_dflash27b_archs}")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:275:    target_compile_definitions(dflash27b PRIVATE DFLASH27B_BACKEND_HIP=1 GGML_USE_HIP)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:279:#   - CUDA sm_80+: BF16 WMMA (m16n16k16) + cp.async — flashprefill_kernels.cu
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:280:#   - CUDA sm_70–sm_79 (Volta/Turing): F16 WMMA (m16n8k16), cooperative loads — flashprefill_f16.cu
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:281:#   - CUDA sm_60–sm_69 (Pascal): scalar F16, no tensor cores — flashprefill_scalar.cu
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:282:#   - HIP Phase 1 (default): ggml q8 fallback, no custom kernels.
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:283:#   - HIP Phase 2 (DFLASH27B_HIP_SM80_EQUIV=ON): rocWMMA-native kernels.
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:286:if(DFLASH27B_GPU_BACKEND STREQUAL "hip")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:287:    if(DFLASH27B_HIP_SM80_EQUIV)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:288:        find_path(DFLASH27B_ROCWMMA_INCLUDE_DIR rocwmma/rocwmma.hpp
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:291:        if(NOT DFLASH27B_ROCWMMA_INCLUDE_DIR)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:293:                "DFLASH27B_HIP_SM80_EQUIV=ON but rocwmma/rocwmma.hpp not found. "
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:295:                "or fetch headers from https://github.com/ROCm/rocWMMA), or rebuild "
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:296:                "with -DDFLASH27B_HIP_SM80_EQUIV=OFF (uses the slower q8 fallback).")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:299:            src/flashprefill_kernels.hip.cu
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:300:            src/flashprefill_select.cpp
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:301:            src/flashprefill.cpp)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:302:        set_source_files_properties(src/flashprefill_kernels.hip.cu
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:303:            PROPERTIES LANGUAGE HIP)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:305:            ${DFLASH27B_ROCWMMA_INCLUDE_DIR}
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:308:            DFLASH27B_HAVE_FLASHPREFILL=1
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:309:            DFLASH27B_CUDA_MIN_SM=80)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:310:        message(STATUS "dflash: HIP Phase 2 - rocWMMA flashprefill kernels enabled")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:312:        message(STATUS "dflash: HIP Phase 1 - ggml q8 fallback for flashprefill")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:314:elseif(DFLASH27B_GPU_BACKEND STREQUAL "cuda")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:316:        src/flashprefill_select.cpp
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:317:        src/flashprefill.cpp)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:319:    # flashprefill kernel variant.  This lets a single binary run on mixed
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:348:            src/flashprefill_kernels.cu
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:351:            DFLASH27B_HAVE_CUDA_WMMA_FLASHPREFILL=1
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:352:            DFLASH27B_HAVE_SM80_FLASHPREFILL=1)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:355:        set_source_files_properties(src/flashprefill_kernels.cu PROPERTIES
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:359:        target_sources(dflash27b PRIVATE src/flashprefill_f16.cu)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:361:            DFLASH27B_HAVE_CUDA_WMMA_FLASHPREFILL=1
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:362:            DFLASH27B_HAVE_VOLTA_FLASHPREFILL=1)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:365:        set_source_files_properties(src/flashprefill_f16.cu PROPERTIES
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:369:        target_sources(dflash27b PRIVATE src/flashprefill_scalar.cu)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:371:            DFLASH27B_HAVE_CUDA_SCALAR_FLASHPREFILL=1
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:372:            DFLASH27B_HAVE_PASCAL_FLASHPREFILL=1)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:374:        set_source_files_properties(src/flashprefill_scalar.cu PROPERTIES
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:381:if(DFLASH27B_GPU_BACKEND STREQUAL "hip" AND DFLASH27B_ENABLE_BSA)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:383:        "DFLASH27B_ENABLE_BSA=ON requested with DFLASH27B_GPU_BACKEND=hip; "
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:385:    set(DFLASH27B_ENABLE_BSA OFF)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:387:if(DFLASH27B_ENABLE_BSA)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:391:                "DFLASH27B_ENABLE_BSA=ON requested but CUDA_ARCHITECTURES contains '${_arch}' (<80); "
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:393:            set(DFLASH27B_ENABLE_BSA OFF)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:401:if(DFLASH27B_ENABLE_BSA AND DFLASH27B_GPU_BACKEND STREQUAL "cuda" AND NOT EXISTS
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:404:        "DFLASH27B_ENABLE_BSA=ON requested but the Block-Sparse-Attention submodule "
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:408:    set(DFLASH27B_ENABLE_BSA OFF)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:410:if(DFLASH27B_ENABLE_BSA)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:411:    if(DFLASH27B_GPU_BACKEND STREQUAL "hip")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:412:        # HIP BSA: backed by our rocWMMA sparse-FA kernel; no CUTLASS needed.
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:414:        set_source_files_properties(src/bsa_launcher_hip.cu PROPERTIES LANGUAGE HIP)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:424:        ${DFLASH27B_SRC_INCLUDE_DIRS}
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:427:if(DFLASH27B_GPU_BACKEND STREQUAL "cuda")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:430:if(DFLASH27B_ENABLE_BSA)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:431:    if(DFLASH27B_GPU_BACKEND STREQUAL "hip")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:432:        # HIP path: bsa_launcher_hip.cu only needs DFLASH27B_HAVE_BSA + the
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:434:        target_compile_definitions(dflash27b PRIVATE DFLASH27B_HAVE_BSA=1)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:441:        target_compile_definitions(dflash27b PRIVATE FLASHATTENTION_DISABLE_DROPOUT FLASH_NAMESPACE=flash DFLASH27B_HAVE_BSA=1)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:454:        ${DFLASH27B_GGML_BACKEND_TARGET}
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:457:if(DFLASH27B_GPU_BACKEND STREQUAL "hip")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:475:    target_include_directories(pflash_daemon PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:476:    target_link_libraries(pflash_daemon PRIVATE dflash27b ggml ${DFLASH27B_GGML_BACKEND_TARGET})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:481:option(DFLASH27B_TESTS "Build numerics tests" ON)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:482:if(DFLASH27B_TESTS)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:483:    if(DFLASH27B_GPU_BACKEND STREQUAL "cuda" AND _dflash27b_cuda_min_sm GREATER_EQUAL 80 AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/test/test_flashprefill_kernels.cpp")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:484:        add_executable(test_flashprefill_kernels test/test_flashprefill_kernels.cpp)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:485:        set_target_properties(test_flashprefill_kernels PROPERTIES CUDA_ARCHITECTURES "${_dflash27b_archs}")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:486:        target_include_directories(test_flashprefill_kernels PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:487:        target_link_libraries(test_flashprefill_kernels PRIVATE dflash27b CUDA::cudart)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:491:        target_include_directories(test_kv_quant PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:500:        target_include_directories(smoke_load_draft PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:501:        target_link_libraries(smoke_load_draft PRIVATE dflash27b ggml ${DFLASH27B_GGML_BACKEND_TARGET})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:505:        target_include_directories(spike_thin_copy PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:506:        target_link_libraries(spike_thin_copy PRIVATE ggml ${DFLASH27B_GGML_BACKEND_TARGET})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:510:        target_include_directories(smoke_draft_graph PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:511:        target_link_libraries(smoke_draft_graph PRIVATE dflash27b ggml ${DFLASH27B_GGML_BACKEND_TARGET})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:515:        target_include_directories(smoke_qwen3_forward PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:516:        target_link_libraries(smoke_qwen3_forward PRIVATE dflash27b ggml ${DFLASH27B_GGML_BACKEND_TARGET})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:520:        target_include_directories(test_vs_oracle PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:521:        target_link_libraries(test_vs_oracle PRIVATE dflash27b ggml ${DFLASH27B_GGML_BACKEND_TARGET})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:525:        target_include_directories(smoke_load_target PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:526:        target_link_libraries(smoke_load_target PRIVATE dflash27b ggml ${DFLASH27B_GGML_BACKEND_TARGET})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:530:        target_include_directories(smoke_load_target_laguna PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:535:        target_include_directories(smoke_laguna_forward PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:540:        target_include_directories(bench_laguna_ttft PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:545:        target_include_directories(bench_laguna_pflash PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:550:        target_include_directories(bench_laguna_generate PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:555:        target_include_directories(test_laguna_daemon PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:560:        target_include_directories(smoke_target_forward PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:561:        target_link_libraries(smoke_target_forward PRIVATE dflash27b ggml ${DFLASH27B_GGML_BACKEND_TARGET})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:565:        target_include_directories(test_generate PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:566:        target_link_libraries(test_generate PRIVATE dflash27b ggml ${DFLASH27B_GGML_BACKEND_TARGET})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:570:        target_include_directories(test_dflash PRIVATE ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:571:        if(DFLASH27B_GPU_BACKEND STREQUAL "hip")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:572:            target_compile_definitions(test_dflash PRIVATE DFLASH27B_BACKEND_HIP=1 GGML_USE_HIP)
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:575:                DFLASH27B_BACKEND_CUDA=1
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:576:                DFLASH27B_CUDA_MIN_SM=${_dflash27b_cuda_min_sm})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:578:        target_link_libraries(test_dflash PRIVATE dflash27b ggml ${DFLASH27B_GGML_BACKEND_TARGET})
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:581:        if(DFLASH27B_GPU_BACKEND STREQUAL "cuda")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:587:        # OpenMP for parallel CPU top-K extraction in the ddtree path.
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:594:    if(DFLASH27B_GPU_BACKEND STREQUAL "cuda")
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:621:    if(DFLASH27B_GPU_BACKEND STREQUAL "cuda" AND _dflash_has_sm80
+local-scratch/lucebox-hub/dflash/CMakeLists.txt:628:            ${DFLASH27B_SRC_INCLUDE_DIRS})
+local-scratch/lucebox-hub/dflash/deps/bsa_stubs/README.md:19:(`dflash/CMakeLists.txt`, gated on `DFLASH27B_ENABLE_BSA`). When BSA's
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:13:- **Target** (Qwen3.6-27B Q4_K_M) loaded directly via ggml.
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:24:cmake -DCMAKE_CUDA_ARCHITECTURES=86 -DDFLASH27B_ENABLE_BSA=ON ..
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:25:cmake --build . --target test_dflash test_flashprefill_kernels -- -j8
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:36:- `DFLASH27B_ENABLE_BSA=ON` (default) — build the Block-Sparse-Attention
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:39:- `DFLASH27B_FA_ALL_QUANTS=ON` (default) — compile ggml-cuda fattn for
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:52:See `src/flashprefill.h` for the full list and defaults.
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:56:CUDA/HIP mixed backend placement uses separate CUDA and HIP builds at the
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:62:NIAH single-needle end-to-end on RTX 3090 (Qwen3.6-27B Q4_K_M target,
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:79:  flashprefill.{h,cpp}         FlashPrefill C++ entry + dispatcher
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:80:  flashprefill_kernels.cu       4 CUDA kernels (mean_K, score, select, sparse_fwd)
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:81:  flashprefill_select.cpp       Host fallback for block_select (rarely used)
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:88:  qwen35/                       Qwen3.5/3.6 target + DFlash draft model code
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:89:    qwen35_target_graph.cpp     Qwen3.5/3.6 target graph (ggml)
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:90:    gguf_target_loader.cpp      Qwen3.5 target GGUF loader
+local-scratch/lucebox-hub/dflash/docs/SPEC_PREFILL.md:105:  test_flashprefill_kernels.cpp parity tests for the 4 FP kernels
+local-scratch/lucebox-hub/dflash/docs/laguna_integration_plan.md:10:- `flashprefill.{h,cpp}` + `flashprefill_kernels.cu`: model-agnostic block-sparse FA. Takes Q/K/V tensors, returns O. Already works for any GQA arch with head_dim 128. **Reusable as-is.**
+local-scratch/lucebox-hub/dflash/docs/MIXED_BACKEND.md:1:# CUDA/HIP mixed backend placement
+local-scratch/lucebox-hub/dflash/docs/MIXED_BACKEND.md:4:DFlash work across separate CUDA and HIP builds. The mixed-backend boundary is
+local-scratch/lucebox-hub/dflash/docs/MIXED_BACKEND.md:14:## Build CUDA and HIP binaries
+local-scratch/lucebox-hub/dflash/docs/MIXED_BACKEND.md:18:  -DDFLASH27B_GPU_BACKEND=cuda
+local-scratch/lucebox-hub/dflash/docs/MIXED_BACKEND.md:22:  -DDFLASH27B_GPU_BACKEND=hip \
+local-scratch/lucebox-hub/dflash/docs/MIXED_BACKEND.md:23:  -DDFLASH27B_HIP_ARCHITECTURES=<your-gfx-arch>
+local-scratch/lucebox-hub/dflash/docs/MIXED_BACKEND.md:41:Example: HIP PFlash drafter followed by CUDA target layer split:
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:1:# HIP perf — diagnosis + kernel-side optimization plan
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:3:_Drafted 2026-05-11 against `Luce-Org/lucebox-hub` post-#122 with HIP/ROCm
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:5:DFlash bench (Qwen3.6-27B-Q4_K_M + z-lab DFlash drafter,
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:6:`--fast-rollback --ddtree --ddtree-budget=22`, HE-style 128-tok prompt
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:12:Lucebox HIP decode on gfx1100 (7900 XTX) runs **3.22× over AR** today —
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:21:`--ddtree-budget=8` instead of the default 22 on gfx1100 lifts decode
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:30:hold. Three-arch A/B (gfx1100 / gfx1151 / gfx1201, 10-prompt HE bench,
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:65:`flashprefill_kernels.hip.cu` (that path is short-prompt-cold here) — it
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:107:Try `--ddtree-budget=8` on the HIP backend. Routes spec-verify through
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:116:| gfx1151 | Strix Halo iGPU | **34.78 tok/s** | 30.71 tok/s | -13% |
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:120:7800 XT, 7700 XT/S, 7600). RDNA3.5 (Strix Halo gfx1151) and RDNA4
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:125:- RDNA3.5 Strix Halo's LPDDR5X UMA (~270 GB/s vs 7900 XTX's 960 GB/s
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:133:`server.py` — set `--ddtree-budget=8` when running on gfx1100, gfx1101,
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:139:./test_dflash $T $D prompt.bin 256 out.bin --fast-rollback --ddtree --ddtree-budget=22  # current default
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:140:./test_dflash $T $D prompt.bin 256 out.bin --fast-rollback --ddtree --ddtree-budget=8   # MMVQ-routed
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:147:chain mode = `DFLASH27B_DRAFT_BLOCK_SIZE`, `ne[1] = 23` for default
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:148:DDTree `--ddtree-budget=22` = `1 + budget`). Add a per-(type, cc, batch)
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:175:Qwen3.6-27B-Q4_K_M target + matched z-lab/Qwen3.6-27B-DFlash drafter,
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:184:| Strix Halo iGPU (hipx)  | gfx1151 (RDNA3.5) | **22** | 6.66 / **26.36** | 8.24 / 14.79 | **−43.9 %** |
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:185:| Strix Halo iGPU (hipx)  | gfx1151 (RDNA3.5) | 8      | 5.56 / 28.73     | 5.17 / 26.70 | −7.1 % (noise; AL drift) |
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:274:missing `v_dot4`) or runs ~7× slower than Strix Halo (gfx1030 — uses
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:284:   gfx1100 (`--ddtree-budget=8`). Zero kernel work, lowest risk, ships
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:302:Path B (rocWMMA port of `flashprefill_kernels.cu`) addresses the PFlash
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:309:1. **PR-A**: arch-aware `--ddtree-budget` default (Tier 1, daemon-side
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:319:4. **PR-E (separate, against `lucebox-hub`)**: rocWMMA port of
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:320:   `flashprefill_kernels.cu` → `flashprefill_kernels.hip.cu` (Path B,
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:336:  on the HIP support PR.
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:346:HIP path's ceiling. The headline is mixed: **one new kernel-side
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:351:shows lucebox-hub HIP runs at ~58% of the hardware's practical ceiling.
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:354:direction toward **Vulkan**, not because the HIP work is wasted (it
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:355:shouldn't be — ship it), but because the kernel-tuning ceiling on HIP
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:379:The closed PR #21344 (pedapudi, for gfx1151) hypothesized that the
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:408:## Cycle 10 — ggml's built-in HIP graph capture: FALSIFIED at -0.73%
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:410:ggml ships `GGML_HIP_GRAPHS=ON` (default OFF, ggml's own description:
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:463:HIP-friendly cost/benefit ratio.
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:486:*reason* was wrong. Drafter weights are already F16 on HIP
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:521:Drafter swap from `z-lab/Qwen3.6-27B-DFlash/model.safetensors`
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:523:`spiritbuun/Qwen3.6-27B-DFlash-GGUF/dflash-draft-3.6-q8_0.gguf`
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:562:- **DDTree HURTS hipfire's DFlash impl**. At `--ddtree-budget=8` on
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:568:  different tokenizers (built-in vs HF Qwen3.5-27B), different prompt
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:571:  HIP without ggml refactors is ~70-80 tok/s. We're at 68. The
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:585:After 14 cycles measuring every available HIP-side lever, the
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:590:### Option A: Ship the HIP path as-is
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:592:Ship the HIP support PR + the two cycle-validated improvements
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:594:recommendation). Stop further HIP optimization. Realistic ceiling
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:624:Vulkan AR on the same 7900 XTX + Qwen3.6-27B Q4_K_M:**
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:628:| HIP (ROCm 7.2.2 + cycle 9 tile) | 30.8 | 31.0 | 30.9 | 23.0 GiB |
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:632:Two surprising findings: (a) Vulkan beats HIP **at Q4_K_M too**
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:636:headroom for larger context or MTP setups that HIP can't fit.
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:640:HIP/CUDA-specific; doesn't transfer. Vulkan uses GLSL/SPIRV compute
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:641:shaders compiled by the driver, not custom HIP intrinsics. Future
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:649:1. Ship the HIP support PR + cycle 9 + cycle 14 as the **fallback
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:667:1. **PR-A**: arch-aware `--ddtree-budget` default (Tier 1, daemon-side
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:681:   `spiritbuun/Qwen3.6-27B-DFlash-GGUF/dflash-draft-3.6-q8_0.gguf`
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:682:   as the canonical drafter (replaces `z-lab/Qwen3.6-27B-DFlash`
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:688:6. **PR-F (renamed, was original PR-E)**: rocWMMA port of
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:689:   `flashprefill_kernels.cu`. Unchanged.
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:692:   PR-F (which keep the HIP path as fallback). Not blocked on any
+local-scratch/lucebox-hub/dflash/docs/HIP_PERF_PLAN.md:693:   HIP-side work landing.
+local-scratch/lucebox-hub/dflash/docs/ARCHITECTURE.md:54:│   ├── ddtree.{h,cpp}     # Dynamic Draft Tree algorithm
+local-scratch/lucebox-hub/dflash/docs/ARCHITECTURE.md:62:├── qwen35/                 # Qwen3.5 hybrid (attn + DeltaNet/SSM)
+local-scratch/lucebox-hub/dflash/docs/ARCHITECTURE.md:213:| `ddtree.{h,cpp}` | DDTree algorithm — build best-first spec decode trees from draft top-K |
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/CMakeLists.txt:221:option(GGML_HIP                             "ggml: use HIP"                                   OFF)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/CMakeLists.txt:222:option(GGML_HIP_GRAPHS                      "ggml: use HIP graph, experimental, slow"         OFF)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/CMakeLists.txt:223:option(GGML_HIP_RCCL                        "ggml: use ROCm Collective Comm. Library"         OFF)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/CMakeLists.txt:224:option(GGML_HIP_NO_VMM                      "ggml: do not try to use HIP VMM"                 ON)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/CMakeLists.txt:225:option(GGML_HIP_ROCWMMA_FATTN               "ggml: enable rocWMMA for FlashAttention"         OFF)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/CMakeLists.txt:226:option(GGML_HIP_MMQ_MFMA                    "ggml: enable MFMA MMA for CDNA in MMQ"           ON)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/CMakeLists.txt:227:option(GGML_HIP_EXPORT_METRICS              "ggml: enable kernel perf metrics output"         OFF)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/CMakeLists.txt:452:ggml_add_backend(HIP)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:22:* [HIP](#hip)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:345:## HIP
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:347:This provides GPU acceleration on HIP-supported AMD GPUs.
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:353:  HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -R)" \
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:354:      cmake -S . -B build -DGGML_HIP=ON -DGPU_TARGETS=gfx1030 -DCMAKE_BUILD_TYPE=Release \
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:360:  To enhance flash attention performance on RDNA3+ or CDNA architectures, you can utilize the rocWMMA library by enabling the `-DGGML_HIP_ROCWMMA_FATTN=ON` option. This requires rocWMMA headers to be installed on the build system.
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:362:  The rocWMMA library is included by default when installing the ROCm SDK using the `rocm` meta package provided by AMD. Alternatively, if you are not using the meta package, you can install the library using the `rocwmma-dev` or `rocwmma-devel` package, depending on your system's package manager.
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:364:  As an alternative, you can manually install the library by cloning it from the official [GitHub repository](https://github.com/ROCm/rocWMMA), checkout the corresponding version tag (e.g. `rocm-6.2.4`) and set `-DCMAKE_CXX_FLAGS="-I<path/to/rocwmma>/library/include/"` in CMake. This also works under Windows despite not officially supported by AMD.
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:370:  Try searching for a directory under `HIP_PATH` that contains the file
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:372:  command: `HIP_DEVICE_LIB_PATH=<directory-you-just-found>`, so something
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:375:  HIPCXX="$(hipconfig -l)/clang" HIP_PATH="$(hipconfig -p)" \
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:376:  HIP_DEVICE_LIB_PATH=<directory-you-just-found> \
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:377:      cmake -S . -B build -DGGML_HIP=ON -DGPU_TARGETS=gfx1030 -DCMAKE_BUILD_TYPE=Release \
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:383:  set PATH=%HIP_PATH%\bin;%PATH%
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:384:  cmake -S . -B build -G Ninja -DGPU_TARGETS=gfx1100 -DGGML_HIP=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Release
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/build.md:391:The environment variable [`HIP_VISIBLE_DEVICES`](https://rocm.docs.amd.com/en/latest/understand/gpu_isolation.html#hip-visible-devices) can be used to specify which GPU(s) will be used.
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:14:if (NOT DEFINED CMAKE_HIP_FLAGS_DEBUG)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:15:    set(CMAKE_HIP_FLAGS_DEBUG "-g -O2")
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:18:# CMake on Windows doesn't support the HIP language yet
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:20:    set(CXX_IS_HIPCC TRUE)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:22:    string(REGEX MATCH "hipcc(\.bat)?$" CXX_IS_HIPCC "${CMAKE_CXX_COMPILER}")
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:25:if (CXX_IS_HIPCC)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:28:            message(WARNING "Only LLVM is supported for HIP, hint: CXX=/opt/rocm/llvm/bin/clang++")
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:32:                " Prefer setting the HIP compiler directly. See README for details.")
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:35:    # Forward (AMD)GPU_TARGETS to CMAKE_HIP_ARCHITECTURES.
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:39:    if(GPU_TARGETS AND NOT CMAKE_HIP_ARCHITECTURES)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:40:        set(CMAKE_HIP_ARCHITECTURES ${GPU_TARGETS})
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:43:    enable_language(HIP)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:50:if (GGML_HIP_RCCL)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:55:    message(FATAL_ERROR "At least ROCM/HIP V6.1 is required")
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:58:message(STATUS "HIP and hipBLAS found")
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:90:# TODO: do not use CUDA definitions for HIP
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:95:add_compile_definitions(GGML_USE_HIP)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:109:if (GGML_HIP_GRAPHS)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:110:    add_compile_definitions(GGML_HIP_GRAPHS)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:113:if (GGML_HIP_NO_VMM)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:114:    add_compile_definitions(GGML_HIP_NO_VMM)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:117:if (GGML_HIP_ROCWMMA_FATTN)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:118:    add_compile_definitions(GGML_HIP_ROCWMMA_FATTN)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:121:if (NOT GGML_HIP_MMQ_MFMA)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:122:    add_compile_definitions(GGML_HIP_NO_MMQ_MFMA)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:125:if (GGML_HIP_RCCL)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:129:if (GGML_HIP_EXPORT_METRICS)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:130:    set(CMAKE_HIP_FLAGS "${CMAKE_HIP_FLAGS} -Rpass-analysis=kernel-resource-usage --save-temps")
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:137:if (CXX_IS_HIPCC)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:140:        # CMake on Windows doesn't support the HIP language yet.
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:141:        # Therefore we workaround debug build's failure on HIP backend this way.
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:146:    set_source_files_properties(${GGML_SOURCES_ROCM} PROPERTIES LANGUAGE HIP)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:150:    message(FATAL_ERROR "Static linking not supported for HIP/ROCm")
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/ggml/src/ggml-hip/CMakeLists.txt:153:if (GGML_HIP_RCCL)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/backend/CANN.md:235:    > `$ARCH` can be `x86_64` or `aarch64`, `$CHIP` can be `910b` or `310p`.
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/backend/CANN.md:241:    wget https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.5.T63/Ascend-cann-$CHIP-ops_8.5.0_linux-$ARCH.run
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/backend/CANN.md:242:    sudo bash ./Ascend-cann-$CHIP-ops_8.5.0_linux-$ARCH.run --install
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/docs/backend/ZenDNN.md:50:| AMD Ryzen™ AI MAX (Strix Halo)| Support | High-performance mobile processors |
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/README.md:67:- Custom CUDA kernels for running LLMs on NVIDIA GPUs (support for AMD GPUs via HIP and Moore Threads GPUs via MUSA)
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/README.md:286:| [HIP](docs/build.md#hip) | AMD GPU |
+local-scratch/lucebox-hub/dflash/deps/llama.cpp/tools/server/webui/docs/flows/server-flow.md:63:    Note over UI,API: 🔗 RELATIONSHIPS

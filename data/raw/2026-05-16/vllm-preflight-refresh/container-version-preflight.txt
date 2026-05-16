@@ -1,0 +1,42 @@
++ python --version
+Python 3.12.13
++ python -
+vllm 0.19.2rc1.dev113+g6aa057c9d.d20260422.rocm713
+torch 2.13.0a0+rocm7.13.0a20260422
+triton 3.7.0+git6aa07328.rocm7.13.0a20260422
++ rocm-smi --showdriverversion --showproductname
+
+
+============================ ROCm System Management Interface ============================
+============================== Version of System Component ===============================
+Driver version: 6.19.4-061904-generic
+==========================================================================================
+====================================== Product Info ======================================
+GPU[0]		: Card Series: 		Radeon 8060S Graphics
+GPU[0]		: Card Model: 		0x1586
+GPU[0]		: Card Vendor: 		Advanced Micro Devices, Inc. [AMD/ATI]
+GPU[0]		: Card SKU: 		STRXLGEN
+GPU[0]		: Subsystem ID: 	0x0124
+GPU[0]		: Device Rev: 		0xc1
+GPU[0]		: Node ID: 		1
+GPU[0]		: GUID: 		50092
+GPU[0]		: GFX Version: 		gfx1151
+==========================================================================================
+================================== End of ROCm SMI Log ===================================
++ env
++ grep -E 'VLLM|ROCM|HIP|PYTORCH'
++ sort
+HIP_ARCHITECTURES=gfx1151
+HIP_CLANG_PATH=/opt/rocm/llvm/bin
+HIP_DEVICE_LIB_PATH=/opt/rocm/lib/llvm/amdgcn/bitcode
+HIP_FORCE_DEV_KERNARG=1
+HIP_PATH=/opt/rocm
+HIP_PLATFORM=amd
+PYTORCH_ROCM_ARCH=gfx1151
+ROCBLAS_USE_HIPBLASLT=1
+ROCM_HOME=/opt/rocm
+ROCM_PATH=/opt/rocm
+TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=1
+VLLM_DISABLE_COMPILE_CACHE=1
+VLLM_TARGET_DEVICE=rocm
+VLLM_USE_TRITON_AWQ=1

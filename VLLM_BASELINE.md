@@ -83,3 +83,26 @@ Next controlled vLLM benchmark:
 3. Run concurrency 1, 2, 4, 8, 16.
 4. Capture TTFT, p50/p95 latency, aggregate throughput, memory, startup/warmup time, and exact serve flags.
 5. Compare against `llama-server` only when model, quant, context, token count, and concurrency are defensible.
+
+## 2026-05-16 Refresh
+
+Status: lightweight container preflight only. No new vLLM throughput benchmark was run.
+
+Raw refresh:
+
+- [`data/raw/2026-05-16/vllm-preflight-refresh/`](data/raw/2026-05-16/vllm-preflight-refresh/)
+
+Findings:
+
+- `vllm-gfx1151` still starts.
+- ROCm SMI inside the container still sees Radeon 8060S / `gfx1151`.
+- Container software remains:
+  - vLLM `0.19.2rc1.dev113+g6aa057c9d.d20260422.rocm713`
+  - PyTorch `2.13.0a0+rocm7.13.0a20260422`
+  - Triton `3.7.0+git6aa07328.rocm7.13.0a20260422`
+
+Current interpretation:
+
+- Plain vLLM AWQ is proven as a serving smoke path but not as the fastest local generation path.
+- The existing 2026-05-07 Qwen3.6 AWQ4 smoke measured about 24.8-25.0 aggregate t/s at `np=1`, far below the current Vulkan/RADV llama.cpp rows.
+- Keep vLLM experimental until DFlash, higher-concurrency serving, tool/vision endpoints, or long-context behavior gives a clearly useful result.

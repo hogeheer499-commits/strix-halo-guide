@@ -1,0 +1,7 @@
+2026-05-16T12:48:59+02:00
+Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+cmake version 3.28.3
+1.11.1
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6 ext4  1.4T  858G  417G  68% /
+/dev/nvme0n1p4 ext4  458G  380G   78G  84% /home/hoge-heer/models

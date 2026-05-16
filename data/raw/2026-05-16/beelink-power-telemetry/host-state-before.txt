@@ -1,0 +1,14 @@
+2026-05-16T12:44:39+02:00
+Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+TARGET                 SOURCE         FSTYPE OPTIONS
+/home/hoge-heer/models /dev/nvme0n1p4 ext4   rw,noatime
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6 ext4  1.4T  858G  417G  68% /
+/dev/nvme0n1p4 ext4  458G  380G   78G  84% /home/hoge-heer/models
+amdgpu_hwmon=/sys/class/hwmon/hwmon6
+/sys/class/hwmon/hwmon6/power1_average
+/sys/class/hwmon/hwmon6/power1_input
+/sys/class/hwmon/hwmon6/power1_label
+0: 2900Mhz
+1: 1100Mhz
+2: 2900Mhz *

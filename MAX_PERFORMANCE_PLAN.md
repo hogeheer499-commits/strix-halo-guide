@@ -15,7 +15,9 @@ Current measured recommendation:
 - Vulkan/RADV remains the best measured local default for short-context generation, chat, coding, and direct `llama-server` work.
 - ROCm/HIP can win prompt-processing-heavy work. The local crossover spot check showed HIP ahead at pp16384, while Vulkan stayed ahead at tg128.
 - Lemonade ROCm is still relevant for aggregate server throughput at higher Qwen3.6 concurrency.
-- vLLM/AWQ/DFlash is promising for OpenAI-compatible agent serving, tool calls, vision, and long context, but this guide has not reproduced it locally yet.
+- Plain vLLM/AWQ serves locally but is not competitive for single-user generation without DFlash or another serving-specific win.
+- Lucebox DFlash/PFlash is now the highest-upside experimental decode/prefill route, but local reproduction is blocked until an isolated ROCm/HIP dev toolchain with `hipcc` and rocWMMA is available.
+- FastFlowLM/NPU is visible at the kernel level on this Beelink (`amdxdna` + `/dev/accel/accel0`), but XRT/FastFlowLM user-space is not installed yet.
 
 Current fastest local headline:
 
@@ -37,6 +39,24 @@ Detailed results: [`MAX_PERFORMANCE_RESULTS_2026-05-07.md`](MAX_PERFORMANCE_RESU
 | Tuned rocWMMA path | attempted | lhl branch built, but failed to load current Qwen3.6 GGUFs. |
 | vLLM AWQ/DFlash | partially blocked | Plain AWQ smoke works at about 25 t/s; exact DFlash route blocked by gated drafter access. |
 | Speculative decoding sanity | attempted | Optional `llama-cli` sanity produced runaway output and was excluded from claims. |
+
+## 2026-05-16 Follow-Up
+
+Raw evidence:
+
+- [`data/raw/2026-05-16/post-migration-smoke/`](data/raw/2026-05-16/post-migration-smoke/)
+- [`data/raw/2026-05-16/beelink-power-telemetry/`](data/raw/2026-05-16/beelink-power-telemetry/)
+- [`data/raw/2026-05-16/lucebox-dflash-preflight/`](data/raw/2026-05-16/lucebox-dflash-preflight/)
+- [`data/raw/2026-05-16/npu-fastflowlm-preflight/`](data/raw/2026-05-16/npu-fastflowlm-preflight/)
+- [`data/raw/2026-05-16/vllm-preflight-refresh/`](data/raw/2026-05-16/vllm-preflight-refresh/)
+
+Findings:
+
+- Storage migration did not break benchmark paths. Qwen3 0.6B and Qwen3.6 loaded from `/home/hoge-heer/models` and ran through Vulkan/RADV.
+- Beelink amdgpu `PPT` telemetry is now captured for idle, Qwen3-Coder, and Qwen3.6. It is useful same-machine context, not wall power.
+- Lucebox DFlash/PFlash cloned cleanly, but CMake HIP configuration failed because the host has no ROCm root / `hipcc` developer stack. Do not install that host-wide; use an isolated ROCm dev container/toolbox.
+- NPU hardware is visible through `amdxdna` and `/dev/accel/accel0`, but XRT/FastFlowLM user-space is missing. The next NPU step is an isolated XRT/FastFlowLM install lane plus reboot/memlock validation.
+- vLLM container versions and gfx1151 visibility were refreshed. Existing AWQ smoke remains about 25 t/s at `np=1`, which is useful serving evidence but not a default-speed win.
 
 ## Route Details And Remaining Work
 
@@ -137,6 +157,28 @@ Pass condition:
 - Capture startup time, warmup behavior, TTFT, p50/p95 latency, throughput, memory, endpoint compatibility, tool-call behavior, and failure modes.
 - Compare against `llama-server` only when model, quant, prompt, context, concurrency, and output length are close enough.
 
+Current local state:
+
+- Plain Qwen3.6 AWQ4 vLLM smoke exists and measured about 25 t/s at `np=1`.
+- The `vllm-gfx1151` container still starts and sees gfx1151.
+- This route needs DFlash/speculative serving or a clear API-serving win before it belongs in the beginner recommendation.
+
+### P2: Lucebox DFlash/PFlash Reproduction
+
+Why: Lucebox is the clearest new route that might materially improve a real long-prompt + generation workload on Strix Halo. It targets Qwen3.5/Qwen3.6 27B DFlash/PFlash, not the same 30B/35B Vulkan headline workload.
+
+Current local state:
+
+- Repo clone and submodules succeeded at `6fe0d9a0a9b79855cc56967a60f6d35a5532cdd7`.
+- HIP CMake preflight failed: no host ROCm root / `hipcc`.
+- Required route: isolated ROCm/HIP dev container or toolbox, then target/draft model download inside that lane.
+
+Pass condition:
+
+- Build with `DFLASH27B_GPU_BACKEND=hip`, `DFLASH27B_HIP_ARCHITECTURES=gfx1151`, and documented rocWMMA settings.
+- Compare Lucebox against llama.cpp HIP and Vulkan on the same target model and prompt shape.
+- Publish as experimental until it has reproducible raw logs and an explanation for which workload it improves.
+
 ### P2: Speculative Decoding Check
 
 Why: speculative decoding can improve generation in llama.cpp, but MoE models can also regress if draft verification activates too many experts. This is worth testing, but it is not safe to assume it helps.
@@ -183,7 +225,7 @@ Pass condition:
 
 - AMDVLK retesting is low value unless a specific new claim appears. AMDVLK is discontinued and has already caused ICD hijacking.
 - BIOS UMA above 512MB is not expected to improve Vulkan inference. Test only if a specific ROCm/vLLM path requires it, and isolate the result.
-- NPU LLM testing is not a max-performance path for these models.
+- NPU LLM testing is not a max-performance path for the current 30B/35B/80B/120B GPU rows, but it is now a practical "should I use the NPU?" guide question because `amdxdna` and `/dev/accel/accel0` are visible locally.
 - Full OS upgrade is not a first move for Vulkan performance. Ubuntu 24.04 with current kernel/Mesa already reaches the current measured peak.
 - Windows testing is useful for completeness, but not likely to beat the current Linux/RADV headline.
 
@@ -193,9 +235,10 @@ Pass condition:
 2. Run same-build HIP vs Vulkan on current llama.cpp.
 3. Run the Qwen3-Coder max-speed sweep.
 4. Extend gpt-oss-120b into long-context rows.
-5. Attempt tuned ROCm/rocWMMA.
-6. Attempt vLLM AWQ/DFlash reproduction.
-7. Add sustained thermals/power validation.
+5. Add sustained thermals and wall-power validation.
+6. Attempt Lucebox DFlash/PFlash in an isolated ROCm dev lane.
+7. Attempt FastFlowLM NPU in a separate XRT/FastFlowLM lane.
+8. Attempt vLLM AWQ/DFlash only when DFlash or another server-specific win is available.
 
 This order prioritizes likely useful wins first, then deeper experimental work.
 

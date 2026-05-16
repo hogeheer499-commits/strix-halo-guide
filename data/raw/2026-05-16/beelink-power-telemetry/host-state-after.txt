@@ -1,0 +1,7 @@
+2026-05-16T12:45:24+02:00
+  "ok": true,
+  "service": "t3-react185-semantic-proxy",
+    "ok": true,
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6 ext4  1.4T  858G  417G  68% /
+/dev/nvme0n1p4 ext4  458G  380G   78G  84% /home/hoge-heer/models
