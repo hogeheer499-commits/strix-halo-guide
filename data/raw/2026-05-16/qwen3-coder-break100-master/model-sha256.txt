@@ -1,0 +1,4 @@
+27f17516dacc1576ddc8a5e31a33d9c7829fb15dfa502fb208e50b1e70612b56  /home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-IQ4_NL.gguf
+cf9ea0572e8759348ef7f8cd899fbfecba5110929fc1aa620d18bb6d91e62700  /home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_0.gguf
+fadc3e5f8d42bf7e894a785b05082e47daee4df26680389817e2093056f088ad  /home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf
+56a7d00783419bcb0ae566253c371bcb3678261bb79881a553539f5679864db4  /home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf

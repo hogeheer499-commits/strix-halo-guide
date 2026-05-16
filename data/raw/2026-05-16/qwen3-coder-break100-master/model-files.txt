@@ -1,0 +1,5 @@
+total 66G
+-rw-rw-r-- 1 hoge-heer hoge-heer 17G May 16 14:19 Qwen3-Coder-30B-A3B-Instruct-IQ4_NL.gguf
+-rw-rw-r-- 1 hoge-heer hoge-heer 17G May 16 14:08 Qwen3-Coder-30B-A3B-Instruct-Q4_0.gguf
+-rw-rw-r-- 1 hoge-heer hoge-heer 18G May 16 14:24 Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf
+-rw-rw-r-- 1 hoge-heer hoge-heer 17G May 16 14:13 Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf

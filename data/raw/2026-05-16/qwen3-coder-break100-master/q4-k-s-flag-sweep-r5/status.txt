@@ -1,0 +1,10 @@
+guide exit=0
+b4096-ub512 exit=0
+b4096-ub1024 exit=0
+b4096-ub2048 exit=0
+b4096-ub4096 exit=0
+poll100 exit=0
+poll0 exit=0
+kv-q8 exit=0
+kv-q4 exit=0
+no-host exit=0

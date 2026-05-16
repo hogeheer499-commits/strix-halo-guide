@@ -23,6 +23,7 @@ Current fastest local headline:
 
 - Current latest-stack direct path: Qwen3-Coder 30B-A3B at 96.76 t/s on llama.cpp b9049, Vulkan/RADV.
 - Historical peak: Qwen3-Coder 30B-A3B at 97.24 t/s on b9010.
+- Current master b9179 plus a Qwen3-Coder Q4_K_S speed-first quant measured 97.22 t/s, effectively matching the historical ceiling but not proving a stable 100 t/s path.
 - Treat 96-97 t/s as the current stable ceiling for the measured Qwen3-Coder path until a new build, quant, or decode method beats it with raw logs.
 - Current fastest measured Qwen3.6 path: Q4_0 at 81.30 t/s on llama.cpp b9049, Vulkan/RADV. Label this as speed-first, not the default all-round quality recommendation.
 
@@ -49,6 +50,7 @@ Raw evidence:
 - [`data/raw/2026-05-16/lucebox-dflash-preflight/`](data/raw/2026-05-16/lucebox-dflash-preflight/)
 - [`data/raw/2026-05-16/npu-fastflowlm-preflight/`](data/raw/2026-05-16/npu-fastflowlm-preflight/)
 - [`data/raw/2026-05-16/vllm-preflight-refresh/`](data/raw/2026-05-16/vllm-preflight-refresh/)
+- [`data/raw/2026-05-16/qwen3-coder-break100-master/`](data/raw/2026-05-16/qwen3-coder-break100-master/)
 
 Findings:
 
@@ -57,6 +59,7 @@ Findings:
 - Lucebox DFlash/PFlash cloned cleanly, but CMake HIP configuration failed because the host has no ROCm root / `hipcc` developer stack. Do not install that host-wide; use an isolated ROCm dev container/toolbox.
 - NPU hardware is visible through `amdxdna` and `/dev/accel/accel0`, but XRT/FastFlowLM user-space is missing. The next NPU step is an isolated XRT/FastFlowLM install lane plus reboot/memlock validation.
 - vLLM container versions and gfx1151 visibility were refreshed. Existing AWQ smoke remains about 25 t/s at `np=1`, which is useful serving evidence but not a default-speed win.
+- Qwen3-Coder current-master break-100 sweep tested UD-Q4_K_XL plus Q4_0, Q4_K_S, IQ4_NL, and Q4_K_M. Q4_K_S was fastest at 97.22 t/s r20; r5-only 97.7 t/s flag wins did not hold under r20 confirmation. No stable 100 t/s path found.
 
 ## Route Details And Remaining Work
 
@@ -100,6 +103,8 @@ Expected outcome:
 ### P1: Qwen3-Coder Max-Speed Sweep - Done
 
 Why: this directly targets the 96-97 t/s headline. The next useful question is whether the Beelink can cross 100 t/s on a still-useful coding model.
+
+2026-05-16 update: current llama.cpp master b9179 and Unsloth Qwen3-Coder Q4_0/Q4_K_S/IQ4_NL/Q4_K_M quants were tested. Q4_K_S reached 97.22 t/s r20 with guide flags; `--no-host`, `--poll`, and `-b/-ub` r5 wins did not hold at r20. This is useful evidence that the current Vulkan/RADV Qwen3-Coder ceiling remains about 96-97 t/s, not 100 t/s.
 
 Levers:
 
