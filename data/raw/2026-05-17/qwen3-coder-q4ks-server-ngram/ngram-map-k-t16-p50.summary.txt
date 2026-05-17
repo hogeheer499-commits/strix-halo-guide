@@ -1,0 +1,21 @@
+case=ngram-map-k-t16-p50
+date=2026-05-17T12:59:12+02:00
+model=/home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+n_predict=192
+ignore_eos=0
+extra_flags=--poll 50 --spec-type ngram-map-k
+
+mean_predicted_per_second=94.594
+max_predicted_per_second=104.712
+min_predicted_per_second=89.383
+mean_predicted_per_second=94.594
+min_predicted_per_second=89.383
+max_predicted_per_second=104.712
+gpu_temp_c_avg=55.781
+gpu_temp_c_max=61.000
+cpu_tctl_c_avg=60.449
+cpu_tctl_c_max=62.750
+gpu_ppt_w_avg=101.184
+gpu_ppt_w_max=119.093
+gpu_busy_percent_avg=79.156
+gpu_busy_percent_max=97.000

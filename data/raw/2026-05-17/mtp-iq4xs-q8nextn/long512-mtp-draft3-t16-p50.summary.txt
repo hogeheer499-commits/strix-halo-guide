@@ -1,0 +1,21 @@
+case=long512-mtp-draft3-t16-p50
+date=2026-05-17T12:51:00+02:00
+model=/home/hoge-heer/benchmark-models/qwen36-mtp-iq4xs-q8nextn/Qwen3.6-35B-A3B-MTP-IQ4_XS-Q8nextn.gguf
+n_predict=512
+ignore_eos=0
+extra_flags=--poll 50 --spec-type draft-mtp --spec-draft-n-max 3
+
+mean_predicted_per_second=89.399
+max_predicted_per_second=109.494
+min_predicted_per_second=72.564
+mean_predicted_per_second=89.399
+min_predicted_per_second=72.564
+max_predicted_per_second=109.494
+gpu_temp_c_avg=62.690
+gpu_temp_c_max=67.000
+cpu_tctl_c_avg=65.917
+cpu_tctl_c_max=69.875
+gpu_ppt_w_avg=109.397
+gpu_ppt_w_max=120.010
+gpu_busy_percent_avg=84.352
+gpu_busy_percent_max=95.000

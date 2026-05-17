@@ -1,0 +1,21 @@
+case=baseline-t16-p50
+date=2026-05-17T12:56:49+02:00
+model=/home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+n_predict=192
+ignore_eos=0
+extra_flags=--poll 50
+
+mean_predicted_per_second=93.715
+max_predicted_per_second=93.877
+min_predicted_per_second=93.436
+mean_predicted_per_second=93.715
+min_predicted_per_second=93.436
+max_predicted_per_second=93.877
+gpu_temp_c_avg=43.599
+gpu_temp_c_max=58.000
+cpu_tctl_c_avg=60.479
+cpu_tctl_c_max=67.500
+gpu_ppt_w_avg=56.122
+gpu_ppt_w_max=119.090
+gpu_busy_percent_avg=11.903
+gpu_busy_percent_max=97.000
