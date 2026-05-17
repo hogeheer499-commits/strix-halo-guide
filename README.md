@@ -1936,6 +1936,14 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the full contribution path and the 
 
 ## Changelog
 
+### 2026-05-17 -- MTP, Wall Power, And Community Flow
+
+- **MTP speculative decoding documented:** Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn reached **90.80 t/s** average over six `llama-server` prompts and **110.61 t/s** on the best prompt. This is a server/speculative result, not a replacement for the direct `llama-bench` headline and not a broad 100 t/s average.
+- **Qwen3-Coder ngram server route checked:** Qwen3-Coder Q4_K_S with `llama-server` ngram speculation reached **95.21 t/s** average, below the direct 98.51 t/s speed-first headline.
+- **Community wall-power cross-section added:** Fail-Safe's Corsair AI Workstation 300 power data now covers Qwen3-Coder, Qwen3.6, gpt-oss-120b, and Qwen3-Coder-Next, with sustained generation rows from about **137-174 W** and **1.6-3.4 J/token**.
+- **Contribution flow tightened:** `CONTRIBUTING.md` and the benchmark/power issue templates now ask for the metadata needed to turn community reports into structured evidence.
+- Added raw evidence under `data/raw/2026-05-17/` and `data/raw/2026-05-10/community-power-issue6/`.
+
 ### 2026-05-16 -- Latest-Stack b9172 Spot Check
 
 - **Qwen3-Next 80B improved:** llama.cpp b9172 with Vulkan/RADV confirmed **59.06 t/s** tg128 and **751.70 pp512**, replacing the old 54.92 t/s b8933 row as the best current 80B Qwen-family result.
