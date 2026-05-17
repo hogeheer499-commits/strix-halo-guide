@@ -22,24 +22,35 @@ assignees: ''
 
 ## Benchmark
 - **Model:**
+- **Model source / download repo:**
 - **Quant / model file:**
+- **Model hash, if available:**
 - **Backend:** (Ollama Vulkan / llama-bench RADV / llama-server RADV / Lemonade ROCm / vLLM / other)
 - **Tool version / build / container:**
 - **Context length:**
 - **Prompt tokens:**
 - **Generated tokens:**
+- **Repeats:**
 - **Parallel slots / concurrency, if applicable:**
 - **Command used:**
+
+```bash
+paste exact command here
+```
 
 ## Results
 ```
 paste benchmark output here
 ```
 
-Attach or link CSV/raw logs if possible.
+Attach or link CSV/raw logs if possible. `llama-bench -o csv` output is ideal for direct comparisons.
 
 ## Comparison
 How do these results compare to the guide's numbers? Better, worse, or similar?
 
+If you are reproducing a specific guide row, link it here:
+
 ## Notes
-Any other relevant observations (temperature, power draw, stability, etc.)
+Any other relevant observations: temperature, power draw, clocks, throttling, background load, stability, model loading time, storage path, or failure mode.
+
+Slower, failed, and surprising results are useful too if the setup details are complete.

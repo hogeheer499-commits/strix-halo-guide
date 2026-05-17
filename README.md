@@ -234,6 +234,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) | Community multi-node `llama.cpp` RPC over USB4 results, kept separate from single-machine headline claims. |
 | [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md) | Community USB4 latency tuning for active Strix Halo cluster nodes. |
 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) | Community benchmark contributor credits and contribution path. |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | What data is most useful, which issue template to use, and how community reports become structured evidence. |
 | [`data/headline_claims.csv`](data/headline_claims.csv) | Machine-readable map from public headline claims to data, raw evidence, charts, and notes. |
 | [`data/README.md`](data/README.md) | Structured CSV schema and raw-data conventions. |
 | [`charts/README.md`](charts/README.md) | Generated chart inventory and regeneration command. |
@@ -1923,6 +1924,8 @@ Yes, with limitations. QLoRA fine-tuning of 7B-30B models works via kyuz0's [fin
 
 Found something that's wrong, outdated, or missing?
 
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the full contribution path and the highest-value data currently wanted.
+
 1. Open a [benchmark report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md) with hardware, BIOS, kernel, driver, model, backend, command, and raw output.
 2. Open a [power / efficiency report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=power-report.md) with wall-power or board-power readings, idle baseline, sample interval, raw readings, and the exact benchmark command.
 3. Use [Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discussions) for setup questions, early results, and comparisons.
@@ -2020,7 +2023,7 @@ Found something that's wrong, outdated, or missing?
 **Infrastructure:**
 - One-command setup script (`setup.sh`)
 - Auto-update script for llama.cpp (`update-and-build.sh`)
-- CONTRIBUTING.md and 3 GitHub issue templates
+- CONTRIBUTING.md plus GitHub issue templates for benchmarks, power reports, model requests, bugs, suggestions, and impersonation/security reports
 - GitHub release v1.0.0
 - 19 topics for discoverability
 - GitHub stars + last-commit badges

@@ -1,56 +1,126 @@
 # Contributing
 
-Thanks for considering contributing to the Strix Halo LLM Guide!
+This guide is strongest when results come from more than one Strix Halo machine. Reports from Beelink, GMKtec, Corsair, Framework, HP ZBook, and other Ryzen AI MAX systems help readers know which setup choices are portable and which are machine-specific.
 
-## How to Contribute
+## Best Ways To Help
 
-### Report a Finding
-The most valuable contributions are **benchmark results** from your own Strix Halo system. If you find something that contradicts or improves upon this guide, open an issue with:
-- Your hardware (Beelink GTR9 Pro, Framework Desktop, GMKtec EVO-X2, etc.)
-- Your RAM size and BIOS UMA setting
-- Your kernel version (`uname -r`)
-- Your Mesa version (`vulkaninfo --summary 2>&1 | grep driverInfo`)
-- Your ROCm version, if relevant
-- Your backend, build/container version, model file, quant, context length, prompt size, and generated token count
-- The exact benchmark command and output
-- CSV or raw log output when possible
-- What you expected vs what you got
+1. Share a benchmark from your own Strix Halo system.
+2. Share wall-power or board-power measurements for an existing benchmark row.
+3. Report a failed setup, slower result, crash, or regression.
+4. Request a model/backend combination that would help real users choose what to run.
+5. Open a PR that adds structured data, raw logs, docs fixes, or reproducibility improvements.
 
-### Fix an Error
-If you find incorrect information, outdated commands, or broken links:
-1. Fork the repo
-2. Fix the issue
-3. Open a PR with a clear description of what was wrong
+Slower results are useful. Failed results are useful. Contradictions are useful if the setup details are complete.
 
-### Add New Content
-Before writing new sections, open an issue first to discuss scope. This prevents duplicate work and ensures the content fits the guide's structure.
+## High-Value Reports Wanted
 
-### Test the Setup Script
-Run `bash setup.sh` on your Strix Halo system and report any issues. Testing on different Ubuntu versions, kernel versions, and hardware variants is especially valuable.
+These are currently the most valuable community contributions:
 
-### Request a Model or Backend
-Open a model request issue if there is a model/backend combination that should be tested. Include why the result would help other Strix Halo users and whether the model requires gated access or unusual setup.
+- Native Linux Vulkan/RADV results from Framework Desktop, GMKtec EVO-X2, HP ZBook, Beelink, and other Ryzen AI MAX systems.
+- Same-model reproduction of the guide's Qwen3-Coder and Qwen3.6 rows.
+- Windows native, WSL2/HIP, and Windows-vs-Linux comparisons on the same machine.
+- Wall-power, smart-plug, UPS, or validated board-power measurements with idle and load readings.
+- Long-context, RAG/prefill-heavy, server concurrency, and multi-user API workloads.
+- ROCm/HIP, Lemonade, vLLM, DFlash/AWQ, NPU, or other backend experiments.
+- Negative results: crashes, OOMs, driver failures, slower backends, and setup steps that did not work.
 
-### Discuss Early Results
-Use GitHub Discussions for setup questions, early benchmark notes, and comparisons that are not ready for a clean issue yet.
+## Issue Templates
 
-## What We Look For
+Use the template that best matches your contribution:
 
-- **Measured, not estimated.** Every performance claim needs a benchmark number.
-- **Reproducible.** Someone else should be able to run your commands and get similar results.
-- **Negative results matter.** "I tried X and it didn't work because Y" is valuable content.
-- **Copy-paste ready.** Commands should work without modification.
-- **Comparable.** Include enough setup detail for someone else to understand why your result differs.
+- [Benchmark report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md): measured tokens/sec results.
+- [Power / efficiency report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=power-report.md): wall power, board power, UPS, smart-plug, or validated telemetry.
+- [Model or backend request](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=model-request.md): a model, quant, backend, or serving route worth testing.
+- [Bug report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=bug-report.md): wrong commands, broken links, stale claims, or setup failures.
+- [Suggestion](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=suggestion.md): guide structure, explanation, reproducibility, or usability improvements.
+- [Impersonation or unsafe download report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=impersonation-report.md): unofficial mirrors, installers, or repos using this guide's name.
+
+Use [Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discussions) for early notes, setup questions, and comparison ideas that are not ready for a clean issue yet.
+
+## Benchmark Metadata
+
+Include enough detail for someone else to understand why your result matches or differs from the guide:
+
+- device and memory size
+- CPU/GPU name
+- BIOS UMA setting
+- IOMMU setting
+- OS and kernel
+- Mesa/RADV, AMDVLK, ROCm, Ollama, or container version
+- backend and tool build/commit
+- model name, source, quant, file name, and hash if available
+- context length, prompt tokens, generated tokens, repeats, and concurrency
+- exact command
+- raw output, CSV, logs, screenshots, or attachments
+- power profile, clocks, thermals, and background load if known
+
+For `llama.cpp` rows, raw `llama-bench -o csv` output is ideal. For server/API rows, include request shape, prompt, generated token count, concurrency, TTFT if measured, and whether streaming was enabled.
+
+## Power Metadata
+
+For power reports, please include:
+
+- meter/tool used and whether it measures wall power, board power, or APU/GPU telemetry
+- sample interval and whether readings are event-based or polled
+- idle baseline before and after the run
+- sustained generation power window
+- prompt-processing peak or sustained power window if measured
+- tokens/J and J/token if calculated
+- raw readings or exported CSV if possible
+- cooling/fan profile, ambient temperature, and attached displays/peripherals if known
+
+Do not mix APU `PPT` telemetry with wall-power claims. If the source is `amdgpu` PPT, label it as PPT, not total system power.
+
+## How Data Is Used
+
+Community rows are credited and kept separate from local Beelink headline claims unless they are explicitly promoted with clear scope. This keeps the guide useful without pretending every result came from the same machine.
+
+Useful community reports may be added to:
+
+- [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md)
+- [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md)
+- [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md)
+- [`data/community_results.csv`](data/community_results.csv)
+- [`data/community_power.csv`](data/community_power.csv)
+- raw provenance folders under [`data/raw/`](data/raw/)
+- [`CONTRIBUTORS.md`](CONTRIBUTORS.md)
+
+Headline claims require structured data, raw evidence, version details, and clear caveats. If a result is community-reported, it stays labeled that way.
+
+## Pull Requests
+
+PRs are welcome, especially for structured CSV additions, raw-data imports, reproducibility fixes, and documentation cleanup.
+
+Before opening a PR:
+
+1. Keep changes scoped to one topic.
+2. Add raw evidence or source links for benchmark changes.
+3. Credit community contributors and link to the original issue/comment/source.
+4. Run the validator:
+
+```bash
+python3 scripts/validate_repo.py
+```
+
+If you cannot run the validator, say so in the PR.
 
 ## Style Guidelines
 
-- Write in English
-- No emoji in technical content
-- Use `> blockquotes` for warnings and tips
-- Use `tee` instead of `nano` for file creation commands
-- Include version numbers and dates
-- When referencing community work, credit the author and link to the source
+- Write in English.
+- Keep claims bounded to the measured setup.
+- Include dates and version numbers.
+- Prefer clear commands and raw evidence over broad claims.
+- Use `> blockquotes` for warnings and important caveats.
+- Do not add binary downloads, model weights, installers, or unofficial executables.
+- Do not paste API keys, tokens, private SSH keys, passwords, or private model URLs.
+- When referencing community work, credit the author and link to the source.
+
+## Contributor Credit
+
+Benchmark reports in issues are welcome and will be credited when incorporated. PRs are even better for future datasets because GitHub also records commit-level contribution.
+
+For repo safety, direct write access is not needed for benchmark contributions. Long-running contributors can start with issue triage, reproducibility review, or PR review before any broader access is considered.
 
 ## Code of Conduct
 
-Be respectful. We're all here because we want local AI to work well on AMD hardware.
+Be respectful and evidence-focused. The goal is to make local AI on Strix Halo easier to reproduce for everyone.
