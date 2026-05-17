@@ -2031,8 +2031,8 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the full contribution path and the 
 **Infrastructure:**
 - One-command setup script (`setup.sh`)
 - Auto-update script for llama.cpp (`update-and-build.sh`)
-- CONTRIBUTING.md plus GitHub issue templates for benchmarks, power reports, model requests, bugs, suggestions, and impersonation/security reports
-- GitHub release v1.0.0
+- CONTRIBUTING.md and initial GitHub issue templates; expanded in later May updates for benchmarks, power reports, model requests, bugs, suggestions, and impersonation/security reports
+- Historical launch release v1.0.0; latest release is v2.2.0 from 2026-05-17
 - 19 topics for discoverability
 - GitHub stars + last-commit badges
 
