@@ -11,7 +11,7 @@ Fail-Safe materially expanded the guide's evidence base with a Corsair AI Workst
 - independent Qwen3-Coder Vulkan/RADV reproduction on Fedora 43, kernel 7.0-rc6, Mesa RADV 25.3.6, and kyuz0 containers
 - second-session reproducibility for the same Qwen3-Coder row
 - N=3 same-SKU cross-box variance across three Corsair AI Workstation 300 systems
-- whole-system wall-power and energy-per-token telemetry
+- whole-system wall-power and energy-per-token telemetry across Qwen3-Coder, Qwen3.6, gpt-oss-120b, and Qwen3-Coder-Next
 - Qwen3.6 Q4_0 and Q4_K_M community quant comparison
 - 3-node USB4 `llama.cpp` RPC matrix across Vulkan/RADV and ROCm
 - MiniMax-M2.7 ROCm RPC capacity result and Vulkan/RADV allocation failure evidence
@@ -26,6 +26,7 @@ Relevant docs:
 - [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md)
 - [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md)
 - [`data/community_results.csv`](data/community_results.csv)
+- [`data/community_power.csv`](data/community_power.csv)
 - [`data/community_rpc.csv`](data/community_rpc.csv)
 - [`data/community_rpc_server.csv`](data/community_rpc_server.csv)
 - [`data/community_rpc_failures.csv`](data/community_rpc_failures.csv)

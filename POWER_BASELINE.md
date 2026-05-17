@@ -91,3 +91,44 @@ Interpretation:
 - The Qwen3-Coder speed in this power run is lower than the 96-97 t/s headline because it used the b9172 power-sampling run, not the b9049 headline campaign.
 - The rough J/token values divide token-generation speed by run-window PPT mean; they should be treated as same-machine context only.
 - The next publishable efficiency step is a wall-meter run on the Beelink, ideally matching the same Qwen3-Coder and Qwen3.6 commands.
+
+## 2026-05-10 Community Wall-Power Rows
+
+Status: community-reported whole-system wall power from Corsair AI Workstation 300 systems. These rows are useful tokens-per-watt context, but they are not Beelink wall-power headline claims.
+
+Structured data:
+
+- [`data/community_power.csv`](data/community_power.csv)
+
+Provenance:
+
+- [`data/raw/2026-05-10/community-power-issue6/`](data/raw/2026-05-10/community-power-issue6/)
+
+Summary:
+
+| Model | Sustained tg wall W | tg throughput | Wall J/token | Source |
+|-------|--------------------:|--------------:|-------------:|--------|
+| Qwen3-Coder 30B-A3B UD-Q4_K_XL | 150 W | 95.31 t/s | 1.59 | [issue #10](https://github.com/hogeheer499-commits/strix-halo-guide/issues/10#issuecomment-4401438242) |
+| Qwen3.6 35B-A3B Q4_0 | 148 W | 75.41 t/s | 1.96 | [issue #6](https://github.com/hogeheer499-commits/strix-halo-guide/issues/6#issuecomment-4414228987) |
+| gpt-oss-120b MXFP4 | 173.6 W | 55.90 t/s | 3.10 | [issue #6](https://github.com/hogeheer499-commits/strix-halo-guide/issues/6#issuecomment-4414323665) |
+| Qwen3-Coder-Next 80B-A3B Q8_0 | 137.4 W | 39.98 t/s | 3.44 | [issue #6](https://github.com/hogeheer499-commits/strix-halo-guide/issues/6#issuecomment-4414411995) |
+
+Interpretation:
+
+- Qwen3-Coder is the best energy-per-generated-token community row in this set.
+- gpt-oss-120b costs roughly twice as much energy per generated token as Qwen3-Coder in this sample.
+- Qwen3-Coder-Next Q8_0 shows that model file size alone does not predict wall power; actual throughput, bandwidth use, and kernel intensity matter.
+- The current Beelink still needs an external wall meter before publishing local tokens-per-watt claims.
+
+## Wall-Power Submission Protocol
+
+For publishable power rows, prefer a wall meter, smart plug with raw export, UPS export, or validated board-power tool. Include:
+
+1. The measurement device/tool and whether it measures wall power, board power, or APU/GPU telemetry.
+2. Idle baseline before and after the benchmark.
+3. Sample interval and raw readings, not only a final average.
+4. Exact benchmark command, model file, quant, backend, and build/container.
+5. Sustained generation window and prompt-processing window if both are measured.
+6. Power profile, cooling/fan state, ambient temperature if known, and background workload.
+
+Use the GitHub [power / efficiency report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=power-report.md) template for new community rows.

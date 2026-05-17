@@ -19,7 +19,7 @@
 >
 > Measured primarily on one Beelink GTR9 Pro. Every headline claim below links to CSVs, raw logs, charts, or explicit notes. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights.
 >
-> Independent reproduction: three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128, and a GMKtec EVO-X2 96GB native Ubuntu run reproduced the guide's Qwen3.6 UD-Q4_K_M row within -0.8% pp512 and -1.7% tg128. Community contributors also added Qwen3.6 quant/source checks, whole-system power, a 3-node USB4 `llama.cpp` RPC matrix, RPC serving/TTFT data, WSL2/HIP baseline data, and USB4 latency tuning. See [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), and [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md).
+> Independent reproduction: three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128, and a GMKtec EVO-X2 96GB native Ubuntu run reproduced the guide's Qwen3.6 UD-Q4_K_M row within -0.8% pp512 and -1.7% tg128. Community contributors also added Qwen3.6 quant/source checks, a four-model wall-power cross-section, a 3-node USB4 `llama.cpp` RPC matrix, RPC serving/TTFT data, WSL2/HIP baseline data, and USB4 latency tuning. See [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), and [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md).
 
 [Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [What Runs](#what-you-can-run-quick-snapshot) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
 
@@ -56,7 +56,7 @@
 | Largest new local model check | gpt-oss-120b MXFP4 split GGUF loaded locally with llama.cpp Vulkan/RADV b9049: 55.57 t/s tg128, 726.99 t/s pp512, and prompt processing tested through 65K tokens. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Backend split | Vulkan/RADV wins measured generation on the current single-box Qwen rows; ROCm/HIP can win prompt-processing-heavy work, and ROCm RPC is required for the tested MiniMax capacity case. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) and [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md). |
-| Community validation | Three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128. A second contributor reproduced the Qwen3.6 native Vulkan/RADV row on GMKtec EVO-X2 within -0.8% pp512 and -1.7% tg128. Community reports also cover quant/source/build effects, same-SKU variance, whole-system power, WSL2/HIP, 3-node USB4 RPC, RPC serving/TTFT, and USB4 tuning. |
+| Community validation | Three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128. A second contributor reproduced the Qwen3.6 native Vulkan/RADV row on GMKtec EVO-X2 within -0.8% pp512 and -1.7% tg128. Community reports also cover quant/source/build effects, same-SKU variance, wall-power efficiency, WSL2/HIP, 3-node USB4 RPC, RPC serving/TTFT, and USB4 tuning. |
 | Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
 | Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
 
@@ -135,6 +135,7 @@ These are the practical decisions extracted from the primary Beelink runs plus F
 | Choosing Qwen3.6 quantization | Use Q4_K_M/UD-Q4_K_M for balanced defaults; use Q4_0 only when speed matters more than quality. | Q4_0 was faster locally and in the Corsair report, but this guide has not made a model-quality claim for it. | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`data/community_results.csv`](data/community_results.csv) |
 | Serving an interactive local API | Prefer single-box `llama-server` when the model fits. | Community `llama-server` TTFT was about 201 ms on 1 node versus about 301 ms on 2-node RPC, with higher RPC variance. | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`data/community_rpc_server.csv`](data/community_rpc_server.csv) |
 | Comparing your t/s to this guide | Treat about 2% tg128 spread as normal between well-matched Strix Halo systems. | Three matched Corsair boxes showed 0.11% pp512 spread and 2.05% tg128 spread; the GMKtec native Qwen3.6 row landed within 2% of the Beelink row. | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md) |
+| Estimating electricity and heat | Use wall-power rows as workload-specific context, not universal TDP. | Community wall-power data measured about 150 W / 1.6 J/token for Qwen3-Coder, 148 W / 2.0 J/token for Qwen3.6, 174 W / 3.1 J/token for gpt-oss-120b, and 137 W / 3.4 J/token for Qwen3-Coder-Next. | [`COMMUNITY_RESULTS.md#whole-system-power`](COMMUNITY_RESULTS.md#whole-system-power), [`data/community_power.csv`](data/community_power.csv) |
 | Seeing a Vulkan/RADV failure on a huge MoE | Check for per-buffer allocation limits, not only total memory. | MiniMax-M2.7 hit the same 830472192-byte RADV allocation failure on 1-node and RPC follower paths. | [`data/community_rpc_failures.csv`](data/community_rpc_failures.csv), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) |
 
 ## Results Wanted
@@ -142,9 +143,10 @@ These are the practical decisions extracted from the primary Beelink runs plus F
 Have a Strix Halo / Ryzen AI MAX system? Please share results, even if they are slower, failed, or contradict this guide.
 
 - Open a [benchmark report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md) with your system, BIOS UMA setting, kernel, Mesa/ROCm versions, backend, model, command, CSV/raw output, and notes.
+- Open a [power / efficiency report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=power-report.md) if you can measure wall power, UPS power, or validated board power during the same benchmark command.
 - Open a [model request](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=model-request.md) if there is a model/backend combination that should be tested.
 - Use [Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discussions) for setup questions, comparisons, and early results that are not ready for a benchmark issue yet.
-- Power telemetry is useful too if you have reliable wall-power data; it helps turn raw tokens/sec into tokens-per-watt context.
+- Power telemetry is useful if you have reliable wall-power data; it helps turn raw tokens/sec into tokens-per-watt context for buying, cooling, and always-on server decisions.
 - Current community reports live in [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md), and the `community_*` CSVs listed in [`data/README.md`](data/README.md).
 - See [`SHARE.md`](SHARE.md) for short Reddit/HN/forum text and the current social preview image if you want to share the guide.
 
@@ -1520,7 +1522,11 @@ Based on community testing and our own findings:
 
 ## Power Measurement Status
 
-Beelink wall-power efficiency is not published yet. `powercap` is empty on this system, but `amdgpu` exposes `PPT` telemetry through `power1_average` / `power1_input`. A 2026-05-16 local PPT run measured roughly 111-113 W during Qwen3-Coder/Qwen3.6 Vulkan workloads, but this is GPU/APU telemetry, not wall power. See [`POWER_BASELINE.md`](POWER_BASELINE.md), [`data/beelink_power_telemetry.csv`](data/beelink_power_telemetry.csv), and `scripts/sample_power.py` before adding tokens-per-watt claims.
+Beelink wall-power efficiency is not published yet. `powercap` is empty on this system, but `amdgpu` exposes `PPT` telemetry through `power1_average` / `power1_input`. A 2026-05-16 local PPT run measured roughly 111-113 W during Qwen3-Coder/Qwen3.6 Vulkan workloads, but this is GPU/APU telemetry, not wall power.
+
+Community wall-power data does exist from Corsair AI Workstation 300 systems. The current issue #6 cross-section measures about 150 W / 1.6 J/token for Qwen3-Coder, 148 W / 2.0 J/token for Qwen3.6, 174 W / 3.1 J/token for gpt-oss-120b, and 137 W / 3.4 J/token for Qwen3-Coder-Next during sustained generation. Use that as practical community context, not as a Beelink claim.
+
+See [`POWER_BASELINE.md`](POWER_BASELINE.md), [`COMMUNITY_RESULTS.md#whole-system-power`](COMMUNITY_RESULTS.md#whole-system-power), [`data/community_power.csv`](data/community_power.csv), [`data/beelink_power_telemetry.csv`](data/beelink_power_telemetry.csv), and `scripts/sample_power.py` before adding tokens-per-watt claims.
 
 ---
 
@@ -1918,9 +1924,10 @@ Yes, with limitations. QLoRA fine-tuning of 7B-30B models works via kyuz0's [fin
 Found something that's wrong, outdated, or missing?
 
 1. Open a [benchmark report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md) with hardware, BIOS, kernel, driver, model, backend, command, and raw output.
-2. Use [Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discussions) for setup questions, early results, and comparisons.
-3. PRs welcome -- especially from other Strix Halo systems (Framework, GMKtec, HP ZBook).
-4. If you find a new optimization, include before/after benchmarks.
+2. Open a [power / efficiency report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=power-report.md) with wall-power or board-power readings, idle baseline, sample interval, raw readings, and the exact benchmark command.
+3. Use [Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discussions) for setup questions, early results, and comparisons.
+4. PRs welcome -- especially from other Strix Halo systems (Framework, GMKtec, HP ZBook).
+5. If you find a new optimization, include before/after benchmarks.
 
 ---
 
