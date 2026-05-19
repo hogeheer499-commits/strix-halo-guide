@@ -6,25 +6,31 @@ Short version: MTP works on Strix Halo with Vulkan/RADV and current `llama.cpp` 
 
 ## Current Result
 
-Measured on the Beelink GTR9 Pro with `llama.cpp` b9187 / `0253fb21`, Mesa/RADV 26.0.6, and Qwen3.6 35B-A3B MTP GGUFs:
+Measured on the Beelink GTR9 Pro with Mesa/RADV 26.0.6 and Qwen3.6 MTP GGUFs. The latest rerun used `llama.cpp` b9235 / `d14ce3dab`.
 
 | Model file | Mode | Mean over 6 prompts | Range | Takeaway |
 |------------|------|--------------------:|------:|----------|
-| Official Q8_0 MTP GGUF | no MTP | 56.20 t/s | 53.35-69.44 | Heavy baseline. |
-| Official Q8_0 MTP GGUF | MTP `draft-n=2` | 67.04 t/s | 60.81-75.55 | Best Q8 average; about +19%. |
+| Official 35B Q8_0 MTP GGUF | no MTP | 56.20 t/s | 53.35-69.44 | Heavy baseline. |
+| Official 35B Q8_0 MTP GGUF | MTP `draft-n=2` | 67.04 t/s | 60.81-75.55 | Best 35B Q8 average; about +19%. |
 | Local Q4_K_M requant | no MTP | 74.13 t/s | 72.55-74.56 | Better baseline after reducing model weight. |
 | Local Q4_K_M requant | MTP `draft-n=2` | 87.53 t/s | 82.18-95.68 | Best Q4_K_M average; about +18% over Q4_K_M no-MTP. |
 | Local Q4_K_M requant | MTP `draft-n=3`, `-t 16`, `--poll 10` | 83.13-84.19 t/s repeats | best prompt 99.86-100.74 | Repeatable single-prompt 100 t/s, but not a broad average claim. |
 | `localweights` IQ4_XS-Q8nextn | no MTP | 72.44 t/s | 72.12-72.62 | Published small MTP quant baseline. |
-| `localweights` IQ4_XS-Q8nextn | MTP `draft-n=2`, `-t 16`, `--poll 50` | **90.80 t/s** | 83.23-100.37 | Best broad MTP average measured here. |
+| `localweights` IQ4_XS-Q8nextn | MTP `draft-n=2`, `-t 16`, `--poll 50` | 90.80 t/s | 83.23-100.37 | Previous best broad MTP average before the b9235 rerun. |
 | `localweights` IQ4_XS-Q8nextn | MTP `draft-n=3`, `-t 16`, `--poll 10` | 90.27 t/s | 73.81-110.61 | Fastest single prompt, but less stable. |
+| `localweights` IQ4_XS-Q8nextn, b9235 | no MTP | 74.54 t/s | 74.36-74.86 | Latest-stack baseline rerun. |
+| `localweights` IQ4_XS-Q8nextn, b9235 | MTP `draft-n=2`, `-t 16`, `--poll 50` | 91.88 t/s | 80.40-100.67 | Latest-stack MTP rerun. |
+| `localweights` IQ4_XS-Q8nextn, b9235 | MTP `draft-n=3`, `-t 16`, `--poll 10` | **92.30 t/s** | 76.57-109.21 | Best broad MTP average measured here. |
+| Official 27B Q8_0 MTP GGUF, b9235 | no MTP | 7.74 t/s | 7.74-7.75 | Heavy dense route; not a speed candidate. |
+| Official 27B Q8_0 MTP GGUF, b9235 | best MTP | 14.59 t/s | 12.70-16.56 | MTP helps, but this stays far slower than the 35B-A3B MoE path. |
 
 The most honest public summary is:
 
 - **Direct speed headline remains:** Qwen3-Coder Q4_K_S at 98.51 t/s r50.
-- **Best MTP server average measured here:** Qwen3.6 MTP IQ4_XS-Q8nextn at about 90.8 t/s across six practical prompts.
-- **Fastest local MTP server prompt:** Qwen3.6 MTP IQ4_XS-Q8nextn with `draft-n=3`, `-t 16`, `--poll 10` reached 110.61 t/s on the best prompt, but the same run averaged about 90.3 t/s across the full prompt set.
+- **Best MTP server average measured here:** Qwen3.6 MTP IQ4_XS-Q8nextn at about 92.3 t/s across six practical prompts on b9235.
+- **Fastest local MTP server prompt:** Qwen3.6 MTP IQ4_XS-Q8nextn with `draft-n=3`, `-t 16`, `--poll 10` reached 110.61 t/s on the best historical b9187 prompt; the latest b9235 rerun reached 109.21 t/s on its best prompt and averaged 92.3 t/s.
 - **Still not a broad 100 t/s claim:** the best six-prompt average stayed below 100 t/s.
+- **Official 27B MTP Q8_0 is not a speed route here:** it reached 14.59 t/s with the best MTP setting, so the useful practical path remains the 35B-A3B MoE MTP quant.
 
 ## Why This Matters
 
@@ -57,6 +63,13 @@ Published small MTP quant:
 - Size: 19,393,459,552 bytes
 - SHA256: `4d2349305663bc59bacab26d8eba8ed1218de84b8d1f0456208037e13efa9a98`
 
+Official 27B MTP Q8_0 checked as a negative speed result:
+
+- Source: `ggml-org/Qwen3.6-27B-MTP-GGUF`
+- File: `Qwen3.6-27B-MTP-Q8_0.gguf`
+- Size: 29,047,083,264 bytes
+- SHA256: `9cbd97ae7cf607be58535f5c81600086ce774ae1e10895ab8ca1d8719fe8b74e`
+
 ## Best Commands Tested
 
 Baseline Q4_K_M server:
@@ -86,7 +99,7 @@ VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
   --jinja --no-webui
 ```
 
-Best average route with the published IQ4_XS-Q8nextn file:
+Previous best average route with the published IQ4_XS-Q8nextn file:
 
 ```bash
 AMD_VULKAN_ICD=RADV \
@@ -100,12 +113,12 @@ VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
   --jinja --no-webui
 ```
 
-Fastest single-prompt MTP route found:
+Best current average MTP route found:
 
 ```bash
 AMD_VULKAN_ICD=RADV \
 VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
-~/llama-cpp-master-0253/build-vulkan/bin/llama-server \
+~/llama-cpp-master-2026-05-19/build-vulkan/bin/llama-server \
   -m ~/benchmark-models/qwen36-mtp-iq4xs-q8nextn/Qwen3.6-35B-A3B-MTP-IQ4_XS-Q8nextn.gguf \
   --host 127.0.0.1 --port 18081 \
   -ngl 999 -fa on --no-mmap --no-mmproj \
@@ -120,8 +133,10 @@ VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
 - Raw CSVs, JSONL responses, and server logs:
   - [`data/raw/2026-05-16/mtp-server-qwen36-35b/`](data/raw/2026-05-16/mtp-server-qwen36-35b/)
   - [`data/raw/2026-05-17/mtp-iq4xs-q8nextn/`](data/raw/2026-05-17/mtp-iq4xs-q8nextn/)
+  - [`data/raw/2026-05-19/mtp-35b-iq4xs-llamacpp-9235/`](data/raw/2026-05-19/mtp-35b-iq4xs-llamacpp-9235/)
+  - [`data/raw/2026-05-19/qwen36-27b-mtp-q8-llamacpp-9235/`](data/raw/2026-05-19/qwen36-27b-mtp-q8-llamacpp-9235/)
 - Upstream MTP support: <https://github.com/ggml-org/llama.cpp/pull/22673>
 
 ## Interpretation
 
-Use MTP when you want to test speculative decoding on a real local API server. Do not use the 110.61 t/s prompt as a general "Strix Halo runs Qwen3.6 at 100 t/s" claim. The guide can honestly say that MTP exceeded 100 t/s on favorable server prompts, while the best measured practical six-prompt average stayed around 90.8 t/s.
+Use MTP when you want to test speculative decoding on a real local API server. Do not use the 110.61 t/s prompt as a general "Strix Halo runs Qwen3.6 at 100 t/s" claim. The guide can honestly say that MTP exceeded 100 t/s on favorable server prompts, while the best measured practical six-prompt average stayed around 92.3 t/s. The official 27B Q8_0 MTP GGUF is worth documenting as a negative speed result so readers do not chase the wrong route.

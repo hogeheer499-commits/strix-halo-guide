@@ -1,0 +1,7 @@
+prompt_id,wall_s,predicted_n,predicted_per_second,prompt_n,prompt_per_second,content_chars
+code_python,25.129610,192,7.753426,12,34.093427,752
+code_cpp,25.164597,192,7.737092,18,56.956798,829
+explain_concept,25.161536,192,7.739212,20,62.736241,818
+summarize,25.179405,192,7.737222,28,85.388763,794
+qa_factual,25.135830,192,7.752896,31,93.078838,736
+stepwise_math,25.212162,192,7.742499,40,106.260609,536

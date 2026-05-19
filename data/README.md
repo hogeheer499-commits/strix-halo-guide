@@ -23,7 +23,7 @@ python3 scripts/generate_charts.py
 - `community_usb4_latency.csv`: community-reported USB4 latency tuning rows for Strix Halo clusters. These are advanced cluster-tuning results and are not relevant to the default single-machine setup.
 - `community_usb4_idle_power.csv`: community-reported idle-power measurements for the USB4 `pm_qos` tuning step.
 - `benchmarks.csv`: existing short-context and backend benchmark rows already published in the guide.
-- `mtp_speculative.csv`: local `llama-server` MTP speculative-decoding rows for Qwen3.6 35B-A3B MTP GGUFs, including official Q8_0, local Q4_K_M requant, and IQ4_XS-Q8nextn tests.
+- `mtp_speculative.csv`: local `llama-server` MTP speculative-decoding rows for Qwen3.6 MTP GGUFs, including official 35B Q8_0, local 35B Q4_K_M requant, 35B IQ4_XS-Q8nextn, and official 27B Q8_0 negative-speed tests.
 - `max_performance_campaign.csv`: 2026-05-07 "push the Beelink further" campaign summary, including quant sweeps, same-source HIP/Vulkan, gpt-oss long-context, vLLM AWQ smoke, and negative results.
 - `multi_user.csv`: controlled `llama-server` concurrency results with aggregate throughput, per-request throughput, TTFT, and ITL.
 - `server_shootout.csv`: practical local-AI-server comparison rows across Ollama, `llama-server`, ROCm builds, and vLLM candidates.
@@ -57,6 +57,8 @@ python3 scripts/generate_charts.py
 - `raw/2026-05-16/mtp-server-qwen36-35b/`: `llama-server` MTP speculative-decoding sweep; Qwen3.6 MTP Q4_K_M averaged 87.53 t/s with `draft-n=2`, and repeated a 100.74 t/s best-prompt result with `draft-n=3`.
 - `raw/2026-05-17/mtp-iq4xs-q8nextn/`: `llama-server` MTP speculative-decoding sweep with the IQ4_XS-Q8nextn quant; best six-prompt average was 90.80 t/s and best prompt was 110.61 t/s.
 - `raw/2026-05-17/qwen3-coder-q4ks-server-ngram/`: Qwen3-Coder Q4_K_S `llama-server` ngram speculative-decoding check; best average was 95.21 t/s, below broad 100 t/s.
+- `raw/2026-05-19/mtp-35b-iq4xs-llamacpp-9235/`: latest llama.cpp b9235 MTP rerun with Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn; best six-prompt average was 92.30 t/s and best prompt was 109.21 t/s.
+- `raw/2026-05-19/qwen36-27b-mtp-q8-llamacpp-9235/`: official Qwen3.6 27B MTP Q8_0 test; MTP improved 7.74 t/s baseline to 14.59 t/s, but it is not a speed/headline route.
 
 ## Status Values
 

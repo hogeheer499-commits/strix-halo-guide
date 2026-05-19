@@ -1,0 +1,27 @@
+case=mtp-draft3-t16-p10
+date=2026-05-19T15:40:07+02:00
+llama_cpp=version: 9235 (d14ce3dab);built with GNU 13.3.0 for Linux x86_64;
+model=/home/hoge-heer/benchmark-models/qwen36-27b-mtp/Qwen3.6-27B-MTP-Q8_0.gguf
+n_predict=192
+ignore_eos=0
+threads=16
+ctx=4096
+batch=2048
+ubatch=512
+base_poll=10
+extra_flags=--spec-type draft-mtp --spec-draft-n-max 3
+
+mean_predicted_per_second=14.588
+max_predicted_per_second=16.561
+min_predicted_per_second=12.696
+mean_predicted_per_second=14.588
+min_predicted_per_second=12.696
+max_predicted_per_second=16.561
+gpu_temp_c_avg=69.679
+gpu_temp_c_max=72.000
+cpu_tctl_c_avg=71.337
+cpu_tctl_c_max=74.500
+gpu_ppt_w_avg=115.025
+gpu_ppt_w_max=121.092
+gpu_busy_percent_avg=92.038
+gpu_busy_percent_max=98.000

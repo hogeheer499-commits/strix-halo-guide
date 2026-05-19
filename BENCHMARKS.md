@@ -59,26 +59,33 @@ Measured on the same Beelink GTR9 Pro after pausing non-essential GUI/noise proc
 | Ollama 0.24.0 isolated binary, Qwen3.6 API | 49.05 t/s warm generation average | No speedup versus the same-prompt Ollama 0.23.1 control at 49.09 t/s. |
 | llama.cpp b9179, Qwen3-Coder 30B Q4_K_S/Q4_0/IQ4_NL/Q4_K_M sweep | Initial best row: Q4_K_S at **97.22 tg128**, 1387.22 pp512 | Useful negative result: current master plus smaller Qwen3-Coder quants did not produce a stable 100 t/s path. Raw data: [`qwen3-coder-break100-master`](data/raw/2026-05-16/qwen3-coder-break100-master/). |
 | llama.cpp b9179, Qwen3-Coder 30B Q4_K_S strict-clean confirmation | **98.51 tg128 r50**, 1396.11 pp512 | New speed-first peak after fixing `tuned`/`power-profiles-daemon` conflict and pausing RustDesk/Firefox/Zoom/ffmpeg noise. Raw data: [`break-97-24-strict-noise-settings`](data/raw/2026-05-16/break-97-24-strict-noise-settings/). |
-| llama.cpp b9187, Qwen3.6 35B MTP IQ4_XS-Q8nextn server route | **90.80 t/s average** over six prompts with `draft-n=2`; best prompt **110.61 t/s** with `draft-n=3`, `-t 16`, `--poll 10` | Best measured MTP server route so far, but not a replacement for the direct non-speculative headline or a broad 100 t/s average. Raw data: [`mtp-iq4xs-q8nextn`](data/raw/2026-05-17/mtp-iq4xs-q8nextn/), summary: [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md). |
+| llama.cpp b9187, Qwen3.6 35B MTP IQ4_XS-Q8nextn server route | **90.80 t/s average** over six prompts with `draft-n=2`; best prompt **110.61 t/s** with `draft-n=3`, `-t 16`, `--poll 10` | Previous MTP route and still the best single-prompt MTP result, but not a replacement for the direct non-speculative headline or a broad 100 t/s average. Raw data: [`mtp-iq4xs-q8nextn`](data/raw/2026-05-17/mtp-iq4xs-q8nextn/), summary: [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md). |
+| llama.cpp b9235, Qwen3.6 35B MTP IQ4_XS-Q8nextn server route | **92.30 t/s average** over six prompts with `draft-n=3`; best prompt **109.21 t/s** | Latest master improved the broad MTP average versus b9187, but still did not reach a broad 100 t/s average. Raw data: [`mtp-35b-iq4xs-llamacpp-9235`](data/raw/2026-05-19/mtp-35b-iq4xs-llamacpp-9235/). |
+| llama.cpp b9235, official Qwen3.6 27B MTP Q8_0 | 7.74 t/s baseline; **14.59 t/s** best MTP average | Useful negative result: MTP nearly doubled the official 27B Q8_0 route, but this dense/heavy path is much slower than the 35B-A3B MoE routes and is not a speed candidate. Raw data: [`qwen36-27b-mtp-q8-llamacpp-9235`](data/raw/2026-05-19/qwen36-27b-mtp-q8-llamacpp-9235/). |
 
-Takeaway: upgrading blindly is not always faster. b9172 is worthwhile for Qwen3-Next 80B on this machine. Current master b9179 plus the Qwen3-Coder Q4_K_S speed-first quant can beat the old 97.24 t/s peak under a strict benchmark host state, but still did not produce a reliable direct non-speculative 100 t/s result. MTP on b9187 can exceed 100 t/s on favorable server prompts, while its best practical six-prompt average is now about 90.8 t/s. Keep direct `llama-bench`, server batching, and speculative decoding claims separate.
+Takeaway: upgrading blindly is not always faster. b9172 is worthwhile for Qwen3-Next 80B on this machine. Current master b9179 plus the Qwen3-Coder Q4_K_S speed-first quant can beat the old 97.24 t/s peak under a strict benchmark host state, but still did not produce a reliable direct non-speculative 100 t/s result. MTP on b9187/b9235 can exceed 100 t/s on favorable server prompts, while its best practical six-prompt average is now about 92.3 t/s. Keep direct `llama-bench`, server batching, and speculative decoding claims separate.
 
 ## MTP Speculative Decoding
 
-Measured 2026-05-16 with `llama-server` b9187 / `0253fb21`, Vulkan/RADV, six `/completion` prompts, `n_predict=192`, `temperature=0`, `top_k=1`, and prompt cache disabled per request. Structured data: [`data/mtp_speculative.csv`](data/mtp_speculative.csv). Raw data: [`data/raw/2026-05-16/mtp-server-qwen36-35b/`](data/raw/2026-05-16/mtp-server-qwen36-35b/).
+Measured with `llama-server` Vulkan/RADV, six `/completion` prompts, `n_predict=192`, `temperature=0`, `top_k=1`, and prompt cache disabled per request. Structured data: [`data/mtp_speculative.csv`](data/mtp_speculative.csv). Raw data: [`data/raw/2026-05-16/mtp-server-qwen36-35b/`](data/raw/2026-05-16/mtp-server-qwen36-35b/), [`data/raw/2026-05-17/mtp-iq4xs-q8nextn/`](data/raw/2026-05-17/mtp-iq4xs-q8nextn/), and [`data/raw/2026-05-19/`](data/raw/2026-05-19/).
 
 | Route | Mean t/s | Min-Max | Read |
 |-------|---------:|--------:|------|
-| Official Qwen3.6 MTP Q8_0, no MTP | 56.20 | 53.35-69.44 | Heavy baseline. |
-| Official Qwen3.6 MTP Q8_0, `draft-n=2` | 67.04 | 60.81-75.55 | Best Q8 average; about +19%. |
+| Official Qwen3.6 35B MTP Q8_0, no MTP | 56.20 | 53.35-69.44 | Heavy baseline. |
+| Official Qwen3.6 35B MTP Q8_0, `draft-n=2` | 67.04 | 60.81-75.55 | Best 35B Q8 average; about +19%. |
 | Local Qwen3.6 MTP Q4_K_M requant, no MTP | 74.13 | 72.55-74.56 | Faster baseline from reduced model weight. |
 | Local Qwen3.6 MTP Q4_K_M requant, `draft-n=2` | 87.53 | 82.18-95.68 | Best Q4_K_M average; about +18% over the Q4_K_M no-MTP server baseline. |
 | Local Qwen3.6 MTP Q4_K_M requant, `draft-n=3`, `-t 16`, `--poll 10` | 83.13-84.19 repeats | best prompt 99.86-100.74 | Repeatable single-prompt 100 t/s result, but lower broad average. |
 | Qwen3.6 MTP IQ4_XS-Q8nextn, no MTP | 72.44 | 72.12-72.62 | Published small MTP quant baseline. |
-| Qwen3.6 MTP IQ4_XS-Q8nextn, `draft-n=2`, `-t 16`, `--poll 50` | **90.80** | 83.23-100.37 | Best broad MTP average measured so far. |
+| Qwen3.6 MTP IQ4_XS-Q8nextn, `draft-n=2`, `-t 16`, `--poll 50` | 90.80 | 83.23-100.37 | Previous best broad MTP average before the b9235 rerun. |
 | Qwen3.6 MTP IQ4_XS-Q8nextn, `draft-n=3`, `-t 16`, `--poll 10` | 90.27 | 73.81-110.61 | Fastest single prompt, but not a broad 100 t/s average. |
+| Qwen3.6 MTP IQ4_XS-Q8nextn, b9235, no MTP | 74.54 | 74.36-74.86 | Latest-stack baseline rerun. |
+| Qwen3.6 MTP IQ4_XS-Q8nextn, b9235, `draft-n=2`, `-t 16`, `--poll 50` | 91.88 | 80.40-100.67 | Latest-stack MTP rerun, stronger than the b9187 draft-n=2 average. |
+| Qwen3.6 MTP IQ4_XS-Q8nextn, b9235, `draft-n=3`, `-t 16`, `--poll 10` | **92.30** | 76.57-109.21 | Best broad MTP average measured so far. |
+| Official Qwen3.6 27B MTP Q8_0, b9235, no MTP | 7.74 | 7.74-7.75 | Heavy dense route; not a speed candidate. |
+| Official Qwen3.6 27B MTP Q8_0, b9235, best MTP | 14.59 | 12.70-16.56 | MTP helps, but this route remains far slower than the 35B-A3B MoE path. |
 
-Takeaway: MTP is useful for server/speculative experiments and likely worth tracking as `llama.cpp` support matures. It should not be written as "Qwen3.6 now runs 100 t/s" because the full prompt-set average did not reach 100.
+Takeaway: MTP is useful for server/speculative experiments and likely worth tracking as `llama.cpp` support matures. It should not be written as "Qwen3.6 now runs 100 t/s" because the full prompt-set average did not reach 100. The official 27B Q8_0 MTP GGUF is a useful negative speed result here.
 
 ## Qwen3.6 Quant Sweep
 
