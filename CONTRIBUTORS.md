@@ -42,6 +42,8 @@ mottledMantis added the second major independent community validation path, this
 - 96GB LPDDR5X-8000 system, Ubuntu 26.04, kernel 7.0.0-15, Mesa RADV 26.0.3, and llama.cpp b9156
 - native result landed within -0.8% pp512 and -1.7% tg128 of the guide's Beelink Qwen3.6 b9049 row
 - confirmed the result was stable without `tuned`; an `accelerator-performance` rerun stayed in the same performance class
+- contributed the first GMKtec EVO-X2 Qwen3-Coder UD-Q4_K_XL row on llama.cpp b9235, useful as a latest-stack GMKtec baseline
+- independently reproduced the guide's exact Qwen3.6 MTP IQ4_XS-Q8nextn route on GMKtec, reaching 93.29 t/s average with `draft-n=2`
 - contributed a WSL2/HIP ROCm 7.2 baseline for the same GMKtec EVO-X2, useful for Windows/WSL2 users even though it is not an apples-to-apples native Vulkan comparison
 - provided raw CSV attachments for the native Vulkan/RADV run and detailed setup metadata for BIOS UMA, IOMMU mode, kernel, Mesa, model SHA, build, command, and limitations
 
@@ -51,6 +53,8 @@ Relevant docs:
 - [`data/community_results.csv`](data/community_results.csv)
 - [`data/raw/2026-05-13/community-gmktec-wsl2-issue15/`](data/raw/2026-05-13/community-gmktec-wsl2-issue15/)
 - [`data/raw/2026-05-14/community-gmktec-native-issue16/`](data/raw/2026-05-14/community-gmktec-native-issue16/)
+- [`data/raw/2026-05-19/community-gmktec-qwen-coder-issue17/`](data/raw/2026-05-19/community-gmktec-qwen-coder-issue17/)
+- [`data/raw/2026-05-19/community-gmktec-mtp-issue18/`](data/raw/2026-05-19/community-gmktec-mtp-issue18/)
 
 ## How To Get Contributor Credit
 

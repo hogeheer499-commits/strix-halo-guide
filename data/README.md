@@ -23,7 +23,7 @@ python3 scripts/generate_charts.py
 - `community_usb4_latency.csv`: community-reported USB4 latency tuning rows for Strix Halo clusters. These are advanced cluster-tuning results and are not relevant to the default single-machine setup.
 - `community_usb4_idle_power.csv`: community-reported idle-power measurements for the USB4 `pm_qos` tuning step.
 - `benchmarks.csv`: existing short-context and backend benchmark rows already published in the guide.
-- `mtp_speculative.csv`: local `llama-server` MTP speculative-decoding rows for Qwen3.6 MTP GGUFs, including official 35B Q8_0, local 35B Q4_K_M requant, 35B IQ4_XS-Q8nextn, and official 27B Q8_0 negative-speed tests.
+- `mtp_speculative.csv`: local and community `llama-server` MTP speculative-decoding rows for Qwen3.6 MTP GGUFs, including official 35B Q8_0, local 35B Q4_K_M requant, 35B IQ4_XS-Q8nextn, the GMKtec exact-model reproduction, and official 27B Q8_0 negative-speed tests.
 - `max_performance_campaign.csv`: 2026-05-07 "push the Beelink further" campaign summary, including quant sweeps, same-source HIP/Vulkan, gpt-oss long-context, vLLM AWQ smoke, and negative results.
 - `multi_user.csv`: controlled `llama-server` concurrency results with aggregate throughput, per-request throughput, TTFT, and ITL.
 - `server_shootout.csv`: practical local-AI-server comparison rows across Ollama, `llama-server`, ROCm builds, and vLLM candidates.
@@ -46,6 +46,8 @@ python3 scripts/generate_charts.py
 - `raw/2026-05-10/community-usb4-tuning-issue13/`: raw USB4 tuning CSVs plus the experimental thunderbolt patch and Makefile from issue #13.
 - `raw/2026-05-13/community-gmktec-wsl2-issue15/`: issue-comment provenance and TG512 raw CSV row for mottledMantis' GMKtec EVO-X2 WSL2/HIP baseline.
 - `raw/2026-05-14/community-gmktec-native-issue16/`: raw native Ubuntu Vulkan/RADV CSV attachments for mottledMantis' GMKtec EVO-X2 reproduction.
+- `raw/2026-05-19/community-gmktec-qwen-coder-issue17/`: raw generation-only Qwen3-Coder UD-Q4_K_XL b9235 row from mottledMantis' GMKtec EVO-X2.
+- `raw/2026-05-19/community-gmktec-mtp-issue18/`: Qwen3.6 MTP IQ4_XS-Q8nextn b9235 community reproduction from mottledMantis' GMKtec EVO-X2.
 - `raw/2026-05-16/latest-stack-b9172/`: local llama.cpp b9172 rerun; Qwen3-Next 80B improved to 59.06 t/s while Qwen3-Coder, Qwen3.6, and gpt-oss did not improve.
 - `raw/2026-05-16/ollama-0.24.0-api/`: isolated Ollama 0.24.0 API check plus same-prompt 0.23.1 control; no speedup found.
 - `raw/2026-05-16/lemonade-rocm-b1259-spotcheck/`: Qwen3-Next 80B ROCm spot check; HIP won pp512, Vulkan/RADV won tg128.

@@ -25,6 +25,8 @@ Raw community follow-up artifacts:
 - USB4 tuning CSVs and patch notes: [`data/raw/2026-05-10/community-usb4-tuning-issue13/`](data/raw/2026-05-10/community-usb4-tuning-issue13/)
 - GMKtec EVO-X2 WSL2/HIP baseline: [`data/raw/2026-05-13/community-gmktec-wsl2-issue15/`](data/raw/2026-05-13/community-gmktec-wsl2-issue15/)
 - GMKtec EVO-X2 native Ubuntu Vulkan/RADV reproduction: [`data/raw/2026-05-14/community-gmktec-native-issue16/`](data/raw/2026-05-14/community-gmktec-native-issue16/)
+- GMKtec EVO-X2 Qwen3-Coder follow-up: [`data/raw/2026-05-19/community-gmktec-qwen-coder-issue17/`](data/raw/2026-05-19/community-gmktec-qwen-coder-issue17/)
+- GMKtec EVO-X2 Qwen3.6 MTP follow-up: [`data/raw/2026-05-19/community-gmktec-mtp-issue18/`](data/raw/2026-05-19/community-gmktec-mtp-issue18/)
 
 Short version: these reports add trust signals the primary Beelink results cannot provide alone:
 
@@ -35,6 +37,8 @@ Short version: these reports add trust signals the primary Beelink results canno
 - first community USB4 latency tuning result tied to a real RPC benchmark cell
 - first community Qwen3.6 Q4_0/Q4_K_M comparison on a second Strix Halo chassis
 - first GMKtec EVO-X2 native Ubuntu Vulkan/RADV reproduction of the guide's Qwen3.6 row, within about 2% of the Beelink result
+- first GMKtec EVO-X2 Qwen3-Coder UD-Q4_K_XL row, useful as a b9235/Ubuntu 26.04 GMKtec baseline
+- first independent Qwen3.6 MTP exact-model reproduction, with a 93.29 t/s six-prompt average on GMKtec
 - first GMKtec EVO-X2 WSL2/HIP baseline, useful as Windows/WSL2 evidence but not apples-to-apples with native Vulkan/RADV
 
 For the shortest practical decision layer, see the README section [Community-Tested Rules Of Thumb](README.md#community-tested-rules-of-thumb).
@@ -51,6 +55,8 @@ For the shortest practical decision layer, see the README section [Community-Tes
 | 2026-05-09 | Fail-Safe | 2-node Corsair USB4 RPC cell from the same fleet | Fedora 43, kernel 7.0-rc6, kyuz0 Vulkan/RADV container | Qwen3-Coder 30B-A3B UD-Q4_K_XL | `pm_qos_resume_latency_us=100` reduced USB4 ping RTT from about 600-700 us to 134 us and improved 2-node Vulkan/RADV tg128 from 75.27 to 76.79 t/s. | Gives a simple, reversible tuning step for active Strix Halo cluster nodes; the kernel-module patch remains experimental. | [#13](https://github.com/hogeheer499-commits/strix-halo-guide/issues/13), [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md) |
 | 2026-05-13 | mottledMantis | GMKtec EVO-X2, Ryzen AI MAX+ 395, 96GB | Ubuntu 24.04 on WSL2, ROCm 7.2.53211 / HIP, llama.cpp b9127 | Qwen3.6 35B-A3B UD-Q4_K_M | TG512 generation-only: 44.05 t/s. PP512: 538 t/s from a separate high-variance run. | First GMKtec EVO-X2 WSL2/HIP baseline. Useful Windows/WSL2 evidence, but not apples-to-apples with native Vulkan/RADV because prompt variance was high and the primary result is TG512. | [#15](https://github.com/hogeheer499-commits/strix-halo-guide/issues/15) |
 | 2026-05-14 | mottledMantis | GMKtec EVO-X2, Ryzen AI MAX+ 395, 96GB | Ubuntu 26.04, kernel 7.0.0-15, Mesa RADV 26.0.3, llama.cpp b9156 | Qwen3.6 35B-A3B UD-Q4_K_M | 1050.82 pp512 / 61.52 tg128. Guide Beelink b9049 row: 1059.45 pp512 / 62.56 tg128. | Second independent contributor and first GMKtec native Ubuntu Vulkan/RADV reproduction. Despite 96GB RAM, IOMMU translated mode, no tuned daemon, newer kernel/Mesa/build, and model storage via mounted WSL2 VHDX, it lands within -0.8% pp and -1.7% tg of the Beelink row. | [#16](https://github.com/hogeheer499-commits/strix-halo-guide/issues/16) |
+| 2026-05-19 | mottledMantis | GMKtec EVO-X2, Ryzen AI MAX+ 395, 96GB | Ubuntu 26.04, kernel 7.0.0-15, Mesa RADV 26.0.3, llama.cpp b9235 | Qwen3-Coder 30B-A3B UD-Q4_K_XL | 92.11 tg128 generation-only, `-p 0 -n 128 -r 20`. | First GMKtec Qwen3-Coder UD row. Lower than the Beelink/Corsair b9049 rows, but still in the same practical performance class and useful as a b9235/GMKtec/latest-stack baseline. | [#17](https://github.com/hogeheer499-commits/strix-halo-guide/issues/17) |
+| 2026-05-19 | mottledMantis | GMKtec EVO-X2, Ryzen AI MAX+ 395, 96GB | Ubuntu 26.04, kernel 7.0.0-15, Mesa RADV 26.0.3, llama.cpp b9235 | Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn | no MTP: 74.72 t/s; MTP `draft-n=2`: 93.29 t/s; MTP `draft-n=3`: 93.01 t/s. | First independent reproduction of the guide's exact MTP GGUF route. It slightly exceeds the local Beelink b9235 broad MTP average, while still keeping the "not a broad 100 t/s claim" boundary intact. | [#18](https://github.com/hogeheer499-commits/strix-halo-guide/issues/18), [`mtp_speculative.csv`](data/mtp_speculative.csv) |
 
 ## Cross-Box Variance
 
@@ -77,6 +83,19 @@ mottledMantis contributed the first native Ubuntu Vulkan/RADV GMKtec EVO-X2 resu
 The practical conclusion is strong: native Linux Vulkan/RADV performance transfers across Beelink, Corsair, and GMKtec Strix Halo systems when the model/backend shape is comparable. This does not make every platform detail identical, but it does make the guide's native Vulkan/RADV setup much more credible for people choosing a GMKtec EVO-X2.
 
 Raw CSV attachments are imported under [`data/raw/2026-05-14/community-gmktec-native-issue16/`](data/raw/2026-05-14/community-gmktec-native-issue16/). Structured rows are in [`data/community_results.csv`](data/community_results.csv).
+
+## GMKtec EVO-X2 Qwen3-Coder And MTP Follow-Ups
+
+mottledMantis then added two follow-up reports on the same GMKtec EVO-X2 class system: Qwen3-Coder UD-Q4_K_XL on llama.cpp b9235 and the exact Qwen3.6 MTP IQ4_XS-Q8nextn GGUF referenced by the guide.
+
+| Issue | Model | Mode | Result | Interpretation |
+|-------|-------|------|--------|----------------|
+| [#17](https://github.com/hogeheer499-commits/strix-halo-guide/issues/17) | Qwen3-Coder 30B-A3B UD-Q4_K_XL | Direct `llama-bench`, generation-only `-p 0 -n 128 -r 20` | 92.11 tg128 | Useful GMKtec/latest-b9235 baseline. It is lower than the Beelink/Corsair b9049 rows, so keep it as community portability evidence rather than a headline replacement. |
+| [#18](https://github.com/hogeheer499-commits/strix-halo-guide/issues/18) | Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn | `llama-server`, no MTP | 74.72 t/s average over six prompts | Confirms the exact MTP GGUF baseline works on GMKtec. |
+| [#18](https://github.com/hogeheer499-commits/strix-halo-guide/issues/18) | Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn | `llama-server`, `draft-n=2` | 93.29 t/s average over six prompts | Best community broad MTP average reported so far; slightly above the local Beelink b9235 92.30 t/s row. |
+| [#18](https://github.com/hogeheer499-commits/strix-halo-guide/issues/18) | Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn | `llama-server`, `draft-n=3` | 93.01 t/s average, 175.97 t/s best prompt | Higher single-prompt peak, but `draft-n=2` was the better broad-average setting in this GMKtec rerun. |
+
+The #18 result is especially useful because it validates the guide's MTP route on a second Strix Halo vendor/chassis with a different kernel and Mesa stack. It also sharpens the public wording: MTP is a real server-speed route and can spike far above 100 t/s on favorable prompts, but the broad six-prompt averages are still in the 92-93 t/s range, not a general 100 t/s guarantee.
 
 ## Qwen3.6 Community Quant Check
 
@@ -151,6 +170,8 @@ This is strong independent validation for the Vulkan/RADV Qwen3-Coder path. It d
 - Strix Halo Vulkan/RADV performance appears portable across at least Beelink GTR9 Pro, Corsair AI Workstation 300, and GMKtec EVO-X2.
 - The Qwen3-Coder 30B-A3B direct `llama-bench` result stays around 95-97 t/s even with a different distro/kernel/Mesa/container stack.
 - The Qwen3.6 35B-A3B UD-Q4_K_M native Vulkan/RADV row reproduced within about 2% on GMKtec EVO-X2 despite 96GB memory, Ubuntu 26.04, kernel 7.0.0-15, Mesa 26.0.3, llama.cpp b9156, and IOMMU translated mode.
+- The Qwen3.6 MTP IQ4_XS-Q8nextn route now has an independent GMKtec reproduction at 93.29 t/s average over six prompts, slightly above the local Beelink b9235 92.30 t/s row.
+- The GMKtec Qwen3-Coder b9235 row came in lower than the Beelink/Corsair b9049 rows, which is useful too: it reminds readers that build, model source, prompt shape, and host state can move results by several percent.
 - N=3 community data suggests same-SKU Qwen3-Coder tg128 variance can be around 2% even when software and model files match.
 - The community wall-power cross-section now has four model rows: Qwen3-Coder around 150 W and 1.6 J/token, Qwen3.6 around 148 W and 2.0 J/token, gpt-oss-120b around 174 W and 3.1 J/token, and Qwen3-Coder-Next around 137 W and 3.4 J/token.
 - The Qwen3.6 Q4_0-vs-Q4_K_M shape reproduced on a second Strix Halo system, but absolute numbers differ enough to reinforce the "model file and stack matter" warning.
