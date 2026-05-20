@@ -241,6 +241,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`charts/README.md`](charts/README.md) | Generated chart inventory and regeneration command. |
 | [`SHARE.md`](SHARE.md) | Copyable Reddit/HN/forum/Discord text and share links. |
 | [`SECURITY.md`](SECURITY.md) | Official-source and impersonation reporting policy. |
+| [`SUPPORT.md`](SUPPORT.md) | How to support ongoing testing without changing the evidence-first benchmark policy. |
 
 ## Table of Contents
 
@@ -1932,6 +1933,14 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the full contribution path and the 
 3. Use [Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discussions) for setup questions, early results, and comparisons.
 4. PRs welcome -- especially from other Strix Halo systems (Framework, GMKtec, HP ZBook).
 5. If you find a new optimization, include before/after benchmarks.
+
+---
+
+## Support This Guide
+
+This guide stays free and evidence-first. If it saved you setup time or helped you choose hardware/software, the most useful support is a GitHub star, a benchmark report, a correction, or a pull request.
+
+Financial support may fund hardware, storage, model downloads, testing time, and ongoing maintenance, but it does not influence benchmark conclusions. See [`SUPPORT.md`](SUPPORT.md) for the funding policy.
 
 ---
 
