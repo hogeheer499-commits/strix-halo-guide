@@ -28,7 +28,7 @@ Current fastest local headline:
 - Treat 98.51 t/s as the current measured speed-first Qwen3-Coder peak, not a 100 t/s result and not the default balanced-quality recommendation.
 - Additional break-100 route testing reached 99.11 t/s in an r5 scout and 98.96 t/s in an r20 confirmation, but still did not produce a stable 100 t/s result.
 - Current fastest measured Qwen3.6 path: Q4_0 at 81.30 t/s on llama.cpp b9049, Vulkan/RADV. Label this as speed-first, not the default all-round quality recommendation.
-- Current fastest measured Qwen3.6 MTP server prompt: 110.61 t/s on IQ4_XS-Q8nextn with `draft-n=3`, `-t 16`, and `--poll 10`; the best broad MTP average is 90.80 t/s on IQ4_XS-Q8nextn with `draft-n=2`, `-t 16`, and `--poll 50`.
+- Current fastest measured Qwen3.6 MTP server prompt: 110.61 t/s on IQ4_XS-Q8nextn with `draft-n=3`, `-t 16`, and `--poll 10`; the best local Beelink broad MTP average is now 92.30 t/s on llama.cpp b9235, and the best community broad MTP average is 93.29 t/s on GMKtec EVO-X2.
 
 ## 2026-05-07 Campaign Results
 
@@ -42,7 +42,7 @@ Detailed results: [`MAX_PERFORMANCE_RESULTS_2026-05-07.md`](MAX_PERFORMANCE_RESU
 | gpt-oss-120b long-context sweep | done | 55.57 t/s tg128 and prompt processing through 65K tokens. |
 | Tuned rocWMMA path | attempted | lhl branch built, but failed to load current Qwen3.6 GGUFs. |
 | vLLM AWQ/DFlash | partially blocked | Plain AWQ smoke works at about 25 t/s; exact DFlash route blocked by gated drafter access. |
-| MTP speculative decoding | done | `llama-server` MTP works on b9187; Qwen3.6 MTP IQ4_XS-Q8nextn averaged 90.80 t/s with `draft-n=2`, and `draft-n=3` reached a 110.61 t/s best-prompt result. |
+| MTP speculative decoding | done | `llama-server` MTP works. The b9187 sweep averaged 90.80 t/s and reached a 110.61 t/s best-prompt result; the later b9235 rerun improved the local broad average to 92.30 t/s, with a GMKtec community reproduction at 93.29 t/s. |
 
 ## 2026-05-16 Follow-Up
 
@@ -74,7 +74,7 @@ Findings:
 - A stricter follow-up found the missing host-state factor: `power-profiles-daemon` can stop/conflict with `tuned`. With `tuned accelerator-performance` active, `power-profiles-daemon` inactive, CPU/EPP on performance, GPU high, and RustDesk/Firefox/Zoom/ffmpeg paused, Qwen3-Coder Q4_K_S on b9179 confirmed 98.51 t/s r50. Raw data: [`data/raw/2026-05-16/break-97-24-strict-noise-settings/`](data/raw/2026-05-16/break-97-24-strict-noise-settings/).
 - Follow-up break-100 routes tested threads, poll settings, batch/ubatch, CPU masks, no-host, mmap, direct I/O, KV q8/q4, Flash Attention off, no-op/no-KV variants, root RustDesk/qemu pausing, and temporary T3 renice while keeping T3 running. Best r5 scout was 99.11 t/s; best r20 confirmation was 98.96 t/s with 1382.12 pp512. No stable 100 t/s path found.
 - Additional high-upside break-100 checks did not change the direct `llama-bench` conclusion. AMDVLK via kyuz0's isolated toolbox measured 93.28 t/s r5, llama.cpp PR #22970 measured 98.74 t/s r20, and latest upstream master b9187 measured 98.64 t/s r20.
-- MTP was then tested as the separate route it actually is: `llama-server` speculative decoding. Official Qwen3.6 MTP Q8_0 improved from 56.20 to 67.04 t/s average with `draft-n=2`. A local Q4_K_M requant improved from 74.13 to 87.53 t/s average with `draft-n=2`. The published IQ4_XS-Q8nextn route improved the best broad average to 90.80 t/s and the best prompt to 110.61 t/s. This is still not a broad 100 t/s average. Raw data: [`data/raw/2026-05-16/mtp-server-qwen36-35b/`](data/raw/2026-05-16/mtp-server-qwen36-35b/) and [`data/raw/2026-05-17/mtp-iq4xs-q8nextn/`](data/raw/2026-05-17/mtp-iq4xs-q8nextn/), summary: [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md).
+- MTP was then tested as the separate route it actually is: `llama-server` speculative decoding. Official Qwen3.6 MTP Q8_0 improved from 56.20 to 67.04 t/s average with `draft-n=2`. A local Q4_K_M requant improved from 74.13 to 87.53 t/s average with `draft-n=2`. The published IQ4_XS-Q8nextn route later improved the local broad average to 92.30 t/s on b9235, and the best historical local prompt remains 110.61 t/s. This is still not a broad 100 t/s average. Raw data: [`data/raw/2026-05-16/mtp-server-qwen36-35b/`](data/raw/2026-05-16/mtp-server-qwen36-35b/), [`data/raw/2026-05-17/mtp-iq4xs-q8nextn/`](data/raw/2026-05-17/mtp-iq4xs-q8nextn/), and [`data/raw/2026-05-19/mtp-35b-iq4xs-llamacpp-9235/`](data/raw/2026-05-19/mtp-35b-iq4xs-llamacpp-9235/), summary: [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md).
 - Qwen3-Coder Q4_K_S was also checked as a practical `llama-server` route with ngram speculative decoding. Baseline server average was 93.72 t/s; the best ngram route was `ngram-map-k4v` at 95.21 t/s average and 104.72 t/s best prompt. This did not create a broad 100 t/s coding-server claim. Raw data: [`data/raw/2026-05-17/qwen3-coder-q4ks-server-ngram/`](data/raw/2026-05-17/qwen3-coder-q4ks-server-ngram/).
 
 ## Route Details And Remaining Work

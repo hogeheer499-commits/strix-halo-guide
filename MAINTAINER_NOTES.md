@@ -97,12 +97,13 @@ Keep community activity real and technical:
 - Leave open issues open only when they represent real unanswered benchmark questions.
 - Treat slower, failed, or contradictory reports as useful evidence, not a branding problem.
 
-Buy Me a Coffee or a similar support link is acceptable, but keep it secondary:
+GitHub Sponsors / Buy Me a Coffee support is acceptable, but keep it secondary:
 
 - Do not place a donation CTA before the technical TL;DR, benchmark table, or reproducibility links.
 - Keep the primary CTA as starring the repo, sharing it, or contributing benchmark results.
-- If a support link is added, use one restrained sentence near the existing star/share sentence or in `SHARE.md`.
-- Do not add `.github/FUNDING.yml` or a README support link until the real support URL exists.
+- `.github/FUNDING.yml` and `SUPPORT.md` now exist as the repo-side preparation for GitHub Sponsors.
+- The next sponsorship step is account-side activation by the owner in GitHub Sponsors, because it requires account, payout, and tax setup.
+- If a Buy Me a Coffee link is added later, keep it as a custom funding link and preserve the evidence-first funding policy.
 
 ## T3 Is Required Locally
 
