@@ -105,6 +105,20 @@ GitHub Sponsors / Buy Me a Coffee support is acceptable, but keep it secondary:
 - The next sponsorship step is account-side activation by the owner in GitHub Sponsors, because it requires account, payout, and tax setup.
 - If a Buy Me a Coffee link is added later, keep it as a custom funding link and preserve the evidence-first funding policy.
 
+## GitHub Account Safety
+
+Hard rule: all public GitHub activity for this repository must use `hogeheer499-commits`, not `brvale97`.
+
+Before any `gh issue comment`, `gh api`, `gh issue edit`, `gh release`, `gh repo edit`, or `git push` that affects this repository, run:
+
+```bash
+gh auth switch -u hogeheer499-commits
+gh auth setup-git
+gh auth status
+```
+
+Do not post comments, edit issues, create releases, or push until `gh auth status` shows `hogeheer499-commits` as the active account. If a wrong-account comment ever appears, delete it immediately and repost under `hogeheer499-commits`.
+
 ## T3 Is Required Locally
 
 Strix Halo work on this machine is operated from T3. Routine benchmark work must keep the T3 backend on `3773` and the semantic proxy on `3777` alive.
