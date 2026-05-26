@@ -51,8 +51,8 @@
 | Primary hardware | Beelink GTR9 Pro, Ryzen AI MAX+ 395, Radeon 8060S `gfx1151`, 128GB LPDDR5X-8000 unified memory. |
 | Best easy path | Ollama 0.23.1 with Vulkan/RADV for chat, model pulling, and Open WebUI. |
 | Fastest measured short-context path | Direct llama.cpp / `llama-server` with Vulkan/RADV. Current strict-clean b9179 speed-first Qwen3-Coder Q4_K_S row reached 98.51 t/s r50. The balanced Qwen3-Coder UD row remains 96.76 t/s on the current b9049 campaign; Qwen3.6 reached 62.56 t/s balanced UD and 81.30 t/s speed-first Q4_0. |
-| Experimental speculative server path | MTP works on current `llama.cpp` master. The best local Qwen3.6 MTP server route now uses IQ4_XS-Q8nextn and averaged about 92.3 t/s across six prompts; the first GMKtec community reproduction reached 93.3 t/s. This is a server/speculative result, not the direct `llama-bench` headline or a broad 100 t/s average. |
-| Latest-stack delta | llama.cpp b9172 did not improve the current Qwen3-Coder, Qwen3.6, or gpt-oss headline rows, but it did improve Qwen3-Next 80B to 59.06 t/s tg128 on the same Beelink. |
+| Experimental speculative server path | MTP works on current `llama.cpp` master. The best local Qwen3.6 MTP server route now uses IQ4_XS-Q8nextn and reached about 98.5 t/s across six prompts on b9334; the first GMKtec community reproduction on b9235 reached 93.3 t/s. This is a server/speculative result, not the direct `llama-bench` headline or a broad 100 t/s average. |
+| Latest-stack delta | llama.cpp b9334 did not improve the current direct Qwen3-Coder headline rows, but it materially improved the experimental Qwen3.6 MTP server route. Earlier, b9172 improved Qwen3-Next 80B to 59.06 t/s tg128 on the same Beelink. |
 | Largest new local model check | gpt-oss-120b MXFP4 split GGUF loaded locally with llama.cpp Vulkan/RADV b9049: 55.57 t/s tg128, 726.99 t/s pp512, and prompt processing tested through 65K tokens. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Backend split | Vulkan/RADV wins measured generation on the current single-box Qwen rows; ROCm/HIP can win prompt-processing-heavy work, and ROCm RPC is required for the tested MiniMax capacity case. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) and [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md). |
@@ -103,7 +103,7 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 | Easy private chat setup | Qwen3.6 35B-A3B Q4_K_M: 50.51 t/s through Ollama 0.23.1 API | Good default if you want model pulling, Open WebUI, and simple local chat. | [`headline claims`](data/headline_claims.csv), [`raw API run`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/ollama-qwen3.6-35b-a3b-0.23.1-api-r10.csv) |
 | Fast all-rounder direct path | Qwen3.6 35B-A3B UD-Q4_K_M: 62.56 t/s direct llama.cpp Vulkan/RADV on current b9049 | Use this when you care more about speed and control than the easiest UI. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/qwen36-35b-b9049-clean-r20.csv) |
 | Fastest Qwen3.6 direct path | Qwen3.6 35B-A3B Q4_0: 81.30 t/s direct llama.cpp Vulkan/RADV on current b9049 | Speed-first option. Use the default/balanced quant if quality matters more than raw t/s. | [`max campaign`](data/max_performance_campaign.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen36-top-confirm-r20/q4-0-ub2048.csv) |
-| Experimental Qwen3.6 MTP server path | Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn: 92.30 t/s local Beelink average over six `llama-server` prompts on b9235; first GMKtec community reproduction reached 93.29 t/s | Advanced speculative-decoding route. Good evidence for future server work, but still not a general "Qwen3.6 runs at 100 t/s" claim. | [`MTP notes`](MTP_SPECULATIVE_DECODING.md), [`MTP CSV`](data/mtp_speculative.csv), [`local raw`](data/raw/2026-05-19/mtp-35b-iq4xs-llamacpp-9235/), [`GMKtec raw`](data/raw/2026-05-19/community-gmktec-mtp-issue18/) |
+| Experimental Qwen3.6 MTP server path | Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn: 98.57 t/s local Beelink average over six `llama-server` prompts on b9334; first GMKtec community reproduction reached 93.29 t/s on b9235 | Advanced speculative-decoding route. Good evidence for future server work, but still not a general "Qwen3.6 runs at 100 t/s" claim. | [`MTP notes`](MTP_SPECULATIVE_DECODING.md), [`MTP CSV`](data/mtp_speculative.csv), [`local raw`](data/raw/2026-05-26/latest-llamacpp-b9334/), [`GMKtec raw`](data/raw/2026-05-19/community-gmktec-mtp-issue18/) |
 | 80B MoE coding/reasoning experiments | Qwen3-Next 80B-A3B UD-Q4_K_XL: 59.06 t/s direct llama.cpp Vulkan/RADV on b9172 | Best current 80B Qwen-family path measured here; use when model size and 256K context matter more than smallest footprint. | [`headline claims`](data/headline_claims.csv), [`raw r20`](data/raw/2026-05-16/latest-stack-b9172/qwen3-next-confirm-r20/qwen3-next-80b-b9172-ub1024-r20.csv) |
 | Open-weight 120B reasoning model | gpt-oss-120b MXFP4: 55.57 t/s direct llama.cpp Vulkan/RADV on current b9049 | 128GB unified memory can run a 117B-parameter MoE locally; this is speed evidence, not a model-quality eval. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/) |
 | Local API for tools or several clients | Qwen3-Coder 30B-A3B: 173.16 aggregate t/s at `-np 8` | A small AI server can feed multiple local workflows without cloud APIs. | [`multi-user CSV`](data/multi_user.csv), [`chart`](charts/multi_user_aggregate.svg) |
@@ -116,7 +116,7 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 |------|------------|-----|----------|
 | Easiest private local chat | Ollama Vulkan/RADV | easiest model pulling and Open WebUI path | 50.51 t/s warm Qwen3.6 API average, [`data/benchmarks.csv`](data/benchmarks.csv) |
 | Fast coding or scripts on one machine | `llama-server` Vulkan/RADV | fastest measured Qwen3.6 path at 1-4 parallel requests | [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md) |
-| Speculative decoding experiments | `llama-server` MTP on current master | measured server speedup on Qwen3.6 MTP GGUFs; local route averages about 92.3 t/s, GMKtec community reproduction reached 93.3 t/s, and favorable prompts can exceed 100 t/s | [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md) |
+| Speculative decoding experiments | `llama-server` MTP on current master | measured server speedup on Qwen3.6 MTP GGUFs; latest local route averages about 98.5 t/s, GMKtec community reproduction reached 93.3 t/s on b9235, and favorable prompts can exceed 100 t/s | [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md) |
 | Several local tools or users hitting one API | Lemonade `llamacpp-rocm` b1259 | best measured Qwen3.6 aggregate throughput at 8-16 parallel requests | [`data/server_shootout.csv`](data/server_shootout.csv) |
 | Long local documents or codebase context | `llama-server` Vulkan/RADV first, test ROCm/HIP for prompt-heavy ingestion | 128K prompt plus generation completed; HIP can win prompt processing | [`data/filled_kv_decode.csv`](data/filled_kv_decode.csv), [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) |
 | vLLM-style serving experiments | ROCm vLLM containers only as experiments | smoke-tested, but no 27B/35B throughput claim yet | [`VLLM_BASELINE.md`](VLLM_BASELINE.md), [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md) |
@@ -130,7 +130,7 @@ These are the practical decisions extracted from the primary Beelink runs plus F
 | One Strix Halo AI PC | Use Vulkan/RADV for GGUF chat, coding, and generation-heavy inference. | It is the fastest measured practical path for the main Qwen MoE rows. | [`headline claims`](data/headline_claims.csv), [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md) |
 | Native Linux on another Strix Halo vendor | Expect the same performance class if backend, model, quant, and command match. | GMKtec EVO-X2 96GB on Ubuntu 26.04, Mesa RADV 26.0.3, and llama.cpp b9156 reproduced the guide's Qwen3.6 UD-Q4_K_M row within -0.8% pp512 and -1.7% tg128. | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [#16](https://github.com/hogeheer499-commits/strix-halo-guide/issues/16) |
 | Comparing Qwen3-Coder rows | Preserve the exact command flags before calling one system faster. | The GMKtec Qwen3-Coder b9235 follow-up measured 91.40-92.11 tg128, but the full row used smaller batch settings, `flash_attn=0`, and `use_mmap=1`, so it is portability evidence rather than a Beelink headline replacement. | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [#17](https://github.com/hogeheer499-commits/strix-halo-guide/issues/17) |
-| Testing MTP/speculative decoding | Treat MTP as an advanced server route, not a direct benchmark replacement. | The exact Qwen3.6 MTP IQ4_XS-Q8nextn route now has a GMKtec reproduction at 93.29 t/s average, slightly above the local Beelink 92.30 t/s row, but still below a broad 100 t/s average. | [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md), [#18](https://github.com/hogeheer499-commits/strix-halo-guide/issues/18) |
+| Testing MTP/speculative decoding | Treat MTP as an advanced server route, not a direct benchmark replacement. | The exact Qwen3.6 MTP IQ4_XS-Q8nextn route now has a local b9334 rerun at 98.57 t/s average and a GMKtec b9235 reproduction at 93.29 t/s average, but still below a broad 100 t/s average. | [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md), [#18](https://github.com/hogeheer499-commits/strix-halo-guide/issues/18) |
 | The model fits on one Strix Halo box | Do not use `llama.cpp` RPC for raw single-stream speed. | 2-node RPC lost about 14-22% tg128 on fits-on-one models; 3-node was slower again. | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`data/community_rpc.csv`](data/community_rpc.csv) |
 | A huge GGUF does not fit on one box | Try ROCm RPC first, starting with the smallest node count that fits. | In the tested MiniMax-M2.7 140.8GB case, one box failed, 2-node ROCm worked, and 3-node ROCm was slower. This is a capacity rule from that case, not a universal speedup rule. | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) |
 | Building a USB4 Strix Halo cluster | Start with MTU 9000 and `pm_qos_resume_latency_us=100`. | MTU 9000 beat 1500 and 65520; `pm_qos` added about +2% tg128 with only about 1.5 W idle cost per toggled box in the community report. | [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md) |
@@ -160,7 +160,7 @@ Best current setup from this guide's measured local runs:
 - BIOS UMA set to 512MB.
 - IOMMU disabled for the measured local setup; use `iommu=pt` only if your RDMA/VFIO needs require it.
 - Kernel 6.19.4 on the primary measured system.
-- Mesa/RADV 26.0.6 from kisak-mesa PPA.
+- Mesa/RADV from kisak-mesa PPA. The main May 7 headline rows used Mesa 26.0.6; the latest May 26 b9334 MTP spot check used Mesa 26.1.1.
 - AMDVLK removed so it cannot silently override RADV.
 - `tuned` set to `accelerator-performance`.
 - Ollama Vulkan/RADV for easiest local chat and Open WebUI.
@@ -178,7 +178,7 @@ The machine-readable index for these rows is [`data/headline_claims.csv`](data/h
 | Fast balanced short-context coding MoE | 2026-05-07 | llama.cpp Vulkan/RADV b9049 | Qwen3-Coder 30B-A3B UD-Q4_K_XL | 96.76 tg128, 1320.52 pp512 | [`max campaign`](data/max_performance_campaign.csv) | [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv) | n/a | max-performance r20 confirmation; previous b9010 peak was 97.24 t/s |
 | Default Qwen3.6 direct path | 2026-05-07 | llama.cpp Vulkan/RADV b9049 | Qwen3.6 35B-A3B UD-Q4_K_M | 62.56 tg128, 1059.45 pp512 | [`benchmarks`](data/benchmarks.csv) | [`raw run`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/qwen36-35b-b9049-clean-r20.csv) | [`chart`](charts/backend_spot_check.svg) | clean latest-stack r20 rerun; rounds to 63 t/s |
 | Fastest measured Qwen3.6 speed-first quant | 2026-05-07 | llama.cpp Vulkan/RADV b9049 | Qwen3.6 35B-A3B Q4_0 | 81.30 tg128, 1243.51 pp512 | [`max campaign`](data/max_performance_campaign.csv) | [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen36-top-confirm-r20/q4-0-ub2048.csv) | n/a | speed-first lower-quality quant; not the default all-round recommendation without a quality sanity check |
-| Experimental Qwen3.6 MTP server path | 2026-05-19 | `llama-server` Vulkan/RADV b9235 | Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn | 92.30 t/s local average over six prompts; 93.29 t/s GMKtec community average; best historical prompt 110.61 t/s | [`MTP CSV`](data/mtp_speculative.csv) | [`local raw`](data/raw/2026-05-19/mtp-35b-iq4xs-llamacpp-9235/), [`GMKtec raw`](data/raw/2026-05-19/community-gmktec-mtp-issue18/) | n/a | server/speculative result; localweights Q8-next-token-head quant; not the direct `llama-bench` headline or broad 100 t/s average |
+| Experimental Qwen3.6 MTP server path | 2026-05-26 | `llama-server` Vulkan/RADV b9334 | Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn | 98.57 t/s local average over six prompts; 93.29 t/s GMKtec community average on b9235; best b9334 prompt 116.75 t/s | [`MTP CSV`](data/mtp_speculative.csv) | [`local raw`](data/raw/2026-05-26/latest-llamacpp-b9334/), [`GMKtec raw`](data/raw/2026-05-19/community-gmktec-mtp-issue18/) | n/a | server/speculative result; localweights Q8-next-token-head quant; not the direct `llama-bench` headline or broad 100 t/s average |
 | Best current 80B Qwen-family path | 2026-05-16 | llama.cpp Vulkan/RADV b9172 | Qwen3-Next 80B-A3B UD-Q4_K_XL | 59.06 tg128, 751.70 pp512 | [`benchmarks`](data/benchmarks.csv) | [`raw r20`](data/raw/2026-05-16/latest-stack-b9172/qwen3-next-confirm-r20/qwen3-next-80b-b9172-ub1024-r20.csv) | n/a | b9172 improved this 80B MoE path versus the older 54.92 t/s b8933 row |
 | gpt-oss-120b loaded locally | 2026-05-07 | llama.cpp Vulkan/RADV b9049 | gpt-oss-120b MXFP4 split GGUF | 55.57 tg128, 726.99 pp512, 293.73 pp65536 r1 | [`max campaign`](data/max_performance_campaign.csv) | [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/) | n/a | performance evidence only; no model-quality eval; pp65536 is one repeat |
 | Easiest useful Qwen3.6 chat path | 2026-05-07 | Ollama 0.23.1 Vulkan/RADV | Qwen3.6 35B-A3B Q4_K_M | 50.51 t/s warm API generation average | [`benchmarks`](data/benchmarks.csv) | [`raw API run`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/ollama-qwen3.6-35b-a3b-0.23.1-api-r10.csv) | n/a | 10 warm API runs; matches 0.21.2 |
@@ -212,7 +212,7 @@ Measured local result: 96.76 tg128 in the max-performance b9049 campaign: [`raw 
 - FastFlowLM/NPU inference. The kernel sees `amdxdna` and `/dev/accel/accel0`, but XRT/FastFlowLM user-space is not installed yet.
 - A local tuned rocWMMA long-context comparison against the current Vulkan/RADV path; the lhl branch built but failed to load current Qwen3.6 GGUFs.
 - Multi-machine clustering numbers from this guide's own hardware. Community RPC data exists in [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), but it is not a local Beelink headline claim.
-- A broad 100 t/s Qwen3.6 MTP server average. MTP reached 110.61 t/s on the best local prompt with IQ4_XS-Q8nextn, and the GMKtec community report saw a 175.97 t/s best prompt, but the best measured six-prompt averages are still 92.30 t/s locally and 93.29 t/s in community data.
+- A broad 100 t/s Qwen3.6 MTP server average. The latest b9334 local MTP rerun reached 98.57 t/s across six prompts and 116.75 t/s on its best prompt, while the GMKtec community report saw a 175.97 t/s best prompt on b9235. This is close, but still not a broad 100 t/s average claim.
 
 ## Do Not Copy These Claims Without Matching Setup
 
@@ -355,7 +355,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (Vulkan RADV). Spe
 
 ## Benchmark Results
 
-Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, 2026-05-07, and 2026-05-16. Benchmark system: Beelink GTR9 Pro, kernel 6.19.4, Mesa RADV 26.0.2-26.0.6, AMDVLK removed, tuned `accelerator-performance` active for measured runs. Before running new benchmarks, verify `tuned-adm active` and keep `power-profiles-daemon` inactive; it can conflict with `tuned`.
+Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, 2026-05-07, 2026-05-16, and 2026-05-26. Benchmark system: Beelink GTR9 Pro, kernel 6.19.4, Mesa RADV 26.0.2-26.1.1, AMDVLK removed, tuned `accelerator-performance` active for measured runs. Before running new benchmarks, verify `tuned-adm active` and keep `power-profiles-daemon` inactive; it can conflict with `tuned`.
 
 ### Benchmark Charts
 
@@ -905,7 +905,7 @@ systemctl is-active power-profiles-daemon
 
 ### Step 4.2: Upgrade Mesa Vulkan Drivers
 
-The default Mesa on Ubuntu 24.04 is significantly slower. Upgrade to Mesa 26.0.2 or newer. Current tested system: Mesa 26.0.6 from kisak-mesa PPA.
+The default Mesa on Ubuntu 24.04 is significantly slower. Upgrade to Mesa 26.0.2 or newer. Latest tested local system: Mesa 26.1.1 from kisak-mesa PPA.
 
 ```bash
 sudo add-apt-repository ppa:kisak/kisak-mesa
@@ -917,7 +917,7 @@ Verify:
 
 ```bash
 vulkaninfo --summary 2>&1 | grep driverInfo
-# Expected: driverInfo = Mesa 26.0.6 - kisak-mesa PPA
+# Expected: Mesa 26.0.2+ RADV from kisak-mesa PPA. Latest local run used Mesa 26.1.1.
 ```
 
 > **Impact:** Mesa 25.2.8 to 26.0.1 gave **+9% prompt eval** (87 to 96 t/s). Mesa 26.0.1 to 26.0.2 gave an additional small improvement.
@@ -1539,7 +1539,7 @@ See [`POWER_BASELINE.md`](POWER_BASELINE.md), [`COMMUNITY_RESULTS.md#whole-syste
 After completing setup, verify each item:
 
 - [ ] `free -h` shows most of your installed memory, not ~31GB (~124GiB on 128GB systems; lower on 96GB systems)
-- [ ] `vulkaninfo --summary` shows RADV Mesa 26.0.2+ (current tested: 26.0.6)
+- [ ] `vulkaninfo --summary` shows RADV Mesa 26.0.2+ (latest tested: 26.1.1)
 - [ ] `tuned-adm active` shows `accelerator-performance`
 - [ ] `systemctl is-active power-profiles-daemon` shows `inactive`
 - [ ] `cat /sys/class/drm/card*/device/pp_dpm_sclk` shows 2900Mhz with asterisk
@@ -1870,7 +1870,7 @@ Prices, availability, and external benchmark numbers change quickly; treat this 
 
 Common causes:
 1. **tuned not running or power-profiles-daemon active** -- Run `tuned-adm active` and `systemctl is-active power-profiles-daemon`. `tuned` should show `accelerator-performance`; `power-profiles-daemon` should be inactive. This alone is worth several percent.
-2. **Old Mesa drivers** -- Check `vulkaninfo --summary | grep driverInfo`. Should be Mesa 26.0.2+; current tested system is Mesa 26.0.6.
+2. **Old Mesa drivers** -- Check `vulkaninfo --summary | grep driverInfo`. Should be Mesa 26.0.2+; latest tested local system is Mesa 26.1.1.
 3. **Using Ollama instead of llama-bench** -- Qwen3.6 is about 19-20% slower through Ollama 0.23.1 than direct llama-bench on the current data. The 96-98.5 t/s Qwen3-Coder numbers are via llama-bench direct, not Ollama.
 4. **GPU clock stuck low** -- Check `cat /sys/class/drm/card*/device/pp_dpm_sclk`. Should show 2900Mhz with asterisk.
 5. **Wrong BIOS VRAM setting** -- Check `free -h`. On a 128GB system it should show roughly ~124GiB OS-visible memory; a 96GB system will be lower. If a 128GB box only shows ~31GiB, set UMA Frame Buffer to 512MB in BIOS.
@@ -1947,6 +1947,13 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 
 ## Changelog
 
+### 2026-05-26 -- Latest b9334 MTP And Direct Rerun
+
+- **MTP route improved again:** llama.cpp b9334 (`192d8ae`) with Mesa/RADV 26.1.1 raised the local Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn six-prompt average to **98.57 t/s** with `draft-n=3`; the best b9334 prompt reached **116.75 t/s**.
+- **Still not a broad 100 t/s claim:** repeated b9334 MTP runs landed around **97.76-98.57 t/s** depending on thread/poll settings. This is close and valuable, but it remains an experimental server/speculative result rather than the direct `llama-bench` headline.
+- **Direct latest-stack check stayed below the headline:** llama.cpp b9334 direct Qwen3-Coder Q4_K_S measured **96.27 tg128**, and UD-Q4_K_XL measured **94.15 tg128**. The existing direct headline remains the b9179 Q4_K_S **98.51 t/s** strict-clean row and the balanced b9049/b9010 **96-97 t/s** UD row.
+- Added raw evidence under `data/raw/2026-05-26/latest-llamacpp-b9334/` and updated `BENCHMARKS.md`, `MTP_SPECULATIVE_DECODING.md`, `data/benchmarks.csv`, `data/mtp_speculative.csv`, and `data/headline_claims.csv`.
+
 ### 2026-05-26 -- GMKtec Qwen3-Coder Full Follow-Up
 
 - **GMKtec Qwen3-Coder full row:** mottledMantis added the requested full `pp512/tg128` Qwen3-Coder 30B-A3B UD-Q4_K_XL b9235 run on GMKtec EVO-X2: **1157.29 pp512 / 91.40 tg128**.
@@ -1961,7 +1968,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 
 ### 2026-05-19 -- Latest llama.cpp MTP Rerun
 
-- **Latest MTP master rerun:** llama.cpp b9235 (`d14ce3dab`) raised the Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn six-prompt average to **92.30 t/s** with `draft-n=3`. The fastest prompt in this rerun was **109.21 t/s**; the older b9187 sweep still holds the best single-prompt MTP result at **110.61 t/s**.
+- **Latest MTP master rerun at the time:** llama.cpp b9235 (`d14ce3dab`) raised the Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn six-prompt average to **92.30 t/s** with `draft-n=3`. The fastest prompt in this rerun was **109.21 t/s**; the older b9187 sweep held the best single-prompt MTP result at **110.61 t/s** until the later b9334 rerun.
 - **Official 27B MTP Q8_0 checked:** `ggml-org/Qwen3.6-27B-MTP-GGUF` was tested on the same b9235 Vulkan/RADV stack. It reached **7.74 t/s** without MTP and **14.59 t/s** with the best MTP setting, making it a useful negative result rather than a speed/headline candidate.
 - Added raw evidence under `data/raw/2026-05-19/` and updated the MTP CSV/claim index.
 

@@ -1,0 +1,27 @@
+case=synthetic512-ignoreeos-draft3-t16-p100
+date=2026-05-26T18:04:10+02:00
+llama_cpp=version: 1 (192d8ae);built with GNU 13.3.0 for Linux x86_64;
+model=/home/hoge-heer/benchmark-models/qwen36-mtp-iq4xs-q8nextn/Qwen3.6-35B-A3B-MTP-IQ4_XS-Q8nextn.gguf
+n_predict=512
+ignore_eos=1
+threads=16
+ctx=4096
+batch=2048
+ubatch=512
+base_poll=100
+extra_flags=--spec-type draft-mtp --spec-draft-n-max 3
+
+mean_predicted_per_second=93.931
+max_predicted_per_second=114.876
+min_predicted_per_second=74.783
+mean_predicted_per_second=93.931
+min_predicted_per_second=74.783
+max_predicted_per_second=114.876
+gpu_temp_c_avg=66.101
+gpu_temp_c_max=71.000
+cpu_tctl_c_avg=68.590
+cpu_tctl_c_max=72.125
+gpu_ppt_w_avg=109.639
+gpu_ppt_w_max=120.016
+gpu_busy_percent_avg=87.228
+gpu_busy_percent_max=97.000
