@@ -19,7 +19,7 @@
 >
 > Measured primarily on one Beelink GTR9 Pro. Every headline claim below links to CSVs, raw logs, charts, or explicit notes. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights.
 >
-> Independent reproduction: three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128, and a GMKtec EVO-X2 96GB native Ubuntu run reproduced the guide's Qwen3.6 UD-Q4_K_M row within -0.8% pp512 and -1.7% tg128. Community contributors also added Qwen3.6 quant/source checks, a four-model wall-power cross-section, a 3-node USB4 `llama.cpp` RPC matrix, RPC serving/TTFT data, WSL2/HIP baseline data, and USB4 latency tuning. See [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), and [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md).
+> Independent reproduction: three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128, and a GMKtec EVO-X2 96GB native Ubuntu run reproduced the guide's Qwen3.6 UD-Q4_K_M row within -0.8% pp512 and -1.7% tg128. Community contributors also added GMKtec Qwen3-Coder b9235 follow-up rows, Qwen3.6 quant/source checks, a four-model wall-power cross-section, a 3-node USB4 `llama.cpp` RPC matrix, RPC serving/TTFT data, WSL2/HIP baseline data, and USB4 latency tuning. See [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), and [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md).
 
 [Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [What Runs](#what-you-can-run-quick-snapshot) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
 
@@ -56,7 +56,7 @@
 | Largest new local model check | gpt-oss-120b MXFP4 split GGUF loaded locally with llama.cpp Vulkan/RADV b9049: 55.57 t/s tg128, 726.99 t/s pp512, and prompt processing tested through 65K tokens. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Backend split | Vulkan/RADV wins measured generation on the current single-box Qwen rows; ROCm/HIP can win prompt-processing-heavy work, and ROCm RPC is required for the tested MiniMax capacity case. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) and [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md). |
-| Community validation | Three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128. A second contributor reproduced the Qwen3.6 native Vulkan/RADV row on GMKtec EVO-X2 within -0.8% pp512 and -1.7% tg128. Community reports also cover quant/source/build effects, same-SKU variance, wall-power efficiency, WSL2/HIP, 3-node USB4 RPC, RPC serving/TTFT, and USB4 tuning. |
+| Community validation | Three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128. A second contributor reproduced the Qwen3.6 native Vulkan/RADV row on GMKtec EVO-X2 within -0.8% pp512 and -1.7% tg128 and added GMKtec Qwen3-Coder b9235 follow-up rows. Community reports also cover quant/source/build effects, same-SKU variance, wall-power efficiency, WSL2/HIP, 3-node USB4 RPC, RPC serving/TTFT, and USB4 tuning. |
 | Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
 | Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
 
@@ -129,6 +129,7 @@ These are the practical decisions extracted from the primary Beelink runs plus F
 |-----------|---------------|-----|----------|
 | One Strix Halo AI PC | Use Vulkan/RADV for GGUF chat, coding, and generation-heavy inference. | It is the fastest measured practical path for the main Qwen MoE rows. | [`headline claims`](data/headline_claims.csv), [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md) |
 | Native Linux on another Strix Halo vendor | Expect the same performance class if backend, model, quant, and command match. | GMKtec EVO-X2 96GB on Ubuntu 26.04, Mesa RADV 26.0.3, and llama.cpp b9156 reproduced the guide's Qwen3.6 UD-Q4_K_M row within -0.8% pp512 and -1.7% tg128. | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [#16](https://github.com/hogeheer499-commits/strix-halo-guide/issues/16) |
+| Comparing Qwen3-Coder rows | Preserve the exact command flags before calling one system faster. | The GMKtec Qwen3-Coder b9235 follow-up measured 91.40-92.11 tg128, but the full row used smaller batch settings, `flash_attn=0`, and `use_mmap=1`, so it is portability evidence rather than a Beelink headline replacement. | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [#17](https://github.com/hogeheer499-commits/strix-halo-guide/issues/17) |
 | Testing MTP/speculative decoding | Treat MTP as an advanced server route, not a direct benchmark replacement. | The exact Qwen3.6 MTP IQ4_XS-Q8nextn route now has a GMKtec reproduction at 93.29 t/s average, slightly above the local Beelink 92.30 t/s row, but still below a broad 100 t/s average. | [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md), [#18](https://github.com/hogeheer499-commits/strix-halo-guide/issues/18) |
 | The model fits on one Strix Halo box | Do not use `llama.cpp` RPC for raw single-stream speed. | 2-node RPC lost about 14-22% tg128 on fits-on-one models; 3-node was slower again. | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`data/community_rpc.csv`](data/community_rpc.csv) |
 | A huge GGUF does not fit on one box | Try ROCm RPC first, starting with the smallest node count that fits. | In the tested MiniMax-M2.7 140.8GB case, one box failed, 2-node ROCm worked, and 3-node ROCm was slower. This is a capacity rule from that case, not a universal speedup rule. | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) |
@@ -1945,6 +1946,12 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 ---
 
 ## Changelog
+
+### 2026-05-26 -- GMKtec Qwen3-Coder Full Follow-Up
+
+- **GMKtec Qwen3-Coder full row:** mottledMantis added the requested full `pp512/tg128` Qwen3-Coder 30B-A3B UD-Q4_K_XL b9235 run on GMKtec EVO-X2: **1157.29 pp512 / 91.40 tg128**.
+- **Command-shape caveat preserved:** the full row used `-b 512 -ub 512`, `flash_attn=0`, and `use_mmap=1`, so it is documented as portability and flag-sensitivity evidence, not as an apples-to-apples replacement for the Beelink headline row.
+- Added the raw CSV under `data/raw/2026-05-19/community-gmktec-qwen-coder-issue17/` and updated `COMMUNITY_RESULTS.md`, `CONTRIBUTORS.md`, `BENCHMARKS.md`, `SHARE.md`, and `data/community_results.csv`.
 
 ### 2026-05-20 -- GMKtec MTP And Qwen3-Coder Community Follow-Up
 
