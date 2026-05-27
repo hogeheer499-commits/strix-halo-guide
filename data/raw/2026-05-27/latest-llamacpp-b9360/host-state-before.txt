@@ -1,0 +1,53 @@
+2026-05-27T17:14:08+02:00
+Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+6b4e4bd58
+b9360
+version: 27 (6b4e4bd58)
+built with GNU 13.3.0 for Linux x86_64
+Current active profile: accelerator-performance
+active
+inactive
+CPU governors: performance=32 
+CPU EPP: performance=32 
+Devices:
+========
+GPU0:
+	apiVersion         = 1.4.348
+	driverVersion      = 26.1.1
+	vendorID           = 0x1002
+	deviceID           = 0x1586
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = Radeon 8060S Graphics (RADV STRIX_HALO)
+	driverID           = DRIVER_ID_MESA_RADV
+	driverName         = radv
+	driverInfo         = Mesa 26.1.1 - kisak-mesa PPA
+	conformanceVersion = 1.4.0.0
+	deviceUUID = redacted
+	driverUUID = redacted
+GPU1:
+	apiVersion         = 1.4.348
+	driverVersion      = 26.1.1
+	vendorID           = 0x10005
+	deviceID           = 0x0000
+	deviceType         = PHYSICAL_DEVICE_TYPE_CPU
+	deviceName         = llvmpipe (LLVM 20.1.8, 256 bits)
+	driverID           = DRIVER_ID_MESA_LLVMPIPE
+	driverName         = llvmpipe
+	driverInfo         = Mesa 26.1.1 - kisak-mesa PPA (LLVM 20.1.8)
+	conformanceVersion = 1.3.1.1
+	deviceUUID = redacted
+	driverUUID = redacted
+
+GPU clocks:
+0: 2900Mhz 
+1: 1100Mhz 
+2: 2900Mhz *
+
+Process list redacted before publication.
+
+Benchmark state note:
+- tuned was active.
+- power-profiles-daemon was inactive.
+- CPU governors/EPP were set to performance.
+- RADV was selected through VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json.
+- Non-essential GUI, remote-desktop, media, local model-server, and demo-app noise was paused while the normal workspace dependency remained running.

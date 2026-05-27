@@ -4,7 +4,7 @@ This file is the compact benchmark source-of-truth for numbers already published
 
 ## Current System Snapshot
 
-Latest live audit on 2026-05-26:
+Latest live audit on 2026-05-27:
 
 | Component | Current State |
 |-----------|---------------|
@@ -20,15 +20,17 @@ Latest live audit on 2026-05-26:
 | GPU clock | 2900 MHz selected |
 | tuned | `accelerator-performance` active |
 
-Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 2026-04-26 with `tuned accelerator-performance` active. The 2026-05-07 latest-stack rerun confirms `tuned accelerator-performance` active, Mesa RADV 26.0.6, AMDVLK absent, linux-firmware safe, GPU clock at 2900 MHz, llama.cpp b9049, and Ollama 0.23.1. The 2026-05-16 spot check tested llama.cpp b9172 and an isolated Ollama 0.24.0 binary without changing the installed Ollama service. The 2026-05-26 spot check used Mesa RADV 26.1.1 and llama.cpp b9334.
+Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 2026-04-26 with `tuned accelerator-performance` active. The 2026-05-07 latest-stack rerun confirms `tuned accelerator-performance` active, Mesa RADV 26.0.6, AMDVLK absent, linux-firmware safe, GPU clock at 2900 MHz, llama.cpp b9049, and Ollama 0.23.1. The 2026-05-16 spot check tested llama.cpp b9172 and an isolated Ollama 0.24.0 binary without changing the installed Ollama service. The 2026-05-26 spot check used Mesa RADV 26.1.1 and llama.cpp b9334. The 2026-05-27 spot check used the same Mesa/RADV stack and llama.cpp b9360.
 
 ## Top-Line Model Results
 
 | Model | Backend / Build | Quant | pp512 | tg128 | Notes |
 |-------|-----------------|-------|-------|-------|-------|
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9179 | Q4_K_S | 1396 | **98.51** | 2026-05-16 strict-clean r50 speed-first quant confirmation |
+| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9360 | Q4_K_S | 1409 | 97.23 | Latest direct rerun; better than b9334 but no new direct headline |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9334 | Q4_K_S | 1401 | 96.27 | Latest direct rerun; no new headline versus b9179 |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9049 | UD-Q4_K_XL | 1321 | **96.76** | Max-performance guide-flags r20 confirmation; balanced UD default |
+| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9360 | UD-Q4_K_XL | 1399 | 92.60 | Latest direct balanced-UD rerun; no new headline |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9334 | UD-Q4_K_XL | 1402 | 94.15 | Latest direct balanced-UD rerun; no new headline |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9179 | Q4_K_S | 1387 | **97.22** | Earlier 2026-05-16 speed-first quant sweep before strict host-state fix |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9010 | UD-Q4_K_XL | 1346 | **97.24** | Previous May peak |
@@ -47,6 +49,21 @@ Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 202
 | Llama 3.1 70B | Ollama Vulkan RADV | Q4_K_M | 22-80 | **4.7-4.9** | Dense 70B, bandwidth-bound |
 | Qwen3 0.6B | Vulkan RADV, llama.cpp | Q8_0 | 13112 | **266** | Small-model speed ceiling |
 
+## 2026-05-27 Latest b9360 Spot Check
+
+Measured on the same Beelink GTR9 Pro after pausing benchmark noise while leaving the normal workspace dependency running. Raw data lives under [`data/raw/2026-05-27/latest-llamacpp-b9360/`](data/raw/2026-05-27/latest-llamacpp-b9360/).
+
+| Route | Result | Read |
+|-------|--------|------|
+| llama.cpp b9360, Qwen3-Coder 30B Q4_K_S direct `llama-bench` | 97.23 tg128, 1408.59 pp512 | Better than b9334 direct, but still below the b9179 98.51 t/s strict-clean row. |
+| llama.cpp b9360, Qwen3-Coder 30B UD-Q4_K_XL direct `llama-bench` | 92.60 tg128, 1398.69 pp512 | No new balanced headline; below the b9049/b9010 96-97 t/s rows. |
+| llama.cpp b9360, Qwen3.6 35B MTP IQ4_XS-Q8nextn, no MTP | 74.88 t/s average over six prompts | Current no-speculative server baseline. |
+| llama.cpp b9360, Qwen3.6 35B MTP IQ4_XS-Q8nextn, `draft-n=2`, `-ub 512` | 99.56 t/s best default-ubatch average; best prompt 108.28 t/s | Very close to 100 t/s, but still below it without the ubatch change. |
+| llama.cpp b9360, Qwen3.6 35B MTP IQ4_XS-Q8nextn, `draft-n=2`, `-ub 1024` | **101.16 t/s** best six-prompt average; t16 repeats **101.15 / 101.10 / 101.06 t/s** | First repeated local broad 100+ t/s MTP server route. |
+| llama.cpp b9360, Qwen3.6 35B MTP IQ4_XS-Q8nextn, `draft-n=3`, `-ub 1024` | 99.83 t/s average; best prompt 117.53 t/s | Higher single-prompt peak, lower broad average than draft-n=2. |
+
+Takeaway: latest b9360 did not improve the direct Qwen3-Coder headline, but it did create the first repeat-confirmed local MTP server route above 100 t/s across the six-prompt harness. Keep these categories separate: direct `llama-bench` remains 98.51 t/s speed-first / 96-97 t/s balanced, while MTP is now about 101.1 t/s as an advanced server/speculative route.
+
 ## 2026-05-26 Latest b9334 Spot Check
 
 Measured on the same Beelink GTR9 Pro after pausing benchmark noise while leaving the normal workspace dependency running. Raw data lives under [`data/raw/2026-05-26/latest-llamacpp-b9334/`](data/raw/2026-05-26/latest-llamacpp-b9334/).
@@ -58,11 +75,11 @@ Measured on the same Beelink GTR9 Pro after pausing benchmark noise while leavin
 | Same-state b9179 Qwen3-Coder Q4_K_S control | 97.61 tg128, 1409.36 pp512 | Confirms b9334 itself did not improve direct generation in this check. |
 | llama.cpp b9334, Qwen3.6 35B MTP IQ4_XS-Q8nextn, no MTP | 74.39 t/s average over six prompts | Current no-speculative server baseline. |
 | llama.cpp b9334, Qwen3.6 35B MTP IQ4_XS-Q8nextn, `draft-n=2` | 96.14 t/s average; best prompt 107.24 t/s | Strong improvement over b9235 draft-n=2. |
-| llama.cpp b9334, Qwen3.6 35B MTP IQ4_XS-Q8nextn, `draft-n=3` | **98.57 t/s** best six-prompt average; best prompt **116.75 t/s** | Best local MTP route measured so far, but still not a broad 100 t/s average. |
+| llama.cpp b9334, Qwen3.6 35B MTP IQ4_XS-Q8nextn, `draft-n=3` | **98.57 t/s** best six-prompt average; best prompt **116.75 t/s** | Former best local MTP route before the b9360 `-ub 1024` rerun. |
 | llama.cpp b9334, Qwen3.6 35B MTP IQ4_XS-Q8nextn, `draft-n=4` | 87.89 t/s average | Higher draft depth hurt average stability. |
 | llama.cpp b9334, synthetic512/ignore-EOS MTP variant | 93.93 t/s average | Synthetic prompt variant did not improve the broad average. |
 
-Takeaway: latest b9334 did not improve the direct Qwen3-Coder headline, but it materially improved the experimental MTP server path. Keep these categories separate: direct `llama-bench` remains 98.51 t/s speed-first / 96-97 t/s balanced, while MTP is now about 98.5 t/s as an advanced server/speculative route.
+Takeaway: latest b9334 did not improve the direct Qwen3-Coder headline, but it materially improved the experimental MTP server path. It was later superseded by the b9360 MTP rerun at about 101.1 t/s. Keep these categories separate: direct `llama-bench` remains 98.51 t/s speed-first / 96-97 t/s balanced.
 
 ## 2026-05-16 Latest-Stack Spot Check
 
@@ -84,11 +101,11 @@ Measured on the same Beelink GTR9 Pro after pausing non-essential GUI/noise proc
 | Community GMKtec EVO-X2, llama.cpp b9235, Qwen3.6 35B MTP IQ4_XS-Q8nextn | **93.29 t/s average** over six prompts with `draft-n=2`; `draft-n=3` reached 93.01 t/s average and 175.97 t/s best prompt | First independent exact-model MTP reproduction. It slightly exceeds the local Beelink b9235 average, but still does not create a broad 100 t/s average claim. Raw data: [`community-gmktec-mtp-issue18`](data/raw/2026-05-19/community-gmktec-mtp-issue18/). |
 | llama.cpp b9235, official Qwen3.6 27B MTP Q8_0 | 7.74 t/s baseline; **14.59 t/s** best MTP average | Useful negative result: MTP nearly doubled the official 27B Q8_0 route, but this dense/heavy path is much slower than the 35B-A3B MoE routes and is not a speed candidate. Raw data: [`qwen36-27b-mtp-q8-llamacpp-9235`](data/raw/2026-05-19/qwen36-27b-mtp-q8-llamacpp-9235/). |
 
-Takeaway: upgrading blindly is not always faster. b9172 is worthwhile for Qwen3-Next 80B on this machine. Current master b9179 plus the Qwen3-Coder Q4_K_S speed-first quant can beat the old 97.24 t/s peak under a strict benchmark host state, but still did not produce a reliable direct non-speculative 100 t/s result. The GMKtec Qwen3-Coder follow-up reinforces that command flags such as batch size, flash attention, and mmap must be preserved when comparing rows. MTP on b9187/b9235/b9334 can exceed 100 t/s on favorable server prompts, while its best practical six-prompt averages are now about 98.5 t/s locally and 93.3 t/s in the first GMKtec community reproduction. Keep direct `llama-bench`, server batching, and speculative decoding claims separate.
+Takeaway: upgrading blindly is not always faster. b9172 is worthwhile for Qwen3-Next 80B on this machine. Current master b9179 plus the Qwen3-Coder Q4_K_S speed-first quant can beat the old 97.24 t/s peak under a strict benchmark host state, but still did not produce a reliable direct non-speculative 100 t/s result. The GMKtec Qwen3-Coder follow-up reinforces that command flags such as batch size, flash attention, and mmap must be preserved when comparing rows. MTP on b9187/b9235/b9334/b9360 can exceed 100 t/s on favorable server prompts, and b9360 plus `-ub 1024` now gives a repeat-confirmed local six-prompt average around 101.1 t/s. Keep direct `llama-bench`, server batching, and speculative decoding claims separate.
 
 ## MTP Speculative Decoding
 
-Measured with `llama-server` Vulkan/RADV, six `/completion` prompts, `n_predict=192`, `temperature=0`, `top_k=1`, and prompt cache disabled per request. Structured data: [`data/mtp_speculative.csv`](data/mtp_speculative.csv). Raw data: [`data/raw/2026-05-16/mtp-server-qwen36-35b/`](data/raw/2026-05-16/mtp-server-qwen36-35b/), [`data/raw/2026-05-17/mtp-iq4xs-q8nextn/`](data/raw/2026-05-17/mtp-iq4xs-q8nextn/), [`data/raw/2026-05-19/`](data/raw/2026-05-19/), and [`data/raw/2026-05-26/latest-llamacpp-b9334/`](data/raw/2026-05-26/latest-llamacpp-b9334/).
+Measured with `llama-server` Vulkan/RADV, six `/completion` prompts, `n_predict=192`, `temperature=0`, `top_k=1`, and prompt cache disabled per request. Structured data: [`data/mtp_speculative.csv`](data/mtp_speculative.csv). Raw data: [`data/raw/2026-05-16/mtp-server-qwen36-35b/`](data/raw/2026-05-16/mtp-server-qwen36-35b/), [`data/raw/2026-05-17/mtp-iq4xs-q8nextn/`](data/raw/2026-05-17/mtp-iq4xs-q8nextn/), [`data/raw/2026-05-19/`](data/raw/2026-05-19/), [`data/raw/2026-05-26/latest-llamacpp-b9334/`](data/raw/2026-05-26/latest-llamacpp-b9334/), and [`data/raw/2026-05-27/latest-llamacpp-b9360/`](data/raw/2026-05-27/latest-llamacpp-b9360/).
 
 | Route | Mean t/s | Min-Max | Read |
 |-------|---------:|--------:|------|
@@ -105,14 +122,19 @@ Measured with `llama-server` Vulkan/RADV, six `/completion` prompts, `n_predict=
 | Qwen3.6 MTP IQ4_XS-Q8nextn, b9235, `draft-n=3`, `-t 16`, `--poll 10` | 92.30 | 76.57-109.21 | Former best local Beelink broad MTP average. |
 | Qwen3.6 MTP IQ4_XS-Q8nextn, b9334, no MTP | 74.39 | 70.77-75.14 | Latest no-speculative baseline. |
 | Qwen3.6 MTP IQ4_XS-Q8nextn, b9334, `draft-n=2`, `-t 16`, `--poll 50` | 96.14 | 86.58-107.24 | Latest-stack MTP improvement. |
-| Qwen3.6 MTP IQ4_XS-Q8nextn, b9334, `draft-n=3`, `-t 16`, `--poll 100` | **98.57** | 81.94-116.22 | Best local Beelink broad MTP average measured so far. |
+| Qwen3.6 MTP IQ4_XS-Q8nextn, b9334, `draft-n=3`, `-t 16`, `--poll 100` | **98.57** | 81.94-116.22 | Former best local Beelink broad MTP average before the b9360 `-ub 1024` rerun. |
 | Qwen3.6 MTP IQ4_XS-Q8nextn, b9334, `draft-n=3`, `-t 16`, `--poll 10` | 98.52 | 82.24-116.75 | Best b9334 single-prompt peak. |
+| Qwen3.6 MTP IQ4_XS-Q8nextn, b9360, no MTP | 74.88 | 74.82-74.97 | Latest no-speculative baseline. |
+| Qwen3.6 MTP IQ4_XS-Q8nextn, b9360, `draft-n=2`, `-t 16`, `--poll 100`, `-ub 512` | 99.56 | 86.91-108.28 | Very close, but still below broad 100 t/s. |
+| Qwen3.6 MTP IQ4_XS-Q8nextn, b9360, `draft-n=2`, `-t 16`, `--poll 100`, `-ub 1024` | **101.15** | 88.36-109.87 | First repeated local broad 100+ t/s MTP route; t16 repeats were 101.15 / 101.10 / 101.06. |
+| Qwen3.6 MTP IQ4_XS-Q8nextn, b9360, `draft-n=2`, `-t 12`, `--poll 100`, `-ub 1024` | **101.16** | 88.29-109.71 | Highest single six-prompt average in this b9360 sweep, essentially tied with t16. |
+| Qwen3.6 MTP IQ4_XS-Q8nextn, b9360, `draft-n=3`, `-t 16`, `--poll 100`, `-ub 1024` | 99.83 | 83.28-117.53 | Higher prompt peak, lower broad average than draft-n=2. |
 | Community GMKtec Qwen3.6 MTP IQ4_XS-Q8nextn, b9235, `draft-n=2`, `-t 16`, `--poll 50` | **93.29** | 71.79-161.54 | First independent exact-model reproduction; best community broad average so far. |
 | Community GMKtec Qwen3.6 MTP IQ4_XS-Q8nextn, b9235, `draft-n=3`, `-t 16`, `--poll 50` | 93.01 | 68.28-175.97 | Higher prompt peak, slightly lower broad average than `draft-n=2`. |
 | Official Qwen3.6 27B MTP Q8_0, b9235, no MTP | 7.74 | 7.74-7.75 | Heavy dense route; not a speed candidate. |
 | Official Qwen3.6 27B MTP Q8_0, b9235, best MTP | 14.59 | 12.70-16.56 | MTP helps, but this route remains far slower than the 35B-A3B MoE path. |
 
-Takeaway: MTP is useful for server/speculative experiments and likely worth tracking as `llama.cpp` support matures. It should not be written as "Qwen3.6 now runs 100 t/s" because the full prompt-set average did not reach 100. The latest local rerun raises the practical MTP range to about 98.5 t/s on the Beelink, the GMKtec reproduction makes the earlier 92-93 t/s route more credible, and the official 27B Q8_0 MTP GGUF is a useful negative speed result here.
+Takeaway: MTP is useful for server/speculative experiments and likely worth tracking as `llama.cpp` support matures. The latest local b9360 rerun raises the practical MTP range to about 101.1 t/s on the Beelink when `-ub 1024` is used. Do not write this as a direct `llama-bench` result or as a universal "all Qwen3.6 runs at 100 t/s" claim. The GMKtec reproduction makes the earlier 92-93 t/s route more credible, and the official 27B Q8_0 MTP GGUF is a useful negative speed result here.
 
 ## Qwen3.6 Quant Sweep
 

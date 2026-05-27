@@ -2,11 +2,11 @@
 
 This is an experimental `llama-server` route for practical local API speed. It is not the same benchmark as the direct non-speculative `llama-bench` headline.
 
-Short version: MTP works on Strix Halo with Vulkan/RADV and current `llama.cpp` master. It improves server generation on the tested Qwen3.6 35B MTP GGUFs, and the route now has a GMKtec EVO-X2 community reproduction, but the broad average still does not replace the 98.51 t/s direct Qwen3-Coder headline.
+Short version: MTP works on Strix Halo with Vulkan/RADV and current `llama.cpp` master. It improves server generation on the tested Qwen3.6 35B MTP GGUFs. The latest local b9360 run crossed 100 t/s across the six-prompt harness, and the route also has a GMKtec EVO-X2 community reproduction. This still does not replace the 98.51 t/s direct Qwen3-Coder `llama-bench` headline.
 
 ## Current Result
 
-Local rows were measured on the Beelink GTR9 Pro with Mesa/RADV and Qwen3.6 MTP GGUFs. The latest local MTP rerun used `llama.cpp` b9334 / `192d8ae` with Mesa 26.1.1. Community rows are kept separate and marked as GMKtec EVO-X2 reports.
+Local rows were measured on the Beelink GTR9 Pro with Mesa/RADV and Qwen3.6 MTP GGUFs. The latest local MTP rerun used `llama.cpp` b9360 / `6b4e4bd58` with Mesa 26.1.1. Community rows are kept separate and marked as GMKtec EVO-X2 reports.
 
 | Model file | Mode | Mean over 6 prompts | Range | Takeaway |
 |------------|------|--------------------:|------:|----------|
@@ -23,9 +23,14 @@ Local rows were measured on the Beelink GTR9 Pro with Mesa/RADV and Qwen3.6 MTP 
 | `localweights` IQ4_XS-Q8nextn, b9235 | MTP `draft-n=3`, `-t 16`, `--poll 10` | 92.30 t/s | 76.57-109.21 | Former best local Beelink broad MTP average. |
 | `localweights` IQ4_XS-Q8nextn, b9334 | no MTP | 74.39 t/s | 70.77-75.14 | Latest no-speculative baseline. |
 | `localweights` IQ4_XS-Q8nextn, b9334 | MTP `draft-n=2`, `-t 16`, `--poll 50` | 96.14 t/s | 86.58-107.24 | Clear latest-stack MTP improvement. |
-| `localweights` IQ4_XS-Q8nextn, b9334 | MTP `draft-n=3`, `-t 16`, `--poll 100` | **98.57 t/s** | 81.94-116.22 | Best local Beelink broad MTP average measured so far. |
+| `localweights` IQ4_XS-Q8nextn, b9334 | MTP `draft-n=3`, `-t 16`, `--poll 100` | **98.57 t/s** | 81.94-116.22 | Former best local Beelink broad MTP average before the b9360 `-ub 1024` rerun. |
 | `localweights` IQ4_XS-Q8nextn, b9334 | MTP `draft-n=3`, `-t 16`, `--poll 10` | 98.52 t/s | 82.24-116.75 | Best b9334 single-prompt peak. |
 | `localweights` IQ4_XS-Q8nextn, b9334 | MTP `draft-n=4`, `-t 16`, `--poll 50` | 87.89 t/s | 66.66-110.46 | Higher draft depth hurt average stability. |
+| `localweights` IQ4_XS-Q8nextn, b9360 | no MTP | 74.88 t/s | 74.82-74.97 | Latest no-speculative baseline. |
+| `localweights` IQ4_XS-Q8nextn, b9360 | MTP `draft-n=2`, `-t 16`, `--poll 100`, `-ub 512` | 99.56 t/s | 86.91-108.28 | Very close to 100, but still below it without the ubatch change. |
+| `localweights` IQ4_XS-Q8nextn, b9360 | MTP `draft-n=2`, `-t 16`, `--poll 100`, `-ub 1024` | **101.15 t/s** | 88.36-109.87 | First repeated local broad 100+ t/s MTP route; t16 repeats were 101.15 / 101.10 / 101.06. |
+| `localweights` IQ4_XS-Q8nextn, b9360 | MTP `draft-n=2`, `-t 12`, `--poll 100`, `-ub 1024` | **101.16 t/s** | 88.29-109.71 | Highest single six-prompt average in the b9360 sweep, essentially tied with t16. |
+| `localweights` IQ4_XS-Q8nextn, b9360 | MTP `draft-n=3`, `-t 16`, `--poll 100`, `-ub 1024` | 99.83 t/s | 83.28-117.53 | Higher single-prompt peak, lower broad average than draft-n=2. |
 | GMKtec EVO-X2 `localweights` IQ4_XS-Q8nextn, b9235 | no MTP | 74.72 t/s | 65.57-114.89 | Community exact-model baseline from mottledMantis. |
 | GMKtec EVO-X2 `localweights` IQ4_XS-Q8nextn, b9235 | MTP `draft-n=2`, `-t 16`, `--poll 50` | **93.29 t/s** | 71.79-161.54 | Best community broad MTP average reported so far. |
 | GMKtec EVO-X2 `localweights` IQ4_XS-Q8nextn, b9235 | MTP `draft-n=3`, `-t 16`, `--poll 50` | 93.01 t/s | 68.28-175.97 | Higher single-prompt peak, slightly lower average than `draft-n=2`. |
@@ -35,10 +40,10 @@ Local rows were measured on the Beelink GTR9 Pro with Mesa/RADV and Qwen3.6 MTP 
 The most honest public summary is:
 
 - **Direct speed headline remains:** Qwen3-Coder Q4_K_S at 98.51 t/s r50.
-- **Best local MTP server average measured here:** Qwen3.6 MTP IQ4_XS-Q8nextn at about 98.5 t/s across six practical prompts on b9334.
+- **Best local MTP server average measured here:** Qwen3.6 MTP IQ4_XS-Q8nextn at about 101.1 t/s across six practical prompts on b9360 with `draft-n=2`, `--poll 100`, and `-ub 1024`.
 - **Best community MTP average reported so far:** the same exact route reached 93.29 t/s on mottledMantis' GMKtec EVO-X2.
-- **Fastest local MTP server prompt:** Qwen3.6 MTP IQ4_XS-Q8nextn with `draft-n=3`, `-t 16`, `--poll 10` reached 116.75 t/s on the best b9334 prompt.
-- **Still not a broad 100 t/s claim:** the best six-prompt averages stayed below 100 t/s.
+- **Fastest local MTP server prompt:** Qwen3.6 MTP IQ4_XS-Q8nextn with `draft-n=3`, `-t 16`, `--poll 100`, and `-ub 1024` reached 117.53 t/s on the best b9360 prompt.
+- **Still not a direct 100 t/s claim:** the 100+ result is `llama-server` speculative decoding, not direct non-speculative `llama-bench`.
 - **Official 27B MTP Q8_0 is not a speed route here:** it reached 14.59 t/s with the best MTP setting, so the useful practical path remains the 35B-A3B MoE MTP quant.
 
 ## Why This Matters
@@ -127,12 +132,12 @@ Best current average MTP route found:
 ```bash
 AMD_VULKAN_ICD=RADV \
 VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
-~/llama-cpp-upstream-2026-05-26-b9334/build-vulkan/bin/llama-server \
+~/llama-cpp-upstream-2026-05-27-b9360/build-vulkan/bin/llama-server \
   -m ~/benchmark-models/qwen36-mtp-iq4xs-q8nextn/Qwen3.6-35B-A3B-MTP-IQ4_XS-Q8nextn.gguf \
   --host 127.0.0.1 --port 18081 \
   -ngl 999 -fa on --no-mmap --no-mmproj \
-  -c 4096 -np 1 -b 2048 -ub 512 -t 16 --poll 100 \
-  --spec-type draft-mtp --spec-draft-n-max 3 \
+  -c 4096 -np 1 -b 2048 -ub 1024 -t 16 --poll 100 \
+  --spec-type draft-mtp --spec-draft-n-max 2 \
   --jinja --no-webui
 ```
 
@@ -146,8 +151,9 @@ VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
   - [`data/raw/2026-05-19/community-gmktec-mtp-issue18/`](data/raw/2026-05-19/community-gmktec-mtp-issue18/)
   - [`data/raw/2026-05-19/qwen36-27b-mtp-q8-llamacpp-9235/`](data/raw/2026-05-19/qwen36-27b-mtp-q8-llamacpp-9235/)
   - [`data/raw/2026-05-26/latest-llamacpp-b9334/`](data/raw/2026-05-26/latest-llamacpp-b9334/)
+  - [`data/raw/2026-05-27/latest-llamacpp-b9360/`](data/raw/2026-05-27/latest-llamacpp-b9360/)
 - Upstream MTP support: <https://github.com/ggml-org/llama.cpp/pull/22673>
 
 ## Interpretation
 
-Use MTP when you want to test speculative decoding on a real local API server. Do not use the 116.75 t/s local prompt or the 175.97 t/s GMKtec prompt peak as a general "Strix Halo runs Qwen3.6 at 100 t/s" claim. The guide can honestly say that MTP exceeded 100 t/s on favorable server prompts, while the best measured practical six-prompt average is now about 98.5 t/s locally and 93.3 t/s in the first GMKtec reproduction. The official 27B Q8_0 MTP GGUF is worth documenting as a negative speed result so readers do not chase the wrong route.
+Use MTP when you want to test speculative decoding on a real local API server. Do not use the 117.53 t/s local prompt or the 175.97 t/s GMKtec prompt peak as a general "Strix Halo runs every Qwen3.6 workload at 100 t/s" claim. The guide can honestly say that the best measured local Qwen3.6 MTP server route now reaches about 101.1 t/s across six prompts on b9360, while the first GMKtec reproduction reached 93.3 t/s on b9235. The official 27B Q8_0 MTP GGUF is worth documenting as a negative speed result so readers do not chase the wrong route.
