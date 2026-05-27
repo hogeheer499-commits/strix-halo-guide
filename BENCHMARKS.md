@@ -49,7 +49,7 @@ Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 202
 
 ## 2026-05-26 Latest b9334 Spot Check
 
-Measured on the same Beelink GTR9 Pro after pausing benchmark noise while leaving T3 running. Raw data lives under [`data/raw/2026-05-26/latest-llamacpp-b9334/`](data/raw/2026-05-26/latest-llamacpp-b9334/).
+Measured on the same Beelink GTR9 Pro after pausing benchmark noise while leaving the normal workspace dependency running. Raw data lives under [`data/raw/2026-05-26/latest-llamacpp-b9334/`](data/raw/2026-05-26/latest-llamacpp-b9334/).
 
 | Route | Result | Read |
 |-------|--------|------|
