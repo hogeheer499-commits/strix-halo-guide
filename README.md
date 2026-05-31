@@ -13,6 +13,8 @@
 
 # AMD Strix Halo Local LLM Guide
 
+Reproducible local LLM setup and benchmark evidence for AMD Strix Halo / Ryzen AI MAX+ 395 systems.
+
 **Current direct Vulkan/RADV results on AMD Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory: Qwen3-Coder 30B speed-first Q4_K_S at 98.5 t/s, Qwen3-Coder balanced UD-Q4_K_XL at 96.8 t/s, Qwen3.6 balanced UD-Q4_K_M at 62.6 t/s, Qwen3.6 speed-first Q4_0 at 81.3 t/s, Qwen3-Next 80B at 59.1 t/s, and gpt-oss-120b MXFP4 at 55.6 t/s.**
 
 **Experimental server route:** Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn reached a repeat-confirmed 101.1 t/s average across six `llama-server` prompts on `llama.cpp` b9360. This is speculative decoding, not the direct `llama-bench` headline.
