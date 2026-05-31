@@ -1,6 +1,6 @@
 # ROCm and vLLM Bugwatch
 
-Status: current as of 2026-05-23.
+Status: current as of 2026-05-31.
 
 This file tracks fast-moving upstream items that affect Strix Halo local AI work. It is intentionally separate from the README so the public guide stays stable even when upstream ROCm/vLLM issues move.
 
@@ -8,10 +8,10 @@ This file tracks fast-moving upstream items that affect Strix Halo local AI work
 
 | Area | Current status | Why it matters |
 |------|----------------|----------------|
-| ROCm production release | [`ROCm 7.2.3`](https://github.com/ROCm/ROCm/releases/tag/rocm-7.2.3) remains the latest production ROCm release checked here, published 2026-05-04. | Production documentation still points to 7.2.3 for normal use. This guide did not install it host-wide. |
+| ROCm production release | [`ROCm 7.2.4`](https://github.com/ROCm/ROCm/releases/tag/rocm-7.2.4) is the latest production ROCm release checked here, published 2026-05-29. | Production docs now point to 7.2.4 for normal use. This guide did not install it host-wide. |
 | ROCm preview release | [`ROCm 7.13.0 Preview`](https://rocm.docs.amd.com/en/7.13.0-preview/about/release-notes.html) is the latest preview stream checked here, published 2026-05-15. | It adds official gfx1151/vLLM image coverage and RCCL multi-node optimization for AMD Ryzen AI Max 300 series, but it is a preview stream and should stay isolated from the host. |
-| vLLM release | [`vLLM 0.21.0`](https://docs.vllm.ai/en/v0.21.0/getting_started/installation/gpu/) is the latest normal upstream vLLM release checked here. ROCm 7.13.0 Preview also documents vLLM 0.19.1 images for gfx1151/gfx1150/gfx1152. | Useful signal for future containers; do not pip-install into the host Python environment for this guide. |
-| Strix Halo unified memory reporting | [`ROCm/hip#3892`](https://github.com/ROCm/hip/issues/3892) remains open. | Some HIP APIs can report VRAM aperture instead of unified memory, which can confuse schedulers and capacity checks. |
+| vLLM release | [`vLLM 0.22.0`](https://github.com/vllm-project/vllm/releases/tag/v0.22.0) is the latest normal upstream vLLM release checked here, published 2026-05-29. ROCm 7.13.0 Preview also documents vLLM 0.19.1 images for gfx1151/gfx1150/gfx1152. | Useful signal for future containers; do not pip-install into the host Python environment for this guide. |
+| Strix Halo unified memory reporting | [`ROCm/hip#3892`](https://github.com/ROCm/hip/issues/3892) is now closed as of 2026-05-29. | Still verify inside any ROCm/vLLM container before making a capacity/autoscheduling claim; closed upstream does not prove every local bundle has the fix. |
 | Older 15.5GB VRAM aperture issue | [`ROCm/ROCm#5444`](https://github.com/ROCm/ROCm/issues/5444) is closed. | Keep as troubleshooting context; not a current headline blocker. |
 | MES memory-access fault report | [`ROCm/ROCm#5724`](https://github.com/ROCm/ROCm/issues/5724) is closed. | Still relevant when diagnosing firmware/kernel regressions. |
 | Qwen ROCm load/hang report | [`ROCm/ROCm#6027`](https://github.com/ROCm/ROCm/issues/6027) is closed. | Historical context for why the guide keeps ROCm notes conservative. |
@@ -71,6 +71,16 @@ Practical guide interpretation:
 - Treat ROCm 7.13 Preview as the next isolated vLLM/RCCL/container lane, not a host-wide upgrade.
 - If tested, capture container image digest, ROCm component versions, `rocminfo`, model source/hash, startup logs, TTFT, throughput, and failure modes before adding claims.
 
+## 2026-05-31 Upstream Watch Refresh
+
+Latest watch changes:
+
+- ROCm production moved to 7.2.4 on 2026-05-29.
+- vLLM moved to 0.22.0 on 2026-05-29.
+- `ROCm/hip#3892` is closed, but any local ROCm/vLLM path should still record memory reporting from inside the actual container or bundle before claiming full unified-memory scheduler behavior.
+- `vllm-project/vllm#40898` remains open, so DFlash/SWA support is still a watch item rather than a reproduced guide claim.
+- Latest local `llama.cpp` b9442 direct Qwen3-Coder check did not improve the direct headline; the current direct headline remains b9179 Q4_K_S at 98.51 t/s and the experimental MTP server route remains b9360 at about 101.1 t/s.
+
 ## vLLM AWQ/DFlash Lead
 
 [`hec-ovi/vllm-awq4-qwen`](https://github.com/hec-ovi/vllm-awq4-qwen) is now an important Strix Halo lead:
@@ -94,8 +104,8 @@ The README recommendation should stay conservative:
 
 ## Next Watch Items
 
-1. Recheck `ROCm/hip#3892` before any vLLM capacity/autoscheduling claim.
+1. Verify local memory reporting inside any ROCm 7.2.4, ROCm 7.13 Preview, TheRock, or vLLM container before making a capacity/autoscheduling claim.
 2. Recheck `vllm-project/vllm#40898` before trying to reproduce DFlash/SWA behavior.
 3. Test ROCm 7.13 Preview vLLM images only through a container or isolated environment.
 4. Recheck ROCm 7.13 Preview RCCL notes before any future multi-node Strix Halo claim.
-5. If installing ROCm 7.2.3 or preview ROCm host-wide becomes necessary, treat it as a dedicated maintenance window and record a new system snapshot before publishing numbers.
+5. If installing ROCm 7.2.4 or preview ROCm host-wide becomes necessary, treat it as a dedicated maintenance window and record a new system snapshot before publishing numbers.
