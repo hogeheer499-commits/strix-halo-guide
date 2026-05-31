@@ -3,7 +3,7 @@ __pycache__/
 CONTEXT.md
 local-scratch/
 
-# OS Caches
+# OS Specific Caches
 .DS_Store
 .DS_Store?
 ._*
