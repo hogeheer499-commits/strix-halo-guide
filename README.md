@@ -1,32 +1,25 @@
 ![AMD](https://img.shields.io/badge/AMD-Ryzen_AI_MAX+_395-ED1C24?style=for-the-badge&logo=amd&logoColor=white)
 ![Speed](https://img.shields.io/badge/63--98.5_t/s_current_30B--35B_Qwen_MoE-brightgreen?style=for-the-badge)
 ![MTP](https://img.shields.io/badge/MTP_server-101.1_t/s_experimental-7c3aed?style=for-the-badge)
-![Qwen3.6](https://img.shields.io/badge/Qwen3.6_speed--first-81.3_t/s-2563eb?style=for-the-badge)
-![Qwen3-Next](https://img.shields.io/badge/Qwen3--Next_80B-59.1_t/s-16a34a?style=for-the-badge)
-![gpt-oss](https://img.shields.io/badge/gpt--oss--120b-55.6_t/s_MXFP4-0b7285?style=for-the-badge)
 [![Community](https://img.shields.io/badge/community-2_contributors_4_systems-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
 ![RAM](https://img.shields.io/badge/128GB_unified-blue?style=for-the-badge)
 ![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
-![Last commit](https://img.shields.io/github/last-commit/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 [![Validate](https://img.shields.io/github/actions/workflow/status/hogeheer499-commits/strix-halo-guide/validate.yml?branch=main&label=validate&style=for-the-badge)](https://github.com/hogeheer499-commits/strix-halo-guide/actions/workflows/validate.yml)
 
 # AMD Strix Halo Local LLM Guide
 
 Reproducible local LLM setup and benchmark evidence for AMD Strix Halo / Ryzen AI MAX+ 395 systems.
 
-**Current direct Vulkan/RADV results on AMD Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory: Qwen3-Coder 30B speed-first Q4_K_S at 98.5 t/s, Qwen3-Coder balanced UD-Q4_K_XL at 96.8 t/s, Qwen3.6 balanced UD-Q4_K_M at 62.6 t/s, Qwen3.6 speed-first Q4_0 at 81.3 t/s, Qwen3-Next 80B at 59.1 t/s, and gpt-oss-120b MXFP4 at 55.6 t/s.**
+What you get:
 
-**Experimental server route:** Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn reached a repeat-confirmed 101.1 t/s average across six `llama-server` prompts on `llama.cpp` b9360. This is speculative decoding, not the direct `llama-bench` headline.
+- Copyable Ubuntu + Vulkan/RADV setup for Ollama and `llama.cpp`.
+- Practical model/backend choices for a local AI PC.
+- Current direct result: Qwen3-Coder 30B at 98.5 t/s on Vulkan/RADV.
+- Experimental server route: Qwen3.6 MTP at 101.1 t/s with `llama-server` speculative decoding.
+- Raw CSVs, logs, charts, and reproducibility notes for headline claims.
+- Community validation from Beelink, Corsair, and GMKtec Strix Halo systems.
 
-Also useful if you search for Ryzen AI MAX+ 395, Ryzen AI Max 395, AMD Strix Halo, Radeon 8060S, `gfx1151`, Beelink GTR9 Pro, GMKtec EVO-X2, Corsair AI Workstation 300, Framework Desktop, local AI PC, Ollama Vulkan, llama.cpp Vulkan/RADV, ROCm/HIP, or unified-memory LLM benchmarks.
-
-> If this guide saves you time, consider giving it a star -- it helps others find it.
-> Official source: https://github.com/hogeheer499-commits/strix-halo-guide
->
-> Measured primarily on one Beelink GTR9 Pro. Every headline claim below links to CSVs, raw logs, charts, or explicit notes. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights.
->
-> Independent reproduction: three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128, and a GMKtec EVO-X2 96GB native Ubuntu run reproduced the guide's Qwen3.6 UD-Q4_K_M row within -0.8% pp512 and -1.7% tg128. Community contributors also added GMKtec Qwen3-Coder b9235 follow-up rows, Qwen3.6 quant/source checks, a four-model wall-power cross-section, a 3-node USB4 `llama.cpp` RPC matrix, RPC serving/TTFT data, WSL2/HIP baseline data, and USB4 latency tuning. See [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), and [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md).
+> Measured primarily on one Beelink GTR9 Pro. Community results are kept separate from local headline claims. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights. If this guide saves you time, a star helps others find it.
 
 [Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [What Runs](#what-you-can-run-quick-snapshot) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
 
