@@ -4,7 +4,7 @@ This file is the compact benchmark source-of-truth for numbers already published
 
 ## Current System Snapshot
 
-Latest live audit on 2026-05-27:
+Latest live audit on 2026-05-31:
 
 | Component | Current State |
 |-----------|---------------|
@@ -20,13 +20,14 @@ Latest live audit on 2026-05-27:
 | GPU clock | 2900 MHz selected |
 | tuned | `accelerator-performance` active |
 
-Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 2026-04-26 with `tuned accelerator-performance` active. The 2026-05-07 latest-stack rerun confirms `tuned accelerator-performance` active, Mesa RADV 26.0.6, AMDVLK absent, linux-firmware safe, GPU clock at 2900 MHz, llama.cpp b9049, and Ollama 0.23.1. The 2026-05-16 spot check tested llama.cpp b9172 and an isolated Ollama 0.24.0 binary without changing the installed Ollama service. The 2026-05-26 spot check used Mesa RADV 26.1.1 and llama.cpp b9334. The 2026-05-27 spot check used the same Mesa/RADV stack and llama.cpp b9360.
+Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 2026-04-26 with `tuned accelerator-performance` active. The 2026-05-07 latest-stack rerun confirms `tuned accelerator-performance` active, Mesa RADV 26.0.6, AMDVLK absent, linux-firmware safe, GPU clock at 2900 MHz, llama.cpp b9049, and Ollama 0.23.1. The 2026-05-16 spot check tested llama.cpp b9172 and an isolated Ollama 0.24.0 binary without changing the installed Ollama service. The 2026-05-26 spot check used Mesa RADV 26.1.1 and llama.cpp b9334. The 2026-05-27 spot check used the same Mesa/RADV stack and llama.cpp b9360. The 2026-05-31 spot check tested latest llama.cpp b9442 for the direct Qwen3-Coder speed-first path and found no new headline.
 
 ## Top-Line Model Results
 
 | Model | Backend / Build | Quant | pp512 | tg128 | Notes |
 |-------|-----------------|-------|-------|-------|-------|
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9179 | Q4_K_S | 1396 | **98.51** | 2026-05-16 strict-clean r50 speed-first quant confirmation |
+| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9442 | Q4_K_S | 1376 | 93.85 | Latest direct rerun; no new headline versus b9179 |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9360 | Q4_K_S | 1409 | 97.23 | Latest direct rerun; better than b9334 but no new direct headline |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9334 | Q4_K_S | 1401 | 96.27 | Latest direct rerun; no new headline versus b9179 |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9049 | UD-Q4_K_XL | 1321 | **96.76** | Max-performance guide-flags r20 confirmation; balanced UD default |
@@ -48,6 +49,18 @@ Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 202
 | Llama 4 Scout 109B | Vulkan RADV, llama.cpp b8933 | Q4_K_M | 331 | **18.32** | 109B params on one mini PC |
 | Llama 3.1 70B | Ollama Vulkan RADV | Q4_K_M | 22-80 | **4.7-4.9** | Dense 70B, bandwidth-bound |
 | Qwen3 0.6B | Vulkan RADV, llama.cpp | Q8_0 | 13112 | **266** | Small-model speed ceiling |
+
+## 2026-05-31 Latest b9442 Direct Spot Check
+
+Measured on the same Beelink GTR9 Pro after a safe-clean pass that left T3 running. Raw data lives under [`data/raw/2026-05-31/`](data/raw/2026-05-31/).
+
+| Route | Result | Read |
+|-------|--------|------|
+| llama.cpp b9442, Qwen3-Coder 30B Q4_K_S direct `llama-bench` | 93.85 tg128, 1376.37 pp512 | Latest upstream did not beat the existing b9179 98.51 t/s speed-first headline. |
+| Same-state b9360 Qwen3-Coder 30B Q4_K_S control | 95.35 tg128, 1384.21 pp512 | Same host state also stayed below the earlier b9360 97.23 t/s r20 row, so do not promote this as a regression claim without more repeats. |
+| Same-state b9187 Qwen3-Coder 30B Q4_K_S `-t 15` control | 95.09 tg128, 1388.21 pp512 | Older near-99 scout route did not reproduce a higher result in this short control run. |
+
+Takeaway: latest b9442 did not create a new direct Qwen3-Coder headline. These are useful negative/control rows only; the direct speed-first headline remains the older strict-clean b9179 r50 row at 98.51 t/s.
 
 ## 2026-05-27 Latest b9360 Spot Check
 

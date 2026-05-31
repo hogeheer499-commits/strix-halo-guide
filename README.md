@@ -17,6 +17,8 @@
 
 **Experimental server route:** Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn reached a repeat-confirmed 101.1 t/s average across six `llama-server` prompts on `llama.cpp` b9360. This is speculative decoding, not the direct `llama-bench` headline.
 
+Also useful if you search for Ryzen AI MAX+ 395, Ryzen AI Max 395, AMD Strix Halo, Radeon 8060S, `gfx1151`, Beelink GTR9 Pro, GMKtec EVO-X2, Corsair AI Workstation 300, Framework Desktop, local AI PC, Ollama Vulkan, llama.cpp Vulkan/RADV, ROCm/HIP, or unified-memory LLM benchmarks.
+
 > If this guide saves you time, consider giving it a star -- it helps others find it.
 > Official source: https://github.com/hogeheer499-commits/strix-halo-guide
 >
@@ -55,7 +57,7 @@
 | Best easy path | Ollama 0.23.1 with Vulkan/RADV for chat, model pulling, and Open WebUI. |
 | Fastest measured short-context path | Direct llama.cpp / `llama-server` with Vulkan/RADV. Current strict-clean b9179 speed-first Qwen3-Coder Q4_K_S row reached 98.51 t/s r50. The balanced Qwen3-Coder UD row remains 96.76 t/s on the current b9049 campaign; Qwen3.6 reached 62.56 t/s balanced UD and 81.30 t/s speed-first Q4_0. |
 | Experimental speculative server path | MTP works on current `llama.cpp` master. The best local Qwen3.6 MTP server route now uses IQ4_XS-Q8nextn and reached about 101.1 t/s across six prompts on b9360; the first GMKtec community reproduction on b9235 reached 93.3 t/s. This is a server/speculative result, not the direct `llama-bench` headline. |
-| Latest-stack delta | llama.cpp b9360 did not improve the current direct Qwen3-Coder headline rows, but it pushed the experimental Qwen3.6 MTP server route past a repeat-confirmed 100 t/s six-prompt average. Earlier, b9172 improved Qwen3-Next 80B to 59.06 t/s tg128 on the same Beelink. |
+| Latest-stack delta | llama.cpp b9442 was checked on 2026-05-31 and did not improve the current direct Qwen3-Coder headline rows. The b9360 route remains important because it pushed the experimental Qwen3.6 MTP server route past a repeat-confirmed 100 t/s six-prompt average. Earlier, b9172 improved Qwen3-Next 80B to 59.06 t/s tg128 on the same Beelink. |
 | Largest new local model check | gpt-oss-120b MXFP4 split GGUF loaded locally with llama.cpp Vulkan/RADV b9049: 55.57 t/s tg128, 726.99 t/s pp512, and prompt processing tested through 65K tokens. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Backend split | Vulkan/RADV wins measured generation on the current single-box Qwen rows; ROCm/HIP can win prompt-processing-heavy work, and ROCm RPC is required for the tested MiniMax capacity case. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) and [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md). |

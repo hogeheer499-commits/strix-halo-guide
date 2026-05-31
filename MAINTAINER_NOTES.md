@@ -119,9 +119,39 @@ gh auth status
 
 Do not post comments, edit issues, create releases, or push until `gh auth status` shows `hogeheer499-commits` as the active account. If a wrong-account comment ever appears, delete it immediately and repost under `hogeheer499-commits`.
 
-## T3 Is Required Locally
+## T3 Must Stay Reachable
 
-Strix Halo work on this machine is operated from T3. Routine benchmark work must keep the T3 backend on `3773` and the semantic proxy on `3777` alive.
+Absolute hard rule: T3 must stay active and reachable at all times. Strix Halo work on this machine is operated from T3; if T3 breaks, the user cannot work.
+
+T3 is not benchmark noise. It is never part of "stop everything", "pause everything", "clean the system", "go more aggressive", or any similar instruction. Those phrases always mean "everything safe except T3".
+
+Never stop, pause, kill, restart, renice, deprioritize, firewall, port-kill, mask, service-manage, or otherwise interfere with:
+
+- T3 backend/server on `127.0.0.1:3773`
+- T3 semantic proxy on `127.0.0.1:3777`
+- `t3code` processes
+- `t3_react185_semantic_proxy`
+- T3 healthcheck/recovery scripts
+
+If a benchmark, cleanup, script, shell pipeline, PID list, container action, service action, or performance experiment could affect T3, do not run it. Skip the benchmark instead. Even a better benchmark number is not worth a T3 interruption.
+
+Before any benchmark cleanup or long benchmark, check T3:
+
+```bash
+curl -fsS http://127.0.0.1:3777/__t3react185/health
+curl -fsSI http://127.0.0.1:3773/ | sed -n '1,3p'
+```
+
+If either check fails, stop Strix testing and restore T3 before doing anything else.
+
+2026-05-27 incident rule: do not pause desktop, audio, T3, or active meeting/streaming processes for Strix Halo benchmarks. A too-aggressive `SIGSTOP` pass against `Xorg`, `gnome-shell`, `pipewire`, `t3code` UI processes, and related desktop/session processes made the machine look frozen and took T3 upstream `127.0.0.1:3773` down until reboot. Future benchmark cleanup must never target:
+
+- `t3code`, T3 backend/server, T3 proxy, T3 healthcheck/recovery scripts, or ports `3773`/`3777`
+- `Xorg`, `gnome-shell`, `pipewire`, `pipewire-pulse`, display manager, or desktop session processes
+- Zoom, DocFlock `ffmpeg`, virtual camera/audio, or meeting/streaming processes while Zoom is in use
+- RustDesk, NoMachine, Tailscale, SSH, or other remote-access paths unless the user explicitly says remote access can be interrupted
+
+Use `renice` or skip the run instead of pausing required workflow processes, but do not renice or deprioritize T3. Only pause clearly nonessential benchmark noise, and keep a restore path that works even if T3 is unavailable.
 
 If the browser shows:
 

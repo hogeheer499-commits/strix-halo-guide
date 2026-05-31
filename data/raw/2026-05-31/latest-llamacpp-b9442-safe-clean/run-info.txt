@@ -1,0 +1,4 @@
+date=2026-05-31T17:36:05+02:00
+bench=/home/hoge-heer/llama-cpp-upstream-2026-05-31-latest/build-vulkan/bin/llama-bench
+model=/home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+commit=d4c8e2c29
