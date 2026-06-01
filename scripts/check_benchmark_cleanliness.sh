@@ -124,10 +124,11 @@ if pgrep -f -i 't3_react185_semantic_proxy|t3-react185-semantic-proxy' >/dev/nul
 else
   blocker "T3 semantic proxy is not running"
 fi
-check_http "T3 local backend" "${T3_LOCAL_BASE}:3773/"
-check_http "T3 LAN backend" "${T3_LAN_BASE}:3773/"
-check_json_ok "T3 local semantic proxy" "${T3_LOCAL_BASE}:3777/__t3react185/health"
-check_http "T3 LAN semantic proxy" "${T3_LAN_BASE}:3777/"
+check_http "T3 local semantic proxy" "${T3_LOCAL_BASE}:3773/"
+check_http "T3 LAN semantic proxy" "${T3_LAN_BASE}:3773/"
+check_json_ok "T3 local semantic proxy health" "${T3_LOCAL_BASE}:3773/__t3react185/health"
+check_json_ok "T3 LAN semantic proxy health" "${T3_LAN_BASE}:3773/__t3react185/health"
+check_http "T3 local upstream backend" "${T3_LOCAL_BASE}:3774/"
 
 section "Local AI and Containers"
 ai_pids="$(

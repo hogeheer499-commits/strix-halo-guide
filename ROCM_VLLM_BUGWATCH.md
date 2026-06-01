@@ -1,6 +1,6 @@
 # ROCm and vLLM Bugwatch
 
-Status: current as of 2026-05-31.
+Status: current as of 2026-06-01.
 
 This file tracks fast-moving upstream items that affect Strix Halo local AI work. It is intentionally separate from the README so the public guide stays stable even when upstream ROCm/vLLM issues move.
 
@@ -80,6 +80,16 @@ Latest watch changes:
 - `ROCm/hip#3892` is closed, but any local ROCm/vLLM path should still record memory reporting from inside the actual container or bundle before claiming full unified-memory scheduler behavior.
 - `vllm-project/vllm#40898` remains open, so DFlash/SWA support is still a watch item rather than a reproduced guide claim.
 - Latest local `llama.cpp` b9442 direct Qwen3-Coder check did not improve the direct headline; the current direct headline remains b9179 Q4_K_S at 98.51 t/s and the experimental MTP server route remains b9360 at about 101.1 t/s.
+
+## 2026-06-01 Watch Recheck
+
+No new public guide claim changed in the 2026-06-01 recheck:
+
+- ROCm production remained 7.2.4 as the latest checked production release.
+- vLLM remained 0.22.0 as the latest checked normal upstream release.
+- Local installed Ollama remained 0.23.1; the previous isolated Ollama 0.24.0 API check already found no speedup versus the same-prompt 0.23.1 control.
+- Local `llama.cpp` latest-stack evidence remained the 2026-05-31 b9442 direct Qwen3-Coder spot check. That row is useful negative evidence, not a new headline.
+- Keep ROCm/vLLM/DFlash work in isolated containers or extracted bundles until a reproducible 27B/35B serving row beats or complements the existing `llama-server` and Ollama paths.
 
 ## vLLM AWQ/DFlash Lead
 

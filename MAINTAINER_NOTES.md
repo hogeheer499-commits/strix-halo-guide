@@ -127,8 +127,8 @@ T3 is not benchmark noise. It is never part of "stop everything", "pause everyth
 
 Never stop, pause, kill, restart, renice, deprioritize, firewall, port-kill, mask, service-manage, or otherwise interfere with:
 
-- T3 backend/server on `127.0.0.1:3773`
-- T3 semantic proxy on `127.0.0.1:3777`
+- T3 semantic proxy on `127.0.0.1:3773`
+- T3 upstream backend on `127.0.0.1:3774`
 - `t3code` processes
 - `t3_react185_semantic_proxy`
 - T3 healthcheck/recovery scripts
@@ -138,15 +138,18 @@ If a benchmark, cleanup, script, shell pipeline, PID list, container action, ser
 Before any benchmark cleanup or long benchmark, check T3:
 
 ```bash
-curl -fsS http://127.0.0.1:3777/__t3react185/health
-curl -fsSI http://127.0.0.1:3773/ | sed -n '1,3p'
+curl -fsS http://127.0.0.1:3773/__t3react185/health
+curl -fsSI http://127.0.0.1:3774/ | sed -n '1,3p'
+curl -fsSI http://192.168.2.13:3773/ | sed -n '1,3p'
 ```
 
-If either check fails, stop Strix testing and restore T3 before doing anything else.
+If any check fails, stop Strix testing and restore T3 before doing anything else.
+
+Current 2026-06-01 T3 layout: the semantic proxy is integrated on `3773` and forwards to the upstream T3 backend on `3774`. The old `3777` hotpatch route is historical and should not be required for Strix Halo benchmark readiness unless T3 Code Ops deliberately switches back to that route.
 
 2026-05-27 incident rule: do not pause desktop, audio, T3, or active meeting/streaming processes for Strix Halo benchmarks. A too-aggressive `SIGSTOP` pass against `Xorg`, `gnome-shell`, `pipewire`, `t3code` UI processes, and related desktop/session processes made the machine look frozen and took T3 upstream `127.0.0.1:3773` down until reboot. Future benchmark cleanup must never target:
 
-- `t3code`, T3 backend/server, T3 proxy, T3 healthcheck/recovery scripts, or ports `3773`/`3777`
+- `t3code`, T3 backend/server, T3 proxy, T3 healthcheck/recovery scripts, or ports `3773`/`3774`/`3777`
 - `Xorg`, `gnome-shell`, `pipewire`, `pipewire-pulse`, display manager, or desktop session processes
 - Zoom, DocFlock `ffmpeg`, virtual camera/audio, or meeting/streaming processes while Zoom is in use
 - RustDesk, NoMachine, Tailscale, SSH, or other remote-access paths unless the user explicitly says remote access can be interrupted
@@ -185,7 +188,7 @@ scripts/run_with_t3_guard.py \
   -- <benchmark command>
 ```
 
-Cleanup commands are for benchmark targets only. The guard refuses cleanup commands that reference T3, `3773`, `3777`, broad Node kills, Hermes, or destructive Docker-wide actions.
+Cleanup commands are for benchmark targets only. The guard refuses cleanup commands that reference T3, `3773`, `3774`, `3777`, broad Node kills, Hermes, or destructive Docker-wide actions.
 
 ## Hermes Is Out Of Scope
 

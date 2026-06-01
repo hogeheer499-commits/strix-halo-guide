@@ -1948,6 +1948,12 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 
 ## Changelog
 
+### 2026-06-01 -- Watchlist And Sharing Hygiene
+
+- **Upstream watch rechecked:** ROCm production remains **7.2.4**, vLLM remains **0.22.0**, and the previous isolated Ollama **0.24.0** check still does not change the installed Ollama 0.23.1 guidance.
+- **No new headline from latest llama.cpp direct reruns:** the 2026-05-31 b9442 Qwen3-Coder direct check remains useful negative evidence, but the direct headline stays at **98.51 t/s** on the b9179 strict-clean speed-first row.
+- **Community hygiene improved:** responsible-sharing guidance was added to [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`SHARE.md`](SHARE.md), and Fail-Safe's `.gitignore` PR added macOS/Windows cache-file ignores for cleaner community contributions.
+
 ### 2026-05-27 -- Latest b9360 MTP Breaks 100 t/s Server Average
 
 - **MTP route crossed 100 t/s broad average:** llama.cpp b9360 (`6b4e4bd58`) with Mesa/RADV 26.1.1 pushed Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn to **101.16 t/s** best six-prompt average with `draft-n=2`, `--poll 100`, and `-ub 1024`. Three t16 repeats landed at **101.15 / 101.10 / 101.06 t/s**.

@@ -23,13 +23,14 @@ import urllib.request
 DEFAULT_URLS = [
     "http://127.0.0.1:3773/",
     "http://192.168.2.13:3773/",
-    "http://127.0.0.1:3777/__t3react185/health",
-    "http://192.168.2.13:3777/",
+    "http://127.0.0.1:3773/__t3react185/health",
+    "http://192.168.2.13:3773/__t3react185/health",
+    "http://127.0.0.1:3774/",
 ]
 
 PROTECTED_CLEANUP_PATTERN = re.compile(
     r"("
-    r"t3code|t3-react185|t3_react185|:3773\b|:3777\b|pkill\s+.*node|killall\s+node|"
+    r"t3code|t3-react185|t3_react185|:3773\b|:3774\b|:3777\b|pkill\s+.*node|killall\s+node|"
     r"hermes|docker\s+(stop|restart|kill|rm)|docker\s+compose\s+down"
     r")",
     re.IGNORECASE,
@@ -116,7 +117,7 @@ def guard_reason(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--url", action="append", default=[], help="T3 URL to guard; defaults cover 3773 and 3777")
+    parser.add_argument("--url", action="append", default=[], help="T3 URL to guard; defaults cover the current 3773 proxy and 3774 upstream")
     parser.add_argument("--interval", type=float, default=5.0)
     parser.add_argument("--timeout", type=float, default=3.0)
     parser.add_argument("--max-failures", type=int, default=2)
