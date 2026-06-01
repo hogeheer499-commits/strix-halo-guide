@@ -234,6 +234,12 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`PERFORMANCE_NOTES.md`](PERFORMANCE_NOTES.md) | Narrow notes on strict-stack reruns, failed headline reproduction attempts, and useful negative model results. |
 | [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md) | Fast-moving ROCm/vLLM upstream issue and release watchlist. |
 | [`BENCHMARKS.md`](BENCHMARKS.md) | Compact benchmark source-of-truth for current README numbers. |
+| [`QWEN3_CODER_STRIX_HALO_BENCHMARK.md`](QWEN3_CODER_STRIX_HALO_BENCHMARK.md) | Focused Qwen3-Coder direct `llama-bench` evidence page with commands, raw CSV links, and caveats. |
+| [`STRIX_HALO_ROCM_VS_VULKAN.md`](STRIX_HALO_ROCM_VS_VULKAN.md) | Search-focused backend decision page for ROCm/HIP versus Vulkan/RADV workload splits. |
+| [`STRIX_HALO_POWER_EFFICIENCY.md`](STRIX_HALO_POWER_EFFICIENCY.md) | Wall-power and tokens-per-watt measurement checklist for Strix Halo local LLM runs. |
+| [`FRAMEWORK_DESKTOP_RESULTS_WANTED.md`](FRAMEWORK_DESKTOP_RESULTS_WANTED.md) | Framework Desktop reproduction checklist and high-value benchmark requests. |
+| [`REVIEWER_BENCHMARK_CHECKLIST.md`](REVIEWER_BENCHMARK_CHECKLIST.md) | Reviewer/blogger checklist for comparable Strix Halo local LLM testing. |
+| [`STRIX_HALO_LOCAL_LLM_FAQ.md`](STRIX_HALO_LOCAL_LLM_FAQ.md) | FAQ clarifying direct benchmarks, MTP/speculative rows, backend choice, and contribution paths. |
 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md) | Independent benchmark reports from other Strix Halo systems, kept separate from headline claims. |
 | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) | Community multi-node `llama.cpp` RPC over USB4 results, kept separate from single-machine headline claims. |
 | [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md) | Community USB4 latency tuning for active Strix Halo cluster nodes. |
