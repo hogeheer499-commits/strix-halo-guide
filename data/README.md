@@ -64,6 +64,7 @@ python3 scripts/generate_charts.py
 - `raw/2026-05-26/latest-llamacpp-b9334/`: latest llama.cpp b9334 / Mesa 26.1.1 spot check. Direct Qwen3-Coder did not beat the current direct headlines, but Qwen3.6 MTP IQ4_XS-Q8nextn improved to a 98.57 t/s six-prompt average with a 116.75 t/s best prompt.
 - `raw/2026-05-27/latest-llamacpp-b9360/`: latest llama.cpp b9360 / Mesa 26.1.1 spot check. Direct Qwen3-Coder did not beat the current direct headlines, but Qwen3.6 MTP IQ4_XS-Q8nextn reached a repeat-confirmed 101.1 t/s six-prompt average with `draft-n=2`, `--poll 100`, and `-ub 1024`.
 - `raw/2026-06-01/latest-llamacpp-de6f727-safe-clean/`: latest llama.cpp `de6f727aa` / Mesa 26.1.1 spot check. Direct Qwen3-Coder Q4_K_S measured 95.55 t/s tg128 with `mmap=0`, so it did not beat the current b9179 98.51 t/s direct headline.
+- `raw/2026-06-01/qwen36-27b-mtp-latest-de6f727/`: latest llama.cpp `de6f727aa` / Mesa 26.1.1 sanity rerun for official Qwen3.6 27B MTP Q8_0. Baseline was 7.61 t/s and `draft-n=3` was 14.69 t/s, confirming this dense Q8 route is useful negative/control evidence rather than a speed path.
 
 ## Status Values
 

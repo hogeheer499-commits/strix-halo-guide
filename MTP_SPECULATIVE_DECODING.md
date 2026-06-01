@@ -36,6 +36,8 @@ Local rows were measured on the Beelink GTR9 Pro with Mesa/RADV and Qwen3.6 MTP 
 | GMKtec EVO-X2 `localweights` IQ4_XS-Q8nextn, b9235 | MTP `draft-n=3`, `-t 16`, `--poll 50` | 93.01 t/s | 68.28-175.97 | Higher single-prompt peak, slightly lower average than `draft-n=2`. |
 | Official 27B Q8_0 MTP GGUF, b9235 | no MTP | 7.74 t/s | 7.74-7.75 | Heavy dense route; not a speed candidate. |
 | Official 27B Q8_0 MTP GGUF, b9235 | best MTP | 14.59 t/s | 12.70-16.56 | MTP helps, but this stays far slower than the 35B-A3B MoE path. |
+| Official 27B Q8_0 MTP GGUF, `de6f727aa` | no MTP | 7.61 t/s | 7.59-7.62 | Latest local build rerun; unchanged practical conclusion. |
+| Official 27B Q8_0 MTP GGUF, `de6f727aa` | MTP `draft-n=3`, `--poll 10` | 14.69 t/s | 12.87-16.53 | Slightly faster than the b9235 row, still not a speed route. |
 
 The most honest public summary is:
 
@@ -44,7 +46,7 @@ The most honest public summary is:
 - **Best community MTP average reported so far:** the same exact route reached 93.29 t/s on mottledMantis' GMKtec EVO-X2.
 - **Fastest local MTP server prompt:** Qwen3.6 MTP IQ4_XS-Q8nextn with `draft-n=3`, `-t 16`, `--poll 100`, and `-ub 1024` reached 117.53 t/s on the best b9360 prompt.
 - **Still not a direct 100 t/s claim:** the 100+ result is `llama-server` speculative decoding, not direct non-speculative `llama-bench`.
-- **Official 27B MTP Q8_0 is not a speed route here:** it reached 14.59 t/s with the best MTP setting, so the useful practical path remains the 35B-A3B MoE MTP quant.
+- **Official 27B MTP Q8_0 is not a speed route here:** the latest rerun reached 14.69 t/s with MTP, so the useful practical path remains the 35B-A3B MoE MTP quant.
 
 ## Why This Matters
 
@@ -152,6 +154,7 @@ VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
   - [`data/raw/2026-05-19/qwen36-27b-mtp-q8-llamacpp-9235/`](data/raw/2026-05-19/qwen36-27b-mtp-q8-llamacpp-9235/)
   - [`data/raw/2026-05-26/latest-llamacpp-b9334/`](data/raw/2026-05-26/latest-llamacpp-b9334/)
   - [`data/raw/2026-05-27/latest-llamacpp-b9360/`](data/raw/2026-05-27/latest-llamacpp-b9360/)
+  - [`data/raw/2026-06-01/qwen36-27b-mtp-latest-de6f727/`](data/raw/2026-06-01/qwen36-27b-mtp-latest-de6f727/)
 - Upstream MTP support: <https://github.com/ggml-org/llama.cpp/pull/22673>
 
 ## Interpretation

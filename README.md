@@ -231,6 +231,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md) | Practical local-AI-server comparison: Ollama, `llama-server`, Lemonade ROCm, and vLLM candidates. |
 | [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) | HIP versus Vulkan workload split: prompt processing versus token generation. |
 | [`POWER_BASELINE.md`](POWER_BASELINE.md) | Local amdgpu `PPT` telemetry status and Beelink power-sampling caveats. |
+| [`PERFORMANCE_NOTES.md`](PERFORMANCE_NOTES.md) | Narrow notes on strict-stack reruns, failed headline reproduction attempts, and useful negative model results. |
 | [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md) | Fast-moving ROCm/vLLM upstream issue and release watchlist. |
 | [`BENCHMARKS.md`](BENCHMARKS.md) | Compact benchmark source-of-truth for current README numbers. |
 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md) | Independent benchmark reports from other Strix Halo systems, kept separate from headline claims. |
@@ -1948,10 +1949,11 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 
 ## Changelog
 
-### 2026-06-01 -- Watchlist And Sharing Hygiene
+### 2026-06-01 -- Watchlist, Controls, And Sharing Hygiene
 
 - **Upstream watch rechecked:** ROCm production remains **7.2.4**, vLLM remains **0.22.0**, and the previous isolated Ollama **0.24.0** check still does not change the installed Ollama 0.23.1 guidance.
 - **No new headline from latest llama.cpp direct reruns:** the 2026-06-01 `de6f727aa` Qwen3-Coder direct check measured **95.55 t/s** tg128 with `mmap=0`, so the direct headline stays at **98.51 t/s** on the b9179 strict-clean speed-first row.
+- **Qwen3.6 27B MTP control confirmed:** the latest-build rerun measured **7.61 t/s** without MTP and **14.69 t/s** with MTP, so the official dense 27B Q8_0 route remains useful negative evidence rather than a speed candidate. Details live in [`PERFORMANCE_NOTES.md`](PERFORMANCE_NOTES.md).
 - **Community hygiene improved:** responsible-sharing guidance was added to [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`SHARE.md`](SHARE.md), and Fail-Safe's `.gitignore` PR added macOS/Windows cache-file ignores for cleaner community contributions.
 
 ### 2026-05-27 -- Latest b9360 MTP Breaks 100 t/s Server Average
