@@ -14,6 +14,34 @@ Social preview image in this repo:
 social-preview.png
 ```
 
+## Share Responsibly
+
+Please do not brigade, coordinate upvotes, or require anyone to share this repo as a condition of contributing. Sharing is useful only when it adds evidence or helps another owner reproduce a result.
+
+If you are a contributor sharing your own result:
+
+- disclose that your row is a community reproduction or follow-up
+- lead with your hardware, backend, model, command, and raw output
+- link to the repo only when the guide or data is directly relevant
+- invite corrections and failed/slower runs
+- follow the target platform's self-promotion rules
+
+Good framing:
+
+```text
+I reproduced one Strix Halo local LLM benchmark on my own system and posted the raw output. Here is where it matched or differed from the guide.
+```
+
+Avoid:
+
+```text
+Please upvote/star this repo.
+```
+
+```text
+Everyone should post this link.
+```
+
 ## One-Line Summary
 
 Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 96-128GB unified memory: setup, model choices, 63-98.5 t/s current direct Qwen MoE results, 81.3 t/s Qwen3.6 speed-first, 55.6 t/s gpt-oss-120b, 128K context, MTP speculative decoding at 101.1 t/s local broad average, CSVs, raw logs, reproducibility notes, community validation across Corsair and GMKtec systems, command-flag sensitivity notes, and first wall-power efficiency rows.

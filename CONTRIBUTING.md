@@ -9,8 +9,38 @@ This guide is strongest when results come from more than one Strix Halo machine.
 3. Report a failed setup, slower result, crash, or regression.
 4. Request a model/backend combination that would help real users choose what to run.
 5. Open a PR that adds structured data, raw logs, docs fixes, or reproducibility improvements.
+6. Share your own reproduction publicly if it would help other owners, while following the rules of the platform where you post.
 
 Slower results are useful. Failed results are useful. Contradictions are useful if the setup details are complete.
+
+## Sharing Your Results
+
+Sharing is optional. It is never required for contributing to this repo, and contributors should not ask for upvotes, coordinate voting, or post the same text across many communities.
+
+If you share a reproduction on Reddit, Hacker News, Discord, forums, blogs, or social media:
+
+- post as yourself and disclose any connection to this repo
+- lead with your own hardware, command, and result
+- include raw CSV/logs or a GitHub issue/PR with the evidence
+- keep community-reported rows separate from local Beelink headline claims
+- link to the repo only when it is directly relevant to the discussion
+- invite corrections and slower/failed reproductions
+- avoid titles that imply a universal result across all Strix Halo systems
+
+Useful places to share independent reproductions:
+
+- Reddit r/LocalLLaMA, when the post is a real benchmark or setup report and follows subreddit rules
+- Framework Community, especially for Framework Desktop rows
+- Level1Techs and ServeTheHome forums for hardware, power, cooling, and server-use discussions
+- Hacker News only for polished, evidence-first writeups
+
+Suggested phrasing:
+
+```text
+I reproduced/checked one row from the Strix Halo local LLM guide on my own system. Here are my hardware, command, raw output, and where it matched or differed.
+```
+
+Do not frame sharing as marketing. The useful contribution is the measurement, not the link.
 
 ## High-Value Reports Wanted
 
