@@ -53,7 +53,7 @@ What you get:
 | Best easy path | Ollama 0.23.1 with Vulkan/RADV for chat, model pulling, and Open WebUI. |
 | Fastest measured short-context path | Direct llama.cpp / `llama-server` with Vulkan/RADV. Current strict-clean b9179 speed-first Qwen3-Coder Q4_K_S row reached 98.51 t/s r50. The balanced Qwen3-Coder UD row remains 96.76 t/s on the current b9049 campaign; Qwen3.6 reached 62.56 t/s balanced UD and 81.30 t/s speed-first Q4_0. |
 | Experimental speculative server path | MTP works on current `llama.cpp` master. The best local Qwen3.6 MTP server route now uses IQ4_XS-Q8nextn and reached about 101.1 t/s across six prompts on b9360; the first GMKtec community reproduction on b9235 reached 93.3 t/s. This is a server/speculative result, not the direct `llama-bench` headline. |
-| Latest-stack delta | llama.cpp b9442 was checked on 2026-05-31 and did not improve the current direct Qwen3-Coder headline rows. The b9360 route remains important because it pushed the experimental Qwen3.6 MTP server route past a repeat-confirmed 100 t/s six-prompt average. Earlier, b9172 improved Qwen3-Next 80B to 59.06 t/s tg128 on the same Beelink. |
+| Latest-stack delta | llama.cpp `de6f727aa` was checked on 2026-06-01 and did not improve the current direct Qwen3-Coder headline rows. The b9360 route remains important because it pushed the experimental Qwen3.6 MTP server route past a repeat-confirmed 100 t/s six-prompt average. Earlier, b9172 improved Qwen3-Next 80B to 59.06 t/s tg128 on the same Beelink. |
 | Largest new local model check | gpt-oss-120b MXFP4 split GGUF loaded locally with llama.cpp Vulkan/RADV b9049: 55.57 t/s tg128, 726.99 t/s pp512, and prompt processing tested through 65K tokens. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Backend split | Vulkan/RADV wins measured generation on the current single-box Qwen rows; ROCm/HIP can win prompt-processing-heavy work, and ROCm RPC is required for the tested MiniMax capacity case. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) and [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md). |
@@ -1951,7 +1951,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 ### 2026-06-01 -- Watchlist And Sharing Hygiene
 
 - **Upstream watch rechecked:** ROCm production remains **7.2.4**, vLLM remains **0.22.0**, and the previous isolated Ollama **0.24.0** check still does not change the installed Ollama 0.23.1 guidance.
-- **No new headline from latest llama.cpp direct reruns:** the 2026-05-31 b9442 Qwen3-Coder direct check remains useful negative evidence, but the direct headline stays at **98.51 t/s** on the b9179 strict-clean speed-first row.
+- **No new headline from latest llama.cpp direct reruns:** the 2026-06-01 `de6f727aa` Qwen3-Coder direct check measured **95.55 t/s** tg128 with `mmap=0`, so the direct headline stays at **98.51 t/s** on the b9179 strict-clean speed-first row.
 - **Community hygiene improved:** responsible-sharing guidance was added to [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`SHARE.md`](SHARE.md), and Fail-Safe's `.gitignore` PR added macOS/Windows cache-file ignores for cleaner community contributions.
 
 ### 2026-05-27 -- Latest b9360 MTP Breaks 100 t/s Server Average

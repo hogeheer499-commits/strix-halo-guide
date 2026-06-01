@@ -1,0 +1,116 @@
+
+== Host Load ==
+2026-06-01T18:18:11+02:00
+ 18:18:11 up 4 days, 22:58,  1 user,  load average: 1.94, 10.42, 16.34
+               total        used        free      shared  buff/cache   available
+Mem:           124Gi        14Gi        30Gi        73Mi        80Gi       110Gi
+Swap:          8.0Gi        12Mi       8.0Gi
+
+== tuned ==
+Current active profile: accelerator-performance
+INFO: power-profiles-daemon is inactive
+     32 performance
+
+== GPU Clock ==
+/sys/class/drm/card1/device/pp_dpm_sclk
+0: 2900Mhz
+1: 1100Mhz
+2: 2900Mhz *
+
+== Vulkan Device ==
+Devices:
+========
+GPU0:
+	apiVersion         = 1.4.348
+	driverVersion      = 26.1.1
+	vendorID           = 0x1002
+	deviceID           = 0x1586
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = Radeon 8060S Graphics (RADV STRIX_HALO)
+	driverID           = DRIVER_ID_MESA_RADV
+	driverName         = radv
+	driverInfo         = Mesa 26.1.1 - kisak-mesa PPA
+	conformanceVersion = 1.4.0.0
+	deviceUUID         = 00000000-c600-0000-0000-000000000000
+	driverUUID         = 414d442d-4d45-5341-2d44-525600000000
+GPU1:
+	apiVersion         = 1.4.348
+	driverVersion      = 26.1.1
+	vendorID           = 0x10005
+	deviceID           = 0x0000
+	deviceType         = PHYSICAL_DEVICE_TYPE_CPU
+	deviceName         = llvmpipe (LLVM 20.1.8, 256 bits)
+	driverID           = DRIVER_ID_MESA_LLVMPIPE
+	driverName         = llvmpipe
+	driverInfo         = Mesa 26.1.1 - kisak-mesa PPA (LLVM 20.1.8)
+	conformanceVersion = 1.3.1.1
+	deviceUUID         = 6d657361-3236-2e31-2e31-202d206b6900
+	driverUUID         = 6c6c766d-7069-7065-5555-494400000000
+
+== Known Benchmark Noise ==
+
+== T3 Workstation Dependency ==
+ 890997  0.4  0.1 t3code
+ 891010  0.0  0.0 t3code
+ 891011  0.0  0.0 t3code
+ 891014  0.0  0.0 t3code
+ 891058  5.0  0.1 t3code
+ 891063  0.0  0.0 t3code
+ 891369 11.2  0.7 t3code
+ 891984  8.7  0.4 t3code
+INFO: T3 Code process is running and protected
+ 890186  0.0  0.0 node
+3358167  0.0  0.0 bash
+INFO: T3 semantic proxy is running and protected
+INFO: T3 local semantic proxy is reachable: http://127.0.0.1:3773/
+INFO: T3 LAN semantic proxy is reachable: http://192.168.2.13:3773/
+INFO: T3 local semantic proxy health is healthy: http://127.0.0.1:3773/__t3react185/health
+INFO: T3 LAN semantic proxy health is healthy: http://192.168.2.13:3773/__t3react185/health
+INFO: T3 local upstream backend is reachable: http://127.0.0.1:3774/
+
+== Local AI and Containers ==
+NAMES          STATUS                  PORTS     IMAGE
+hermes-gep     Up 3 days                         nousresearch/hermes-agent:latest
+hermes-jesse   Up 4 days (unhealthy)             nousresearch/hermes-agent:latest
+hermes-anna    Up 37 hours (healthy)             9d0a12c02818
+hermes-bram    Up 4 days (healthy)               9d0a12c02818
+NAMES       STATUS      PORTS       IMAGE
+
+== Listening Ports ==
+tcp   LISTEN 0      100                               127.0.0.1:12001      0.0.0.0:*    users:(("nxnode.bin",pid=8189,fd=17))
+tcp   LISTEN 0      128                               127.0.0.1:7001       0.0.0.0:*    users:(("nxnode.bin",pid=8189,fd=24))
+tcp   LISTEN 0      511                                 0.0.0.0:3774       0.0.0.0:*    users:(("t3code",pid=891369,fd=3))
+tcp   LISTEN 0      511                                 0.0.0.0:3773       0.0.0.0:*    users:(("node",pid=890186,fd=21))
+tcp   LISTEN 0      4096                                0.0.0.0:22         0.0.0.0:*
+tcp   LISTEN 0      100                               127.0.0.1:22401      0.0.0.0:*
+tcp   LISTEN 0      100                               127.0.0.1:22402      0.0.0.0:*    users:(("nxrunner.bin",pid=8209,fd=31),("nxnode.bin",pid=8189,fd=31))
+tcp   LISTEN 0      128                                   [::1]:7001          [::]:*    users:(("nxnode.bin",pid=8189,fd=23))
+tcp   LISTEN 0      511                                       *:3000             *:*    users:(("next-server (v1",pid=1673899,fd=24))
+tcp   LISTEN 0      4096                                   [::]:22            [::]:*
+
+== Top CPU Processes ==
+    PID    PPID STAT %CPU %MEM COMMAND
+ 891369  890997 Ssl  11.2  0.7 t3code
+ 891984  891014 Sl    8.7  0.4 t3code
+ 948144  948134 Sl    6.4  0.1 codex
+ 891058  891010 Sl    5.0  0.1 t3code
+   6591    6589 Sl+   4.7  0.1 Xorg
+ 906462  906455 Sl    3.3  0.1 codex
+   6924    2272 Ssl   3.2  0.3 gnome-shell
+ 902819  902812 Sl    1.0  0.1 codex
+   1398       1 Ss    1.0  0.0 dbus-daemon
+ 821894    6924 Sl    0.9  0.6 firefox
+ 290857    6924 Sl    0.5  0.0 gjs
+ 948790       2 I     0.5  0.0 kworker/u128:3-mt76
+ 947989       1 Ssl   0.4  0.0 libvirtd
+ 890997    2272 Ssl   0.4  0.1 t3code
+   2568    2272 Ssl   0.3  0.0 pipewire
+   7563    2272 SNsl  0.3  0.0 tracker-miner-f
+   2574    2272 SLsl  0.3  0.0 pipewire-pulse
+ 934962       2 I     0.2  0.0 kworker/u128:1-gfx_0.0.0
+   1109       2 S     0.2  0.0 napi/phy0-0
+
+== Verdict ==
+Blockers: 0
+Warnings: 0
+CLEAN ENOUGH for benchmark runs.

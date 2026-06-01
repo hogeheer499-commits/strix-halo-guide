@@ -88,7 +88,7 @@ No new public guide claim changed in the 2026-06-01 recheck:
 - ROCm production remained 7.2.4 as the latest checked production release.
 - vLLM remained 0.22.0 as the latest checked normal upstream release.
 - Local installed Ollama remained 0.23.1; the previous isolated Ollama 0.24.0 API check already found no speedup versus the same-prompt 0.23.1 control.
-- Local `llama.cpp` latest-stack evidence remained the 2026-05-31 b9442 direct Qwen3-Coder spot check. That row is useful negative evidence, not a new headline.
+- Local `llama.cpp` latest-stack evidence moved to `de6f727aa` on 2026-06-01. The direct Qwen3-Coder Q4_K_S check measured 95.55 t/s tg128 with `mmap=0`, so it is useful negative evidence, not a new headline.
 - Keep ROCm/vLLM/DFlash work in isolated containers or extracted bundles until a reproducible 27B/35B serving row beats or complements the existing `llama-server` and Ollama paths.
 
 ## vLLM AWQ/DFlash Lead

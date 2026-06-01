@@ -1,0 +1,6 @@
+date=2026-06-01T18:16:38+02:00
+bench=/home/hoge-heer/llama-cpp-upstream-2026-05-31-latest/build-vulkan/bin/llama-bench
+model=/home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+commit=de6f727aa
+source=/home/hoge-heer/llama-cpp-upstream-2026-05-31-latest
+clean_state=/tmp/strix-clean-state-20260601.txt
