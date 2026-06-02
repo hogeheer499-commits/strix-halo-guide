@@ -2,7 +2,7 @@
 
 This is an experimental `llama-server` route for practical local API speed. It is not the same benchmark as the direct non-speculative `llama-bench` headline.
 
-Short version: MTP works on Strix Halo with Vulkan/RADV and current `llama.cpp` master. It improves server generation on the tested Qwen3.6 35B MTP GGUFs. The latest local b9360 run crossed 100 t/s across the six-prompt harness, and the route also has a GMKtec EVO-X2 community reproduction. This still does not replace the 98.51 t/s direct Qwen3-Coder `llama-bench` headline.
+Short version: MTP works on Strix Halo with Vulkan/RADV and current `llama.cpp` master. It improves server generation on the tested Qwen3.6 35B MTP GGUFs. The latest local b9360 run crossed 100 t/s across the six-prompt harness, and the route also has a GMKtec EVO-X2 community reproduction. Keep it separate from direct `llama-bench`: the guide now has a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS direct 100.04 t/s row, while the Qwen3-Coder direct speed-first row remains 98.51 t/s.
 
 ## Current Result
 
@@ -41,11 +41,12 @@ Local rows were measured on the Beelink GTR9 Pro with Mesa/RADV and Qwen3.6 MTP 
 
 The most honest public summary is:
 
-- **Direct speed headline remains:** Qwen3-Coder Q4_K_S at 98.51 t/s r50.
+- **Direct Qwen3-Coder speed row:** Qwen3-Coder Q4_K_S remains 98.51 t/s r50.
+- **Separate direct 100 t/s row:** Qwen3-30B-A3B-Instruct-2507 IQ4_XS reached 100.04 t/s r50 direct `llama-bench`; this is a different general-instruct model and quant.
 - **Best local MTP server average measured here:** Qwen3.6 MTP IQ4_XS-Q8nextn at about 101.1 t/s across six practical prompts on b9360 with `draft-n=2`, `--poll 100`, and `-ub 1024`.
 - **Best community MTP average reported so far:** the same exact route reached 93.29 t/s on mottledMantis' GMKtec EVO-X2.
 - **Fastest local MTP server prompt:** Qwen3.6 MTP IQ4_XS-Q8nextn with `draft-n=3`, `-t 16`, `--poll 100`, and `-ub 1024` reached 117.53 t/s on the best b9360 prompt.
-- **Still not a direct 100 t/s claim:** the 100+ result is `llama-server` speculative decoding, not direct non-speculative `llama-bench`.
+- **MTP is still not the direct headline category:** the 101.1 t/s MTP result is `llama-server` speculative decoding, not direct non-speculative `llama-bench`.
 - **Official 27B MTP Q8_0 is not a speed route here:** the latest rerun reached 14.69 t/s with MTP, so the useful practical path remains the 35B-A3B MoE MTP quant.
 
 ## Why This Matters

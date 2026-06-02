@@ -79,7 +79,7 @@ Latest watch changes:
 - vLLM moved to 0.22.0 on 2026-05-29.
 - `ROCm/hip#3892` is closed, but any local ROCm/vLLM path should still record memory reporting from inside the actual container or bundle before claiming full unified-memory scheduler behavior.
 - `vllm-project/vllm#40898` remains open, so DFlash/SWA support is still a watch item rather than a reproduced guide claim.
-- Latest local `llama.cpp` b9442 direct Qwen3-Coder check did not improve the direct headline; the current direct headline remains b9179 Q4_K_S at 98.51 t/s and the experimental MTP server route remains b9360 at about 101.1 t/s.
+- Latest local `llama.cpp` b9442 direct Qwen3-Coder check did not improve the Qwen3-Coder direct row; that remains b9179 Q4_K_S at 98.51 t/s. A later b9467 scout added a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS direct 100.04 t/s row, and the experimental MTP server route remains b9360 at about 101.1 t/s.
 
 ## 2026-06-01 Watch Recheck
 

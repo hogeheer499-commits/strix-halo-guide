@@ -1990,7 +1990,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 ### 2026-05-27 -- Latest b9360 MTP Breaks 100 t/s Server Average
 
 - **MTP route crossed 100 t/s broad average:** llama.cpp b9360 (`6b4e4bd58`) with Mesa/RADV 26.1.1 pushed Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn to **101.16 t/s** best six-prompt average with `draft-n=2`, `--poll 100`, and `-ub 1024`. Three t16 repeats landed at **101.15 / 101.10 / 101.06 t/s**.
-- **Still not a direct 100 t/s claim:** b9360 direct Qwen3-Coder Q4_K_S measured **97.23 tg128**, and UD-Q4_K_XL measured **92.60 tg128**. The direct headline remains b9179 Q4_K_S **98.51 t/s** and balanced b9049/b9010 **96-97 t/s**.
+- **At that date, still not a direct 100 t/s claim:** b9360 direct Qwen3-Coder Q4_K_S measured **97.23 tg128**, and UD-Q4_K_XL measured **92.60 tg128**. The Qwen3-Coder direct row remained b9179 Q4_K_S **98.51 t/s** and balanced b9049/b9010 **96-97 t/s** until the later 2026-06-02 guide update added a separate Qwen3-30B-A3B-Instruct-2507 direct 100.04 t/s row.
 - Added raw evidence under `data/raw/2026-05-27/latest-llamacpp-b9360/` and updated `BENCHMARKS.md`, `MTP_SPECULATIVE_DECODING.md`, `data/benchmarks.csv`, `data/mtp_speculative.csv`, and `data/headline_claims.csv`.
 
 ### 2026-05-26 -- Latest b9334 MTP And Direct Rerun

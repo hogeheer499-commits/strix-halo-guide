@@ -26,7 +26,8 @@ Current fastest local headline:
 - Historical balanced peak: Qwen3-Coder 30B-A3B UD-Q4_K_XL at 97.24 t/s on b9010.
 - New speed-first peak: Qwen3-Coder 30B-A3B Q4_K_S at 98.51 t/s r50 on llama.cpp b9179, Vulkan/RADV, after fixing the `tuned` versus `power-profiles-daemon` conflict and pausing benchmark noise.
 - Treat 98.51 t/s as the current measured speed-first Qwen3-Coder peak, not a 100 t/s result and not the default balanced-quality recommendation.
-- Additional break-100 route testing reached 99.11 t/s in an r5 scout and 98.96 t/s in an r20 confirmation, but still did not produce a stable 100 t/s result.
+- Separate direct 100 t/s row: Qwen3-30B-A3B-Instruct-2507 IQ4_XS reached 100.04 t/s r50 on llama.cpp b9467, Vulkan/RADV. Treat it as a separate general-instruct Qwen route, not as a Qwen3-Coder replacement.
+- Additional Qwen3-Coder break-100 route testing reached 99.11 t/s in an r5 scout and 98.96 t/s in an r20 confirmation, but still did not produce a stable Qwen3-Coder 100 t/s result.
 - Current fastest measured Qwen3.6 path: Q4_0 at 81.30 t/s on llama.cpp b9049, Vulkan/RADV. Label this as speed-first, not the default all-round quality recommendation.
 - Current fastest measured Qwen3.6 MTP server route: 101.16 t/s best local Beelink six-prompt average on IQ4_XS-Q8nextn with b9360, `draft-n=2`, `--poll 100`, and `-ub 1024`; t16 repeats were 101.15 / 101.10 / 101.06 t/s. The best community broad MTP average is 93.29 t/s on GMKtec EVO-X2 with b9235.
 
@@ -38,7 +39,8 @@ Detailed results: [`MAX_PERFORMANCE_RESULTS_2026-05-07.md`](MAX_PERFORMANCE_RESU
 |-------|--------|--------|
 | Qwen3.6 quant sweep | done | Q4_0 reached 81.30 t/s; Q4_K_M reached 76.94 t/s; old UD row remains 62.56 t/s. |
 | Same-source HIP vs Vulkan | done | HIP wins prompt processing at pp16384; Vulkan wins tg128. |
-| Qwen3-Coder max-speed sweep | done | No stable 100 t/s result; strict-clean speed-first ceiling is now 98.51 t/s; balanced UD remains 96-97 t/s. |
+| Qwen3-Coder max-speed sweep | done | No stable Qwen3-Coder 100 t/s result; strict-clean speed-first ceiling is now 98.51 t/s; balanced UD remains 96-97 t/s. |
+| Qwen3-30B-A3B-Instruct-2507 scout | done | IQ4_XS reached 100.04 t/s r50 direct `llama-bench` on b9467; separate general-instruct Qwen route, not a Qwen3-Coder replacement. |
 | gpt-oss-120b long-context sweep | done | 55.57 t/s tg128 and prompt processing through 65K tokens. |
 | Tuned rocWMMA path | attempted | lhl branch built, but failed to load current Qwen3.6 GGUFs. |
 | vLLM AWQ/DFlash | partially blocked | Plain AWQ smoke works at about 25 t/s; exact DFlash route blocked by gated drafter access. |
@@ -120,7 +122,7 @@ Expected outcome:
 
 Why: this directly targets the 96-98.5 t/s Qwen3-Coder headline. The next useful question is whether the Beelink can cross 100 t/s on a still-useful coding model.
 
-2026-05-17 update: current llama.cpp master b9179 and Unsloth Qwen3-Coder Q4_0/Q4_K_S/IQ4_NL/Q4_K_M quants were tested. Q4_K_S reached 97.22 t/s r20 in the first sweep. After fixing the `tuned`/`power-profiles-daemon` host-state conflict and pausing benchmark noise, Q4_K_S confirmed 98.51 t/s r50. A later break-100 pass reached 99.11 t/s in r5 and 98.96 t/s in r20. AMDVLK isolated, PR #22970, and latest master b9187 also failed to produce a stable direct 100 t/s path. Qwen3-Coder `llama-server` plus ngram speculation reached 95.21 t/s average, also below broad 100. MTP did produce a 110.61 t/s best-prompt `llama-server` result, but that is a separate speculative server claim, not this direct Qwen3-Coder `llama-bench` target.
+2026-05-17 update: current llama.cpp master b9179 and Unsloth Qwen3-Coder Q4_0/Q4_K_S/IQ4_NL/Q4_K_M quants were tested. Q4_K_S reached 97.22 t/s r20 in the first sweep. After fixing the `tuned`/`power-profiles-daemon` host-state conflict and pausing benchmark noise, Q4_K_S confirmed 98.51 t/s r50. A later Qwen3-Coder break-100 pass reached 99.11 t/s in r5 and 98.96 t/s in r20. AMDVLK isolated, PR #22970, and latest master b9187 also failed to produce a stable direct Qwen3-Coder 100 t/s path. A later 2026-06-02 scout did cross 100 t/s direct with Qwen3-30B-A3B-Instruct-2507 IQ4_XS, but that is a separate general-instruct model/quant route. Qwen3-Coder `llama-server` plus ngram speculation reached 95.21 t/s average, also below broad 100. MTP did produce a 110.61 t/s best-prompt `llama-server` result, but that is a separate speculative server claim, not this direct Qwen3-Coder `llama-bench` target.
 
 Levers:
 
