@@ -57,6 +57,39 @@ Relevant docs:
 - [`data/raw/2026-05-19/community-gmktec-qwen-coder-issue17/`](data/raw/2026-05-19/community-gmktec-qwen-coder-issue17/)
 - [`data/raw/2026-05-19/community-gmktec-mtp-issue18/`](data/raw/2026-05-19/community-gmktec-mtp-issue18/)
 
+### [bennos1911](https://github.com/bennos1911)
+
+bennos1911 added the first Windows / LM Studio / Ryzen AI MAX+ 395 community serving report:
+
+- Minisforum MS-S1-Max with Ryzen AI MAX+ 395 / Radeon 8060S and 128GB memory
+- Windows 11 Pro 25H2, AMD Adrenalin 26.5.2, and LM Studio 0.4.15 build 2
+- Qwen3.6 35B-A3B Q4_K_M with 96GB AMD Adrenalin Variable Graphics Memory, `n_parallel=4`, and 262K context
+- benchmark script, CSV output, and hardware telemetry attachments
+- useful Windows-path evidence for beginners, kept separate from native Linux `llama-bench` headline claims
+
+Relevant docs:
+
+- [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md#windows-lm-studio-ms-s1-max-report)
+- [`data/community_results.csv`](data/community_results.csv)
+- [`data/raw/2026-06-02/community-windows-lmstudio-issue3/`](data/raw/2026-06-02/community-windows-lmstudio-issue3/)
+
+### Look_Over_There
+
+Look_Over_There added a Reddit community report showing a tuned GMKtec EVO-X2 can touch the round 100 t/s mark on the Qwen3-Coder 30B-A3B `Q4_K_S` short-context speed shape:
+
+- GMKtec EVO-X2 with Radeon 8060S / Vulkan RADV `RADV_STRIX_HALO`
+- llama.cpp b9467 `1fd5f4803`
+- Qwen3-Coder 30B-A3B Instruct `Q4_K_S`
+- `llama-bench -fa 1 -n 128 -p 0`
+- most runs around 99.90 t/s, best observed 100.0 t/s after about 10 runs
+- important qualifier: repasted heatsink, reseated memory thermal pads, reported 15-20C lower CPU/GPU temperatures, and used GPU `high` plus CPU EPP `performance`
+
+Relevant docs:
+
+- [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md#reddit-gmktec-evo-x2-tuned-100-ts-report)
+- [`data/community_results.csv`](data/community_results.csv)
+- [`data/raw/2026-06-02/community-reddit-look-qwen-coder/`](data/raw/2026-06-02/community-reddit-look-qwen-coder/)
+
 ## How To Get Contributor Credit
 
 Benchmark reports in issues are welcome and will be credited when incorporated. Pull requests are even better for future datasets because GitHub will automatically attach commit-level contributor credit after merge.

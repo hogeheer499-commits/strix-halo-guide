@@ -1,7 +1,7 @@
 ![AMD](https://img.shields.io/badge/AMD-Ryzen_AI_MAX+_395-ED1C24?style=for-the-badge&logo=amd&logoColor=white)
 ![Speed](https://img.shields.io/badge/63--98.5_t/s_current_30B--35B_Qwen_MoE-brightgreen?style=for-the-badge)
 ![MTP](https://img.shields.io/badge/MTP_server-101.1_t/s_experimental-7c3aed?style=for-the-badge)
-[![Community](https://img.shields.io/badge/community-2_contributors_4_systems-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
+[![Community](https://img.shields.io/badge/community-4_contributors_7_systems-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
 ![RAM](https://img.shields.io/badge/128GB_unified-blue?style=for-the-badge)
 ![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
@@ -18,7 +18,7 @@ What you get:
 - Current direct result: Qwen3-Coder 30B at 98.5 t/s on Vulkan/RADV.
 - Experimental server route: Qwen3.6 MTP at 101.1 t/s with `llama-server` speculative decoding.
 - Raw CSVs, logs, charts, and reproducibility notes for headline claims.
-- Community validation from Beelink, Corsair, and GMKtec Strix Halo systems.
+- Community validation from Beelink, Corsair, GMKtec, and MS-S1-Max Strix Halo systems.
 
 > Measured primarily on one Beelink GTR9 Pro. Community results are kept separate from local headline claims. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights. If this guide saves you time, a star helps others find it.
 
@@ -39,10 +39,10 @@ What you get:
 |-------------------|------------|
 | Apply the setup without reading everything | [Quick Start](#quick-start-6-steps), then [Setup Script](#setup-script). |
 | Decide what to run on your Strix Halo machine | [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot), then [Use This If You Want](#use-this-if-you-want): practical model and backend choices for a local AI PC. |
-| Skip the community-data deep dive | [Community-Tested Rules Of Thumb](#community-tested-rules-of-thumb): practical decisions extracted from the Beelink data plus Corsair and GMKtec community reports. |
+| Skip the community-data deep dive | [Community-Tested Rules Of Thumb](#community-tested-rules-of-thumb): practical decisions extracted from the Beelink data plus Corsair, GMKtec, and MS-S1-Max community reports. |
 | See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
 | Check whether the numbers are real | [Reproduce One Headline Result](#reproduce-one-headline-result), [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md), and [`data/headline_claims.csv`](data/headline_claims.csv). |
-| Compare against other Strix Halo systems | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md): independent benchmark reports kept separate from headline claims. [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md): multi-node USB4 RPC results. [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md): cluster latency tuning. |
+| Compare against other Strix Halo systems | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md): independent benchmark reports kept separate from headline claims, including native Linux, WSL2/HIP, Windows LM Studio, power, and tuned thermal/power-policy rows. [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md): multi-node USB4 RPC results. [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md): cluster latency tuning. |
 
 ## 20-Second Summary
 
@@ -57,7 +57,7 @@ What you get:
 | Largest new local model check | gpt-oss-120b MXFP4 split GGUF loaded locally with llama.cpp Vulkan/RADV b9049: 55.57 t/s tg128, 726.99 t/s pp512, and prompt processing tested through 65K tokens. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Backend split | Vulkan/RADV wins measured generation on the current single-box Qwen rows; ROCm/HIP can win prompt-processing-heavy work, and ROCm RPC is required for the tested MiniMax capacity case. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) and [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md). |
-| Community validation | Three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128. A second contributor reproduced the Qwen3.6 native Vulkan/RADV row on GMKtec EVO-X2 within -0.8% pp512 and -1.7% tg128 and added GMKtec Qwen3-Coder b9235 follow-up rows. Community reports also cover quant/source/build effects, same-SKU variance, wall-power efficiency, WSL2/HIP, 3-node USB4 RPC, RPC serving/TTFT, and USB4 tuning. |
+| Community validation | Three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128. GMKtec EVO-X2 reports cover native Ubuntu within about 2% of the Beelink Qwen3.6 row, Qwen3-Coder follow-ups, WSL2/HIP, and a tuned Reddit Qwen3-Coder `Q4_K_S` report around 99.9-100.0 t/s. A Windows MS-S1-Max LM Studio report adds the first Windows serving/API row. Community reports also cover quant/source/build effects, same-SKU variance, wall-power efficiency, 3-node USB4 RPC, RPC serving/TTFT, and USB4 tuning. |
 | Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
 | Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
 
@@ -134,7 +134,8 @@ These are the practical decisions extracted from the primary Beelink runs plus F
 | Native Linux on another Strix Halo vendor | Expect the same performance class if backend, model, quant, and command match. | GMKtec EVO-X2 96GB on Ubuntu 26.04, Mesa RADV 26.0.3, and llama.cpp b9156 reproduced the guide's Qwen3.6 UD-Q4_K_M row within -0.8% pp512 and -1.7% tg128. | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [#16](https://github.com/hogeheer499-commits/strix-halo-guide/issues/16) |
 | Comparing Qwen3-Coder rows | Preserve the exact command flags before calling one system faster. | The GMKtec Qwen3-Coder b9235 follow-up measured 91.40-92.11 tg128, but the full row used smaller batch settings, `flash_attn=0`, and `use_mmap=1`, so it is portability evidence rather than a Beelink headline replacement. | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [#17](https://github.com/hogeheer499-commits/strix-halo-guide/issues/17) |
 | Handling "older model" criticism | Add current-model rows, but keep speed and capability separate. | Qwen3-Coder-Next IQ4_XS runs locally at 61.91 t/s on the Beelink with b9467. That is a useful modern coding-model result, but it does not replace the older Qwen3-Coder 30B Q4_K_S speed-first headline. | [`raw Qwen3-Coder-Next run`](data/raw/2026-06-02/modern-model-clean-followup/), [`data/benchmarks.csv`](data/benchmarks.csv) |
-| Seeing Qwen3-Coder around 100 t/s on another Strix Halo box | Check the Vulkan device line, `glslc --version`, and driver/toolchain details. | A local b9467 reproduction of a Reddit-reported 100 t/s GMKtec command stayed at 96.38-96.72 t/s with the default `int dot: 0` build. A follow-up `glslc v2026.1` build enabled `int dot: 1`, but still measured only 95.27-95.91 t/s in completed checks, so `int dot: 1` alone is not enough. | [`PERFORMANCE_NOTES.md#vulkan-integer-dot-and-100-ts-reproduction-status`](PERFORMANCE_NOTES.md#vulkan-integer-dot-and-100-ts-reproduction-status), [`raw reproduction`](data/raw/2026-06-02/reddit-look-int-dot-reproduction/) |
+| Seeing Qwen3-Coder around 100 t/s on another Strix Halo box | Treat it as a tuned-system clue, not a default claim. Capture thermals, power policy, Vulkan device line, `glslc --version`, driver/toolchain details, and exact command. | A Reddit GMKtec EVO-X2 report saw most `Q4_K_S -p 0 -n 128` runs around 99.90 t/s and a best 100.0 t/s after repasting, reseating memory pads, and using GPU `high` plus CPU EPP `performance`. Local Beelink b9467 follow-ups stayed around 95.27-96.72 t/s, so thermals/power/toolchain still need to be separated before calling this generally reproducible. | [`COMMUNITY_RESULTS.md#reddit-gmktec-evo-x2-tuned-100-ts-report`](COMMUNITY_RESULTS.md#reddit-gmktec-evo-x2-tuned-100-ts-report), [`PERFORMANCE_NOTES.md#vulkan-integer-dot-and-100-ts-reproduction-status`](PERFORMANCE_NOTES.md#vulkan-integer-dot-and-100-ts-reproduction-status), [`raw reproduction`](data/raw/2026-06-02/reddit-look-int-dot-reproduction/) |
+| Starting on Windows | LM Studio Vulkan is now a documented Windows path, but keep it separate from Linux `llama-bench`. | The first Windows MS-S1-Max report measured a 89.49 tok/s script average through LM Studio with `n_parallel=4` and 262K context; the long 512-token prompt rows were around 69-70 tok/s. This is useful Windows buyer evidence, not a same-machine Windows-vs-Linux comparison. | [`COMMUNITY_RESULTS.md#windows-lm-studio-ms-s1-max-report`](COMMUNITY_RESULTS.md#windows-lm-studio-ms-s1-max-report), [`raw Windows report`](data/raw/2026-06-02/community-windows-lmstudio-issue3/) |
 | Testing MTP/speculative decoding | Treat MTP as an advanced server route, not a direct benchmark replacement. | The exact Qwen3.6 MTP IQ4_XS-Q8nextn route now has a local b9360 rerun at 101.16 t/s best six-prompt average, repeated t16 runs around 101.1 t/s, and a GMKtec b9235 reproduction at 93.29 t/s average. | [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md), [#18](https://github.com/hogeheer499-commits/strix-halo-guide/issues/18) |
 | The model fits on one Strix Halo box | Do not use `llama.cpp` RPC for raw single-stream speed. | 2-node RPC lost about 14-22% tg128 on fits-on-one models; 3-node was slower again. | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`data/community_rpc.csv`](data/community_rpc.csv) |
 | A huge GGUF does not fit on one box | Try ROCm RPC first, starting with the smallest node count that fits. | In the tested MiniMax-M2.7 140.8GB case, one box failed, 2-node ROCm worked, and 3-node ROCm was slower. This is a capacity rule from that case, not a universal speedup rule. | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) |
@@ -221,7 +222,7 @@ Measured local result: 96.76 tg128 in the max-performance b9049 campaign: [`raw 
 - Lucebox/DFlash throughput on a comparable Strix Halo workload; local preflight is blocked until an isolated ROCm/HIP dev toolchain with `hipcc` and rocWMMA is available.
 - vLLM DFlash throughput on a comparable 35B path; plain AWQ without the gated DFlash drafter was only a smoke test here at about 25 t/s.
 - Fully polished same-build HIP versus Vulkan comparison with build IDs embedded correctly; the b9049 source-matched matrix is already enough for workload-split guidance.
-- Same-machine Windows versus Linux performance.
+- Same-machine Windows versus Linux performance. Windows LM Studio and WSL2/HIP community rows now exist, but they are not same-machine, same-shape Linux comparisons.
 - Reliable wall-power tokens-per-watt on the Beelink. Local amdgpu `PPT` telemetry now exists, but it is not a wall-power claim.
 - FastFlowLM/NPU inference. The kernel sees `amdxdna` and `/dev/accel/accel0`, but XRT/FastFlowLM user-space is not installed yet.
 - A local tuned rocWMMA long-context comparison against the current Vulkan/RADV path; the lhl branch built but failed to load current Qwen3.6 GGUFs.
@@ -329,7 +330,8 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | **Beelink GTR9 Pro** | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | This guide's primary test system |
 | Corsair AI Workstation 300 | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | Three community systems reproduced the Qwen3-Coder path |
 | Framework Desktop | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | Used by kyuz0, lhl |
-| GMKtec EVO-X2 | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 96GB or 128GB LPDDR5X-8000 | Native 96GB community run reproduced the Qwen3.6 row; [pablo-ross guide](https://github.com/pablo-ross/strix-halo-gmktec-evo-x2) |
+| GMKtec EVO-X2 | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 96GB or 128GB LPDDR5X-8000 | Native 96GB community run reproduced the Qwen3.6 row; a separate tuned Reddit GMKtec report touched 100.0 t/s on Qwen3-Coder `Q4_K_S`; [pablo-ross guide](https://github.com/pablo-ross/strix-halo-gmktec-evo-x2) |
+| Minisforum MS-S1-Max | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X | Windows LM Studio community serving report imported; not a same-shape Linux comparison |
 | HP ZBook Ultra G1a | Ryzen AI MAX+ 395 | Radeon 8060S (40 CU) | 128GB LPDDR5X-8000 | Workstation laptop |
 
 ### Strix Halo Specs
@@ -1755,14 +1757,14 @@ Current Strix Halo mini PCs use the same AMD Ryzen AI MAX+ 395 APU with 96GB or 
 
 | Feature | Linux (recommended) | Windows |
 |---------|-------------------|---------|
-| LLM performance | Best-tested path; native GMKtec Vulkan/RADV reproduced the Beelink row within about 2% | WSL2/HIP baseline works but measured lower and with high prompt variance |
+| LLM performance | Best-tested path; native GMKtec Vulkan/RADV reproduced the Beelink row within about 2% | LM Studio Vulkan works as a Windows serving/API path; WSL2/HIP baseline works but measured lower and with high prompt variance |
 | Max model size | ~120 GB usable GPU memory via GTT | Up to 96GB VGM on 128GB systems; 109B/128B demos exist, not yet tested here |
 | ROCm/HIP | Supported (6.19.x requires HSA override) | WSL2 HIP can see the GPU with DXG detection, but current community data is a baseline, not a recommended fast path |
 | vLLM serving | Works | Not supported |
 | Image generation | Works (ComfyUI) | Limited |
 | Setup effort | Higher (this guide helps) | Lower (but slower) |
 
-> Linux is strongly recommended for Strix Halo LLM work because it is the path with the strongest native Vulkan/RADV evidence. One GMKtec EVO-X2 community report measured WSL2/HIP at 44.05 t/s on a TG512 Qwen3.6 generation-only run, while the same contributor's native Ubuntu Vulkan/RADV run measured 61.52 t/s on the guide's TG128 shape. Treat that as useful WSL2 baseline evidence, not a clean same-backend Windows-vs-Linux comparison.
+> Linux is strongly recommended for Strix Halo LLM work because it is the path with the strongest native Vulkan/RADV evidence. Windows is now represented by a community MS-S1-Max LM Studio report: Qwen3.6 Q4_K_M through LM Studio measured a 89.49 tok/s script average across mixed prompts, with long 512-token prompt rows around 69-70 tok/s. That is useful Windows serving/API evidence, not a same-shape comparison against native Linux `llama-bench`. One GMKtec EVO-X2 community report also measured WSL2/HIP at 44.05 t/s on a TG512 Qwen3.6 generation-only run, while the same contributor's native Ubuntu Vulkan/RADV run measured 61.52 t/s on the guide's TG128 shape. Treat both as useful Windows-path baselines, not a clean same-machine Windows-vs-Linux conclusion.
 
 ---
 
@@ -1866,7 +1868,7 @@ Yes. Qwen3.6-35B-A3B and Qwen3-Coder 30B-A3B are fast enough here for practical 
 <details>
 <summary><strong>Do I need Linux? Can I use Windows?</strong></summary>
 
-Linux gives the best-tested performance and the strongest native Vulkan/RADV evidence. Windows works for Vulkan-based inference via Ollama/LM Studio, and AMD's Adrenalin 25.8.1+ drivers added Variable Graphics Memory support for up to 96GB VGM. A GMKtec EVO-X2 community report also shows WSL2/HIP working, but with lower generation throughput and high prompt-processing variance versus native Linux Vulkan/RADV. Treat it as a useful baseline, not the recommended fast path.
+Linux gives the best-tested performance and the strongest native Vulkan/RADV evidence. Windows works for Vulkan-based inference via Ollama/LM Studio, and AMD's Adrenalin 25.8.1+ drivers added Variable Graphics Memory support for up to 96GB VGM. The guide now includes a Windows MS-S1-Max LM Studio serving/API report and a GMKtec EVO-X2 WSL2/HIP baseline. Treat both as useful Windows-path evidence, not proof that Windows matches native Linux `llama-bench`.
 
 </details>
 
@@ -1965,6 +1967,12 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 ---
 
 ## Changelog
+
+### 2026-06-02 -- Windows And Tuned GMKtec Community Evidence
+
+- **Windows LM Studio evidence added:** bennos1911 contributed a Minisforum MS-S1-Max Windows 11 / LM Studio 0.4.15 / Qwen3.6 Q4_K_M serving report with benchmark script, CSV output, and hardware telemetry. It is documented as Windows-path evidence, not as a same-shape Linux `llama-bench` comparison.
+- **Tuned GMKtec 100 t/s report added:** Look_Over_There contributed a Reddit GMKtec EVO-X2 Qwen3-Coder `Q4_K_S` b9467 report where most short-context runs were around **99.90 t/s** and the best observed run reached **100.0 t/s** after about 10 runs. It is explicitly labeled as tuned thermal/power-policy evidence because the system had heatsink repaste, memory-pad reseating, lower reported temperatures, and GPU/CPU high-performance policy.
+- **Community signal updated:** community results now include Beelink first-party data plus Corsair, GMKtec, and MS-S1-Max community evidence across Linux Vulkan/RADV, WSL2/HIP, Windows LM Studio, wall-power, RPC, USB4 tuning, and tuned thermal/power-policy reports.
 
 ### 2026-06-01 -- Watchlist, Controls, And Sharing Hygiene
 
@@ -2149,7 +2157,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 These are the highest-value tests to add next, because they answer practical buyer/setup questions that current evidence only partially covers:
 
 - **Lemonade/FastFlowLM NPU on Linux:** local preflight shows `amdxdna` and `/dev/accel/accel0`, but XRT/FastFlowLM are not installed. Next step is a separate NPU lane: install XRT/FastFlowLM, reboot, run `flm validate`, then test small Qwen/Gemma rows for speed and power.
-- **Same-machine Windows native Vulkan/Ollama/LM Studio vs Linux:** WSL2/HIP now has a community baseline, but the most useful beginner answer is still native Windows app performance versus native Linux Vulkan/RADV.
+- **Same-machine Windows native Vulkan/Ollama/LM Studio vs Linux:** Windows LM Studio and WSL2/HIP now have community baselines, but the most useful beginner answer is still a same-machine native Windows app result versus native Linux Vulkan/RADV with the same model and benchmark shape.
 - **More GMKtec/Bosgame/Framework native Linux reproductions:** The first GMKtec native result matched within about 2%; more vendors turn the guide from one-machine evidence into a platform map.
 - **Tokens per watt with wall-power data:** Fail-Safe supplied valuable Corsair wall-power telemetry, and this guide now has Beelink amdgpu PPT telemetry. A Beelink wall-meter run would make the efficiency story publishable.
 - **Lucebox / DFlash / PFlash:** highest-upside experimental route for 27B long-prompt + generation workloads, but local preflight currently needs an isolated ROCm/HIP dev toolchain with `hipcc` and rocWMMA.

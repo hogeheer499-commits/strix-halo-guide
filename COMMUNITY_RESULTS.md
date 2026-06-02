@@ -27,6 +27,8 @@ Raw community follow-up artifacts:
 - GMKtec EVO-X2 native Ubuntu Vulkan/RADV reproduction: [`data/raw/2026-05-14/community-gmktec-native-issue16/`](data/raw/2026-05-14/community-gmktec-native-issue16/)
 - GMKtec EVO-X2 Qwen3-Coder follow-up: [`data/raw/2026-05-19/community-gmktec-qwen-coder-issue17/`](data/raw/2026-05-19/community-gmktec-qwen-coder-issue17/)
 - GMKtec EVO-X2 Qwen3.6 MTP follow-up: [`data/raw/2026-05-19/community-gmktec-mtp-issue18/`](data/raw/2026-05-19/community-gmktec-mtp-issue18/)
+- Windows LM Studio MS-S1-Max report: [`data/raw/2026-06-02/community-windows-lmstudio-issue3/`](data/raw/2026-06-02/community-windows-lmstudio-issue3/)
+- Reddit GMKtec EVO-X2 tuned Qwen3-Coder report: [`data/raw/2026-06-02/community-reddit-look-qwen-coder/`](data/raw/2026-06-02/community-reddit-look-qwen-coder/)
 
 Short version: these reports add trust signals the primary Beelink results cannot provide alone:
 
@@ -40,6 +42,8 @@ Short version: these reports add trust signals the primary Beelink results canno
 - first GMKtec EVO-X2 Qwen3-Coder UD-Q4_K_XL rows, including generation-only and full `pp512/tg128` b9235 follow-up data
 - first independent Qwen3.6 MTP exact-model reproduction, with a 93.29 t/s six-prompt average on GMKtec
 - first GMKtec EVO-X2 WSL2/HIP baseline, useful as Windows/WSL2 evidence but not apples-to-apples with native Vulkan/RADV
+- first Windows / LM Studio / Ryzen AI MAX+ 395 community serving report, useful for Windows buyers but not a native-Linux comparison
+- first Reddit-reported tuned GMKtec EVO-X2 Qwen3-Coder `Q4_K_S` row around 99.9-100.0 t/s, with explicit thermal and power-policy qualifiers
 
 For the shortest practical decision layer, see the README section [Community-Tested Rules Of Thumb](README.md#community-tested-rules-of-thumb).
 
@@ -57,6 +61,8 @@ For the shortest practical decision layer, see the README section [Community-Tes
 | 2026-05-14 | mottledMantis | GMKtec EVO-X2, Ryzen AI MAX+ 395, 96GB | Ubuntu 26.04, kernel 7.0.0-15, Mesa RADV 26.0.3, llama.cpp b9156 | Qwen3.6 35B-A3B UD-Q4_K_M | 1050.82 pp512 / 61.52 tg128. Guide Beelink b9049 row: 1059.45 pp512 / 62.56 tg128. | Second independent contributor and first GMKtec native Ubuntu Vulkan/RADV reproduction. Despite 96GB RAM, IOMMU translated mode, no tuned daemon, newer kernel/Mesa/build, and model storage via mounted WSL2 VHDX, it lands within -0.8% pp and -1.7% tg of the Beelink row. | [#16](https://github.com/hogeheer499-commits/strix-halo-guide/issues/16) |
 | 2026-05-19 / 2026-05-24 | mottledMantis | GMKtec EVO-X2, Ryzen AI MAX+ 395, 96GB | Ubuntu 26.04, kernel 7.0.0-15, Mesa RADV 26.0.3, llama.cpp b9235 | Qwen3-Coder 30B-A3B UD-Q4_K_XL | 92.11 tg128 generation-only. Full follow-up: 1157.29 pp512 / 91.40 tg128. | First GMKtec Qwen3-Coder UD rows. Lower than the Beelink/Corsair b9049 rows, but still in the same practical performance class. The full follow-up is especially useful because it shows command-shape sensitivity: it used `-b 512 -ub 512`, `flash_attn=0`, and `use_mmap=1`, so keep it as portability evidence rather than a headline replacement. | [#17](https://github.com/hogeheer499-commits/strix-halo-guide/issues/17) |
 | 2026-05-19 | mottledMantis | GMKtec EVO-X2, Ryzen AI MAX+ 395, 96GB | Ubuntu 26.04, kernel 7.0.0-15, Mesa RADV 26.0.3, llama.cpp b9235 | Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn | no MTP: 74.72 t/s; MTP `draft-n=2`: 93.29 t/s; MTP `draft-n=3`: 93.01 t/s. | First independent reproduction of the guide's exact MTP GGUF route. It slightly exceeds the local Beelink b9235 broad MTP average, while still keeping the "not a broad 100 t/s claim" boundary intact. | [#18](https://github.com/hogeheer499-commits/strix-halo-guide/issues/18), [`mtp_speculative.csv`](data/mtp_speculative.csv) |
+| 2026-06-02 | bennos1911 | Minisforum MS-S1-Max, Ryzen AI MAX+ 395, 128GB | Windows 11 Pro 25H2, AMD Adrenalin 26.5.2, LM Studio 0.4.15 build 2, Vulkan llama.cpp v2.18.0 | Qwen3.6 35B-A3B Q4_K_M | LM Studio API script summary: 45 runs, 89.49 tok/s average, 78.53 tok/s median; long 512-token prompt rows around 69-70 tok/s. | First Windows / LM Studio / Ryzen AI MAX+ 395 community serving report. It helps Windows-first buyers, but it is a different benchmark shape from native Linux `llama-bench` and does not prove Windows-vs-Linux parity. | [#3](https://github.com/hogeheer499-commits/strix-halo-guide/issues/3#issuecomment-4602020775), [`raw`](data/raw/2026-06-02/community-windows-lmstudio-issue3/) |
+| 2026-06-02 | Look_Over_There | GMKtec EVO-X2, Ryzen AI MAX+ 395 | Vulkan/RADV device line `RADV_STRIX_HALO`, llama.cpp b9467 `1fd5f4803`; OS/kernel/Mesa not reported | Qwen3-Coder 30B-A3B Q4_K_S | Short-context `-p 0 -n 128`: most runs around 99.90 t/s; best observed 100.0 t/s after about 10 runs. | Independent Reddit result showing that a tuned GMKtec can touch 100 t/s on this speed-first Qwen3-Coder shape. The contributor disclosed repaste, reseated memory pads, 15-20C lower CPU/GPU temps, and high-power policy, so treat it as tuned thermal/power-policy evidence rather than a default headline. | [Reddit thread](https://www.reddit.com/r/StrixHalo/comments/1tu78x5/qwen3coder_30b_at_985_ts_on_strix_halo_has_anyone/), [`raw note`](data/raw/2026-06-02/community-reddit-look-qwen-coder/) |
 
 ## Cross-Box Variance
 
@@ -97,6 +103,30 @@ mottledMantis then added follow-up reports on the same GMKtec EVO-X2 class syste
 | [#18](https://github.com/hogeheer499-commits/strix-halo-guide/issues/18) | Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn | `llama-server`, `draft-n=3` | 93.01 t/s average, 175.97 t/s best prompt | Higher single-prompt peak, but `draft-n=2` was the better broad-average setting in this GMKtec rerun. |
 
 The #17 follow-up is useful because it converts the original generation-only Qwen3-Coder report into a full `pp512/tg128` reference row while preserving why it should not be over-promoted: batch size, flash attention, mmap, build, and host setup all matter. The #18 result is especially useful because it validates the guide's MTP route on a second Strix Halo vendor/chassis with a different kernel and Mesa stack. It also sharpens the public wording: MTP is a real server-speed route and can spike far above 100 t/s on favorable prompts, but the broad six-prompt averages are still in the 92-93 t/s range, not a general 100 t/s guarantee.
+
+## Reddit GMKtec EVO-X2 Tuned 100 t/s Report
+
+Look_Over_There contributed a Reddit-reported GMKtec EVO-X2 Qwen3-Coder `Q4_K_S` result on llama.cpp b9467 `1fd5f4803`. The reported command shape was:
+
+```bash
+llama-bench -fa 1 -n 128 -p 0 -m ./Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+```
+
+They reported that most short-context runs sat around 99.90 t/s and the best observed run reached 100.0 t/s after about 10 runs. This is valuable because it is the first external Strix Halo report to touch the round 100 t/s mark on the same speed-first Qwen3-Coder family used by the Beelink headline.
+
+The qualifier matters just as much as the number: the contributor repasted the heatsink, reseated memory thermal pads, saw CPU/GPU temperatures drop by about 15-20C, and used a high-power Linux policy that forces GPU `power_dpm_force_performance_level=high` plus CPU EPP `performance`. They also warned that the high-power policy can add about 15-20W, may help or hurt depending on workload, and should not be treated as a full-time recommendation without thermal checks.
+
+Local Beelink follow-up did not reproduce 100 t/s with the same b9467 command. The default local build path measured 96.38-96.72 t/s, a `glslc v2026.1` build enabled `int dot: 1` but still measured 95.27-95.91 t/s, and a separate high-power-policy test improved one short b9467 run from 95.18 to 96.37 t/s. Practical interpretation: 100 t/s is plausible on tuned Strix Halo hardware, but the guide should not promote it as the default Beelink direct headline.
+
+## Windows LM Studio MS-S1-Max Report
+
+bennos1911 contributed the first Windows / LM Studio / Ryzen AI MAX+ 395 report in [#3](https://github.com/hogeheer499-commits/strix-halo-guide/issues/3#issuecomment-4602020775). This is especially useful for beginner buyers because many people start from Windows and want to know whether they can use local AI before committing to native Ubuntu.
+
+| System | Backend | Model | Result | Interpretation |
+|--------|---------|-------|--------|----------------|
+| Minisforum MS-S1-Max, Ryzen AI MAX+ 395, 128GB, Windows 11 Pro 25H2, AMD Adrenalin 26.5.2 | LM Studio 0.4.15 build 2, Vulkan llama.cpp v2.18.0 | Qwen3.6 35B-A3B Q4_K_M, `n_parallel=4`, `n_ctx=262144`, max tokens 512 | Script summary: 89.49 tok/s average, 78.53 tok/s median across 45 runs; the long 512-token prompt rows were around 69-70 tok/s | Useful Windows serving/API evidence. Not a same-shape comparison against native Linux `llama-bench`, so keep it out of headline speed claims. |
+
+The benchmark script was run from WSL2 Ubuntu while LM Studio performed GPU work on the Windows host. The imported raw artifacts include the benchmark script, CSV output, and hardware telemetry. This report does not close the same-machine Windows-vs-Linux question yet, but it does prove that Windows + LM Studio is a real path worth documenting instead of ignoring.
 
 ## Qwen3.6 Community Quant Check
 

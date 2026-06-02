@@ -96,6 +96,7 @@ Interpretation:
 Raw evidence:
 
 - [`data/raw/2026-06-02/reddit-look-int-dot-reproduction/`](data/raw/2026-06-02/reddit-look-int-dot-reproduction/)
+- [`data/raw/2026-06-02/community-reddit-look-qwen-coder/`](data/raw/2026-06-02/community-reddit-look-qwen-coder/)
 
 ## High-Power Policy And Thermal Tuning Status
 
@@ -127,7 +128,7 @@ Local interpretation:
 - The external thermal rework may matter as much as, or more than, the software policy.
 - Keep this labeled as advanced tuning context until repeated with temperature, clock, power, and before/after logs.
 
-Raw local logs: [`data/raw/2026-06-02/high-power-policy-test/`](data/raw/2026-06-02/high-power-policy-test/).
+Raw local logs: [`data/raw/2026-06-02/high-power-policy-test/`](data/raw/2026-06-02/high-power-policy-test/). Community provenance note: [`data/raw/2026-06-02/community-reddit-look-qwen-coder/`](data/raw/2026-06-02/community-reddit-look-qwen-coder/).
 
 ## Modern-Model Anti-Cherry-Pick Follow-Up
 
