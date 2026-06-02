@@ -208,7 +208,9 @@ Dates below are measurement dates. A row being from May does not mean it is stal
 
 ## Reproduce One Headline Result
 
-This reproduces the balanced UD Qwen3-Coder 96-97 t/s row if your machine, model file, driver stack, and power state match the measured setup in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md). The speed-first Q4_K_S row is faster at 98.51 t/s r50, but it uses a lower-quality speed quant and a stricter host state.
+Pick the row that matches what you want to verify. The balanced coding row is the best first reproduction target for most users. The direct 100 t/s row is useful if you specifically want to verify the fastest measured 30B-class Qwen speed scout. Keep them separate: they use different model files, quants, builds, and quality tradeoffs.
+
+### Balanced Qwen3-Coder Row
 
 ```bash
 AMD_VULKAN_ICD=RADV \
@@ -218,19 +220,32 @@ VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
   -fa 1 -ngl 999 -mmp 0 -p 0 -n 128 -r 20 -o csv
 ```
 
-Measured local result: 96.76 tg128 in the max-performance b9049 campaign: [`raw CSV`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv). Fastest speed-first result: 98.51 tg128 with Q4_K_S on b9179: [`raw r50`](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv).
+Measured local result: 96.76 tg128 in the max-performance b9049 campaign: [`raw CSV`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv). This is the practical balanced Qwen3-Coder row. The fastest first-party Qwen3-Coder row is 98.51 tg128 with Q4_K_S on b9179, but that is a speed-first quant and stricter host state: [`raw r50`](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv).
+
+### Direct 100 t/s Qwen3 30B Speed Scout
+
+Use this only if you have the exact `Qwen3-30B-A3B-Instruct-2507` `IQ4_XS-3.63bpw` GGUF and a comparable b9467 Vulkan/RADV build. Adjust the binary and model paths to your checkout; the flags, model hash, build, and raw CSV are the reproducibility anchors. This is a direct `llama-bench` result, but it is not Qwen3-Coder and not the balanced default.
+
+```bash
+AMD_VULKAN_ICD=RADV \
+VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
+~/llama-cpp-b9467/build-vulkan/bin/llama-bench \
+  -m ~/models/Qwen3-30B-A3B-Instruct-2507-IQ4_XS-3.63bpw.gguf \
+  -fa 1 -ngl 999 -mmp 0 -b 2048 -ub 512 -t 16 --poll 50 -p 512 -n 128 -r 50 -o csv
+```
+
+Measured local result: 100.04 tg128 and 1416.03 pp512 on the r50 confirmation: [`raw r50`](data/raw/2026-06-02/qwen3-30b-a3b-2507-direct-scout/qwen3-30b-2507-iq4xs-b9467-r50.csv), [`model hash`](data/raw/2026-06-02/qwen3-30b-a3b-2507-direct-scout/model-iq4xs.sha256), [`scout notes`](data/raw/2026-06-02/qwen3-30b-a3b-2507-direct-scout/README.md).
 
 ## Not Yet Proven Here
 
-- Lucebox/DFlash throughput on a comparable Strix Halo workload; local preflight is blocked until an isolated ROCm/HIP dev toolchain with `hipcc` and rocWMMA is available.
-- vLLM DFlash throughput on a comparable 35B path; plain AWQ without the gated DFlash drafter was only a smoke test here at about 25 t/s.
-- Fully polished same-build HIP versus Vulkan comparison with build IDs embedded correctly; the b9049 source-matched matrix is already enough for workload-split guidance.
-- Same-machine Windows versus Linux performance. Windows LM Studio and WSL2/HIP community rows now exist, but they are not same-machine, same-shape Linux comparisons.
-- Reliable wall-power tokens-per-watt on the Beelink. Local amdgpu `PPT` telemetry now exists, but it is not a wall-power claim.
-- FastFlowLM/NPU inference. The kernel sees `amdxdna` and `/dev/accel/accel0`, but XRT/FastFlowLM user-space is not installed yet.
-- A local tuned rocWMMA long-context comparison against the current Vulkan/RADV path; the lhl branch built but failed to load current Qwen3.6 GGUFs.
-- Multi-machine clustering numbers from this guide's own hardware. Community RPC data exists in [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), but it is not a local Beelink headline claim.
-- A direct non-speculative 100 t/s Qwen3-Coder result. The direct Qwen3-Coder headline remains 98.51 t/s. A separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS route did cross 100 t/s direct `llama-bench`, and the b9360 Qwen3.6 MTP server route crossed 100 t/s across six prompts, but these are separate model/backend categories.
+- A first-party Beelink wall-power tokens-per-watt claim. Local amdgpu `PPT` telemetry exists, and community Corsair wall-power rows exist, but the guide still needs a Beelink wall-meter run before publishing Beelink J/token claims.
+- Same-machine Windows versus Linux performance. Windows LM Studio and WSL2/HIP community rows now exist, but they are not same-machine, same-model, same-shape comparisons against native Linux Vulkan/RADV.
+- A default first-party 100 t/s Qwen3-Coder claim. The direct Beelink Qwen3-Coder headline remains 98.51 t/s. A tuned community GMKtec report touched 100.0 t/s on Qwen3-Coder, and a separate first-party Qwen3-30B-A3B-Instruct-2507 IQ4_XS route reached 100.04 t/s, but those are separate evidence categories.
+- Production-ready NPU/FastFlowLM inference. The kernel sees `amdxdna` and `/dev/accel/accel0`, but XRT/FastFlowLM user-space is not installed and no local NPU LLM row is published yet.
+- Reproducible DFlash/PFlash throughput on a comparable Strix Halo workload. Local preflight found relevant source/assets, but there is no supported performance claim yet.
+- A vLLM/DFlash server path that competes with `llama-server` or Ollama for a real 35B Strix Halo use case. Plain AWQ without the gated DFlash drafter was only a smoke test here at about 25 t/s.
+- A local tuned rocWMMA long-context comparison against the current Vulkan/RADV path. External rocWMMA evidence exists, but the local lhl branch built here failed to load the current Qwen3.6 GGUFs.
+- Multi-machine clustering numbers from this guide's own hardware. Community RPC and USB4 tuning data exists in [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) and [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md), but it is not a local Beelink headline claim.
 
 ## Do Not Copy These Claims Without Matching Setup
 
