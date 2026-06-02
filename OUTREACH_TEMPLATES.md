@@ -29,7 +29,8 @@ If this is better routed to another AMD Developer Relations, Ryzen AI, ROCm, or 
 
 Best,
 [name]
-TODO: contact details
+GitHub: https://github.com/hogeheer499-commits
+Direct email / LinkedIn: TODO before outreach
 ```
 
 ## Beelink Product Marketing Email
@@ -53,7 +54,8 @@ Would you be open to discussing a collaboration or routing me to the right produ
 
 Best,
 [name]
-TODO: contact details
+GitHub: https://github.com/hogeheer499-commits
+Direct email / LinkedIn: TODO before outreach
 ```
 
 ## OEM / System Vendor Email
@@ -71,13 +73,14 @@ The guide helps buyers and developers answer practical questions: which OS and b
 
 I am interested in validating [vendor/system] so buyers can see how it compares with existing Beelink, Corsair, and GMKtec evidence in the repo. This would reduce adoption friction for your hardware by turning setup and benchmark work into public, reproducible technical evidence.
 
-Collaboration could be a loaner/review unit, permanent hardware sponsorship, early firmware/software access, technical contacts, or a sponsored but independent benchmark report. Hardware or sponsorship would be disclosed clearly, and conclusions would remain independent.
+Collaboration could be a technical contact, loaner/review unit, early firmware/software access, scoped benchmark campaign, or sponsored but independent technical report. Hardware or sponsorship would be disclosed clearly, and conclusions would remain independent.
 
 Could you route me to the right product marketing, developer relations, or engineering contact?
 
 Best,
 [name]
-TODO: contact details
+GitHub: https://github.com/hogeheer499-commits
+Direct email / LinkedIn: TODO before outreach
 ```
 
 ## Reviewer / Newsletter / YouTube Creator Message
@@ -99,7 +102,8 @@ If you cover Strix Halo systems, I would be interested in corrections, independe
 
 Best,
 [name]
-TODO: contact details
+GitHub: https://github.com/hogeheer499-commits
+Direct email / LinkedIn: TODO before outreach
 ```
 
 ## Short LinkedIn / DM Version

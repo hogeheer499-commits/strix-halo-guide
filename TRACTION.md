@@ -6,16 +6,16 @@ Do not invent traction numbers. Fill the TODOs only from current public GitHub d
 
 ## Current Public GitHub Stats
 
-Last updated: TODO: add date.
+Snapshot date: 2026-06-02.
 
 | Metric | Current value | Source |
 |--------|---------------|--------|
-| Stars | TODO | TODO: GitHub repository page or API link |
-| Forks | TODO | TODO: GitHub repository page or API link |
-| Issues | TODO | TODO: GitHub Issues link |
-| Pull requests | TODO | TODO: GitHub Pull Requests link |
-| Releases | TODO | TODO: GitHub Releases link |
-| Contributors | TODO | TODO: GitHub Contributors link |
+| Stars | 66 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| Forks | 4 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| Open issues | 4 | [GitHub Issues](https://github.com/hogeheer499-commits/strix-halo-guide/issues) |
+| Open pull requests | 0 | [GitHub Pull Requests](https://github.com/hogeheer499-commits/strix-halo-guide/pulls) |
+| Releases | 5 | [GitHub Releases](https://github.com/hogeheer499-commits/strix-halo-guide/releases) |
+| Contributors | 3 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
 
 ## Evidence Already In The Repo
 

@@ -47,14 +47,14 @@ That creates a win-win:
 
 Possible support includes:
 
+- Technical contact for setup, firmware, driver, or reproducibility questions.
 - Review unit.
 - Loaner hardware.
-- Permanent hardware sponsorship.
 - Early BIOS or firmware access.
 - Early driver, ROCm, Ryzen AI, or local-AI software access.
-- Technical contacts for factual setup questions.
 - Sponsorship for a clearly scoped benchmark campaign.
 - Affiliate relationship, if disclosed clearly.
+- Longer-term hardware support for ongoing regression and cross-version testing.
 - Engineering feedback on reproducibility, setup blockers, or driver behavior.
 
 These are options, not demands. The useful collaboration is access to hardware, software, and context that lets the guide produce better public evidence.
@@ -77,4 +77,6 @@ No fake claims, hidden influence, unsupported marketing language, or undisclosed
 
 ## Contact
 
-TODO: add preferred contact method.
+For collaboration inquiries, open a GitHub issue or contact the maintainer through the GitHub profile.
+
+Direct email / LinkedIn: TODO before outreach.

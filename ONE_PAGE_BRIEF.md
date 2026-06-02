@@ -29,7 +29,7 @@ For vendors and developer-relations teams, that means fewer adoption barriers, c
 
 I can produce independent, reproducible, public technical evidence that reduces adoption friction and helps buyers understand the value and limits of your hardware.
 
-Useful collaboration can include review or loaner systems, permanent hardware sponsorship, early BIOS/firmware/software access, technical contacts, benchmark campaign sponsorship, affiliate relationships, or engineering feedback.
+Useful collaboration can include technical contacts, review or loaner systems, early BIOS/firmware/software access, scoped benchmark campaign sponsorship, affiliate relationships, or engineering feedback.
 
 ## Example Deliverables
 
@@ -48,4 +48,6 @@ No paid-positive reviews. No hidden influence. No unsupported marketing claims. 
 
 ## Contact
 
-TODO: add preferred contact method.
+For collaboration inquiries, open a GitHub issue or contact the maintainer through the GitHub profile.
+
+Direct email / LinkedIn: TODO before outreach.

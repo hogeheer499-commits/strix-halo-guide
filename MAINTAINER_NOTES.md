@@ -1,89 +1,52 @@
 # Maintainer Notes
 
-These notes are for the local Hoge Heer workstation workflow. They are intentionally separate from the public README because they are not required to reproduce Strix Halo performance on another machine.
+This public file is intentionally limited to repository-maintenance guidance that is safe to publish. Machine-specific workflow, local service names, ports, account operations, credentials, and private maintainer procedures belong in ignored local notes such as `CONTEXT.md` or files under `local-scratch/`.
 
-## Current Handoff
+## Public Maintenance Scope
 
-Current as of 2026-05-10. For the latest pushed commit, run `git log -1 --oneline`.
+`strix-halo-guide` is an evidence-backed AMD Strix Halo / Ryzen AI MAX+ 395 local-AI setup and benchmark guide. The public docs should stay technical-first, reproducible, and independent.
 
-For a new Strix Halo chat, start by reading:
+When maintaining public documentation:
 
-0. `AGENTS.md`
-1. `README.md`
-2. `BENCHMARKS.md`
-3. `MAX_PERFORMANCE_PLAN.md`
-4. `BACKEND_CROSSOVER.md`
-5. `ROCM_VLLM_BUGWATCH.md`
-6. `SERVER_SHOOTOUT.md`
-7. `REPRODUCIBILITY.md`
-8. this file
+- Keep buyer/developer setup value primary.
+- Keep vendor/partner/sponsor positioning secondary and evidence-based.
+- Link benchmark claims to raw data, CSVs, charts, or `data/headline_claims.csv` where possible.
+- Keep first-party results separate from community results.
+- Keep direct `llama-bench` results separate from server/API/MTP/speculative/concurrency results.
+- Preserve negative results, caveats, failed routes, and reproducibility risks.
+- Do not invent benchmark numbers, traffic, sponsors, testimonials, contact names, endorsements, or sales impact.
 
-When the user asks for "updates", "nieuws", or "what should we test next", apply the `AGENTS.md` project lens: evaluate both technical benchmark value and adoption-friction/vendor-buyer value. Benchmark work is the proof layer; vendor/partner/sponsor positioning is the leverage layer.
+## Recommended Public Context
 
-The guide is share-ready. The latest completed work:
+For a new documentation pass, read:
 
-- 2026-05-09 community/trust work:
-  - first independent benchmark report incorporated into `COMMUNITY_RESULTS.md`
-  - three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128
-  - same report added a same-SKU variance envelope and about 150 W sustained generation / about 1.6 J per generated token
-  - `data/community_results.csv`, `data/community_power.csv`, README community badge, and SHARE text updated
-  - Fail-Safe also contributed a 3-node USB4 `llama.cpp` RPC matrix; `COMMUNITY_RPC.md`, `data/community_rpc.csv`, and imported raw CSVs under `data/raw/2026-05-09/community-rpc-issue12/` document it
-  - Fail-Safe followed up with USB4 latency tuning data in #13; `USB4_CLUSTER_TUNING.md` and `data/community_usb4_latency.csv` document the recommended `pm_qos_resume_latency_us=100` cluster step
-  - 2026-05-10 follow-ups added Qwen3.6 community quant checks, RPC model hashes/failure rows, `llama-server` TTFT rows, and measured `pm_qos` idle-power cost around 1.5 W per toggled box
-  - Raw follow-up artifacts are now stored under `data/raw/2026-05-09/community-qwen36-issue10/`, `data/raw/2026-05-10/community-rpc-followup-issue12/`, and `data/raw/2026-05-10/community-usb4-tuning-issue13/`
-  - README now has `Community-Tested Rules Of Thumb`, turning the community data into practical decisions for visitors
-  - `CONTRIBUTORS.md` credits Fail-Safe as the first major community benchmark contributor
-  - GitHub issues #8 and #9 closed as completed; #3, #4, #5, #6, #10, #12, and #13 intentionally left open for real follow-up work
-- 2026-05-07 max-performance campaign added:
-  - Qwen3.6 Q4_0 reached 81.30 t/s as a speed-first row
-  - Qwen3-Coder b9049 guide-flags confirmation reached 96.76 t/s, no stable 100 t/s result
-  - gpt-oss-120b clean rerun reached 55.57 t/s and prompt processing through 65K tokens
-  - same-source b9049 HIP/Vulkan matrix confirmed HIP wins prompt processing and Vulkan wins generation
-  - vLLM AWQ without DFlash worked as a smoke test but only reached about 25 t/s
-  - lhl rocWMMA branch built but failed to load current Qwen3.6 GGUFs
-- latest-stack rerun with llama.cpp b9049 and Ollama 0.23.1
-- first local gpt-oss-120b MXFP4 check: 50.59 t/s tg128, 725.03 t/s pp512, 707.29 t/s pp2048; superseded by the 55.57 t/s paused-system rerun above
-- HIP/Vulkan crossover evidence: Vulkan wins measured generation; HIP can win prompt processing
-- hec-ovi vLLM AWQ/DFlash tracked as an important candidate, not a local claim
-- ROCm/vLLM bugwatch added
-- README, SHARE, social preview, CSVs, raw logs, and charts updated
-- `MAX_PERFORMANCE_PLAN.md` added as the focused "can we push the Beelink further?" roadmap
-- `MAX_PERFORMANCE_RESULTS_2026-05-07.md` and `data/max_performance_campaign.csv` hold the latest campaign summary
+1. `AGENTS.md`
+2. `README.md`
+3. `BENCHMARKS.md`
+4. `REPRODUCIBILITY.md`
+5. `data/README.md`
+6. `COMMUNITY_RESULTS.md`
+7. `SERVER_SHOOTOUT.md`
+8. `BACKEND_CROSSOVER.md`
+9. `ROCM_VLLM_BUGWATCH.md`
+10. `SPONSOR_ROADMAP.md`
 
-Current local-only handoff details live in `CONTEXT.md`. That file is intentionally ignored by git and should be used for local continuity, not public claims.
-
-Known local scratch directory:
-
-```text
-local-scratch/server-shootout/kyuz0-vllm-awq-qwen36-t3-baseline/
-```
-
-This contains the old incomplete vLLM AWQ startup artifact. It is ignored by git and intentionally kept out of `data/raw/`, which should contain only public evidence used by the guide.
-
-## Keep Public Docs Separate
-
-The README should answer, within one screen:
-
-- what was tested
-- which hardware was used
-- best current backend per use case
-- where raw data and charts live
-- where reproducibility and security context live
-
-Keep local workflow details here unless they directly affect public reproducibility.
+For local workstation continuity, use ignored local notes rather than public Markdown.
 
 ## Raw Evidence Hygiene
 
 Before committing raw host-state or benchmark-environment captures, redact anything that is not needed to reproduce the benchmark:
 
-- full process lists and command lines
-- local home-directory paths
-- service health JSON from T3, Hermes, RustDesk, browsers, or unrelated local apps
-- VM UUIDs, MAC addresses, libvirt secret paths, and browser profile paths
+- full process lists and unrelated command lines
+- local home-directory paths that are not needed for reproduction
+- local service health JSON
+- VM UUIDs, MAC addresses, secret paths, browser profile paths, or private tokens
 
-Keep benchmark-relevant facts such as timestamp, kernel, memory, tuned profile, driver, GPU device string, llama.cpp commit, model hash, command, and raw benchmark output.
+Keep benchmark-relevant facts such as timestamp, kernel, memory, tuned profile, driver, GPU device string, tool commit, model hash, exact command, and raw benchmark output.
 
-Run the lightweight repo checks before publishing docs/data updates:
+## Validation
+
+Run the lightweight repo checks before publishing docs or data updates:
 
 ```bash
 python3 scripts/validate_repo.py
@@ -100,115 +63,4 @@ Keep community activity real and technical:
 - Leave open issues open only when they represent real unanswered benchmark questions.
 - Treat slower, failed, or contradictory reports as useful evidence, not a branding problem.
 
-GitHub Sponsors / Buy Me a Coffee support is acceptable, but keep it secondary:
-
-- Do not place a donation CTA before the technical TL;DR, benchmark table, or reproducibility links.
-- Keep the primary CTA as starring the repo, sharing it, or contributing benchmark results.
-- `.github/FUNDING.yml` and `SUPPORT.md` now exist as the repo-side preparation for GitHub Sponsors.
-- The next sponsorship step is account-side activation by the owner in GitHub Sponsors, because it requires account, payout, and tax setup.
-- If a Buy Me a Coffee link is added later, keep it as a custom funding link and preserve the evidence-first funding policy.
-
-## GitHub Account Safety
-
-Hard rule: all public GitHub activity for this repository must use `hogeheer499-commits`, not `brvale97`.
-
-Before any `gh issue comment`, `gh api`, `gh issue edit`, `gh release`, `gh repo edit`, or `git push` that affects this repository, run:
-
-```bash
-gh auth switch -u hogeheer499-commits
-gh auth setup-git
-gh auth status
-```
-
-Do not post comments, edit issues, create releases, or push until `gh auth status` shows `hogeheer499-commits` as the active account. If a wrong-account comment ever appears, delete it immediately and repost under `hogeheer499-commits`.
-
-## T3 Must Stay Reachable
-
-Absolute hard rule: T3 must stay active and reachable at all times. Strix Halo work on this machine is operated from T3; if T3 breaks, the user cannot work.
-
-T3 is not benchmark noise. It is never part of "stop everything", "pause everything", "clean the system", "go more aggressive", or any similar instruction. Those phrases always mean "everything safe except T3".
-
-Never stop, pause, kill, restart, renice, deprioritize, firewall, port-kill, mask, service-manage, or otherwise interfere with:
-
-- T3 semantic proxy on `127.0.0.1:3773`
-- T3 upstream backend on `127.0.0.1:3774`
-- `t3code` processes
-- `t3_react185_semantic_proxy`
-- T3 healthcheck/recovery scripts
-
-If a benchmark, cleanup, script, shell pipeline, PID list, container action, service action, or performance experiment could affect T3, do not run it. Skip the benchmark instead. Even a better benchmark number is not worth a T3 interruption.
-
-Before any benchmark cleanup or long benchmark, check T3:
-
-```bash
-curl -fsS http://127.0.0.1:3773/__t3react185/health
-curl -fsSI http://127.0.0.1:3774/ | sed -n '1,3p'
-curl -fsSI http://192.168.2.13:3773/ | sed -n '1,3p'
-```
-
-If any check fails, stop Strix testing and restore T3 before doing anything else.
-
-Current 2026-06-01 T3 layout: the semantic proxy is integrated on `3773` and forwards to the upstream T3 backend on `3774`. The old `3777` hotpatch route is historical and should not be required for Strix Halo benchmark readiness unless T3 Code Ops deliberately switches back to that route.
-
-2026-05-27 incident rule: do not pause desktop, audio, T3, or active meeting/streaming processes for Strix Halo benchmarks. A too-aggressive `SIGSTOP` pass against `Xorg`, `gnome-shell`, `pipewire`, `t3code` UI processes, and related desktop/session processes made the machine look frozen and took T3 upstream `127.0.0.1:3773` down until reboot. Future benchmark cleanup must never target:
-
-- `t3code`, T3 backend/server, T3 proxy, T3 healthcheck/recovery scripts, or ports `3773`/`3774`/`3777`
-- `Xorg`, `gnome-shell`, `pipewire`, `pipewire-pulse`, display manager, or desktop session processes
-- Zoom, DocFlock `ffmpeg`, virtual camera/audio, or meeting/streaming processes while Zoom is in use
-- RustDesk, NoMachine, Tailscale, SSH, or other remote-access paths unless the user explicitly says remote access can be interrupted
-
-Use `renice` or skip the run instead of pausing required workflow processes, but do not renice or deprioritize T3. Only pause clearly nonessential benchmark noise, and keep a restore path that works even if T3 is unavailable.
-
-If the browser shows:
-
-```text
-Upstream request failed: connect ECONNREFUSED 127.0.0.1:3773
-```
-
-the proxy is reachable but the real T3 backend is down. Stop Strix testing and restore T3 before doing anything else.
-
-Read-only readiness check:
-
-```bash
-scripts/check_benchmark_cleanliness.sh
-```
-
-For long or memory-risky benchmark commands, use the T3 guard:
-
-```bash
-scripts/run_with_t3_guard.py \
-  --cleanup-cmd "podman stop vllm-gfx1151" \
-  -- <benchmark command>
-```
-
-For heavy vLLM experiments, set stricter headroom explicitly:
-
-```bash
-scripts/run_with_t3_guard.py \
-  --min-mem-available-gib 24 \
-  --min-swap-free-gib 4 \
-  --cleanup-cmd "podman stop vllm-gfx1151" \
-  -- <benchmark command>
-```
-
-Cleanup commands are for benchmark targets only. The guard refuses cleanup commands that reference T3, `3773`, `3774`, `3777`, broad Node kills, Hermes, or destructive Docker-wide actions.
-
-## Hermes Is Out Of Scope
-
-Do not stop, restart, remove, or otherwise manage `hermes-*` Docker containers from Strix Halo guide work. Docker may be inspected read-only for noise/status, but Hermes recovery belongs in its own chat/workspace.
-
-## Remote Desktop And Other Noise
-
-RustDesk, Zoom, unrelated VMs, Open WebUI, ComfyUI, and unrelated local AI servers can affect publishable numbers. Prefer pausing them for benchmark campaigns, but do not manage them from this project unless explicitly requested for that run. Record the state in raw notes.
-
-Default restore rule for future Strix Halo benchmark chats: when the user asks to pause benchmark noise, automatically restore everything that was paused before ending the task. The user should not need to repeat this. T3 must stay on the whole time, Hermes stays out of scope, and restore should cover the paused local services such as DocFlock, RustDesk, Ollama, Zoom, and suspended benchmark-noise VMs.
-
-## Scratch Data
-
-The directory below contains incomplete vLLM startup artifacts and is not a publishable result:
-
-```text
-data/raw/2026-05-05/server-shootout/kyuz0-vllm-awq-qwen36-t3-baseline/
-```
-
-Keep it untracked until the vLLM AWQ run is either completed and documented or deliberately discarded.
+Support, sponsorship, loaned hardware, affiliate links, or early-access software must not change benchmark conclusions. Disclose vendor involvement clearly and preserve independent findings.

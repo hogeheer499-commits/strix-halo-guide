@@ -34,6 +34,7 @@ Higher t/s is useful, but it is not the only priority. Treat benchmarks as the p
 - Use TODO placeholders for missing stats, contact details, quotes, traffic, sponsors, or evidence.
 - Preserve negative results, caveats, and failed paths.
 - Do not make the README feel like an advertisement.
+- Keep machine-specific workflow, local services, ports, account operations, and private maintainer procedures out of public docs.
 
 ## Do-Not-Invent Rules
 
@@ -95,11 +96,3 @@ Before finishing documentation or benchmark-claim work:
 - Confirm TODO placeholders are clearly marked.
 - Confirm first-party, community, server/API, MTP/speculative, ROCm/vLLM, power, NPU, RPC, and cross-OEM claims remain separated.
 - Confirm vendor-facing docs preserve independence and disclosure language.
-
-## Required Local Safety
-
-Read `MAINTAINER_NOTES.md` before benchmark cleanup or long-running tests.
-
-T3 must remain reachable at all times. Do not stop, pause, kill, restart, renice, firewall, or otherwise interfere with T3 processes, ports, health checks, or related services.
-
-Before GitHub mutations or pushes for this repository, use the `hogeheer499-commits` account as documented in `MAINTAINER_NOTES.md`.
