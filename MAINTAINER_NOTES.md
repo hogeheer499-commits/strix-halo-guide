@@ -8,6 +8,7 @@ Current as of 2026-05-10. For the latest pushed commit, run `git log -1 --onelin
 
 For a new Strix Halo chat, start by reading:
 
+0. `AGENTS.md`
 1. `README.md`
 2. `BENCHMARKS.md`
 3. `MAX_PERFORMANCE_PLAN.md`
@@ -16,6 +17,8 @@ For a new Strix Halo chat, start by reading:
 6. `SERVER_SHOOTOUT.md`
 7. `REPRODUCIBILITY.md`
 8. this file
+
+When the user asks for "updates", "nieuws", or "what should we test next", apply the `AGENTS.md` project lens: evaluate both technical benchmark value and adoption-friction/vendor-buyer value. Benchmark work is the proof layer; vendor/partner/sponsor positioning is the leverage layer.
 
 The guide is share-ready. The latest completed work:
 
