@@ -30,7 +30,7 @@ If this is better routed to another AMD Developer Relations, Ryzen AI, ROCm, or 
 Best,
 [name]
 GitHub: https://github.com/hogeheer499-commits
-Direct email / LinkedIn: TODO before outreach
+Email: hogeheer499@gmail.com
 ```
 
 ## Beelink Product Marketing Email
@@ -55,7 +55,7 @@ Would you be open to discussing a collaboration or routing me to the right produ
 Best,
 [name]
 GitHub: https://github.com/hogeheer499-commits
-Direct email / LinkedIn: TODO before outreach
+Email: hogeheer499@gmail.com
 ```
 
 ## OEM / System Vendor Email
@@ -80,7 +80,7 @@ Could you route me to the right product marketing, developer relations, or engin
 Best,
 [name]
 GitHub: https://github.com/hogeheer499-commits
-Direct email / LinkedIn: TODO before outreach
+Email: hogeheer499@gmail.com
 ```
 
 ## Reviewer / Newsletter / YouTube Creator Message
@@ -103,7 +103,7 @@ If you cover Strix Halo systems, I would be interested in corrections, independe
 Best,
 [name]
 GitHub: https://github.com/hogeheer499-commits
-Direct email / LinkedIn: TODO before outreach
+Email: hogeheer499@gmail.com
 ```
 
 ## Short LinkedIn / DM Version

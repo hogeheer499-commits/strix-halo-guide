@@ -50,4 +50,4 @@ No paid-positive reviews. No hidden influence. No unsupported marketing claims. 
 
 For collaboration inquiries, open a GitHub issue or contact the maintainer through the GitHub profile.
 
-Direct email / LinkedIn: TODO before outreach.
+Email: hogeheer499@gmail.com.
