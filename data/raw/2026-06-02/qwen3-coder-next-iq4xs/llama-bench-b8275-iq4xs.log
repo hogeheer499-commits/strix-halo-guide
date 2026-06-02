@@ -1,0 +1,19 @@
+# Qwen3-Coder-Next IQ4_XS Vulkan/RADV
+2026-06-02T16:31:55+02:00
+b8275a8ac revert to using global_invocation_id for cpy shader (#23955)
+# model
+-rw-rw-r-- 1 hoge-heer hoge-heer 40G Jun  2 16:31 /home/hoge-heer/benchmark-models/qwen3-coder-next/Qwen3-Coder-Next-IQ4_XS.gguf
+# device
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 0 | matrix cores: KHR_coopmat
+Available devices:
+  Vulkan0: Radeon 8060S Graphics (RADV STRIX_HALO) (131584 MiB, 129989 MiB free)
+# bench
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 0 | matrix cores: KHR_coopmat
+| model                          |       size |     params | backend    | ngl |  fa | mmap |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | --: | ---: | --------------: | -------------------: |
+| qwen3next 80B.A3B IQ4_XS - 4.25 bpw |  39.74 GiB |    79.67 B | Vulkan     | 999 |   1 |    0 |           pp512 |        735.72 ± 4.89 |
+| qwen3next 80B.A3B IQ4_XS - 4.25 bpw |  39.74 GiB |    79.67 B | Vulkan     | 999 |   1 |    0 |           tg128 |         61.68 ± 0.08 |
+
+build: b8275a8ac (132)
