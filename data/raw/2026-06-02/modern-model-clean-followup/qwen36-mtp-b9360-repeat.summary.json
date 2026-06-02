@@ -1,0 +1,62 @@
+{
+  "case": "qwen36-mtp-b9360-repeat",
+  "mean": 97.0765117964148,
+  "min": 87.34554169248364,
+  "max": 106.24361990633038,
+  "rows": [
+    {
+      "prompt_id": "code_python",
+      "wall_s": 1.0924786740215495,
+      "predicted_n": 97,
+      "predicted_per_second": 106.24361990633038,
+      "prompt_n": 12,
+      "prompt_per_second": 72.32008871264216,
+      "content_chars": 289
+    },
+    {
+      "prompt_id": "code_cpp",
+      "wall_s": 1.9652127739973366,
+      "predicted_n": 192,
+      "predicted_per_second": 105.27729875997598,
+      "prompt_n": 18,
+      "prompt_per_second": 144.44720855769464,
+      "content_chars": 702
+    },
+    {
+      "prompt_id": "explain_concept",
+      "wall_s": 2.3283221780438907,
+      "predicted_n": 192,
+      "predicted_per_second": 87.34554169248364,
+      "prompt_n": 20,
+      "prompt_per_second": 175.9788825340959,
+      "content_chars": 743
+    },
+    {
+      "prompt_id": "summarize",
+      "wall_s": 2.142581394989975,
+      "predicted_n": 192,
+      "predicted_per_second": 95.79452075298485,
+      "prompt_n": 28,
+      "prompt_per_second": 229.32022932022934,
+      "content_chars": 759
+    },
+    {
+      "prompt_id": "qa_factual",
+      "wall_s": 2.2216648010071367,
+      "predicted_n": 192,
+      "predicted_per_second": 92.34010013129608,
+      "prompt_n": 22,
+      "prompt_per_second": 174.858523558212,
+      "content_chars": 799
+    },
+    {
+      "prompt_id": "shell_script",
+      "wall_s": 2.136874697986059,
+      "predicted_n": 192,
+      "predicted_per_second": 95.45798953541791,
+      "prompt_n": 19,
+      "prompt_per_second": 173.90985977373413,
+      "content_chars": 763
+    }
+  ]
+}

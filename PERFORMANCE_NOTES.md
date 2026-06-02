@@ -128,3 +128,19 @@ Local interpretation:
 - Keep this labeled as advanced tuning context until repeated with temperature, clock, power, and before/after logs.
 
 Raw local logs: [`data/raw/2026-06-02/high-power-policy-test/`](data/raw/2026-06-02/high-power-policy-test/).
+
+## Modern-Model Anti-Cherry-Pick Follow-Up
+
+Reddit feedback correctly pointed out that the direct 98.51 t/s Qwen3-Coder 30B row should not be framed as the newest-model claim. The current framing is:
+
+- Qwen3-Coder 30B `Q4_K_S` remains the reproducible direct-speed baseline.
+- Newer/current models are tracked separately for capability and buyer relevance.
+- Experimental server/speculative rows stay separate from direct `llama-bench`.
+
+A clean follow-up on llama.cpp `1fd5f4803` / b9467 measured Qwen3-Coder-Next 80B-A3B `IQ4_XS` at **738.98 t/s pp512** and **61.91 t/s tg128**. This confirms the modern coding-model row remains far below the older 30B speed-first row on raw decode speed, but is useful current-model context.
+
+The same follow-up repeated the previous best Qwen3.6 MTP IQ4_XS-Q8nextn b9360 server route. This repeat averaged **97.08 t/s** across six prompts, with code prompts at **105.28-106.24 t/s** and general prompts at **87.35-95.79 t/s**. This reinforces the caveat: MTP can cross 100 t/s on favorable prompts and previously crossed 100 t/s as a six-prompt average, but it should remain labeled as an experimental server/speculative route, not a beginner/simple direct benchmark.
+
+DFlash/PFlash preflight found local source trees and cached assets, but no DFlash/PFlash performance claim is made yet.
+
+Raw evidence: [`data/raw/2026-06-02/modern-model-clean-followup/`](data/raw/2026-06-02/modern-model-clean-followup/).
