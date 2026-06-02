@@ -136,6 +136,18 @@ https://github.com/hogeheer499-commits/strix-halo-guide
 Highlights: 96.76 t/s Qwen3-Coder direct llama.cpp Vulkan/RADV on current b9049, 101.16 t/s local Qwen3.6 MTP server average on b9360 plus 93.29 t/s GMKtec community MTP reproduction on b9235, 55.57 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included, N=3 Corsair validation at 93.55-95.50 t/s, GMKtec EVO-X2 native Ubuntu Qwen3.6 validation within 2%, GMKtec Qwen3-Coder b9235 follow-up data, community wall-power rows, a community 3-node USB4 llama.cpp RPC matrix, and USB4 latency tuning data.
 ```
 
+## Partner / Reviewer Sharing Snippet
+
+```text
+Independent AMD Strix Halo / Ryzen AI MAX+ local-AI guide:
+https://github.com/hogeheer499-commits/strix-halo-guide
+
+The useful angle for AMD, OEMs, reviewers, and developer-relations teams is adoption friction: the repo turns scattered setup choices and benchmark claims into reproducible public evidence with raw logs, CSVs, charts, caveats, and community validation.
+
+Partner brief:
+https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ONE_PAGE_BRIEF.md
+```
+
 ## Links To Include
 
 - README: https://github.com/hogeheer499-commits/strix-halo-guide

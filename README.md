@@ -33,6 +33,12 @@ What you get:
 - You need practical model/backend choices for Ollama, llama.cpp Vulkan/RADV, ROCm, server use, and long context.
 - You want benchmark claims that point to CSVs, raw logs, charts, and reproducibility notes.
 
+## For Vendors, Partners, And Reviewers
+
+This guide is primarily a technical resource for AMD Strix Halo local-AI users. For vendors, reviewers, and partners, it also documents a reproducible way to reduce buyer setup friction and validate real-world local-AI use cases without weakening independent benchmark discipline.
+
+Start with [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md) and [`PARTNERSHIP.md`](PARTNERSHIP.md). Supporting docs cover [`SPONSORSHIP.md`](SPONSORSHIP.md), [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md), [`BUYER_USE_CASES.md`](BUYER_USE_CASES.md), [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md), [`TRACTION.md`](TRACTION.md), and [`OUTREACH_TEMPLATES.md`](OUTREACH_TEMPLATES.md).
+
 ## What This Gives You
 
 | If you want to... | Start here |
@@ -157,14 +163,15 @@ Have a Strix Halo / Ryzen AI MAX system? Please share results, even if they are 
 
 Best current setup from this guide's measured local runs:
 
+- Status: still current for the published first-party guidance as of the 2026-06-01 latest-stack checks. Later spot checks did not replace the direct headline rows.
 - Ubuntu 24.04.
 - BIOS UMA set to 512MB.
 - IOMMU disabled for the measured local setup; use `iommu=pt` only if your RDMA/VFIO needs require it.
 - Kernel 6.19.4 on the primary measured system.
-- Mesa/RADV from kisak-mesa PPA. The main May 7 headline rows used Mesa 26.0.6; the latest May 27 b9360 MTP spot check used Mesa 26.1.1.
+- Mesa/RADV from kisak-mesa PPA. The main May 7 headline rows used Mesa 26.0.6; the latest May 27 b9360 MTP spot check and June 1 latest-stack controls used Mesa 26.1.1.
 - AMDVLK removed so it cannot silently override RADV.
 - `tuned` set to `accelerator-performance`.
-- Ollama Vulkan/RADV for easiest local chat and Open WebUI.
+- Ollama 0.23.1 Vulkan/RADV for easiest local chat and Open WebUI. An isolated Ollama 0.24.0 check did not change the current guidance.
 - Direct llama.cpp Vulkan/RADV for fastest measured generation-heavy and low-concurrency Qwen MoE inference.
 - Lemonade `llamacpp-rocm` b1259 for the best measured Qwen3.6 aggregate throughput at 8-16 parallel requests.
 - ROCm/HIP for prompt-processing-heavy experiments, high-concurrency server paths, vLLM, batching, and future long-context work; not as the current default generation path.
@@ -172,6 +179,8 @@ Best current setup from this guide's measured local runs:
 ## Headline Evidence
 
 The machine-readable index for these rows is [`data/headline_claims.csv`](data/headline_claims.csv).
+
+Dates below are measurement dates. A row being from May does not mean it is stale; it means later checks did not produce a stronger replacement headline. The latest June 1 controls are documented in [`PERFORMANCE_NOTES.md`](PERFORMANCE_NOTES.md), [`BENCHMARKS.md`](BENCHMARKS.md), and the changelog.
 
 | Claim | Date | Backend | Model | Result | CSV | Raw | Chart | Notes |
 |-------|------|---------|-------|--------|-----|-----|-------|-------|
@@ -245,6 +254,8 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`SHARE.md`](SHARE.md) | Copyable Reddit/HN/forum/Discord text and share links. |
 | [`SECURITY.md`](SECURITY.md) | Official-source and impersonation reporting policy. |
 | [`SUPPORT.md`](SUPPORT.md) | How to support ongoing testing without changing the evidence-first benchmark policy. |
+| [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md), [`PARTNERSHIP.md`](PARTNERSHIP.md), [`SPONSORSHIP.md`](SPONSORSHIP.md), [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md) | Vendor/partner-facing explanation of how the technical proof layer reduces buyer adoption friction while preserving independence. |
+| [`BUYER_USE_CASES.md`](BUYER_USE_CASES.md), [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md), [`TRACTION.md`](TRACTION.md), [`OUTREACH_TEMPLATES.md`](OUTREACH_TEMPLATES.md) | Buyer-use-case, roadmap, public-evidence, and outreach support docs. |
 
 ## Table of Contents
 
