@@ -2,9 +2,9 @@
 
 This file keeps narrow performance conclusions that are useful for repeat testing, but too detailed for the first README screen.
 
-## Direct 98.51 t/s Reproduction Status
+## Qwen3-Coder Direct 98.51 t/s Reproduction Status
 
-The current direct `llama-bench` speed-first headline remains Qwen3-Coder 30B-A3B `Q4_K_S` at **98.51 t/s** on llama.cpp b9179, Vulkan/RADV, measured on 2026-05-16.
+The current Qwen3-Coder direct `llama-bench` speed-first headline remains Qwen3-Coder 30B-A3B `Q4_K_S` at **98.51 t/s** on llama.cpp b9179, Vulkan/RADV, measured on 2026-05-16.
 
 That result came from a strict host state:
 
@@ -15,7 +15,7 @@ That result came from a strict host state:
 - `tuned accelerator-performance` active and `power-profiles-daemon` inactive.
 - CPU governors and EPP set to `performance`.
 - GPU fixed high with 2900 MHz selected.
-- RustDesk, Firefox, Zoom VM, and ffmpeg paused; T3 kept running and guarded.
+- Nonessential GUI, remote-access, video, and media noise was paused where safe; workspace-critical services were preserved.
 
 Raw evidence:
 
@@ -36,6 +36,36 @@ Interpretation:
 - Source-built Mesa 26.0.6 is not identical to the old kisak Mesa 26.0.6 binary stack.
 - The 98.51 t/s row remains valid as recorded evidence, but it should be treated as a strict-stack speed-first result, not a casual “always reproduce this” number.
 - Do not change the headline unless a newer repeated run beats 98.51 t/s with raw CSV, host state, model hash, and exact command.
+
+## Qwen3-30B-A3B-Instruct-2507 Direct 100 t/s Status
+
+A 2026-06-02 scout found a separate local direct `llama-bench` route above 100 t/s:
+
+- Model: Qwen3-30B-A3B-Instruct-2507.
+- Quant: `IQ4_XS-3.63bpw`.
+- Build: llama.cpp `1fd5f4803` / b9467.
+- Backend: Vulkan/RADV, Mesa 26.1.1.
+- Result: **100.04 t/s** tg128 and **1416.03 t/s** pp512 on the r50 confirmation.
+- Shorter confirmation: **100.58 t/s** tg128 on r20.
+- Generation-only shape: **100.40 t/s** with `-p 0 -n 128 -r 20`.
+
+The same model family with `Q4_K_S-3.61bpw` did not beat the Qwen3-Coder 98.51 t/s row:
+
+- `Q4_K_S` r20: **94.37 t/s** tg128.
+- `Q4_K_S` generation-only: **94.85 t/s** tg128.
+
+Raw evidence:
+
+- [`data/raw/2026-06-02/qwen3-30b-a3b-2507-direct-scout/qwen3-30b-2507-iq4xs-b9467-r50.csv`](data/raw/2026-06-02/qwen3-30b-a3b-2507-direct-scout/qwen3-30b-2507-iq4xs-b9467-r50.csv)
+- [`data/raw/2026-06-02/qwen3-30b-a3b-2507-direct-scout/model-iq4xs.sha256`](data/raw/2026-06-02/qwen3-30b-a3b-2507-direct-scout/model-iq4xs.sha256)
+- [`data/raw/2026-06-02/qwen3-30b-a3b-2507-direct-scout/README.md`](data/raw/2026-06-02/qwen3-30b-a3b-2507-direct-scout/README.md)
+
+Interpretation:
+
+- This is the first local direct `llama-bench` row above 100 t/s in the guide.
+- It should be framed as "multiple 30B-class Qwen MoE routes around 98.5-100 t/s, with raw logs."
+- It should not replace the Qwen3-Coder 30B headline, because it is a different general-instruct model and a different quant.
+- It is not MTP, server/speculative decoding, or a multi-user aggregate result.
 
 ## Qwen3.6 27B MTP Q8_0 Status
 
