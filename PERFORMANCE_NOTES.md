@@ -47,14 +47,45 @@ Measured server results:
 
 - llama.cpp b9235, Mesa/RADV 26.0.6: **7.74 t/s** without MTP, **14.59 t/s** best MTP average.
 - llama.cpp `de6f727aa`, Mesa/RADV 26.1.1: **7.61 t/s** without MTP, **14.69 t/s** with `draft-n=3`.
+- llama.cpp `1fd5f4803` / b9467, Mesa/RADV 26.1.1: **7.70 t/s** direct `llama-bench` tg128 follow-up.
 
 Raw evidence:
 
 - [`data/raw/2026-05-19/qwen36-27b-mtp-q8-llamacpp-9235/`](data/raw/2026-05-19/qwen36-27b-mtp-q8-llamacpp-9235/)
 - [`data/raw/2026-06-01/qwen36-27b-mtp-latest-de6f727/`](data/raw/2026-06-01/qwen36-27b-mtp-latest-de6f727/)
+- [`data/raw/2026-06-02/reddit-look-int-dot-reproduction/`](data/raw/2026-06-02/reddit-look-int-dot-reproduction/)
 
 Interpretation:
 
 - MTP nearly doubles the dense 27B Q8 route, but the route remains much slower than the 35B-A3B MoE paths.
 - For a practical Strix Halo local-AI setup, Qwen3.6 35B-A3B GGUFs remain the better Qwen3.6 speed path in this guide.
 - Keep the 27B result as a negative/control row, not as a headline.
+
+## Vulkan Integer-Dot And 100 t/s Reproduction Status
+
+A Reddit follow-up reported about 99.84-100.00 t/s on Qwen3-Coder 30B-A3B `Q4_K_S` using llama.cpp `1fd5f4803` / b9467 and simple command shapes:
+
+```bash
+llama-bench -fa 1 -n 128 -m Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+llama-bench -fa 1 -n 128 -p 0 -m Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+```
+
+Local Beelink reproduction on the same source commit:
+
+- default command: **1392.09 t/s pp512**, **96.38 t/s tg128**
+- ten `-p 0` runs: **96.72 t/s best**, **96.51 t/s average**, **95.99 t/s minimum**
+- local Vulkan device line: `int dot: 0`
+
+The Reddit-reported GMKtec output showed `int dot: 1`. That matters because llama.cpp's Vulkan backend has integer-dot shader paths for quantized matmul. If the device and shader compiler expose that path, decode can be faster on Q4-style workloads.
+
+The confusing part is that this Beelink's `vulkaninfo` reports `VK_KHR_shader_integer_dot_product` and `shaderIntegerDotProduct = true`, but the host Ubuntu `glslc` package used during CMake reports `GL_EXT_integer_dot_product not supported by glslc`. In practice, the hardware/driver capability is visible, but the current host shader-compiler path does not let this llama.cpp build enable the integer-dot shaders.
+
+Interpretation:
+
+- The Reddit result is plausible and valuable, but this guide has not reproduced it on the Beelink yet.
+- The next clean route is not another random benchmark sweep; it is an isolated shader-toolchain test that enables `GL_EXT_integer_dot_product` without polluting the host.
+- Do not change the Beelink direct headline unless a repeated local run beats 98.51 t/s with raw output, host state, model hash, exact command, and `int dot: 1`/toolchain metadata.
+
+Raw evidence:
+
+- [`data/raw/2026-06-02/reddit-look-int-dot-reproduction/`](data/raw/2026-06-02/reddit-look-int-dot-reproduction/)
