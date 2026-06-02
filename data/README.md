@@ -65,7 +65,7 @@ python3 scripts/generate_charts.py
 - `raw/2026-05-27/latest-llamacpp-b9360/`: latest llama.cpp b9360 / Mesa 26.1.1 spot check. Direct Qwen3-Coder did not beat the current direct headlines, but Qwen3.6 MTP IQ4_XS-Q8nextn reached a repeat-confirmed 101.1 t/s six-prompt average with `draft-n=2`, `--poll 100`, and `-ub 1024`.
 - `raw/2026-06-01/latest-llamacpp-de6f727-safe-clean/`: latest llama.cpp `de6f727aa` / Mesa 26.1.1 spot check. Direct Qwen3-Coder Q4_K_S measured 95.55 t/s tg128 with `mmap=0`, so it did not beat the current b9179 98.51 t/s direct headline.
 - `raw/2026-06-01/qwen36-27b-mtp-latest-de6f727/`: latest llama.cpp `de6f727aa` / Mesa 26.1.1 sanity rerun for official Qwen3.6 27B MTP Q8_0. Baseline was 7.61 t/s and `draft-n=3` was 14.69 t/s, confirming this dense Q8 route is useful negative/control evidence rather than a speed path.
-- `raw/2026-06-02/reddit-look-int-dot-reproduction/`: exact local reproduction attempt for a Reddit-reported GMKtec Qwen3-Coder 100 t/s command on llama.cpp `1fd5f4803`, plus a Qwen3.6 27B direct follow-up. The Beelink stayed at 96.38-96.72 t/s because this build path reports `int dot: 0`; Qwen3.6 27B direct measured 7.70 t/s tg128.
+- `raw/2026-06-02/reddit-look-int-dot-reproduction/`: exact local reproduction attempt for a Reddit-reported GMKtec Qwen3-Coder 100 t/s command on llama.cpp `1fd5f4803`, plus a Qwen3.6 27B direct follow-up. The default Beelink build path stayed at 96.38-96.72 t/s with `int dot: 0`; a follow-up `glslc v2026.1` build enabled `int dot: 1` but still measured only 95.27-95.91 t/s in the completed checks. Qwen3.6 27B direct measured 7.70 t/s tg128.
 
 ## Status Values
 

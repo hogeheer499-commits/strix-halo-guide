@@ -1,0 +1,45 @@
+# intdot glslc2026 qwen3-coder q4_k_s
+2026-06-02T15:31:13+02:00
+1fd5f4803 clean up unused variables warnings (#23975)
+# list devices
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 1 | matrix cores: KHR_coopmat
+Available devices:
+  Vulkan0: Radeon 8060S Graphics (RADV STRIX_HALO) (131584 MiB, 129993 MiB free)
+# exact look command default
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 1 | matrix cores: KHR_coopmat
+| model                          |       size |     params | backend    | ngl |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | --: | --------------: | -------------------: |
+| qwen3moe 30B.A3B Q4_K - Small  |  16.25 GiB |    30.53 B | Vulkan     |  -1 |   1 |           pp512 |      1392.68 ± 12.39 |
+| qwen3moe 30B.A3B Q4_K - Small  |  16.25 GiB |    30.53 B | Vulkan     |  -1 |   1 |           tg128 |         95.61 ± 0.41 |
+
+build: 1fd5f4803 (134)
+# exact look command p0 ten-run batch
+## p0_run_1
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 1 | matrix cores: KHR_coopmat
+| model                          |       size |     params | backend    | ngl |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | --: | --------------: | -------------------: |
+| qwen3moe 30B.A3B Q4_K - Small  |  16.25 GiB |    30.53 B | Vulkan     |  -1 |   1 |           tg128 |         95.27 ± 0.59 |
+
+build: 1fd5f4803 (134)
+## p0_run_2
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 1 | matrix cores: KHR_coopmat
+| model                          |       size |     params | backend    | ngl |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | --: | --------------: | -------------------: |
+| qwen3moe 30B.A3B Q4_K - Small  |  16.25 GiB |    30.53 B | Vulkan     |  -1 |   1 |           tg128 |         95.91 ± 0.06 |
+
+build: 1fd5f4803 (134)
+## p0_run_3
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 1 | matrix cores: KHR_coopmat
+| model                          |       size |     params | backend    | ngl |  fa |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | --: | --------------: | -------------------: |
+| qwen3moe 30B.A3B Q4_K - Small  |  16.25 GiB |    30.53 B | Vulkan     |  -1 |   1 |           tg128 |         95.66 ± 0.42 |
+
+build: 1fd5f4803 (134)
+## p0_run_4
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 1 | matrix cores: KHR_coopmat

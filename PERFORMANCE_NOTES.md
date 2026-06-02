@@ -70,7 +70,7 @@ llama-bench -fa 1 -n 128 -m Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
 llama-bench -fa 1 -n 128 -p 0 -m Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
 ```
 
-Local Beelink reproduction on the same source commit:
+Local Beelink reproduction on the same source commit with the normal Ubuntu `glslc 2023.8` build path:
 
 - default command: **1392.09 t/s pp512**, **96.38 t/s tg128**
 - ten `-p 0` runs: **96.72 t/s best**, **96.51 t/s average**, **95.99 t/s minimum**
@@ -78,12 +78,19 @@ Local Beelink reproduction on the same source commit:
 
 The Reddit-reported GMKtec output showed `int dot: 1`. That matters because llama.cpp's Vulkan backend has integer-dot shader paths for quantized matmul. If the device and shader compiler expose that path, decode can be faster on Q4-style workloads.
 
-The confusing part is that this Beelink's `vulkaninfo` reports `VK_KHR_shader_integer_dot_product` and `shaderIntegerDotProduct = true`, but the host Ubuntu `glslc` package used during CMake reports `GL_EXT_integer_dot_product not supported by glslc`. In practice, the hardware/driver capability is visible, but the current host shader-compiler path does not let this llama.cpp build enable the integer-dot shaders.
+The confusing part is that this Beelink's `vulkaninfo` reports `VK_KHR_shader_integer_dot_product` and `shaderIntegerDotProduct = true`, but the host Ubuntu `glslc` package used during CMake reports `GL_EXT_integer_dot_product not supported by glslc`. In practice, the hardware/driver capability is visible, but the default host shader-compiler path does not let this llama.cpp build enable the integer-dot shaders.
+
+Follow-up: a separate host/RADV build using a container-wrapped `glslc v2026.1` did enable `GL_EXT_integer_dot_product`, and `llama-bench --list-devices` then reported `int dot: 1` on the same Beelink. That did **not** improve the result on this stack:
+
+- default command: **1392.68 t/s pp512**, **95.61 t/s tg128**
+- three `-p 0` checks before stopping the long run: **95.27-95.91 t/s**
+- local Vulkan device line: `int dot: 1`
 
 Interpretation:
 
 - The Reddit result is plausible and valuable, but this guide has not reproduced it on the Beelink yet.
-- The next clean route is not another random benchmark sweep; it is an isolated shader-toolchain test that enables `GL_EXT_integer_dot_product` without polluting the host.
+- `int dot: 1` is not sufficient by itself on this Beelink/RADV stack; the exact shader compiler, driver, and generated shader behavior still matter.
+- The next clean route is to compare the Reddit reporter's OS, Mesa/driver, `glslc`, and `llama.cpp` build metadata against this local `glslc v2026.1` attempt before promoting any 100 t/s conclusion.
 - Do not change the Beelink direct headline unless a repeated local run beats 98.51 t/s with raw output, host state, model hash, exact command, and `int dot: 1`/toolchain metadata.
 
 Raw evidence:
