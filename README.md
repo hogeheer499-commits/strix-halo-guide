@@ -343,18 +343,18 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 
 ## What You Can Run
 
-Real-world generation speeds measured on the Beelink GTR9 Pro (Vulkan RADV). Speeds marked with * are via llama-bench direct; others are via Ollama.
+Real-world generation speeds measured on the Beelink GTR9 Pro, primarily with Vulkan/RADV. Speeds marked with * are via `llama-bench` direct; others are via Ollama unless noted. Use this table to choose a first model, then follow the evidence links above before copying a benchmark claim.
 
 | Model | Size | Type | Generation Speed | Use Case |
 |-------|------|------|------------------|----------|
 | Qwen3-0.6B (Q8_0) | 0.8 GB | Dense | 266 t/s * | Ultra-fast tiny model |
 | Llama 2 7B | 3.8 GB | Dense | 48-52 t/s | Testing, lightweight tasks |
 | Qwen2.5-VL 7B | 6.0 GB | Vision | 21.4 t/s | Image understanding |
-| Gemma 4 26B-A4B (UD-Q4_K_M) | 15.7 GB | MoE | **48.5 t/s** * | Google's latest MoE, strong reasoning |
+| Gemma 4 26B-A4B (UD-Q4_K_M) | 15.7 GB | MoE | **48.5 t/s** * | Google MoE model, strong reasoning |
 | Qwen3-Coder 30B-A3B (Q4_K_S) | 17.5 GB | MoE | **98.5 t/s** * | Fastest measured coding speed; speed-first quant, not the balanced default |
 | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | MoE | **97 t/s** * | Best coding-model speed/quality ratio; current b9049 measured 96.76 t/s and previous b9010 peak was 97.24 t/s |
 | Qwen3.6 35B-A3B (Q4_0) | 19.7 GB | MoE | **81 t/s** * | Fastest measured Qwen3.6 speed-first quant; use a balanced quant if quality matters more than raw speed |
-| Qwen3.6 35B-A3B (Q4_K_M / UD-Q4_K_M) | 20-22 GB | MoE | **63-77 t/s** * | Best all-rounder family; current UD row is 63 t/s and Strix Q4_K_M candidate reached 77 t/s |
+| Qwen3.6 35B-A3B (Q4_K_M / UD-Q4_K_M) | 20-22 GB | MoE | **63 t/s** * | Best all-rounder balanced direct path; separate speed-first/alternate quants reach higher but need quality sanity |
 | Qwen3.5 35B-A3B | 23 GB | MoE | 48-**65 t/s** | General purpose, coding (65 with measured direct llama.cpp builds) |
 | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | 51 t/s | Coding (highest quality MoE) |
 | Qwen3-Coder-Next | 51 GB | Dense | 38-39 t/s | Large dense model |
@@ -368,7 +368,9 @@ Real-world generation speeds measured on the Beelink GTR9 Pro (Vulkan RADV). Spe
 
 ## Benchmark Results
 
-Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, 2026-05-07, 2026-05-16, 2026-05-26, and 2026-05-27. Benchmark system: Beelink GTR9 Pro, kernel 6.19.4, Mesa RADV 26.0.2-26.1.1, AMDVLK removed, tuned `accelerator-performance` active for measured runs. Before running new benchmarks, verify `tuned-adm active` and keep `power-profiles-daemon` inactive; it can conflict with `tuned`.
+Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, 2026-05-07, 2026-05-16, 2026-05-26, 2026-05-27, and 2026-06-01. Benchmark system: Beelink GTR9 Pro, kernel 6.19.4, Mesa RADV 26.0.2-26.1.1, AMDVLK removed, tuned `accelerator-performance` active for measured runs. Before running new benchmarks, verify `tuned-adm active` and keep `power-profiles-daemon` inactive; it can conflict with `tuned`.
+
+These rows are included because they answer practical setup questions: which model to try first, which backend removes the most friction, which paths are only experimental, and which results are strong enough to cite.
 
 ### Benchmark Charts
 
@@ -469,7 +471,7 @@ Single-user `llama-bench` tells you the ceiling for one stream. For a real local
 
 Raw data: `data/multi_user.csv`, `data/raw/2026-05-03/multi-user/`, and `data/raw/2026-05-03/multi-user-coder/`.
 
-### llama-bench Direct -- Latest llama.cpp (b9049, b9010, and b8460) vs kyuz0 Containers (b8298)
+### llama-bench Direct -- Key llama.cpp Builds (b9049, b9010, and b8460) vs kyuz0 Containers (b8298)
 
 > **UPDATE (2026-03-21): Updating llama.cpp from b8298 to b8460 gave +25% on both pp and tg for MoE models.** The new build includes a Vulkan Flash Attention refactor ([PR #19625](https://github.com/ggml-org/llama.cpp/pull/19625)), graphics queue optimization for AMD ([PR #20551](https://github.com/ggml-org/llama.cpp/pull/20551)), and GDN shader support for Qwen3.5 ([PR #20334](https://github.com/ggml-org/llama.cpp/pull/20334)).
 >
@@ -482,14 +484,14 @@ Raw data: `data/multi_user.csv`, `data/raw/2026-05-03/multi-user/`, and `data/ra
 
 | Build | Driver | pp128 | pp512 | tg128 | vs old RADV |
 |-------|--------|-------|-------|-------|-------------|
-| **b8460 (latest)** | **RADV** | **623** | **1080** | **64.85** | **pp +24%, tg +25%** |
-| b8460 (latest) | AMDVLK | 521 | 663 | 64.10 | pp -24%, tg +23% |
+| **b8460 (newer March build)** | **RADV** | **623** | **1080** | **64.85** | **pp +24%, tg +25%** |
+| b8460 (newer March build) | AMDVLK | 521 | 663 | 64.10 | pp -24%, tg +23% |
 | b8298 (kyuz0) | RADV | 583 | 868 | 52.06 | baseline |
 | b8298 (kyuz0) | AMDVLK | 479 | 576 | 56.08 | |
 
-> **Beginner rule: use RADV for Vulkan. Do not install AMDVLK.** With the latest tested Vulkan build, RADV is faster than AMDVLK on both pp (+63%) and tg (+1.2%), and AMDVLK can silently hijack your Vulkan driver. Advanced note: ROCm/HIP is a different backend, not a Vulkan driver. HIP can still be worth testing for long prompts, RAG ingest, and other prompt-processing-heavy workloads.
+> **Beginner rule: use RADV for Vulkan. Do not install AMDVLK.** In the newer b8460 Vulkan comparison, RADV is faster than AMDVLK on both pp (+63%) and tg (+1.2%), and AMDVLK can silently hijack your Vulkan driver. Advanced note: ROCm/HIP is a different backend, not a Vulkan driver. HIP can still be worth testing for long prompts, RAG ingest, and other prompt-processing-heavy workloads.
 
-Extended context scaling (latest build, RADV):
+Extended context scaling (b8460 RADV):
 
 | pp512 | pp2048 | pp4096 | pp8192 | Drop at 8K |
 |-------|--------|--------|--------|------------|
@@ -547,17 +549,17 @@ Extended context scaling (latest build, RADV):
 
 > Qwen3.6 is a drop-in replacement for Qwen3.5 with significantly improved coding and reasoning quality (same architecture, same active parameters, effectively identical speed). Older April data showed a 13% UD-Q4_K_M penalty, but the controlled May b9010 and b9049 reruns did **not** reproduce that large gap. Prefer plain Q4_K_M when you have a direct-compatible GGUF, but treat the old "UD is always 13% slower" warning as superseded until same-build plain-vs-UD is rerun.
 
-### ROCm HIP -- now working on kernel 6.19.4!
+### ROCm HIP -- usable on kernel 6.19.4 with HSA override
 
 We discovered that `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0` fixes the ROCm segfault on kernel 6.19.x. We also rebuilt ROCm with the same b8460 source to make the comparison fair:
 
 | Build | pp128 | pp512 | tg128 | Notes |
 |-------|-------|-------|-------|-------|
-| **b8460 (latest, kernel 6.19.4)** | **547** | **1047** | **54.67** | **tg +14% vs b8301** |
+| **b8460 (newer March build, kernel 6.19.4)** | **547** | **1047** | **54.67** | **tg +14% vs b8301** |
 | b8301 (self-compiled, kernel 6.19.4) | 542 | 1059 | 47.87 | old build |
 | b8301 (self-compiled, kernel 6.18.14) | 488 | 996 | 48.80 | previous best |
 
-> ROCm also improved with the latest build: tg went from 47.87 to **54.67** (+14%) thanks to generic llama.cpp optimizations. But **Vulkan RADV is still faster on both pp and tg**: RADV 1080 vs ROCm 1047 pp512 (+3%), RADV 64.85 vs ROCm 54.67 tg128 (+19%). The +25% Vulkan improvement was ~14% generic (ROCm got this too) plus ~11% Vulkan-specific (FA refactor, graphics queue). ROCm's remaining advantage is hipBLASLt and rocWMMA at very long context (32K+).
+> ROCm also improved in the b8460 comparison: tg went from 47.87 to **54.67** (+14%) thanks to generic llama.cpp optimizations. But **Vulkan RADV was still faster on both pp and tg in this short-context pair**: RADV 1080 vs ROCm 1047 pp512 (+3%), RADV 64.85 vs ROCm 54.67 tg128 (+19%). The +25% Vulkan improvement was ~14% generic (ROCm got this too) plus ~11% Vulkan-specific (FA refactor, graphics queue). ROCm's remaining advantage is hipBLASLt and rocWMMA at very long context (32K+).
 
 **ROCm HIP spot check (2026-05-03, b8460 HIP build):**
 
@@ -578,7 +580,7 @@ We discovered that `HSA_OVERRIDE_GFX_VERSION=11.5.1` + `HSA_ENABLE_SDMA=0` fixes
 | ROCm HIP (b8301, HSA fix) | 1059 | 47.87 | Old build, unfair comparison |
 | ROCm HIP **(b8460, HSA fix)** | **1047** | **54.67** | **ROCm got +14% tg from same update** |
 
-> The single biggest optimization you can make is **updating llama.cpp to the latest build**. It gave us more improvement (+25% on MoE models) than all kernel tuning, batch size sweeps, and driver comparisons combined. This is counter-intuitive -- people spend hours on kernel parameters, GRUB flags, and Mesa versions, while `git pull && cmake --build` delivers more than everything else put together. Note: this applies to MoE models specifically. Dense models were already at the bandwidth ceiling and show <2% change.
+> The single biggest optimization in this early campaign was **updating llama.cpp**. It gave more improvement (+25% on MoE models) than all kernel tuning, batch size sweeps, and driver comparisons combined. This is counter-intuitive -- people spend hours on kernel parameters, GRUB flags, and Mesa versions, while a current source build can deliver more than everything else put together. Note: this applies to MoE models specifically. Dense models were already at the bandwidth ceiling and show <2% change.
 
 **Batch size and ubatch tuning results (b8298, for reference):**
 
@@ -647,7 +649,7 @@ export ROCBLAS_USE_HIPBLASLT=1
 | **RADV** | Llama 2 7B Q4_K_M | **1153.53** | **1364.45** | **1377.18** | **1355.88** | 48.12 |
 | **AMDVLK** | Llama 2 7B Q4_K_M | 334.50 | 337.96 | 327.35 | 325.33 | 48.02 |
 
-> **Critical finding (b8298):** AMDVLK has a 2 GiB single buffer allocation limit that cripples pp on dense models (3-4X slower on Llama 2 7B). On MoE models, AMDVLK was slightly faster on tg (+6.5%) with b8298, but **this advantage disappeared with b8460** -- see the [latest benchmarks](#llama-bench-direct-latest-llamacpp-b9049-b9010-and-b8460-vs-kyuz0-containers-b8298). For beginners: keep AMDVLK removed and use RADV for Vulkan.
+> **Critical finding (b8298):** AMDVLK has a 2 GiB single buffer allocation limit that cripples pp on dense models (3-4X slower on Llama 2 7B). On MoE models, AMDVLK was slightly faster on tg (+6.5%) with b8298, but **this advantage disappeared with b8460** -- see the [key build comparison](#llama-bench-direct-key-llamacpp-builds-b9049-b9010-and-b8460-vs-kyuz0-containers-b8298). For beginners: keep AMDVLK removed and use RADV for Vulkan.
 
 **Vulkan RADV vs ROCm HIP (same build b8460, Qwen3.5-35B-A3B):**
 
@@ -1360,7 +1362,7 @@ export HSA_OVERRIDE_GFX_VERSION=11.5.1
 export HSA_ENABLE_SDMA=0
 ```
 
-With this fix, ROCm worked on the measured kernel 6.19.4 setup and improved prompt-processing throughput versus the older measured 6.18.14 row. See [benchmarks](#rocm-hip-now-working-on-kernel-6194) for numbers.
+With this fix, ROCm worked on the measured kernel 6.19.4 setup and improved prompt-processing throughput versus the older measured 6.18.14 row. See [benchmarks](#rocm-hip-usable-on-kernel-6194-with-hsa-override) for numbers.
 
 ### Qwen3.5 ROCm Hang Bug ([ROCm #6027](https://github.com/ROCm/ROCm/issues/6027))
 
@@ -1533,7 +1535,7 @@ Based on community testing and our own findings:
 - linux-firmware-20251125 breaks ROCm regardless of kernel
 - linux-firmware-20260110+ is safe
 
-> **Current recommendation (May 2026):** Kernel 6.19.x works for both Vulkan and ROCm (ROCm requires `HSA_OVERRIDE_GFX_VERSION=11.5.1`). Kernel 6.18.6-6.18.14 works without the HSA workaround. Before publishing benchmark numbers, also verify Mesa, AMDVLK removal, GPU clock, and `tuned` status.
+> **Current measured recommendation:** Kernel 6.19.x works for both Vulkan and ROCm in this guide's May/June 2026 runs (ROCm requires `HSA_OVERRIDE_GFX_VERSION=11.5.1`). Kernel 6.18.6-6.18.14 works without the HSA workaround. Before publishing benchmark numbers, also verify Mesa, AMDVLK removal, GPU clock, and `tuned` status.
 
 ---
 
@@ -1642,7 +1644,7 @@ ollama pull qwen3.6:35b-a3b
 | **Claude Pro** | $20/mo | Fast | No | No |
 | **OpenAI API** (gpt-4o, 50 queries/day) | ~$15/mo | Fast | No | No |
 | **Anthropic API** (Claude Sonnet, 50 queries/day) | ~$12/mo | Fast | No | No |
-| **Strix Halo** (after purchase) | **~$8/mo electricity** | 50-97 t/s on current measured paths | **Yes** | **Yes** |
+| **Strix Halo** (after purchase) | **~$8/mo electricity** | 50-98.5 t/s on current measured paths | **Yes** | **Yes** |
 
 **Break-even calculation:**
 
@@ -1680,7 +1682,7 @@ For Claude Code specifically:
 ANTHROPIC_BASE_URL=http://localhost:11434 claude --model qwen3.6:35b-a3b
 ```
 
-At 50-97 t/s on current measured paths, local inference feels fast enough for code completion and review workflows.
+At 50-98.5 t/s on current measured paths, local inference feels fast enough for code completion and review workflows.
 
 ### ChatGPT-like Web Interface (Open WebUI)
 
@@ -1818,11 +1820,11 @@ New to local LLMs? Here's what the technical terms mean.
 
 They are not two different programs. **Ollama is a wrapper around llama.cpp.** It adds model management (`ollama pull`), a simple API, and easy commands (`ollama run`). Under the hood, it runs the same llama.cpp inference engine.
 
-So why is llama.cpp direct about 25% faster on Qwen3.6? Two reasons:
+So why can llama.cpp direct be faster on Qwen3.6 and Qwen3-Coder? Two reasons:
 
-1. **Wrapper overhead.** Ollama adds layers between you and the GPU: model loading, API translation, memory management. This costs ~8-15% on token generation.
+1. **Wrapper/API overhead.** Ollama adds layers between you and the GPU: model loading, API translation, memory management, and service behavior. On the current Qwen3.6 rows, Ollama 0.23.1 is about 19-20% slower than the direct `llama-bench` path.
 
-2. **Bundled version.** Ollama ships with a specific llama.cpp version baked in. As of March 2026, Ollama bundles an older build that misses recent Vulkan optimizations (Flash Attention refactor, graphics queue on AMD, GDN shaders). These optimizations gave us +25% on MoE models. Ollama will catch up eventually, but there's always a lag.
+2. **Bundled version.** Ollama ships with a specific llama.cpp version baked in. Direct source builds can pick up new `llama.cpp` optimizations earlier. The March b8298-to-b8460 jump gave +25% on some MoE Vulkan rows; later rows are tracked separately in [`BENCHMARKS.md`](BENCHMARKS.md).
 
 **Think of it like a web browser:** Ollama is Chrome (easy to use, auto-updates, but bundles a specific engine version). llama.cpp direct is building Chromium from source (more work, but you get the latest engine immediately).
 
@@ -1846,7 +1848,7 @@ AMD_VULKAN_ICD=RADV ./build-vulkan/bin/llama-server \
   --host 0.0.0.0 --port 8080
 ```
 
-Then point your tools at `http://localhost:8080/v1` instead of `http://localhost:11434/v1`. Same API, about 25% faster on Qwen3.6 short-context generation.
+Then point your tools at `http://localhost:8080/v1` instead of `http://localhost:11434/v1`. Same API style, with less wrapper overhead and more control over the exact `llama.cpp` build and flags.
 
 </details>
 
@@ -2112,7 +2114,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 - Complete rewrite with live benchmarks on current system
 - Added: Kernel 6.19.x ROCm fix (HSA_OVERRIDE_GFX_VERSION=11.5.1)
 - Added: Mesa 26.0.2 results (+4-5% tg improvement over 26.0.1)
-- Added: qwen3-coder:30b-a3b-q8_0 benchmarks (51.4 t/s -- fastest model)
+- Added: qwen3-coder:30b-a3b-q8_0 benchmarks (51.4 t/s -- fastest model in that initial run)
 - Added: Long context performance data from lhl (Vulkan vs ROCm at 32K)
 - Added: rocWMMA status update (upstream broken, lhl's tuned branch works)
 - Added: vLLM setup and known issues
