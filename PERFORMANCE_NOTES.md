@@ -96,3 +96,35 @@ Interpretation:
 Raw evidence:
 
 - [`data/raw/2026-06-02/reddit-look-int-dot-reproduction/`](data/raw/2026-06-02/reddit-look-int-dot-reproduction/)
+
+## High-Power Policy And Thermal Tuning Status
+
+A community GMKtec EVO-X2 follow-up later reported two important tuning details behind a roughly 100 t/s Qwen3-Coder 30B `Q4_K_S` result:
+
+- the heatsink was reapplied with higher-quality thermal paste;
+- stock thermal pads on memory chips were reseated, reportedly lowering CPU/GPU temperatures by 15-20C;
+- Linux GPU DPM was forced to `high`, and CPU EPP was forced to `performance`.
+
+This is useful context, but it is not a default recommendation. The reporter also warned that the policy can add roughly 15-20 W to GPU power, can be workload-dependent, and can be risky if the stock thermal interface is poor.
+
+A short local Beelink follow-up used llama.cpp `1fd5f4803`, Qwen3-Coder 30B-A3B `Q4_K_S`, Vulkan/RADV, and this command shape:
+
+```bash
+llama-bench -m Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf -fa 1 -ngl 999 -mmp 0 -b 2048 -ub 512 -p 512 -n 128 -r 5
+```
+
+Result:
+
+| Policy | pp512 | tg128 |
+| --- | ---: | ---: |
+| GPU `auto`, CPU EPP still reported `performance` | 1216.82 +/- 68.76 t/s | 95.18 +/- 1.42 t/s |
+| GPU `high`, CPU EPP `performance` | 1390.03 +/- 7.91 t/s | 96.37 +/- 0.29 t/s |
+
+Local interpretation:
+
+- The high-power policy helped this short local run, especially prompt processing stability.
+- It did not reproduce the external 100 t/s GMKtec result on this Beelink.
+- The external thermal rework may matter as much as, or more than, the software policy.
+- Keep this labeled as advanced tuning context until repeated with temperature, clock, power, and before/after logs.
+
+Raw local logs: [`data/raw/2026-06-02/high-power-policy-test/`](data/raw/2026-06-02/high-power-policy-test/).

@@ -1,0 +1,48 @@
+## before clean_auto_pp512_tg128_r5
+2026-06-02T17:08:08+02:00
+/sys/class/drm/card1/device/power_dpm_force_performance_level=auto
+cpu0_epp=performance
+# sclk
+0: 600Mhz 
+1: 1070Mhz *
+2: 2900Mhz 
+# mclk
+0: 400Mhz 
+1: 800Mhz 
+2: 1000Mhz *
+## after before clean_auto_pp512_tg128_r5
+2026-06-02T17:10:00+02:00
+/sys/class/drm/card1/device/power_dpm_force_performance_level=auto
+cpu0_epp=performance
+# sclk
+0: 600Mhz 
+1: 2607Mhz *
+2: 2900Mhz 
+# mclk
+0: 400Mhz 
+1: 800Mhz 
+2: 1000Mhz *
+## before clean_high_pp512_tg128_r5
+2026-06-02T17:10:06+02:00
+/sys/class/drm/card1/device/power_dpm_force_performance_level=high
+cpu0_epp=performance
+# sclk
+0: 2900Mhz 
+1: 2899Mhz *
+2: 2900Mhz 
+# mclk
+0: 400Mhz 
+1: 800Mhz 
+2: 1000Mhz *
+## after before clean_high_pp512_tg128_r5
+2026-06-02T17:10:16+02:00
+/sys/class/drm/card1/device/power_dpm_force_performance_level=high
+cpu0_epp=performance
+# sclk
+0: 2900Mhz 
+1: 1100Mhz 
+2: 2900Mhz *
+# mclk
+0: 400Mhz 
+1: 800Mhz 
+2: 1000Mhz *

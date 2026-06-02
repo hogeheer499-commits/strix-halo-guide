@@ -1,0 +1,13 @@
+# before clean_auto_pp512_tg128_r5
+2026-06-02T17:08:08+02:00
+# command
+/home/hoge-heer/llama-cpp-upstream-2026-06-02-1fd5f4803/build-vulkan/bin/llama-bench -m /home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf -fa 1 -ngl 999 -mmp 0 -b 2048 -ub 512 -p 512 -n 128 -r 5
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 0 | matrix cores: KHR_coopmat
+| model                          |       size |     params | backend    | ngl |  fa | mmap |            test |                  t/s |
+| ------------------------------ | ---------: | ---------: | ---------- | --: | --: | ---: | --------------: | -------------------: |
+| qwen3moe 30B.A3B Q4_K - Small  |  16.25 GiB |    30.53 B | Vulkan     | 999 |   1 |    0 |           pp512 |      1216.82 ± 68.76 |
+| qwen3moe 30B.A3B Q4_K - Small  |  16.25 GiB |    30.53 B | Vulkan     | 999 |   1 |    0 |           tg128 |         95.18 ± 1.42 |
+
+build: 1fd5f4803 (134)
+# exit=0
