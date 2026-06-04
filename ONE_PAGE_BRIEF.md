@@ -16,7 +16,7 @@ The repo already includes a technical proof layer:
 - Headline claim index: [`data/headline_claims.csv`](data/headline_claims.csv).
 - Structured CSV data and raw artifacts: [`data/`](data/README.md), [`data/raw/`](data/raw/).
 - Charts: [`charts/`](charts/README.md).
-- Community validation: [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md).
+- Community validation: [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md).
 - Backend/server caveats: [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md), [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md), [`VLLM_BASELINE.md`](VLLM_BASELINE.md), [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md).
 
 ## Commercial Value
@@ -24,6 +24,8 @@ The repo already includes a technical proof layer:
 This project turns scattered setup knowledge into public evidence and practical buyer confidence. It helps developers and buyers understand what AMD Strix Halo local-AI hardware can do, which setup path to try first, what remains experimental, and where more vendor support would remove friction.
 
 For vendors and developer-relations teams, that means fewer adoption barriers, clearer buyer guidance, more credible reviews, and better signals about software or firmware gaps.
+
+Current public evidence includes five community benchmark contributors and eight Strix Halo-class systems across Beelink, Corsair, GMKtec, MS-S1-Max, and Nimo. Community rows remain separated from first-party Beelink headline claims.
 
 ## Collaboration Ask
 

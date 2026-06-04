@@ -6,22 +6,24 @@ Do not invent traction numbers. Fill the TODOs only from current public GitHub d
 
 ## Current Public GitHub Stats
 
-Snapshot date: 2026-06-02.
+Snapshot date: 2026-06-04.
 
 | Metric | Current value | Source |
 |--------|---------------|--------|
-| Stars | 66 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| Stars | 86 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
 | Forks | 4 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
 | Open issues | 4 | [GitHub Issues](https://github.com/hogeheer499-commits/strix-halo-guide/issues) |
 | Open pull requests | 0 | [GitHub Pull Requests](https://github.com/hogeheer499-commits/strix-halo-guide/pulls) |
 | Releases | 5 | [GitHub Releases](https://github.com/hogeheer499-commits/strix-halo-guide/releases) |
 | Contributors | 3 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
+| Community benchmark contributors | 5 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
+| Strix Halo-class systems represented | 8 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) |
 
 ## Evidence Already In The Repo
 
 | Evidence type | Where to read it | Why it matters |
 |---------------|------------------|----------------|
-| Community validation | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`data/community_results.csv`](data/community_results.csv) | Shows independent reproduction and portability evidence without treating community data as vendor endorsement. |
+| Community validation | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`data/community_results.csv`](data/community_results.csv), [`data/community_nimo_issue4.csv`](data/community_nimo_issue4.csv) | Shows independent reproduction and portability evidence across Beelink, Corsair, GMKtec, MS-S1-Max, and Nimo without treating community data as vendor endorsement. |
 | Community power context | [`COMMUNITY_RESULTS.md#whole-system-power`](COMMUNITY_RESULTS.md#whole-system-power), [`data/community_power.csv`](data/community_power.csv) | Helps buyers think about efficiency, heat, and always-on operation. |
 | Community RPC and USB4 data | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md), [`data/community_rpc.csv`](data/community_rpc.csv) | Shows advanced capacity/scaling experiments while keeping them separate from default single-machine guidance. |
 | Raw benchmark data | [`data/raw/`](data/raw/) | Lets readers inspect command output and provenance instead of relying on summary claims. |

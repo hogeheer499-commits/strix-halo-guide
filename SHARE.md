@@ -44,7 +44,7 @@ Everyone should post this link.
 
 ## One-Line Summary
 
-Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 96-128GB unified memory: setup, model choices, direct 100.0 t/s 30B-class Qwen MoE evidence, 98.5 t/s Qwen3-Coder speed-first, 81.3 t/s Qwen3.6 speed-first, 55.6 t/s gpt-oss-120b, 128K context, MTP speculative decoding at 101.1 t/s local broad average, CSVs, raw logs, reproducibility notes, community validation across Corsair, GMKtec, and MS-S1-Max systems, command-flag sensitivity notes, Windows LM Studio evidence, tuned thermal/power-policy evidence, and first wall-power efficiency rows.
+Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 96-128GB unified memory: setup, model choices, direct 100.0 t/s 30B-class Qwen MoE evidence, 98.5 t/s Qwen3-Coder speed-first, 81.3 t/s Qwen3.6 speed-first, 55.6 t/s gpt-oss-120b, 128K context, MTP speculative decoding at 101.1 t/s local broad average, CSVs, raw logs, reproducibility notes, community validation across Corsair, GMKtec, MS-S1-Max, and Nimo systems, command-flag sensitivity notes, Windows LM Studio evidence, tuned thermal/power-policy evidence, Nimo large-model serving evidence, and first wall-power efficiency rows.
 
 ## Short Share Text
 

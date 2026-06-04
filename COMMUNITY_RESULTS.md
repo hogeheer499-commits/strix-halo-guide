@@ -5,6 +5,7 @@ Community benchmark reports are kept separate from the guide's headline claims. 
 Structured data:
 
 - [`data/community_results.csv`](data/community_results.csv)
+- [`data/community_nimo_issue4.csv`](data/community_nimo_issue4.csv)
 - [`data/community_power.csv`](data/community_power.csv)
 - [`data/community_rpc.csv`](data/community_rpc.csv)
 - [`data/community_rpc_server.csv`](data/community_rpc_server.csv)
@@ -29,6 +30,7 @@ Raw community follow-up artifacts:
 - GMKtec EVO-X2 Qwen3.6 MTP follow-up: [`data/raw/2026-05-19/community-gmktec-mtp-issue18/`](data/raw/2026-05-19/community-gmktec-mtp-issue18/)
 - Windows LM Studio MS-S1-Max report: [`data/raw/2026-06-02/community-windows-lmstudio-issue3/`](data/raw/2026-06-02/community-windows-lmstudio-issue3/)
 - Reddit GMKtec EVO-X2 tuned Qwen3-Coder report: [`data/raw/2026-06-02/community-reddit-look-qwen-coder/`](data/raw/2026-06-02/community-reddit-look-qwen-coder/)
+- Nimo AI Mini PC issue #4 bundle: [`data/raw/2026-06-03/community-nimo-issue4/`](data/raw/2026-06-03/community-nimo-issue4/), summarized in [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md)
 
 Short version: these reports add trust signals the primary Beelink results cannot provide alone:
 
@@ -44,6 +46,7 @@ Short version: these reports add trust signals the primary Beelink results canno
 - first GMKtec EVO-X2 WSL2/HIP baseline, useful as Windows/WSL2 evidence but not apples-to-apples with native Vulkan/RADV
 - first Windows / LM Studio / Ryzen AI MAX+ 395 community serving report, useful for Windows buyers but not a native-Linux comparison
 - first Reddit-reported tuned GMKtec EVO-X2 Qwen3-Coder `Q4_K_S` row around 99.9-100.0 t/s, with explicit thermal and power-policy qualifiers
+- first Nimo AI Mini PC community bundle, adding another compact 128GB Strix Halo chassis plus large-model, MTP, StepFun, Qwen 122B, and thermal-context evidence
 
 For the shortest practical decision layer, see the README section [Community-Tested Rules Of Thumb](README.md#community-tested-rules-of-thumb).
 
@@ -63,6 +66,21 @@ For the shortest practical decision layer, see the README section [Community-Tes
 | 2026-05-19 | mottledMantis | GMKtec EVO-X2, Ryzen AI MAX+ 395, 96GB | Ubuntu 26.04, kernel 7.0.0-15, Mesa RADV 26.0.3, llama.cpp b9235 | Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn | no MTP: 74.72 t/s; MTP `draft-n=2`: 93.29 t/s; MTP `draft-n=3`: 93.01 t/s. | First independent reproduction of the guide's exact MTP GGUF route. It slightly exceeds the local Beelink b9235 broad MTP average, while still keeping the "not a broad 100 t/s claim" boundary intact. | [#18](https://github.com/hogeheer499-commits/strix-halo-guide/issues/18), [`mtp_speculative.csv`](data/mtp_speculative.csv) |
 | 2026-06-02 | bennos1911 | Minisforum MS-S1-Max, Ryzen AI MAX+ 395, 128GB | Windows 11 Pro 25H2, AMD Adrenalin 26.5.2, LM Studio 0.4.15 build 2, Vulkan llama.cpp v2.18.0 | Qwen3.6 35B-A3B Q4_K_M | LM Studio API script summary: 45 runs, 89.49 tok/s average, 78.53 tok/s median; long 512-token prompt rows around 69-70 tok/s. | First Windows / LM Studio / Ryzen AI MAX+ 395 community serving report. It helps Windows-first buyers, but it is a different benchmark shape from native Linux `llama-bench` and does not prove Windows-vs-Linux parity. | [#3](https://github.com/hogeheer499-commits/strix-halo-guide/issues/3#issuecomment-4602020775), [`raw`](data/raw/2026-06-02/community-windows-lmstudio-issue3/) |
 | 2026-06-02 | Look_Over_There | GMKtec EVO-X2, Ryzen AI MAX+ 395 | Vulkan/RADV device line `RADV_STRIX_HALO`, llama.cpp b9467 `1fd5f4803`; OS/kernel/Mesa not reported | Qwen3-Coder 30B-A3B Q4_K_S | Short-context `-p 0 -n 128`: most runs around 99.90 t/s; best observed 100.0 t/s after about 10 runs. | Independent Reddit result showing that a tuned GMKtec can touch 100 t/s on this speed-first Qwen3-Coder shape. The contributor disclosed repaste, reseated memory pads, 15-20C lower CPU/GPU temps, and high-power policy, so treat it as tuned thermal/power-policy evidence rather than a default headline. | [Reddit thread](https://www.reddit.com/r/StrixHalo/comments/1tu78x5/qwen3coder_30b_at_985_ts_on_strix_halo_has_anyone/), [`raw note`](data/raw/2026-06-02/community-reddit-look-qwen-coder/) |
+| 2026-06-03 | boxwrench | Nimo AI Mini PC, Ryzen AI MAX+ 395, 128GB | Ubuntu 25.04, kernel 6.18.1, Mesa RADV 25.2.8, ROCm 7.1.1 baseline, UMA 4GB, IOMMU on | Qwen 3.6 35B, Qwen3-Coder-Next, Qwen 122B, StepFun Step-3.7-Flash, DFlash rows | Key rows include Qwen3-Coder-Next Vulkan server at 723.2 pp / 44.4 decode, Qwen 122B MTP tuned decode at 28.3 t/s, StepFun MTP at 211.2 pp / 26.0 decode, and Qwen3.6 MTP Q4_K_M at 81.2 t/s. | Adds another compact 128GB Strix Halo chassis and broad large-model/server evidence. This is valuable buyer/OEM portability evidence, but the rows are server/eval/community rows, not first-party direct `llama-bench` headlines. | [#4](https://github.com/hogeheer499-commits/strix-halo-guide/issues/4#issuecomment-4608440144), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`structured`](data/community_nimo_issue4.csv) |
+
+## Nimo AI Mini PC Large-Model Bundle
+
+boxwrench contributed the first Nimo AI Mini PC bundle in [#4](https://github.com/hogeheer499-commits/strix-halo-guide/issues/4#issuecomment-4608440144). The summary lives in [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), with structured rows in [`data/community_nimo_issue4.csv`](data/community_nimo_issue4.csv) and raw attachments under [`data/raw/2026-06-03/community-nimo-issue4/`](data/raw/2026-06-03/community-nimo-issue4/).
+
+The practical value is vendor/chassis coverage and large-model feasibility, not a replacement speed headline. The bundle adds:
+
+- Nimo AI Mini PC, Ryzen AI MAX+ 395 / Radeon 8060S, 128GB unified memory
+- Ubuntu 25.04, kernel 6.18.1, Mesa 25.2.8, ROCm 7.1.1 baseline
+- 4GB UMA and IOMMU enabled, different from this guide's primary Beelink recommendation
+- Qwen 3.6 35B, Qwen3-Coder-Next, Qwen 122B, StepFun Step-3.7-Flash, DFlash, GPT-OSS/Gemma rows in the raw bundle
+- thermal and power context that is useful for compact-chassis buyers
+
+Important caveat: these are community serving/eval rows with their own harnesses, not same-shape direct Beelink `llama-bench` comparisons.
 
 ## Cross-Box Variance
 
@@ -210,6 +228,7 @@ This is strong independent validation for the Vulkan/RADV Qwen3-Coder path. It d
 - The WSL2/HIP baseline is useful for Windows users, but native Linux Vulkan/RADV remains the recommended fast path for this guide's measured workloads.
 - The first community RPC matrix says multi-box Strix Halo is useful for capacity, not automatic speed. Shard only when the model does not fit or when the capacity tradeoff is worth the RPC tax.
 - The first community USB4 tuning result gives cluster operators a low-friction step for lower latency and tighter benchmark variance, with an idle-power tradeoff.
+- The Nimo bundle extends the evidence map to another compact 128GB Strix Halo chassis and adds large-model/server/MTP rows that answer "what can this hardware attempt?" rather than only "what is the fastest short-context direct row?"
 - `RADV GFX1151` on older Mesa and `RADV STRIX_HALO` on newer Mesa refer to the same Strix Halo iGPU class; the name changed with Mesa/device-string updates.
 - Community rows should stay out of `data/headline_claims.csv` unless they are reproduced locally or promoted with clear scope.
 

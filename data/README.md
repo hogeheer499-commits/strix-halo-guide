@@ -14,6 +14,7 @@ python3 scripts/generate_charts.py
 
 - `headline_claims.csv`: machine-readable map from public README headline claims to structured CSVs, raw evidence, charts, and notes.
 - `community_results.csv`: benchmark reports from other Strix Halo systems. These rows are useful external validation but are kept separate from public headline claims.
+- `community_nimo_issue4.csv`: selected structured rows from boxwrench's Nimo AI Mini PC issue #4 bundle, including Qwen 3.6, Qwen3-Coder-Next, Qwen 122B, StepFun, MTP, DFlash, and thermal-context references. These are community serving/eval rows, not first-party direct `llama-bench` headlines.
 - `community_power.csv`: community-reported whole-system wall-power and energy-per-token rows. These are useful external validation and tokens-per-watt baselines, but are not local headline claims.
 - `beelink_power_telemetry.csv`: local Beelink amdgpu `PPT` telemetry rows. These are useful same-machine power/load context, but they are not wall-power rows.
 - `community_rpc.csv`: community-reported multi-node `llama.cpp` RPC rows over USB4 Ethernet. These are advanced capacity/scaling results and are not single-machine headline claims.
@@ -70,6 +71,7 @@ python3 scripts/generate_charts.py
 - `raw/2026-06-02/high-power-policy-test/`: short local Beelink follow-up for a community high-power policy / thermal tuning report. GPU `high` plus CPU EPP `performance` improved this short b9467 Qwen3-Coder Q4_K_S run from 95.18 to 96.37 t/s tg128, but it did not reproduce the external 100 t/s GMKtec result and is advanced tuning context only.
 - `raw/2026-06-02/community-windows-lmstudio-issue3/`: imported Windows / LM Studio / MS-S1-Max community report from issue #3, including the benchmark script, CSV output, and hardware telemetry. This is serving/API evidence, not a native Linux `llama-bench` comparison.
 - `raw/2026-06-02/community-reddit-look-qwen-coder/`: provenance note for Look_Over_There's Reddit GMKtec EVO-X2 tuned Qwen3-Coder `Q4_K_S` report, including the reported 99.9-100.0 t/s result, thermal repaste/pad qualifier, and high-power policy caveat.
+- `raw/2026-06-03/community-nimo-issue4/`: imported Nimo AI Mini PC community bundle from issue #4, including system metadata, reproducibility notes, manifest, raw benchmark rows, thermal telemetry, StepFun, Qwen 122B MTP, and Qwen3-Coder-Next follow-up notes. Summarized in `../COMMUNITY_NIMO.md` and `community_nimo_issue4.csv`.
 - `raw/2026-06-02/modern-model-clean-followup/`: modern-model follow-up after Reddit feedback. Qwen3-Coder-Next 80B-A3B IQ4_XS measured 61.91 t/s tg128 and 738.98 t/s pp512 on b9467. A Qwen3.6 MTP b9360 repeat averaged 97.08 t/s across six prompts, with code prompts above 105 t/s; useful nuance for the experimental server/speculative route, not a new direct headline.
 - `raw/2026-06-02/qwen3-coder-next-iq4xs/`: earlier modern Qwen3-Coder-Next 80B-A3B IQ4_XS Vulkan/RADV row. It measured 61.68 t/s tg128 and 735.72 t/s pp512, useful for current-model context but superseded by the b9467 repeat in `raw/2026-06-02/modern-model-clean-followup/`.
 

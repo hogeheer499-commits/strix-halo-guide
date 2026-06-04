@@ -90,6 +90,25 @@ Relevant docs:
 - [`data/community_results.csv`](data/community_results.csv)
 - [`data/raw/2026-06-02/community-reddit-look-qwen-coder/`](data/raw/2026-06-02/community-reddit-look-qwen-coder/)
 
+### [boxwrench](https://github.com/boxwrench)
+
+boxwrench added the first Nimo AI Mini PC community bundle:
+
+- Nimo AI Mini PC with Ryzen AI MAX+ 395 / Radeon 8060S and 128GB unified memory
+- Ubuntu 25.04, kernel 6.18.1, Mesa RADV 25.2.8, ROCm 7.1.1 baseline, 4GB UMA, and IOMMU enabled
+- structured bundle with system metadata, reproducibility notes, manifest, raw benchmark rows, headline-style claim index, and supplemental thermal telemetry
+- Qwen 3.6 35B, Qwen3-Coder-Next, Qwen 122B, StepFun Step-3.7-Flash, DFlash, GPT-OSS, and Gemma rows in the raw bundle
+- Qwen 122B MTP tuning notes showing that `PMIN` pruning improved validation efficiency but reduced generation throughput
+- StepFun MTP notes showing a server/speculative speedup in the contributor's harness
+- compact-chassis thermal/power/noise context useful for buyers and vendors evaluating non-Beelink systems
+
+Relevant docs:
+
+- [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md)
+- [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md#nimo-ai-mini-pc-large-model-bundle)
+- [`data/community_nimo_issue4.csv`](data/community_nimo_issue4.csv)
+- [`data/raw/2026-06-03/community-nimo-issue4/`](data/raw/2026-06-03/community-nimo-issue4/)
+
 ## How To Get Contributor Credit
 
 Benchmark reports in issues are welcome and will be credited when incorporated. Pull requests are even better for future datasets because GitHub will automatically attach commit-level contributor credit after merge.
