@@ -15,8 +15,8 @@ Snapshot date: 2026-06-04.
 | Open issues | 4 | [GitHub Issues](https://github.com/hogeheer499-commits/strix-halo-guide/issues) |
 | Open pull requests | 0 | [GitHub Pull Requests](https://github.com/hogeheer499-commits/strix-halo-guide/pulls) |
 | Releases | 5 | [GitHub Releases](https://github.com/hogeheer499-commits/strix-halo-guide/releases) |
-| Contributors | 3 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
-| Community benchmark contributors | 5 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
+| Contributors | 4 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
+| External benchmark submitters credited | 5 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
 | Strix Halo-class systems represented | 8 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) |
 
 ## Evidence Already In The Repo

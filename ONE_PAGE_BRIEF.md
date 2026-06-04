@@ -25,7 +25,7 @@ This project turns scattered setup knowledge into public evidence and practical 
 
 For vendors and developer-relations teams, that means fewer adoption barriers, clearer buyer guidance, more credible reviews, and better signals about software or firmware gaps.
 
-Current public evidence includes five community benchmark contributors and eight Strix Halo-class systems across Beelink, Corsair, GMKtec, MS-S1-Max, and Nimo. Community rows remain separated from first-party Beelink headline claims.
+Current public evidence includes eight Strix Halo-class systems across Beelink, Corsair, GMKtec, MS-S1-Max, and Nimo. Community rows remain separated from first-party Beelink headline claims.
 
 ## Collaboration Ask
 
