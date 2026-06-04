@@ -1,7 +1,7 @@
 ![AMD](https://img.shields.io/badge/AMD-Ryzen_AI_MAX+_395-ED1C24?style=for-the-badge&logo=amd&logoColor=white)
 ![Speed](https://img.shields.io/badge/direct_30B_Qwen-100.0_t/s-brightgreen?style=for-the-badge)
 ![MTP](https://img.shields.io/badge/MTP_server-101.1_t/s_experimental-7c3aed?style=for-the-badge)
-[![Community](https://img.shields.io/badge/community-8_systems_tested-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
+[![Community](https://img.shields.io/badge/community-4_contributors_8_systems-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
 ![RAM](https://img.shields.io/badge/128GB_unified-blue?style=for-the-badge)
 ![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
@@ -1994,7 +1994,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 ### 2026-06-03 -- Nimo AI Mini PC Community Bundle
 
 - **Nimo AI Mini PC evidence added:** boxwrench contributed a Ryzen AI MAX+ 395 / Radeon 8060S / 128GB Nimo bundle in issue #4 with system metadata, reproducibility notes, raw benchmark rows, thermal telemetry, and model-specific follow-ups.
-- **Community map now covers 8 systems:** the guide now tracks Beelink first-party data plus three Corsair systems, two GMKtec sources, MS-S1-Max, and Nimo community evidence. The badge and community docs were updated to emphasize the 8-system evidence map.
+- **Community map now covers 8 systems:** the guide now tracks Beelink first-party data plus three Corsair systems, two GMKtec sources, MS-S1-Max, and Nimo community evidence. The badge now matches GitHub's 4 contributor count while emphasizing the 8-system evidence map.
 - **Large-model buyer context added:** Nimo rows cover Qwen 3.5/3.6 35B, Qwen 122B-class serving, Qwen3-Coder-Next, StepFun Step-3.7-Flash, GPT-OSS/Gemma notes in the raw bundle, and DFlash negative/control evidence. These are community serving/eval rows, not first-party direct `llama-bench` headline claims.
 - **Vendor/adoption value improved:** [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) summarizes what the Nimo bundle proves and what it does not prove, so vendors/reviewers can see how additional hardware reduces setup and buyer uncertainty without turning community data into endorsement language.
 
