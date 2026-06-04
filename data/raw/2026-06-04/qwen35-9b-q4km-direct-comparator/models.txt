@@ -1,0 +1,3 @@
+1 /home/hoge-heer/benchmark-models/qwen35-9b-q4km/.cache/huggingface/.gitignore
+125 /home/hoge-heer/benchmark-models/qwen35-9b-q4km/.cache/huggingface/download/Qwen3.5-9B-Q4_K_M.gguf.metadata
+5680522464 /home/hoge-heer/benchmark-models/qwen35-9b-q4km/Qwen3.5-9B-Q4_K_M.gguf

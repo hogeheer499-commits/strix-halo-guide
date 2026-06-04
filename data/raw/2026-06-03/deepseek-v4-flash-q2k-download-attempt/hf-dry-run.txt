@@ -1,0 +1,5 @@
+[dry-run] Fetching 1 files:   0%|          | 0/1 [00:00<?, ?it/s][dry-run] Fetching 1 files: 100%|██████████| 1/1 [00:00<00:00,  7.73it/s][dry-run] Fetching 1 files: 100%|██████████| 1/1 [00:00<00:00,  7.72it/s]
+[dry-run] Will download 1 files (out of 1) totalling 103.3G.
+File                        Bytes to download
+--------------------------- -----------------
+DeepSeek-V4-Flash-Q2_K.gguf 103.3G           

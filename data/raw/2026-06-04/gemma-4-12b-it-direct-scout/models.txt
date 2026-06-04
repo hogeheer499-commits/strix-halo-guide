@@ -1,0 +1,6 @@
+1 /home/hoge-heer/benchmark-models/gemma-4-12b-it-ggml-q4km/.cache/huggingface/.gitignore
+125 /home/hoge-heer/benchmark-models/gemma-4-12b-it-ggml-q4km/.cache/huggingface/download/gemma-4-12B-it-Q4_K_M.gguf.metadata
+7381382048 /home/hoge-heer/benchmark-models/gemma-4-12b-it-ggml-q4km/gemma-4-12B-it-Q4_K_M.gguf
+1 /home/hoge-heer/benchmark-models/gemma-4-12b-it-unsloth-iq4xs/.cache/huggingface/.gitignore
+125 /home/hoge-heer/benchmark-models/gemma-4-12b-it-unsloth-iq4xs/.cache/huggingface/download/gemma-4-12b-it-IQ4_XS.gguf.metadata
+6375732640 /home/hoge-heer/benchmark-models/gemma-4-12b-it-unsloth-iq4xs/gemma-4-12b-it-IQ4_XS.gguf

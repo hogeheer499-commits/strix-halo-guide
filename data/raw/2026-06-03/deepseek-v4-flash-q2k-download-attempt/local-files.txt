@@ -1,0 +1,3 @@
+56581248743 /home/hoge-heer/benchmark-models/deepseek-v4-flash-q2k/.cache/huggingface/download/4vrgMAngNtoKFRA78qGU_cItuOU=.3edea7ba62c553109b4b1477b37d17862cf555b817f1725ffba709176528c993.incomplete
+1 /home/hoge-heer/benchmark-models/deepseek-v4-flash-q2k/.cache/huggingface/.gitignore
+0 /home/hoge-heer/benchmark-models/deepseek-v4-flash-q2k/.cache/huggingface/download/DeepSeek-V4-Flash-Q2_K.gguf.lock
