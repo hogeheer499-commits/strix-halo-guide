@@ -35,7 +35,7 @@ Email: hogeheer499@gmail.com
 
 ## Beelink Product Marketing Email
 
-Subject: Independent local-AI evidence for Beelink Strix Halo systems
+Subject: Independent Beelink GTR9 Pro local-AI evidence and setup-friction feedback
 
 ```text
 Hello [name/team],
@@ -46,11 +46,19 @@ https://github.com/hogeheer499-commits/strix-halo-guide
 
 The guide is evidence-backed rather than promotional: it documents setup, backend choices, raw benchmark artifacts, charts, reproducibility notes, and caveats. It helps buyers understand how to get useful local-AI workloads running instead of piecing together scattered BIOS, OS, driver, backend, and model advice.
 
-The commercial value is reduced adoption friction. A strong AI PC is easier to evaluate, trust, recommend, and purchase when buyers can reproduce a known-good setup and understand the limits.
+The repo recently reached 100 GitHub stars in a small hardware/software niche, but the more important value is practical: it reduces adoption friction for buyers and reviewers. A strong AI PC is easier to evaluate, trust, recommend, and purchase when buyers can reproduce a known-good setup and understand the limits.
 
-Possible collaboration could include a review/loaner system, early BIOS/firmware access, technical feedback, or sponsorship for a clearly scoped benchmark campaign. All vendor involvement would be disclosed, and results would remain independent, including negative findings if they are accurate.
+Because the Beelink GTR9 Pro is the primary measured system, Beelink feedback would be especially useful on:
 
-Would you be open to discussing a collaboration or routing me to the right product/technical contact?
+- recommended BIOS / UMA / IOMMU settings for local AI
+- current firmware and board-revision guidance
+- any known local-AI setup notes for Linux/Vulkan/RADV/Ollama/llama.cpp
+- technical corrections to the current Beelink setup notes
+- possible review/loaner access or a scoped benchmark campaign for future validation
+
+All vendor involvement would be disclosed, and results would remain independent, including negative findings if they are accurate.
+
+Would you be open to discussing this, or routing me to the right product/technical contact?
 
 Best,
 [name]

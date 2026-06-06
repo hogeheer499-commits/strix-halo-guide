@@ -6,18 +6,20 @@ Do not invent traction numbers. Fill the TODOs only from current public GitHub d
 
 ## Current Public GitHub Stats
 
-Snapshot date: 2026-06-04.
+Snapshot date: 2026-06-07.
 
 | Metric | Current value | Source |
 |--------|---------------|--------|
-| Stars | 86 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| Stars | 100 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
 | Forks | 4 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
 | Open issues | 4 | [GitHub Issues](https://github.com/hogeheer499-commits/strix-halo-guide/issues) |
 | Open pull requests | 0 | [GitHub Pull Requests](https://github.com/hogeheer499-commits/strix-halo-guide/pulls) |
 | Releases | 5 | [GitHub Releases](https://github.com/hogeheer499-commits/strix-halo-guide/releases) |
-| Contributors | 4 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
+| GitHub contributors | 4 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
 | External benchmark submitters credited | 5 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
 | Strix Halo-class systems represented | 8 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) |
+
+Read the star count as a small-niche demand signal, not the main argument. The stronger vendor evidence is the technical proof layer: reproducible commands, raw logs, CSVs, claim indexes, community rows, and documented failures.
 
 ## Evidence Already In The Repo
 
