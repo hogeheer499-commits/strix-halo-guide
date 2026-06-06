@@ -410,7 +410,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro, primarily with Vu
 
 ## Benchmark Results
 
-Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, 2026-05-07, 2026-05-16, 2026-05-26, 2026-05-27, 2026-05-31, 2026-06-01, 2026-06-02, and 2026-06-05. Benchmark system: Beelink GTR9 Pro, kernel 6.19.4, Mesa RADV 26.0.2-26.1.1, AMDVLK removed, tuned `accelerator-performance` active for measured runs. Before running new benchmarks, verify `tuned-adm active` and keep `power-profiles-daemon` inactive; it can conflict with `tuned`.
+Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, 2026-05-07, 2026-05-16, 2026-05-26, 2026-05-27, 2026-05-31, 2026-06-01, 2026-06-02, and 2026-06-05. Primary benchmark system: Beelink GTR9 Pro. Recorded local runs used kernel 6.19.4, Mesa RADV 26.0.2-26.1.1, AMDVLK removed, and `tuned` `accelerator-performance` where captured; individual raw directories and CSV rows are the source of truth for exact run metadata. Before running new benchmarks, verify `tuned-adm active` and keep `power-profiles-daemon` inactive; it can conflict with `tuned`.
 
 These rows are included because they answer practical setup questions: which model to try first, which backend removes the most friction, which paths are only experimental, and which results are strong enough to cite.
 
@@ -1687,7 +1687,7 @@ ollama pull qwen3.6:35b-a3b
 | **Claude Pro** | $20/mo | Fast | No | No |
 | **OpenAI API** (gpt-4o, 50 queries/day) | ~$15/mo | Fast | No | No |
 | **Anthropic API** (Claude Sonnet, 50 queries/day) | ~$12/mo | Fast | No | No |
-| **Strix Halo** (after purchase) | **~$8/mo electricity** | 50-100.0 t/s on current measured paths | **Yes** | **Yes** |
+| **Strix Halo** (after purchase) | **~$8/mo electricity** | ~50-100.0 t/s on larger local assistant paths; small-MoE scouts can be higher | **Yes** | **Yes** |
 
 **Break-even calculation:**
 
@@ -1725,7 +1725,7 @@ For Claude Code specifically:
 ANTHROPIC_BASE_URL=http://localhost:11434 claude --model qwen3.6:35b-a3b
 ```
 
-At 50-100.0 t/s on current measured paths, local inference feels fast enough for code completion and review workflows.
+At roughly 50-100.0 t/s on the larger local assistant paths measured here, local inference feels fast enough for code completion and review workflows. Smaller active-parameter MoE scouts can be much faster, but they answer a different model-capability question.
 
 ### ChatGPT-like Web Interface (Open WebUI)
 
@@ -1919,7 +1919,7 @@ Linux gives the best-tested performance and the strongest native Vulkan/RADV evi
 <details>
 <summary><strong>How does this compare to a Mac Studio?</strong></summary>
 
-Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro price snapshot is $4,399 and this guide measures 50.51-100.04 t/s on the current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row. Apple Silicon usually wins per-model bandwidth-sensitive inference. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
+Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro price snapshot is $4,399 and this guide measures 50.51-100.04 t/s on the larger current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row, and smaller active-parameter MoE scouts can be higher. Apple Silicon usually wins per-model bandwidth-sensitive inference. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
 
 </details>
 
