@@ -1,6 +1,6 @@
 # ROCm and vLLM Bugwatch
 
-Status: current as of 2026-06-01.
+Status: current as of 2026-06-07.
 
 This file tracks fast-moving upstream items that affect Strix Halo local AI work. It is intentionally separate from the README so the public guide stays stable even when upstream ROCm/vLLM issues move.
 
@@ -10,7 +10,7 @@ This file tracks fast-moving upstream items that affect Strix Halo local AI work
 |------|----------------|----------------|
 | ROCm production release | [`ROCm 7.2.4`](https://github.com/ROCm/ROCm/releases/tag/rocm-7.2.4) is the latest production ROCm release checked here, published 2026-05-29. | Production docs now point to 7.2.4 for normal use. This guide did not install it host-wide. |
 | ROCm preview release | [`ROCm 7.13.0 Preview`](https://rocm.docs.amd.com/en/7.13.0-preview/about/release-notes.html) is the latest preview stream checked here, published 2026-05-15. | It adds official gfx1151/vLLM image coverage and RCCL multi-node optimization for AMD Ryzen AI Max 300 series, but it is a preview stream and should stay isolated from the host. |
-| vLLM release | [`vLLM 0.22.0`](https://github.com/vllm-project/vllm/releases/tag/v0.22.0) is the latest normal upstream vLLM release checked here, published 2026-05-29. ROCm 7.13.0 Preview also documents vLLM 0.19.1 images for gfx1151/gfx1150/gfx1152. | Useful signal for future containers; do not pip-install into the host Python environment for this guide. |
+| vLLM release | [`vLLM 0.22.1`](https://github.com/vllm-project/vllm/releases/tag/v0.22.1) is the latest normal upstream vLLM release checked here, published 2026-06-05. ROCm 7.13.0 Preview also documents vLLM 0.19.1 images for gfx1151/gfx1150/gfx1152. | Useful signal for future containers; do not pip-install into the host Python environment for this guide. |
 | Strix Halo unified memory reporting | [`ROCm/hip#3892`](https://github.com/ROCm/hip/issues/3892) is now closed as of 2026-05-29. | Still verify inside any ROCm/vLLM container before making a capacity/autoscheduling claim; closed upstream does not prove every local bundle has the fix. |
 | Older 15.5GB VRAM aperture issue | [`ROCm/ROCm#5444`](https://github.com/ROCm/ROCm/issues/5444) is closed. | Keep as troubleshooting context; not a current headline blocker. |
 | MES memory-access fault report | [`ROCm/ROCm#5724`](https://github.com/ROCm/ROCm/issues/5724) is closed. | Still relevant when diagnosing firmware/kernel regressions. |
@@ -90,6 +90,16 @@ No new public guide claim changed in the 2026-06-01 recheck:
 - Local installed Ollama remained 0.23.1; the previous isolated Ollama 0.24.0 API check already found no speedup versus the same-prompt 0.23.1 control.
 - Local `llama.cpp` latest-stack evidence moved to `de6f727aa` on 2026-06-01. The direct Qwen3-Coder Q4_K_S check measured 95.55 t/s tg128 with `mmap=0`, so it is useful negative evidence, not a new headline.
 - Keep ROCm/vLLM/DFlash work in isolated containers or extracted bundles until a reproducible 27B/35B serving row beats or complements the existing `llama-server` and Ollama paths.
+
+## 2026-06-07 Watch Recheck
+
+No benchmark recommendation changed in this recheck:
+
+- `llama.cpp` latest release is b9544, while the local source checkout used for recent experiments is behind that release. This makes a latest-release regression run useful before telling users to update.
+- Ollama latest release is 0.30.6, while the installed local Ollama remains 0.23.1. This is a buyer-facing update candidate because Ollama is the easiest setup path.
+- ROCm production remains 7.2.4.
+- vLLM moved to 0.22.1. Treat this as a watch/update signal only; it does not make vLLM/DFlash a guide recommendation without a clean local reproduction.
+- Atomic TurboQuant PR #26 for Gemma 4 MTP `PARALLEL=2` is still open, so the Nimo Gemma 4 QAT/MTP route remains a useful but advanced single-slot/experimental path until fixed-and-measured multi-slot data exists.
 
 ## vLLM AWQ/DFlash Lead
 
