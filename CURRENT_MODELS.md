@@ -32,7 +32,7 @@ Measured rows below are first-party Beelink GTR9 Pro direct `llama-bench` Vulkan
 | Gemma 4 12B IT | `IQ4_XS` | 6.4 GB / 12B | 680.17 pp512 / 25.74 tg128; 25.77 tg128 generation-only | New Google model runs locally. Use for current-model/multimodal coverage, not speed. |
 | Gemma 4 12B IT | `Q4_K_M` | 7.4 GB / 12B | 684.92 pp512 / 24.42 tg128; 24.42 tg128 generation-only | Balanced Gemma route. Slower than Qwen3.5 9B and much slower than Qwen 30B-class MoE speed rows. |
 | MiniMax M2.7 | `UD-IQ4_XS` | 108.4 GB / 230B.A10B MoE | 101.00 pp512 / 28.27 tg128; 28.60 tg128 generation-only | Large-model feasibility proof: 230B-class MoE runs locally on one Strix Halo. Not a speed result. |
-| DeepSeek V4 Flash | `Q2_K` target | 103.3 GB target | Download attempt only; partial reached about 53 GiB | Distribution/download friction blocked this attempt before benchmarking. Do not list as pass or fail. |
+| DeepSeek V4 Flash | `Q2_K` / 0xSero Spark-Mini targets | 103.3 GB original target; 52.6 GB local Spark-Mini file | Original route download-blocked; later smaller 0xSero/Spark-Mini local file still failed to load in `llama-bench` smoke attempts | Strong setup-friction evidence. Do not list as pass, speed result, or hardware limit without a successful load. |
 | Nemotron 3 Ultra 550B-A55B | GGUF dry-run / BF16 / NVFP4 targets | 188.0 GB smallest scanned GGUF route; 1.1 TB BF16 / 352.4 GB NVFP4 | Artifact scan only | GGUF artifacts now exist, but the smallest scanned route is still too large for a practical one-box 128 GB Strix Halo internal-disk benchmark. |
 
 Raw evidence:
@@ -49,8 +49,26 @@ Raw evidence:
 - Qwen3.5 35B-A3B IQ4_XS control: [`data/raw/2026-06-03/qwen35-35b-a3b-iq4xs-direct-scout/`](data/raw/2026-06-03/qwen35-35b-a3b-iq4xs-direct-scout/)
 - MiniMax M2.7: [`data/raw/2026-06-03/minimax-m27-ud-iq4xs-local-smoke/`](data/raw/2026-06-03/minimax-m27-ud-iq4xs-local-smoke/)
 - DeepSeek V4 Flash attempt: [`data/raw/2026-06-03/deepseek-v4-flash-q2k-download-attempt/`](data/raw/2026-06-03/deepseek-v4-flash-q2k-download-attempt/)
+- DeepSeek V4 Flash 0xSero/Spark-Mini load failure: [`data/raw/2026-06-05/deepseek-v4-flash-0xsero-load-failure/`](data/raw/2026-06-05/deepseek-v4-flash-0xsero-load-failure/)
 - Large-model feasibility scan: [`data/raw/2026-06-03/large-model-feasibility-scan/`](data/raw/2026-06-03/large-model-feasibility-scan/)
 - Triage notes: [`data/raw/2026-06-04/latest-model-viral-scan/`](data/raw/2026-06-04/latest-model-viral-scan/), [`data/raw/2026-06-05/model-update-scan/`](data/raw/2026-06-05/model-update-scan/)
+
+## Related Controls Already Covered Elsewhere
+
+These rows are useful for context, but they are not promoted as new headline claims:
+
+| Route | Result | Why it stays secondary |
+| --- | ---: | --- |
+| Qwen3-Coder-Next 80B-A3B `IQ4_XS` direct | 61.91 tg128 / 738.98 pp512 | Modern coding-model row for currentness. It is useful, but not a speed replacement for the 30B Qwen rows. |
+| Qwen3.6 35B-A3B MTP repeat | 97.08 t/s six-prompt mean; 106.24 t/s max | Confirms code prompts can cross 100 t/s, but broad repeat average did not reproduce the earlier 101.1 t/s run. Keep as server/speculative evidence. |
+| Qwen3-Coder 30B high-power policy check | 95.18 tg128 auto policy, 96.37 tg128 high policy | Shows power policy can help this Beelink run, but did not reproduce the tuned external GMKtec 100 t/s report. |
+| Qwen3.6 27B dense Q8 control | 7.70 tg128 direct follow-up | Useful response to model requests, but this dense Q8 route is not a speed candidate versus the 35B-A3B MoE paths. |
+
+Raw evidence:
+
+- Qwen3-Coder-Next and MTP repeat: [`data/raw/2026-06-02/modern-model-clean-followup/`](data/raw/2026-06-02/modern-model-clean-followup/)
+- High-power policy check: [`data/raw/2026-06-02/high-power-policy-test/`](data/raw/2026-06-02/high-power-policy-test/)
+- Qwen3.6 27B dense follow-up: [`data/raw/2026-06-02/reddit-look-int-dot-reproduction/`](data/raw/2026-06-02/reddit-look-int-dot-reproduction/)
 
 ## What This Means
 
@@ -77,7 +95,7 @@ Qwen3.5 9B is useful only as a community-discussion comparator. For current Qwen
 
 MiniMax M2.7 is the best current evidence that 128 GB unified memory changes what a mini PC can attempt. A 108 GB GGUF route loaded and generated locally. That is valuable for buyers even though it is not fast.
 
-DeepSeek V4 Flash shows a different adoption blocker: a 100 GB single-file model can be blocked by download/resume friction before the hardware gets tested.
+DeepSeek V4 Flash shows a different adoption blocker: one route was blocked by 100GB+ download/resume friction, while a later smaller 0xSero/Spark-Mini local file still failed during `llama-bench` load. That is not a hardware speed result, but it is valuable adoption-friction evidence.
 
 Nemotron 3 Ultra shows the same pattern at a larger scale. The new Ultra release is important, and a GGUF route was found in the 2026-06-05 follow-up scan. The smallest scanned Ultra GGUF route was still about 188 GB, so it remains a watchlist/external-storage/multi-node target rather than a practical one-box 128 GB Strix Halo benchmark. The practical NVIDIA family map is now: Ultra as watchlist, Super 120B-A12B as the larger direct GGUF capacity route, and Nano 30B-A3B as the faster practical route.
 
@@ -114,7 +132,7 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | 1 | `llama.cpp` latest-release regression check on the Qwen3-Coder 30B headline, Qwen3-30B-A3B-Instruct-2507, Nemotron Super, and LFM2.5 rows | Shows whether users should update or pin their `llama.cpp` build. Recent releases are moving quickly, so this directly reduces setup uncertainty. |
 | 2 | Ollama 0.30.x Windows/Linux sanity check for one default chat model and one 30B-class MoE | Ollama is the easiest buyer path. Version drift matters more to typical users than another raw `llama-bench` row. |
 | 3 | Nemotron Super quant comparison: `UD-IQ2_M` or `UD-Q2_K_XL` versus current `UD-IQ4_XS` if storage permits | Answers whether lower quants make 120B-class Nemotron meaningfully faster or more practical on one Strix Halo box. |
-| 4 | DeepSeek V4 Flash small-route retry using a sharded 0xSero or teamblobfish artifact instead of the previous blocked 103 GB single-file route | Turns a download-friction failure into a better artifact-distribution lesson. |
+| 4 | DeepSeek V4 Flash runtime/loadability follow-up on a smaller route | The 0xSero/Spark-Mini file existed locally but did not load in current smoke attempts. Next value comes from identifying whether this is GGUF compatibility, runtime support, or build/backend mismatch. |
 | 5 | External-storage feasibility plan for Ultra/Kimi/GLM class routes | These are not current one-box internal-disk targets. A clean external NVMe plan would answer whether 128 GB unified memory can at least smoke/load the smallest extreme routes. |
 
 ## Watch List
@@ -125,7 +143,7 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | Kimi K2.6 | Very high viral value, but direct GGUF routes are currently too large for quick single-box internal-disk testing. |
 | Kimi K3 | No concrete local artifact found during the 2026-06-04 scan. Treat as watch item, not benchmarkable evidence. |
 | MiniMax M3 | Watch for actual local weights/GGUF artifacts before claiming a benchmark path. |
-| DeepSeek V4 Flash | Resume or retry the existing partial download from a more stable network path. |
+| DeepSeek V4 Flash | Original 103GB route was download-blocked; smaller 0xSero/Spark-Mini route reached local load attempts but failed before benchmarking. Watch for compatible GGUF/runtime fixes before claiming performance. |
 | Nemotron 3 Ultra 550B-A55B | GGUF route found in the 2026-06-05 scan, but the smallest scanned route is about 188 GB. Watch for smaller practical artifacts or test only with external storage / multi-node planning. |
 | Nemotron 3 Super 120B-A12B | Tested with `UD-IQ4_XS`. Add lower/higher quant comparisons only if they answer a specific buyer question. |
 
