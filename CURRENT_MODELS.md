@@ -8,30 +8,49 @@ It is not a leaderboard. The goal is to separate three questions that often get 
 - Does it run locally on one 128 GB Strix Halo system?
 - Is it fast, or is its value mainly capability, memory capacity, multimodality, or setup friction?
 
-Measured rows below are first-party Beelink GTR9 Pro direct `llama-bench` Vulkan/RADV scouts unless stated otherwise. normal workstation services were left running, so treat these as practical workstation scouts rather than cold/clean headline rows.
+Measured rows below are first-party Beelink GTR9 Pro direct `llama-bench` Vulkan/RADV scouts unless stated otherwise. Normal workstation services were left running, so treat these as practical workstation scouts rather than cold/clean headline rows.
+
+## Best Current Headline Rows
+
+| Question | Best current row | Why it matters |
+| --- | --- | --- |
+| Fastest direct 30B-class Qwen MoE | Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`: 100.04 t/s direct `llama-bench` on b9467 | Shows a direct 30B-class Qwen route can cross 100 t/s on Strix Halo. Keep separate from the Qwen3-Coder headline and balanced-default rows. |
+| Fastest current small-MoE scout | LFM2.5 8B-A1B `Q4_K_M`: 170.02 t/s generation-only and 168.96 tg128 in the latest/int-dot pp512/tg128 check | Shows how fast newer small active-parameter MoE routes can be. This is not a 30B-class capability replacement. |
+| Largest current direct GGUF capacity route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS`: 18.43 tg128 direct `llama-bench` on one 128 GB Strix Halo system | Proves a 120B-class MoE GGUF route can run directly on one box; value is capacity/currentness, not raw speed. |
 
 ## June 2026 Scout Results
 
 | Model | Quant | Size class | Result | Read |
 | --- | --- | ---: | ---: | --- |
-| LFM2.5 8B-A1B | `Q4_K_M` | 5.1 GB / 8B.A1B | 1772.48 pp512 / 135.82 tg128; 139.30 tg128 generation-only | Fastest new small-MoE result in this scout. Strong speed/currentness hook, but not a 30B-class capability comparison. |
-| Nemotron 3 Nano 30B-A3B | `IQ4_XS` | 18.2 GB / 31B.A3.5B MoE | 619.00 pp512 / 65.45 tg128; 66.60 tg128 generation-only | Practical NVIDIA Nemotron route for one Strix Halo system after the Nemotron 3 Ultra release. |
+| LFM2.5 8B-A1B | `Q4_K_M` | 5.1 GB / 8B.A1B | 3414.61 pp512 / 168.96 tg128; 170.02 tg128 generation-only on the 2026-06-05 int-dot rerun | Fastest new small-MoE result in this scout. Strong speed/currentness hook, but not a 30B-class capability comparison. |
+| Nemotron 3 Nano 30B-A3B | `IQ4_XS` | 18.2 GB / 31B.A3.5B MoE | 1312.47 pp512 / 75.97 tg128 on the 2026-06-05 int-dot rerun | Practical NVIDIA Nemotron route for one Strix Halo system after the Nemotron 3 Ultra release. |
+| Nemotron 3 Super 120B-A12B | `UD-IQ4_XS` | 64.5 GB / 120B.A12B MoE | 294.99 pp512 / 18.43 tg128 on the 2026-06-05 int-dot rerun | Missing middle Nemotron route: much larger than Nano, directly runnable as GGUF on one Strix Halo, but not a speed result. |
+| Qwen3-Coder 30B-A3B | `IQ4_XS` | 16.4 GB / 30B.A3B | 1372.27 pp512 / 90.44 tg128; 90.72 tg128 generation-only | Negative/control row: `IQ4_XS` alone did not beat the older Qwen3-Coder Q4_K_S 98.51 t/s headline. |
+| Qwen3 30B-A3B NEO-MAX | `IQ4_XS` | 16.4 GB / 30B.A3B | 1396.05 pp512 / 87.39 tg128; 87.77 tg128 generation-only | Alternate 30B-A3B control row; the 2507 100 t/s result does not generalize to every 30B-A3B IQ4_XS file. |
+| Qwen3.5 35B-A3B | `IQ4_XS` | 19.7 GB / 35B.A3B | 1170.27 pp512 / 75.22 tg128; 75.53 tg128 generation-only | Current/larger Qwen comparator; newer or larger is not automatically faster. |
 | Qwen3.5 9B | `Q4_K_M` | 5.7 GB / 9B dense | 1015.35 pp512 / 34.49 tg128; 34.34 tg128 generation-only | Useful comparator for current Gemma-vs-Qwen discussion. Not the newest Qwen family. |
 | Gemma 4 12B IT | `IQ4_XS` | 6.4 GB / 12B | 680.17 pp512 / 25.74 tg128; 25.77 tg128 generation-only | New Google model runs locally. Use for current-model/multimodal coverage, not speed. |
 | Gemma 4 12B IT | `Q4_K_M` | 7.4 GB / 12B | 684.92 pp512 / 24.42 tg128; 24.42 tg128 generation-only | Balanced Gemma route. Slower than Qwen3.5 9B and much slower than Qwen 30B-class MoE speed rows. |
 | MiniMax M2.7 | `UD-IQ4_XS` | 108.4 GB / 230B.A10B MoE | 101.00 pp512 / 28.27 tg128; 28.60 tg128 generation-only | Large-model feasibility proof: 230B-class MoE runs locally on one Strix Halo. Not a speed result. |
 | DeepSeek V4 Flash | `Q2_K` target | 103.3 GB target | Download attempt only; partial reached about 53 GiB | Distribution/download friction blocked this attempt before benchmarking. Do not list as pass or fail. |
-| Nemotron 3 Ultra 550B-A55B | BF16 / NVFP4 targets | 1.1 TB BF16 / 352.4 GB NVFP4 | Artifact scan only | Major release, but not a direct one-box 128 GB Strix Halo GGUF/`llama.cpp` target yet. |
+| Nemotron 3 Ultra 550B-A55B | GGUF dry-run / BF16 / NVFP4 targets | 188.0 GB smallest scanned GGUF route; 1.1 TB BF16 / 352.4 GB NVFP4 | Artifact scan only | GGUF artifacts now exist, but the smallest scanned route is still too large for a practical one-box 128 GB Strix Halo internal-disk benchmark. |
 
 Raw evidence:
 
 - Gemma 4 12B: [`data/raw/2026-06-04/gemma-4-12b-it-direct-scout/`](data/raw/2026-06-04/gemma-4-12b-it-direct-scout/)
+- Nimo Gemma 4 QAT/MTP follow-up: [`data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/)
 - Qwen3.5 9B comparator: [`data/raw/2026-06-04/qwen35-9b-q4km-direct-comparator/`](data/raw/2026-06-04/qwen35-9b-q4km-direct-comparator/)
 - LFM2.5 8B-A1B: [`data/raw/2026-06-04/lfm25-8b-a1b-q4km-direct-scout/`](data/raw/2026-06-04/lfm25-8b-a1b-q4km-direct-scout/)
 - Nemotron 3 Nano 30B-A3B: [`data/raw/2026-06-04/nemotron-3-nano-30b-a3b-iq4xs-direct-scout/`](data/raw/2026-06-04/nemotron-3-nano-30b-a3b-iq4xs-direct-scout/)
+- Nemotron 3 Super 120B-A12B: [`data/raw/2026-06-04/nemotron-3-super-120b-a12b-udiq4xs-direct-scout/`](data/raw/2026-06-04/nemotron-3-super-120b-a12b-udiq4xs-direct-scout/)
+- 2026-06-05 latest/int-dot rerun for LFM2.5, Nemotron Nano, Nemotron Super, Qwen3-30B-A3B-Instruct-2507, and Qwen3-Coder UD: [`data/raw/2026-06-05/latest-llamacpp-intdot-regression/`](data/raw/2026-06-05/latest-llamacpp-intdot-regression/)
+- Qwen3-Coder IQ4_XS control: [`data/raw/2026-06-03/qwen3-coder-iq4xs-direct-scout/`](data/raw/2026-06-03/qwen3-coder-iq4xs-direct-scout/)
+- Qwen3 30B-A3B NEO-MAX IQ4_XS control: [`data/raw/2026-06-03/qwen3-30b-a3b-neo-max-iq4xs-direct-scout/`](data/raw/2026-06-03/qwen3-30b-a3b-neo-max-iq4xs-direct-scout/)
+- Qwen3.5 35B-A3B IQ4_XS control: [`data/raw/2026-06-03/qwen35-35b-a3b-iq4xs-direct-scout/`](data/raw/2026-06-03/qwen35-35b-a3b-iq4xs-direct-scout/)
 - MiniMax M2.7: [`data/raw/2026-06-03/minimax-m27-ud-iq4xs-local-smoke/`](data/raw/2026-06-03/minimax-m27-ud-iq4xs-local-smoke/)
 - DeepSeek V4 Flash attempt: [`data/raw/2026-06-03/deepseek-v4-flash-q2k-download-attempt/`](data/raw/2026-06-03/deepseek-v4-flash-q2k-download-attempt/)
-- Triage notes: [`data/raw/2026-06-04/latest-model-viral-scan/`](data/raw/2026-06-04/latest-model-viral-scan/)
+- Large-model feasibility scan: [`data/raw/2026-06-03/large-model-feasibility-scan/`](data/raw/2026-06-03/large-model-feasibility-scan/)
+- Triage notes: [`data/raw/2026-06-04/latest-model-viral-scan/`](data/raw/2026-06-04/latest-model-viral-scan/), [`data/raw/2026-06-05/model-update-scan/`](data/raw/2026-06-05/model-update-scan/)
 
 ## What This Means
 
@@ -42,13 +61,15 @@ For text generation speed, model architecture dominates. LFM2.5 8B-A1B is much f
 The existing Qwen 30B-class rows remain the stronger 30B speed story:
 
 - Qwen3-Coder 30B-A3B `Q4_K_S`: 98.51 t/s direct first-party Beelink headline.
-- Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`: about 100 t/s direct first-party scout.
+- Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`: 100.04 t/s direct first-party scout on b9467; 99.10 t/s generation-only on the 2026-06-05 latest/int-dot rerun.
 
 Keep those separate from small-model speed results.
 
 ### Currentness
 
 Gemma 4 12B is the strongest current-model brand hook in this scout. The practical result is not "Gemma is fastest"; it is "a newly released Google local model runs on Strix Halo, and the guide can show exactly how it compares."
+
+The Nimo community follow-up adds a second Gemma 4 lesson for QAT/server users: matched QAT MTP assistant heads can materially improve single-stream decode and acceptance on Gemma 4 12B, 26B-A4B, and 31B QAT Q4_0 rows, but the current Atomic TurboQuant path is still an advanced server route with a `PARALLEL=2` caveat. Keep this separate from first-party direct `llama-bench` rows.
 
 Qwen3.5 9B is useful only as a community-discussion comparator. For current Qwen framing, prefer the existing Qwen3.6 rows in this guide.
 
@@ -58,15 +79,16 @@ MiniMax M2.7 is the best current evidence that 128 GB unified memory changes wha
 
 DeepSeek V4 Flash shows a different adoption blocker: a 100 GB single-file model can be blocked by download/resume friction before the hardware gets tested.
 
-Nemotron 3 Ultra shows the same pattern at a larger scale. The new Ultra release is important, but the available BF16/NVFP4 artifacts are too large for one 128 GB Strix Halo system and were not found as a direct GGUF route during the 2026-06-04 scan. The practical NVIDIA route is Nemotron 3 Nano 30B-A3B GGUF.
+Nemotron 3 Ultra shows the same pattern at a larger scale. The new Ultra release is important, and a GGUF route was found in the 2026-06-05 follow-up scan. The smallest scanned Ultra GGUF route was still about 188 GB, so it remains a watchlist/external-storage/multi-node target rather than a practical one-box 128 GB Strix Halo benchmark. The practical NVIDIA family map is now: Ultra as watchlist, Super 120B-A12B as the larger direct GGUF capacity route, and Nano 30B-A3B as the faster practical route.
 
 ## Good Post Hooks
 
-- "LFM2.5 8B-A1B at 139 t/s on Strix Halo: new small-MoE models are a different speed class."
+- "LFM2.5 8B-A1B at 170 t/s generation-only on Strix Halo: new small-MoE models are a different speed class."
 - "Google Gemma 4 12B runs locally on Strix Halo, but Qwen/LFM are faster for text-only generation."
 - "Current model reality check: newest does not automatically mean fastest."
 - "A 230B-class MiniMax MoE runs locally on one 128 GB Strix Halo system, but speed and capacity are different wins."
-- "NVIDIA Nemotron 3 Ultra just dropped; the practical Strix Halo route today is Nemotron 3 Nano 30B-A3B at 66.6 t/s."
+- "NVIDIA Nemotron 3 Ultra just dropped; on one 128 GB Strix Halo, Super 120B-A12B is the runnable middle route and Nano 30B-A3B is the faster route."
+- "Nemotron 3 Super 120B-A12B runs directly on Strix Halo: 295.0 pp512 / 18.4 tg128 via `llama.cpp` Vulkan/RADV."
 - "The hidden local-AI friction is not just GPU speed. It is model format, quant choice, download size, backend support, and reproducible commands."
 
 ## Guide Value To Add
@@ -81,6 +103,20 @@ The most useful public addition is not another single headline number. It is a r
 
 This helps buyers and vendors because it turns "can this AI PC run the latest models?" into dated, reproducible evidence instead of scattered social screenshots.
 
+The Nemotron 3 Super row is also an example of the community feedback loop documented in [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md): a public correction identified a missing route, and the guide added a measured result instead of leaving the original framing unchanged.
+
+## Highest-Value Next Tests
+
+These are prioritized for buyer/vendor guide value, not social-media hooks:
+
+| Priority | Test | Why it adds guide value |
+| ---: | --- | --- |
+| 1 | `llama.cpp` latest-release regression check on the Qwen3-Coder 30B headline, Qwen3-30B-A3B-Instruct-2507, Nemotron Super, and LFM2.5 rows | Shows whether users should update or pin their `llama.cpp` build. Recent releases are moving quickly, so this directly reduces setup uncertainty. |
+| 2 | Ollama 0.30.x Windows/Linux sanity check for one default chat model and one 30B-class MoE | Ollama is the easiest buyer path. Version drift matters more to typical users than another raw `llama-bench` row. |
+| 3 | Nemotron Super quant comparison: `UD-IQ2_M` or `UD-Q2_K_XL` versus current `UD-IQ4_XS` if storage permits | Answers whether lower quants make 120B-class Nemotron meaningfully faster or more practical on one Strix Halo box. |
+| 4 | DeepSeek V4 Flash small-route retry using a sharded 0xSero or teamblobfish artifact instead of the previous blocked 103 GB single-file route | Turns a download-friction failure into a better artifact-distribution lesson. |
+| 5 | External-storage feasibility plan for Ultra/Kimi/GLM class routes | These are not current one-box internal-disk targets. A clean external NVMe plan would answer whether 128 GB unified memory can at least smoke/load the smallest extreme routes. |
+
 ## Watch List
 
 | Target | Status |
@@ -90,7 +126,8 @@ This helps buyers and vendors because it turns "can this AI PC run the latest mo
 | Kimi K3 | No concrete local artifact found during the 2026-06-04 scan. Treat as watch item, not benchmarkable evidence. |
 | MiniMax M3 | Watch for actual local weights/GGUF artifacts before claiming a benchmark path. |
 | DeepSeek V4 Flash | Resume or retry the existing partial download from a more stable network path. |
-| Nemotron 3 Ultra 550B-A55B | Watch for GGUF or smaller practical artifacts. Current BF16/NVFP4 artifacts are too large for direct one-box Strix Halo testing. |
+| Nemotron 3 Ultra 550B-A55B | GGUF route found in the 2026-06-05 scan, but the smallest scanned route is about 188 GB. Watch for smaller practical artifacts or test only with external storage / multi-node planning. |
+| Nemotron 3 Super 120B-A12B | Tested with `UD-IQ4_XS`. Add lower/higher quant comparisons only if they answer a specific buyer question. |
 
 ## Sources
 
@@ -100,5 +137,7 @@ This helps buyers and vendors because it turns "can this AI PC run the latest mo
 - LFM2.5 8B-A1B GGUF: <https://huggingface.co/LiquidAI/LFM2.5-8B-A1B-GGUF>
 - Qwen3.5 9B GGUF: <https://huggingface.co/unsloth/Qwen3.5-9B-GGUF>
 - Nemotron 3 Nano 30B-A3B GGUF: <https://huggingface.co/unsloth/Nemotron-3-Nano-30B-A3B-GGUF>
+- Nemotron 3 Super 120B-A12B GGUF: <https://huggingface.co/unsloth/NVIDIA-Nemotron-3-Super-120B-A12B-GGUF>
+- Nemotron 3 Ultra 550B-A55B GGUF: <https://huggingface.co/unsloth/NVIDIA-Nemotron-3-Ultra-550B-A55B-GGUF>
 - Nemotron 3 Ultra BF16: <https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16>
 - Nemotron 3 Ultra NVFP4: <https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-NVFP4>

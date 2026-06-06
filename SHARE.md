@@ -44,7 +44,7 @@ Everyone should post this link.
 
 ## One-Line Summary
 
-Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 96-128GB unified memory: setup, model choices, direct 100.0 t/s 30B-class Qwen MoE evidence, 98.5 t/s Qwen3-Coder speed-first, 81.3 t/s Qwen3.6 speed-first, 55.6 t/s gpt-oss-120b, 128K context, MTP speculative decoding at 101.1 t/s local broad average, CSVs, raw logs, reproducibility notes, community validation across Corsair, GMKtec, MS-S1-Max, and Nimo systems, command-flag sensitivity notes, Windows LM Studio evidence, tuned thermal/power-policy evidence, Nimo large-model serving evidence, and first wall-power efficiency rows.
+Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 96-128GB unified memory: setup, model choices, direct 100.0 t/s 30B-class Qwen MoE evidence, 170.0 t/s LFM2.5 small-MoE evidence, 18.4 t/s Nemotron 3 Super 120B direct GGUF capacity evidence, 98.5 t/s Qwen3-Coder speed-first, 81.3 t/s Qwen3.6 speed-first, 55.6 t/s gpt-oss-120b, 128K context, MTP speculative decoding at 101.1 t/s local broad average, CSVs, raw logs, reproducibility notes, community validation across Corsair, GMKtec, MS-S1-Max, and Nimo systems, command-flag sensitivity notes, Windows LM Studio evidence, tuned thermal/power-policy evidence, Nimo large-model serving evidence, and first wall-power efficiency rows.
 
 ## Short Share Text
 
@@ -54,6 +54,8 @@ Highlights:
 
 - Qwen3-Coder 30B-A3B: 96.76 t/s direct llama.cpp Vulkan/RADV on current b9049; previous b9010 peak was 97.24 t/s.
 - Qwen3-30B-A3B-Instruct-2507 IQ4_XS: 100.04 t/s direct llama.cpp Vulkan/RADV on b9467. This is a separate general-instruct Qwen route, not the Qwen3-Coder headline.
+- LFM2.5 8B-A1B Q4_K_M: 168.96 t/s in pp512/tg128 and 170.02 t/s generation-only in the 2026-06-05 latest/int-dot check. This is a small active-parameter MoE speed row, not a 30B-class replacement.
+- Nemotron 3 Super 120B-A12B UD-IQ4_XS: 18.43 t/s direct llama.cpp Vulkan/RADV in the 2026-06-05 latest/int-dot check. This is a 120B-class GGUF capacity/current-model row, not a speed headline.
 - Qwen3-Coder 30B-A3B Q4_K_S: 98.51 t/s direct llama.cpp Vulkan/RADV speed-first row on b9179.
 - Qwen3.6 35B-A3B: 62.56 t/s direct llama.cpp Vulkan/RADV on current b9049.
 - Qwen3.6 35B-A3B Q4_0: 81.30 t/s direct llama.cpp Vulkan/RADV as a speed-first quant row.
@@ -88,6 +90,8 @@ This is measured primarily on a Beelink GTR9 Pro with Ryzen AI MAX+ 395, Radeon 
 
 Headline results:
 - Qwen3-30B-A3B-Instruct-2507 IQ4_XS: 100.04 t/s direct llama.cpp Vulkan/RADV on b9467. Separate general-instruct Qwen route; not a Qwen3-Coder replacement.
+- LFM2.5 8B-A1B Q4_K_M: 170.02 t/s generation-only and 168.96 tg128 in the pp512/tg128 latest/int-dot check. Small-MoE speed row; not a 30B-class capability replacement.
+- Nemotron 3 Super 120B-A12B UD-IQ4_XS: 18.43 t/s direct `llama-bench` on one 128GB Strix Halo. Current-model capacity proof; not a speed row.
 - Qwen3-Coder 30B-A3B Q4_K_S: 98.51 t/s direct llama.cpp Vulkan/RADV speed-first row on b9179
 - Qwen3-Coder 30B-A3B UD-Q4_K_XL: 96.76 t/s direct llama.cpp Vulkan/RADV on current b9049
 - Qwen3.6 35B-A3B UD-Q4_K_M: 62.56 t/s direct llama.cpp Vulkan/RADV on current b9049
@@ -137,7 +141,7 @@ Repo: https://github.com/hogeheer499-commits/strix-halo-guide
 Strix Halo local LLM guide with measured setup + raw benchmark evidence:
 https://github.com/hogeheer499-commits/strix-halo-guide
 
-Highlights: 100.04 t/s direct Qwen3-30B-A3B-Instruct-2507 IQ4_XS, 98.51 t/s Qwen3-Coder speed-first direct llama.cpp Vulkan/RADV, 96.76 t/s balanced Qwen3-Coder direct row on b9049, 101.16 t/s local Qwen3.6 MTP server average on b9360 plus 93.29 t/s GMKtec community MTP reproduction on b9235, 55.57 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included, N=3 Corsair validation at 93.55-95.50 t/s, GMKtec EVO-X2 native Ubuntu Qwen3.6 validation within 2%, GMKtec Qwen3-Coder b9235 follow-up data, Windows MS-S1-Max LM Studio evidence, a tuned Reddit GMKtec 99.9-100.0 t/s Qwen3-Coder report, community wall-power rows, a community 3-node USB4 llama.cpp RPC matrix, and USB4 latency tuning data.
+Highlights: 100.04 t/s direct Qwen3-30B-A3B-Instruct-2507 IQ4_XS, 170.02 t/s generation-only LFM2.5 small-MoE scout, 18.43 t/s Nemotron 3 Super 120B direct GGUF capacity scout, 98.51 t/s Qwen3-Coder speed-first direct llama.cpp Vulkan/RADV, 96.76 t/s balanced Qwen3-Coder direct row on b9049, 101.16 t/s local Qwen3.6 MTP server average on b9360 plus 93.29 t/s GMKtec community MTP reproduction on b9235, 55.57 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included, N=3 Corsair validation at 93.55-95.50 t/s, GMKtec EVO-X2 native Ubuntu Qwen3.6 validation within 2%, GMKtec Qwen3-Coder b9235 follow-up data, Windows MS-S1-Max LM Studio evidence, a tuned Reddit GMKtec 99.9-100.0 t/s Qwen3-Coder report, community wall-power rows, a community 3-node USB4 llama.cpp RPC matrix, and USB4 latency tuning data.
 ```
 
 ## Partner / Reviewer Sharing Snippet

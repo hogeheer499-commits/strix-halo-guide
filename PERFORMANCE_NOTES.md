@@ -67,6 +67,29 @@ Interpretation:
 - It should not replace the Qwen3-Coder 30B headline, because it is a different general-instruct model and a different quant.
 - It is not MTP, server/speculative decoding, or a multi-user aggregate result.
 
+## 2026-06-05 Current-Model / Int-Dot Scout Status
+
+A 2026-06-05 scout reran selected current-model rows on a newer local `llama.cpp` build where the Vulkan device line reported `int dot: 1`.
+
+Key results:
+
+- LFM2.5 8B-A1B `Q4_K_M`: **168.96 t/s** tg128 with pp512/tg128, and **170.02 t/s** generation-only.
+- Nemotron 3 Nano 30B-A3B `IQ4_XS`: **75.97 t/s** tg128.
+- Nemotron 3 Super 120B-A12B `UD-IQ4_XS`: **18.43 t/s** tg128.
+- Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`: **98.32 t/s** tg128 with pp512/tg128, and **99.10 t/s** generation-only.
+- Qwen3-Coder 30B-A3B `UD-Q4_K_XL`: **92.84 t/s** generation-only.
+
+Raw evidence:
+
+- [`data/raw/2026-06-05/latest-llamacpp-intdot-regression/`](data/raw/2026-06-05/latest-llamacpp-intdot-regression/)
+
+Interpretation:
+
+- LFM2.5 is the guide's fastest current small-MoE scout, but it is not a 30B-class capability replacement.
+- Nemotron 3 Super is a direct 120B-class GGUF capacity/current-model route, not a speed headline.
+- The latest/int-dot Qwen3-Coder UD row did not beat the older balanced or speed-first Qwen3-Coder rows.
+- The earlier Qwen3-30B-A3B-Instruct-2507 b9467 r50 row remains the strongest direct 30B-class Qwen result at 100.04 t/s.
+
 ## Qwen3.6 27B MTP Q8_0 Status
 
 The official Qwen3.6 27B MTP `Q8_0` GGUF is useful evidence because it answers a natural question: “Should I use the dense 27B route instead of the 35B-A3B MoE route on Strix Halo?”

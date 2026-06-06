@@ -1,0 +1,19 @@
+2026-06-04T21:55:44+02:00
+Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+               total        used        free      shared  buff/cache   available
+Mem:           124Gi        14Gi        22Gi       2.5Gi        92Gi       110Gi
+Swap:          8.0Gi       5.6Gi       2.4Gi
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p6  1.4T  1.2T   57G  96% /
+   4102 tini            /usr/bin/tini -g -- /opt/hermes/docker/entrypoint.sh gateway run
+   4241 hermes          /opt/hermes/.venv/bin/python3 /opt/hermes/.venv/bin/hermes gateway run
+ 356677 python          /home/hoge-heer/.hermes/hermes-agent/venv/bin/python -m hermes_cli.main gateway run --replace
+ 431416 rc.init         /bin/sh -e /run/s6/basedir/scripts/rc.init top /opt/hermes/docker/main-wrapper.sh gateway run
+ 431428 s6-supervise    s6-supervise main-hermes
+ 432374 hermes          /opt/hermes/.venv/bin/python3 /opt/hermes/.venv/bin/hermes gateway run
+ 724923 tini            /usr/bin/tini -g -- /opt/hermes/docker/entrypoint.sh gateway run
+ 725015 hermes          /opt/hermes/.venv/bin/python3 /opt/hermes/.venv/bin/hermes gateway run
+1081233 ollama          /usr/local/bin/ollama serve
+1197484 rc.init         /bin/sh -e /run/s6/basedir/scripts/rc.init top /opt/hermes/docker/main-wrapper.sh gateway run
+1197496 s6-supervise    s6-supervise main-hermes
+1198217 hermes          /opt/hermes/.venv/bin/python3 /opt/hermes/.venv/bin/hermes gateway run

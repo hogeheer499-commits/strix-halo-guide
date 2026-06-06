@@ -25,7 +25,9 @@ This project turns scattered setup knowledge into public evidence and practical 
 
 For vendors and developer-relations teams, that means fewer adoption barriers, clearer buyer guidance, more credible reviews, and better signals about software or firmware gaps.
 
-Current public evidence includes eight Strix Halo-class systems across Beelink, Corsair, GMKtec, MS-S1-Max, and Nimo. Community rows remain separated from first-party Beelink headline claims.
+Current public evidence includes eight Strix Halo-class systems across Beelink, Corsair, GMKtec, MS-S1-Max, and Nimo. Community rows remain separated from first-party Beelink headline claims. The Nimo evidence now includes a Gemma 4 QAT/MTP assistant-head follow-up, which is useful for showing how model format, matched draft heads, and serving topology affect real buyer setup choices.
+
+Public technical feedback also exposes trust friction. When benchmark framing feels promotional, unsupported, or too polished, technical readers push back even if the measurements are real. The guide uses that feedback to improve the proof layer: raw logs first, exact artifacts and commands, clear caveats, separated claim types, and corrected routes when the community finds a gap. See [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md).
 
 ## Collaboration Ask
 
