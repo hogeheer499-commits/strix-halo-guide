@@ -14,9 +14,9 @@ Measured rows below are first-party Beelink GTR9 Pro direct `llama-bench` Vulkan
 
 | Question | Best current row | Why it matters |
 | --- | --- | --- |
-| Fastest direct 30B-class Qwen MoE | Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`: 100.04 t/s direct `llama-bench` on b9467 | Shows a direct 30B-class Qwen route can cross 100 t/s on Strix Halo. Keep separate from the Qwen3-Coder headline and balanced-default rows. |
-| Fastest current small-MoE scout | LFM2.5 8B-A1B `Q4_K_M`: 170.02 t/s generation-only and 168.96 tg128 in the latest/int-dot pp512/tg128 check | Shows how fast newer small active-parameter MoE routes can be. This is not a 30B-class capability replacement. |
-| Largest current direct GGUF capacity route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS`: 18.43 tg128 direct `llama-bench` on one 128 GB Strix Halo system | Proves a 120B-class MoE GGUF route can run directly on one box; value is capacity/currentness, not raw speed. |
+| Fastest direct 30B-class Qwen MoE | Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`: 100.04 t/s direct `llama-bench` on b9467; latest b9544 control measured 103.18 tg128 r10 | Shows a direct 30B-class Qwen route can cross 100 t/s on Strix Halo. Keep separate from the Qwen3-Coder headline and balanced-default rows. |
+| Fastest current small-MoE scout | LFM2.5 8B-A1B `Q4_K_M`: 170.02 t/s generation-only on the 2026-06-05 check; latest b9544 control measured 176.48 tg128 r10 | Shows how fast newer small active-parameter MoE routes can be. This is not a 30B-class capability replacement. |
+| Largest current direct GGUF capacity route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS`: 18.43 tg128 direct `llama-bench`; latest b9544 control measured 18.93 tg128 r3 | Proves a 120B-class MoE GGUF route can run directly on one box; value is capacity/currentness, not raw speed. |
 
 ## June 2026 Scout Results
 
@@ -35,6 +35,17 @@ Measured rows below are first-party Beelink GTR9 Pro direct `llama-bench` Vulkan
 | DeepSeek V4 Flash | `Q2_K` / 0xSero Spark-Mini targets | 103.3 GB original target; 52.6 GB local Spark-Mini file | Original route download-blocked; later smaller 0xSero/Spark-Mini local file still failed to load in `llama-bench` smoke attempts | Strong setup-friction evidence. Do not list as pass, speed result, or hardware limit without a successful load. |
 | Nemotron 3 Ultra 550B-A55B | GGUF dry-run / BF16 / NVFP4 targets | 188.0 GB smallest scanned GGUF route; 1.1 TB BF16 / 352.4 GB NVFP4 | Artifact scan only | GGUF artifacts now exist, but the smallest scanned route is still too large for a practical one-box 128 GB Strix Halo internal-disk benchmark. |
 
+## 2026-06-07 b9544 Regression Control
+
+This checked whether current `llama.cpp` b9544 regresses the guide's most important direct Vulkan/RADV sentinel rows. It used explicit `-dev Vulkan0`; automatic-device dry runs selected CPU and were discarded before publishing.
+
+| Model | Quant | Build | Result | Read |
+| --- | --- | --- | ---: | --- |
+| Qwen3-30B-A3B-Instruct-2507 | `IQ4_XS` | b9544 `98d5e8ba8` | 1438.10 pp512 / 103.18 tg128 r10 | Latest build still keeps the direct 30B-class Qwen route above 100 t/s. |
+| Qwen3-Coder 30B-A3B | `UD-Q4_K_XL` | b9544 `98d5e8ba8` | 1399.98 pp512 / 97.08 tg128 r5 | Balanced coding row remains in the 96-97 t/s class. The exact older `Q4_K_S` speed-first file was not present locally, so the 98.51 t/s Q4_K_S headline was not rerun. |
+| LFM2.5 8B-A1B | `Q4_K_M` | b9544 `98d5e8ba8` | 3398.36 pp512 / 176.48 tg128 r10 | No latest-build regression in the current small-MoE speed route. |
+| Nemotron 3 Super 120B-A12B | `UD-IQ4_XS` | b9544 `98d5e8ba8` | 297.14 pp512 / 18.93 tg128 r3 | No latest-build regression in the 120B-class direct GGUF capacity route. |
+
 Raw evidence:
 
 - Gemma 4 12B: [`data/raw/2026-06-04/gemma-4-12b-it-direct-scout/`](data/raw/2026-06-04/gemma-4-12b-it-direct-scout/)
@@ -44,6 +55,7 @@ Raw evidence:
 - Nemotron 3 Nano 30B-A3B: [`data/raw/2026-06-04/nemotron-3-nano-30b-a3b-iq4xs-direct-scout/`](data/raw/2026-06-04/nemotron-3-nano-30b-a3b-iq4xs-direct-scout/)
 - Nemotron 3 Super 120B-A12B: [`data/raw/2026-06-04/nemotron-3-super-120b-a12b-udiq4xs-direct-scout/`](data/raw/2026-06-04/nemotron-3-super-120b-a12b-udiq4xs-direct-scout/)
 - 2026-06-05 latest/int-dot rerun for LFM2.5, Nemotron Nano, Nemotron Super, Qwen3-30B-A3B-Instruct-2507, and Qwen3-Coder UD: [`data/raw/2026-06-05/latest-llamacpp-intdot-regression/`](data/raw/2026-06-05/latest-llamacpp-intdot-regression/)
+- 2026-06-07 `llama.cpp` b9544 regression control for Qwen3-30B-A3B-Instruct-2507, Qwen3-Coder UD, LFM2.5, and Nemotron Super: [`data/raw/2026-06-07/latest-llamacpp-b9544-regression/`](data/raw/2026-06-07/latest-llamacpp-b9544-regression/)
 - Qwen3-Coder IQ4_XS control: [`data/raw/2026-06-03/qwen3-coder-iq4xs-direct-scout/`](data/raw/2026-06-03/qwen3-coder-iq4xs-direct-scout/)
 - Qwen3 30B-A3B NEO-MAX IQ4_XS control: [`data/raw/2026-06-03/qwen3-30b-a3b-neo-max-iq4xs-direct-scout/`](data/raw/2026-06-03/qwen3-30b-a3b-neo-max-iq4xs-direct-scout/)
 - Qwen3.5 35B-A3B IQ4_XS control: [`data/raw/2026-06-03/qwen35-35b-a3b-iq4xs-direct-scout/`](data/raw/2026-06-03/qwen35-35b-a3b-iq4xs-direct-scout/)
@@ -79,7 +91,7 @@ For text generation speed, model architecture dominates. LFM2.5 8B-A1B is much f
 The existing Qwen 30B-class rows remain the stronger 30B speed story:
 
 - Qwen3-Coder 30B-A3B `Q4_K_S`: 98.51 t/s direct first-party Beelink headline.
-- Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`: 100.04 t/s direct first-party scout on b9467; 99.10 t/s generation-only on the 2026-06-05 latest/int-dot rerun.
+- Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`: 100.04 t/s direct first-party scout on b9467; 99.10 t/s generation-only on the 2026-06-05 latest/int-dot rerun; 103.18 tg128 on the 2026-06-07 b9544 regression control.
 
 Keep those separate from small-model speed results.
 
@@ -129,11 +141,10 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 
 | Priority | Test | Why it adds guide value |
 | ---: | --- | --- |
-| 1 | `llama.cpp` latest-release regression check on the Qwen3-Coder 30B headline, Qwen3-30B-A3B-Instruct-2507, Nemotron Super, and LFM2.5 rows | Shows whether users should update or pin their `llama.cpp` build. Recent releases are moving quickly, so this directly reduces setup uncertainty. |
-| 2 | Ollama 0.30.x Windows/Linux sanity check for one default chat model and one 30B-class MoE | Ollama is the easiest buyer path. Version drift matters more to typical users than another raw `llama-bench` row. |
-| 3 | Nemotron Super quant comparison: `UD-IQ2_M` or `UD-Q2_K_XL` versus current `UD-IQ4_XS` if storage permits | Answers whether lower quants make 120B-class Nemotron meaningfully faster or more practical on one Strix Halo box. |
-| 4 | DeepSeek V4 Flash runtime/loadability follow-up on a smaller route | The 0xSero/Spark-Mini file existed locally but did not load in current smoke attempts. Next value comes from identifying whether this is GGUF compatibility, runtime support, or build/backend mismatch. |
-| 5 | External-storage feasibility plan for Ultra/Kimi/GLM class routes | These are not current one-box internal-disk targets. A clean external NVMe plan would answer whether 128 GB unified memory can at least smoke/load the smallest extreme routes. |
+| 1 | Ollama 0.30.x Windows/Linux sanity check for one default chat model and one 30B-class MoE | Ollama is the easiest buyer path. Version drift matters more to typical users than another raw `llama-bench` row. |
+| 2 | Nemotron Super quant comparison: `UD-IQ2_M` or `UD-Q2_K_XL` versus current `UD-IQ4_XS` if storage permits | Answers whether lower quants make 120B-class Nemotron meaningfully faster or more practical on one Strix Halo box. |
+| 3 | DeepSeek V4 Flash runtime/loadability follow-up on a smaller route | The 0xSero/Spark-Mini file existed locally but did not load in current smoke attempts. Next value comes from identifying whether this is GGUF compatibility, runtime support, or build/backend mismatch. |
+| 4 | External-storage feasibility plan for Ultra/Kimi/GLM class routes | These are not current one-box internal-disk targets. A clean external NVMe plan would answer whether 128 GB unified memory can at least smoke/load the smallest extreme routes. |
 
 ## Watch List
 

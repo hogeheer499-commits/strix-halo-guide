@@ -4,7 +4,7 @@ This file is the compact benchmark source-of-truth for numbers already published
 
 ## Current System Snapshot
 
-Latest live audit on 2026-06-05:
+Latest live audit on 2026-06-07:
 
 | Component | Current State |
 |-----------|---------------|
@@ -13,24 +13,28 @@ Latest live audit on 2026-06-05:
 | GPU | Radeon 8060S, gfx1151, RADV STRIX_HALO |
 | RAM | 124GiB OS-visible unified memory |
 | Kernel | 6.19.4-061904-generic |
-| Mesa RADV | 26.1.1, kisak-mesa PPA |
+| Mesa RADV | 26.1.2, kisak-mesa PPA |
 | Ollama | 0.23.1 |
 | AMDVLK | Removed |
 | linux-firmware | 20240318.git3b128b60-0ubuntu2.27 |
 | GPU clock | 2900 MHz selected |
 | tuned | `accelerator-performance` active |
 
-Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 2026-04-26 with `tuned accelerator-performance` active. The 2026-05-07 latest-stack rerun confirms `tuned accelerator-performance` active, Mesa RADV 26.0.6, AMDVLK absent, linux-firmware safe, GPU clock at 2900 MHz, llama.cpp b9049, and Ollama 0.23.1. The 2026-05-16 spot check tested llama.cpp b9172 and an isolated Ollama 0.24.0 binary without changing the installed Ollama service. The 2026-05-26 spot check used Mesa RADV 26.1.1 and llama.cpp b9334. The 2026-05-27 spot check used the same Mesa/RADV stack and llama.cpp b9360. The 2026-05-31 spot check tested latest llama.cpp b9442 for the direct Qwen3-Coder speed-first path and found no new headline. The 2026-06-01 spot check updated the same latest-stack worktree to `de6f727aa` and again found no new Qwen3-Coder headline. The 2026-06-02 b9467 scout found a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS direct route above 100 t/s. The 2026-06-05 latest/int-dot scout added LFM2.5 small-MoE speed evidence and Nemotron 3 Super 120B-class direct GGUF capacity evidence.
+Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 2026-04-26 with `tuned accelerator-performance` active. The 2026-05-07 latest-stack rerun confirms `tuned accelerator-performance` active, Mesa RADV 26.0.6, AMDVLK absent, linux-firmware safe, GPU clock at 2900 MHz, llama.cpp b9049, and Ollama 0.23.1. The 2026-05-16 spot check tested llama.cpp b9172 and an isolated Ollama 0.24.0 binary without changing the installed Ollama service. The 2026-05-26 spot check used Mesa RADV 26.1.1 and llama.cpp b9334. The 2026-05-27 spot check used the same Mesa/RADV stack and llama.cpp b9360. The 2026-05-31 spot check tested latest llama.cpp b9442 for the direct Qwen3-Coder speed-first path and found no new headline. The 2026-06-01 spot check updated the same latest-stack worktree to `de6f727aa` and again found no new Qwen3-Coder headline. The 2026-06-02 b9467 scout found a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS direct route above 100 t/s. The 2026-06-05 latest/int-dot scout added LFM2.5 small-MoE speed evidence and Nemotron 3 Super 120B-class direct GGUF capacity evidence. The 2026-06-07 b9544 regression control showed no regression on the available Vulkan/RADV sentinel rows.
 
 ## Top-Line Model Results
 
 | Model | Backend / Build | Quant | pp512 | tg128 | Notes |
 |-------|-----------------|-------|-------|-------|-------|
+| LFM2.5 8B-A1B | Vulkan RADV, llama.cpp b9544 | Q4_K_M | 3398 | **176.48** | 2026-06-07 latest b9544 control; small-MoE speed row, not a 30B-class replacement |
+| Qwen3-30B-A3B-Instruct-2507 | Vulkan RADV, llama.cpp b9544 | IQ4_XS | 1438 | **103.18** | 2026-06-07 latest b9544 control; confirms the separate direct 30B-class Qwen route remains above 100 t/s |
 | Qwen3-30B-A3B-Instruct-2507 | Vulkan RADV, llama.cpp b9467 | IQ4_XS | 1416 | **100.04** | First local direct `llama-bench` row above 100 t/s; separate general-instruct Qwen route, not the Qwen3-Coder headline |
+| Nemotron 3 Super 120B-A12B | Vulkan RADV, llama.cpp b9544 | UD-IQ4_XS | 297 | **18.93** | 2026-06-07 latest b9544 control for the 120B-class direct GGUF capacity route |
 | LFM2.5 8B-A1B | Vulkan RADV, llama.cpp 2016bf2 | Q4_K_M | 3415 | **168.96** | 2026-06-05 latest/int-dot small-MoE scout; generation-only p0/n128 reached 170.02 t/s |
 | Nemotron 3 Super 120B-A12B | Vulkan RADV, llama.cpp 2016bf2 | UD-IQ4_XS | 295 | **18.43** | 2026-06-05 direct 120B-class GGUF capacity/current-model proof, not a speed result |
 | Nemotron 3 Nano 30B-A3B | Vulkan RADV, llama.cpp 2016bf2 | IQ4_XS | 1312 | **75.97** | Practical NVIDIA 30B-class route from the 2026-06-05 latest/int-dot scout |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9179 | Q4_K_S | 1396 | **98.51** | 2026-05-16 strict-clean r50 speed-first quant confirmation |
+| Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9544 | UD-Q4_K_XL | 1400 | 97.08 | 2026-06-07 balanced-UD control; exact Q4_K_S speed-first file was not present locally |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp 2016bf2 | UD-Q4_K_XL | n/a | 92.84 | 2026-06-05 generation-only latest/int-dot check; below the older balanced b9049 96-97 t/s row |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9453-7 | Q4_K_S | 1384 | 95.55 | Latest direct rerun; no new headline versus b9179 |
 | Qwen3-Coder 30B-A3B | Vulkan RADV, llama.cpp b9442 | Q4_K_S | 1376 | 93.85 | Latest direct rerun; no new headline versus b9179 |
@@ -84,6 +88,19 @@ Measured on the same Beelink GTR9 Pro with a newer local `llama.cpp` build whose
 | Qwen3-Coder 30B-A3B `UD-Q4_K_XL`, `-p 0 -n 128`, r20 | 92.84 tg128 | Useful negative/control row; below the older b9049 96-97 t/s balanced row. |
 
 Takeaway: the 2026-06-05 check improves the current-model map rather than replacing the Qwen3-Coder headline. LFM2.5 is the small-MoE speed winner, Nemotron Super is the 120B-class direct capacity route, and Qwen3-Coder still keeps its older b9179 speed-first and b9049 balanced rows.
+
+## 2026-06-07 Latest b9544 Regression Control
+
+Measured on the same Beelink GTR9 Pro with llama.cpp b9544 / `98d5e8ba8`, Vulkan/RADV, Mesa 26.1.2, and explicit `-dev Vulkan0`. Raw data lives under [`data/raw/2026-06-07/latest-llamacpp-b9544-regression/`](data/raw/2026-06-07/latest-llamacpp-b9544-regression/).
+
+| Route | Result | Read |
+|-------|--------|------|
+| Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`, pp512/tg128 r10 | 103.18 tg128, 1438.10 pp512 | Latest b9544 keeps the separate 30B-class Qwen route above 100 t/s. |
+| Qwen3-Coder 30B-A3B `UD-Q4_K_XL`, pp512/tg128 r5 | 97.08 tg128, 1399.98 pp512 | Balanced coding control stays in the 96-97 t/s class. The exact older `Q4_K_S` speed-first file was not present locally, so the 98.51 t/s Q4_K_S headline was not rerun. |
+| LFM2.5 8B-A1B `Q4_K_M`, pp512/tg128 r10 | 176.48 tg128, 3398.36 pp512 | Latest b9544 does not regress the small-MoE speed route. |
+| Nemotron 3 Super 120B-A12B `UD-IQ4_XS`, pp512/tg128 r3 | 18.93 tg128, 297.14 pp512 | Latest b9544 does not regress the 120B-class direct GGUF capacity route. |
+
+Takeaway: users do not need to pin away from b9544 for these available Vulkan/RADV sentinel rows. Keep the Qwen3-Coder Q4_K_S 98.51 t/s row scoped to its original b9179 evidence until the exact speed-first file is rerun.
 
 ## 2026-06-01 Latest de6f727 Direct Spot Check
 

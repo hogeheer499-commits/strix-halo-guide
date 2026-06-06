@@ -90,6 +90,29 @@ Interpretation:
 - The latest/int-dot Qwen3-Coder UD row did not beat the older balanced or speed-first Qwen3-Coder rows.
 - The earlier Qwen3-30B-A3B-Instruct-2507 b9467 r50 row remains the strongest direct 30B-class Qwen result at 100.04 t/s.
 
+## 2026-06-07 llama.cpp b9544 Regression Control
+
+A 2026-06-07 control built `llama.cpp` b9544 / `98d5e8ba8` locally and reran the available direct Vulkan/RADV sentinel rows with explicit `-dev Vulkan0`.
+
+Key results:
+
+- Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`: **103.18 t/s** tg128 and **1438.10 t/s** pp512, r10.
+- Qwen3-Coder 30B-A3B `UD-Q4_K_XL`: **97.08 t/s** tg128 and **1399.98 t/s** pp512, r5.
+- LFM2.5 8B-A1B `Q4_K_M`: **176.48 t/s** tg128 and **3398.36 t/s** pp512, r10.
+- Nemotron 3 Super 120B-A12B `UD-IQ4_XS`: **18.93 t/s** tg128 and **297.14 t/s** pp512, r3.
+
+Raw evidence:
+
+- [`data/raw/2026-06-07/latest-llamacpp-b9544-regression/`](data/raw/2026-06-07/latest-llamacpp-b9544-regression/)
+
+Interpretation:
+
+- b9544 did not regress the available direct Vulkan/RADV sentinel rows.
+- Qwen3-30B-A3B-Instruct-2507 remains a separate direct 30B-class Qwen route above 100 t/s.
+- LFM2.5 remains a small active-parameter MoE speed row, not a 30B-class replacement.
+- Nemotron Super remains a direct 120B-class capacity/current-model row.
+- The exact Qwen3-Coder `Q4_K_S` speed-first file used for the older 98.51 t/s headline was not present locally, so that row was not rerun and should remain scoped to its original b9179 evidence.
+
 ## Qwen3.6 27B MTP Q8_0 Status
 
 The official Qwen3.6 27B MTP `Q8_0` GGUF is useful evidence because it answers a natural question: “Should I use the dense 27B route instead of the 35B-A3B MoE route on Strix Halo?”
