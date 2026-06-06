@@ -100,6 +100,7 @@ boxwrench added the first Nimo AI Mini PC community bundle:
 - Qwen 3.6 35B, Qwen3-Coder-Next, Qwen 122B, StepFun Step-3.7-Flash, DFlash, GPT-OSS, and Gemma rows in the raw bundle
 - Qwen 122B MTP tuning notes showing that `PMIN` pruning improved validation efficiency but reduced generation throughput
 - StepFun MTP notes showing a server/speculative speedup in the contributor's harness
+- Gemma 4 QAT Q4_0 follow-up across 12B, 26B-A4B, and 31B, including matched QAT MTP assistant-head rows and concurrency caveats
 - compact-chassis thermal/power/noise context useful for buyers and vendors evaluating non-Beelink systems
 
 Relevant docs:
@@ -108,6 +109,7 @@ Relevant docs:
 - [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md#nimo-ai-mini-pc-large-model-bundle)
 - [`data/community_nimo_issue4.csv`](data/community_nimo_issue4.csv)
 - [`data/raw/2026-06-03/community-nimo-issue4/`](data/raw/2026-06-03/community-nimo-issue4/)
+- [`data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/)
 
 ## How To Get Contributor Credit
 
