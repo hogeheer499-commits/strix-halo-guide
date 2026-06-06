@@ -1,0 +1,3 @@
+T3 health check after b9544 Vulkan runs: OK.
+
+The full JSON health response was intentionally not stored because it includes local websocket/client metadata that is not relevant to benchmark evidence.
