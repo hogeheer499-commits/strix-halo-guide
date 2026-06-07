@@ -1,0 +1,6 @@
+date: 2026-06-07T02:29:34+02:00
+command: /home/hoge-heer/llama.cpp-b9544/build-vulkan/bin/llama-bench -dev Vulkan0 -m /home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf -fa 1 -ngl 999 -mmp 0 -b 2048 -ub 512 -t 16 --poll 50 -p 0 -n 128 -r 20 -o csv
+ 02:29:34 up 10 days,  7:09,  1 user,  load average: 0.35, 1.02, 0.85
+0: 2900Mhz 
+1: 1100Mhz 
+2: 2900Mhz *

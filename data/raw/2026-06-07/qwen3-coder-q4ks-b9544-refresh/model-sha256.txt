@@ -1,0 +1,1 @@
+56a7d00783419bcb0ae566253c371bcb3678261bb79881a553539f5679864db4  /home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf

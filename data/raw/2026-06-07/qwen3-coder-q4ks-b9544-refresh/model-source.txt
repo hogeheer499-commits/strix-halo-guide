@@ -1,0 +1,8 @@
+repo: unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF
+file: Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+size_bytes: 17456012448
+sha256: 56a7d00783419bcb0ae566253c371bcb3678261bb79881a553539f5679864db4
+downloaded_at: 2026-06-07
+local_path: /home/hoge-heer/models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+benchmark_symlink: /home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+note: exact SHA256 match with data/raw/2026-05-16/qwen3-coder-break100-master/model-sha256.txt

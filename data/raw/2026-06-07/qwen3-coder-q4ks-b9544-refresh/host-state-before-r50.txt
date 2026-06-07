@@ -1,0 +1,7 @@
+date: 2026-06-07T02:27:14+02:00
+command: /home/hoge-heer/llama.cpp-b9544/build-vulkan/bin/llama-bench -dev Vulkan0 -m /home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf -fa 1 -ngl 999 -mmp 0 -b 2048 -ub 512 -t 16 --poll 50 -p 512 -n 128 -r 50 -o csv
+workspace_guard: one workspace-critical service left running; remote desktop, local AI serving, VM, and media/backend services paused; long-running background containers left running.
+ 02:27:14 up 10 days,  7:07,  1 user,  load average: 1.11, 1.40, 0.93
+0: 2900Mhz 
+1: 1100Mhz 
+2: 2900Mhz *

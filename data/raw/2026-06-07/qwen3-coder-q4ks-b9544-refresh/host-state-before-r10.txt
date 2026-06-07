@@ -1,0 +1,140 @@
+date: 2026-06-07T02:26:25+02:00
+host: Beelink GTR9 Pro / Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory
+llama_cpp_binary: /home/hoge-heer/llama.cpp-b9544/build-vulkan/bin/llama-bench
+usage: /home/hoge-heer/llama.cpp-b9544/build-vulkan/bin/llama-bench [options]
+
+options:
+  -h, --help
+  --numa <distribute|isolate|numactl>         numa mode (default: disabled)
+  -r, --repetitions <n>                       number of times to repeat each test (default: 5)
+  --prio <-1|0|1|2|3>                         process/thread priority (default: 0)
+  --delay <0...N> (seconds)                   delay between each test (default: 0)
+  -o, --output <csv|json|jsonl|md|sql>        output format printed to stdout (default: md)
+  -oe, --output-err <csv|json|jsonl|md|sql>   output format printed to stderr (default: none)
+  --list-devices                              list available devices and exit
+  -v, --verbose                               verbose output
+  --progress                                  print test progress indicators
+  --no-warmup                                 skip warmup runs before benchmarking
+  -fitt, --fit-target <MiB>                   fit model to device memory with this margin per device in MiB (default: off)
+  -fitc, --fit-ctx <n>                        minimum ctx size for --fit-target (default: 4096)
+
+test parameters:
+  -m, --model <filename>                      (default: models/7B/ggml-model-q4_0.gguf)
+  -hf, -hfr, --hf-repo <user>/<model>[:quant] Hugging Face model repository; quant is optional, case-insensitive
+                                              default to Q4_K_M, or falls back to the first file in the repo if Q4_K_M doesn't exist.
+                                              example: ggml-org/GLM-4.7-Flash-GGUF:Q4_K_M
+                                              (default: unused)
+  -hff, --hf-file <file>                      Hugging Face model file. If specified, it will override the quant in --hf-repo
+                                              (default: unused)
+  -hft, --hf-token <token>                    Hugging Face access token
+                                              (default: value from HF_TOKEN environment variable)
+  -p, --n-prompt <n>                          (default: 512)
+  -n, --n-gen <n>                             (default: 128)
+  -pg <pp,tg>                                 (default: )
+  -d, --n-depth <n>                           (default: 0)
+  -b, --batch-size <n>                        (default: 2048)
+  -ub, --ubatch-size <n>                      (default: 512)
+  -ctk, --cache-type-k <t>                    (default: f16)
+  -ctv, --cache-type-v <t>                    (default: f16)
+  -t, --threads <n>                           (default: 16)
+  -C, --cpu-mask <hex,hex>                    (default: 0x0)
+  --cpu-strict <0|1>                          (default: 0)
+  --poll <0...100>                            (default: 50)
+  -ngl, --n-gpu-layers <n>                    (default: -1)
+  -ncmoe, --n-cpu-moe <n>                     (default: 0)
+  -sm, --split-mode <none|layer|row|tensor>   (default: layer)
+  -mg, --main-gpu <i>                         (default: 0)
+  -nkvo, --no-kv-offload <0|1>                (default: 0)
+  -fa, --flash-attn <on|off|auto>             (default: auto)
+  -dev, --device <dev0/dev1/...>              (default: auto)
+  -mmp, --mmap <0|1>                          (default: 1)
+  -dio, --direct-io <0|1>                     (default: 0)
+  -embd, --embeddings <0|1>                   (default: 0)
+  -ts, --tensor-split <ts0/ts1/..>            (default: 0)
+  -ot --override-tensor <tensor name pattern>=<buffer type>;...
+                                              (default: disabled)
+  -nopo, --no-op-offload <0|1>                (default: 0)
+  --no-host <0|1>                             (default: 0)
+
+Multiple values can be given for each parameter by separating them with ','
+or by specifying the parameter multiple times. Ranges can be given as
+'first-last' or 'first-last+step' or 'first-last*mult'.
+model: /home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+model_sha256: 56a7d00783419bcb0ae566253c371bcb3678261bb79881a553539f5679864db4
+command: /home/hoge-heer/llama.cpp-b9544/build-vulkan/bin/llama-bench -dev Vulkan0 -m /home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf -fa 1 -ngl 999 -mmp 0 -b 2048 -ub 512 -t 16 --poll 50 -p 512 -n 128 -r 10 -o csv
+Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+==========
+VULKANINFO
+==========
+
+Vulkan Instance Version: 1.3.275
+
+
+Instance Extensions: count = 25
+-------------------------------
+VK_EXT_acquire_drm_display             : extension revision 1
+VK_EXT_acquire_xlib_display            : extension revision 1
+VK_EXT_debug_report                    : extension revision 10
+VK_EXT_debug_utils                     : extension revision 2
+VK_EXT_direct_mode_display             : extension revision 1
+VK_EXT_display_surface_counter         : extension revision 1
+VK_EXT_headless_surface                : extension revision 1
+VK_EXT_layer_settings                  : extension revision 2
+VK_EXT_surface_maintenance1            : extension revision 1
+VK_EXT_swapchain_colorspace            : extension revision 5
+VK_KHR_device_group_creation           : extension revision 1
+VK_KHR_display                         : extension revision 23
+VK_KHR_external_fence_capabilities     : extension revision 1
+VK_KHR_external_memory_capabilities    : extension revision 1
+VK_KHR_external_semaphore_capabilities : extension revision 1
+VK_KHR_get_display_properties2         : extension revision 1
+VK_KHR_get_physical_device_properties2 : extension revision 2
+VK_KHR_get_surface_capabilities2       : extension revision 1
+VK_KHR_portability_enumeration         : extension revision 1
+VK_KHR_surface                         : extension revision 25
+VK_KHR_surface_protected_capabilities  : extension revision 1
+VK_KHR_wayland_surface                 : extension revision 6
+VK_KHR_xcb_surface                     : extension revision 6
+VK_KHR_xlib_surface                    : extension revision 6
+VK_LUNARG_direct_driver_loading        : extension revision 1
+
+Instance Layers: count = 5
+--------------------------
+VK_LAYER_INTEL_nullhw       INTEL NULL HW                                                1.1.73   version 1
+VK_LAYER_MESA_anti_lag      Open-source implementation of the VK_AMD_anti_lag extension. 1.4.303  version 1
+VK_LAYER_MESA_device_select Linux device selection layer                                 1.4.303  version 1
+VK_LAYER_MESA_overlay       Mesa Overlay layer                                           1.4.303  version 1
+VK_LAYER_MESA_screenshot    Mesa Screenshot layer                                        1.4.303  version 1
+
+Devices:
+========
+GPU0:
+	apiVersion         = 1.4.348
+	driverVersion      = 26.1.2
+	vendorID           = 0x1002
+	deviceID           = 0x1586
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = Radeon 8060S Graphics (RADV STRIX_HALO)
+	driverID           = DRIVER_ID_MESA_RADV
+	driverName         = radv
+	driverInfo         = Mesa 26.1.2 - kisak-mesa PPA
+	conformanceVersion = 1.4.0.0
+	deviceUUID         = 00000000-c600-0000-0000-000000000000
+	driverUUID         = 414d442d-4d45-5341-2d44-525600000000
+GPU1:
+	apiVersion         = 1.4.348
+	driverVersion      = 26.1.2
+	vendorID           = 0x10005
+	deviceID           = 0x0000
+	deviceType         = PHYSICAL_DEVICE_TYPE_CPU
+	deviceName         = llvmpipe (LLVM 20.1.8, 256 bits)
+	driverID           = DRIVER_ID_MESA_LLVMPIPE
+	driverName         = llvmpipe
+	driverInfo         = Mesa 26.1.2 - kisak-mesa PPA (LLVM 20.1.8)
+	conformanceVersion = 1.3.1.1
+	deviceUUID         = 6d657361-3236-2e31-2e32-202d206b6900
+	driverUUID         = 6c6c766d-7069-7065-5555-494400000000
+gpu_clock:
+0: 2900Mhz 
+1: 1100Mhz 
+2: 2900Mhz *
