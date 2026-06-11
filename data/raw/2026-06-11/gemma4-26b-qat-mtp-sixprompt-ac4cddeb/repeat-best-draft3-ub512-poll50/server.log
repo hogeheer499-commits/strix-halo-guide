@@ -1,0 +1,132 @@
+0.00.029.459 I log_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.029.461 I device_info:
+0.00.029.561 I   - Vulkan0 : Radeon 8060S Graphics (RADV STRIX_HALO) (131584 MiB, 130713 MiB free)
+0.00.029.564 I   - CPU     : AMD RYZEN AI MAX+ 395 w/ Radeon 8060S (127938 MiB, 127938 MiB free)
+0.00.029.607 I system_info: n_threads = 16 (n_threads_batch = 16) / 32 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX_VNNI = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | AVX512 = 1 | AVX512_VBMI = 1 | AVX512_VNNI = 1 | AVX512_BF16 = 1 | LLAMAFILE = 1 | REPACK = 1 | 
+0.00.029.633 I srv          init: running without SSL
+0.00.029.667 I srv          init: using 31 threads for HTTP server
+0.00.029.669 I srv          init: The UI is disabled
+0.00.029.669 I srv          init: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+0.00.029.745 I srv         start: binding port with default address family
+0.00.030.879 I srv  llama_server: loading model
+0.00.030.892 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/gemma-4-26b-a4b-it-qat-unsloth-udq4kxl/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf'
+0.00.398.186 E llama_init_from_model: failed to initialize the context: Gemma4Assistant requires ctx_other to be set (this is normal during memory fitting)
+0.00.488.699 W srv    load_model: [spec] failed to measure draft model memory: failed to create llama_context from model
+0.00.488.723 I common_init_result: fitting params to device memory ...
+0.00.488.725 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+0.01.091.699 W load: override 'tokenizer.ggml.add_bos_token' to 'true' for Gemma4
+0.01.125.351 W load: control-looking token:    212 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.01.125.561 W load: control-looking token:     50 '<|tool_response>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.01.136.611 W load: special_eog_ids contains '<|tool_response>', removing '</s>' token from EOG list
+0.02.467.192 W llama_context: n_ctx_seq (4096) < n_ctx_train (262144) -- the full capacity of the model will not be utilized
+0.02.489.773 I common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+0.02.515.597 I srv    load_model: loading draft model '/home/hoge-heer/benchmark-models/gemma-4-26b-a4b-it-qat-unsloth-udq4kxl/MTP/gemma-4-26B-A4B-it-Q4_0-MTP.gguf'
+0.02.785.118 W load: control-looking token:    212 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.02.785.336 W load: control-looking token:     50 '<|tool_response>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.02.797.181 W load: special_eog_ids contains '<|tool_response>', removing '</s>' token from EOG list
+0.02.855.901 W llama_context: n_ctx_seq (4096) < n_ctx_train (131072) -- the full capacity of the model will not be utilized
+0.02.856.063 W llama_kv_cache: layer   3: sharing with layer 29. k = 0x4001000, v = 0x4801000
+0.02.856.080 W llama_kv_cache: layer   0: sharing with layer 28. k = 0x12001000, v = 0x12601000
+0.02.856.081 W llama_kv_cache: layer   1: sharing with layer 28. k = 0x12001000, v = 0x12601000
+0.02.856.082 W llama_kv_cache: layer   2: sharing with layer 28. k = 0x12001000, v = 0x12601000
+0.02.859.943 I srv    load_model: initializing slots, n_slots = 1
+0.02.879.678 I common_speculative_impl_draft_mtp: adding speculative implementation 'draft-mtp'
+0.02.879.682 I common_speculative_impl_draft_mtp: - n_max=3, n_min=0, p_min=0.00, n_embd=2816, backend_sampling=1
+0.02.879.685 I common_speculative_impl_draft_mtp: - gpu_layers=-1, cache_k=f16, cache_v=f16, ctx_tgt=yes, ctx_dft=yes, devices=[default]
+0.02.886.554 I srv    load_model: speculative decoding context initialized
+0.02.886.558 I slot   load_model: id  0 | task -1 | new slot, n_ctx = 4096
+0.02.886.596 I srv    load_model: prompt cache is disabled - use `--cache-ram N` to enable it
+0.02.886.597 I srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+0.02.886.598 I srv    load_model: context checkpoints enabled, max = 32, min spacing = 256
+0.02.886.629 W srv          init: --cache-idle-slots requires --cache-ram, disabling
+0.02.891.026 I init: chat template, example_format: '<|turn>system
+<|think|>
+You are a helpful assistant<turn|>
+<|turn>user
+Hello<turn|>
+<|turn>model
+Hi there<turn|>
+<|turn>user
+How are you?<turn|>
+<|turn>model
+'
+0.02.891.416 I srv          init: init: chat template, thinking = 1
+0.02.891.463 I srv  llama_server: model loaded
+0.02.891.469 I srv  llama_server: server is listening on http://127.0.0.1:18080
+0.02.891.477 I srv  update_slots: all slots are idle
+0.03.055.687 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = -1
+0.03.055.714 I slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+0.03.113.695 I slot create_check: id  0 | task 0 | created context checkpoint 1 of 32 (pos_min = 0, pos_max = 8, n_tokens = 9, size = 1.759 MiB)
+0.03.925.581 I slot print_timing: id  0 | task 0 | n_decoded =    101, tg = 128.06 t/s
+0.04.654.049 I slot print_timing: id  0 | task 0 | prompt eval time =      81.17 ms /    13 tokens (    6.24 ms per token,   160.16 tokens per second)
+0.04.654.053 I slot print_timing: id  0 | task 0 |        eval time =    1517.14 ms /   192 tokens (    7.90 ms per token,   126.55 tokens per second)
+0.04.654.054 I slot print_timing: id  0 | task 0 |       total time =    1598.30 ms /   205 tokens
+0.04.654.060 I slot print_timing: id  0 | task 0 |    graphs reused =         53
+0.04.654.061 I slot print_timing: id  0 | task 0 | draft acceptance = 0.85093 (  137 accepted /   161 generated)
+0.04.654.090 I statistics        draft-mtp: #calls(b,g,a) =    1     54     54, #gen drafts =     54, #acc drafts =    49, #gen tokens =    161, #acc tokens =   137, dur(b,g,a) = 0.002, 241.586, 0.026 ms
+0.04.654.121 I slot      release: id  0 | task 0 | stop processing: n_tokens = 204, truncated = 0
+0.04.654.130 I srv  update_slots: all slots are idle
+0.04.655.405 I slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 0.158 (> 0.100 thold), f_keep = 0.015
+0.04.655.419 I slot launch_slot_: id  0 | task 57 | processing task, is_child = 0
+0.04.655.424 W slot update_slots: id  0 | task 57 | erased invalidated context checkpoint (pos_min = 0, pos_max = 8, n_tokens = 9, n_swa = 1024, pos_next = 0, size = 1.759 MiB)
+0.04.717.880 I slot create_check: id  0 | task 57 | created context checkpoint 1 of 32 (pos_min = 0, pos_max = 14, n_tokens = 15, size = 2.930 MiB)
+0.06.249.793 I slot print_timing: id  0 | task 57 | prompt eval time =      86.47 ms /    19 tokens (    4.55 ms per token,   219.73 tokens per second)
+0.06.249.796 I slot print_timing: id  0 | task 57 |        eval time =    1507.89 ms /   192 tokens (    7.85 ms per token,   127.33 tokens per second)
+0.06.249.797 I slot print_timing: id  0 | task 57 |       total time =    1594.36 ms /   211 tokens
+0.06.249.797 I slot print_timing: id  0 | task 57 |    graphs reused =        105
+0.06.249.798 I slot print_timing: id  0 | task 57 | draft acceptance = 0.86164 (  137 accepted /   159 generated)
+0.06.249.815 I statistics        draft-mtp: #calls(b,g,a) =    2    107    107, #gen drafts =    107, #acc drafts =    96, #gen tokens =    320, #acc tokens =   274, dur(b,g,a) = 0.003, 478.336, 0.055 ms
+0.06.249.828 I slot      release: id  0 | task 57 | stop processing: n_tokens = 210, truncated = 0
+0.06.249.836 I srv  update_slots: all slots are idle
+0.06.250.961 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 120013227852
+0.06.250.983 I slot launch_slot_: id  0 | task 114 | processing task, is_child = 0
+0.06.250.989 W slot update_slots: id  0 | task 114 | erased invalidated context checkpoint (pos_min = 0, pos_max = 14, n_tokens = 15, n_swa = 1024, pos_next = 0, size = 2.930 MiB)
+0.06.311.809 I slot create_check: id  0 | task 114 | created context checkpoint 1 of 32 (pos_min = 0, pos_max = 14, n_tokens = 15, size = 2.930 MiB)
+0.07.315.843 I slot print_timing: id  0 | task 114 | n_decoded =    100, tg = 101.99 t/s
+0.08.387.446 I slot print_timing: id  0 | task 114 | prompt eval time =      84.40 ms /    19 tokens (    4.44 ms per token,   225.12 tokens per second)
+0.08.387.449 I slot print_timing: id  0 | task 114 |        eval time =    2052.05 ms /   192 tokens (   10.69 ms per token,    93.57 tokens per second)
+0.08.387.450 I slot print_timing: id  0 | task 114 |       total time =    2136.45 ms /   211 tokens
+0.08.387.451 I slot print_timing: id  0 | task 114 |    graphs reused =        179
+0.08.387.452 I slot print_timing: id  0 | task 114 | draft acceptance = 0.51111 (  115 accepted /   225 generated)
+0.08.387.472 I statistics        draft-mtp: #calls(b,g,a) =    3    182    182, #gen drafts =    182, #acc drafts =   149, #gen tokens =    545, #acc tokens =   389, dur(b,g,a) = 0.004, 814.958, 0.093 ms
+0.08.387.486 I slot      release: id  0 | task 114 | stop processing: n_tokens = 210, truncated = 0
+0.08.387.493 I srv  update_slots: all slots are idle
+0.08.388.644 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 120015365509
+0.08.388.659 I slot launch_slot_: id  0 | task 193 | processing task, is_child = 0
+0.08.388.663 W slot update_slots: id  0 | task 193 | erased invalidated context checkpoint (pos_min = 0, pos_max = 14, n_tokens = 15, n_swa = 1024, pos_next = 0, size = 2.930 MiB)
+0.08.461.807 I slot create_check: id  0 | task 193 | created context checkpoint 1 of 32 (pos_min = 0, pos_max = 25, n_tokens = 26, size = 5.079 MiB)
+0.10.331.470 I slot print_timing: id  0 | task 193 | n_decoded =    186, tg = 100.82 t/s
+0.10.438.843 I slot print_timing: id  0 | task 193 | prompt eval time =      97.97 ms /    30 tokens (    3.27 ms per token,   306.21 tokens per second)
+0.10.438.847 I slot print_timing: id  0 | task 193 |        eval time =    1952.20 ms /   192 tokens (   10.17 ms per token,    98.35 tokens per second)
+0.10.438.847 I slot print_timing: id  0 | task 193 |       total time =    2050.17 ms /   222 tokens
+0.10.438.848 I slot print_timing: id  0 | task 193 |    graphs reused =        248
+0.10.438.850 I slot print_timing: id  0 | task 193 | draft acceptance = 0.56604 (  120 accepted /   212 generated)
+0.10.438.869 I statistics        draft-mtp: #calls(b,g,a) =    4    253    253, #gen drafts =    253, #acc drafts =   201, #gen tokens =    757, #acc tokens =   509, dur(b,g,a) = 0.005, 1137.452, 0.129 ms
+0.10.438.889 I slot      release: id  0 | task 193 | stop processing: n_tokens = 221, truncated = 0
+0.10.438.902 I srv  update_slots: all slots are idle
+0.10.440.135 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 120017416913
+0.10.440.152 I slot launch_slot_: id  0 | task 267 | processing task, is_child = 0
+0.10.440.158 W slot update_slots: id  0 | task 267 | erased invalidated context checkpoint (pos_min = 0, pos_max = 25, n_tokens = 26, n_swa = 1024, pos_next = 0, size = 5.079 MiB)
+0.10.511.359 I slot create_check: id  0 | task 267 | created context checkpoint 1 of 32 (pos_min = 0, pos_max = 26, n_tokens = 27, size = 5.274 MiB)
+0.12.562.854 I slot print_timing: id  0 | task 267 | prompt eval time =      96.66 ms /    31 tokens (    3.12 ms per token,   320.71 tokens per second)
+0.12.562.858 I slot print_timing: id  0 | task 267 |        eval time =    2026.03 ms /   192 tokens (   10.55 ms per token,    94.77 tokens per second)
+0.12.562.859 I slot print_timing: id  0 | task 267 |       total time =    2122.69 ms /   223 tokens
+0.12.562.860 I slot print_timing: id  0 | task 267 |    graphs reused =        321
+0.12.562.860 I slot print_timing: id  0 | task 267 | draft acceptance = 0.52252 (  116 accepted /   222 generated)
+0.12.562.878 I statistics        draft-mtp: #calls(b,g,a) =    5    327    327, #gen drafts =    327, #acc drafts =   251, #gen tokens =    979, #acc tokens =   625, dur(b,g,a) = 0.006, 1467.821, 0.153 ms
+0.12.562.892 I slot      release: id  0 | task 267 | stop processing: n_tokens = 222, truncated = 0
+0.12.562.899 I srv  update_slots: all slots are idle
+0.12.564.291 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 120019540915
+0.12.564.305 I slot launch_slot_: id  0 | task 345 | processing task, is_child = 0
+0.12.564.308 W slot update_slots: id  0 | task 345 | erased invalidated context checkpoint (pos_min = 0, pos_max = 26, n_tokens = 27, n_swa = 1024, pos_next = 0, size = 5.274 MiB)
+0.12.687.763 I slot create_check: id  0 | task 345 | created context checkpoint 1 of 32 (pos_min = 0, pos_max = 36, n_tokens = 37, size = 7.228 MiB)
+0.13.654.785 I slot print_timing: id  0 | task 345 | n_decoded =    100, tg = 106.00 t/s
+0.14.318.662 I slot print_timing: id  0 | task 345 | prompt eval time =     147.06 ms /    41 tokens (    3.59 ms per token,   278.81 tokens per second)
+0.14.318.666 I slot print_timing: id  0 | task 345 |        eval time =    1607.29 ms /   192 tokens (    8.37 ms per token,   119.46 tokens per second)
+0.14.318.667 I slot print_timing: id  0 | task 345 |       total time =    1754.35 ms /   233 tokens
+0.14.318.668 I slot print_timing: id  0 | task 345 |    graphs reused =        377
+0.14.318.668 I slot print_timing: id  0 | task 345 | draft acceptance = 0.77778 (  133 accepted /   171 generated)
+0.14.318.687 I statistics        draft-mtp: #calls(b,g,a) =    6    384    384, #gen drafts =    384, #acc drafts =   299, #gen tokens =   1150, #acc tokens =   758, dur(b,g,a) = 0.007, 1722.917, 0.179 ms
+0.14.318.702 I slot      release: id  0 | task 345 | stop processing: n_tokens = 232, truncated = 0
+0.14.318.710 I srv  update_slots: all slots are idle
+0.14.328.075 I srv    operator(): operator(): cleaning up before exit...

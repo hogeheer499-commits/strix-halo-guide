@@ -1,0 +1,2 @@
+combo,draft_n_max,ubatch,poll,prompts,mean_predicted_per_second,min_predicted_per_second,max_predicted_per_second,mean_prompt_per_second,mean_acceptance,total_predicted_tokens
+draft3_ub1024_poll100,3,1024,100,6,109.96481359902253,93.31169020518851,127.4389288758028,251.68954081271139,0.681669340734148,1152

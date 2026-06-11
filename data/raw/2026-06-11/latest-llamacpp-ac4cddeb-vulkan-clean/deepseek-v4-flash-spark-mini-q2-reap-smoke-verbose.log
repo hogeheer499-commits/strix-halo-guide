@@ -1,0 +1,75 @@
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: dot2 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 0 | matrix cores: KHR_coopmat
+llama_model_loader: loaded meta data with 58 key-value pairs and 1328 tensors from /home/hoge-heer/benchmark-models/deepseek-v4-flash-162b-0xsero/DeepSeek-V4-Flash-Spark-Mini-Q2-REAP-ds4.gguf (version GGUF V3 (latest))
+llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+llama_model_loader: - kv   0:                       general.architecture str              = deepseek4
+llama_model_loader: - kv   1:                               general.type str              = model
+llama_model_loader: - kv   2:                     general.sampling.top_p f32              = 1.000000
+llama_model_loader: - kv   3:                      general.sampling.temp f32              = 1.000000
+llama_model_loader: - kv   4:                               general.name str              = DeepSeek V4 Flash
+llama_model_loader: - kv   5:                         general.size_label str              = 256x8.4B
+llama_model_loader: - kv   6:                            general.license str              = mit
+llama_model_loader: - kv   7:                      deepseek4.block_count u32              = 43
+llama_model_loader: - kv   8:                   deepseek4.context_length u32              = 1048576
+llama_model_loader: - kv   9:                 deepseek4.embedding_length u32              = 4096
+llama_model_loader: - kv  10:             deepseek4.attention.head_count u32              = 64
+llama_model_loader: - kv  11:          deepseek4.attention.head_count_kv u32              = 1
+llama_model_loader: - kv  12:                deepseek4.rope.scaling.type str              = yarn
+llama_model_loader: - kv  13:              deepseek4.rope.scaling.factor f32              = 16.000000
+llama_model_loader: - kv  14: deepseek4.rope.scaling.original_context_length u32              = 65536
+llama_model_loader: - kv  15:      deepseek4.rope.scaling.yarn_beta_fast f32              = 32.000000
+llama_model_loader: - kv  16:      deepseek4.rope.scaling.yarn_beta_slow f32              = 1.000000
+llama_model_loader: - kv  17:                   deepseek4.rope.freq_base f32              = 10000.000000
+llama_model_loader: - kv  18: deepseek4.attention.layer_norm_rms_epsilon f32              = 0.000001
+llama_model_loader: - kv  19:                deepseek4.expert_used_count u32              = 6
+llama_model_loader: - kv  20:               deepseek4.expert_gating_func u32              = 4
+llama_model_loader: - kv  21:             deepseek4.attention.key_length u32              = 512
+llama_model_loader: - kv  22:           deepseek4.attention.value_length u32              = 512
+llama_model_loader: - kv  23:                          general.file_type u32              = 19
+llama_model_loader: - kv  24:                       deepseek4.vocab_size u32              = 129280
+llama_model_loader: - kv  25:             deepseek4.rope.dimension_count u32              = 64
+llama_model_loader: - kv  26:            deepseek4.attention.q_lora_rank u32              = 1024
+llama_model_loader: - kv  27:       deepseek4.attention.output_lora_rank u32              = 1024
+llama_model_loader: - kv  28:     deepseek4.attention.output_group_count u32              = 8
+llama_model_loader: - kv  29:        deepseek4.attention.compress_ratios arr[i32,44]      = [0, 0, 4, 128, 4, 128, 4, 128, 4, 128...
+llama_model_loader: - kv  30: deepseek4.attention.compress_rope_freq_base f32              = 160000.000000
+llama_model_loader: - kv  31:       deepseek4.expert_feed_forward_length u32              = 2048
+llama_model_loader: - kv  32:              deepseek4.expert_shared_count u32              = 1
+llama_model_loader: - kv  33:             deepseek4.expert_weights_scale f32              = 1.500000
+llama_model_loader: - kv  34:                 deepseek4.hash_layer_count u32              = 3
+llama_model_loader: - kv  35:              deepseek4.expert_weights_norm bool             = true
+llama_model_loader: - kv  36:                 deepseek4.swiglu_clamp_exp arr[f32,43]      = [10.000000, 10.000000, 10.000000, 10....
+llama_model_loader: - kv  37:         deepseek4.attention.sliding_window u32              = 128
+llama_model_loader: - kv  38:     deepseek4.attention.indexer.head_count u32              = 64
+llama_model_loader: - kv  39:     deepseek4.attention.indexer.key_length u32              = 128
+llama_model_loader: - kv  40:          deepseek4.attention.indexer.top_k u32              = 512
+llama_model_loader: - kv  41:             deepseek4.nextn_predict_layers u32              = 1
+llama_model_loader: - kv  42:           deepseek4.hyper_connection.count u32              = 4
+llama_model_loader: - kv  43: deepseek4.hyper_connection.sinkhorn_iterations u32              = 20
+llama_model_loader: - kv  44:         deepseek4.hyper_connection.epsilon f32              = 0.000001
+llama_model_loader: - kv  45:               general.quantization_version u32              = 2
+llama_model_loader: - kv  46:                       tokenizer.ggml.model str              = gpt2
+llama_model_loader: - kv  47:                         tokenizer.ggml.pre str              = joyai-llm
+llama_model_loader: - kv  48:                      tokenizer.ggml.tokens arr[str,129280]  = ["<｜begin▁of▁sentence｜>", "<�...
+llama_model_loader: - kv  49:                  tokenizer.ggml.token_type arr[i32,129280]  = [3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, ...
+llama_model_loader: - kv  50:                      tokenizer.ggml.merges arr[str,127741]  = ["Ġ t", "Ġ a", "i n", "Ġ Ġ", "h e...
+llama_model_loader: - kv  51:                tokenizer.ggml.bos_token_id u32              = 0
+llama_model_loader: - kv  52:                tokenizer.ggml.eos_token_id u32              = 1
+llama_model_loader: - kv  53:            tokenizer.ggml.padding_token_id u32              = 1
+llama_model_loader: - kv  54:               tokenizer.ggml.add_bos_token bool             = false
+llama_model_loader: - kv  55:               tokenizer.ggml.add_eos_token bool             = false
+llama_model_loader: - kv  56:                    tokenizer.chat_template str              = {%- if not add_generation_prompt is d...
+llama_model_loader: - kv  57:                     deepseek4.expert_count u32              = 144
+llama_model_loader: - type  f32:  492 tensors
+llama_model_loader: - type  f16:  359 tensors
+llama_model_loader: - type q8_0:  345 tensors
+llama_model_loader: - type q2_K:   43 tensors
+llama_model_loader: - type iq2_xxs:   86 tensors
+llama_model_loader: - type  i32:    3 tensors
+print_info: file format = GGUF V3 (latest)
+print_info: file type   = IQ2_XXS - 2.0625 bpw
+print_info: file size   = 48.98 GiB (2.58 BPW) 
+llama_model_load: error loading model: unknown model architecture: 'deepseek4'
+llama_model_load_from_file_impl: failed to load model
+llama_bench: error: failed to load model '/home/hoge-heer/benchmark-models/deepseek-v4-flash-162b-0xsero/DeepSeek-V4-Flash-Spark-Mini-Q2-REAP-ds4.gguf'
+build_commit,build_number,cpu_info,gpu_info,backends,model_filename,model_type,model_size,model_n_params,n_batch,n_ubatch,n_threads,cpu_mask,cpu_strict,poll,type_k,type_v,n_gpu_layers,n_cpu_moe,split_mode,main_gpu,no_kv_offload,flash_attn,devices,tensor_split,tensor_buft_overrides,use_mmap,use_direct_io,embeddings,no_op_offload,no_host,fit_target,fit_min_ctx,n_prompt,n_gen,n_depth,test_time,avg_ns,stddev_ns,avg_ts,stddev_ts

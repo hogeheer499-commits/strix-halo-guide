@@ -99,7 +99,7 @@ No benchmark recommendation changed in this recheck:
 - Ollama latest release is 0.30.6, while the installed local Ollama remains 0.23.1. This is a buyer-facing update candidate because Ollama is the easiest setup path.
 - ROCm production remains 7.2.4.
 - vLLM moved to 0.22.1. Treat this as a watch/update signal only; it does not make vLLM/DFlash a guide recommendation without a clean local reproduction.
-- Atomic TurboQuant PR #26 for Gemma 4 MTP `PARALLEL=2` is still open, so the Nimo Gemma 4 QAT/MTP route remains a useful but advanced single-slot/experimental path until fixed-and-measured multi-slot data exists.
+- Atomic TurboQuant PR #26 for Gemma 4 MTP `PARALLEL=2` has merged. The Nimo Gemma 4 QAT/MTP route remains an advanced path until fresh post-merge 1-slot and 2-slot numbers are measured with exact Atomic commit, command, acceptance rate, single-stream decode, and aggregate throughput.
 
 ## vLLM AWQ/DFlash Lead
 

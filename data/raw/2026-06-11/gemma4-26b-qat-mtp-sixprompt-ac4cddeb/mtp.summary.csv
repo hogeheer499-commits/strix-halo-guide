@@ -1,0 +1,2 @@
+mode,prompts,mean_predicted_per_second,min_predicted_per_second,max_predicted_per_second,mean_prompt_per_second,mean_acceptance,total_predicted_tokens
+mtp,6,106.87681484096436,92.91107829113298,119.08313429290358,252.92124935162963,0.7384903400233602,1152

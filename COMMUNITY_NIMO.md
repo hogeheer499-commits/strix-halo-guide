@@ -43,7 +43,7 @@ These rows are not apples-to-apples `llama-bench` headline replacements. They ar
 | StepFun Step-3.7-Flash UD-IQ4_XS | Vulkan/RADV b9360 server | 43.13 tok/s prefill, 22.28 tok/s decode | 198B-class sparse MoE feasibility row; useful for "large model on 128GB unified memory" buyers. | [`STEPFUN-NUMBERS.md`](data/raw/2026-06-03/community-nimo-issue4/STEPFUN-NUMBERS.md) |
 | StepFun Step-3.7-Flash MTP | Vulkan/RADV b9360 patched server | 211.2 tok/s prefill, 26.0 tok/s decode | MTP improved decode by about 27.5% in the contributor's harness, with high draft acceptance from raw timing logs. | [`STEPFUN-MTP-NUMBERS.md`](data/raw/2026-06-03/community-nimo-issue4/STEPFUN-MTP-NUMBERS.md) |
 | Gemma 4 12B QAT Q4_0 + matched MTP head | Atomic TurboQuant fork, Vulkan/RADV b9360 | 539.9 tok/s prefill, 45.6 tok/s decode | Matched QAT MTP head raised acceptance to 78.4% and improved single-stream decode by 77.4% versus the plain QAT row. | [`GEMMA4-QAT-NUMBERS.md`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/GEMMA4-QAT-NUMBERS.md) |
-| Gemma 4 26B-A4B QAT Q4_0 + matched MTP head | Atomic TurboQuant fork, Vulkan/RADV b9360 | 729.3 tok/s prefill, 71.4 tok/s decode | Best single-stream Gemma QAT row; matched QAT head closed the non-QAT-head acceptance gap, 56.9% to 91.8%. Plain QAT still wins 2-slot aggregate at 90.9 tok/s. | [`GEMMA4-QAT-NUMBERS.md`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/GEMMA4-QAT-NUMBERS.md) |
+| Gemma 4 26B-A4B QAT Q4_0 + matched MTP head | Atomic TurboQuant fork, Vulkan/RADV b9360 | 729.3 tok/s prefill, 71.4 tok/s decode | Best single-stream Gemma QAT row in the submitted bundle; matched QAT head closed the non-QAT-head acceptance gap, 56.9% to 91.8%. The original report had a `PARALLEL=2` crash caveat; Atomic PR #26 has since landed, so fresh post-merge 2-slot numbers are the useful next evidence. | [`GEMMA4-QAT-NUMBERS.md`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/GEMMA4-QAT-NUMBERS.md) |
 | Gemma 4 31B QAT Q4_0 + matched MTP head | Atomic TurboQuant fork, Vulkan/RADV b9360 | 203.6 tok/s prefill, 19.1 tok/s decode | Dense 31B route is bandwidth-limited plain at 11.0 tok/s; matched MTP recovered significant single-stream speed, +73.6% decode. | [`GEMMA4-QAT-NUMBERS.md`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/GEMMA4-QAT-NUMBERS.md) |
 | Qwen 3.6 27B Dense DFlash | Lucebox HIP / DFlash | about 7 tok/s | Useful negative/control evidence: functional, but not a speed route in this bundle. | [`RAW-BENCHMARK-ROWS.md`](data/raw/2026-06-03/community-nimo-issue4/RAW-BENCHMARK-ROWS.md) |
 
@@ -66,9 +66,18 @@ This Nimo bundle expands the guide from "fastest direct rows on one Beelink" tow
 - The direct Beelink headlines remain separate.
 - The Nimo data is strongest for large-model feasibility, server/MTP routes, and buyer-friction reduction.
 - The StepFun and Qwen 122B rows are especially useful because they answer "what can 128GB unified memory attempt?" rather than only "what is the fastest 30B decode number?"
-- The Gemma 4 QAT rows are useful because they separate three issues that are easy to mix up: QAT main-model speed, MTP assistant-head compatibility, and serving concurrency. Matched QAT heads improve single-stream decode, while the current Atomic path still has a `PARALLEL=2` crash caveat.
+- The Gemma 4 QAT rows are useful because they separate three issues that are easy to mix up: QAT main-model speed, MTP assistant-head compatibility, and serving concurrency. Matched QAT heads improve single-stream decode; the submitted Atomic rows predate the merged `PARALLEL=2` fix, so post-fix aggregate throughput still needs fresh measurement.
 - The DFlash 27B row is useful precisely because it is not fast; it prevents the guide from over-promoting a complex route without evidence.
 - The Nimo metadata differs from the Beelink recommendation, so it should be read as portability evidence, not a universal setup recommendation.
+
+## Boxwrench Follow-Up
+
+boxwrench later added two useful follow-ups in issue #4:
+
+- StepFun MTP tuning: lowering `--ubatch-size` from 512 to 256 improved the submitted StepFun decode from 26.0 to 27.9 tok/s and improved 2-slot aggregate from 35.7 to 38.5 tok/s in that harness. This is community server-tuning evidence, not a Beelink headline.
+- Atomic PR #26: the Gemma 4 MTP `PARALLEL=2` crash fix was merged upstream. The useful next step is a fresh post-merge Gemma 4 QAT MTP repeat with exact Atomic commit, command, acceptance rate, single-stream decode, and 2-slot aggregate throughput.
+
+That means the old Gemma QAT caveat should no longer be read as "this cannot be fixed." It should be read as "the submitted rows predate the fix, and the guide still needs measured post-fix evidence before changing the recommendation."
 
 ## Raw Evidence
 

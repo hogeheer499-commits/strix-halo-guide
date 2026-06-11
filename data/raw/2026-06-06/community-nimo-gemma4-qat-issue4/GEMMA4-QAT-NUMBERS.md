@@ -2,6 +2,8 @@
 
 This file captures the full measured numbers for the Gemma 4 QAT Q4_0 runs across three model sizes (12B, 26B-A4B, 31B) on the Strix Halo APU, including plain Vulkan baselines, non-QAT MTP heads, and matched QAT MTP heads.
 
+Later status note: Atomic PR #26 has since merged a Gemma 4 MTP `PARALLEL=2` fix. These numbers predate that merge. Treat the `PARALLEL=2` crash notes below as historical caveats until fresh post-merge 1-slot and 2-slot measurements are available.
+
 ## Model And Run Context
 
 | Field | Value |
@@ -90,7 +92,7 @@ Single-stream speedup (plain → qathead MTP): **+73.6%** decode, wall time **41
 | Gemma 4 31B QAT | MTP qathead Q8 F16KV | **19.1 tok/s** | 110.4 s | 18.9 tok/s | 60.4% |
 | Gemma 4 26B-A4B QAT | Plain F16 KV (best concurrency) | 59.4 tok/s | 34.6 s | **90.9 tok/s** | N/A |
 
-The 26B-A4B plain row wins 2-slot aggregate (90.9 tok/s) because PARALLEL=2 is stable for the plain server. The MTP rows are capped at PARALLEL=1 by a current Atomic crash on Gemma 4 MTP graph init with two slots.
+The 26B-A4B plain row wins the submitted 2-slot aggregate (90.9 tok/s) because PARALLEL=2 was stable for the plain server in this bundle. The submitted MTP rows were capped at PARALLEL=1 by an Atomic crash on Gemma 4 MTP graph init with two slots. Atomic PR #26 later merged a fix, so fresh post-merge aggregate numbers are pending.
 
 ## DRAFT_BLOCK_SIZE Sweep (Short Probe, Non-QAT Heads)
 
@@ -123,7 +125,7 @@ No thermal throttle observed on any run. Pre-decode is peak prefill load; post-d
 - All runs use `llama.cpp-b9360` Vulkan build (`build-vulkan-b9360/bin/llama-server`)
 - MTP rows require the **Atomic llama.cpp TurboQuant fork**, which has the `gemma4_assistant` architecture wired up. Stock llama.cpp b9360 does not load MTP heads for Gemma 4.
 - `ik_llama` QAT assistant heads (from `ji-farthing/gemma-4-qat-q4_0-MTP-assistants-ik-llama-GGUF`) use architecture `gemma4_mtp` — this Atomic build rejects them with `unknown model architecture: 'gemma4_mtp'`. These rows use the Atomic-compatible heads converted from Google's unquantized QAT assistant repos.
-- **PARALLEL=2 crashes** on Gemma 4 MTP graph init in this Atomic build even with F16 KV and async overlap disabled. MTP rows are PARALLEL=1 only. For concurrent serving, use multiple PARALLEL=1 servers behind a router.
+- **PARALLEL=2 crashed in this submitted Atomic build** on Gemma 4 MTP graph init even with F16 KV and async overlap disabled. MTP rows in this bundle are PARALLEL=1 only. Atomic PR #26 later merged a fix, so post-merge 2-slot results should be measured before reusing the old concurrency conclusion.
 - Plain serve scripts: `scripts/serve/gemma26_mtp_vulkan_serve.sh` (26B/12B) and `scripts/serve/gemma31_mtp_vulkan_serve.sh` (31B) with env overrides for plain vs MTP configurations.
 
 ## Context Against Previous Non-QAT Gemma Rows

@@ -1,0 +1,2 @@
+mode,draft_n_max,ubatch,poll,prompts,mean_predicted_per_second,min_predicted_per_second,max_predicted_per_second,mean_prompt_per_second,mean_acceptance,total_predicted_tokens
+mtp_cold_repeat,3,512,50,6,102.69337080356824,86.7607991211854,118.77116384605773,230.77604035402567,0.681669340734148,1152

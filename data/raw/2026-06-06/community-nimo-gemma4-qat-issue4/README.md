@@ -20,11 +20,13 @@ This follow-up adds Gemma 4 QAT Q4_0 rows for 12B, 26B-A4B, and 31B on a Strix H
 
 These rows are not first-party Beelink headline claims and are not direct replacements for the guide's `llama-bench` headline rows. They are community serving/tooling evidence for Gemma 4 QAT and Atomic TurboQuant MTP paths.
 
+Later status note: Atomic PR #26 has since merged a Gemma 4 MTP `PARALLEL=2` fix. The rows below predate that merge, so their `PARALLEL=2` caveat is historical evidence. Fresh post-merge 1-slot and 2-slot numbers are still needed before changing the guide recommendation.
+
 Important caveats from the submitted attachment:
 
 - MTP rows require an Atomic `llama.cpp` TurboQuant fork with `gemma4_assistant` support.
 - Stock `llama.cpp` b9360 does not load Gemma 4 MTP heads.
-- Current Atomic Gemma 4 MTP path crashes at `PARALLEL=2`, so MTP rows are `PARALLEL=1`.
+- The submitted Atomic Gemma 4 MTP path crashed at `PARALLEL=2`, so these MTP rows are `PARALLEL=1`. Atomic PR #26 later merged a fix; post-merge aggregate numbers are pending.
 - Plain Gemma 4 26B-A4B QAT still wins the submitted 2-slot aggregate row at 90.9 tok/s.
 - No thermal throttle was reported in the submitted rows.
 
