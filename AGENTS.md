@@ -72,6 +72,18 @@ Higher t/s is useful, but it is not the only priority. Treat benchmarks as the p
 - Update related docs when adding a new public-facing evidence category.
 - Do not add headline claims unless the supporting data, raw evidence, chart or `n/a`, and caveats are known.
 
+## Context Efficiency
+
+For new benchmark, update, or "is there news?" work, do not load the full README or all raw logs by default. Start with:
+
+- `AGENTS.md`
+- `CURRENT_MODELS.md`
+- `data/headline_claims.csv`
+- `data/mtp_speculative.csv`
+- the specific raw directory or issue thread relevant to the task
+
+Open `README.md`, broad benchmark docs, or `data/raw/**` only when the task requires that exact surface. Keep ignored local scratch and handoff files out of context unless the user explicitly asks for them.
+
 ## Commercial Thesis
 
 The guide reduces a major adoption blocker for AMD Strix Halo / Ryzen AI MAX+ local-AI hardware: buyers struggle to know which setup path, backend, model format, quantization, driver, and benchmark claims are reliable.

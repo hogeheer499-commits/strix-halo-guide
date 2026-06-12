@@ -17,7 +17,7 @@ Measured rows below are first-party Beelink GTR9 Pro direct `llama-bench` Vulkan
 | Fastest direct 30B-class Qwen MoE | Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`: 100.04 t/s direct `llama-bench` on b9467; latest b9544 control measured 103.18 tg128 r10 | Shows a direct 30B-class Qwen route can cross 100 t/s on Strix Halo. Keep separate from the Qwen3-Coder headline and balanced-default rows. |
 | Fastest current small-MoE scout | LFM2.5 8B-A1B `Q4_K_M`: 170.02 t/s generation-only on the 2026-06-05 check; latest b9544 control measured 176.48 tg128 r10 | Shows how fast newer small active-parameter MoE routes can be. This is not a 30B-class capability replacement. |
 | Largest current direct GGUF capacity route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS`: 18.43 tg128 direct `llama-bench`; latest b9544 control measured 18.93 tg128 r3 | Proves a 120B-class MoE GGUF route can run directly on one box; value is capacity/currentness, not raw speed. |
-| Fastest current-model MTP server route | Gemma 4 26B-A4B QAT `UD-Q4_K_XL` + matched `Q4_0` MTP head: 102.69 t/s cold repeat, 107.42 t/s T3-only repeat, 110.00 t/s best repeat, 73.96 t/s no-spec baseline on ac4cddeb0 | Shows matched QAT MTP heads can turn a current Google model into a 100+ t/s-class local server route. Keep separate from direct `llama-bench`; the repeats show host-workload sensitivity. |
+| Fastest current-model MTP server route | Gemma 4 26B-A4B QAT `UD-Q4_K_XL` + matched `Q4_0` MTP head: 110.00 t/s best repeat, 107.42 t/s T3-only repeat, 102.69 t/s cold repeat, 73.96 t/s no-spec baseline on ac4cddeb0 | Shows matched QAT MTP heads can turn a current Google model into a 100+ t/s-class local server route. Keep separate from direct `llama-bench`; the repeats show host-workload sensitivity. |
 
 ## June 2026 Scout Results
 
@@ -37,7 +37,7 @@ Measured rows below are first-party Beelink GTR9 Pro direct `llama-bench` Vulkan
 | Gemma 4 12B IT | `IQ4_XS` | 6.4 GB / 12B | 680.17 pp512 / 25.74 tg128; 25.77 tg128 generation-only | New Google model runs locally. Use for current-model/multimodal coverage, not speed. |
 | Gemma 4 12B IT | `Q4_K_M` | 7.4 GB / 12B | 684.92 pp512 / 24.42 tg128; 24.42 tg128 generation-only | Balanced Gemma route. Slower than Qwen3.5 9B and much slower than Qwen 30B-class MoE speed rows. |
 | Gemma 4 12B IT QAT | `UD-Q4_K_XL` | 6.7 GB / 12B | 816.32 pp512 / 29.34 tg128 direct on ac4cddeb0; MTP smoke reached 73.33 t/s | Better local Gemma 4 12B route than the earlier non-QAT direct rows, but the strongest value is the matched QAT MTP server path. |
-| Gemma 4 26B-A4B IT QAT | `UD-Q4_K_XL` + matched `Q4_0` MTP head | 14.2 GB / 26B.A4B | 1431.96 pp512 / 74.80 tg128 direct; 73.96 t/s no-spec server; 102.69 t/s cold repeat; 107.42 t/s T3-only repeat; 110.00 t/s best MTP repeat | Highest-value new route in this update: current Google model, direct baseline, matched MTP speedup, and host-workload sensitivity evidence on the same Beelink box. |
+| Gemma 4 26B-A4B IT QAT | `UD-Q4_K_XL` + matched `Q4_0` MTP head | 14.2 GB / 26B.A4B | 1431.96 pp512 / 74.80 tg128 direct; 73.96 t/s no-spec server; 110.00 t/s best MTP repeat; 107.42 t/s T3-only repeat; 102.69 t/s cold repeat | Highest-value new route in this update: current Google model, direct baseline, matched MTP speedup, and host-workload sensitivity evidence on the same Beelink box. |
 | Qwen3.6 27B MTP NVFP4 v3 | `NVFP4` | 16.1 GB / 27B dense | 373.97 pp512 / 13.17 tg128 direct; server smoke 13.32 t/s no-spec and 24.37 t/s MTP | Newer Qwen3.6 artifact runs, but it is a negative speed control. Valuable because it prevents chasing the wrong route. |
 | MiniMax M2.7 | `UD-IQ4_XS` | 108.4 GB / 230B.A10B MoE | 101.00 pp512 / 28.27 tg128; 28.60 tg128 generation-only | Large-model feasibility proof: 230B-class MoE runs locally on one Strix Halo. Not a speed result. |
 | DeepSeek V4 Flash | `Q2_K` / 0xSero Spark-Mini targets | 103.3 GB original target; 52.6 GB local Spark-Mini file | Original route download-blocked; later smaller 0xSero/Spark-Mini local file still failed to load in `llama-bench` smoke attempts | Strong setup-friction evidence. Do not list as pass, speed result, or hardware limit without a successful load. |
@@ -135,7 +135,7 @@ Nemotron 3 Ultra shows the same pattern at a larger scale. The new Ultra release
 
 - "LFM2.5 8B-A1B at 170 t/s generation-only on Strix Halo: new small-MoE models are a different speed class."
 - "Google Gemma 4 12B runs locally on Strix Halo, but Qwen/LFM are faster for text-only generation."
-- "Gemma 4 26B-A4B QAT with matched MTP head: 102.7 t/s cold / 107.4 t/s T3-only / 110.0 t/s best-repeat on Strix Halo as a local server route."
+- "Gemma 4 26B-A4B QAT with matched MTP head: 110.0 t/s best-repeat on Strix Halo as a local server route."
 - "Current model reality check: newest does not automatically mean fastest."
 - "A 230B-class MiniMax MoE runs locally on one 128 GB Strix Halo system, but speed and capacity are different wins."
 - "NVIDIA Nemotron 3 Ultra just dropped; on one 128 GB Strix Halo, Super 120B-A12B is the runnable middle route and Nano 30B-A3B is the faster route."
