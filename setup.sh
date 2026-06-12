@@ -64,6 +64,9 @@ echo ""
 info "Phase 3: Kernel Configuration"
 echo "---------------------------------------------"
 
+REBOOT_REQUIRED=0
+SESSION_REFRESH_REQUIRED=0
+
 GRUB_FILE="/etc/default/grub"
 CURRENT_CMDLINE=$(grep "^GRUB_CMDLINE_LINUX_DEFAULT" "$GRUB_FILE" 2>/dev/null || echo "")
 
@@ -85,6 +88,7 @@ if [ -n "$MISSING_PARAMS" ]; then
     sudo sed -i "s|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT=\"$NEW_VALUE\"|" "$GRUB_FILE"
     sudo update-grub
     log "GRUB updated. Changes take effect after reboot."
+    REBOOT_REQUIRED=1
 else
     log "Kernel parameters already configured."
 fi
@@ -99,6 +103,7 @@ options ttm page_pool_size=31457280
 MODPROBE
     sudo update-initramfs -u -k all 2>/dev/null || true
     log "Modprobe configuration created."
+    REBOOT_REQUIRED=1
 else
     log "Modprobe configuration already exists."
 fi
@@ -123,6 +128,7 @@ if ! groups | grep -q render; then
     sudo usermod -aG render "$USER"
     sudo usermod -aG video "$USER"
     log "Added $USER to render and video groups."
+    SESSION_REFRESH_REQUIRED=1
 else
     log "User already in GPU groups."
 fi
@@ -231,8 +237,13 @@ echo ""
 info "Phase 6: Running benchmark"
 echo "---------------------------------------------"
 
-info "Benchmarking qwen3.6:35b-a3b..."
-BENCH_RESULT=$(curl -s http://localhost:11434/api/generate -d '{"model":"qwen3.6:35b-a3b","prompt":"hello how are you","stream":false}' 2>/dev/null | python3 -c "
+if [ "$REBOOT_REQUIRED" -eq 1 ]; then
+    warn "Skipping the final benchmark because boot-time GPU/kernel changes were applied."
+    warn "After this script finishes, reboot first, then run: bash ~/bench-ollama.sh"
+    BENCH_RESULT="STATUS:SKIPPED"
+else
+    info "Benchmarking qwen3.6:35b-a3b..."
+    BENCH_RESULT=$(curl -s http://localhost:11434/api/generate -d '{"model":"qwen3.6:35b-a3b","prompt":"hello how are you","stream":false}' 2>/dev/null | python3 -c "
 import sys,json
 try:
     d=json.load(sys.stdin)
@@ -247,13 +258,16 @@ except:
     print('STATUS:FAIL')
 " 2>/dev/null)
 
-echo "$BENCH_RESULT" | head -1
+    echo "$BENCH_RESULT" | head -1
+fi
 
 if echo "$BENCH_RESULT" | grep -q "STATUS:PASS"; then
     log "Benchmark PASSED. Your system is performing well."
 elif echo "$BENCH_RESULT" | grep -q "STATUS:SLOW"; then
     warn "Benchmark completed but speed is lower than expected."
     warn "Expected 45+ t/s. Check if tuned is running and Mesa is upgraded."
+elif echo "$BENCH_RESULT" | grep -q "STATUS:SKIPPED"; then
+    warn "Benchmark skipped until reboot so the reported speed is not misleading."
 else
     err "Benchmark failed. Check Ollama logs: journalctl -u ollama -n 50"
 fi
@@ -298,9 +312,11 @@ echo "  For ROCm containers and advanced setup, see:"
 echo "    https://github.com/hogeheer499-commits/strix-halo-guide"
 echo ""
 
-if echo "$CURRENT_CMDLINE" | grep -q "amd_iommu=off"; then
-    log "No reboot needed."
-else
-    warn "REBOOT REQUIRED for kernel parameters to take effect."
+if [ "$REBOOT_REQUIRED" -eq 1 ]; then
+    warn "REBOOT REQUIRED for boot-time GPU/kernel changes to take effect."
     warn "Run: sudo reboot"
+elif [ "$SESSION_REFRESH_REQUIRED" -eq 1 ]; then
+    warn "Log out and back in, or reboot, so GPU group membership applies to your shell."
+else
+    log "No reboot needed."
 fi

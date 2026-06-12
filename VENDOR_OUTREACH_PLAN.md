@@ -7,7 +7,7 @@ This plan keeps vendor outreach focused on adoption-friction evidence instead of
 Do not frame the repo as:
 
 ```text
-I have 100 stars, can I get hardware?
+I have 132 stars as of 2026-06-12, can I get hardware?
 ```
 
 Frame it as:
@@ -71,7 +71,7 @@ Then ask for higher-leverage support:
 
 - Keep the first message short.
 - Lead with buyer/setup friction, not self-promotion.
-- Mention 100 stars once at most.
+- Mention the dated 132-star snapshot once at most.
 - Avoid claiming vendor endorsement.
 - Avoid asking for free hardware as the main point.
 - Always say results remain independent and disclosed.

@@ -71,9 +71,10 @@ If BIOS is already configured and Ubuntu 24.04 is installed:
 ```bash
 git clone https://github.com/hogeheer499-commits/strix-halo-guide
 cd strix-halo-guide
-less setup.sh
 bash setup.sh
 ```
+
+Optional: inspect the script first with `less setup.sh` before running it on a production system.
 
 For unattended installs:
 

@@ -78,7 +78,7 @@ For those who want to get running as fast as possible:
 5. **Ollama:** Install, configure Vulkan backend with `OLLAMA_VULKAN=1` and `HIP_VISIBLE_DEVICES=-1`.
 6. **Test:** `ollama run qwen3.6:35b-a3b` -- expect ~50 t/s generation.
 
-Each step is detailed in the phases below.
+Use the setup script below for the automated path. The phases later in this README are the manual reference and fallback path if you want to inspect or reproduce each change yourself.
 
 ## Setup Script
 
@@ -87,9 +87,10 @@ If you've already set your BIOS (UMA = 512MB, IOMMU = off) and installed Ubuntu 
 ```bash
 git clone https://github.com/hogeheer499-commits/strix-halo-guide
 cd strix-halo-guide
-less setup.sh
 bash setup.sh
 ```
+
+Optional: inspect the script first with `less setup.sh` before running it on a production system.
 
 For unattended copy/paste installs, the same script can also be run as:
 
@@ -213,7 +214,7 @@ If you only want a working local AI PC, stop after Ollama works. If you want to 
 
 The machine-readable index for these rows is [`data/headline_claims.csv`](data/headline_claims.csv).
 
-Dates below are measurement dates. A row being from May does not mean it is stale; it means later checks did not produce a stronger replacement headline. The latest June 5 controls are documented in [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`BENCHMARKS.md`](BENCHMARKS.md), [`PERFORMANCE_NOTES.md`](PERFORMANCE_NOTES.md), and the raw evidence links below.
+Dates below are measurement dates. A row being from May does not mean it is stale; it means later checks did not produce a stronger replacement headline. The latest controls and current-model rows are documented in [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`BENCHMARKS.md`](BENCHMARKS.md), [`PERFORMANCE_NOTES.md`](PERFORMANCE_NOTES.md), and the raw evidence links below.
 
 | Claim | Date | Backend | Model | Result | CSV | Raw | Chart | Notes |
 |-------|------|---------|-------|--------|-----|-----|-------|-------|
@@ -983,7 +984,7 @@ systemctl is-active power-profiles-daemon
 
 ### Step 4.2: Upgrade Mesa Vulkan Drivers
 
-The default Mesa on Ubuntu 24.04 is significantly slower. Upgrade to Mesa 26.0.2 or newer. Latest tested local system: Mesa 26.1.1 from kisak-mesa PPA.
+The default Mesa on Ubuntu 24.04 is significantly slower. Upgrade to Mesa 26.0.2 or newer from the kisak-mesa PPA. Exact driver metadata is recorded per run in the CSV and raw evidence when available.
 
 ```bash
 sudo add-apt-repository ppa:kisak/kisak-mesa
@@ -995,7 +996,7 @@ Verify:
 
 ```bash
 vulkaninfo --summary 2>&1 | grep driverInfo
-# Expected: Mesa 26.0.2+ RADV from kisak-mesa PPA. Latest local run used Mesa 26.1.1.
+# Expected: Mesa 26.0.2+ RADV from kisak-mesa PPA.
 ```
 
 > **Impact:** Mesa 25.2.8 to 26.0.1 gave **+9% prompt eval** (87 to 96 t/s). Mesa 26.0.1 to 26.0.2 gave an additional small improvement.
@@ -1952,7 +1953,7 @@ Prices, availability, and external benchmark numbers change quickly; treat this 
 
 Common causes:
 1. **tuned not running or power-profiles-daemon active** -- Run `tuned-adm active` and `systemctl is-active power-profiles-daemon`. `tuned` should show `accelerator-performance`; `power-profiles-daemon` should be inactive. This alone is worth several percent.
-2. **Old Mesa drivers** -- Check `vulkaninfo --summary | grep driverInfo`. Should be Mesa 26.0.2+; latest tested local system is Mesa 26.1.1.
+2. **Old Mesa drivers** -- Check `vulkaninfo --summary | grep driverInfo`. Should be Mesa 26.0.2+ from the kisak-mesa PPA; exact driver metadata is recorded per run when available.
 3. **Using Ollama instead of llama-bench** -- Qwen3.6 is about 19-20% slower through Ollama 0.23.1 than direct llama-bench on the current data. The 96-100 t/s Qwen rows are via llama-bench direct, not Ollama.
 4. **GPU clock stuck low** -- Check `cat /sys/class/drm/card*/device/pp_dpm_sclk`. Should show 2900Mhz with asterisk.
 5. **Wrong BIOS VRAM setting** -- Check `free -h`. On a 128GB system it should show roughly ~124GiB OS-visible memory; a 96GB system will be lower. If a 128GB box only shows ~31GiB, set UMA Frame Buffer to 512MB in BIOS.
