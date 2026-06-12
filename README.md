@@ -177,20 +177,20 @@ Start with [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md) and [`PARTNERSHIP.md`](PARTN
 
 ## Best Current Setup Tested Here
 
-Best current setup from this guide's measured local runs:
+Best current AMD Strix Halo / Ryzen AI MAX+ 395 local LLM setup from this guide's measured runs:
 
-- Status: still current for the published first-party guidance as of the 2026-06-07 b9544 checks. The Qwen3-Coder speed-first headline remains the older strict-clean b9179 98.51 t/s row; the exact `Q4_K_S` file now reproduces around 98 t/s on b9544 at 98.02 t/s r50 and 98.49 t/s p0 r20, but does not create a first-party 100 t/s Qwen3-Coder claim. The balanced Qwen3-Coder `UD-Q4_K_XL` control stayed in the 96-97 t/s class at 97.08 t/s. The separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS route remained above 100 t/s on b9544 at 103.18 t/s. LFM2.5 and Nemotron Super also showed no b9544 regression.
-- Ubuntu 24.04.
-- BIOS UMA set to 512MB.
-- IOMMU disabled for the measured local setup; use `iommu=pt` only if your RDMA/VFIO needs require it.
-- Kernel 6.19.4 on the primary measured system.
-- Mesa/RADV from kisak-mesa PPA. The main May 7 headline rows used Mesa 26.0.6; the latest May 27 b9360 MTP spot check and June 1 latest-stack controls used Mesa 26.1.1.
-- AMDVLK removed so it cannot silently override RADV.
-- `tuned` set to `accelerator-performance`.
-- Ollama 0.23.1 Vulkan/RADV for easiest local chat and Open WebUI. An isolated Ollama 0.24.0 check did not change the current guidance.
-- Direct llama.cpp Vulkan/RADV for fastest measured generation-heavy and low-concurrency Qwen MoE inference.
-- Lemonade `llamacpp-rocm` b1259 for the best measured Qwen3.6 aggregate throughput at 8-16 parallel requests.
-- ROCm/HIP for prompt-processing-heavy experiments, high-concurrency server paths, vLLM, batching, and future long-context work; not as the current default generation path.
+- Tested hardware baseline: Beelink GTR9 Pro with AMD Ryzen AI MAX+ 395, Radeon 8060S `gfx1151`, and 128GB LPDDR5X-8000 unified memory. The same guidance should be treated as a starting point for other Strix Halo systems, not an automatic guarantee.
+- Operating system: Ubuntu 24.04 on the primary measured system.
+- BIOS memory setting: set UMA Frame Buffer Size to 512MB so Linux can see the full system-memory pool; Vulkan/RADV still uses GPU-accessible unified memory through GTT.
+- IOMMU setting: disabled for the measured local setup; use `iommu=pt` only if RDMA, VFIO, or passthrough requirements need it.
+- Kernel and boot parameters: kernel 6.19.4 on the primary measured system with `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280`.
+- Graphics stack: Mesa/RADV from kisak-mesa PPA with AMDVLK removed so it cannot silently override RADV. The May 7 headline rows used Mesa 26.0.6; the May 27 b9360 MTP spot check and June 1 latest-stack controls used Mesa 26.1.1; the June 7 b9544 regression controls used Mesa 26.1.2 kisak. Some later raw rows record the driver as `not recorded`, so the CSV/raw metadata remains the source of truth per run.
+- Power profile: `tuned` set to `accelerator-performance`.
+- Easiest local chat path: Ollama 0.23.1 with Vulkan/RADV for model pulling, Open WebUI, and private local chat. An isolated Ollama 0.24.0 check did not change the current guidance.
+- Fastest direct benchmark path: direct `llama.cpp` Vulkan/RADV for generation-heavy and low-concurrency Qwen MoE inference. The Qwen3-Coder speed-first headline remains the strict-clean b9179 98.51 t/s row; the exact `Q4_K_S` file reproduced around 98 t/s on b9544, while the separate Qwen3-30B-A3B-Instruct-2507 `IQ4_XS` route remained above 100 t/s on b9544 and ac4cddeb0 controls.
+- Experimental server/speculative path: `llama-server` MTP with Vulkan/RADV for advanced local API experiments. Qwen3.6 MTP reached about 101.1 t/s on b9360, and Gemma 4 26B-A4B QAT MTP reached 102.69 t/s cold, 107.42 t/s T3-only, and 110.00 t/s best repeat on ac4cddeb0. These are server/speculative results, not direct `llama-bench` replacements.
+- High-concurrency backend path: Lemonade `llamacpp-rocm` b1259 for the best measured Qwen3.6 aggregate throughput at 8-16 parallel requests.
+- ROCm/HIP role: use ROCm/HIP for prompt-processing-heavy experiments, high-concurrency server paths, vLLM, batching, and future long-context work; not as the current default single-stream generation path.
 
 ## Headline Evidence
 
