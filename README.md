@@ -178,30 +178,36 @@ Start with [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md) and [`PARTNERSHIP.md`](PARTN
 
 ## Best Current Setup Tested Here
 
-Best current AMD Strix Halo / Ryzen AI MAX+ 395 local LLM setup from this guide's measured runs.
+Best current AMD Strix Halo / Ryzen AI MAX+ 395 local LLM setup from this guide's measured runs. This section is the practical path; the detailed evidence is linked below.
 
-If you are new, start with this simple path:
+If you are new, do this first:
 
 1. Use Ubuntu 24.04.
 2. Set BIOS UMA Frame Buffer Size to 512MB.
 3. Disable IOMMU unless you need RDMA, VFIO, passthrough, or clustering.
 4. Use the setup script to install the Vulkan/RADV + Ollama path.
-5. Use Ollama first for chat; use direct `llama.cpp` only when you want benchmark-level control.
+5. Start with Ollama for chat and Open WebUI.
+6. Move to direct `llama.cpp` only when you want exact benchmark control or the fastest measured single-box path.
 
-The exact measured setup and advanced backend split:
+After the setup script, the quickest sanity check is:
 
-- Tested hardware baseline: Beelink GTR9 Pro with AMD Ryzen AI MAX+ 395, Radeon 8060S `gfx1151`, and 128GB LPDDR5X-8000 unified memory. The same guidance should be treated as a starting point for other Strix Halo systems, not an automatic guarantee.
-- Operating system: Ubuntu 24.04 on the primary measured system.
-- BIOS memory setting: set UMA Frame Buffer Size to 512MB so Linux can see the full system-memory pool; Vulkan/RADV still uses GPU-accessible unified memory through GTT.
-- IOMMU setting: disabled for the measured local setup; use `iommu=pt` only if RDMA, VFIO, or passthrough requirements need it.
-- Kernel and boot parameters: kernel 6.19.4 on the primary measured system with `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280`.
-- Graphics stack: Mesa/RADV from kisak-mesa PPA with AMDVLK removed so it cannot silently override RADV. The May 7 headline rows used Mesa 26.0.6; the May 27 b9360 MTP spot check and June 1 latest-stack controls used Mesa 26.1.1; the June 7 b9544 regression controls used Mesa 26.1.2 kisak. Some later raw rows record the driver as `not recorded`, so the CSV/raw metadata remains the source of truth per run.
-- Power profile: `tuned` set to `accelerator-performance`.
-- Easiest local chat path: Ollama 0.23.1 with Vulkan/RADV for model pulling, Open WebUI, and private local chat. An isolated Ollama 0.24.0 check did not change the current guidance.
-- Fastest direct benchmark path: direct `llama.cpp` Vulkan/RADV for generation-heavy and low-concurrency Qwen MoE inference. The Qwen3-Coder speed-first headline remains the strict-clean b9179 98.51 t/s row; the exact `Q4_K_S` file reproduced around 98 t/s on b9544, while the separate Qwen3-30B-A3B-Instruct-2507 `IQ4_XS` route remained above 100 t/s on b9544 and ac4cddeb0 controls.
-- Experimental server/speculative path: `llama-server` MTP with Vulkan/RADV for advanced local API experiments. Qwen3.6 MTP reached about 101.1 t/s on b9360, and Gemma 4 26B-A4B QAT MTP reached 102.69 t/s cold, 107.42 t/s T3-only, and 110.00 t/s best repeat on ac4cddeb0. These are server/speculative results, not direct `llama-bench` replacements.
-- High-concurrency backend path: Lemonade `llamacpp-rocm` b1259 for the best measured Qwen3.6 aggregate throughput at 8-16 parallel requests.
-- ROCm/HIP role: use ROCm/HIP for prompt-processing-heavy experiments, high-concurrency server paths, vLLM, batching, and future long-context work; not as the current default single-stream generation path.
+```bash
+ollama run qwen3.6:35b-a3b
+```
+
+Expect roughly the same performance class as the guide's Ollama Vulkan/RADV rows if your BIOS, kernel parameters, Vulkan ICD, model, quant, and power profile match.
+
+Choose the backend by what you are trying to do:
+
+| Use case | Start with | Why |
+|----------|------------|-----|
+| You want private chat working today | Ollama Vulkan/RADV | Easiest path to model pulling, local chat, and Open WebUI. |
+| You want to reproduce the headline speed rows | direct `llama.cpp` Vulkan/RADV | Fastest measured generation-heavy Qwen MoE path here. |
+| You want a local API server or MTP tests | `llama-server` Vulkan/RADV | Supports serving, batching, long-context tests, and speculative decoding. |
+| You have many parallel local requests | Lemonade `llamacpp-rocm` | Best measured Qwen3.6 aggregate throughput at 8-16 parallel requests. |
+| You are testing prompt-heavy, vLLM, or future server paths | ROCm/HIP | Useful for prompt processing, batching, vLLM, and long-context experiments. |
+
+If you only want a working local AI PC, stop after Ollama works. If you want to compare numbers, use the exact commands and evidence links in [Reproduce One Headline Result](#reproduce-one-headline-result), the [AI/search setup summary](STRIX_HALO_LOCAL_LLM_SETUP.md), [headline claim index](data/headline_claims.csv), and raw evidence under [`data/raw/`](data/raw/).
 
 ## Headline Evidence
 
