@@ -3,7 +3,7 @@
 ![Small MoE](https://img.shields.io/badge/small_MoE-170.0_t/s-brightgreen?style=for-the-badge)
 ![120B](https://img.shields.io/badge/direct_120B_GGUF-18.4_t/s-0ea5e9?style=for-the-badge)
 ![MTP](https://img.shields.io/badge/MTP_server-101--110_t/s_experimental-7c3aed?style=for-the-badge)
-[![Community](https://img.shields.io/badge/community-4_contributors_8_systems-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
+[![Community](https://img.shields.io/badge/community-4_contributors_9_systems-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
 ![RAM](https://img.shields.io/badge/128GB_unified-blue?style=for-the-badge)
 ![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
@@ -20,7 +20,7 @@ What you get:
 - Direct local results: Qwen3-Coder 30B at 98.5 t/s, Qwen3-30B-A3B-Instruct-2507 IQ4_XS at 100.0 t/s with a b9544 control at 103.2 t/s, LFM2.5 8B-A1B at 170.0 t/s with a b9544 control at 176.5 t/s, and Nemotron 3 Super 120B-A12B at 18.4-18.9 t/s direct on Vulkan/RADV.
 - Experimental server routes: Qwen3.6 MTP at 101.1 t/s and Gemma 4 26B-A4B QAT MTP up to 110.0 t/s best-repeat with `llama-server` speculative decoding.
 - Raw CSVs, logs, charts, and reproducibility notes for headline claims.
-- Community validation from Beelink, Corsair, GMKtec, MS-S1-Max, and Nimo Strix Halo systems.
+- Community validation from Beelink, Corsair, GMKtec, MS-S1-Max, and Nimo Strix Halo systems and owner stacks.
 
 > Measured primarily on one Beelink GTR9 Pro. Community results are kept separate from local headline claims. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights. Raw evidence, commands, caveats, and corrections are linked so results can be checked instead of taken on trust.
 
@@ -63,7 +63,7 @@ What you get:
 | Large local model checks | gpt-oss-120b MXFP4 split GGUF loaded locally at 55.57 t/s tg128; Nemotron 3 Super 120B-A12B UD-IQ4_XS loaded directly at 18.43 t/s; MiniMax M2.7 230B-class MoE loaded and generated locally in a capacity scout. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Backend split | Vulkan/RADV wins measured generation on the current single-box Qwen rows; ROCm/HIP can win prompt-processing-heavy work, and ROCm RPC is required for the tested MiniMax capacity case. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) and [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md). |
-| Community validation | The public evidence map now covers 8 Strix Halo-class systems. Three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128. GMKtec EVO-X2 reports cover native Ubuntu within about 2% of the Beelink Qwen3.6 row, Qwen3-Coder follow-ups, WSL2/HIP, and a tuned Reddit Qwen3-Coder `Q4_K_S` report around 99.9-100.0 t/s. A Windows MS-S1-Max LM Studio report adds the first Windows serving/API row. A Nimo AI Mini PC bundle adds another compact 128GB chassis, large-model serving rows, MTP/StepFun/Qwen 122B evidence, Gemma 4 QAT/MTP assistant-head follow-up data, and thermal context. Community reports also cover quant/source/build effects, same-SKU variance, wall-power efficiency, 3-node USB4 RPC, RPC serving/TTFT, and USB4 tuning. |
+| Community validation | The public evidence map now covers 9 Strix Halo-class systems/sources. Three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128. GMKtec EVO-X2 reports cover native Ubuntu within about 2% of the Beelink Qwen3.6 row, Qwen3-Coder follow-ups, WSL2/HIP, and a tuned Reddit Qwen3-Coder `Q4_K_S` report around 99.9-100.0 t/s. A Windows MS-S1-Max LM Studio report adds the first Windows serving/API row. A Nimo AI Mini PC bundle adds another compact 128GB chassis, large-model serving rows, MTP/StepFun/Qwen 122B evidence, Gemma 4 QAT/MTP assistant-head follow-up data, and thermal context. A community Beelink CachyOS/ROCm/ZenDNN report adds prompt-processing crossover evidence and VMM/rocWMMA failure notes. Community reports also cover quant/source/build effects, same-SKU variance, wall-power efficiency, 3-node USB4 RPC, RPC serving/TTFT, and USB4 tuning. |
 | Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
 | Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
 
@@ -133,11 +133,12 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 | Speculative decoding experiments | `llama-server` MTP on current master | measured server speedups on Qwen3.6 MTP GGUFs and Gemma 4 QAT matched MTP heads; Qwen3.6 reached about 101.1 t/s on b9360, and Gemma 4 26B-A4B QAT reached 110.0 t/s best-repeat on ac4cddeb0 with 107.4 t/s T3-only and 102.7 t/s cold repeats documented separately | [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md), [`data/mtp_speculative.csv`](data/mtp_speculative.csv) |
 | Several local tools or users hitting one API | Lemonade `llamacpp-rocm` b1259 | best measured Qwen3.6 aggregate throughput at 8-16 parallel requests | [`data/server_shootout.csv`](data/server_shootout.csv) |
 | Long local documents or codebase context | `llama-server` Vulkan/RADV first, test ROCm/HIP for prompt-heavy ingestion | 128K prompt plus generation completed; HIP can win prompt processing | [`data/filled_kv_decode.csv`](data/filled_kv_decode.csv), [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) |
+| Prompt-heavy ROCm experiments | Keep a reproducible ROCm/HIP + ZenDNN path available, but do not treat it as a decode-speed headline. | A community Beelink GTR9 Pro on CachyOS / kernel 7.0.11 / ROCm 7.2.4 / ZenDNN measured Qwen3.6 27B MTP `UD-Q6_K_XL` at 303.20 pp5000 on ROCm versus 155.89 pp5000 on Vulkan, while decode stayed around 8 t/s on both backends. | [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md#community-beelink-cachyos-rocmzendnn-crossover), [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md#beelink-gtr9-pro-cachyos-rocmzendnn-crossover) |
 | vLLM-style serving experiments | ROCm vLLM containers only as experiments | smoke-tested, but no 27B/35B throughput claim yet | [`VLLM_BASELINE.md`](VLLM_BASELINE.md), [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md) |
 
 ## Community-Tested Rules Of Thumb
 
-These are the practical decisions extracted from the primary Beelink runs plus Fail-Safe's Corsair AI Workstation 300 reports and mottledMantis' GMKtec EVO-X2 reports. Use them to avoid retesting dead ends first; follow the evidence links if your setup differs.
+These are the practical decisions extracted from the primary Beelink runs plus community reports from Corsair, GMKtec, MS-S1-Max, Nimo, and a second Beelink owner stack. Use them to avoid retesting dead ends first; follow the evidence links if your setup differs.
 
 | Situation | Do this first | Why | Evidence |
 |-----------|---------------|-----|----------|
@@ -2036,6 +2037,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 
 - **Gemma 4 26B-A4B QAT MTP repeat documented:** the matched-head `llama-server` route measured **102.69 t/s** cold, **107.42 t/s** with only T3 left among known local services, and **110.00 t/s** as the best repeat on `ac4cddeb0`. This is server/speculative evidence, not a direct `llama-bench` replacement.
 - **Current setup routing improved:** the README now sends new users to `setup.sh` first, then Ollama/Open WebUI for local chat, and only then to direct `llama.cpp`, MTP, Lemonade, or ROCm/vLLM paths when they need benchmark or server control.
+- **Community Beelink CachyOS ROCm/ZenDNN row added:** devoidfury contributed a second Beelink owner stack with CachyOS, kernel 7.0.11, ROCm 7.2.4, local ZenDNN, and Qwen3.6 27B MTP `UD-Q6_K_XL`. ROCm roughly doubled pp5000 versus Vulkan on that setup while decode stayed around 8 t/s, making it backend-crossover evidence rather than a decode headline.
 
 ### 2026-06-11 -- Latest ac4cddeb0 Controls And Gemma QAT Route
 
@@ -2056,7 +2058,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 ### 2026-06-03 -- Nimo AI Mini PC Community Bundle
 
 - **Nimo AI Mini PC evidence added:** boxwrench contributed a Ryzen AI MAX+ 395 / Radeon 8060S / 128GB Nimo bundle in issue #4 with system metadata, reproducibility notes, raw benchmark rows, thermal telemetry, and model-specific follow-ups.
-- **Community map now covers 8 systems:** the guide now tracks Beelink first-party data plus three Corsair systems, two GMKtec sources, MS-S1-Max, and Nimo community evidence. The badge now matches GitHub's 4 contributor count while emphasizing the 8-system evidence map.
+- **Community map now covers 8 systems:** the guide now tracks Beelink first-party data plus three Corsair systems, two GMKtec sources, MS-S1-Max, and Nimo community evidence. This was later expanded to 9 systems/sources with a second Beelink owner stack.
 - **Large-model buyer context added:** Nimo rows cover Qwen 3.5/3.6 35B, Qwen 122B-class serving, Qwen3-Coder-Next, StepFun Step-3.7-Flash, GPT-OSS/Gemma notes in the raw bundle, and DFlash negative/control evidence. These are community serving/eval rows, not first-party direct `llama-bench` headline claims.
 - **Gemma 4 QAT follow-up added:** boxwrench added Gemma 4 12B, 26B-A4B, and 31B QAT Q4_0 rows with matched MTP assistant-head comparisons. The useful lesson is not a homepage headline; it is that matched QAT assistant heads can materially improve single-stream decode and acceptance. Atomic PR #26 later fixed the reported `PARALLEL=2` Gemma 4 MTP crash, so fresh post-merge 2-slot community numbers are now the useful follow-up.
 - **Vendor/adoption value improved:** [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) summarizes what the Nimo bundle proves and what it does not prove, so vendors/reviewers can see how additional hardware reduces setup and buyer uncertainty without turning community data into endorsement language.

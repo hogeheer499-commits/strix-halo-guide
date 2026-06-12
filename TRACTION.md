@@ -16,8 +16,8 @@ Snapshot date: 2026-06-12.
 | Open pull requests | 0 | [GitHub Pull Requests](https://github.com/hogeheer499-commits/strix-halo-guide/pulls) |
 | Releases | 5 | [GitHub Releases](https://github.com/hogeheer499-commits/strix-halo-guide/releases) |
 | GitHub contributors | 4 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
-| External benchmark submitters credited | 5 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
-| Strix Halo-class systems represented | 8 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) |
+| External benchmark submitters credited | 6 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
+| Strix Halo-class systems/sources represented | 9 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) |
 
 Read the star count as a small-niche demand signal, not the main argument. The stronger vendor evidence is the technical proof layer: reproducible commands, raw logs, CSVs, claim indexes, community rows, and documented failures.
 
@@ -25,7 +25,7 @@ Read the star count as a small-niche demand signal, not the main argument. The s
 
 | Evidence type | Where to read it | Why it matters |
 |---------------|------------------|----------------|
-| Community validation | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`data/community_results.csv`](data/community_results.csv), [`data/community_nimo_issue4.csv`](data/community_nimo_issue4.csv) | Shows independent reproduction and portability evidence across Beelink, Corsair, GMKtec, MS-S1-Max, and Nimo without treating community data as vendor endorsement. |
+| Community validation | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`data/community_results.csv`](data/community_results.csv), [`data/community_nimo_issue4.csv`](data/community_nimo_issue4.csv) | Shows independent reproduction and portability evidence across Beelink owner stacks, Corsair, GMKtec, MS-S1-Max, and Nimo without treating community data as vendor endorsement. |
 | Community power context | [`COMMUNITY_RESULTS.md#whole-system-power`](COMMUNITY_RESULTS.md#whole-system-power), [`data/community_power.csv`](data/community_power.csv) | Helps buyers think about efficiency, heat, and always-on operation. |
 | Community RPC and USB4 data | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md), [`data/community_rpc.csv`](data/community_rpc.csv) | Shows advanced capacity/scaling experiments while keeping them separate from default single-machine guidance. |
 | Raw benchmark data | [`data/raw/`](data/raw/) | Lets readers inspect command output and provenance instead of relying on summary claims. |

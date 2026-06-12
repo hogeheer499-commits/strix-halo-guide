@@ -111,6 +111,28 @@ Relevant docs:
 - [`data/raw/2026-06-03/community-nimo-issue4/`](data/raw/2026-06-03/community-nimo-issue4/)
 - [`data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/)
 
+### [devoidfury](https://github.com/devoidfury)
+
+devoidfury added a second Beelink GTR9 Pro owner stack and the first community CachyOS / ROCm 7.2.4 / ZenDNN backend-crossover report:
+
+- Beelink GTR9 Pro with Ryzen AI MAX+ 395 / Radeon 8060S and BIOS video reserved / UMA set to 512MB
+- CachyOS with `linux-cachyos-server` 7.0.11-1
+- `amd_iommu=on`, partly to keep NPU workflows visible
+- ROCm 7.2.4-1 plus a local upstream ZenDNN build
+- llama.cpp commit `1593d5684d077c07fc788e9527ec1bd52287de7f` with posted local MMQ/ZenDNN build tweaks
+- Qwen3.6 27B MTP `UD-Q6_K_XL` Vulkan/RADV and ROCm/HIP rows on the same host setup
+- ROCm prompt-processing evidence: 303.20 pp5000 versus 155.89 pp5000 on Vulkan, while decode stayed around 8 t/s
+- ROCm long-prompt bonus row at 227.44 pp40000 and 8.39 tg1024
+- negative notes that VMM built but crashed on model load and `GGML_HIP_ROCWMMA_FATTN` remained a prompt-processing regression
+
+Relevant docs:
+
+- [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md#beelink-gtr9-pro-cachyos-rocmzendnn-crossover)
+- [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md#community-beelink-cachyos-rocmzendnn-crossover)
+- [`ROCM_ROCWMMA_BASELINE.md`](ROCM_ROCWMMA_BASELINE.md#2026-06-12-community-cachyos--rocm-724-note)
+- [`data/community_results.csv`](data/community_results.csv)
+- [`data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/`](data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/)
+
 ## How To Get Contributor Credit
 
 Benchmark reports in issues are welcome and will be credited when incorporated. Pull requests are even better for future datasets because GitHub will automatically attach commit-level contributor credit after merge.

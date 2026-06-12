@@ -32,6 +32,7 @@ Raw community follow-up artifacts:
 - Reddit GMKtec EVO-X2 tuned Qwen3-Coder report: [`data/raw/2026-06-02/community-reddit-look-qwen-coder/`](data/raw/2026-06-02/community-reddit-look-qwen-coder/)
 - Nimo AI Mini PC issue #4 bundle: [`data/raw/2026-06-03/community-nimo-issue4/`](data/raw/2026-06-03/community-nimo-issue4/), summarized in [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md)
 - Nimo Gemma 4 QAT follow-up: [`data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/)
+- Beelink GTR9 Pro CachyOS ROCm/ZenDNN crossover: [`data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/`](data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/)
 
 Short version: these reports add trust signals the primary Beelink results cannot provide alone:
 
@@ -49,6 +50,7 @@ Short version: these reports add trust signals the primary Beelink results canno
 - first Reddit-reported tuned GMKtec EVO-X2 Qwen3-Coder `Q4_K_S` row around 99.9-100.0 t/s, with explicit thermal and power-policy qualifiers
 - first Nimo AI Mini PC community bundle, adding another compact 128GB Strix Halo chassis plus large-model, MTP, StepFun, Qwen 122B, and thermal-context evidence
 - first Nimo Gemma 4 QAT + matched MTP assistant-head follow-up, showing where QAT heads improve single-stream decode and where concurrency/tooling caveats still matter
+- first additional-owner Beelink CachyOS / ROCm 7.2.4 / ZenDNN crossover report, showing ROCm prompt-processing value, `amd_iommu=on` / NPU context, and VMM / rocWMMA caveats on a non-Ubuntu owner stack
 
 For the shortest practical decision layer, see the README section [Community-Tested Rules Of Thumb](README.md#community-tested-rules-of-thumb).
 
@@ -70,6 +72,7 @@ For the shortest practical decision layer, see the README section [Community-Tes
 | 2026-06-02 | Look_Over_There | GMKtec EVO-X2, Ryzen AI MAX+ 395 | Vulkan/RADV device line `RADV_STRIX_HALO`, llama.cpp b9467 `1fd5f4803`; OS/kernel/Mesa not reported | Qwen3-Coder 30B-A3B Q4_K_S | Short-context `-p 0 -n 128`: most runs around 99.90 t/s; best observed 100.0 t/s after about 10 runs. | Independent Reddit result showing that a tuned GMKtec can touch 100 t/s on this speed-first Qwen3-Coder shape. The contributor disclosed repaste, reseated memory pads, 15-20C lower CPU/GPU temps, and high-power policy, so treat it as tuned thermal/power-policy evidence rather than a default headline. | [Reddit thread](https://www.reddit.com/r/StrixHalo/comments/1tu78x5/qwen3coder_30b_at_985_ts_on_strix_halo_has_anyone/), [`raw note`](data/raw/2026-06-02/community-reddit-look-qwen-coder/) |
 | 2026-06-03 | boxwrench | Nimo AI Mini PC, Ryzen AI MAX+ 395, 128GB | Ubuntu 25.04, kernel 6.18.1, Mesa RADV 25.2.8, ROCm 7.1.1 baseline, UMA 4GB, IOMMU on | Qwen 3.6 35B, Qwen3-Coder-Next, Qwen 122B, StepFun Step-3.7-Flash, DFlash rows | Key rows include Qwen3-Coder-Next Vulkan server at 723.2 pp / 44.4 decode, Qwen 122B MTP tuned decode at 28.3 t/s, StepFun MTP at 211.2 pp / 26.0 decode, and Qwen3.6 MTP Q4_K_M at 81.2 t/s. | Adds another compact 128GB Strix Halo chassis and broad large-model/server evidence. This is valuable buyer/OEM portability evidence, but the rows are server/eval/community rows, not first-party direct `llama-bench` headlines. | [#4](https://github.com/hogeheer499-commits/strix-halo-guide/issues/4#issuecomment-4608440144), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`structured`](data/community_nimo_issue4.csv) |
 | 2026-06-06 | boxwrench | Nimo AI Mini PC follow-up, Ryzen AI MAX+ 395, 128GB | llama.cpp b9360 Vulkan/RADV; Atomic llama.cpp TurboQuant fork for Gemma 4 MTP assistant-head rows | Gemma 4 12B / 26B-A4B / 31B QAT Q4_0 plus matched MTP heads | Best rows: 12B QAT MTP 45.6 decode, 26B-A4B QAT MTP 71.4 decode, 31B QAT MTP 19.1 decode. Plain 26B-A4B QAT submitted 2-slot aggregate at 90.9 tok/s. | Adds a strong Gemma 4 QAT/MTP lesson: matched QAT assistant heads can materially improve single-stream decode and acceptance. The submitted rows predate Atomic PR #26's `PARALLEL=2` fix, so fresh post-merge aggregate numbers are the useful next evidence. | [#4](https://github.com/hogeheer499-commits/strix-halo-guide/issues/4#issuecomment-4639263658), [`raw`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/GEMMA4-QAT-NUMBERS.md), [`structured`](data/community_nimo_issue4.csv) |
+| 2026-06-12 | devoidfury | Beelink GTR9 Pro community owner stack, Ryzen AI MAX+ 395, 128GB-class unified memory | CachyOS, `linux-cachyos-server` 7.0.11-1, ROCm 7.2.4-1, local ZenDNN, `amd_iommu=on`, llama.cpp `1593d5684d077c07fc788e9527ec1bd52287de7f` with local build tweaks | Qwen3.6 27B MTP `UD-Q6_K_XL` | Vulkan: 155.89 pp5000 / 8.09 tg512. ROCm: 303.20 pp5000 / 8.38 tg512. ROCm long prompt: 227.44 pp40000 / 8.39 tg1024. | Adds a second Beelink owner stack and strong backend-crossover evidence: ROCm + ZenDNN greatly improved prompt processing on this workload, while decode stayed about 8 t/s. Also preserves VMM crash and `GGML_HIP_ROCWMMA_FATTN` regression notes. | [discussion](https://github.com/hogeheer499-commits/strix-halo-guide/discussions/2#discussioncomment-17276639), [`raw`](data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/), [`structured`](data/community_results.csv) |
 
 ## Nimo AI Mini PC Large-Model Bundle
 
@@ -85,6 +88,26 @@ The practical value is vendor/chassis coverage and large-model feasibility, not 
 - thermal and power context that is useful for compact-chassis buyers
 
 Important caveat: these are community serving/eval rows with their own harnesses, not same-shape direct Beelink `llama-bench` comparisons.
+
+## Beelink GTR9 Pro CachyOS ROCm/ZenDNN Crossover
+
+devoidfury contributed a second Beelink GTR9 Pro owner stack in [discussion #2](https://github.com/hogeheer499-commits/strix-halo-guide/discussions/2#discussioncomment-17276639). This is not another Ubuntu reproduction of the guide's default path; it is valuable because it tests a different owner stack:
+
+- CachyOS with `linux-cachyos-server` 7.0.11-1
+- ROCm 7.2.4-1 and local ZenDNN
+- `amd_iommu=on`, partly because the contributor was also looking at NPU workflows
+- llama.cpp `1593d5684d077c07fc788e9527ec1bd52287de7f` with small local MMQ/ZenDNN build tweaks
+- Qwen3.6 27B MTP `UD-Q6_K_XL`
+
+| Backend | Prompt workload | Prompt t/s | Decode workload | Decode t/s | Interpretation |
+|---------|-----------------|-----------:|-----------------|-----------:|----------------|
+| Vulkan/RADV + ZenDNN | pp5000 | 155.89 | tg512 | 8.09 | Baseline for this patched CachyOS/ZenDNN row. |
+| ROCm/HIP + ZenDNN | pp5000 | 303.20 | tg512 | 8.38 | ROCm prompt processing was about 1.95x Vulkan on this workload; decode stayed in the same class. |
+| ROCm/HIP + ZenDNN | pp40000 | 227.44 | tg1024 | 8.39 | Long-prompt bonus row; supports testing ROCm for prompt-heavy work. |
+
+Practical read: this strengthens the guide's backend split. Vulkan/RADV remains the default beginner path for chat and generation-heavy GGUF rows, while ROCm/HIP is worth keeping available for prompt-heavy, long-context, RAG, batching, and future server paths. It also adds useful failure/context notes: VMM built but crashed when loading models, and `GGML_HIP_ROCWMMA_FATTN` was still reported as a prompt-processing regression.
+
+Raw provenance lives in [`data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/`](data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/). Structured rows are in [`data/community_results.csv`](data/community_results.csv). These are community rows with local patches and ZenDNN, not stock same-build headline claims.
 
 ## Cross-Box Variance
 

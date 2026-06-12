@@ -61,3 +61,16 @@ cmake --build build-rocwmma-tuned -j$(nproc)
 ```
 
 6. Only after sanity passes, compare long-context against the current Vulkan RADV filled-KV data at 32K/64K/128K.
+
+## 2026-06-12 Community CachyOS / ROCm 7.2.4 Note
+
+devoidfury reported a Beelink GTR9 Pro CachyOS stack with ROCm 7.2.4-1, local ZenDNN, and llama.cpp commit `1593d5684d077c07fc788e9527ec1bd52287de7f` plus small local MMQ/ZenDNN build tweaks.
+
+The useful positive signal is backend crossover: on Qwen3.6 27B MTP `UD-Q6_K_XL`, ROCm + ZenDNN measured 303.20 pp5000 versus 155.89 pp5000 on Vulkan + ZenDNN, while decode stayed around 8 t/s on both backends.
+
+The useful negative signal for this file:
+
+- VMM: built, but crashed when loading any model.
+- `GGML_HIP_ROCWMMA_FATTN`: still reported as a performance hit, with prompt-processing degrading faster than without it.
+
+So this does not change the local rocWMMA recommendation. Upstream ROCm/HIP remains useful to test for prompt-heavy rows, but upstream `GGML_HIP_ROCWMMA_FATTN=ON` should still be treated as an experiment/failure-mode check until a tuned, reproducible Strix Halo path is built and logged.

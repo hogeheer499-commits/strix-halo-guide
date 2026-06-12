@@ -54,6 +54,26 @@ This is not a final same-build backend shootout: Vulkan uses llama.cpp b9172, wh
 
 Takeaway: Qwen3-Next strengthens the same rule rather than replacing it. Vulkan/RADV stays the practical default for generation-heavy chat/coding on GGUF models, while HIP remains worth testing for prompt-processing-heavy work.
 
+## Community Beelink CachyOS ROCm/ZenDNN Crossover
+
+Canonical community source: [discussion #2](https://github.com/hogeheer499-commits/strix-halo-guide/discussions/2#discussioncomment-17276639) and [`data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/`](data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/).
+
+devoidfury contributed a second Beelink GTR9 Pro owner stack using CachyOS, `linux-cachyos-server` 7.0.11-1, ROCm 7.2.4-1, local ZenDNN, `amd_iommu=on`, and llama.cpp commit `1593d5684d077c07fc788e9527ec1bd52287de7f` with small local MMQ/ZenDNN build tweaks.
+
+Model and command shape:
+
+- `unsloth/Qwen3.6-27B-MTP-GGUF`
+- `UD-Q6_K_XL`
+- `llama-bench --n-gpu-layers 999 --flash-attn on -b 1024 -ub 512 -p 5000 -n 512`
+
+| Backend | Prompt workload | Prompt t/s | Decode workload | Decode t/s | Interpretation |
+|---------|-----------------|-----------:|-----------------|-----------:|----------------|
+| Vulkan/RADV + ZenDNN | pp5000 | 155.89 | tg512 | 8.09 | Baseline for this patched CachyOS/ZenDNN row. |
+| ROCm/HIP + ZenDNN | pp5000 | 303.20 | tg512 | 8.38 | ROCm prompt processing was about 1.95x Vulkan on this workload; decode stayed in the same class. |
+| ROCm/HIP + ZenDNN | pp40000 | 227.44 | tg1024 | 8.39 | Long-prompt bonus row; supports the "test ROCm for prompt-heavy work" rule. |
+
+This is useful backend-crossover evidence, not a stock same-build shootout and not a decode-speed headline. The local patches and ZenDNN build mean the raw provenance matters. The negative notes matter too: VMM built but crashed on model load, and `GGML_HIP_ROCWMMA_FATTN` was reported as a prompt-processing regression on this stack.
+
 ## Negative Result
 
 Gemma 4 26B-A4B loaded and ran on Vulkan/RADV, but the local HIP b8460 path failed to load the GGUF:
