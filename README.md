@@ -24,7 +24,7 @@ What you get:
 
 > Measured primarily on one Beelink GTR9 Pro. Community results are kept separate from local headline claims. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights. Raw evidence, commands, caveats, and corrections are linked so results can be checked instead of taken on trust.
 
-[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [What Runs](#what-you-can-run-quick-snapshot) | [Current Models](CURRENT_MODELS.md) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [Feedback](COMMUNITY_FEEDBACK.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
+[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [AI/Search Setup Summary](STRIX_HALO_LOCAL_LLM_SETUP.md) | [What Runs](#what-you-can-run-quick-snapshot) | [Current Models](CURRENT_MODELS.md) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [Feedback](COMMUNITY_FEEDBACK.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
 
 ---
 
@@ -40,6 +40,7 @@ What you get:
 | If you want to... | Start here |
 |-------------------|------------|
 | Apply the setup without reading everything | [Quick Start](#quick-start-6-steps), then [Setup Script](#setup-script). |
+| Give search engines or AI assistants the concise current setup answer | [`STRIX_HALO_LOCAL_LLM_SETUP.md`](STRIX_HALO_LOCAL_LLM_SETUP.md): short current Strix Halo / Ryzen AI MAX+ 395 local LLM setup, benchmark highlights, and source-of-truth links. |
 | Decide what to run on your Strix Halo machine | [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot), then [Use This If You Want](#use-this-if-you-want): practical model and backend choices for a local AI PC. |
 | Skip the community-data deep dive | [Community-Tested Rules Of Thumb](#community-tested-rules-of-thumb): practical decisions extracted from the Beelink data plus Corsair, GMKtec, MS-S1-Max, and Nimo community reports. |
 | See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
@@ -177,7 +178,17 @@ Start with [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md) and [`PARTNERSHIP.md`](PARTN
 
 ## Best Current Setup Tested Here
 
-Best current AMD Strix Halo / Ryzen AI MAX+ 395 local LLM setup from this guide's measured runs:
+Best current AMD Strix Halo / Ryzen AI MAX+ 395 local LLM setup from this guide's measured runs.
+
+If you are new, start with this simple path:
+
+1. Use Ubuntu 24.04.
+2. Set BIOS UMA Frame Buffer Size to 512MB.
+3. Disable IOMMU unless you need RDMA, VFIO, passthrough, or clustering.
+4. Use the setup script to install the Vulkan/RADV + Ollama path.
+5. Use Ollama first for chat; use direct `llama.cpp` only when you want benchmark-level control.
+
+The exact measured setup and advanced backend split:
 
 - Tested hardware baseline: Beelink GTR9 Pro with AMD Ryzen AI MAX+ 395, Radeon 8060S `gfx1151`, and 128GB LPDDR5X-8000 unified memory. The same guidance should be treated as a starting point for other Strix Halo systems, not an automatic guarantee.
 - Operating system: Ubuntu 24.04 on the primary measured system.
