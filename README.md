@@ -185,20 +185,11 @@ If you are new, do this first:
 1. Use Ubuntu 24.04.
 2. Set BIOS UMA Frame Buffer Size to 512MB.
 3. Disable IOMMU unless you need RDMA, VFIO, passthrough, or clustering.
-4. Run [`setup.sh`](setup.sh) to install the Vulkan/RADV + Ollama path.
+4. Use the [setup script](#setup-script) to install the Vulkan/RADV + Ollama path.
 5. Start with Ollama for chat, then add [Open WebUI](#chatgpt-like-web-interface-open-webui) if you want a browser UI.
 6. Move to direct `llama.cpp` only when you want exact benchmark control or the fastest measured single-box path.
 
-After BIOS and Ubuntu are ready, run the setup script like this:
-
-```bash
-git clone https://github.com/hogeheer499-commits/strix-halo-guide
-cd strix-halo-guide
-less setup.sh
-bash setup.sh
-```
-
-The quickest sanity check after the script finishes is:
+The quickest sanity check after the setup script finishes is:
 
 ```bash
 ollama run qwen3.6:35b-a3b
@@ -210,7 +201,7 @@ Choose the backend by what you are trying to do:
 
 | Use case | Do this first | Why |
 |----------|---------------|-----|
-| You want private chat working today | Run `ollama run qwen3.6:35b-a3b` after [`setup.sh`](setup.sh). | Easiest path to model pulling, local chat, and Open WebUI. |
+| You want private chat working today | Use the [setup script](#setup-script), then run `ollama run qwen3.6:35b-a3b`. | Easiest path to model pulling, local chat, and Open WebUI. |
 | You want to reproduce the headline speed rows | Use [Reproduce One Headline Result](#reproduce-one-headline-result). | Exact model, quant, build, and command matter for benchmark comparisons. |
 | You want a local API server or MTP tests | Read [MTP/speculative decoding](MTP_SPECULATIVE_DECODING.md) and use `llama-server`. | Supports serving, batching, long-context tests, and speculative decoding. |
 | You have many parallel local requests | Read [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md) and test Lemonade `llamacpp-rocm`. | Best measured Qwen3.6 aggregate throughput at 8-16 parallel requests. |
