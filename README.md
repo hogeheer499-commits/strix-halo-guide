@@ -185,11 +185,20 @@ If you are new, do this first:
 1. Use Ubuntu 24.04.
 2. Set BIOS UMA Frame Buffer Size to 512MB.
 3. Disable IOMMU unless you need RDMA, VFIO, passthrough, or clustering.
-4. Use the setup script to install the Vulkan/RADV + Ollama path.
-5. Start with Ollama for chat and Open WebUI.
+4. Run [`setup.sh`](setup.sh) to install the Vulkan/RADV + Ollama path.
+5. Start with Ollama for chat, then add [Open WebUI](#chatgpt-like-web-interface-open-webui) if you want a browser UI.
 6. Move to direct `llama.cpp` only when you want exact benchmark control or the fastest measured single-box path.
 
-After the setup script, the quickest sanity check is:
+After BIOS and Ubuntu are ready, run the setup script like this:
+
+```bash
+git clone https://github.com/hogeheer499-commits/strix-halo-guide
+cd strix-halo-guide
+less setup.sh
+bash setup.sh
+```
+
+The quickest sanity check after the script finishes is:
 
 ```bash
 ollama run qwen3.6:35b-a3b
@@ -199,13 +208,13 @@ Expect roughly the same performance class as the guide's Ollama Vulkan/RADV rows
 
 Choose the backend by what you are trying to do:
 
-| Use case | Start with | Why |
-|----------|------------|-----|
-| You want private chat working today | Ollama Vulkan/RADV | Easiest path to model pulling, local chat, and Open WebUI. |
-| You want to reproduce the headline speed rows | direct `llama.cpp` Vulkan/RADV | Fastest measured generation-heavy Qwen MoE path here. |
-| You want a local API server or MTP tests | `llama-server` Vulkan/RADV | Supports serving, batching, long-context tests, and speculative decoding. |
-| You have many parallel local requests | Lemonade `llamacpp-rocm` | Best measured Qwen3.6 aggregate throughput at 8-16 parallel requests. |
-| You are testing prompt-heavy, vLLM, or future server paths | ROCm/HIP | Useful for prompt processing, batching, vLLM, and long-context experiments. |
+| Use case | Do this first | Why |
+|----------|---------------|-----|
+| You want private chat working today | Run `ollama run qwen3.6:35b-a3b` after [`setup.sh`](setup.sh). | Easiest path to model pulling, local chat, and Open WebUI. |
+| You want to reproduce the headline speed rows | Use [Reproduce One Headline Result](#reproduce-one-headline-result). | Exact model, quant, build, and command matter for benchmark comparisons. |
+| You want a local API server or MTP tests | Read [MTP/speculative decoding](MTP_SPECULATIVE_DECODING.md) and use `llama-server`. | Supports serving, batching, long-context tests, and speculative decoding. |
+| You have many parallel local requests | Read [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md) and test Lemonade `llamacpp-rocm`. | Best measured Qwen3.6 aggregate throughput at 8-16 parallel requests. |
+| You are testing prompt-heavy, vLLM, or future server paths | Read [BACKEND_CROSSOVER.md](BACKEND_CROSSOVER.md) and [VLLM_BASELINE.md](VLLM_BASELINE.md). | Useful for prompt processing, batching, vLLM, and long-context experiments. |
 
 If you only want a working local AI PC, stop after Ollama works. If you want to compare numbers, use the exact commands and evidence links in [Reproduce One Headline Result](#reproduce-one-headline-result), the [AI/search setup summary](STRIX_HALO_LOCAL_LLM_SETUP.md), [headline claim index](data/headline_claims.csv), and raw evidence under [`data/raw/`](data/raw/).
 

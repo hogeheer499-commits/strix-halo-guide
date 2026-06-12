@@ -12,7 +12,7 @@ For a new AMD Strix Halo / Ryzen AI MAX+ 395 local LLM system, use this order:
 
 1. Configure BIOS memory first.
 2. Install Ubuntu 24.04.
-3. Apply the Strix Halo kernel and Vulkan/RADV setup.
+3. Run [`setup.sh`](setup.sh) to apply the Strix Halo kernel, Mesa/RADV, tuned, and Ollama setup.
 4. Start with Ollama for a working private local chat setup.
 5. Use direct `llama.cpp` only when you want exact benchmark control.
 6. Use `llama-server`, MTP, ROCm/HIP, Lemonade, or vLLM only for the specific server/backend cases below.
@@ -81,7 +81,7 @@ For unattended installs:
 curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/setup.sh | bash
 ```
 
-Read the script before running it on a production system. The full setup guide is in [README.md](README.md), and reproducibility notes are in [REPRODUCIBILITY.md](REPRODUCIBILITY.md).
+That script is [`setup.sh`](setup.sh). Read it before running it on a production system. It configures kernel parameters, GPU access rules, `tuned`, Mesa/RADV, Ollama Vulkan, model pulling, and a verification benchmark. It does not change BIOS settings or install Ubuntu.
 
 The first sanity check after setup is:
 
@@ -95,13 +95,13 @@ If BIOS, kernel parameters, Vulkan ICD, model, quant, and power profile match th
 
 Do not start with ROCm or vLLM just because they sound more "GPU native". For practical Strix Halo local LLM use, start with the backend that matches the job:
 
-| Goal | Start with | Why |
-|------|------------|-----|
-| Private local chat, Open WebUI, easiest first success | Ollama Vulkan/RADV | Best first path for buyers and new users. |
-| Reproduce headline direct speed rows | direct `llama.cpp` Vulkan/RADV | Fastest measured generation-heavy Qwen MoE path here. |
-| Local API, several tools, long-context tests, MTP | `llama-server` Vulkan/RADV | Server path with batching, API, and speculative decoding support. |
-| 8-16 parallel local requests | Lemonade `llamacpp-rocm` | Best measured Qwen3.6 aggregate throughput at higher concurrency. |
-| Prompt-heavy or vLLM experiments | ROCm/HIP | Useful for prompt processing, batching, vLLM, and future long-context work. |
+| Goal | Do this first | Why |
+|------|---------------|-----|
+| Private local chat, Open WebUI, easiest first success | Run `ollama run qwen3.6:35b-a3b` after [`setup.sh`](setup.sh). | Best first path for buyers and new users. |
+| Reproduce headline direct speed rows | Use [Reproduce One Headline Result](README.md#reproduce-one-headline-result). | Exact model, quant, build, and command matter for benchmark comparisons. |
+| Local API, several tools, long-context tests, MTP | Read [MTP_SPECULATIVE_DECODING.md](MTP_SPECULATIVE_DECODING.md) and use `llama-server`. | Server path with batching, API, and speculative decoding support. |
+| 8-16 parallel local requests | Read [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md) and test Lemonade `llamacpp-rocm`. | Best measured Qwen3.6 aggregate throughput at higher concurrency. |
+| Prompt-heavy or vLLM experiments | Read [BACKEND_CROSSOVER.md](BACKEND_CROSSOVER.md) and [VLLM_BASELINE.md](VLLM_BASELINE.md). | Useful for prompt processing, batching, vLLM, and future long-context work. |
 
 See [BACKEND_CROSSOVER.md](BACKEND_CROSSOVER.md), [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md), [VLLM_BASELINE.md](VLLM_BASELINE.md), and [ROCM_VLLM_BUGWATCH.md](ROCM_VLLM_BUGWATCH.md).
 
