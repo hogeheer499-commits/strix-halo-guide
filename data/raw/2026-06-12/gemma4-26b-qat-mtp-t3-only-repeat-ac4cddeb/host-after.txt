@@ -1,0 +1,18 @@
+2026-06-12T02:43:52+02:00
+--- free ---
+               total        used        free      shared  buff/cache   available
+Mem:           124Gi        21Gi        80Gi        55Mi        24Gi       103Gi
+Swap:          8.0Gi          0B       8.0Gi
+--- uptime ---
+ 02:43:52 up  3:51,  1 user,  load average: 3.75, 13.83, 15.73
+--- visible benchmark workload ---
+   2711 node            /home/hoge-heer/.nvm/versions/node/v22.22.1/bin/node /home/hoge-heer/t3-code-ops/scripts/t3_react185_semantic_proxy.mjs --listen 0.0.0.0:3773 --upstream http://127.0.0.1:3774 --server-origin http://192.168.2.13:3774
+  77569 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code
+  77653 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote --no-zygote-sandbox
+  77654 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote
+  77660 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote
+  77702 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote --no-zygote-sandbox
+  77706 t3code          /proc/self/exe --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --enable-crash-reporter=d26cb034-6a32-49d0-89c4-afe91d0206fd,no_channel --user-data-dir=/home/hoge-heer/.config/t3code --standard-schemes=t3 --secure-schemes=t3 --cors-schemes=t3 --fetch-schemes=t3 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,6015021343157813326,5367787146171496885,262144 --enable-features=PdfUseShowSaveFilePicker --disable-features=DropInputEventsWhilePaintHolding,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation --variations-seed-version --pseudonymization-salt-handle=7,i,1630469769101870186,12663868386398719552,4 --trace-process-track-uuid=3190708989122997041
+  78011 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/resources/app.asar/apps/server/dist/bin.mjs --bootstrap-fd 3
+  78599 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote
+ 427594 llama-server    /home/hoge-heer/llama-cpp-latest/build-vulkan-20260611/bin/llama-server -m /home/hoge-heer/benchmark-models/gemma-4-26b-a4b-it-qat-unsloth-udq4kxl/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf -md /home/hoge-heer/benchmark-models/gemma-4-26b-a4b-it-qat-unsloth-udq4kxl/MTP/gemma-4-26B-A4B-it-Q4_0-MTP.gguf --host 127.0.0.1 --port 18080 -ngl 999 -fa on --no-mmap --cache-ram 0 -c 4096 -np 1 -b 2048 -ub 512 --poll 50 --spec-type draft-mtp --spec-draft-n-max 3
