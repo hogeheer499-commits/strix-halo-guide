@@ -12,13 +12,14 @@
 #   3. Installs and configures tuned (accelerator-performance)
 #   4. Upgrades Mesa Vulkan drivers (kisak PPA)
 #   5. Installs Ollama with Vulkan backend
-#   6. Pulls recommended models
-#   7. Runs a benchmark to verify setup
+#   6. Pulls the recommended first model
+#   7. Runs or prepares a verification benchmark
 #
 # What this script does NOT do:
 #   - Change BIOS settings (do this manually first -- see README)
 #   - Install Ubuntu (do this manually first)
 #   - Install ROCm containers (optional, see README Phase 7)
+#   - Run the final benchmark before reboot if boot parameters changed
 
 set -euo pipefail
 

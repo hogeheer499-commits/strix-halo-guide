@@ -12,7 +12,7 @@ For the focused "how far can this Beelink be pushed?" track, see [`MAX_PERFORMAN
 4. **Failure cases are content.** "This did not help" and "this broke silently" are often more useful than another speed row.
 5. **Practicality beats peak numbers.** The guide should answer what to run, how to set it up, how fast it feels, what fails, and when another platform is a better choice.
 
-## Current Locked Baseline
+## 2026-05-01 Locked Baseline
 
 As of the 2026-05-01 reconciliation:
 
@@ -21,7 +21,7 @@ As of the 2026-05-01 reconciliation:
 - Beelink GTR9 Pro pricing is date-bound at $4,399 official for the 128GB+2TB variant on May 1, 2026.
 - AMDVLK is documented as removed and not recommended.
 - ROCm is no longer described as globally broken on kernel 6.19.x; it works with the HSA overrides documented in the guide.
-- Mesa RADV 26.0.6, Ollama 0.21.2, kernel 6.19.4, safe linux-firmware, 2900 MHz GPU clock, and `tuned accelerator-performance` are the current verified system state.
+- Mesa RADV 26.0.6, Ollama 0.21.2, kernel 6.19.4, safe linux-firmware, 2900 MHz GPU clock, and `tuned accelerator-performance` were the verified system state for that reconciliation. New benchmark campaigns must record their own exact host state.
 
 ## Benchmark Workflow
 
@@ -29,7 +29,7 @@ As of the 2026-05-01 reconciliation:
 
 Status: done.
 
-The README, `BENCHMARKS.md`, `SYSTEM_AUDIT.md`, and `RESEARCH.md` must not contain stale claims that contradict the current system state. This gate is complete for the May 2026 baseline.
+The README, `BENCHMARKS.md`, `SYSTEM_AUDIT.md`, and `RESEARCH.md` must not contain stale claims that contradict the dated baseline state. This gate is complete for the May 2026 baseline.
 
 ### Phase 1: Data Foundation
 

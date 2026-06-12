@@ -98,7 +98,7 @@ For unattended copy/paste installs, the same script can also be run as:
 curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/setup.sh | bash
 ```
 
-This installs everything, configures Ollama with Vulkan, pulls a model, and runs a benchmark. Takes ~10 minutes plus model download time.
+This installs the Linux-side Vulkan/RADV + Ollama path, configures Ollama for Vulkan, pulls a model, and prepares a verification benchmark. If the script changes boot parameters, reboot first and then run `bash ~/bench-ollama.sh`.
 
 ## What You Can Run: Quick Snapshot
 
@@ -411,7 +411,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro, primarily with Vu
 | Llama 2 7B | 3.8 GB | Dense | 48-52 t/s | Testing, lightweight tasks |
 | Qwen2.5-VL 7B | 6.0 GB | Vision | 21.4 t/s | Image understanding |
 | LFM2.5 8B-A1B (Q4_K_M) | 5.1 GB | MoE | **170.0 t/s** * | Fastest current small-MoE scout; not a 30B-class replacement |
-| Gemma 4 26B-A4B (UD-Q4_K_M) | 15.7 GB | MoE | **48.5 t/s** * | Google MoE model, strong reasoning |
+| Gemma 4 26B-A4B IT QAT (UD-Q4_K_XL) | 14.2 GB | MoE | **74.8 t/s** direct; **102.7-110.0 t/s** MTP server | Current practical Google-model route; direct row is `llama-bench`, MTP row is server/speculative |
 | Qwen3-30B-A3B-Instruct-2507 (IQ4_XS) | 13.9 GB | MoE | **100.0 t/s** * | Fastest direct 30B-class Qwen row; general-instruct route, not Qwen3-Coder |
 | Qwen3-Coder 30B-A3B (Q4_K_S) | 17.5 GB | MoE | **98.5 t/s** * | Fastest measured coding speed; speed-first quant, not the balanced default |
 | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | MoE | **97 t/s** * | Best coding-model speed/quality ratio; current b9049 measured 96.76 t/s and previous b9010 peak was 97.24 t/s |
@@ -432,7 +432,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro, primarily with Vu
 
 ## Benchmark Results
 
-Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, 2026-05-07, 2026-05-16, 2026-05-26, 2026-05-27, 2026-05-31, 2026-06-01, 2026-06-02, and 2026-06-05. Primary benchmark system: Beelink GTR9 Pro. Recorded local runs used kernel 6.19.4, Mesa RADV 26.0.2-26.1.1, AMDVLK removed, and `tuned` `accelerator-performance` where captured; individual raw directories and CSV rows are the source of truth for exact run metadata. Before running new benchmarks, verify `tuned-adm active` and keep `power-profiles-daemon` inactive; it can conflict with `tuned`.
+Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, 2026-05-07, 2026-05-16, 2026-05-26, 2026-05-27, 2026-05-31, 2026-06-01, 2026-06-02, 2026-06-05, 2026-06-07, 2026-06-11, and 2026-06-12. Primary benchmark system: Beelink GTR9 Pro. Recorded local runs used kernel 6.19.4, Mesa RADV 26.0.2-26.1.2 where captured, AMDVLK removed, and `tuned` `accelerator-performance` where captured; individual raw directories and CSV rows are the source of truth for exact run metadata, and some older or scout rows intentionally record missing metadata as `not recorded`. Before running new benchmarks, verify `tuned-adm active` and keep `power-profiles-daemon` inactive; it can conflict with `tuned`.
 
 These rows are included because they answer practical setup questions: which model to try first, which backend removes the most friction, which paths are only experimental, and which results are strong enough to cite.
 
@@ -575,13 +575,15 @@ Extended context scaling (b8460 RADV):
 
 > A controlled May 2026 rerun moved the balanced Qwen3-Coder 30B headline from 87 t/s to 97 t/s on b9010 Vulkan RADV. The 2026-05-07 b9049 max-performance campaign measured 96.76 t/s on UD-Q4_K_XL. A later strict-clean b9179 run measured 98.51 t/s with Q4_K_S, which is a speed-first quant rather than the default balanced row.
 
-**Gemma 4 26B-A4B** (UD-Q4_K_M, 15.7GB, MoE) -- tested on b8933 (earliest build with Gemma 4 support):
+**Gemma 4 26B-A4B historical non-QAT baseline** (UD-Q4_K_M, 15.7GB, MoE) -- tested on b8933 (earliest build with Gemma 4 support):
 
 | Build | Driver | pp512 | tg128 | Notes |
 |-------|--------|-------|-------|-------|
-| **b8933** | **RADV** | **1142** | **48.46** | Google's latest MoE |
+| **b8933** | **RADV** | **1142** | **48.46** | early non-QAT Gemma 4 MoE baseline |
 
-> Gemma 4 is architecturally slower on tg than Qwen MoE models despite similar size. The reason: head_dim 256/512 (vs Qwen's 128) makes flash attention less efficient, mixed sliding-window/full attention adds overhead, and 3.8B active params vs Qwen's 3.3B. This is not a llama.cpp issue -- it's inherent to the model design. 48.5 t/s is still 3x human reading speed and very usable for interactive chat.
+> This row is historical and non-QAT. The current practical Gemma 4 route in this guide is **Gemma 4 26B-A4B IT QAT UD-Q4_K_XL**, which measured **74.80 t/s direct** and **102.69 cold / 107.42 T3-only / 110.00 best-repeat t/s** through a matched MTP `llama-server` route. Keep the direct row and server/speculative row separate.
+>
+> The older non-QAT Gemma 4 row is architecturally slower on tg than Qwen MoE models despite similar size. The reason: head_dim 256/512 (vs Qwen's 128) makes flash attention less efficient, mixed sliding-window/full attention adds overhead, and 3.8B active params vs Qwen's 3.3B. This is not a llama.cpp issue -- it's inherent to the model design. 48.5 t/s is still 3x human reading speed and very usable for interactive chat.
 >
 > **WARNING:** Gemma 4 is extremely sensitive to KV cache quantization. Using q8_0 KV cache causes 3.5x worse quality degradation compared to Qwen models. Stick with f16 KV cache for Gemma 4. Do NOT use `--cache-type-k q4_0`.
 
@@ -1618,7 +1620,7 @@ See [`POWER_BASELINE.md`](POWER_BASELINE.md), [`COMMUNITY_RESULTS.md#whole-syste
 After completing setup, verify each item:
 
 - [ ] `free -h` shows most of your installed memory, not ~31GB (~124GiB on 128GB systems; lower on 96GB systems)
-- [ ] `vulkaninfo --summary` shows RADV Mesa 26.0.2+ (latest tested: 26.1.1)
+- [ ] `vulkaninfo --summary` shows RADV Mesa 26.0.2+ (latest full host-state audit here: 26.1.2 on 2026-06-07; per-run raw metadata is the source of truth)
 - [ ] `tuned-adm active` shows `accelerator-performance`
 - [ ] `systemctl is-active power-profiles-daemon` shows `inactive`
 - [ ] `cat /sys/class/drm/card*/device/pp_dpm_sclk` shows 2900Mhz with asterisk
@@ -1663,7 +1665,7 @@ Not sure which model to run? Here's what we recommend based on use case:
 | **Chat** (no thinking) | Qwen3.6 35B-A3B (no-think) | 20 GB | 63 t/s | Same speed, direct answers |
 | **Code** (best quality, 256K ctx) | Qwen3-Next 80B-A3B | 42.9 GB | **59 t/s** | 80B MoE, only 3B active, 256K context |
 | **Chat** (smartest possible) | Qwen3-Coder-Next | 51 GB | 38 t/s | Dense 51B model, slower but smarter |
-| **Reasoning** | Gemma 4 26B-A4B | 15.7 GB | 48.5 t/s | Google's latest MoE, strong reasoning |
+| **Reasoning / current Google route** | Gemma 4 26B-A4B IT QAT | 14.2 GB | 74.8 t/s direct; 102.7-110.0 t/s MTP server | Strong current Google-model route. Use the direct row for benchmark comparisons; use MTP only for server/speculative experiments |
 | **Analyze images** | Qwen2.5-VL 7B | 6 GB | 21 t/s | Vision-language model |
 | **Maximum intelligence** | Llama 3.3 70B (Q4) | ~40 GB | ~5 t/s | Slow but very capable |
 | **"Can it run?"** | Llama 4 Scout 109B | 61 GB | 18 t/s | 109B model on a mini PC. RTX 4090 can't |
@@ -2029,6 +2031,27 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 ---
 
 ## Changelog
+
+### 2026-06-12 -- Gemma 4 QAT MTP Repeat And Guide Freshness
+
+- **Gemma 4 26B-A4B QAT MTP repeat documented:** the matched-head `llama-server` route measured **102.69 t/s** cold, **107.42 t/s** with only T3 left among known local services, and **110.00 t/s** as the best repeat on `ac4cddeb0`. This is server/speculative evidence, not a direct `llama-bench` replacement.
+- **Current setup routing improved:** the README now sends new users to `setup.sh` first, then Ollama/Open WebUI for local chat, and only then to direct `llama.cpp`, MTP, Lemonade, or ROCm/vLLM paths when they need benchmark or server control.
+
+### 2026-06-11 -- Latest ac4cddeb0 Controls And Gemma QAT Route
+
+- **Latest-control rows added:** Qwen3-30B-A3B-Instruct-2507 stayed above 100 t/s at **100.38 t/s**, LFM2.5 stayed in the 170 t/s class at **171.17 t/s**, and Nemotron 3 Super stayed in the 18 t/s capacity class at **18.24 t/s**.
+- **Gemma 4 QAT direct route added:** Gemma 4 26B-A4B IT QAT `UD-Q4_K_XL` measured **74.80 t/s** direct and became the practical current Google-model row, replacing the older non-QAT Gemma 4 row as the recommendation.
+- **Negative/control evidence preserved:** Qwen3.6 27B NVFP4 loaded but was not a speed route on this Vulkan/RADV path, and the MTP smoke result remained too slow to recommend.
+
+### 2026-06-07 -- b9544 Regression Controls
+
+- **No Vulkan/RADV sentinel regression found:** Qwen3-30B-A3B-Instruct-2507 measured **103.18 t/s**, the exact Qwen3-Coder Q4_K_S speed-first file reproduced the 98 t/s class at **98.02 t/s r50** and **98.49 t/s generation-only**, and Qwen3-Coder UD-Q4_K_XL stayed in the 96-97 t/s class.
+- **Small-MoE and capacity rows held up:** LFM2.5 measured **176.48 t/s**, and Nemotron 3 Super measured **18.93 t/s** on the b9544 control.
+
+### 2026-06-05 -- Latest/int-dot Scout Rows
+
+- **New speed and capacity scouts added:** LFM2.5 8B-A1B reached **170.02 t/s** generation-only, Nemotron 3 Nano reached **75.97 t/s**, and Nemotron 3 Super 120B-A12B reached **18.43 t/s** direct on one 128GB Strix Halo system.
+- **Failure data kept:** DeepSeek V4 Flash and other large-model routes stayed documented as blocked or impractical where model distribution, architecture support, or storage/runtime requirements prevented a clean local benchmark.
 
 ### 2026-06-03 -- Nimo AI Mini PC Community Bundle
 

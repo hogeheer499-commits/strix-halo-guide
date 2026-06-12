@@ -1,6 +1,6 @@
-# System Audit - 2026-05-01
+# System Audit - 2026-05-01 Historical Snapshot
 
-This file records the current live system state. It is separate from historical benchmark state: older benchmark numbers were measured with the same `tuned accelerator-performance` profile active.
+This file records the 2026-05-01 live system state. It is a historical snapshot, not the latest benchmark state. Use `BENCHMARKS.md`, `REPRODUCIBILITY.md`, `data/benchmarks.csv`, `data/headline_claims.csv`, `data/mtp_speculative.csv`, and the relevant `data/raw/` directory for the current source of truth per run.
 
 ## Hardware
 
@@ -12,14 +12,14 @@ This file records the current live system state. It is separate from historical 
 | RAM | 128GB LPDDR5X-8000 unified, 124GiB OS-visible |
 | Vulkan device | Radeon 8060S Graphics (RADV STRIX_HALO) |
 
-## Live Software State
+## Software State Snapshot
 
-| Parameter | Current Value | Status |
+| Parameter | Snapshot Value | Status |
 |-----------|---------------|--------|
-| Kernel | 6.19.4-061904-generic | Current tested kernel |
-| Mesa RADV | 26.0.6, kisak-mesa PPA | Current Vulkan driver |
+| Kernel | 6.19.4-061904-generic | Tested kernel on this snapshot |
+| Mesa RADV | 26.0.6, kisak-mesa PPA | Vulkan driver on this snapshot |
 | AMDVLK | Not installed | Correct; avoids ICD hijacking |
-| Ollama | 0.21.2 | Current easy path |
+| Ollama | 0.21.2 | Easy path on this snapshot |
 | linux-firmware | 20240318.git3b128b60-0ubuntu2.27 | Safe; not broken 20251125 |
 | tuned | `accelerator-performance` active | Correct |
 | GPU clock | 2900 MHz selected | Correct |
@@ -71,7 +71,7 @@ dpkg -l | grep -E 'amdvlk|linux-firmware'
 Expected state:
 
 - `tuned-adm active` shows `accelerator-performance`
-- RADV Mesa is 26.0.2+; current live system is 26.0.6
+- RADV Mesa is 26.0.2+; this snapshot used 26.0.6
 - AMDVLK is absent
 - GPU clock has the asterisk on `2900Mhz`
 - linux-firmware is not `20251125`

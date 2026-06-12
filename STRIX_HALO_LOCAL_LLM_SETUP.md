@@ -82,7 +82,7 @@ For unattended installs:
 curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/setup.sh | bash
 ```
 
-That script is [`setup.sh`](setup.sh). Read it before running it on a production system. It configures kernel parameters, GPU access rules, `tuned`, Mesa/RADV, Ollama Vulkan, model pulling, and a verification benchmark. It does not change BIOS settings or install Ubuntu.
+That script is [`setup.sh`](setup.sh). Read it before running it on a production system. It configures kernel parameters, GPU access rules, `tuned`, Mesa/RADV, Ollama Vulkan, model pulling, and verification-benchmark setup. It does not change BIOS settings or install Ubuntu. If it changes boot parameters, reboot first and then run `bash ~/bench-ollama.sh`.
 
 The first sanity check after setup is:
 

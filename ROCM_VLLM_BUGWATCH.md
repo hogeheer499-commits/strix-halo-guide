@@ -1,6 +1,6 @@
 # ROCm and vLLM Bugwatch
 
-Status: current as of 2026-06-07.
+Status: current as of 2026-06-12.
 
 This file tracks fast-moving upstream items that affect Strix Halo local AI work. It is intentionally separate from the README so the public guide stays stable even when upstream ROCm/vLLM issues move.
 
@@ -17,6 +17,16 @@ This file tracks fast-moving upstream items that affect Strix Halo local AI work
 | Qwen ROCm load/hang report | [`ROCm/ROCm#6027`](https://github.com/ROCm/ROCm/issues/6027) is closed. | Historical context for why the guide keeps ROCm notes conservative. |
 | vLLM ROCm non-causal attention | [`vllm-project/vllm#40176`](https://github.com/vllm-project/vllm/pull/40176) is merged. | Relevant to ROCm attention support and newer vLLM container paths. |
 | vLLM DFlash SWA support | [`vllm-project/vllm#40898`](https://github.com/vllm-project/vllm/pull/40898) remains open. | Relevant to Qwen3.6 DFlash speculative decoding repos; not a local guide claim yet. |
+
+## 2026-06-12 Watch Recheck
+
+No benchmark recommendation changed in this recheck:
+
+- ROCm production remains 7.2.4.
+- vLLM remains 0.22.1 as the latest normal upstream vLLM release checked here.
+- `llama.cpp` latest release moved beyond the earlier b9544 checkpoint to b9601. This is an update-watch signal only; the guide's measured local controls remain tied to their exact commits and raw evidence.
+- Ollama latest release moved to 0.30.7, while the installed local guide path remains Ollama 0.23.1 until an isolated update check proves that changing it helps the easy buyer path.
+- Keep host-wide ROCm/Ollama/llama.cpp updates out of benchmark campaigns unless the whole campaign is explicitly about testing that update.
 
 ## Local ROCm State
 
@@ -95,8 +105,8 @@ No new public guide claim changed in the 2026-06-01 recheck:
 
 No benchmark recommendation changed in this recheck:
 
-- `llama.cpp` latest release is b9544, while the local source checkout used for recent experiments is behind that release. This makes a latest-release regression run useful before telling users to update.
-- Ollama latest release is 0.30.6, while the installed local Ollama remains 0.23.1. This is a buyer-facing update candidate because Ollama is the easiest setup path.
+- `llama.cpp` latest release was b9544 at this checkpoint, while the local source checkout used for recent experiments was behind that release. This made a latest-release regression run useful before telling users to update.
+- Ollama latest release was 0.30.6 at this checkpoint, while the installed local Ollama remained 0.23.1. This was a buyer-facing update candidate because Ollama is the easiest setup path.
 - ROCm production remains 7.2.4.
 - vLLM moved to 0.22.1. Treat this as a watch/update signal only; it does not make vLLM/DFlash a guide recommendation without a clean local reproduction.
 - Atomic TurboQuant PR #26 for Gemma 4 MTP `PARALLEL=2` has merged. The Nimo Gemma 4 QAT/MTP route remains an advanced path until fresh post-merge 1-slot and 2-slot numbers are measured with exact Atomic commit, command, acceptance rate, single-stream decode, and aggregate throughput.
