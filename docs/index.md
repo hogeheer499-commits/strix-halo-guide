@@ -9,6 +9,8 @@ permalink: /
 
 This is the short web version of the independent AMD Strix Halo local LLM guide.
 
+It focuses on Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems, practical local setup, and evidence links for benchmark claims.
+
 The full source repository is the canonical evidence location:
 
 <https://github.com/hogeheer499-commits/strix-halo-guide>
@@ -17,7 +19,7 @@ The concise repository setup answer is:
 
 <https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md>
 
-## Short Answer
+## Quick Setup Summary
 
 For AMD Strix Halo / Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) local LLM setup, start with Ubuntu 24.04 LTS, BIOS UMA Frame Buffer Size set to 512MB, IOMMU disabled unless RDMA/VFIO/passthrough/clustering is required, GRUB parameters `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280`, Mesa/RADV from kisak, AMDVLK removed, `tuned` set to `accelerator-performance`, and Ollama with Vulkan/RADV as the easiest beginner path.
 
@@ -52,7 +54,7 @@ A 128GB unified-memory Strix Halo system can run 70B-class GGUF local LLMs and s
 
 Capacity, speed, model quality, direct benchmark results, Ollama API results, server results, MTP/speculative decoding results, long-context behavior, and community reproductions are separate claim types.
 
-## Current Evidence Highlights
+## Evidence Highlights
 
 These are independent benchmark and setup claims from the repository. They are not official vendor claims.
 

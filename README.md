@@ -1803,7 +1803,18 @@ Prices, coupons, and availability change quickly. Treat this as a dated buyer sn
 | **Nimo AI Mini PC** | Official page showed $3,999.99 regular pricing with sold-out/pre-order language and a $600-off promo note; no checkout-confirmed code was captured in this pass. | Strong compact-chassis community bundle: large-model serving, MTP, StepFun/Qwen 122B, Gemma 4 QAT/MTP assistant-head follow-up data, and thermal context. | Useful compact 128GB option if large-model feasibility and thermal context matter more than raw headline speed. |
 | **HP ZBook Ultra G1a** | HP official page confirms up to Ryzen AI MAX+ PRO 395 and 128GB unified memory, but a current HP direct price was not captured in this pass; reseller snapshot seen at $4,679.48. | No same-shape guide benchmark evidence yet. | Portable/workstation-laptop option. Treat as a different buyer category, not a mini-PC value comparison. |
 
-> Snapshot sources checked 2026-06-11: [GMKtec](https://www.gmktec.com/products/amd-ryzen%E2%84%A2-ai-max-395-evo-x2-ai-mini-pc), [Bosgame](https://www.bosgamepc.com/products/bosgame-m5-ai-mini-desktop-ryzen-ai-max-395), [Framework mainboard](https://frame.work/products/framework-desktop-mainboard-amd-ryzen-ai-max-300-series), [Beelink](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395), [Corsair](https://www.corsair.com/us/en/p/gaming-computers/cs-9080003-na/corsair-ai-workstation-300-amd-ryzen-ai-max-395-processor-amd-radeon-8060s-igpu-up-to-96gb-vram-128gb-lpddr5x-memory-4tb-2tb-2tb-m2-ssd-win11-home-cs-9080003-na), [Minisforum store](https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc), [Minisforum product page](https://www.minisforum.com/products/ms-s1-max), [Nimo](https://www.nimopc.com/products/nimos-smallest-office-gaming-ai-pc-amd-ryzen-ai-max-395-up-to-5-1-ghz-128gb-lpddr5-8000mhz-16gb-8-2tb-4tb-ssd-with-3-performance-modes-up-to-120w), [HP](https://www.hp.com/us-en/workstations/zbook-ultra.html), and [Best Buy HP reseller snapshot](https://www.bestbuy.com/product/hp-zbook-ultra-g1a-14-touch-amd-ryzen-ai-max-pro-395-128-gb-amd-radeon-8060s-win-11-pro-silver/JJGH2GH9HR). Dynamic vendor pages can show different currency, stock, and coupon state by region.
+> Snapshot sources checked 2026-06-11:
+> [GMKtec](https://www.gmktec.com/products/amd-ryzen%E2%84%A2-ai-max-395-evo-x2-ai-mini-pc),
+> [Bosgame](https://www.bosgamepc.com/products/bosgame-m5-ai-mini-desktop-ryzen-ai-max-395),
+> [Framework mainboard](https://frame.work/products/framework-desktop-mainboard-amd-ryzen-ai-max-300-series),
+> [Beelink](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395),
+> [Corsair](https://www.corsair.com/us/en/p/gaming-computers/cs-9080003-na/corsair-ai-workstation-300-amd-ryzen-ai-max-395-processor-amd-radeon-8060s-igpu-up-to-96gb-vram-128gb-lpddr5x-memory-4tb-2tb-2tb-m2-ssd-win11-home-cs-9080003-na),
+> [Minisforum store](https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc),
+> [Minisforum product page](https://www.minisforum.com/products/ms-s1-max),
+> [Nimo](https://www.nimopc.com/products/nimos-smallest-office-gaming-ai-pc-amd-ryzen-ai-max-395-up-to-5-1-ghz-128gb-lpddr5-8000mhz-16gb-8-2tb-4tb-ssd-with-3-performance-modes-up-to-120w),
+> [HP](https://www.hp.com/us-en/workstations/zbook-ultra.html), and
+> [Best Buy HP reseller snapshot](https://www.bestbuy.com/product/hp-zbook-ultra-g1a-14-touch-amd-ryzen-ai-max-pro-395-128-gb-amd-radeon-8060s-win-11-pro-silver/JJGH2GH9HR).
+> Dynamic vendor pages can show different currency, stock, and coupon state by region.
 
 > **WARNING (Beelink GTR9 Pro):** The v1 motherboard has a fatal NIC stability issue that cannot be fixed in software. Verify you are getting board revision **v2.2** (with Realtek NICs) before purchasing. Beelink offers free replacement for v1 boards. Contact their support with your serial number.
 
