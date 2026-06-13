@@ -1,13 +1,13 @@
 ---
 layout: default
-title: "AMD Strix Halo Local LLM Setup for Ryzen AI MAX+ 395 / Radeon 8060S"
-description: "Canonical setup and benchmark evidence for running local LLMs on AMD Strix Halo / Ryzen AI MAX+ 395 systems with Radeon 8060S gfx1151, 96GB/128GB unified memory, Ollama, llama.cpp Vulkan/RADV, ROCm/HIP, vLLM, and 70B/120B GGUF models."
+title: "AMD Strix Halo Local LLM Setup"
+description: "Practical setup and benchmark evidence for running local LLMs on AMD Strix Halo / Ryzen AI MAX+ 395 systems with Radeon 8060S gfx1151, 96GB/128GB unified memory, Ollama, llama.cpp Vulkan/RADV, ROCm/HIP, vLLM, and 70B/120B GGUF models."
 permalink: /
 ---
 
-# AMD Strix Halo Local LLM Setup for Ryzen AI MAX+ 395 / Radeon 8060S
+# AMD Strix Halo Local LLM Setup
 
-This is the SEO landing page for the independent AMD Strix Halo local LLM guide.
+This is the short web version of the independent AMD Strix Halo local LLM guide.
 
 The full source repository is the canonical evidence location:
 

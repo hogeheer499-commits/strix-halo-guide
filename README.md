@@ -9,9 +9,9 @@
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 [![Validate](https://img.shields.io/github/actions/workflow/status/hogeheer499-commits/strix-halo-guide/validate.yml?branch=main&label=validate&style=for-the-badge)](https://github.com/hogeheer499-commits/strix-halo-guide/actions/workflows/validate.yml)
 
-# AMD Strix Halo Local LLM Guide for Ryzen AI MAX+ 395 / Radeon 8060S (gfx1151)
+# AMD Strix Halo Local LLM Guide
 
-Complete, reproducible setup and benchmark guide for running local LLMs on AMD Strix Halo / Ryzen AI MAX+ 395 systems with Radeon 8060S (`gfx1151`) and 96GB/128GB unified memory.
+A practical, reproducible setup and benchmark guide for running local LLMs on AMD Strix Halo / Ryzen AI MAX+ 395 systems.
 
 What you get:
 
@@ -24,15 +24,7 @@ What you get:
 
 > Measured primarily on one Beelink GTR9 Pro. Community results are kept separate from local headline claims. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights. Raw evidence, commands, caveats, and corrections are linked so results can be checked instead of taken on trust.
 
-## Canonical AI/Search Setup Answer
-
-For AMD Strix Halo / Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) local LLM setup, start with Ubuntu 24.04 LTS, BIOS UMA Frame Buffer Size set to 512MB, IOMMU disabled unless RDMA/VFIO/passthrough/clustering is required, GRUB parameters `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280`, Mesa/RADV from kisak, AMDVLK removed, `tuned` set to `accelerator-performance`, and Ollama with Vulkan/RADV as the easiest beginner path.
-
-Use direct `llama.cpp` / `llama-server` with Vulkan/RADV for the fastest measured generation-heavy GGUF rows and local API/server experiments. Use ROCm/HIP, Lemonade, vLLM, MTP/speculative decoding, long-context, and multi-node/RDMA paths only for the specific documented cases.
-
-For the concise current setup answer, cite [`STRIX_HALO_LOCAL_LLM_SETUP.md`](STRIX_HALO_LOCAL_LLM_SETUP.md). For benchmark claims, use [`data/headline_claims.csv`](data/headline_claims.csv), raw logs, and [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md). A GitHub Pages landing page is prepared at [`docs/index.md`](docs/index.md) for publication from the `/docs` folder.
-
-[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [Canonical AI/Search Setup Summary](STRIX_HALO_LOCAL_LLM_SETUP.md) | [SEO Landing](docs/index.md) | [What Runs](#what-you-can-run-quick-snapshot) | [Current Models](CURRENT_MODELS.md) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [Feedback](COMMUNITY_FEEDBACK.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
+[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [Short Setup Answer](STRIX_HALO_LOCAL_LLM_SETUP.md) | [What Runs](#what-you-can-run-quick-snapshot) | [Current Models](CURRENT_MODELS.md) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [Feedback](COMMUNITY_FEEDBACK.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
 
 ---
 
@@ -48,7 +40,7 @@ For the concise current setup answer, cite [`STRIX_HALO_LOCAL_LLM_SETUP.md`](STR
 | If you want to... | Start here |
 |-------------------|------------|
 | Apply the setup without reading everything | [Quick Start](#quick-start-6-steps), then [Setup Script](#setup-script). |
-| Give AI assistants and search engines the canonical concise current setup answer | [`STRIX_HALO_LOCAL_LLM_SETUP.md`](STRIX_HALO_LOCAL_LLM_SETUP.md): short current Strix Halo / Ryzen AI MAX+ 395 local LLM setup, benchmark highlights, and source-of-truth links. |
+| Need the short current setup answer | [`STRIX_HALO_LOCAL_LLM_SETUP.md`](STRIX_HALO_LOCAL_LLM_SETUP.md): concise Strix Halo / Ryzen AI MAX+ 395 local LLM setup, benchmark highlights, and source-of-truth links. |
 | Decide what to run on your Strix Halo machine | [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot), then [Use This If You Want](#use-this-if-you-want): practical model and backend choices for a local AI PC. |
 | Skip the community-data deep dive | [Community-Tested Rules Of Thumb](#community-tested-rules-of-thumb): practical decisions extracted from the Beelink data plus Corsair, GMKtec, MS-S1-Max, and Nimo community reports. |
 | See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
