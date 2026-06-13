@@ -11,7 +11,9 @@
 
 # AMD Strix Halo Local LLM Guide for Ryzen AI MAX+ 395 / Radeon 8060S (gfx1151)
 
-A practical, reproducible setup and benchmark guide for running local LLMs on AMD Strix Halo / Ryzen AI MAX+ 395 systems.
+A complete, practical guide to running large language models locally on AMD Strix Halo / Ryzen AI MAX+ 395 systems with Radeon 8060S (`gfx1151`) and 96GB/128GB unified memory.
+
+Covers BIOS config, Ubuntu 24.04/kernel setup, Ollama, `llama.cpp` Vulkan/RADV, ROCm/HIP experiments, vLLM notes, 70B/120B GGUF model evidence, benchmarks, raw logs, and reproducibility checks.
 
 What you get:
 
