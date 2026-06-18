@@ -44,7 +44,7 @@ Everyone should post this link.
 
 ## One-Line Summary
 
-Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 96-128GB unified memory: setup, model choices, direct 100.0 t/s 30B-class Qwen MoE evidence, 170.0 t/s LFM2.5 small-MoE evidence, 18.4 t/s Nemotron 3 Super 120B direct GGUF capacity evidence, 98.5 t/s Qwen3-Coder speed-first, 81.3 t/s Qwen3.6 speed-first, 55.6 t/s gpt-oss-120b, 128K context, MTP speculative decoding at 101.1 t/s on Qwen3.6 and a 107-110 t/s Gemma 4 26B-A4B QAT repeat range, CSVs, raw logs, reproducibility notes, community validation across Corsair, GMKtec, MS-S1-Max, and Nimo systems, command-flag sensitivity notes, Windows LM Studio evidence, tuned thermal/power-policy evidence, Nimo large-model serving evidence, and first wall-power efficiency rows.
+Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 96-128GB unified memory: setup, model choices, direct 100.0 t/s 30B-class Qwen MoE evidence, 170.0 t/s LFM2.5 small-MoE evidence, 18.4 t/s Nemotron 3 Super 120B direct GGUF capacity evidence, 98.5 t/s Qwen3-Coder speed-first, 81.3 t/s Qwen3.6 speed-first, 55.6 t/s gpt-oss-120b, 128K context, MTP speculative decoding at 101.1 t/s on Qwen3.6 and a 107-110 t/s Gemma 4 26B-A4B QAT repeat range, CSVs, raw logs, reproducibility notes, community validation across Corsair, GMKtec, MS-S1-Max, Nimo, Beelink owner, and NixOS/NPU/ROCmFP4 sources, command-flag sensitivity notes, Windows LM Studio evidence, tuned thermal/power-policy evidence, Nimo large-model serving evidence, NPU sidecar evidence, and first wall-power efficiency rows.
 
 ## Short Share Text
 
@@ -64,7 +64,7 @@ Highlights:
 - gpt-oss-120b MXFP4: 55.57 t/s direct llama.cpp Vulkan/RADV on current b9049.
 - Qwen3.6 through Ollama 0.23.1 API: 50.51 t/s warm average.
 - 128K context tested on Qwen3.6 without truncation.
-- Independent community validation: three Corsair AI Workstation 300 systems measured 93.55-95.50 t/s Qwen3-Coder, a GMKtec EVO-X2 96GB native Ubuntu run reproduced the guide's Qwen3.6 row within -0.8% pp512 and -1.7% tg128, the same GMKtec class added Qwen3-Coder b9235 follow-up rows and reproduced the MTP route at 93.29 t/s average, a Windows MS-S1-Max report added LM Studio serving evidence, and a tuned Reddit GMKtec report reached about 99.9-100.0 t/s on Qwen3-Coder `Q4_K_S` with thermal/power-policy qualifiers.
+- Independent community validation: three Corsair AI Workstation 300 systems measured 93.55-95.50 t/s Qwen3-Coder, a GMKtec EVO-X2 96GB native Ubuntu run reproduced the guide's Qwen3.6 row within -0.8% pp512 and -1.7% tg128, the same GMKtec class added Qwen3-Coder b9235 follow-up rows and reproduced the MTP route at 93.29 t/s average, a Windows MS-S1-Max report added LM Studio serving evidence, a tuned Reddit GMKtec report reached about 99.9-100.0 t/s on Qwen3-Coder `Q4_K_S` with thermal/power-policy qualifiers, and ciru-ai added a GMKtec EVO-X2 NixOS / IOMMU-on / NPU-sidecar / ROCmFP4 artifact.
 - Community wall-power context: Qwen3-Coder around 150 W / 1.6 J/token, Qwen3.6 around 148 W / 2.0 J/token, gpt-oss-120b around 174 W / 3.1 J/token, and Qwen3-Coder-Next around 137 W / 3.4 J/token during sustained generation.
 - Includes setup steps, backend choices, raw data, charts, and reproducibility notes.
 
@@ -104,7 +104,7 @@ Headline results:
 - Qwen3.6 128K filled-context decode completed at 32.23 t/s without truncation
 - Server/concurrency testing included: Vulkan/RADV wins at 1-4 parallel requests; Lemonade ROCm wins aggregate throughput at 8-16 in the measured Qwen3.6 sweep
 - HIP/Vulkan crossover testing included: HIP can win prompt processing while Vulkan still wins token generation in local Qwen rows
-- Independent community validation included: three Corsair AI Workstation 300 systems measured 93.55-95.50 t/s Qwen3-Coder, a GMKtec EVO-X2 96GB native Ubuntu run reproduced the Qwen3.6 row within -0.8% pp512 and -1.7% tg128, a GMKtec Qwen3-Coder b9235 follow-up added full pp/tg portability evidence, a GMKtec MTP rerun reached 93.29 t/s average, a Windows MS-S1-Max report added LM Studio serving evidence, and a tuned Reddit GMKtec report touched 100.0 t/s with clear thermal/power-policy caveats
+- Independent community validation included: three Corsair AI Workstation 300 systems measured 93.55-95.50 t/s Qwen3-Coder, a GMKtec EVO-X2 96GB native Ubuntu run reproduced the Qwen3.6 row within -0.8% pp512 and -1.7% tg128, a GMKtec Qwen3-Coder b9235 follow-up added full pp/tg portability evidence, a GMKtec MTP rerun reached 93.29 t/s average, a Windows MS-S1-Max report added LM Studio serving evidence, a tuned Reddit GMKtec report touched 100.0 t/s with clear thermal/power-policy caveats, and a ciru-ai GMKtec EVO-X2 artifact added NixOS/IOMMU-on/NPU/ROCmFP4 evidence
 - Wall-power context included: community measurements around 150 W / 1.6 J/token for Qwen3-Coder, 174 W / 3.1 J/token for gpt-oss-120b, and additional Qwen3.6 / Qwen3-Coder-Next rows
 
 The guide includes:
@@ -143,7 +143,7 @@ Repo: https://github.com/hogeheer499-commits/strix-halo-guide
 Strix Halo local LLM guide with measured setup + raw benchmark evidence:
 https://github.com/hogeheer499-commits/strix-halo-guide
 
-Highlights: 100.04 t/s direct Qwen3-30B-A3B-Instruct-2507 IQ4_XS, 170.02 t/s generation-only LFM2.5 small-MoE scout, 18.43 t/s Nemotron 3 Super 120B direct GGUF capacity scout, 98.51 t/s Qwen3-Coder speed-first direct llama.cpp Vulkan/RADV, 96.76 t/s balanced Qwen3-Coder direct row on b9049, 101.16 t/s local Qwen3.6 MTP server average on b9360, 107.42-110.00 t/s repeat range for the Gemma 4 26B-A4B QAT matched-head MTP server route on ac4cddeb0, 93.29 t/s GMKtec community MTP reproduction on b9235, 55.57 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included, N=3 Corsair validation at 93.55-95.50 t/s, GMKtec EVO-X2 native Ubuntu Qwen3.6 validation within 2%, GMKtec Qwen3-Coder b9235 follow-up data, Windows MS-S1-Max LM Studio evidence, a tuned Reddit GMKtec 99.9-100.0 t/s Qwen3-Coder report, community wall-power rows, a community 3-node USB4 llama.cpp RPC matrix, and USB4 latency tuning data.
+Highlights: 100.04 t/s direct Qwen3-30B-A3B-Instruct-2507 IQ4_XS, 170.02 t/s generation-only LFM2.5 small-MoE scout, 18.43 t/s Nemotron 3 Super 120B direct GGUF capacity scout, 98.51 t/s Qwen3-Coder speed-first direct llama.cpp Vulkan/RADV, 96.76 t/s balanced Qwen3-Coder direct row on b9049, 101.16 t/s local Qwen3.6 MTP server average on b9360, 107.42-110.00 t/s repeat range for the Gemma 4 26B-A4B QAT matched-head MTP server route on ac4cddeb0, 93.29 t/s GMKtec community MTP reproduction on b9235, 55.57 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included, N=3 Corsair validation at 93.55-95.50 t/s, GMKtec EVO-X2 native Ubuntu Qwen3.6 validation within 2%, GMKtec Qwen3-Coder b9235 follow-up data, Windows MS-S1-Max LM Studio evidence, a tuned Reddit GMKtec 99.9-100.0 t/s Qwen3-Coder report, ciru-ai NixOS/IOMMU-on/NPU/ROCmFP4 artifact evidence, community wall-power rows, a community 3-node USB4 llama.cpp RPC matrix, and USB4 latency tuning data.
 ```
 
 ## Partner / Reviewer Sharing Snippet

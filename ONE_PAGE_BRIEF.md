@@ -10,7 +10,7 @@ High-end local-AI hardware can be technically strong but commercially under-leve
 
 The repo already includes a technical proof layer:
 
-- Public GitHub demand signal: 132 stars in a small hardware/software niche as of the 2026-06-12 GitHub API snapshot; use this as supporting context, not the main claim.
+- Public GitHub demand signal: 152 stars in a small hardware/software niche as of the 2026-06-18 GitHub API snapshot; use this as supporting context, not the main claim.
 - Setup and workflow guide: [`README.md`](README.md).
 - Current benchmark snapshot: [`BENCHMARKS.md`](BENCHMARKS.md).
 - Reproducibility notes: [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
@@ -26,7 +26,7 @@ This project turns scattered setup knowledge into public evidence and practical 
 
 For vendors and developer-relations teams, that means fewer adoption barriers, clearer buyer guidance, more credible reviews, and better signals about software or firmware gaps.
 
-Current public evidence includes nine Strix Halo-class systems/sources across Beelink owner stacks, Corsair, GMKtec, MS-S1-Max, and Nimo. Community rows remain separated from first-party Beelink headline claims. The Nimo evidence includes a Gemma 4 QAT/MTP assistant-head follow-up, and the second Beelink owner stack adds CachyOS / ROCm 7.2.4 / ZenDNN backend-crossover evidence. Together these show how OS choice, model format, matched draft heads, serving topology, and backend choice affect real buyer setup decisions.
+Current public evidence includes 10 Strix Halo-class systems/sources across Beelink owner stacks, Corsair, GMKtec, MS-S1-Max, Nimo, and NixOS/NPU/ROCmFP4 community artifacts. Community rows remain separated from first-party Beelink headline claims. The Nimo evidence includes a Gemma 4 QAT/MTP assistant-head follow-up, the second Beelink owner stack adds CachyOS / ROCm 7.2.4 / ZenDNN backend-crossover evidence, and ciru-ai's EVO-X2 artifact adds IOMMU-on NPU sidecar data, ROCmFP4 tuned-route context, and quality-eval rows. Together these show how OS choice, model format, matched draft heads, NPU use, serving topology, and backend choice affect real buyer setup decisions.
 
 Public technical feedback also exposes trust friction. When benchmark framing feels promotional, unsupported, or too polished, technical readers push back even if the measurements are real. The guide uses that feedback to improve the proof layer: raw logs first, exact artifacts and commands, clear caveats, separated claim types, and corrected routes when the community finds a gap. See [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md).
 

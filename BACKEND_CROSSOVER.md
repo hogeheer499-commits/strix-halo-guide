@@ -74,6 +74,23 @@ Model and command shape:
 
 This is useful backend-crossover evidence, not a stock same-build shootout and not a decode-speed headline. The local patches and ZenDNN build mean the raw provenance matters. The negative notes matter too: VMM built but crashed on model load, and `GGML_HIP_ROCWMMA_FATTN` was reported as a prompt-processing regression on this stack.
 
+## Community GMKtec EVO-X2 NixOS / ROCmFP4 Context
+
+Canonical community source: [`ciru-ai/strix-halo-evo-x2-evidence`](https://github.com/ciru-ai/strix-halo-evo-x2-evidence), guide provenance note [`data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/`](data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/), and compact metric subset [`data/community_ciru_evox2_metrics.csv`](data/community_ciru_evox2_metrics.csv).
+
+ciru-ai's artifact is not a stock HIP-versus-Vulkan shootout. It is still important for the backend story because it adds an advanced GMKtec EVO-X2 owner stack with NixOS 26.05 pre-release, Linux 7.0.1, Mesa 26.0.5, IOMMU enabled, the NPU exposed through `/dev/accel/accel0`, and tuned ROCmFP4/Chadrock/Gemma/CrownV7 routes.
+
+Selected backend-relevant rows:
+
+| Track | Representative result | Backend interpretation |
+|-------|-----------------------|------------------------|
+| NPU sidecar | +3.29% main 64k iGPU workload latency with concurrent NPU load versus +68.96% with a comparable iGPU auxiliary load | Keep the NPU discussion separate from main iGPU decode speed. The NPU may be useful as an auxiliary lane when IOMMU/NPU access matters. |
+| ROCmFP4 tuned 27B | Qwopus3.6 27B Chadrock reached 0.9451 HumanEval+ in the public artifact | Useful tuned-route quality evidence, not a stock ROCm/HIP backend recommendation. |
+| ROCmFP4 tuned 35B | Ace Saber 35B ROCmFP4 MTP reached 0.9024 HumanEval+ with 104.35 peak predicted tok/s | Interesting for advanced model-route testing; keep separate from direct `llama-bench` headlines. |
+| Gemma QAT/MTP | Gemma 4 26B-A4B QAT/MTP row reports 122.8 decode tok/s after TTFP on a 512-token API row | Served/API and speculative route evidence, not a direct backend replacement row. |
+
+Practical read: this package strengthens the advanced-research lane. It does not change the beginner recommendation: use Ubuntu + Vulkan/RADV + Ollama first, then test direct `llama.cpp`, `llama-server`, ROCm/HIP, NPU sidecar work, or ROCmFP4 tuned routes when the workload justifies the complexity.
+
 ## Negative Result
 
 Gemma 4 26B-A4B loaded and ran on Vulkan/RADV, but the local HIP b8460 path failed to load the GGUF:

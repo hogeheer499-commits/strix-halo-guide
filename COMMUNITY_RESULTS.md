@@ -6,6 +6,7 @@ Structured data:
 
 - [`data/community_results.csv`](data/community_results.csv)
 - [`data/community_nimo_issue4.csv`](data/community_nimo_issue4.csv)
+- [`data/community_ciru_evox2_metrics.csv`](data/community_ciru_evox2_metrics.csv)
 - [`data/community_power.csv`](data/community_power.csv)
 - [`data/community_rpc.csv`](data/community_rpc.csv)
 - [`data/community_rpc_server.csv`](data/community_rpc_server.csv)
@@ -33,6 +34,7 @@ Raw community follow-up artifacts:
 - Nimo AI Mini PC issue #4 bundle: [`data/raw/2026-06-03/community-nimo-issue4/`](data/raw/2026-06-03/community-nimo-issue4/), summarized in [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md)
 - Nimo Gemma 4 QAT follow-up: [`data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/)
 - Beelink GTR9 Pro CachyOS ROCm/ZenDNN crossover: [`data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/`](data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/)
+- GMKtec EVO-X2 NixOS / NPU / ROCmFP4 artifact: [`data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/`](data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/), full source artifact at [`ciru-ai/strix-halo-evo-x2-evidence`](https://github.com/ciru-ai/strix-halo-evo-x2-evidence)
 
 Short version: these reports add trust signals the primary Beelink results cannot provide alone:
 
@@ -51,6 +53,7 @@ Short version: these reports add trust signals the primary Beelink results canno
 - first Nimo AI Mini PC community bundle, adding another compact 128GB Strix Halo chassis plus large-model, MTP, StepFun, Qwen 122B, and thermal-context evidence
 - first Nimo Gemma 4 QAT + matched MTP assistant-head follow-up, showing where QAT heads improve single-stream decode and where concurrency/tooling caveats still matter
 - first additional-owner Beelink CachyOS / ROCm 7.2.4 / ZenDNN crossover report, showing ROCm prompt-processing value, `amd_iommu=on` / NPU context, and VMM / rocWMMA caveats on a non-Ubuntu owner stack
+- first GMKtec EVO-X2 NixOS / IOMMU-on / NPU-sidecar artifact linked to the guide, with sanitized CSV/SQLite exports, ROCmFP4 tuned-route metrics, quality-eval rows, and a concrete NPU contention result
 
 For the shortest practical decision layer, see the README section [Community-Tested Rules Of Thumb](README.md#community-tested-rules-of-thumb).
 
@@ -73,6 +76,7 @@ For the shortest practical decision layer, see the README section [Community-Tes
 | 2026-06-03 | boxwrench | Nimo AI Mini PC, Ryzen AI MAX+ 395, 128GB | Ubuntu 25.04, kernel 6.18.1, Mesa RADV 25.2.8, ROCm 7.1.1 baseline, UMA 4GB, IOMMU on | Qwen 3.6 35B, Qwen3-Coder-Next, Qwen 122B, StepFun Step-3.7-Flash, DFlash rows | Key rows include Qwen3-Coder-Next Vulkan server at 723.2 pp / 44.4 decode, Qwen 122B MTP tuned decode at 28.3 t/s, StepFun MTP at 211.2 pp / 26.0 decode, and Qwen3.6 MTP Q4_K_M at 81.2 t/s. | Adds another compact 128GB Strix Halo chassis and broad large-model/server evidence. This is valuable buyer/OEM portability evidence, but the rows are server/eval/community rows, not first-party direct `llama-bench` headlines. | [#4](https://github.com/hogeheer499-commits/strix-halo-guide/issues/4#issuecomment-4608440144), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`structured`](data/community_nimo_issue4.csv) |
 | 2026-06-06 | boxwrench | Nimo AI Mini PC follow-up, Ryzen AI MAX+ 395, 128GB | llama.cpp b9360 Vulkan/RADV; Atomic llama.cpp TurboQuant fork for Gemma 4 MTP assistant-head rows | Gemma 4 12B / 26B-A4B / 31B QAT Q4_0 plus matched MTP heads | Best rows: 12B QAT MTP 45.6 decode, 26B-A4B QAT MTP 71.4 decode, 31B QAT MTP 19.1 decode. Plain 26B-A4B QAT submitted 2-slot aggregate at 90.9 tok/s. | Adds a strong Gemma 4 QAT/MTP lesson: matched QAT assistant heads can materially improve single-stream decode and acceptance. The submitted rows predate Atomic PR #26's `PARALLEL=2` fix, so fresh post-merge aggregate numbers are the useful next evidence. | [#4](https://github.com/hogeheer499-commits/strix-halo-guide/issues/4#issuecomment-4639263658), [`raw`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/GEMMA4-QAT-NUMBERS.md), [`structured`](data/community_nimo_issue4.csv) |
 | 2026-06-12 | devoidfury | Beelink GTR9 Pro community owner stack, Ryzen AI MAX+ 395, 128GB-class unified memory | CachyOS, `linux-cachyos-server` 7.0.11-1, ROCm 7.2.4-1, local ZenDNN, `amd_iommu=on`, llama.cpp `1593d5684d077c07fc788e9527ec1bd52287de7f` with local build tweaks | Qwen3.6 27B MTP `UD-Q6_K_XL` | Vulkan: 155.89 pp5000 / 8.09 tg512. ROCm: 303.20 pp5000 / 8.38 tg512. ROCm long prompt: 227.44 pp40000 / 8.39 tg1024. | Adds a second Beelink owner stack and strong backend-crossover evidence: ROCm + ZenDNN greatly improved prompt processing on this workload, while decode stayed about 8 t/s. Also preserves VMM crash and `GGML_HIP_ROCWMMA_FATTN` regression notes. | [discussion](https://github.com/hogeheer499-commits/strix-halo-guide/discussions/2#discussioncomment-17276639), [`raw`](data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/), [`structured`](data/community_results.csv) |
+| 2026-06-14 | ciru-ai | GMKtec EVO-X2 / NucBox_EVO-X2, Ryzen AI MAX+ 395, 128GB-class | NixOS 26.05 pre-release, Linux 7.0.1, Mesa 26.0.5, Vulkan 1.4.341, RADV STRIX_HALO, IOMMU enabled with `iommu.passthrough=0`, NPU exposed at `/dev/accel/accel0` | NPU sidecar, FastFlowLM-NPU LFM2.5, Qwopus/Chadrock/Qwen3.6 ROCmFP4, Gemma 4 QAT/MTP, CrownV7 | NPU contention: +3.29% main 64k iGPU latency with concurrent NPU load vs +68.96% with iGPU auxiliary load. FastFlowLM-NPU LFM2.5 1.2B at 32k: 1646 prompt tok/s, 38.18 decode tok/s, ~2.09GiB RSS. Selected quality/speed rows include 0.9451 HumanEval+ 27B routes, Gemma 4 26B QAT/MTP 122.8 decode tok/s after TTFP, and CrownV7 128k pp at 515.33 tok/s. | Adds a second GMKtec EVO-X2 owner/source with a different OS and setup philosophy. The main value is not a single t/s headline; it is an auditable artifact showing IOMMU-on NPU sidecar behavior, ROCmFP4 tuned-route evidence, and quality metrics tied to Strix Halo buyer workflows. | [artifact](https://github.com/ciru-ai/strix-halo-evo-x2-evidence), [`raw note`](data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/), [`structured`](data/community_ciru_evox2_metrics.csv) |
 
 ## Nimo AI Mini PC Large-Model Bundle
 
@@ -88,6 +92,34 @@ The practical value is vendor/chassis coverage and large-model feasibility, not 
 - thermal and power context that is useful for compact-chassis buyers
 
 Important caveat: these are community serving/eval rows with their own harnesses, not same-shape direct Beelink `llama-bench` comparisons.
+
+## GMKtec EVO-X2 NixOS / NPU / ROCmFP4 Evidence Package
+
+ciru-ai contributed a full public artifact in [discussion #2](https://github.com/hogeheer499-commits/strix-halo-guide/discussions/2) and published it at [`ciru-ai/strix-halo-evo-x2-evidence`](https://github.com/ciru-ai/strix-halo-evo-x2-evidence). The guide keeps that repository as the source of truth and imports only a compact metric subset in [`data/community_ciru_evox2_metrics.csv`](data/community_ciru_evox2_metrics.csv).
+
+This is a different kind of community contribution from a normal benchmark comment. It covers a GMKtec EVO-X2 / NucBox_EVO-X2 owner stack with NixOS 26.05 pre-release, Linux 7.0.1, Mesa 26.0.5, Vulkan 1.4.341, RADV STRIX_HALO, IOMMU enabled, and the Strix/Krackan/Strix Halo NPU exposed at `/dev/accel/accel0`.
+
+The practical value is buyer-friction reduction for advanced users:
+
+- it shows an IOMMU-on path where the NPU can be kept available for sidecar work instead of disabled for the simplest benchmark setup
+- it provides a concrete NPU contention result: +3.29% main 64k iGPU workload latency with concurrent NPU load versus +68.96% with a comparable iGPU auxiliary load
+- it reports FastFlowLM-NPU LFM2.5 1.2B at 32k around 1646 prompt tok/s, 38.18 decode tok/s, and about 2.09GiB RSS
+- it links ROCmFP4/Chadrock/Qwopus/Qwen3.6/Gemma/CrownV7 tuned routes to quality-eval evidence, not only raw token speed
+- it ships sanitized SQLite and CSV artifacts externally, so the guide can cite evidence without absorbing a large benchmark database
+
+Selected public rows from the artifact:
+
+| Track | Representative result | Interpretation |
+|-------|-----------------------|----------------|
+| NPU sidecar | +3.29% main 64k iGPU latency with concurrent NPU load | The NPU can be useful for auxiliary work without consuming the main iGPU path like a second iGPU model does. |
+| iGPU auxiliary comparator | +68.96% main 64k iGPU latency with concurrent iGPU auxiliary load | Shows why sidecar placement matters on unified-memory systems. |
+| FastFlowLM-NPU | LFM2.5 1.2B at 32k: 1646 prompt tok/s, 38.18 decode tok/s, ~2.09GiB RSS | Useful NPU footprint and context-planning evidence. |
+| 27B tuned route | Qwopus3.6 27B Chadrock: 0.9451 HumanEval+ | Quality-plus-speed evidence for tuned 27B routes; not a direct Beelink headline. |
+| 35B tuned route | Ace Saber 35B ROCmFP4 MTP: 0.9024 HumanEval+, 104.35 peak predicted tok/s | External tuned-route evidence for high-quality 35B-class serving. |
+| Gemma QAT/MTP | Gemma 4 26B-A4B QAT/MTP: 122.8 decode tok/s after TTFP on a 512-token API row | Strong current Google-model route; keep as served/API evidence. |
+| CrownV7 | Qwen3.6 35B dynamic route: 515.33 tok/s pp at 128k and 0.83 BFCL v4 non-live accuracy | Long-context and tool/function-calling signal for tuned 35B workflows. |
+
+Claim boundary: this is community evidence with its own harnesses, tuned models, and served/API/quality-eval rows. It strengthens the guide's advanced NPU, IOMMU, ROCmFP4, and quality-evidence lanes, but it does not replace the default Ubuntu + Vulkan/RADV + Ollama beginner path or the first-party Beelink direct `llama-bench` headline rows.
 
 ## Beelink GTR9 Pro CachyOS ROCm/ZenDNN Crossover
 

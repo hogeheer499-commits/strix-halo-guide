@@ -19,6 +19,20 @@ Measured rows below are first-party Beelink GTR9 Pro direct `llama-bench` Vulkan
 | Largest current direct GGUF capacity route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS`: 18.43 tg128 direct `llama-bench`; latest b9544 control measured 18.93 tg128 r3 | Proves a 120B-class MoE GGUF route can run directly on one box; value is capacity/currentness, not raw speed. |
 | Fastest current-model MTP server route | Gemma 4 26B-A4B QAT `UD-Q4_K_XL` + matched `Q4_0` MTP head: 110.00 t/s best repeat, 107.42 t/s T3-only repeat, 102.69 t/s cold repeat, 73.96 t/s no-spec baseline on ac4cddeb0 | Shows matched QAT MTP heads can turn a current Google model into a 100+ t/s-class local server route. Keep separate from direct `llama-bench`; the repeats show host-workload sensitivity. |
 
+## External Community Tuned Routes
+
+ciru-ai's GMKtec EVO-X2 / NixOS / IOMMU-on artifact adds a separate current-model lane with ROCmFP4, Chadrock/Qwopus, Gemma QAT/MTP, CrownV7, and quality-eval rows. These are valuable because they connect Strix Halo speed to quality and NPU-sidecar workflows, but they are not first-party Beelink direct `llama-bench` rows.
+
+| Route | Representative public result | Read |
+| --- | ---: | --- |
+| NPU sidecar | +3.29% main 64k iGPU latency with concurrent NPU load versus +68.96% with a comparable iGPU auxiliary load | Useful advanced IOMMU-on/NPU evidence; not a main iGPU replacement path. |
+| Qwopus3.6 27B Chadrock | 0.9451 HumanEval+ and about 2.85x lower recorded request-generation time than the stored original Qwopus comparator | Strong tuned 27B quality-plus-speed evidence; keep as community served-route evidence. |
+| Ace Saber 35B ROCmFP4 MTP | 0.9024 HumanEval+, 104.35 peak predicted tok/s | Interesting high-quality 35B tuned-route evidence; not stock backend guidance. |
+| Gemma 4 26B-A4B QAT/MTP | 122.8 decode tok/s after TTFP on a 512-token API row and 0.9207 HumanEval+ | Strong current Google-model community route; keep separate from the first-party Gemma 4 26B QAT MTP repeat. |
+| CrownV7 Qwen3.6 35B dynamic route | 515.33 tok/s prompt processing at 128k, 0.83 BFCL v4 non-live accuracy | Useful long-context and tool/function-calling signal. |
+
+Source: [`COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-package`](COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-package), [`data/community_ciru_evox2_metrics.csv`](data/community_ciru_evox2_metrics.csv), and [`ciru-ai/strix-halo-evo-x2-evidence`](https://github.com/ciru-ai/strix-halo-evo-x2-evidence).
+
 ## June 2026 Scout Results
 
 | Model | Quant | Size class | Result | Read |

@@ -133,6 +133,26 @@ Relevant docs:
 - [`data/community_results.csv`](data/community_results.csv)
 - [`data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/`](data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/)
 
+### [ciru-ai](https://github.com/ciru-ai)
+
+ciru-ai added a full GMKtec EVO-X2 / NixOS / IOMMU-on / NPU-aware evidence package:
+
+- GMKtec NucBox_EVO-X2 with Ryzen AI MAX+ 395 / Radeon 8060S and 128GB-class memory
+- NixOS 26.05 pre-release, Linux 7.0.1, Mesa 26.0.5, Vulkan 1.4.341, RADV STRIX_HALO
+- IOMMU enabled with `iommu.passthrough=0`, with the Strix/Krackan/Strix Halo NPU exposed through `/dev/accel/accel0`
+- public sanitized CSV/SQLite benchmark artifacts in an external source-of-truth repository
+- NPU sidecar contention evidence: +3.29% main 64k iGPU workload latency with concurrent NPU load versus +68.96% with a comparable iGPU auxiliary load
+- FastFlowLM-NPU LFM2.5 1.2B at 32k context with about 1646 prompt tok/s, 38.18 decode tok/s, and about 2.09GiB RSS
+- ROCmFP4 / Chadrock / Qwopus / Qwen3.6 / Gemma / CrownV7 tuned-route evidence with quality-eval rows
+- a practical advanced-user counterpoint to the default beginner path: keep IOMMU/NPU available when sidecar workflows matter, while keeping the guide's beginner recommendation simple
+
+Relevant docs:
+
+- [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-package)
+- [`data/community_ciru_evox2_metrics.csv`](data/community_ciru_evox2_metrics.csv)
+- [`data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/`](data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/)
+- [`ciru-ai/strix-halo-evo-x2-evidence`](https://github.com/ciru-ai/strix-halo-evo-x2-evidence)
+
 ## How To Get Contributor Credit
 
 Benchmark reports in issues are welcome and will be credited when incorporated. Pull requests are even better for future datasets because GitHub will automatically attach commit-level contributor credit after merge.
