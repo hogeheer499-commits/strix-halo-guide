@@ -7,7 +7,7 @@ This plan keeps vendor outreach focused on adoption-friction evidence instead of
 Do not frame the repo as:
 
 ```text
-I have 132 stars as of 2026-06-12, can I get hardware?
+I have 158 stars as of 2026-06-21, can I get hardware?
 ```
 
 Frame it as:
@@ -16,7 +16,7 @@ Frame it as:
 I maintain an independent Strix Halo local-AI setup and benchmark guide that reduces buyer setup friction with reproducible public evidence. I am looking for technical feedback, firmware/BIOS context, review or loaner access, or scoped collaboration to expand validated evidence across more systems.
 ```
 
-The 100-star milestone is useful, but only as a small-niche demand signal. The primary asset is the technical proof layer:
+The 158-star 2026-06-21 snapshot is useful as a small-niche demand signal, but the primary asset is the technical proof layer:
 
 - reproducible setup steps
 - known-good configurations
@@ -71,7 +71,7 @@ Then ask for higher-leverage support:
 
 - Keep the first message short.
 - Lead with buyer/setup friction, not self-promotion.
-- Mention the dated 132-star snapshot once at most.
+- Mention the dated 158-star snapshot once at most.
 - Avoid claiming vendor endorsement.
 - Avoid asking for free hardware as the main point.
 - Always say results remain independent and disclosed.

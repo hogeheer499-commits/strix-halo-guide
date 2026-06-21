@@ -6,18 +6,19 @@ Do not invent traction numbers. Fill the TODOs only from current public GitHub d
 
 ## Current Public GitHub Stats
 
-Snapshot date: 2026-06-12.
+Snapshot date: 2026-06-21.
 
 | Metric | Current value | Source |
 |--------|---------------|--------|
-| Stars | 132 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
-| Forks | 5 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
-| Open issues | 4 | [GitHub Issues](https://github.com/hogeheer499-commits/strix-halo-guide/issues) |
+| Stars | 158 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| Forks | 7 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| Watchers | 4 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| Open issues | 5 | [GitHub Issues](https://github.com/hogeheer499-commits/strix-halo-guide/issues) |
 | Open pull requests | 0 | [GitHub Pull Requests](https://github.com/hogeheer499-commits/strix-halo-guide/pulls) |
 | Releases | 5 | [GitHub Releases](https://github.com/hogeheer499-commits/strix-halo-guide/releases) |
-| GitHub contributors | 4 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
+| GitHub contributors | 3 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
 | External benchmark submitters credited | 6 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
-| Strix Halo-class systems/sources represented | 9 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) |
+| Strix Halo-class systems represented | 10 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) |
 
 Read the star count as a small-niche demand signal, not the main argument. The stronger vendor evidence is the technical proof layer: reproducible commands, raw logs, CSVs, claim indexes, community rows, and documented failures.
 
