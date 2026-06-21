@@ -2,11 +2,11 @@
 
 This is an experimental `llama-server` route for practical local API speed. It is not the same benchmark as the direct non-speculative `llama-bench` headline.
 
-Short version: MTP works on Strix Halo with Vulkan/RADV and current `llama.cpp` master. It improves server generation on the tested Qwen3.6 35B MTP GGUFs and on a matched Gemma 4 26B-A4B QAT assistant-head route. The Qwen3.6 local b9360 run crossed 100 t/s across the six-prompt harness, the Gemma 4 26B-A4B QAT route measured 102.7 t/s cold / 107.4 t/s T3-only / 110.0 t/s best-repeat on ac4cddeb0, and the Qwen3.6 route also has a GMKtec EVO-X2 community reproduction. Keep these separate from direct `llama-bench`: the guide now has a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS direct 100.04 t/s row, while the Qwen3-Coder direct speed-first row remains 98.51 t/s.
+Short version: MTP works on Strix Halo with Vulkan/RADV and current `llama.cpp`/ROCmFPX routes. It improves server generation on the tested Qwen3.6 35B MTP GGUFs, a matched Gemma 4 26B-A4B QAT assistant-head route, and the tuned CHADROCK ACE/SABER ROCmFP4 route. The Qwen3.6 local b9360 run crossed 100 t/s across the six-prompt harness, Gemma 4 26B-A4B QAT measured 102.7 t/s cold / 107.4 t/s T3-only / 110.0 t/s best-repeat on ac4cddeb0, and CHADROCK ACE/SABER reproduced 139.93-140.40 t/s on high-acceptance gen512 repeats through `ciru-ai/ROCmFPX`. Keep these separate from direct `llama-bench`: the guide now has a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS direct 100.04 t/s row, while the Qwen3-Coder direct speed-first row remains 98.51 t/s.
 
 ## Current Result
 
-Local rows were measured on the Beelink GTR9 Pro with Mesa/RADV. Qwen3.6 rows used MTP GGUFs; the latest local Qwen3.6 MTP rerun used `llama.cpp` b9360 / `6b4e4bd58` with Mesa 26.1.1. Gemma 4 QAT rows used `llama.cpp` ac4cddeb0 build 9592 with a matched Q4_0 MTP head. Community rows are kept separate and marked as GMKtec or Nimo reports.
+Local rows were measured on the Beelink GTR9 Pro with Mesa/RADV. Qwen3.6 rows used MTP GGUFs; the latest local Qwen3.6 MTP rerun used `llama.cpp` b9360 / `6b4e4bd58` with Mesa 26.1.1. Gemma 4 QAT rows used `llama.cpp` ac4cddeb0 build 9592 with a matched Q4_0 MTP head. CHADROCK rows used the pinned `ciru-ai/ROCmFPX` helper runner at `deaa996`. Community rows are kept separate and marked as GMKtec or Nimo reports.
 
 | Model file | Mode | Mean over 6 prompts | Range | Takeaway |
 |------------|------|--------------------:|------:|----------|
@@ -37,6 +37,8 @@ Local rows were measured on the Beelink GTR9 Pro with Mesa/RADV. Qwen3.6 rows us
 | Gemma 4 26B-A4B QAT `UD-Q4_K_XL` + matched `Q4_0` MTP head, ac4cddeb0 | MTP `draft-n=3`, `--poll 50`, `-ub 512` repeat | **110.00 t/s** | 93.57-127.33 | Best repeat-confirmed Gemma MTP average; server/speculative result. |
 | Gemma 4 26B-A4B QAT `UD-Q4_K_XL` + matched `Q4_0` MTP head, ac4cddeb0 | MTP `draft-n=3`, `--poll 50`, `-ub 512` cold repeat | **102.69 t/s** | 86.76-118.77 | Cold repeat after stopping nonessential docflock/VM workload while leaving T3 and Hermes untouched; confirms useful 100+ t/s-class route but shows cold/warm variability. |
 | Gemma 4 26B-A4B QAT `UD-Q4_K_XL` + matched `Q4_0` MTP head, ac4cddeb0 | MTP `draft-n=3`, `--poll 50`, `-ub 512` T3-only repeat | **107.42 t/s** | 91.30-124.71 | Repeat after stopping Hermes/Ollama/RustDesk/docflock/VM/browser-class noise while leaving T3 running; shows the 110 t/s best repeat is mainly host-workload sensitive, not a different route. |
+| CHADROCK ACE/SABER 35B ROCmFP4, ROCmFPX `deaa996` | MTP `n_max=4`, `p_min=0.25`, gen512 high-acceptance repeats | **140.17 t/s** | 139.93-140.40 | Fastest reproduced local server/speculative row; prompt/acceptance-sensitive, with 408/408 draft tokens accepted in both promoted repeats. |
+| CHADROCK ACE/SABER 35B ROCmFP4, ROCmFPX `deaa996` | MTP `n_max=4`, `p_min=0.25`, gen2048 check | 127.77 t/s | 127.77 | Same 3946-token prompt with longer generation; 1595/1753 draft tokens accepted. |
 | GMKtec EVO-X2 `localweights` IQ4_XS-Q8nextn, b9235 | no MTP | 74.72 t/s | 65.57-114.89 | Community exact-model baseline from mottledMantis. |
 | GMKtec EVO-X2 `localweights` IQ4_XS-Q8nextn, b9235 | MTP `draft-n=2`, `-t 16`, `--poll 50` | **93.29 t/s** | 71.79-161.54 | Best community broad MTP average reported so far. |
 | GMKtec EVO-X2 `localweights` IQ4_XS-Q8nextn, b9235 | MTP `draft-n=3`, `-t 16`, `--poll 50` | 93.01 t/s | 68.28-175.97 | Higher single-prompt peak, slightly lower average than `draft-n=2`. |
@@ -51,6 +53,7 @@ The most honest public summary is:
 - **Separate direct 100 t/s row:** Qwen3-30B-A3B-Instruct-2507 IQ4_XS reached 100.04 t/s r50 direct `llama-bench`; this is a different general-instruct model and quant.
 - **Best local MTP server average measured here:** Qwen3.6 MTP IQ4_XS-Q8nextn at about 101.1 t/s across six practical prompts on b9360 with `draft-n=2`, `--poll 100`, and `-ub 1024`.
 - **Best current-model Gemma MTP route measured here:** Gemma 4 26B-A4B QAT with a matched MTP head at 102.69 t/s cold repeat, 107.42 t/s T3-only repeat, and 110.00 t/s best repeat across the same six-prompt harness on ac4cddeb0.
+- **Fastest reproduced local MTP server row:** CHADROCK ACE/SABER 35B ROCmFP4 through `ciru-ai/ROCmFPX` reached 139.93-140.40 t/s on gen512 high-acceptance repeats, but this is prompt/acceptance-sensitive rather than a broad six-prompt average.
 - **Best community MTP average reported so far:** the same exact route reached 93.29 t/s on mottledMantis' GMKtec EVO-X2.
 - **Fastest local MTP server prompt:** Qwen3.6 MTP IQ4_XS-Q8nextn with `draft-n=3`, `-t 16`, `--poll 100`, and `-ub 1024` reached 117.53 t/s on the best b9360 prompt.
 - **MTP is still not the direct headline category:** the 101.1 t/s MTP result is `llama-server` speculative decoding, not direct non-speculative `llama-bench`.
@@ -60,7 +63,7 @@ The most honest public summary is:
 
 MTP is valuable because it can improve real `llama-server` generation, not because it automatically raises every direct `llama-bench` number. The speedup depends on draft-token acceptance rate, prompt shape, generation length, quantization, and server flags.
 
-The Gemma 4 QAT repeats also show that single-stream server/MTP speed is sensitive to host workload. The same route measured 102.69 t/s with T3 and Hermes left running after stopping docflock/VM noise, 107.42 t/s with only T3 left among the known local services, and 110.00 t/s in the best repeat. For public claims, use the range and run condition rather than only the highest number.
+The Gemma 4 QAT repeats also show that single-stream server/MTP speed is sensitive to host workload. The same route measured 102.69 t/s with T3 and Hermes left running after stopping docflock/VM noise, 107.42 t/s with only T3 left among the known local services, and 110.00 t/s in the best repeat. The CHADROCK helper repro shows a different sensitivity: when draft acceptance stayed at 408/408, gen512 landed near 140 t/s; when acceptance dropped, the same lane fell back toward 115-128 t/s. For public claims, use the range and run condition rather than only the highest number.
 
 For beginners: keep using the main README setup first. Treat MTP as an advanced route if you specifically want to experiment with speculative decoding in a local API server.
 
@@ -191,8 +194,9 @@ VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
   - [`data/raw/2026-06-11/gemma4-26b-qat-mtp-sixprompt-ac4cddeb/`](data/raw/2026-06-11/gemma4-26b-qat-mtp-sixprompt-ac4cddeb/)
   - [`data/raw/2026-06-12/gemma4-26b-qat-mtp-cold-repeat-ac4cddeb/`](data/raw/2026-06-12/gemma4-26b-qat-mtp-cold-repeat-ac4cddeb/)
   - [`data/raw/2026-06-12/gemma4-26b-qat-mtp-t3-only-repeat-ac4cddeb/`](data/raw/2026-06-12/gemma4-26b-qat-mtp-t3-only-repeat-ac4cddeb/)
+  - [`data/raw/2026-06-21/rocmfpx-chadrock-ace-saber-helper-repro/`](data/raw/2026-06-21/rocmfpx-chadrock-ace-saber-helper-repro/)
 - Upstream MTP support: <https://github.com/ggml-org/llama.cpp/pull/22673>
 
 ## Interpretation
 
-Use MTP when you want to test speculative decoding on a real local API server. Do not use the 117.53 t/s local Qwen prompt, the 175.97 t/s GMKtec prompt peak, or the 127.33 t/s Gemma prompt peak as a general "Strix Halo runs every workload at that speed" claim. The guide can honestly say that the best measured local Qwen3.6 MTP server route reaches about 101.1 t/s across six prompts on b9360, while the Gemma 4 26B-A4B QAT route reaches 102.7-110.0 t/s across the same six-prompt harness depending on host workload and repeat condition. The official 27B Q8_0 and NVFP4 MTP routes are worth documenting as negative speed results so readers do not chase the wrong route.
+Use MTP when you want to test speculative decoding on a real local API server. Do not use the 117.53 t/s local Qwen prompt, the 175.97 t/s GMKtec prompt peak, the 127.33 t/s Gemma prompt peak, or the 140.40 t/s CHADROCK high-acceptance row as a general "Strix Halo runs every workload at that speed" claim. The guide can honestly say that the best measured local Qwen3.6 MTP server route reaches about 101.1 t/s across six prompts on b9360, the Gemma 4 26B-A4B QAT route reaches 102.7-110.0 t/s across the same six-prompt harness depending on host workload and repeat condition, and the tuned CHADROCK/ROCmFPX lane can reach about 140 t/s on a high-acceptance gen512 prompt. The official 27B Q8_0 and NVFP4 MTP routes are worth documenting as negative speed results so readers do not chase the wrong route.

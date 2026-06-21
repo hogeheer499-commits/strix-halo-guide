@@ -1,0 +1,41 @@
+[
+  {
+    "name": "helper_repeat1_prompt3946_p025_gen512",
+    "prompt_tokens": 3946,
+    "elapsed_s": 7.335381984710693,
+    "predicted_n": 512,
+    "predicted_ms": 3646.822,
+    "predicted_tps": 140.39621347024888,
+    "prompt_n": 3946,
+    "prompt_ms": 3684.274,
+    "prompt_tps": 1071.0386903905626,
+    "draft_n": 408,
+    "draft_accepted": 408
+  },
+  {
+    "name": "helper_repeat2_prompt3946_p025_gen512",
+    "prompt_tokens": 3946,
+    "elapsed_s": 7.360039949417114,
+    "predicted_n": 512,
+    "predicted_ms": 3658.861,
+    "predicted_tps": 139.93425822954194,
+    "prompt_n": 3946,
+    "prompt_ms": 3696.42,
+    "prompt_tps": 1067.5193836198268,
+    "draft_n": 408,
+    "draft_accepted": 408
+  },
+  {
+    "name": "helper_repeat3_prompt3946_p025_gen512",
+    "prompt_tokens": 3946,
+    "elapsed_s": 8.221091270446777,
+    "predicted_n": 512,
+    "predicted_ms": 4454.078,
+    "predicted_tps": 114.95083831042024,
+    "prompt_n": 3946,
+    "prompt_ms": 3762.054,
+    "prompt_tps": 1048.8950982628107,
+    "draft_n": 467,
+    "draft_accepted": 386
+  }
+]
