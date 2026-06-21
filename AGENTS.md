@@ -72,6 +72,16 @@ Higher t/s is useful, but it is not the only priority. Treat benchmarks as the p
 - Update related docs when adding a new public-facing evidence category.
 - Do not add headline claims unless the supporting data, raw evidence, chart or `n/a`, and caveats are known.
 
+## GitHub Discussion Reply Safety
+
+When posting GitHub discussion or issue replies for the user:
+
+- First inspect the target discussion or issue and identify the exact parent comment.
+- If the user wants a reply under a specific comment, use the parent comment ID as `replyToId`; do not post a new top-level comment.
+- If GitHub does not allow a nested reply, explain that before posting somewhere else.
+- After posting, verify that the new comment appears under the intended parent comment.
+- If a comment is posted in the wrong place, fix it immediately and tell the user clearly what happened.
+
 ## Context Efficiency
 
 For new benchmark, update, or "is there news?" work, do not load the full README or all raw logs by default. Start with:
