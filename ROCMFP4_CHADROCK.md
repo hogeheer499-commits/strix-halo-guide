@@ -63,6 +63,38 @@ Record:
 
 The first useful result can be negative. A clean "does not build", "loads but crashes", "runs but slower than Vulkan", or "needs IOMMU-on/ROCm tuning" result still removes setup friction.
 
+## First-Party Beelink Smoke
+
+On 2026-06-21, the guide tested [`jcbtc/qwen3.6-35b-a3b-crown-halo-mtp-dynamic`](https://huggingface.co/jcbtc/qwen3.6-35b-a3b-crown-halo-mtp-dynamic) on the Beelink GTR9 Pro using a local `charlie12345/rocmfp4-llama` HIP-only build at commit `4795079b0`.
+
+Read the raw evidence: [`data/raw/2026-06-21/rocmfp4-crown-halo-dynamic-mtp-smoke/`](data/raw/2026-06-21/rocmfp4-crown-halo-dynamic-mtp-smoke/)
+
+What worked:
+
+- model download and sha256 matched the model card
+- HIP-only build succeeded through the existing `vllm-gfx1151` Distrobox / TheRock-style environment
+- `llama-cli` loaded the model and generated with `draft-mtp`
+- `llama-server` loaded target plus MTP draft context and served OpenAI-compatible responses
+- server responses exposed timing and draft-acceptance metadata
+
+What did not reproduce yet:
+
+- ciru-ai's higher dynamic-MTP community speed band
+- high draft acceptance on the guide's Beelink HIP-only path
+
+Measured smoke rows:
+
+| Run | Result |
+| --- | ---: |
+| short `llama-cli` MTP | 72.2 generation t/s |
+| short `llama-cli` no-spec | 52.4 generation t/s |
+| long structured `llama-cli` MTP | 51.1 generation t/s |
+| long structured `llama-cli` no-spec | 49.9 generation t/s |
+| short `llama-server`, `-sm row`, mmap | 60.66 predicted t/s, 76/152 draft tokens accepted |
+| long structured `llama-server`, `-sm none`, `--no-mmap` | 57.61 predicted t/s, 168/344 draft tokens accepted |
+
+Interpretation: this is a successful load/API/MTP smoke, not a new speed headline. The next useful step is to reproduce the newer dynamic runner/policy that ciru-ai described, preferably with exact model-card updates, runner commit, backend choice, prompt shapes, and acceptance policy.
+
 ## How To Use This In The Guide
 
 Use ROCmFP4 / CHADROCK as:
@@ -81,4 +113,4 @@ Do not use it as:
 
 ## Status
 
-Status as of 2026-06-21: promising and test-worthy, but not yet first-party reproduced on the guide's Beelink GTR9 Pro.
+Status as of 2026-06-21: first-party Beelink load/API/MTP smoke succeeded, but the high-speed community dynamic-MTP result is not yet reproduced on the guide's Beelink GTR9 Pro.

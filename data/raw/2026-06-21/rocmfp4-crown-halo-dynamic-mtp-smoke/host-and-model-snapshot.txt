@@ -1,0 +1,13 @@
+date=2026-06-21T04:49:16+02:00
+host=hoge-heer-GTR-Pro
+kernel=Linux 6.19.4-061904-generic x86_64 GNU/Linux
+cmdline=BOOT_IMAGE=/boot/vmlinuz-6.19.4-061904-generic root=UUID=94525afc-3e5d-4d2b-90e7-0d0bc14b5dc4 ro quiet splash amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0 amdgpu.cwsr_enable=0 amdgpu.cwsr_enable=0 vt.handoff=7
+repo_head=00924c529f4a38b2a6a1974e9101b09217745728
+rocmfp4_llama_commit=4795079b04f5e0ada6e5d2e85b12bac1e27e7873
+rocmfp4_llama_describe=4795079b0
+model_dir=/home/hoge-heer/benchmark-models/rocmfp4-chadrock/qwen36-35b-crown-halo-dyn
+total 22G
+-rw-rw-r-- 1 hoge-heer hoge-heer  22G Jun 21 04:36 Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf
+-rw-rw-r-- 1 hoge-heer hoge-heer 858M Jun 21 04:10 mmproj-F16.mmproj
+342e3ee059792dbcba016dc3274a2de73a2372c0ea300a8e56aa615190f58ba9  /home/hoge-heer/benchmark-models/rocmfp4-chadrock/qwen36-35b-crown-halo-dyn/Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf
+8971ee4f331ff0a4c609374f32984b3d4e6dc086c0aa35f1d637fad1829e887f  /home/hoge-heer/benchmark-models/rocmfp4-chadrock/qwen36-35b-crown-halo-dyn/mmproj-F16.mmproj

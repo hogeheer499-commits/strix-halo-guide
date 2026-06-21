@@ -1,0 +1,34 @@
+0.02.421.866 E srv    send_error: task id = 0, error: request (8587 tokens) exceeds the available context size (8192 tokens), try increasing it
+
+Loading model... 
+
+
+▄▄ ▄▄
+██ ██
+██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄
+██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██
+██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀
+                                    ██    ██
+                                    ▀▀    ▀▀
+
+build      : b9311-4795079b0
+model      : Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf
+modalities : text
+
+available commands:
+  /exit or Ctrl+C     stop or exit
+  /regen              regenerate the last response
+  /clear              clear the chat history
+  /read <file>        add a text file
+  /glob <pattern>     add text files using globbing pattern
+
+
+> You are evaluating a local AMD Strix Halo setup. Produce deterministic structured JSON. Keep values concise. Consider setup friction, reproducibility, model artifacts, backend choice, quantization, MTP acceptance, long-context behavior, NPU sidecar work, and buyer/vendor evidence.
+Case 1: BIOS UMA 512MB, IOMMU choice, Vulkan/RADV default, ROCmFP4 advanced lane, raw logs, exact command, model hash, acceptance and decode stability must be tracked. Case 2: BIOS UMA 512MB, IOMMU choice, Vulkan/RADV  ... (truncated)
+
+Error: request (8587 tokens) exceeds the available context size (8192 tokens), try increasing it
+
+
+[ Prompt: 0.0 t/s | Generation: 0.0 t/s ]
+
+Exiting...
