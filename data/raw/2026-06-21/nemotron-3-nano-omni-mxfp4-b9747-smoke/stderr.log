@@ -1,0 +1,5 @@
+load_backend: loaded RPC backend from /home/hoge-heer/benchmark-tools/llama-b9747/llama-b9747/libggml-rpc.so
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: dot2 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 1 | matrix cores: KHR_coopmat
+load_backend: loaded Vulkan backend from /home/hoge-heer/benchmark-tools/llama-b9747/llama-b9747/libggml-vulkan.so
+load_backend: loaded CPU backend from /home/hoge-heer/benchmark-tools/llama-b9747/llama-b9747/libggml-cpu-zen4.so
