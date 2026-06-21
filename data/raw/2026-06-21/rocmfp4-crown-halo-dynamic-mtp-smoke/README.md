@@ -60,7 +60,7 @@ For guide purposes, this should be treated as:
 - `llama-cli-*.stdout.log`: CLI raw output
 - `llama-server-*.log`: server raw logs
 - `server-*.response.json`: OpenAI-compatible API response and timing metadata
-- `hf-card-README.md`: copied Hugging Face model card text at test time
+- `hf-card-README.txt`: copied Hugging Face model card text at test time
 - `hf-recipe-halo-mtp-dyn-v7.md`: copied model recipe
 - `hf-model-profile.env`: copied model profile
 - `hf-serve-script.sh`: copied model serving script
