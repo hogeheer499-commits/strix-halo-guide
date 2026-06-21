@@ -1,0 +1,92 @@
+Chadrock ROCmFP4 Runner | Ciru Inference Lab
+Ciru Inference Lab llm.ciru.ai / chadrock
+Benchmarks
+Crown Citadel Runner Notes
+Chadrock ROCmFP4 Runner
+Build the patched ROCmFPX / llama.cpp runner, launch the Strix Halo MTP configs, and use request-level speculative controls to reproduce the 35B ~140 tok/s and Qwable 5 27B 50+ tok/s serving rows.
+143.08 tok/s 35B ACE/SABER ROCmFP4, gen512, served path, 3946-token prompt. 53.25 tok/s Qwable 5 27B Chadrock v2 ROCmFP4, gen512 served path, 3946-token prompt. 3 knobs
+speculative.n_max ,
+speculative.n_min , and
+speculative.p_min .
+Run order
+Build commands
+Llama configs
+Request payload
+Chadrock models
+Validation
+Run Order
+Download one of the Chadrock GGUF models from
+jcbtc on Hugging Face .
+Build the runner from the pinned
+Chadrock ROCmFP4 commit .
+Start the built
+llama-server with one of the direct commands below.
+Send
+/completion or
+/v1/chat/completions requests with the speculative fields enabled.
+Start the server with a draft cap at least as high as the deepest policy you plan to test. A request can lower
+speculative.n_max , but it cannot raise it above the server startup cap.
+Build Commands
+Copy this on a Strix Halo machine. The build produces the
+build-strix-rocmfp4/bin/llama-server runner used by the reproduction configs.
+Copy-paste build commands
+Copy
+git clone https://github.com/ciru-ai/ROCmFPX.git cd ROCmFPX git checkout deaa996dab90b3ca6dd3ae5d453bedfcd983012d env JOBS=16 scripts/build-strix-rocmfp4-mtp.sh llama-server llama-bench
+Pinned runner guide
+Pinned commit
+Score tag
+Llama Configs
+Copy one launch block, replace the
+/path/to/... GGUF path, then run it from the ROCmFPX checkout.
+35B ACE/SABER launch
+Copy
+./build-strix-rocmfp4/bin/llama-server \ -m /path/to/Qwen3.6-35B-A3B-NSC-ACE-SABER-MTP-F16-to-ROCmFP4-STRIX_LEAN.gguf \ --alias chadrock-35b-ace-saber-rocmfp4-cap4 \ --host 127.0.0.1 \ --port 18180 \ --jinja \ -c 32768 \ --reasoning off \ --reasoning-format none \ --reasoning-budget -1 \ --no-context-shift \ -dev Vulkan0 \ -ngl 999 \ -fa on \ -b 2048 \ -ub 512 \ -t 16 \ -tb 32 \ -ctk f16 \ -ctv f16 \ --temp 0 \ --top-p 0.95 \ --top-k 20 \ --seed 123 \ --parallel 1 \ --no-mmproj \ --metrics \ --no-webui \ --no-cache-prompt \ --cache-ram 0 \ --slot-prompt-similarity 0.0 \ --spec-type draft-mtp \ --spec-draft-device Vulkan0 \ --spec-draft-ngl all \ --spec-draft-threads 16 \ --spec-draft-threads-batch 32 \ --spec-draft-type-k f16 \ --spec-draft-type-v f16 \ --spec-draft-n-max 4 \ --spec-draft-n-min 0 \ --spec-draft-p-min 0.25 \ --spec-draft-p-split 0.10 \ --no-spec-draft-backend-sampling \ --spec-draft-poll 1 \ --spec-draft-poll-batch 1
+Qwable 5 27B launch
+Copy
+./build-strix-rocmfp4/bin/llama-server \ -m /path/to/Qwable-5-27B-Chadrock-v2-ROCmFP4.gguf \ --alias qwable-5-27b-chadrock-v2-rocmfp4 \ --host 127.0.0.1 \ --port 18180 \ --jinja \ -c 131072 \ --reasoning off \ --reasoning-format none \ --reasoning-budget -1 \ --no-context-shift \ -dev Vulkan0 \ -ngl 999 \ -fa on \ -b 2048 \ -ub 512 \ -t 16 \ -tb 32 \ -ctk q8_0 \ -ctv q8_0 \ --temp 0 \ --top-p 0.95 \ --top-k 20 \ --seed 123 \ --parallel 1 \ --no-mmproj \ --metrics \ --no-webui \ --no-cache-prompt \ --cache-ram 0 \ --slot-prompt-similarity 0.0 \ --spec-type draft-mtp \ --spec-draft-device Vulkan0 \ --spec-draft-ngl all \ --spec-draft-threads 16 \ --spec-draft-threads-batch 32 \ --spec-draft-type-k f16 \ --spec-draft-type-v f16 \ --spec-draft-n-max 6 \ --spec-draft-n-min 0 \ --spec-draft-p-min 0.0 \ --spec-draft-p-split 0.20 \ --no-spec-draft-backend-sampling \ --spec-draft-poll 1 \ --spec-draft-poll-batch 1
+Profile
+Startup cap
+Request policy
+Measured decode
+35B ACE/SABER ROCmFP4
+SPEC_DRAFT_N_MAX=4
+n_max=4 ,
+n_min=0 ,
+p_min=0.25
+143.08 tok/s
+Qwable 5 27B Chadrock v2 ROCmFP4
+SPEC_DRAFT_N_MAX=6
+n_max=6 ,
+n_min=0 ,
+p_min=0.0
+53.25 tok/s
+Request Payload
+The request fields are top-level fields on both
+/completion and OpenAI-compatible chat completions. This example uses
+/completion .
+35B ACE/SABER request
+Copy
+curl -sS http://127.0.0.1:18180/completion \ -H 'Content-Type: application/json' \ -d '{ "prompt": "Write a concise technical note about ROCmFPX MTP serving.", "n_predict": 512, "temperature": 0, "ignore_eos": true, "speculative.n_max": 4, "speculative.n_min": 0, "speculative.p_min": 0.25 }'
+Qwable 5 27B request
+Copy
+curl -sS http://127.0.0.1:18180/completion \ -H 'Content-Type: application/json' \ -d '{ "prompt": "Write a concise technical note about ROCmFPX MTP serving.", "n_predict": 512, "temperature": 0, "ignore_eos": true, "speculative.n_max": 6, "speculative.n_min": 0, "speculative.p_min": 0.0 }'
+Chadrock Models
+Use the filtered Hugging Face profile link for the current Chadrock list, or jump directly to one of the published model repos below. Each tile uses the model card image from its Hugging Face page.
+All Chadrock models on jcbtc
+jcbtc/qwable-5-27b-chadrock-v2-rocmfp4 Qwable 5 27B Chadrock v2 ROCmFP4, the 50+ tok/s served-MTP winner.
+jcbtc/chadrock-35b-ace-saber-rocmfp4-mtp 35B ACE/SABER ROCmFP4 MTP, the text profile used for the ~140 tok/s row.
+jcbtc/chadrock3.6-27b-coder-rocmfp4-mtp CHADROCK3.6 27B Coder ROCmFP4 MTP release with validated card-specific settings.
+jcbtc/chadrock3.6-27b-pi-agent-rocmfp4-mtp 27B Pi-agent Chadrock ROCmFP4 MTP model.
+jcbtc/qwopus3.6-27b-v2-chadrock-rocmfp4-mtp Qwopus3.6 27B v2 Chadrock ROCmFP4 MTP.
+jcbtc/chadrock3.6-40b-opus-deckard-uncensored-thinking-neo-code-di-imatrix-rocmfp4 40B Deckard Chadrock ROCmFP4 release.
+jcbtc/CHADROCK3.6-35B-UNCENSORED-MTP-STRIX-LEAN 35B Uncensored Strix Lean MTP release.
+Validation
+Before sharing a speed row, record the runner commit, model path, backend device, context, KV cache types, batch and ubatch, prompt-cache setting, generated tokens, decode tok/s, TTFP, and draft accepted/generated counters.
+Quick server checks
+Copy
+curl -sS http://127.0.0.1:18180/health curl -sS http://127.0.0.1:18180/props | jq '.default_generation_settings' curl -sS http://127.0.0.1:18180/metrics | head
+Use served API rows or a CLI guard with draft counters for headline MTP speed. Do not use standalone
+llama-bench TG as the headline for MTP serving.
+Published by Ciru Inference Lab. Runner repo:
+ciru-ai/ROCmFPX@deaa996dab90b3ca6dd3ae5d453bedfcd983012d . Score tag:
+chadrock-rocmfp4-mtp-scores-20260621 .

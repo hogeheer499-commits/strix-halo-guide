@@ -95,6 +95,42 @@ Measured smoke rows:
 
 Interpretation: this is a successful load/API/MTP smoke, not a new speed headline. The next useful step is to reproduce the newer dynamic runner/policy that ciru-ai described, preferably with exact model-card updates, runner commit, backend choice, prompt shapes, and acceptance policy.
 
+## CHADROCK ACE/SABER Repro Attempt
+
+Also on 2026-06-21, the guide tested ciru-ai's corrected CHADROCK reproduction route for [`jcbtc/chadrock-35b-ace-saber-rocmfp4-mtp`](https://huggingface.co/jcbtc/chadrock-35b-ace-saber-rocmfp4-mtp).
+
+Read the raw evidence: [`data/raw/2026-06-21/rocmfpx-chadrock-ace-saber-repro-attempt/`](data/raw/2026-06-21/rocmfpx-chadrock-ace-saber-repro-attempt/)
+
+Route:
+
+- model file: `Qwen3.6-35B-A3B-NSC-ACE-SABER-MTP-F16-to-ROCmFP4-STRIX_LEAN.gguf`
+- model sha256: `6a635d1d8ac4af8f2c4ca6ff528bc6bad9b3a6d45e8630ef6e5728f04898eeed`
+- runner: `ciru-ai/ROCmFPX`
+- runner commit: `deaa996dab90b3ca6dd3ae5d453bedfcd983012d`
+- local build: host Vulkan-only, `GGML_VULKAN=ON`, `GGML_HIP=OFF`
+- device: `Vulkan0` / RADV STRIX_HALO
+
+What worked:
+
+- the corrected runner built locally on the host Vulkan/RADV path
+- the ACE/SABER ROCmFP4 GGUF sha matched the model-card hash
+- `llama-server` loaded the model with `draft-mtp`
+- OpenAI-compatible completion requests returned timing and draft-acceptance metadata
+
+Measured rows:
+
+| Run | Result |
+| --- | ---: |
+| 3945-token prompt, `n_max=4`, `p_min=0.25`, first run | 883.73 prompt t/s / 73.64 predicted t/s, 315/677 draft tokens accepted |
+| 3945-token prompt, `n_max=4`, `p_min=0.25`, cleaned repeat | 1051.53 prompt t/s / 81.82 predicted t/s, 315/677 draft tokens accepted |
+| 3945-token prompt, no-draft control | 1121.61 prompt t/s / 75.61 predicted t/s |
+| 3945-token prompt, `n_max=4`, `p_min=0.0` probe | 1121.87 prompt t/s / 72.49 predicted t/s, 301/834 draft tokens accepted |
+| short page-prompt smoke, `n_max=4`, `p_min=0.25` | 101.65 prompt t/s / 86.69 predicted t/s, 332/656 draft tokens accepted |
+
+Interpretation: this is a stronger reproduction attempt than the earlier Crown smoke because the corrected runner and ACE/SABER model load and serve cleanly on a second Strix Halo system. It still does not reproduce ciru-ai's published 140+ t/s CHADROCK speed band. The likely next missing piece is the exact prompt/payload, runtime profile, or build/runtime difference that produced the much higher draft acceptance in ciru-ai's row.
+
+For guide purposes, this is useful positive evidence for the ROCmFP4/CHADROCK lane, plus a concrete reproduction gap. It should not be promoted as a headline speed result.
+
 ## How To Use This In The Guide
 
 Use ROCmFP4 / CHADROCK as:
@@ -113,4 +149,4 @@ Do not use it as:
 
 ## Status
 
-Status as of 2026-06-21: first-party Beelink load/API/MTP smoke succeeded, but the high-speed community dynamic-MTP result is not yet reproduced on the guide's Beelink GTR9 Pro.
+Status as of 2026-06-21: first-party Beelink load/API/MTP smoke succeeded for both the Crown Halo dynamic artifact and the corrected CHADROCK ACE/SABER route, but the high-speed community ROCmFP4/CHADROCK band is not yet reproduced on the guide's Beelink GTR9 Pro.

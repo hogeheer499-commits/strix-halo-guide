@@ -1,0 +1,5 @@
+timestamp=2026-06-21T13:35:10+02:00
+ubuntu-zoom=running
+docflock_user=active
+ollama_pids=3837196 
+rustdesk_pids=187810 187817 3837197 

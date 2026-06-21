@@ -1,0 +1,117 @@
+{
+  "index": 0,
+  "content": "\n\n<think>\n\n</think>\n\nHere is concise technical guidance for benchmarking the AMD Ryzen AI MAX+ 395 (Strix Halo) on ROCm, structured for local AI inference and training workloads.\n\n### 1. ROCm & FP4 Precision\n*   **Hardware Support:** The Strix Halo architecture (RDNA 3.5/CDNA 3 hybrid) supports native FP4 via the **AMX (Advanced Matrix Extensions)** unit. This is critical for high-throughput LLM inference.\n*   **Implementation:** Use `llama.cpp` (with `HIP` backend) or `vLLM`/`TGI` with ROCm 6.1+ support. Ensure you are using the `fp4` quantization option explicitly.\n*   **Performance Tip:** FP4 reduces memory bandwidth pressure significantly. On the 395\u2019s 32GB unified memory, this allows larger context windows or batch sizes compared to FP16/FP8. Verify kernel support via `rocminfo` and ensure your ROCm version includes the latest AMX optimizations.\n\n### 2. MTP (Multi-Token Prediction) Speculative Decoding\n*   **Concept:** MTP (often implemented as Multi-Token Prediction or continuous batching with speculative heads) uses a small \"draft\" model to propose multiple tokens, which the large model verifies in parallel.\n*   **ROCm Context:** On AMD hardware, speculative decoding benefits from the high memory bandwidth of the unified memory architecture. Ensure your inference engine (e.g., `vLLM` or `SGLang`) is compiled with ROCm support.\n*   **Configuration:** Enable `speculative_decoding` with a draft model size ratio of ~1/4 to 1/8 of the target model. Monitor the **acceptance rate**; on Strix Halo, high bandwidth allows for higher parallel verification steps, potentially yielding 2x\u20133x throughput gains over autoregressive decoding.\n\n### 3. Vulkan / RADV Driver Stack\n*   **Role:** While ROCm primarily uses `HIP`/`ROCm` kernels, Vulkan/RADV is essential for **display offload**, **memory management**, and **interoperability** with graphics-heavy workloads or hybrid AI/graphics apps.\n*   **Benchmarking Note:** For pure AI inference, Vulkan is not the compute path. However, ensure `radv` drivers are up-to-date to prevent memory allocation bottlenecks",
+  "tokens": [],
+  "id_slot": 0,
+  "stop": true,
+  "model": "chadrock-35b-ace-saber-rocmfp4-cap4",
+  "tokens_predicted": 512,
+  "tokens_evaluated": 3945,
+  "generation_settings": {
+    "seed": 123,
+    "temperature": 0.0,
+    "dynatemp_range": 0.0,
+    "dynatemp_exponent": 1.0,
+    "top_k": 20,
+    "top_p": 0.949999988079071,
+    "min_p": 0.05000000074505806,
+    "top_n_sigma": -1.0,
+    "xtc_probability": 0.0,
+    "xtc_threshold": 0.10000000149011612,
+    "typical_p": 1.0,
+    "repeat_last_n": 64,
+    "repeat_penalty": 1.0,
+    "presence_penalty": 0.0,
+    "frequency_penalty": 0.0,
+    "dry_multiplier": 0.0,
+    "dry_base": 1.75,
+    "dry_allowed_length": 2,
+    "dry_penalty_last_n": 32768,
+    "dry_sequence_breakers": [
+      "\n",
+      ":",
+      "\"",
+      "*"
+    ],
+    "mirostat": 0,
+    "mirostat_tau": 5.0,
+    "mirostat_eta": 0.10000000149011612,
+    "stop": [],
+    "max_tokens": 512,
+    "n_predict": 512,
+    "n_keep": 0,
+    "n_discard": 0,
+    "ignore_eos": true,
+    "stream": false,
+    "logit_bias": [
+      {
+        "bias": null,
+        "token": 248044
+      },
+      {
+        "bias": null,
+        "token": 248046
+      },
+      {
+        "bias": null,
+        "token": 248063
+      },
+      {
+        "bias": null,
+        "token": 248064
+      },
+      {
+        "bias": null,
+        "token": 248065
+      }
+    ],
+    "n_probs": 0,
+    "min_keep": 0,
+    "grammar": "",
+    "grammar_lazy": false,
+    "grammar_triggers": [],
+    "preserved_tokens": [],
+    "chat_format": "Content-only",
+    "reasoning_format": "none",
+    "reasoning_in_content": false,
+    "generation_prompt": "",
+    "samplers": [
+      "penalties",
+      "dry",
+      "top_n_sigma",
+      "top_k",
+      "typ_p",
+      "top_p",
+      "min_p",
+      "xtc",
+      "temperature"
+    ],
+    "speculative.types": "none,draft-mtp",
+    "speculative.n_max": 4,
+    "speculative.n_min": 0,
+    "speculative.p_min": 0.25,
+    "timings_per_token": false,
+    "post_sampling_probs": false,
+    "backend_sampling": false,
+    "lora": []
+  },
+  "prompt": "You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidance about ROCmFP4, MTP speculative decoding, Vulkan/RADV, unified memory, and reproducible local AI benchmarks. You are benchmarking a local Strix Halo AMD Ryzen AI MAX+ 395 system. Write concise technical guidanc",
+  "has_new_line": true,
+  "truncated": false,
+  "stop_type": "limit",
+  "stopping_word": "",
+  "tokens_cached": 4456,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 3945,
+    "prompt_ms": 4464.033,
+    "prompt_per_token_ms": 1.1315673003802282,
+    "prompt_per_second": 883.7300261893224,
+    "predicted_n": 512,
+    "predicted_ms": 6952.387,
+    "predicted_per_token_ms": 13.578880859375,
+    "predicted_per_second": 73.64377155644529,
+    "draft_n": 677,
+    "draft_n_accepted": 315
+  }
+}

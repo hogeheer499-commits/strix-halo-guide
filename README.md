@@ -2054,6 +2054,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 - **Public traction snapshot refreshed:** the guide reached **158 GitHub stars** and **10 Strix Halo-class systems represented** in the 2026-06-21 snapshot. This is a small-niche demand signal; the main vendor value remains reproducible public evidence that reduces buyer setup friction.
 - **ROCmFP4 / CHADROCK advanced lane added:** [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) tracks the `rocmfp4-llama` / tuned-GGUF route separately from the beginner Vulkan/RADV/Ollama path and from first-party direct `llama-bench` headline rows.
 - **ROCmFP4 Crown Halo smoke added:** the `jcbtc/qwen3.6-35b-a3b-crown-halo-mtp-dynamic` artifact now has first-party Beelink load/API/MTP smoke evidence. It runs, but the high-speed community dynamic-MTP band is not yet reproduced on this HIP-only Beelink route.
+- **CHADROCK ACE/SABER corrected-route repro added:** the `jcbtc/chadrock-35b-ace-saber-rocmfp4-mtp` artifact loads and serves on the guide's Beelink/RADV path with the pinned `ciru-ai/ROCmFPX` runner. The local cleaned repeat reached 81.82 predicted t/s, so this is positive advanced-lane evidence but not a reproduction of ciru-ai's 140+ t/s CHADROCK band yet.
 - **Current model watchlist refreshed:** Kimi-K2.7-Code, GLM-5.2, MiniMax-M3, Nemotron 3 Nano Omni NVFP4/MXFP4, DeepSeek V4 Flash REAP, `llama.cpp` b9743, and Ollama 0.30.10 were triaged for practical guide value.
 
 ### 2026-06-14 -- Ciru-ai EVO-X2 NixOS / NPU / ROCmFP4 Artifact
