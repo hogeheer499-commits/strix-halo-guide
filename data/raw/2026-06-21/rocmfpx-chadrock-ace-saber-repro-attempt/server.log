@@ -8,12 +8,12 @@
 0.00.022.959 I srv          init: the WebUI is disabled
 0.00.023.014 I srv         start: binding port with default address family
 0.00.024.145 I srv          main: loading model
-0.00.024.152 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/rocmfpx-chadrock/ace-saber-35b/Qwen3.6-35B-A3B-NSC-ACE-SABER-MTP-F16-to-ROCmFP4-STRIX_LEAN.gguf'
+0.00.024.152 I srv    load_model: loading model '<model-dir>/Qwen3.6-35B-A3B-NSC-ACE-SABER-MTP-F16-to-ROCmFP4-STRIX_LEAN.gguf'
 0.00.024.171 I common_init_result: fitting params to device memory ...
 0.00.024.173 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
 0.02.857.280 W llama_context: n_ctx_seq (32768) < n_ctx_train (262144) -- the full capacity of the model will not be utilized
 0.02.983.126 W common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
-0.03.562.766 I srv    load_model: creating MTP draft context against the target model '/home/hoge-heer/benchmark-models/rocmfpx-chadrock/ace-saber-35b/Qwen3.6-35B-A3B-NSC-ACE-SABER-MTP-F16-to-ROCmFP4-STRIX_LEAN.gguf'
+0.03.562.766 I srv    load_model: creating MTP draft context against the target model '<model-dir>/Qwen3.6-35B-A3B-NSC-ACE-SABER-MTP-F16-to-ROCmFP4-STRIX_LEAN.gguf'
 0.03.562.826 W llama_context: n_ctx_seq (32768) < n_ctx_train (262144) -- the full capacity of the model will not be utilized
 0.03.630.030 I srv    load_model: initializing slots, n_slots = 1
 0.03.641.751 I common_context_can_seq_rm: the context supports bounded partial sequence removal

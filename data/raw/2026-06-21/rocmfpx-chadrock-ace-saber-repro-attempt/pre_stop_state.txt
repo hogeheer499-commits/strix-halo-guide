@@ -1,5 +1,9 @@
-timestamp=2026-06-21T13:35:10+02:00
-ubuntu-zoom=running
+timestamp=2026-06-21T13:35:00+02:00
+hermes_user=active
 docflock_user=active
-ollama_pids=3837196 
-rustdesk_pids=187810 187817 3837197 
+t3_services=active
+ubuntu-zoom=running
+ollama_system=active
+rustdesk_system=active
+
+Note: this file is a sanitized service-state summary. Local process paths and account-specific process details were intentionally omitted from the public raw evidence.

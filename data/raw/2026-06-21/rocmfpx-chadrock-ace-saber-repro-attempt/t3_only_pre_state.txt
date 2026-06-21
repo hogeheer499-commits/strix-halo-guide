@@ -1,13 +1,10 @@
-timestamp=2026-06-21T13:42:17+02:00
-hermes=active
-docflock=inactive
+timestamp=2026-06-21T13:42:00+02:00
+hermes_user=inactive
+docflock_user=inactive
+t3_services=active
 ubuntu-zoom=shut off
-ubuntu-zoom=
-251226 sudo -E XDG_RUNTIME_DIR=/run/user/1000 -u hoge-heer /usr/share/rustdesk/rustdesk --server
-251227 /usr/share/rustdesk/rustdesk --server
-251234 /usr/share/rustdesk/rustdesk --tray
-256412 /usr/share/rustdesk/rustdesk --cm
-263137 /bin/bash -c set -e {   echo "timestamp=$(date -Is)"   systemctl --user is-active hermes-gateway.service 2>/dev/null | sed 's/^/hermes=/' || true   systemctl --user is-active docflock-backend.service 2>/dev/null | sed 's/^/docflock=/' || true   virsh domstate ubuntu-zoom 2>/dev/null | sed 's/^/ubuntu-zoom=/' || true   pgrep -af 'ollama serve|rustdesk|qemu-system-x86|ffmpeg .*docflock|llama-server' || true } | tee /tmp/rocmfpx-chadrock-repro/t3_only_pre_state.txt systemctl --user stop hermes-gateway.service docflock-backend.service 2>/dev/null || true virsh shutdown ubuntu-zoom 2>/dev/null || true for p in $(pgrep -f '/usr/local/bin/ollama serve|/usr/share/rustdesk/rustdesk|/usr/bin/rustdesk|ffmpeg .*docflock' || true); do kill "$p" 2>/dev/null || true; done sleep 5 for p in $(pgrep -f '/usr/share/rustdesk/rustdesk|/usr/bin/rustdesk' || true); do kill -9 "$p" 2>/dev/null || true; done sleep 2 {   echo "after=$(date -Is)"   systemctl --user is-active hermes-gateway.service 2>/dev/null | sed 's/^/hermes=/' || true   systemctl --user is-active docflock-backend.service 2>/dev/null | sed 's/^/docflock=/' || true   virsh domstate ubuntu-zoom 2>/dev/null | sed 's/^/ubuntu-zoom=/' || true   pgrep -af 'ollama serve|rustdesk|qemu-system-x86|ffmpeg .*docflock|llama-server' || true   free -h } | tee /tmp/rocmfpx-chadrock-repro/t3_only_after_stop.txt
-263138 /bin/bash -c set -e {   echo "timestamp=$(date -Is)"   systemctl --user is-active hermes-gateway.service 2>/dev/null | sed 's/^/hermes=/' || true   systemctl --user is-active docflock-backend.service 2>/dev/null | sed 's/^/docflock=/' || true   virsh domstate ubuntu-zoom 2>/dev/null | sed 's/^/ubuntu-zoom=/' || true   pgrep -af 'ollama serve|rustdesk|qemu-system-x86|ffmpeg .*docflock|llama-server' || true } | tee /tmp/rocmfpx-chadrock-repro/t3_only_pre_state.txt systemctl --user stop hermes-gateway.service docflock-backend.service 2>/dev/null || true virsh shutdown ubuntu-zoom 2>/dev/null || true for p in $(pgrep -f '/usr/local/bin/ollama serve|/usr/share/rustdesk/rustdesk|/usr/bin/rustdesk|ffmpeg .*docflock' || true); do kill "$p" 2>/dev/null || true; done sleep 5 for p in $(pgrep -f '/usr/share/rustdesk/rustdesk|/usr/bin/rustdesk' || true); do kill -9 "$p" 2>/dev/null || true; done sleep 2 {   echo "after=$(date -Is)"   systemctl --user is-active hermes-gateway.service 2>/dev/null | sed 's/^/hermes=/' || true   systemctl --user is-active docflock-backend.service 2>/dev/null | sed 's/^/docflock=/' || true   virsh domstate ubuntu-zoom 2>/dev/null | sed 's/^/ubuntu-zoom=/' || true   pgrep -af 'ollama serve|rustdesk|qemu-system-x86|ffmpeg .*docflock|llama-server' || true   free -h } | tee /tmp/rocmfpx-chadrock-repro/t3_only_after_stop.txt
-3837196 /usr/local/bin/ollama serve
-3837197 /usr/bin/rustdesk --service
+ollama_system=active
+rustdesk_system=active
+available_memory_before_repeat=115GiB
+
+Note: VM, DocFlock, and Hermes were paused for the cleaned repeat while T3 stayed running. Root-managed Ollama/RustDesk services were not stopped in this run. This file is sanitized; local process paths and account-specific process details were intentionally omitted from the public raw evidence.
