@@ -23,6 +23,8 @@ Measured rows below are first-party Beelink GTR9 Pro direct `llama-bench` Vulkan
 
 ciru-ai's GMKtec EVO-X2 / NixOS / IOMMU-on artifact adds a separate current-model lane with ROCmFP4, Chadrock/Qwopus, Gemma QAT/MTP, CrownV7, and quality-eval rows. These are valuable because they connect Strix Halo speed to quality and NPU-sidecar workflows, but they are not first-party Beelink direct `llama-bench` rows.
 
+The separate [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) page now tracks this as an advanced runtime lane. It is promising and test-worthy, but it is not the beginner/default setup path and should not be mixed with stock Vulkan/RADV headline claims.
+
 | Route | Representative public result | Read |
 | --- | ---: | --- |
 | NPU sidecar | +3.29% main 64k iGPU latency with concurrent NPU load versus +68.96% with a comparable iGPU auxiliary load | Useful advanced IOMMU-on/NPU evidence; not a main iGPU replacement path. |
@@ -30,6 +32,8 @@ ciru-ai's GMKtec EVO-X2 / NixOS / IOMMU-on artifact adds a separate current-mode
 | Ace Saber 35B ROCmFP4 MTP | 0.9024 HumanEval+, 104.35 peak predicted tok/s | Interesting high-quality 35B tuned-route evidence; not stock backend guidance. |
 | Gemma 4 26B-A4B QAT/MTP | 122.8 decode tok/s after TTFP on a 512-token API row and 0.9207 HumanEval+ | Strong current Google-model community route; keep separate from the first-party Gemma 4 26B QAT MTP repeat. |
 | CrownV7 Qwen3.6 35B dynamic route | 515.33 tok/s prompt processing at 128k, 0.83 BFCL v4 non-live accuracy | Useful long-context and tool/function-calling signal. |
+
+First practical ROCmFP4/CHADROCK artifact candidates for local reproduction are around 13.8-21.0 GiB, which makes them much more testable than Kimi/GLM/MiniMax extreme-capacity routes.
 
 Source: [`COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-package`](COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-package), [`data/community_ciru_evox2_metrics.csv`](data/community_ciru_evox2_metrics.csv), and [`ciru-ai/strix-halo-evo-x2-evidence`](https://github.com/ciru-ai/strix-halo-evo-x2-evidence).
 
@@ -176,23 +180,27 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 
 | Priority | Test | Why it adds guide value |
 | ---: | --- | --- |
-| 1 | Post-Atomic-PR-#26 Gemma 4 QAT MTP 1-slot and 2-slot repeat from the Nimo/Atomic route | Converts the old `PARALLEL=2` caveat into measured post-fix evidence; useful for server buyers and for the boxwrench contribution loop. |
-| 2 | Ollama 0.30.x Windows/Linux sanity check for one default chat model and one 30B-class MoE | Ollama is the easiest buyer path. Version drift matters more to typical users than another raw `llama-bench` row. |
-| 3 | Nemotron Super quant comparison: `UD-IQ2_M` or `UD-Q2_K_XL` versus current `UD-IQ4_XS` if storage permits | Answers whether lower quants make 120B-class Nemotron meaningfully faster or more practical on one Strix Halo box. |
-| 4 | DeepSeek V4 Flash runtime/loadability follow-up on a smaller route | The 0xSero/Spark-Mini file existed locally but did not load in current smoke attempts. Next value comes from identifying whether this is GGUF compatibility, runtime support, or build/backend mismatch. |
-| 5 | External-storage feasibility plan for Ultra/Kimi/GLM class routes | These are not current one-box internal-disk targets. A clean external NVMe plan would answer whether 128 GB unified memory can at least smoke/load the smallest extreme routes. |
+| 1 | ROCmFP4 / CHADROCK smoke route from [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) | Best new practical advanced lane: public model artifacts are 13.8-21.0 GiB, ciru already has quality/speed context, and a first-party Beelink repro would show whether the tuned route survives outside the EVO-X2/NixOS stack. |
+| 2 | Ollama 0.30.10 Linux sanity check for one default chat model and one 30B-class MoE | Ollama is the easiest buyer path. Version drift matters more to typical users than another raw `llama-bench` row. |
+| 3 | `llama.cpp` b9743 sentinel check for the current direct headline rows | Confirms whether the latest upstream release changes Qwen3-30B-A3B-Instruct-2507, Qwen3-Coder Q4_K_S, LFM2.5, and Nemotron Super guidance. |
+| 4 | Nemotron 3 Nano Omni NVFP4 or MXFP4 smoke test | Small enough to test quickly and adds a new NVIDIA multimodal/NVFP4/MXFP4 angle; keep separate from the earlier Nano IQ4_XS text-only row. |
+| 5 | DeepSeek V4 Flash REAP 47 GiB loadability follow-up | Smaller than the earlier 100GB+ DeepSeek routes and directly answers whether the previous blocker was artifact/runtime support rather than hardware capacity. |
+| 6 | External-storage feasibility plan for Kimi-K2.7-Code, GLM-5.2, MiniMax-M3, and Nemotron Ultra class routes | These are high-traffic model names, but most artifacts are 120-300GB+. A clean external NVMe plan is more valuable than pretending they are simple internal-disk tests. |
 
 ## Watch List
 
 | Target | Status |
 | --- | --- |
 | Qwen3.6 new quants/sources | Already important in the guide. Add only if a new source answers a new question. |
-| Kimi K2.6 | Very high viral value, but direct GGUF routes are currently too large for quick single-box internal-disk testing. |
-| Kimi K3 | No concrete local artifact found during the 2026-06-04 scan. Treat as watch item, not benchmarkable evidence. |
-| MiniMax M3 | Watch for actual local weights/GGUF artifacts before claiming a benchmark path. |
-| DeepSeek V4 Flash | Original 103GB route was download-blocked; smaller 0xSero/Spark-Mini route reached local load attempts but failed before benchmarking. Watch for compatible GGUF/runtime fixes before claiming performance. |
+| Kimi-K2.7-Code | Very high viral value and active GGUF ecosystem. Smallest scanned routes remain huge: AesSedai `IQ2_XXS` about 262.8 GiB, Unsloth `UD-IQ1_M` about 283.0 GiB, and a pruned `deep55` route about 188.7 GiB. Treat as external-storage/watchlist, not a quick local default. |
+| GLM-5.2 | Very high viral value. Unsloth GGUF exists with smallest scanned `UD-IQ1_S` about 201.8 GiB; REAP50 Q2 route scanned at 129.4 GiB; MXFP4/NVFP4 routes are about 400GB+. External-storage/watchlist unless a smaller compatible route appears. |
+| MiniMax M3 | GGUF routes now exist, but smallest scanned Unsloth route is about 119.6 GiB and practical quants are much larger. Treat as watchlist/runtime-support route, not proven local guidance. |
+| Nemotron 3 Nano Omni NVFP4/MXFP4 | New small candidate: NVFP4 route is about 17.9 GiB plus 1.5 GiB mmproj; MXFP4_MOE route is about 17.5 GiB plus mmproj. Good quick smoke-test candidate, separate from earlier Nano IQ4_XS. |
+| DeepSeek V4 Flash | Original 103GB route was download-blocked; smaller 0xSero/Spark-Mini route reached local load attempts but failed before benchmarking. New REAP Q2 route scanned at 47.0 GiB, making loadability worth revisiting before claiming performance. |
 | Nemotron 3 Ultra 550B-A55B | GGUF route found in the 2026-06-05 scan, but the smallest scanned route is about 188 GB. Watch for smaller practical artifacts or test only with external storage / multi-node planning. |
 | Nemotron 3 Super 120B-A12B | Tested with `UD-IQ4_XS`. Add lower/higher quant comparisons only if they answer a specific buyer question. |
+| `llama.cpp` b9743 | Latest release observed 2026-06-20. Useful for regression checks, but not a claim until measured. |
+| Ollama 0.30.10 | Latest release observed 2026-06-17. Useful for buyer-path sanity checks because Ollama is the easiest local chat route. |
 
 ## Sources
 
@@ -206,3 +214,11 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 - Nemotron 3 Ultra 550B-A55B GGUF: <https://huggingface.co/unsloth/NVIDIA-Nemotron-3-Ultra-550B-A55B-GGUF>
 - Nemotron 3 Ultra BF16: <https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16>
 - Nemotron 3 Ultra NVFP4: <https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-NVFP4>
+- ROCmFP4 / CHADROCK route: <https://github.com/charlie12345/rocmfp4-llama>
+- Kimi-K2.7-Code GGUF: <https://huggingface.co/unsloth/Kimi-K2.7-Code-GGUF>
+- GLM-5.2 GGUF: <https://huggingface.co/unsloth/GLM-5.2-GGUF>
+- MiniMax-M3 GGUF: <https://huggingface.co/unsloth/MiniMax-M3-GGUF>
+- Nemotron 3 Nano Omni NVFP4 GGUF: <https://huggingface.co/FreedomAISVR/Nemotron-3-30B-Nano-Omni-NVFP4-GGUF>
+- DeepSeek V4 Flash REAP Q2 GGUF: <https://huggingface.co/sleepyeldrazi/deepseek-v4-flash-reap-k128-Q2-GGUF>
+- `llama.cpp` b9743: <https://github.com/ggml-org/llama.cpp/releases/tag/b9743>
+- Ollama 0.30.10: <https://github.com/ollama/ollama/releases/tag/v0.30.10>
