@@ -1,0 +1,3 @@
+# command
+/home/hoge-heer/benchmark-tools/llama-b9747/llama-b9747/llama-bench --hf-repo unsloth/NVIDIA-Nemotron-3-Nano-Omni-30B-A3B-Reasoning-GGUF --hf-file NVIDIA-Nemotron-3-Nano-Omni-30B-A3B-Reasoning-MXFP4_MOE.gguf -ngl 999 -fa on -p 512 -n 128 -r 3 -o csv 
+# started 2026-06-21T15:55:27+02:00

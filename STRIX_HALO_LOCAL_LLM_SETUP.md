@@ -118,6 +118,7 @@ Start with a practical model before chasing benchmark rows:
 - Fastest direct 30B-class Qwen speed scout: Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`.
 - Current Google-model server experiment: Gemma 4 26B-A4B QAT with matched MTP head through `llama-server`.
 - Fastest advanced server/speculative route: CHADROCK ACE/SABER 35B ROCmFP4 through `ciru-ai/ROCmFPX`.
+- Current NVIDIA Omni/FP4 smoke: Nemotron 3 Nano Omni 30B-A3B Reasoning `MXFP4_MOE`.
 - 120B-class capacity proof: Nemotron 3 Super 120B-A12B `UD-IQ4_XS`.
 
 Use [README.md](README.md), [CURRENT_MODELS.md](CURRENT_MODELS.md), and [data/headline_claims.csv](data/headline_claims.csv) before comparing numbers.
@@ -133,6 +134,7 @@ These are measured results from this guide. They are not vendor claims, official
 | What is the fastest measured Qwen3-Coder 30B route? | Qwen3-Coder 30B-A3B `Q4_K_S` reached 98.51 t/s direct `llama-bench` on b9179. This is a speed-first quant, not the balanced default. | [headline claims](data/headline_claims.csv), [raw r50](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv) |
 | What is the fastest small-MoE speed scout? | LFM2.5 8B-A1B `Q4_K_M` reached 170.02 t/s generation-only, with a b9544 control at 176.48 t/s. This is not a 30B-class replacement. | [headline claims](data/headline_claims.csv), [raw controls](data/raw/2026-06-05/latest-llamacpp-intdot-regression/) |
 | Can a 120B-class GGUF route run on one 128GB Strix Halo box? | Yes. Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly at 18.43 t/s, with a b9544 control at 18.93 t/s. | [headline claims](data/headline_claims.csv), [raw controls](data/raw/2026-06-05/latest-llamacpp-intdot-regression/) |
+| Can a current NVIDIA Omni/FP4 route run locally? | Yes. Nemotron 3 Nano Omni 30B-A3B Reasoning `MXFP4_MOE` ran directly on the official `llama.cpp` b9747 Vulkan binary at 56.56 t/s. This is support/currentness evidence, not a speed headline. | [benchmarks CSV](data/benchmarks.csv), [raw smoke](data/raw/2026-06-21/nemotron-3-nano-omni-mxfp4-b9747-smoke/) |
 | Does MTP/speculative decoding work locally? | Yes, as an experimental server route. Qwen3.6 MTP reached about 101.1 t/s on b9360, Gemma 4 26B-A4B QAT MTP reached 102.69-110.00 t/s depending on repeat condition, and CHADROCK ACE/SABER 35B ROCmFP4 reproduced 139.93-140.40 t/s on high-acceptance gen512 repeats. | [MTP notes](MTP_SPECULATIVE_DECODING.md), [CHADROCK notes](ROCMFP4_CHADROCK.md), [MTP CSV](data/mtp_speculative.csv) |
 | What is the easiest local chat path? | Ollama 0.23.1 with Vulkan/RADV. Qwen3.6 35B-A3B `Q4_K_M` measured 50.51 t/s warm API generation average. | [headline claims](data/headline_claims.csv), [raw Ollama run](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/ollama-qwen3.6-35b-a3b-0.23.1-api-r10.csv) |
 
