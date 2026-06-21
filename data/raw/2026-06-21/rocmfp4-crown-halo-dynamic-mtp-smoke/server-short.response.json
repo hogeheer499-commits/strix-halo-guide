@@ -1,0 +1,38 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "<think>\n\n</think>\n\n{\n  \"verify\": \"Confirms advertised NPU performance\",\n  \"compare\": \"Enables fair hardware comparisons\",\n  \"optimize\": \"Identifies driver efficiency bottlenecks\",\n  \"validate\": \"Checks thermal throttling under load\",\n  \"ensure\": \"Guarantees consistent inference speed\",\n  \"support\": \"Aids developer model porting\",\n  \"trust\": \"Builds confidence in local deployment\",\n  \"future\": \"Ensures long-term software compatibility\"\n}"
+      }
+    }
+  ],
+  "created": 1782009803,
+  "model": "crown-dynamic-mtp-beelink-smoke",
+  "system_fingerprint": "b9311-4795079b0",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 109,
+    "prompt_tokens": 36,
+    "total_tokens": 145,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "id": "chatcmpl-FywGz8DQKt2QN3VL5djcjFfBoCXpaTBb",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 36,
+    "prompt_ms": 230.168,
+    "prompt_per_token_ms": 6.393555555555555,
+    "prompt_per_second": 156.4074936568072,
+    "predicted_n": 109,
+    "predicted_ms": 1969.943,
+    "predicted_per_token_ms": 18.07287155963303,
+    "predicted_per_second": 55.33155020221397,
+    "draft_n": 160,
+    "draft_n_accepted": 71
+  }
+}

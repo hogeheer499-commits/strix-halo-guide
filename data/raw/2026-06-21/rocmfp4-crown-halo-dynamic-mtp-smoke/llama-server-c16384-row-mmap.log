@@ -1,0 +1,12 @@
+0.00.015.143 I log_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.015.146 I device_info:
+0.00.015.207 I   - ROCm0   : Radeon 8060S Graphics (63969 MiB, 92096 MiB free)
+0.00.015.212 I   - CPU     : AMD RYZEN AI MAX+ 395 w/ Radeon 8060S (127938 MiB, 127938 MiB free)
+0.00.015.265 I system_info: n_threads = 16 (n_threads_batch = 32) / 32 | ROCm : FORCE_MMQ = 1 | NO_VMM = 1 | PEER_MAX_BATCH_SIZE = 128 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX_VNNI = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | AVX512 = 1 | AVX512_VBMI = 1 | AVX512_VNNI = 1 | AVX512_BF16 = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+0.00.015.284 I srv          init: running without SSL
+0.00.015.312 I srv          init: using 31 threads for HTTP server
+0.00.015.316 I srv          init: the WebUI is disabled
+0.00.015.372 I srv         start: binding port with default address family
+0.00.015.430 E srv         start: couldn't bind HTTP server socket, hostname: 127.0.0.1, port: 18181
+0.00.015.431 I srv    operator(): operator(): cleaning up before exit...
+0.00.015.445 E srv          main: exiting due to HTTP server error

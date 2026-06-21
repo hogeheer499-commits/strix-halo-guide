@@ -1,0 +1,41 @@
+
+Loading model... 
+
+
+▄▄ ▄▄
+██ ██
+██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄
+██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██
+██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀
+                                    ██    ██
+                                    ▀▀    ▀▀
+
+build      : b9311-4795079b0
+model      : Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf
+modalities : text
+
+available commands:
+  /exit or Ctrl+C     stop or exit
+  /regen              regenerate the last response
+  /clear              clear the chat history
+  /read <file>        add a text file
+  /glob <pattern>     add text files using globbing pattern
+
+
+> You are evaluating a local AMD Strix Halo setup. Produce deterministic structured JSON. Keep values concise. Consider setup friction, reproducibility, model artifacts, backend choice, quantization, MTP acceptance, long-context behavior, NPU sidecar work, and buyer/vendor evidence.
+Case 1: BIOS UMA 512MB, IOMMU choice, Vulkan/RADV default, ROCmFP4 advanced lane, raw logs, exact command, model hash, acceptance and decode stability must be tracked. Case 2: BIOS UMA 512MB, IOMMU choice, Vulkan/RADV  ... (truncated)
+
+{
+  "summary": "The AMD Strix Halo evaluation requires strict standardization across 179 identical test cases to ensure deterministic reproducibility of ROCmFP4 performance.",
+  "setup": "All cases utilize BIOS UMA 512MB, IOMMU enabled, Vulkan/RADV default, ROCmFP4 advanced lane, with raw logs and exact commands tracked.",
+  "evidence": "Model hash, acceptance rates, and decode stability metrics must be recorded for every case to validate backend consistency.",
+  "blockers": "Potential IOMMU conflicts and ROCmFP4 driver maturity on early silicon may introduce non-deterministic decode failures.",
+  "buyer_value": "Standardized FP4 quantization offers significant inference speedup with minimal hardware friction for early adopters.",
+  "vendor_value": "High-volume test data validates ROCm ecosystem stability and drives NPU sidecar workload optimization.",
+  "next_tests": "Expand test matrix to include varying IOMMU settings and alternative quantization schemes beyond FP4.",
+  "caveats": "Results are highly sensitive to specific BIOS versions and ROCm library updates, requiring rigorous version pinning."
+}
+
+[ Prompt: 1334.9 t/s | Generation: 49.9 t/s ]
+
+Exiting...

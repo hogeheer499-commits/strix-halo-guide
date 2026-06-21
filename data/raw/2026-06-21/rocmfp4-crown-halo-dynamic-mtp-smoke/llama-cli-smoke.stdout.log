@@ -1,0 +1,40 @@
+
+Loading model... 
+
+
+▄▄ ▄▄
+██ ██
+██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄
+██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██
+██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀
+                                    ██    ██
+                                    ▀▀    ▀▀
+
+build      : b9311-4795079b0
+model      : Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf
+modalities : text
+
+available commands:
+  /exit or Ctrl+C     stop or exit
+  /regen              regenerate the last response
+  /clear              clear the chat history
+  /read <file>        add a text file
+  /glob <pattern>     add text files using globbing pattern
+
+
+> Write a compact JSON object with eight short keys describing why reproducible local AI benchmarks matter for AMD Strix Halo buyers.
+
+{
+  "validation": "Verifies hardware claims",
+  "consistency": "Ensures repeatable results",
+  "comparison": "Enables fair benchmarking",
+  "optimization": "Highlights driver efficiency",
+  "performance": "Measures real-world speed",
+  "transparency": "Builds consumer trust",
+  "reliability": "Confirms long-term stability",
+  "value": "Justifies purchase cost"
+}
+
+[ Prompt: 133.6 t/s | Generation: 72.2 t/s ]
+
+Exiting...

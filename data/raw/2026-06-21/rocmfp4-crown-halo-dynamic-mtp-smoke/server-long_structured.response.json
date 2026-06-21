@@ -1,0 +1,38 @@
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "<think>\n\n</think>\n\n{\n  \"summary\": \"Evaluation of AMD Strix Halo with 512MB UMA BIOS reservation, IOMMU constraints, Vulkan/RADV defaults, and ROCmFP4 advanced lane stability across 179 identical test cases.\",\n  \"setup\": \"BIOS configured with 512MB UMA allocation, IOMMU enabled, Vulkan/RADV used as default backend, and ROCmFP4 quantization applied for advanced lane testing.\",\n  \"evidence\": \"Raw logs, exact commands, model hashes, and acceptance/decode stability metrics were tracked for all 179 deterministic test runs.\",\n  \"blockers\": \"Potential IOMMU conflicts with Vulkan/RADV and ROCmFP4 precision limitations may impact decode stability in long-context scenarios.\",\n  \"buyer_value\": \"Deterministic, reproducible performance data for advanced quantization on integrated graphics aids in selecting stable local AI deployments.\",\n  \"vendor_value\": \"High-volume test coverage validates hardware robustness and driver stack maturity for enterprise and enthusiast AMD Strix Halo adopters.\",\n  \"next_tests\": \"Investigate NPU sidecar offloading efficiency and compare ROCmFP4 against alternative quantization methods for long-context behavior.\",\n  \"cave"
+      }
+    }
+  ],
+  "created": 1782009815,
+  "model": "crown-dynamic-mtp-beelink-smoke",
+  "system_fingerprint": "b9311-4795079b0",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 256,
+    "prompt_tokens": 8587,
+    "total_tokens": 8843,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "id": "chatcmpl-BOeBCRGCLksoOFu94OP63S8ue1geOpQF",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 8587,
+    "prompt_ms": 8047.235,
+    "prompt_per_token_ms": 0.9371416094095726,
+    "prompt_per_second": 1067.0745914590539,
+    "predicted_n": 256,
+    "predicted_ms": 4444.008,
+    "predicted_per_token_ms": 17.35940625,
+    "predicted_per_second": 57.605656875505176,
+    "draft_n": 344,
+    "draft_n_accepted": 168
+  }
+}

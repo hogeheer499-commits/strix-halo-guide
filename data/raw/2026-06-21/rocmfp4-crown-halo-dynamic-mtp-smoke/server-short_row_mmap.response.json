@@ -1,0 +1,38 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "<think>\n\n</think>\n\n{\n  \"verifiable\": \"Confirms real-world NPU performance claims\",\n  \"fair\": \"Enables apples-to-apples CPU comparisons\",\n  \"efficient\": \"Highlights low-power AI acceleration\",\n  \"transparent\": \"Exposes thermal throttling limits\",\n  \"confident\": \"Reduces buyer purchase anxiety\",\n  \"accurate\": \"Filters out marketing exaggeration\",\n  \"consistent\": \"Ensures reproducible test results\",\n  \"valuable\": \"Validates total cost of ownership\"\n}"
+      }
+    }
+  ],
+  "created": 1782009999,
+  "model": "crown-dynamic-mtp-beelink-row-mmap",
+  "system_fingerprint": "b9311-4795079b0",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 113,
+    "prompt_tokens": 36,
+    "total_tokens": 149,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "id": "chatcmpl-ZYk8HuCXeAjrsMxTLj6FpbNHx0x3lVkE",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 36,
+    "prompt_ms": 220.268,
+    "prompt_per_token_ms": 6.118555555555556,
+    "prompt_per_second": 163.43726732889024,
+    "predicted_n": 113,
+    "predicted_ms": 1862.833,
+    "predicted_per_token_ms": 16.48524778761062,
+    "predicted_per_second": 60.66029536732493,
+    "draft_n": 152,
+    "draft_n_accepted": 76
+  }
+}

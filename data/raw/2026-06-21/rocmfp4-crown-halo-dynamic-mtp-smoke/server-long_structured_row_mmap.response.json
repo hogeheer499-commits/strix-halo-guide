@@ -1,0 +1,38 @@
+{
+  "choices": [
+    {
+      "finish_reason": "length",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "<think>\n\n</think>\n\n{\n  \"summary\": \"The AMD Strix Halo evaluation framework is standardized across 179 cases using identical BIOS, IOMMU, Vulkan, and ROCmFP4 configurations to ensure deterministic reproducibility.\",\n  \"setup\": \"Each case utilizes a 512MB BIOS UMA setting with default Vulkan/RADV and ROCmFP4 advanced lane, tracking raw logs, exact commands, model hashes, and decode stability metrics.\",\n  \"evidence\": \"Stability and acceptance data are continuously tracked for every case to provide verifiable evidence of backend performance and quantization efficacy.\",\n  \"blockers\": \"No specific technical blockers are identified in the prompt, though IOMMU configuration and NPU sidecar workloads remain potential friction points requiring validation.\",\n  \"buyer_value\": \"This setup offers a consistent, reproducible benchmark for evaluating local LLM inference performance on emerging AMD hybrid architecture hardware.\",\n  \"vendor_value\": \"The data provides AMD with detailed feedback on ROCmFP4 adoption and Vulkan driver stability within the Strix Halo ecosystem.\",\n  \"next_tests\": \"Future tests should vary IOMMU settings and test different model hashes to assess generalization beyond the current fixed configuration.\",\n  \"caveats\": \""
+      }
+    }
+  ],
+  "created": 1782010012,
+  "model": "crown-dynamic-mtp-beelink-row-mmap",
+  "system_fingerprint": "b9311-4795079b0",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 256,
+    "prompt_tokens": 8587,
+    "total_tokens": 8843,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "id": "chatcmpl-Jy3izVwxLJ0wbBUkNUUfhMCDbw3s1gdz",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 8587,
+    "prompt_ms": 8055.503,
+    "prompt_per_token_ms": 0.938104460230581,
+    "prompt_per_second": 1065.9793683895346,
+    "predicted_n": 256,
+    "predicted_ms": 4922.213,
+    "predicted_per_token_ms": 19.22739453125,
+    "predicted_per_second": 52.00912678910888,
+    "draft_n": 384,
+    "draft_n_accepted": 159
+  }
+}

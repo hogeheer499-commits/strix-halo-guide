@@ -307,7 +307,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) | Nimo AI Mini PC community bundle with large-model, MTP, StepFun, Qwen 122B, Gemma 4 QAT/MTP assistant-head, and thermal context. |
 | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) | Community multi-node `llama.cpp` RPC over USB4 results, kept separate from single-machine headline claims. |
 | [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md) | Community USB4 latency tuning for active Strix Halo cluster nodes. |
-| [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) | Advanced ROCmFP4 / CHADROCK tuned-GGUF route tracking. Promising and test-worthy, but not the beginner/default setup path. |
+| [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) | Advanced ROCmFP4 / CHADROCK tuned-GGUF route tracking. First-party load/API/MTP smoke now works, but it is still not the beginner/default setup path or a headline-speed replacement. |
 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) | Community benchmark contributor credits and contribution path. |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | What data is most useful, which issue template to use, and how community reports become structured evidence. |
 | [`data/headline_claims.csv`](data/headline_claims.csv) | Machine-readable map from public headline claims to data, raw evidence, charts, and notes. |
@@ -2053,6 +2053,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 
 - **Public traction snapshot refreshed:** the guide reached **158 GitHub stars** and **10 Strix Halo-class systems represented** in the 2026-06-21 snapshot. This is a small-niche demand signal; the main vendor value remains reproducible public evidence that reduces buyer setup friction.
 - **ROCmFP4 / CHADROCK advanced lane added:** [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) tracks the `rocmfp4-llama` / tuned-GGUF route separately from the beginner Vulkan/RADV/Ollama path and from first-party direct `llama-bench` headline rows.
+- **ROCmFP4 Crown Halo smoke added:** the `jcbtc/qwen3.6-35b-a3b-crown-halo-mtp-dynamic` artifact now has first-party Beelink load/API/MTP smoke evidence. It runs, but the high-speed community dynamic-MTP band is not yet reproduced on this HIP-only Beelink route.
 - **Current model watchlist refreshed:** Kimi-K2.7-Code, GLM-5.2, MiniMax-M3, Nemotron 3 Nano Omni NVFP4/MXFP4, DeepSeek V4 Flash REAP, `llama.cpp` b9743, and Ollama 0.30.10 were triaged for practical guide value.
 
 ### 2026-06-14 -- Ciru-ai EVO-X2 NixOS / NPU / ROCmFP4 Artifact
