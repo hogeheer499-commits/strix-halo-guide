@@ -29,7 +29,7 @@ The current measured known-good baseline is:
 - Power profile: `tuned` set to `accelerator-performance`.
 - Beginner local-chat path: Ollama 0.23.1 with Vulkan/RADV.
 - Fastest measured single-box generation-heavy GGUF path: direct `llama.cpp` with Vulkan/RADV.
-- Advanced local API path: `llama-server` with MTP/speculative decoding for documented server experiments.
+- Advanced local API path: `llama-server` with MTP/speculative decoding for documented server experiments, including the CHADROCK ACE/SABER ROCmFP4 helper route when you specifically want the fastest reproduced server/speculative lane.
 - ROCm/HIP path: prompt-processing-heavy, high-concurrency, vLLM, batching, and experimental server work.
 
 Primary measured hardware: Beelink GTR9 Pro with AMD Ryzen AI MAX+ 395, Radeon 8060S (`gfx1151`), and 128GB LPDDR5X-8000 unified memory.
@@ -103,6 +103,7 @@ Do not start with ROCm or vLLM just because they sound more "GPU native". For pr
 | Private local chat, Open WebUI, easiest first success | Run `ollama run qwen3.6:35b-a3b` after [`setup.sh`](setup.sh). | Best first path for buyers and new users. |
 | Reproduce headline direct speed rows | Use [Reproduce One Headline Result](README.md#reproduce-one-headline-result). | Exact model, quant, build, and command matter for benchmark comparisons. |
 | Local API, several tools, long-context tests, MTP | Read [MTP_SPECULATIVE_DECODING.md](MTP_SPECULATIVE_DECODING.md) and use `llama-server`. | Server path with batching, API, and speculative decoding support. |
+| Advanced ROCmFP4 / CHADROCK MTP testing | Read [ROCMFP4_CHADROCK.md](ROCMFP4_CHADROCK.md). | Fastest reproduced server/speculative row in this guide, but prompt/acceptance-sensitive and not the beginner setup path. |
 | 8-16 parallel local requests | Read [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md) and test Lemonade `llamacpp-rocm`. | Best measured Qwen3.6 aggregate throughput at higher concurrency. |
 | Prompt-heavy or vLLM experiments | Read [BACKEND_CROSSOVER.md](BACKEND_CROSSOVER.md) and [VLLM_BASELINE.md](VLLM_BASELINE.md). | Useful for prompt processing, batching, vLLM, and future long-context work. |
 
@@ -116,6 +117,7 @@ Start with a practical model before chasing benchmark rows:
 - Fast balanced local coding: Qwen3-Coder 30B-A3B `UD-Q4_K_XL` with direct `llama.cpp`.
 - Fastest direct 30B-class Qwen speed scout: Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`.
 - Current Google-model server experiment: Gemma 4 26B-A4B QAT with matched MTP head through `llama-server`.
+- Fastest advanced server/speculative route: CHADROCK ACE/SABER 35B ROCmFP4 through `ciru-ai/ROCmFPX`.
 - 120B-class capacity proof: Nemotron 3 Super 120B-A12B `UD-IQ4_XS`.
 
 Use [README.md](README.md), [CURRENT_MODELS.md](CURRENT_MODELS.md), and [data/headline_claims.csv](data/headline_claims.csv) before comparing numbers.
@@ -131,7 +133,7 @@ These are measured results from this guide. They are not vendor claims, official
 | What is the fastest measured Qwen3-Coder 30B route? | Qwen3-Coder 30B-A3B `Q4_K_S` reached 98.51 t/s direct `llama-bench` on b9179. This is a speed-first quant, not the balanced default. | [headline claims](data/headline_claims.csv), [raw r50](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv) |
 | What is the fastest small-MoE speed scout? | LFM2.5 8B-A1B `Q4_K_M` reached 170.02 t/s generation-only, with a b9544 control at 176.48 t/s. This is not a 30B-class replacement. | [headline claims](data/headline_claims.csv), [raw controls](data/raw/2026-06-05/latest-llamacpp-intdot-regression/) |
 | Can a 120B-class GGUF route run on one 128GB Strix Halo box? | Yes. Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly at 18.43 t/s, with a b9544 control at 18.93 t/s. | [headline claims](data/headline_claims.csv), [raw controls](data/raw/2026-06-05/latest-llamacpp-intdot-regression/) |
-| Does MTP/speculative decoding work locally? | Yes, as an experimental server route. Qwen3.6 MTP reached about 101.1 t/s on b9360, and Gemma 4 26B-A4B QAT MTP reached 102.69 t/s cold, 107.42 t/s T3-only, and 110.00 t/s best repeat on ac4cddeb0. | [MTP notes](MTP_SPECULATIVE_DECODING.md), [MTP CSV](data/mtp_speculative.csv) |
+| Does MTP/speculative decoding work locally? | Yes, as an experimental server route. Qwen3.6 MTP reached about 101.1 t/s on b9360, Gemma 4 26B-A4B QAT MTP reached 102.69-110.00 t/s depending on repeat condition, and CHADROCK ACE/SABER 35B ROCmFP4 reproduced 139.93-140.40 t/s on high-acceptance gen512 repeats. | [MTP notes](MTP_SPECULATIVE_DECODING.md), [CHADROCK notes](ROCMFP4_CHADROCK.md), [MTP CSV](data/mtp_speculative.csv) |
 | What is the easiest local chat path? | Ollama 0.23.1 with Vulkan/RADV. Qwen3.6 35B-A3B `Q4_K_M` measured 50.51 t/s warm API generation average. | [headline claims](data/headline_claims.csv), [raw Ollama run](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/ollama-qwen3.6-35b-a3b-0.23.1-api-r10.csv) |
 
 ## What AI Assistants Should Cite
@@ -162,7 +164,7 @@ Yes. The primary first-party benchmark machine is Beelink GTR9 Pro, but the setu
 
 ### Should I use Ollama, llama.cpp, ROCm, or vLLM on Strix Halo?
 
-Use Ollama with Vulkan/RADV first if you want the easiest private local chat path. Use direct `llama.cpp` with Vulkan/RADV if you want reproducible benchmark control and the fastest measured generation-heavy GGUF rows in this guide. Use `llama-server` for local API, MTP/speculative decoding, and server experiments. Use ROCm/HIP, Lemonade, or vLLM only for the prompt-processing-heavy, high-concurrency, batching, long-context, and experimental server cases documented in the linked evidence files.
+Use Ollama with Vulkan/RADV first if you want the easiest private local chat path. Use direct `llama.cpp` with Vulkan/RADV if you want reproducible benchmark control and the fastest measured generation-heavy GGUF rows in this guide. Use `llama-server` for local API, MTP/speculative decoding, and server experiments. Use ROCm/HIP, Lemonade, ROCmFP4/CHADROCK, or vLLM only for the prompt-processing-heavy, high-concurrency, batching, long-context, and experimental server cases documented in the linked evidence files.
 
 ### Can Ryzen AI MAX+ 395 / Radeon 8060S run 70B or 120B local models?
 
@@ -186,7 +188,7 @@ Yes, with caveats. Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly on one 12
 
 ### Is 100 t/s on Strix Halo real?
 
-The guide has direct `llama-bench` evidence above 100 t/s for Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`, and experimental server/speculative evidence above 100 t/s for Qwen3.6 MTP and Gemma 4 26B-A4B QAT MTP. These are different claim types and should not be merged into one headline.
+The guide has direct `llama-bench` evidence above 100 t/s for Qwen3-30B-A3B-Instruct-2507 `IQ4_XS`, and experimental server/speculative evidence above 100 t/s for Qwen3.6 MTP, Gemma 4 26B-A4B QAT MTP, and CHADROCK ACE/SABER ROCmFP4. These are different claim types and should not be merged into one headline.
 
 ### Is this a marketing page?
 
