@@ -56,7 +56,7 @@ Treat this as:
 
 - `ciru_chadrock_rocmfpx_page.txt`: copied text from ciru-ai's reproduction page at test time
 - `ciru_chadrock_rocmfpx_page.html`: copied HTML from ciru-ai's reproduction page at test time
-- `hf_model_card_README.md`: copied Hugging Face model card at test time
+- `hf_model_card_README.txt`: copied Hugging Face model card text at test time
 - `runner_commit.txt`: runner commit used
 - `llama_server_version.txt`: `llama-server` build/version output
 - `model.sha256`: local model sha256
