@@ -23,13 +23,13 @@ Measured rows below are first-party Beelink GTR9 Pro direct `llama-bench` Vulkan
 
 ciru-ai's GMKtec EVO-X2 / NixOS / IOMMU-on artifact adds a separate current-model lane with ROCmFP4, Chadrock/Qwopus, Gemma QAT/MTP, CrownV7, and quality-eval rows. These are valuable because they connect Strix Halo speed to quality and NPU-sidecar workflows, but they are not first-party Beelink direct `llama-bench` rows.
 
-The separate [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) page now tracks this as an advanced runtime lane. It is not the beginner/default setup path and should not be mixed with stock Vulkan/RADV headline claims. A first-party Beelink smoke on 2026-06-21 confirmed that the Crown Halo dynamic MTP artifact loads and serves through a HIP-only ROCmFP4 Distrobox build, but it did not reproduce ciru-ai's higher dynamic-MTP speed band.
+The separate [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) page now tracks this as an advanced runtime lane. It is not the beginner/default setup path and should not be mixed with stock Vulkan/RADV headline claims. First-party Beelink smoke on 2026-06-21 confirmed that both the Crown Halo dynamic artifact and the corrected CHADROCK ACE/SABER route load and serve locally, but the guide has not reproduced ciru-ai's higher ROCmFP4/CHADROCK speed band yet.
 
 | Route | Representative public result | Read |
 | --- | ---: | --- |
 | NPU sidecar | +3.29% main 64k iGPU latency with concurrent NPU load versus +68.96% with a comparable iGPU auxiliary load | Useful advanced IOMMU-on/NPU evidence; not a main iGPU replacement path. |
 | Qwopus3.6 27B Chadrock | 0.9451 HumanEval+ and about 2.85x lower recorded request-generation time than the stored original Qwopus comparator | Strong tuned 27B quality-plus-speed evidence; keep as community served-route evidence. |
-| Ace Saber 35B ROCmFP4 MTP | 0.9024 HumanEval+, 104.35 peak predicted tok/s | Interesting high-quality 35B tuned-route evidence; not stock backend guidance. |
+| Ace Saber 35B ROCmFP4 MTP | 0.9024 HumanEval+, 104.35 peak predicted tok/s in community data; first-party corrected-route repro reached 81.82 predicted t/s on the cleaned repeat | Interesting high-quality 35B tuned-route evidence; local route works, but the high-acceptance/high-speed shape still needs exact repro details. |
 | Gemma 4 26B-A4B QAT/MTP | 122.8 decode tok/s after TTFP on a 512-token API row and 0.9207 HumanEval+ | Strong current Google-model community route; keep separate from the first-party Gemma 4 26B QAT MTP repeat. |
 | CrownV7 Qwen3.6 35B dynamic route | 515.33 tok/s prompt processing at 128k, 0.83 BFCL v4 non-live accuracy | Useful long-context and tool/function-calling signal. |
 | Crown Halo Qwen3.6 35B dynamic MTP Beelink smoke | short server 60.66 predicted t/s with 76/152 accepted; long structured server 57.61 predicted t/s with 168/344 accepted | First-party load/API/MTP smoke succeeded, but high-speed dynamic-MTP behavior remains a reproduction target. |
@@ -181,7 +181,7 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 
 | Priority | Test | Why it adds guide value |
 | ---: | --- | --- |
-| 1 | ROCmFP4 / CHADROCK follow-up from [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) | First-party Beelink load/API/MTP smoke now works, but the guide still needs the newer dynamic runner/policy route that reproduces ciru-ai's high-acceptance speed band. |
+| 1 | ROCmFP4 / CHADROCK follow-up from [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) | First-party Beelink load/API/MTP smoke now works for Crown Halo and ACE/SABER, but the guide still needs exact prompt/payload/build details to reproduce ciru-ai's high-acceptance speed band. |
 | 2 | Ollama 0.30.10 Linux sanity check for one default chat model and one 30B-class MoE | Ollama is the easiest buyer path. Version drift matters more to typical users than another raw `llama-bench` row. |
 | 3 | `llama.cpp` b9743 sentinel check for the current direct headline rows | Confirms whether the latest upstream release changes Qwen3-30B-A3B-Instruct-2507, Qwen3-Coder Q4_K_S, LFM2.5, and Nemotron Super guidance. |
 | 4 | Nemotron 3 Nano Omni NVFP4 or MXFP4 smoke test | Small enough to test quickly and adds a new NVIDIA multimodal/NVFP4/MXFP4 angle; keep separate from the earlier Nano IQ4_XS text-only row. |

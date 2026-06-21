@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chadrock ROCmFP4 Runner | Ciru Inference Lab</title>
+  <meta name="description" content="Build and run the Chadrock ROCmFP4 / ROCmFPX MTP runner on Strix Halo, with copy-paste build commands, llama-server configs, and Hugging Face model links.">
+  <meta name="theme-color" content="#080808">
+  <link rel="icon" type="image/png" sizes="32x32" href="../ccglogo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070707;
+      --bg-2: #111114;
+      --panel: rgba(15, 16, 19, 0.94);
+      --panel-2: rgba(23, 24, 29, 0.96);
+      --line: rgba(255, 255, 255, 0.13);
+      --line-strong: rgba(255, 255, 255, 0.26);
+      --text: #f7f7f4;
+      --muted: #a8adb7;
+      --subtle: #767d8a;
+      --amd: #ed1c24;
+      --red: #ff4e5f;
+      --orange: #ff9f43;
+      --yellow: #f6c046;
+      --green: #20d1a2;
+      --cyan: #39d0ff;
+      --blue: #78a8ff;
+      --violet: #c994ff;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.46);
+      --radius: 8px;
+      --max: 1160px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      line-height: 1.55;
+      background:
+        linear-gradient(120deg, rgba(237, 28, 36, 0.2), transparent 29%),
+        linear-gradient(300deg, rgba(57, 208, 255, 0.11), transparent 32%),
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.034) 0 1px, transparent 1px 20px),
+        linear-gradient(180deg, #090809 0%, #111115 45%, #070707 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(237, 28, 36, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+      background-size: 36px 36px;
+      opacity: 0.34;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.76), transparent 84%);
+    }
+
+    a {
+      color: #9ee8ff;
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:focus-visible {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    header {
+      width: min(calc(100% - 28px), var(--max));
+      margin: 6px auto 0;
+      padding: 18px 20px 22px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background:
+        linear-gradient(120deg, rgba(237, 28, 36, 0.22), transparent 36%),
+        linear-gradient(180deg, rgba(28, 28, 31, 0.96), rgba(9, 9, 10, 0.93));
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-top: 3px solid var(--amd);
+      background:
+        linear-gradient(90deg, rgba(237, 28, 36, 0.16), transparent 50%),
+        repeating-linear-gradient(90deg, transparent 0 28px, rgba(255, 255, 255, 0.04) 28px 29px);
+    }
+
+    header > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .logo-plate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      border: 1px solid rgba(237, 28, 36, 0.32);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(237, 28, 36, 0.16), rgba(57, 208, 255, 0.06)),
+        rgba(0, 0, 0, 0.26);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+
+    .logo-plate img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 16px rgba(237, 28, 36, 0.3));
+      transform: scale(1.24);
+    }
+
+    .brand-title {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.05;
+    }
+
+    .brand-subtitle {
+      display: block;
+      color: var(--muted);
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 0.68rem;
+      margin-top: 4px;
+    }
+
+    .back-link,
+    .copy-button,
+    .text-link {
+      border: 1px solid rgba(57, 208, 255, 0.38);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(135deg, rgba(57, 208, 255, 0.16), rgba(237, 28, 36, 0.07)),
+        rgba(0, 0, 0, 0.3);
+      color: #e9f7ff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .back-link,
+    .text-link {
+      padding: 9px 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .copy-button {
+      padding: 7px 10px;
+    }
+
+    .back-link:hover,
+    .back-link:focus-visible,
+    .copy-button:hover,
+    .copy-button:focus-visible,
+    .text-link:hover,
+    .text-link:focus-visible {
+      border-color: rgba(57, 208, 255, 0.72);
+      color: #fff;
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+
+    .kicker {
+      color: #ff7863;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      margin: 0 0 10px;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 960px;
+      font-size: clamp(2.2rem, 5vw, 4.9rem);
+      line-height: 0.96;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    header p {
+      max-width: 920px;
+      margin: 18px 0 0;
+      color: #c6c9cf;
+      font-size: 1.08rem;
+    }
+
+    main {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 28px 24px 64px;
+      position: relative;
+      z-index: 1;
+    }
+
+    nav {
+      background: rgba(15, 16, 19, 0.82);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+      margin: 0 0 26px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 8px 18px;
+    }
+
+    nav a {
+      color: #9ee8ff;
+      font-weight: 750;
+      font-size: 0.92rem;
+    }
+
+    section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      margin: 0 0 24px;
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 1.65rem;
+      letter-spacing: 0;
+      line-height: 1.18;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      margin: 26px 0 10px;
+      font-size: 1.06rem;
+      letter-spacing: 0;
+      color: #e8edf5;
+      text-transform: uppercase;
+    }
+
+    p { margin: 0 0 14px; }
+
+    ol,
+    ul {
+      margin: 8px 0 16px;
+      padding-left: 1.35rem;
+    }
+
+    li { margin: 7px 0; }
+
+    code,
+    pre {
+      font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    code {
+      color: #f7f7f4;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.12rem 0.32rem;
+      border-radius: 4px;
+      font-size: 0.92em;
+    }
+
+    .stats-grid,
+    .model-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .stat,
+    .model-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.018)),
+        var(--panel-2);
+      padding: 18px;
+    }
+
+    .stat b {
+      display: block;
+      color: var(--cyan);
+      font-size: 1.72rem;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .model-card {
+      position: relative;
+      display: flex;
+      min-height: 218px;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+      isolation: isolate;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--shadow);
+    }
+
+    .model-card::before,
+    .model-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .model-card::before {
+      z-index: -2;
+      background-image: var(--card-image);
+      background-position: center;
+      background-size: cover;
+      opacity: 0.72;
+      filter: saturate(1.08) contrast(1.08);
+      transform: scale(1.01);
+      transition: transform 180ms ease, opacity 180ms ease;
+    }
+
+    .model-card::after {
+      z-index: -1;
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.48) 44%, rgba(0, 0, 0, 0.9) 100%),
+        linear-gradient(110deg, rgba(237, 28, 36, 0.28), transparent 56%),
+        linear-gradient(300deg, rgba(57, 208, 255, 0.18), transparent 45%);
+    }
+
+    .model-card:hover::before,
+    .model-card:focus-within::before {
+      opacity: 0.84;
+      transform: scale(1.045);
+    }
+
+    .model-card span {
+      color: #d6dbe3;
+      font-size: 0.95rem;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.82);
+    }
+
+    .model-card a {
+      display: block;
+      color: #f7f7f4;
+      font-family: "IBM Plex Mono", ui-monospace, monospace;
+      font-size: 0.91rem;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.9);
+    }
+
+    .callout {
+      border: 1px solid rgba(57, 208, 255, 0.24);
+      border-left: 5px solid var(--cyan);
+      border-radius: var(--radius);
+      background: rgba(57, 208, 255, 0.08);
+      padding: 16px 18px;
+      margin: 18px 0;
+    }
+
+    .callout.warning {
+      border-color: rgba(255, 159, 67, 0.25);
+      border-left-color: var(--orange);
+      background: rgba(255, 159, 67, 0.08);
+    }
+
+    .code-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(0, 0, 0, 0.36);
+      overflow: hidden;
+      margin: 16px 0 22px;
+    }
+
+    .code-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(90deg, rgba(237, 28, 36, 0.16), rgba(57, 208, 255, 0.08)),
+        rgba(255, 255, 255, 0.035);
+      padding: 10px 12px;
+    }
+
+    .code-title {
+      color: #f7f7f4;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+    }
+
+    pre {
+      margin: 0;
+      padding: 16px;
+      overflow-x: auto;
+      color: #e7edf5;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      white-space: pre;
+    }
+
+    pre code {
+      display: block;
+      padding: 0;
+      background: transparent;
+      border-radius: 0;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 0.95rem;
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    th,
+    td {
+      border: 1px solid var(--line);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.06);
+      font-weight: 750;
+      color: #f7f7f4;
+    }
+
+    td code {
+      overflow-wrap: anywhere;
+    }
+
+    .num {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 24px 48px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (max-width: 700px) {
+      header { padding: 24px 18px 28px; }
+      main { padding: 20px 14px 44px; }
+      section { padding: 20px 16px; }
+      .brand-row { align-items: flex-start; flex-direction: column; }
+      .code-head { align-items: flex-start; flex-direction: column; }
+      table { font-size: 0.86rem; }
+      th, td { padding: 8px; }
+      h1 { font-size: clamp(2rem, 13vw, 3.2rem); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="brand-row">
+        <a class="brand-lockup" href="../">
+          <span class="logo-plate"><img src="../ccglogo.png" alt="Crown Citadel Group"></span>
+          <span>
+            <span class="brand-title">Ciru Inference Lab</span>
+            <span class="brand-subtitle">llm.ciru.ai / chadrock</span>
+          </span>
+        </a>
+        <a class="back-link" href="../">Benchmarks</a>
+      </div>
+      <p class="kicker">Crown Citadel Runner Notes</p>
+      <h1>Chadrock ROCmFP4 Runner</h1>
+      <p>
+        Build the patched ROCmFPX / llama.cpp runner, launch the Strix Halo
+        MTP configs, and use request-level speculative controls to reproduce
+        the 35B ~140 tok/s and Qwable 5 27B 50+ tok/s serving rows.
+      </p>
+      <div class="stats-grid">
+        <div class="stat">
+          <b>143.08 tok/s</b>
+          <span>35B ACE/SABER ROCmFP4, gen512, served path, 3946-token prompt.</span>
+        </div>
+        <div class="stat">
+          <b>53.25 tok/s</b>
+          <span>Qwable 5 27B Chadrock v2 ROCmFP4, gen512 served path, 3946-token prompt.</span>
+        </div>
+        <div class="stat">
+          <b>3 knobs</b>
+          <span><code>speculative.n_max</code>, <code>speculative.n_min</code>, and <code>speculative.p_min</code>.</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <nav aria-label="Page sections">
+      <a href="#run-order">Run order</a>
+      <a href="#build">Build commands</a>
+      <a href="#configs">Llama configs</a>
+      <a href="#request">Request payload</a>
+      <a href="#models">Chadrock models</a>
+      <a href="#validation">Validation</a>
+    </nav>
+
+    <section id="run-order">
+      <h2>Run Order</h2>
+      <ol>
+        <li>Download one of the Chadrock GGUF models from <a href="https://huggingface.co/jcbtc?search=chadrock">jcbtc on Hugging Face</a>.</li>
+        <li>Build the runner from the pinned <a href="https://github.com/ciru-ai/ROCmFPX/tree/deaa996dab90b3ca6dd3ae5d453bedfcd983012d">Chadrock ROCmFP4 commit</a>.</li>
+        <li>Start the built <code>llama-server</code> with one of the direct commands below.</li>
+        <li>Send <code>/completion</code> or <code>/v1/chat/completions</code> requests with the speculative fields enabled.</li>
+      </ol>
+      <div class="callout">
+        Start the server with a draft cap at least as high as the deepest policy
+        you plan to test. A request can lower <code>speculative.n_max</code>,
+        but it cannot raise it above the server startup cap.
+      </div>
+    </section>
+
+    <section id="build">
+      <h2>Build Commands</h2>
+      <p>
+        Copy this on a Strix Halo machine. The build produces the
+        <code>build-strix-rocmfp4/bin/llama-server</code> runner used by the
+        reproduction configs.
+      </p>
+      <div class="code-panel">
+        <div class="code-head">
+          <span class="code-title">Copy-paste build commands</span>
+          <button class="copy-button" type="button" data-copy-target="build-code">Copy</button>
+        </div>
+        <pre><code id="build-code">git clone https://github.com/ciru-ai/ROCmFPX.git
+cd ROCmFPX
+git checkout deaa996dab90b3ca6dd3ae5d453bedfcd983012d
+env JOBS=16 scripts/build-strix-rocmfp4-mtp.sh llama-server llama-bench</code></pre>
+      </div>
+      <div class="actions">
+        <a class="text-link" href="https://github.com/ciru-ai/ROCmFPX/blob/deaa996dab90b3ca6dd3ae5d453bedfcd983012d/docs/ROCmFPX-SERVING.md">Pinned runner guide</a>
+        <a class="text-link" href="https://github.com/ciru-ai/ROCmFPX/tree/deaa996dab90b3ca6dd3ae5d453bedfcd983012d">Pinned commit</a>
+        <a class="text-link" href="https://github.com/ciru-ai/ROCmFPX/releases/tag/chadrock-rocmfp4-mtp-scores-20260621">Score tag</a>
+      </div>
+    </section>
+
+    <section id="configs">
+      <h2>Llama Configs</h2>
+      <p>
+        Copy one launch block, replace the <code>/path/to/...</code> GGUF path,
+        then run it from the ROCmFPX checkout.
+      </p>
+      <div class="code-panel">
+        <div class="code-head">
+          <span class="code-title">35B ACE/SABER launch</span>
+          <button class="copy-button" type="button" data-copy-target="config-35b-code">Copy</button>
+        </div>
+        <pre><code id="config-35b-code">./build-strix-rocmfp4/bin/llama-server \
+  -m /path/to/Qwen3.6-35B-A3B-NSC-ACE-SABER-MTP-F16-to-ROCmFP4-STRIX_LEAN.gguf \
+  --alias chadrock-35b-ace-saber-rocmfp4-cap4 \
+  --host 127.0.0.1 \
+  --port 18180 \
+  --jinja \
+  -c 32768 \
+  --reasoning off \
+  --reasoning-format none \
+  --reasoning-budget -1 \
+  --no-context-shift \
+  -dev Vulkan0 \
+  -ngl 999 \
+  -fa on \
+  -b 2048 \
+  -ub 512 \
+  -t 16 \
+  -tb 32 \
+  -ctk f16 \
+  -ctv f16 \
+  --temp 0 \
+  --top-p 0.95 \
+  --top-k 20 \
+  --seed 123 \
+  --parallel 1 \
+  --no-mmproj \
+  --metrics \
+  --no-webui \
+  --no-cache-prompt \
+  --cache-ram 0 \
+  --slot-prompt-similarity 0.0 \
+  --spec-type draft-mtp \
+  --spec-draft-device Vulkan0 \
+  --spec-draft-ngl all \
+  --spec-draft-threads 16 \
+  --spec-draft-threads-batch 32 \
+  --spec-draft-type-k f16 \
+  --spec-draft-type-v f16 \
+  --spec-draft-n-max 4 \
+  --spec-draft-n-min 0 \
+  --spec-draft-p-min 0.25 \
+  --spec-draft-p-split 0.10 \
+  --no-spec-draft-backend-sampling \
+  --spec-draft-poll 1 \
+  --spec-draft-poll-batch 1</code></pre>
+      </div>
+      <div class="code-panel">
+        <div class="code-head">
+          <span class="code-title">Qwable 5 27B launch</span>
+          <button class="copy-button" type="button" data-copy-target="config-qwable-code">Copy</button>
+        </div>
+        <pre><code id="config-qwable-code">./build-strix-rocmfp4/bin/llama-server \
+  -m /path/to/Qwable-5-27B-Chadrock-v2-ROCmFP4.gguf \
+  --alias qwable-5-27b-chadrock-v2-rocmfp4 \
+  --host 127.0.0.1 \
+  --port 18180 \
+  --jinja \
+  -c 131072 \
+  --reasoning off \
+  --reasoning-format none \
+  --reasoning-budget -1 \
+  --no-context-shift \
+  -dev Vulkan0 \
+  -ngl 999 \
+  -fa on \
+  -b 2048 \
+  -ub 512 \
+  -t 16 \
+  -tb 32 \
+  -ctk q8_0 \
+  -ctv q8_0 \
+  --temp 0 \
+  --top-p 0.95 \
+  --top-k 20 \
+  --seed 123 \
+  --parallel 1 \
+  --no-mmproj \
+  --metrics \
+  --no-webui \
+  --no-cache-prompt \
+  --cache-ram 0 \
+  --slot-prompt-similarity 0.0 \
+  --spec-type draft-mtp \
+  --spec-draft-device Vulkan0 \
+  --spec-draft-ngl all \
+  --spec-draft-threads 16 \
+  --spec-draft-threads-batch 32 \
+  --spec-draft-type-k f16 \
+  --spec-draft-type-v f16 \
+  --spec-draft-n-max 6 \
+  --spec-draft-n-min 0 \
+  --spec-draft-p-min 0.0 \
+  --spec-draft-p-split 0.20 \
+  --no-spec-draft-backend-sampling \
+  --spec-draft-poll 1 \
+  --spec-draft-poll-batch 1</code></pre>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Profile</th>
+            <th>Startup cap</th>
+            <th>Request policy</th>
+            <th class="num">Measured decode</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>35B ACE/SABER ROCmFP4</td>
+            <td><code>SPEC_DRAFT_N_MAX=4</code></td>
+            <td><code>n_max=4</code>, <code>n_min=0</code>, <code>p_min=0.25</code></td>
+            <td class="num">143.08 tok/s</td>
+          </tr>
+          <tr>
+            <td>Qwable 5 27B Chadrock v2 ROCmFP4</td>
+            <td><code>SPEC_DRAFT_N_MAX=6</code></td>
+            <td><code>n_max=6</code>, <code>n_min=0</code>, <code>p_min=0.0</code></td>
+            <td class="num">53.25 tok/s</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="request">
+      <h2>Request Payload</h2>
+      <p>
+        The request fields are top-level fields on both <code>/completion</code>
+        and OpenAI-compatible chat completions. This example uses
+        <code>/completion</code>.
+      </p>
+      <div class="code-panel">
+        <div class="code-head">
+          <span class="code-title">35B ACE/SABER request</span>
+          <button class="copy-button" type="button" data-copy-target="request-35b-code">Copy</button>
+        </div>
+        <pre><code id="request-35b-code">curl -sS http://127.0.0.1:18180/completion \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "prompt": "Write a concise technical note about ROCmFPX MTP serving.",
+    "n_predict": 512,
+    "temperature": 0,
+    "ignore_eos": true,
+    "speculative.n_max": 4,
+    "speculative.n_min": 0,
+    "speculative.p_min": 0.25
+  }'</code></pre>
+      </div>
+      <div class="code-panel">
+        <div class="code-head">
+          <span class="code-title">Qwable 5 27B request</span>
+          <button class="copy-button" type="button" data-copy-target="request-qwable-code">Copy</button>
+        </div>
+        <pre><code id="request-qwable-code">curl -sS http://127.0.0.1:18180/completion \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "prompt": "Write a concise technical note about ROCmFPX MTP serving.",
+    "n_predict": 512,
+    "temperature": 0,
+    "ignore_eos": true,
+    "speculative.n_max": 6,
+    "speculative.n_min": 0,
+    "speculative.p_min": 0.0
+  }'</code></pre>
+      </div>
+    </section>
+
+    <section id="models">
+      <h2>Chadrock Models</h2>
+      <p>
+        Use the filtered Hugging Face profile link for the current Chadrock list,
+        or jump directly to one of the published model repos below. Each tile uses
+        the model card image from its Hugging Face page.
+      </p>
+      <div class="actions">
+        <a class="text-link" href="https://huggingface.co/jcbtc?search=chadrock">All Chadrock models on jcbtc</a>
+      </div>
+      <div class="model-grid">
+        <div class="model-card" style="--card-image: url('assets/chadrockv2quable5.png');">
+          <a href="https://huggingface.co/jcbtc/qwable-5-27b-chadrock-v2-rocmfp4">jcbtc/qwable-5-27b-chadrock-v2-rocmfp4</a>
+          <span>Qwable 5 27B Chadrock v2 ROCmFP4, the 50+ tok/s served-MTP winner.</span>
+        </div>
+        <div class="model-card" style="--card-image: url('assets/chadrock35b.png');">
+          <a href="https://huggingface.co/jcbtc/chadrock-35b-ace-saber-rocmfp4-mtp">jcbtc/chadrock-35b-ace-saber-rocmfp4-mtp</a>
+          <span>35B ACE/SABER ROCmFP4 MTP, the text profile used for the ~140 tok/s row.</span>
+        </div>
+        <div class="model-card" style="--card-image: url('assets/chadrockcoder.png');">
+          <a href="https://huggingface.co/jcbtc/chadrock3.6-27b-coder-rocmfp4-mtp">jcbtc/chadrock3.6-27b-coder-rocmfp4-mtp</a>
+          <span>CHADROCK3.6 27B Coder ROCmFP4 MTP release with validated card-specific settings.</span>
+        </div>
+        <div class="model-card" style="--card-image: url('assets/chadrockpiagent.png');">
+          <a href="https://huggingface.co/jcbtc/chadrock3.6-27b-pi-agent-rocmfp4-mtp">jcbtc/chadrock3.6-27b-pi-agent-rocmfp4-mtp</a>
+          <span>27B Pi-agent Chadrock ROCmFP4 MTP model.</span>
+        </div>
+        <div class="model-card" style="--card-image: url('assets/chadrock27b.png');">
+          <a href="https://huggingface.co/jcbtc/qwopus3.6-27b-v2-chadrock-rocmfp4-mtp">jcbtc/qwopus3.6-27b-v2-chadrock-rocmfp4-mtp</a>
+          <span>Qwopus3.6 27B v2 Chadrock ROCmFP4 MTP.</span>
+        </div>
+        <div class="model-card" style="--card-image: url('assets/chadrock40b.png');">
+          <a href="https://huggingface.co/jcbtc/chadrock3.6-40b-opus-deckard-uncensored-thinking-neo-code-di-imatrix-rocmfp4">jcbtc/chadrock3.6-40b-opus-deckard-uncensored-thinking-neo-code-di-imatrix-rocmfp4</a>
+          <span>40B Deckard Chadrock ROCmFP4 release.</span>
+        </div>
+        <div class="model-card" style="--card-image: url('assets/chadrockuncensored.png');">
+          <a href="https://huggingface.co/jcbtc/CHADROCK3.6-35B-UNCENSORED-MTP-STRIX-LEAN">jcbtc/CHADROCK3.6-35B-UNCENSORED-MTP-STRIX-LEAN</a>
+          <span>35B Uncensored Strix Lean MTP release.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="validation">
+      <h2>Validation</h2>
+      <p>Before sharing a speed row, record the runner commit, model path, backend device, context, KV cache types, batch and ubatch, prompt-cache setting, generated tokens, decode tok/s, TTFP, and draft accepted/generated counters.</p>
+      <div class="code-panel">
+        <div class="code-head">
+          <span class="code-title">Quick server checks</span>
+          <button class="copy-button" type="button" data-copy-target="check-code">Copy</button>
+        </div>
+        <pre><code id="check-code">curl -sS http://127.0.0.1:18180/health
+curl -sS http://127.0.0.1:18180/props | jq '.default_generation_settings'
+curl -sS http://127.0.0.1:18180/metrics | head</code></pre>
+      </div>
+      <p>
+        Use served API rows or a CLI guard with draft counters for headline MTP
+        speed. Do not use standalone <code>llama-bench</code> TG as the headline
+        for MTP serving.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Published by Ciru Inference Lab. Runner repo: <code>ciru-ai/ROCmFPX@deaa996dab90b3ca6dd3ae5d453bedfcd983012d</code>. Score tag: <code>chadrock-rocmfp4-mtp-scores-20260621</code>.</p>
+  </footer>
+
+  <script>
+    document.querySelectorAll("[data-copy-target]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const target = document.getElementById(button.dataset.copyTarget);
+        if (!target) return;
+        const text = target.textContent.trimEnd();
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = button.textContent;
+          button.textContent = "Copied";
+          window.setTimeout(() => {
+            button.textContent = original;
+          }, 1400);
+        } catch {
+          button.textContent = "Select Text";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
