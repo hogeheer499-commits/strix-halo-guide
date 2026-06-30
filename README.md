@@ -2057,6 +2057,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 - **Community map expanded to 11 systems/sources:** papagenic contributed a Minix Elite ER939 Ai Ollama 0.30.10 report for `qwen3.6:35b-a3b` on Ubuntu 26.04, kernel 7.0.0-22, Mesa 26.1.3, BIOS UMA 1G, and IOMMU disabled.
 - **Claim boundary preserved:** the row is useful buyer-path evidence for Minix/Ollama/Ubuntu 26.04, but it is not a direct `llama-bench` headline because backend/Vulkan ICD, script details, repeats, and warm/cold state are not yet confirmed.
 - **Public traction snapshot refreshed:** the guide reached **187 GitHub stars**, **9 forks**, **4 watchers**, **1 open issue**, and **1 open pull request** in the 2026-06-30 GitHub API snapshot. This remains a small-niche demand signal; the main value is still reproducible public evidence that reduces buyer setup friction.
+- **Runtime watchlist refreshed:** `llama.cpp` b9851 and Ollama 0.30.11 are now the current next sanity-check targets. No new performance claim is made until the sentinel rows are rerun.
 
 ### 2026-06-21 -- Traction Snapshot And ROCmFP4 Watch Lane
 
