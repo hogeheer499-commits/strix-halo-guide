@@ -3,7 +3,7 @@
 ![Small MoE](https://img.shields.io/badge/small_MoE-170.0_t/s-brightgreen?style=for-the-badge)
 ![120B](https://img.shields.io/badge/direct_120B_GGUF-18.4_t/s-0ea5e9?style=for-the-badge)
 ![MTP](https://img.shields.io/badge/MTP_server-101--140_t/s_experimental-7c3aed?style=for-the-badge)
-[![Community](https://img.shields.io/badge/community-6_contributors_10_systems-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
+[![Community](https://img.shields.io/badge/community-7_contributors_11_systems-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
 ![RAM](https://img.shields.io/badge/128GB_unified-blue?style=for-the-badge)
 ![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
@@ -65,7 +65,7 @@ What you get:
 | Large local model checks | gpt-oss-120b MXFP4 split GGUF loaded locally at 55.57 t/s tg128; Nemotron 3 Super 120B-A12B UD-IQ4_XS loaded directly at 18.43 t/s; MiniMax M2.7 230B-class MoE loaded and generated locally in a capacity scout. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Backend split | Vulkan/RADV wins measured generation on the current single-box Qwen rows; ROCm/HIP can win prompt-processing-heavy work, and ROCm RPC is required for the tested MiniMax capacity case. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) and [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md). |
-| Community validation | The public evidence map now covers 10 Strix Halo-class systems. Three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128. GMKtec EVO-X2 reports cover native Ubuntu within about 2% of the Beelink Qwen3.6 row, Qwen3-Coder follow-ups, WSL2/HIP, and a tuned Reddit Qwen3-Coder `Q4_K_S` report around 99.9-100.0 t/s. A Windows MS-S1-Max LM Studio report adds the first Windows serving/API row. A Nimo AI Mini PC bundle adds another compact 128GB chassis, large-model serving rows, MTP/StepFun/Qwen 122B evidence, Gemma 4 QAT/MTP assistant-head follow-up data, and thermal context. A community Beelink CachyOS/ROCm/ZenDNN report adds prompt-processing crossover evidence and VMM/rocWMMA failure notes. A ciru-ai GMKtec EVO-X2 artifact adds a NixOS / IOMMU-on / NPU-sidecar / ROCmFP4 evidence package with sanitized CSV/SQLite exports and quality-eval rows. Community reports also cover quant/source/build effects, same-SKU variance, wall-power efficiency, 3-node USB4 RPC, RPC serving/TTFT, and USB4 tuning. |
+| Community validation | The public evidence map now covers 11 Strix Halo-class systems/sources. Three Corsair AI Workstation 300 systems reproduced the Qwen3-Coder Vulkan/RADV path at 93.55-95.50 t/s tg128. GMKtec EVO-X2 reports cover native Ubuntu within about 2% of the Beelink Qwen3.6 row, Qwen3-Coder follow-ups, WSL2/HIP, and a tuned Reddit Qwen3-Coder `Q4_K_S` report around 99.9-100.0 t/s. A Windows MS-S1-Max LM Studio report adds the first Windows serving/API row. A Nimo AI Mini PC bundle adds another compact 128GB chassis, large-model serving rows, MTP/StepFun/Qwen 122B evidence, Gemma 4 QAT/MTP assistant-head follow-up data, and thermal context. A community Beelink CachyOS/ROCm/ZenDNN report adds prompt-processing crossover evidence and VMM/rocWMMA failure notes. A ciru-ai GMKtec EVO-X2 artifact adds a NixOS / IOMMU-on / NPU-sidecar / ROCmFP4 evidence package with sanitized CSV/SQLite exports and quality-eval rows. A Minix Elite ER939 Ai report adds Ubuntu 26.04 / kernel 7.0 / Mesa 26.1.3 / Ollama 0.30.10 buyer-path evidence. Community reports also cover quant/source/build effects, same-SKU variance, wall-power efficiency, 3-node USB4 RPC, RPC serving/TTFT, and USB4 tuning. |
 | Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
 | Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
 
@@ -2052,6 +2052,12 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 
 ## Changelog
 
+### 2026-06-30 -- Minix Elite ER939 Ai Community Row
+
+- **Community map expanded to 11 systems/sources:** papagenic contributed a Minix Elite ER939 Ai Ollama 0.30.10 report for `qwen3.6:35b-a3b` on Ubuntu 26.04, kernel 7.0.0-22, Mesa 26.1.3, BIOS UMA 1G, and IOMMU disabled.
+- **Claim boundary preserved:** the row is useful buyer-path evidence for Minix/Ollama/Ubuntu 26.04, but it is not a direct `llama-bench` headline because backend/Vulkan ICD, script details, repeats, and warm/cold state are not yet confirmed.
+- **Public traction snapshot refreshed:** the guide reached **187 GitHub stars**, **9 forks**, **4 watchers**, **1 open issue**, and **1 open pull request** in the 2026-06-30 GitHub API snapshot. This remains a small-niche demand signal; the main value is still reproducible public evidence that reduces buyer setup friction.
+
 ### 2026-06-21 -- Traction Snapshot And ROCmFP4 Watch Lane
 
 - **Public traction snapshot refreshed:** the guide reached **160+ GitHub stars** and **10 Strix Halo-class systems represented** in the 2026-06-21 snapshot. This is a small-niche demand signal; the main vendor value remains reproducible public evidence that reduces buyer setup friction.
@@ -2092,7 +2098,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 ### 2026-06-03 -- Nimo AI Mini PC Community Bundle
 
 - **Nimo AI Mini PC evidence added:** boxwrench contributed a Ryzen AI MAX+ 395 / Radeon 8060S / 128GB Nimo bundle in issue #4 with system metadata, reproducibility notes, raw benchmark rows, thermal telemetry, and model-specific follow-ups.
-- **Community map now covers 8 systems:** the guide now tracks Beelink first-party data plus three Corsair systems, two GMKtec sources, MS-S1-Max, and Nimo community evidence. This was later expanded to 10 systems with a second Beelink owner stack and ciru-ai's GMKtec EVO-X2 NixOS/NPU artifact.
+- **Community map now covers 8 systems:** the guide now tracks Beelink first-party data plus three Corsair systems, two GMKtec sources, MS-S1-Max, and Nimo community evidence. This was later expanded to 11 systems/sources with a second Beelink owner stack, ciru-ai's GMKtec EVO-X2 NixOS/NPU artifact, and papagenic's Minix Elite ER939 Ai Ollama report.
 - **Large-model buyer context added:** Nimo rows cover Qwen 3.5/3.6 35B, Qwen 122B-class serving, Qwen3-Coder-Next, StepFun Step-3.7-Flash, GPT-OSS/Gemma notes in the raw bundle, and DFlash negative/control evidence. These are community serving/eval rows, not first-party direct `llama-bench` headline claims.
 - **Gemma 4 QAT follow-up added:** boxwrench added Gemma 4 12B, 26B-A4B, and 31B QAT Q4_0 rows with matched MTP assistant-head comparisons. The useful lesson is not a homepage headline; it is that matched QAT assistant heads can materially improve single-stream decode and acceptance. Atomic PR #26 later fixed the reported `PARALLEL=2` Gemma 4 MTP crash, so fresh post-merge 2-slot community numbers are now the useful follow-up.
 - **Vendor/adoption value improved:** [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) summarizes what the Nimo bundle proves and what it does not prove, so vendors/reviewers can see how additional hardware reduces setup and buyer uncertainty without turning community data into endorsement language.
