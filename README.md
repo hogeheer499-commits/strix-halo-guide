@@ -1967,7 +1967,7 @@ Linux gives the best-tested performance and the strongest native Vulkan/RADV evi
 <details>
 <summary><strong>How does this compare to a Mac Studio?</strong></summary>
 
-Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro price snapshot is $4,399 and this guide measures 50.51-100.04 t/s on the larger current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row, and smaller active-parameter MoE scouts can be higher. Apple Silicon usually wins per-model bandwidth-sensitive inference. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
+Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro price snapshot is $4,399 and this guide measures 50.51-101.0 t/s on the larger current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row, and smaller active-parameter MoE scouts can be higher. Apple Silicon usually wins per-model bandwidth-sensitive inference. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
 
 </details>
 
@@ -2061,7 +2061,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 
 - **Community map expanded to 11 systems/sources:** papagenic contributed a Minix Elite ER939 Ai Ollama 0.30.10 report for `qwen3.6:35b-a3b` on Ubuntu 26.04, kernel 7.0.0-22, Mesa 26.1.3, BIOS UMA 1G, and IOMMU disabled.
 - **Claim boundary preserved:** the row is useful buyer-path evidence for Minix/Ollama/Ubuntu 26.04, but it is not a direct `llama-bench` headline because backend/Vulkan ICD, script details, repeats, and warm/cold state are not yet confirmed.
-- **Public traction snapshot refreshed:** the guide reached **187 GitHub stars**, **9 forks**, **4 watchers**, **1 open issue**, and **1 open pull request** in the 2026-06-30 GitHub API snapshot. This remains a small-niche demand signal; the main value is still reproducible public evidence that reduces buyer setup friction.
+- **Public traction snapshot refreshed:** the guide reached **188 GitHub stars**, **9 forks**, **4 watchers**, **7 open issues**, and **0 open pull requests** in the 2026-07-01 GitHub API snapshot. This remains a small-niche demand signal; the main value is still reproducible public evidence that reduces buyer setup friction.
 - **Runtime watchlist refreshed:** the `llama.cpp` b9851 sentinel is now measured; Ollama 0.30.11 remains the next buyer-path sanity-check target because the local installed service is still 0.23.1.
 
 ### 2026-06-21 -- Traction Snapshot And ROCmFP4 Watch Lane
