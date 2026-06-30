@@ -184,8 +184,8 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | Priority | Test | Why it adds guide value |
 | ---: | --- | --- |
 | 1 | ROCmFP4 / CHADROCK stability follow-up from [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) | The helper route now reproduces ~140 t/s gen512 on a high-acceptance prompt. Next value is a cleaner multi-prompt profile: when does it stay near 140, when does it fall back toward 115-128, and which prompt/model profiles should users actually choose? |
-| 2 | Ollama 0.30.10 Linux sanity check for one default chat model and one 30B-class MoE | Ollama is the easiest buyer path. Version drift matters more to typical users than another raw `llama-bench` row. |
-| 3 | `llama.cpp` b9747 sentinel check for the current direct headline rows | Official b9747 Vulkan binary already ran the Nemotron Omni smoke cleanly. Next value is a sentinel rerun for Qwen3-30B-A3B-Instruct-2507, Qwen3-Coder Q4_K_S, LFM2.5, and Nemotron Super if the exact model files are restored locally. |
+| 2 | Ollama 0.30.11 Linux sanity check for one default chat model and one 30B-class MoE | Ollama is the easiest buyer path. Version drift matters more to typical users than another raw `llama-bench` row. |
+| 3 | `llama.cpp` b9851 sentinel check for the current direct headline rows | Official b9747 Vulkan binary already ran the Nemotron Omni smoke cleanly, and b9851 is now the latest release observed on 2026-06-30. Next value is a sentinel rerun for Qwen3-30B-A3B-Instruct-2507, Qwen3-Coder Q4_K_S, LFM2.5, Nemotron Super, and Nemotron Omni if the exact model files are restored locally. |
 | 4 | Nemotron 3 Nano Omni NVFP4 or quality/multimodal follow-up | MXFP4_MOE now has a direct b9747 smoke pass at 56.56 tg128. A follow-up only matters if it compares NVFP4/MXFP4 quality, multimodal/mmproj behavior, or an easier recommended route. |
 | 5 | DeepSeek V4 Flash REAP 47 GiB loadability follow-up | Smaller than the earlier 100GB+ DeepSeek routes and directly answers whether the previous blocker was artifact/runtime support rather than hardware capacity. |
 | 6 | External-storage feasibility plan for Kimi-K2.7-Code, GLM-5.2, MiniMax-M3, and Nemotron Ultra class routes | These are high-traffic model names, but most artifacts are 120-300GB+. A clean external NVMe plan is more valuable than pretending they are simple internal-disk tests. |
@@ -202,8 +202,8 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | DeepSeek V4 Flash | Original 103GB route was download-blocked; smaller 0xSero/Spark-Mini route reached local load attempts but failed before benchmarking. New REAP Q2 route scanned at 47.0 GiB, making loadability worth revisiting before claiming performance. |
 | Nemotron 3 Ultra 550B-A55B | GGUF route found in the 2026-06-05 scan, but the smallest scanned route is about 188 GB. Watch for smaller practical artifacts or test only with external storage / multi-node planning. |
 | Nemotron 3 Super 120B-A12B | Tested with `UD-IQ4_XS`. Add lower/higher quant comparisons only if they answer a specific buyer question. |
-| `llama.cpp` b9747 | Latest release observed 2026-06-21. The official Vulkan binary ran the Nemotron Omni smoke cleanly; direct headline sentinel reruns still require restoring the exact local model files. |
-| Ollama 0.30.10 | Latest release observed 2026-06-17. Useful for buyer-path sanity checks because Ollama is the easiest local chat route. |
+| `llama.cpp` b9851 | Latest release observed 2026-06-30. The older official b9747 Vulkan binary ran the Nemotron Omni smoke cleanly; direct headline sentinel reruns on b9851 are the useful next regression check. |
+| Ollama 0.30.11 | Latest release observed 2026-06-25. Useful for buyer-path sanity checks because Ollama is the easiest local chat route; include Minix/Ollama community context but keep it separate from direct `llama-bench` claims. |
 
 ## Sources
 
@@ -224,5 +224,6 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 - Nemotron 3 Nano Omni MXFP4 GGUF: <https://huggingface.co/unsloth/NVIDIA-Nemotron-3-Nano-Omni-30B-A3B-Reasoning-GGUF>
 - Nemotron 3 Nano Omni NVFP4 GGUF: <https://huggingface.co/FreedomAISVR/Nemotron-3-30B-Nano-Omni-NVFP4-GGUF>
 - DeepSeek V4 Flash REAP Q2 GGUF: <https://huggingface.co/sleepyeldrazi/deepseek-v4-flash-reap-k128-Q2-GGUF>
+- `llama.cpp` b9851: <https://github.com/ggml-org/llama.cpp/releases/tag/b9851>
 - `llama.cpp` b9747: <https://github.com/ggml-org/llama.cpp/releases/tag/b9747>
-- Ollama 0.30.10: <https://github.com/ollama/ollama/releases/tag/v0.30.10>
+- Ollama 0.30.11: <https://github.com/ollama/ollama/releases/tag/v0.30.11>
