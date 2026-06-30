@@ -153,6 +153,22 @@ Relevant docs:
 - [`data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/`](data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/)
 - [`ciru-ai/strix-halo-evo-x2-evidence`](https://github.com/ciru-ai/strix-halo-evo-x2-evidence)
 
+### [papagenic](https://github.com/papagenic)
+
+papagenic added the first Minix Elite ER939 Ai community report:
+
+- Minix Elite ER939 Ai with 128GB-class memory reported as `128GI`
+- Ubuntu 26.04 LTS, kernel 7.0.0-22-generic, Mesa 26.1.3 from kisak-mesa PPA, BIOS UMA 1G, IOMMU disabled
+- Ollama 0.30.10 with `qwen3.6:35b-a3b`
+- reported `bench-ollama.sh` result: 97.4 t/s prompt eval over 14 tokens and 30.5 t/s generation over 206 tokens
+- useful buyer-path evidence for Minix/Ollama/Ubuntu 26.04, kept separate from direct `llama-bench` headline claims because backend, Vulkan ICD, repeats, warm/cold state, and script details are still incomplete
+
+Relevant docs:
+
+- [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md#minix-elite-er939-ai-ollama-03010-report)
+- [`data/community_results.csv`](data/community_results.csv)
+- [`data/raw/2026-06-24/community-minix-er939-ollama-issue27/`](data/raw/2026-06-24/community-minix-er939-ollama-issue27/)
+
 ## How To Get Contributor Credit
 
 Benchmark reports in issues are welcome and will be credited when incorporated. Pull requests are even better for future datasets because GitHub will automatically attach commit-level contributor credit after merge.
