@@ -19,6 +19,7 @@ Fail-Safe materially expanded the guide's evidence base with a Corsair AI Workst
 - `llama-server` TTFT and streaming generation-rate comparison for 1-node versus 2-node RPC
 - USB4 latency tuning, MTU comparison, `pm_qos` idle-power measurement, and experimental thunderbolt throttle patch notes
 - Qwen3.6 GGUF source/build follow-up showing source effects, build effects, and guide-flag effects separately
+- MiMo-V2.5 310B-total / 15B-active `UD-IQ2_M` capacity row on Corsair `ai-2`, including prompt-processing-only `llama-bench` output and wall-power/GPU telemetry
 
 Relevant docs:
 
@@ -27,6 +28,7 @@ Relevant docs:
 - [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md)
 - [`data/community_results.csv`](data/community_results.csv)
 - [`data/community_power.csv`](data/community_power.csv)
+- [`data/raw/2026-06-21/community-failsafe-corsair-mimo25-issue26/`](data/raw/2026-06-21/community-failsafe-corsair-mimo25-issue26/)
 - [`data/community_rpc.csv`](data/community_rpc.csv)
 - [`data/community_rpc_server.csv`](data/community_rpc_server.csv)
 - [`data/community_rpc_failures.csv`](data/community_rpc_failures.csv)

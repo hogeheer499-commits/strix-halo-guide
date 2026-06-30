@@ -1,0 +1,4 @@
+metric,low,high,mean,unit,source
+home_assistant_wall_power,29.7,162.4,114.14,W,https://github.com/hogeheer499-commits/strix-halo-guide/issues/26
+gpu_edge_temperature,40.0,75.0,59.76,C,https://github.com/hogeheer499-commits/strix-halo-guide/issues/26
+gpu_socket_power,14.098,104.021,70.92,W,https://github.com/hogeheer499-commits/strix-halo-guide/issues/26
