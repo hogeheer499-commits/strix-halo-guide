@@ -17,6 +17,7 @@ The repo also has a visible demand signal: 192 GitHub stars and 11 Strix Halo-cl
 The technical proof layer already includes:
 
 - Setup and workflow guidance in [`README.md`](README.md).
+- Current buyer-path setup checks, including the Ollama 0.31.1 `OLLAMA_IGPU_ENABLE=1` Vulkan/RADV sanity row that turns a silent iGPU-drop risk into a documented setup instruction.
 - Reproducibility notes in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
 - Current benchmark snapshot in [`BENCHMARKS.md`](BENCHMARKS.md).
 - Claim-to-evidence mapping in [`data/headline_claims.csv`](data/headline_claims.csv).

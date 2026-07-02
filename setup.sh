@@ -189,12 +189,15 @@ fi
 
 # Configure Ollama for Vulkan
 OLLAMA_OVERRIDE="/etc/systemd/system/ollama.service.d/override.conf"
-if [ ! -f "$OLLAMA_OVERRIDE" ] || ! grep -q "OLLAMA_VULKAN" "$OLLAMA_OVERRIDE" 2>/dev/null; then
+if [ ! -f "$OLLAMA_OVERRIDE" ] || \
+   ! grep -q "OLLAMA_VULKAN" "$OLLAMA_OVERRIDE" 2>/dev/null || \
+   ! grep -q "OLLAMA_IGPU_ENABLE" "$OLLAMA_OVERRIDE" 2>/dev/null; then
     info "Configuring Ollama for Vulkan..."
     sudo mkdir -p /etc/systemd/system/ollama.service.d
     sudo tee "$OLLAMA_OVERRIDE" > /dev/null << 'OLLAMA'
 [Service]
 Environment="OLLAMA_VULKAN=1"
+Environment="OLLAMA_IGPU_ENABLE=1"
 Environment="HIP_VISIBLE_DEVICES=-1"
 Environment="OLLAMA_FLASH_ATTENTION=1"
 Environment="OLLAMA_CONTEXT_LENGTH=8192"

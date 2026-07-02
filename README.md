@@ -56,12 +56,12 @@ What you get:
 |----------|----------------|
 | What was tested? | Local LLM inference and local API serving on Strix Halo, mainly Vulkan/RADV llama.cpp, Ollama, ROCm/HIP, Lemonade `llamacpp-rocm`, and early vLLM smoke tests. |
 | Primary hardware | Beelink GTR9 Pro, Ryzen AI MAX+ 395, Radeon 8060S `gfx1151`, 128GB LPDDR5X-8000 unified memory. |
-| Best easy path | Ollama 0.23.1 with Vulkan/RADV for chat, model pulling, and Open WebUI. |
+| Best easy path | Ollama with Vulkan/RADV for chat, model pulling, and Open WebUI. The current setup script includes `OLLAMA_IGPU_ENABLE=1`; a user-local Ollama 0.31.1 sanity check measured 71.82 t/s warm Qwen3.6 API generation. |
 | Fastest measured short-context path | Direct llama.cpp / `llama-server` with Vulkan/RADV. Current Qwen3-Coder Q4_K_S speed-first row reached 100.99 t/s r50 on the official b9851 Vulkan release binary. The older strict-clean b9179 Qwen3-Coder row remains in the evidence at 98.51 t/s r50, and a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS row reached 100.04 t/s r50 on b9467 with a b9544 control at 103.18 tg128 r10. |
 | Fastest current small-MoE scout | LFM2.5 8B-A1B Q4_K_M reached 168.96 tg128 in a pp512/tg128 run and 170.02 t/s generation-only on the 2026-06-05 latest/int-dot check; the 2026-06-07 b9544 control measured 176.48 tg128 r10. This is a small active-parameter MoE speed result, not a 30B-class capability replacement. |
 | Largest current direct GGUF capacity route | Nemotron 3 Super 120B-A12B UD-IQ4_XS ran directly on one 128GB Strix Halo system at 18.43 tg128 on the 2026-06-05 latest/int-dot check; the 2026-06-07 b9544 control measured 18.93 tg128 r3. This is capacity/current-model evidence, not a speed headline. |
 | Experimental speculative server path | MTP works on current `llama.cpp`/ROCmFPX routes. The best local Qwen3.6 MTP server route uses IQ4_XS-Q8nextn and reached about 101.1 t/s across six prompts on b9360; Gemma 4 26B-A4B QAT reached up to 110.0 t/s best-repeat; CHADROCK ACE/SABER 35B ROCmFP4 reproduced 139.93-140.40 t/s gen512 on high-acceptance repeats. These are server/speculative results, not direct `llama-bench` headlines. |
-| Latest-stack delta | llama.cpp `de6f727aa` was checked on 2026-06-01 and did not improve the direct Qwen3-Coder headline rows at that time. A 2026-06-02 b9467 scout added the separate direct 100.04 t/s Qwen3-30B-A3B-Instruct-2507 IQ4_XS route. A 2026-06-05 latest/int-dot check added LFM2.5 170.02 t/s generation-only, Nemotron Nano 75.97 t/s, Nemotron Super 18.43 t/s, and a Qwen3-Coder UD negative/control row at 92.84 t/s. A 2026-06-07 b9544 regression check found no regression on the Vulkan/RADV sentinel rows. A 2026-06-11 ac4cddeb0 check kept Qwen3-30B-A3B-Instruct-2507 at 100.38 tg128, LFM2.5 at 171.17 tg128, Nemotron Super at 18.24 tg128, and added Gemma 4 26B-A4B QAT direct/MTP evidence; the 2026-06-12 repeats measured the Gemma 4 26B-A4B QAT MTP server route at 102.69 t/s cold and 107.42 t/s with only T3 left among known local services. A 2026-06-21 ROCmFPX helper-runner check reproduced the CHADROCK ACE/SABER 35B high-acceptance 140 t/s-class gen512 route, and an official b9747 Vulkan binary smoke showed Nemotron 3 Nano Omni MXFP4_MOE runs directly at 1277.60 pp512 / 56.56 tg128. A 2026-06-30 official b9851 Vulkan release-binary sentinel lifted the exact Qwen3-Coder Q4_K_S speed-first route to 1423.05 pp512 / 100.99 tg128 r50. |
+| Latest-stack delta | llama.cpp `de6f727aa` was checked on 2026-06-01 and did not improve the direct Qwen3-Coder headline rows at that time. A 2026-06-02 b9467 scout added the separate direct 100.04 t/s Qwen3-30B-A3B-Instruct-2507 IQ4_XS route. A 2026-06-05 latest/int-dot check added LFM2.5 170.02 t/s generation-only, Nemotron Nano 75.97 t/s, Nemotron Super 18.43 t/s, and a Qwen3-Coder UD negative/control row at 92.84 t/s. A 2026-06-07 b9544 regression check found no regression on the Vulkan/RADV sentinel rows. A 2026-06-11 ac4cddeb0 check kept Qwen3-30B-A3B-Instruct-2507 at 100.38 tg128, LFM2.5 at 171.17 tg128, Nemotron Super at 18.24 tg128, and added Gemma 4 26B-A4B QAT direct/MTP evidence; the 2026-06-12 repeats measured the Gemma 4 26B-A4B QAT MTP server route at 102.69 t/s cold and 107.42 t/s with only T3 left among known local services. A 2026-06-21 ROCmFPX helper-runner check reproduced the CHADROCK ACE/SABER 35B high-acceptance 140 t/s-class gen512 route, and an official b9747 Vulkan binary smoke showed Nemotron 3 Nano Omni MXFP4_MOE runs directly at 1277.60 pp512 / 56.56 tg128. A 2026-06-30 official b9851 Vulkan release-binary sentinel lifted the exact Qwen3-Coder Q4_K_S speed-first route to 1423.05 pp512 / 100.99 tg128 r50. A 2026-07-02 user-local Ollama 0.31.1 binary sanity check raised the easy Qwen3.6 buyer path to 71.82 t/s warm API generation with `OLLAMA_IGPU_ENABLE=1`; the same-day official b9859 Vulkan sentinel reproduced the Qwen3-Coder 98-99 t/s class but did not beat b9851. |
 | Large local model checks | gpt-oss-120b MXFP4 split GGUF loaded locally at 55.57 t/s tg128; Nemotron 3 Super 120B-A12B UD-IQ4_XS loaded directly at 18.43 t/s; MiniMax M2.7 230B-class MoE loaded and generated locally in a capacity scout. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Backend split | Vulkan/RADV wins measured generation on the current single-box Qwen rows; ROCm/HIP can win prompt-processing-heavy work, and ROCm RPC is required for the tested MiniMax capacity case. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) and [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md). |
@@ -113,7 +113,7 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 | Fastest local coding speed | Qwen3-Coder 30B-A3B Q4_K_S: 100.99 t/s direct llama.cpp Vulkan/RADV on the official b9851 release binary; older strict-clean b9179 row measured 98.51 t/s | Speed-first quant candidate. Use it when raw t/s matters and you accept the quality tradeoff. This is direct `llama-bench`, not MTP/server speculation. | [`headline claims`](data/headline_claims.csv), [`b9851 raw r50`](data/raw/2026-06-30/latest-llamacpp-b9851-vulkan-sentinel/qwen3-coder-q4ks-b9851-p512-n128-r50.csv), [`older strict-clean raw r50`](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv) |
 | Fast balanced local coding model | Qwen3-Coder 30B-A3B UD-Q4_K_XL: 96.76 t/s direct llama.cpp Vulkan/RADV on current b9049 | Strong first model for coding scripts, editors, and agent loops. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv) |
 | Newer Qwen coding model | Qwen3-Coder-Next 80B-A3B IQ4_XS: 61.91 t/s direct llama.cpp Vulkan/RADV on b9467 | Modern coding-model row for people who want current Qwen Coder-Next rather than the older 30B speed headline. Use it for capability/currentness, not maximum raw t/s. | [`benchmarks CSV`](data/benchmarks.csv), [`raw run`](data/raw/2026-06-02/modern-model-clean-followup/) |
-| Easy private chat setup | Qwen3.6 35B-A3B Q4_K_M: 50.51 t/s through Ollama 0.23.1 API | Good default if you want model pulling, Open WebUI, and simple local chat. | [`headline claims`](data/headline_claims.csv), [`raw API run`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/ollama-qwen3.6-35b-a3b-0.23.1-api-r10.csv) |
+| Easy private chat setup | Qwen3.6 35B-A3B Q4_K_M: 71.82 t/s warm API generation through a user-local Ollama 0.31.1 binary with `OLLAMA_IGPU_ENABLE=1`; older installed-service 0.23.1 baseline was 50.51 t/s | Good default if you want model pulling, Open WebUI, and simple local chat. `OLLAMA_IGPU_ENABLE=1` matters on current Ollama builds because otherwise the Strix Halo iGPU can be dropped during GPU discovery. | [`benchmarks CSV`](data/benchmarks.csv), [`raw 0.31.1 run`](data/raw/2026-07-02/ollama-0311-qwen36-buyer-path/), [`older 0.23.1 API run`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/ollama-qwen3.6-35b-a3b-0.23.1-api-r10.csv) |
 | Fast all-rounder direct path | Qwen3.6 35B-A3B UD-Q4_K_M: 62.56 t/s direct llama.cpp Vulkan/RADV on current b9049 | Use this when you care more about speed and control than the easiest UI. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/qwen36-35b-b9049-clean-r20.csv) |
 | Fastest Qwen3.6 direct path | Qwen3.6 35B-A3B Q4_0: 81.30 t/s direct llama.cpp Vulkan/RADV on current b9049 | Speed-first option. Use the default/balanced quant if quality matters more than raw t/s. | [`max campaign`](data/max_performance_campaign.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen36-top-confirm-r20/q4-0-ub2048.csv) |
 | Qwen3.6 27B dense control | Official Qwen3.6 27B MTP Q8_0: 7.61-7.74 t/s without MTP, 14.59-14.69 t/s with the best MTP setting; a direct b9467 `llama-bench` follow-up measured 7.70 t/s tg128 | Useful practical row for people comparing 27B versus 35B-A3B. It runs, but this dense Q8 route is much slower than the 35B-A3B MoE paths and is not a speed candidate. | [`Performance notes`](PERFORMANCE_NOTES.md#qwen36-27b-mtp-q8_0-status), [`MTP CSV`](data/mtp_speculative.csv), [`raw b9235`](data/raw/2026-05-19/qwen36-27b-mtp-q8-llamacpp-9235/), [`raw latest`](data/raw/2026-06-01/qwen36-27b-mtp-latest-de6f727/), [`raw b9467`](data/raw/2026-06-02/reddit-look-int-dot-reproduction/) |
@@ -132,7 +132,7 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 
 | Goal | Start with | Why | Evidence |
 |------|------------|-----|----------|
-| Easiest private local chat | Ollama Vulkan/RADV | easiest model pulling and Open WebUI path | 50.51 t/s warm Qwen3.6 API average, [`data/benchmarks.csv`](data/benchmarks.csv) |
+| Easiest private local chat | Ollama Vulkan/RADV | easiest model pulling and Open WebUI path | 71.82 t/s warm Qwen3.6 API average on a user-local Ollama 0.31.1 binary with `OLLAMA_IGPU_ENABLE=1`; older 0.23.1 baseline was 50.51 t/s, [`data/benchmarks.csv`](data/benchmarks.csv) |
 | Fast coding or scripts on one machine | `llama-server` Vulkan/RADV | fastest measured Qwen3.6 path at 1-4 parallel requests | [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md) |
 | Speculative decoding experiments | `llama-server` MTP on current master / ROCmFPX | measured server speedups on Qwen3.6 MTP GGUFs, Gemma 4 QAT matched MTP heads, and CHADROCK ROCmFP4; Qwen3.6 reached about 101.1 t/s on b9360, Gemma 4 26B-A4B QAT reached 110.0 t/s best-repeat, and CHADROCK ACE/SABER 35B reproduced 139.93-140.40 t/s gen512 on high-acceptance repeats | [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md), [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md), [`data/mtp_speculative.csv`](data/mtp_speculative.csv) |
 | Several local tools or users hitting one API | Lemonade `llamacpp-rocm` b1259 | best measured Qwen3.6 aggregate throughput at 8-16 parallel requests | [`data/server_shootout.csv`](data/server_shootout.csv) |
@@ -238,7 +238,7 @@ Dates below are measurement dates. A row being from May does not mean it is stal
 | Experimental CHADROCK ROCmFP4 MTP server path | 2026-06-21 | `llama-server` ROCmFPX/RADV helper route | CHADROCK ACE/SABER 35B ROCmFP4 | 140.40 and 139.93 t/s gen512 high-acceptance repeats; 127.77 t/s gen2048 check | [`MTP CSV`](data/mtp_speculative.csv) | [`raw helper repro`](data/raw/2026-06-21/rocmfpx-chadrock-ace-saber-helper-repro/) | n/a | server/speculative result with `ciru-ai/ROCmFPX`; prompt/acceptance-sensitive; not direct `llama-bench` |
 | Best current 80B Qwen-family path | 2026-05-16 | llama.cpp Vulkan/RADV b9172 | Qwen3-Next 80B-A3B UD-Q4_K_XL | 59.06 tg128, 751.70 pp512 | [`benchmarks`](data/benchmarks.csv) | [`raw r20`](data/raw/2026-05-16/latest-stack-b9172/qwen3-next-confirm-r20/qwen3-next-80b-b9172-ub1024-r20.csv) | n/a | b9172 improved this 80B MoE path versus the older 54.92 t/s b8933 row |
 | gpt-oss-120b loaded locally | 2026-05-07 | llama.cpp Vulkan/RADV b9049 | gpt-oss-120b MXFP4 split GGUF | 55.57 tg128, 726.99 pp512, 293.73 pp65536 r1 | [`max campaign`](data/max_performance_campaign.csv) | [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/) | n/a | performance evidence only; no model-quality eval; pp65536 is one repeat |
-| Easiest useful Qwen3.6 chat path | 2026-05-07 | Ollama 0.23.1 Vulkan/RADV | Qwen3.6 35B-A3B Q4_K_M | 50.51 t/s warm API generation average | [`benchmarks`](data/benchmarks.csv) | [`raw API run`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/ollama-qwen3.6-35b-a3b-0.23.1-api-r10.csv) | n/a | 10 warm API runs; matches 0.21.2 |
+| Easiest useful Qwen3.6 chat path | 2026-07-02 | Ollama 0.31.1 local binary Vulkan/RADV | Qwen3.6 35B-A3B Q4_K_M | 71.82 t/s warm API generation average | [`benchmarks`](data/benchmarks.csv) | [`raw API run`](data/raw/2026-07-02/ollama-0311-qwen36-buyer-path/) | n/a | 9 warm API runs after one cold run; required `OLLAMA_IGPU_ENABLE=1`; older installed-service 0.23.1 baseline was 50.51 t/s |
 | Best measured Qwen3.6 server split | 2026-05-05 | Vulkan/RADV and Lemonade ROCm | Qwen3.6 35B-A3B UD-Q4_K_M | Vulkan wins 1-4 parallel; Lemonade ROCm wins 8-16 | [`server data`](data/server_shootout.csv) | [`raw sweep`](data/raw/2026-05-05/server-shootout/full-sweep-qwen36-workstation-baseline/summary.csv) | n/a | 5 reps per concurrency, 0 errors |
 | HIP/Vulkan workload split | 2026-05-07 | Vulkan/RADV and ROCm/HIP from b9049 source | Qwen3.6 35B-A3B, Qwen3-Coder 30B-A3B | HIP won pp16384; Vulkan won tg128 on both local Qwen rows | [`max campaign`](data/max_performance_campaign.csv) | [`same-source matrix`](data/raw/2026-05-07/max-performance-campaign/benchmarks/same-build-hip-vulkan-b9049/) | n/a | HIP binary reports unknown build id due container git safe-directory, but source checkout was b9049 |
 | Best measured Qwen3-Coder local API point | 2026-05-03 | `llama-server` Vulkan/RADV b9010 | Qwen3-Coder 30B-A3B UD-Q4_K_XL | 173.16 aggregate t/s at `-np 8` | [`multi-user`](data/multi_user.csv) | [`raw summary`](data/raw/2026-05-03/multi-user-coder/qwen3-coder-30b-ud-llama-server-multi-user-summary.csv) | [`chart`](charts/multi_user_aggregate.svg) | `-np 16` regressed |
@@ -344,7 +344,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 - [What You Can Run](#what-you-can-run)
 - [Benchmark Results](#benchmark-results)
   - [Benchmark Charts](#benchmark-charts)
-  - [Ollama Vulkan (RADV)](#ollama-vulkan-radv-ollama-0231)
+  - [Ollama Vulkan (RADV)](#ollama-vulkan-radv)
   - [llama-server Multi-User Serving](#llama-server-multi-user-serving-b9010)
   - [ROCm HIP (llama.cpp)](#rocm-hip-llamacpp)
   - [Backend Comparison](#backend-comparison-table)
@@ -442,7 +442,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro, primarily with Vu
 
 ## Benchmark Results
 
-Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, 2026-05-07, 2026-05-16, 2026-05-26, 2026-05-27, 2026-05-31, 2026-06-01, 2026-06-02, 2026-06-05, 2026-06-07, 2026-06-11, and 2026-06-12. Primary benchmark system: Beelink GTR9 Pro. Recorded local runs used kernel 6.19.4, Mesa RADV 26.0.2-26.1.2 where captured, AMDVLK removed, and `tuned` `accelerator-performance` where captured; individual raw directories and CSV rows are the source of truth for exact run metadata, and some older or scout rows intentionally record missing metadata as `not recorded`. Before running new benchmarks, verify `tuned-adm active` and keep `power-profiles-daemon` inactive; it can conflict with `tuned`.
+Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, 2026-05-07, 2026-05-16, 2026-05-26, 2026-05-27, 2026-05-31, 2026-06-01, 2026-06-02, 2026-06-05, 2026-06-07, 2026-06-11, 2026-06-12, 2026-06-21, 2026-06-30, and 2026-07-02. Primary benchmark system: Beelink GTR9 Pro. Recorded local runs used kernel 6.19.4, Mesa RADV 26.0.2-26.1.3 where captured, AMDVLK removed, and `tuned` `accelerator-performance` where captured; individual raw directories and CSV rows are the source of truth for exact run metadata, and some older or scout rows intentionally record missing metadata as `not recorded`. Before running new benchmarks, verify `tuned-adm active` and keep `power-profiles-daemon` inactive; it can conflict with `tuned`.
 
 These rows are included because they answer practical setup questions: which model to try first, which backend removes the most friction, which paths are only experimental, and which results are strong enough to cite.
 
@@ -462,12 +462,13 @@ These generated SVGs summarize the current structured benchmark data. The CSV fi
 |-------------------------------|--------------------|
 | <img src="charts/real_vs_synthetic.svg" alt="real documentation corpus versus synthetic prompt chart" width="455"> | <img src="charts/backend_spot_check.svg" alt="Vulkan RADV versus ROCm HIP spot check chart" width="455"> |
 
-### Ollama Vulkan (RADV, Ollama 0.23.1)
+### Ollama Vulkan (RADV)
 
-**Qwen3.6-35B-A3B** (Q4_K_M, ~20GB, MoE -- Ollama 0.23.1):
+**Qwen3.6-35B-A3B** (Q4_K_M, ~20-23GB, MoE):
 
 | Prompt Tokens | Prompt Eval | Generation | Notes |
 |---------------|-------------|------------|-------|
+| 25 | 944 t/s | **71.8 t/s** | 2026-07-02 user-local Ollama 0.31.1 binary sanity check; required `OLLAMA_IGPU_ENABLE=1`; 9-run warm average after one cold run |
 | 19 | 158 t/s | **50.5 t/s** | Controlled 2026-05-07 API warm average across 10 runs; matches 0.21.2 |
 | 20 | 163 t/s | 45.6 t/s | Older result, superseded by controlled API run |
 | 22 | 174 t/s | 45.4 t/s | Older result, superseded by controlled API run |
@@ -1067,6 +1068,7 @@ Add between the comment lines:
 ```ini
 [Service]
 Environment="OLLAMA_VULKAN=1"
+Environment="OLLAMA_IGPU_ENABLE=1"
 Environment="HIP_VISIBLE_DEVICES=-1"
 Environment="OLLAMA_FLASH_ATTENTION=1"
 Environment="OLLAMA_CONTEXT_LENGTH=8192"
@@ -1086,6 +1088,7 @@ sudo systemctl restart ollama
 | Variable | Purpose |
 |----------|---------|
 | `OLLAMA_VULKAN=1` | Force Vulkan backend (9% faster than ROCm on Strix Halo) |
+| `OLLAMA_IGPU_ENABLE=1` | Let current Ollama builds use the Strix Halo integrated GPU instead of dropping it during GPU discovery |
 | `HIP_VISIBLE_DEVICES=-1` | Disable HIP device enumeration (avoids ROCm fallback) |
 | `OLLAMA_FLASH_ATTENTION=1` | Enable flash attention (+13% prompt processing) |
 | `OLLAMA_CONTEXT_LENGTH=8192` | Limit context to prevent OOM (increase if needed) |
@@ -1416,6 +1419,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | hipBLASLt | **+8% tg** | `ROCBLAS_USE_HIPBLASLT=1` (ROCm only) |
 | tuned accelerator-performance | **+5-8% overall** | `sudo tuned-adm profile accelerator-performance` |
 | RADV over AMDVLK | **+63% pp, +1.2% tg** | Uninstall AMDVLK entirely (see above). `AMD_VULKAN_ICD=RADV` works too but is easy to forget |
+| `OLLAMA_IGPU_ENABLE=1` | Avoids CPU-only Ollama on current builds | Required for Ollama 0.31.1 local Vulkan/RADV sanity check on the measured Beelink system |
 | `amd_iommu=off` | **+6% memory bandwidth** | GRUB parameter |
 | BIOS UMA/VRAM reserve low enough | OS sees ~124-126GiB instead of ~31GiB on 128GB systems; GTT gets the large shared pool | No speed change from 512MB vs sane low reserves, but required to avoid losing most system RAM. Use 512MB if available; 2GB is fine when that is the vendor minimum |
 | `HIP_VISIBLE_DEVICES=-1` | Fixes Ollama crash | Required for Vulkan-only mode |
@@ -1638,7 +1642,7 @@ After completing setup, verify each item:
 - [ ] `cat /sys/module/ttm/parameters/pages_limit` shows 31457280
 - [ ] `ollama --version` returns without error
 - [ ] `ollama run qwen3.6:35b-a3b "hello"` generates at 50+ t/s
-- [ ] `systemctl show ollama | grep Environment` includes `OLLAMA_VULKAN=1`
+- [ ] `systemctl show ollama | grep Environment` includes `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`
 - [ ] `cat /etc/default/grub | grep CMDLINE` includes `amd_iommu=off`
 - [ ] `uname -r` shows 6.18.x+ (ROCm on 6.19.x requires HSA override -- see Known Issues)
 - [ ] `dpkg -l | grep linux-firmware` does NOT show 20251125
@@ -1914,7 +1918,7 @@ They are not two different programs. **Ollama is a wrapper around llama.cpp.** I
 
 So why can llama.cpp direct be faster on Qwen3.6 and Qwen3-Coder? Two reasons:
 
-1. **Wrapper/API overhead.** Ollama adds layers between you and the GPU: model loading, API translation, memory management, and service behavior. On the current Qwen3.6 rows, Ollama 0.23.1 is about 19-20% slower than the direct `llama-bench` path.
+1. **Wrapper/API overhead and runtime version.** Ollama adds layers between you and the GPU: model loading, API translation, memory management, and service behavior. The older installed-service Ollama 0.23.1 row was about 19-20% slower than the direct `llama-bench` path on Qwen3.6. A user-local Ollama 0.31.1 sanity check improved the easy Qwen3.6 buyer path to 71.82 t/s warm API generation, but it required `OLLAMA_IGPU_ENABLE=1` so the Strix Halo iGPU was not dropped during GPU discovery.
 
 2. **Bundled version.** Ollama ships with a specific llama.cpp version baked in. Direct source builds can pick up new `llama.cpp` optimizations earlier. The March b8298-to-b8460 jump gave +25% on some MoE Vulkan rows; later rows are tracked separately in [`BENCHMARKS.md`](BENCHMARKS.md).
 
@@ -1924,7 +1928,7 @@ So why can llama.cpp direct be faster on Qwen3.6 and Qwen3-Coder? Two reasons:
 
 | Use case | Recommendation |
 |----------|---------------|
-| Just want it to work | **Ollama** -- install and go, 50 t/s is still fast |
+| Just want it to work | **Ollama** -- install and go; the current 0.31.1 sanity check reached 71.82 t/s on Qwen3.6 with `OLLAMA_IGPU_ENABLE=1`, while the older installed-service 0.23.1 baseline remains documented at 50.51 t/s |
 | Want maximum speed | **llama-server** direct Vulkan/RADV -- 101.0 t/s on speed-first Qwen3-Coder, 100.0 t/s on Qwen3-30B-A3B-Instruct-2507 IQ4_XS, 96-99.6 t/s on balanced Qwen3-Coder depending on build/repeat length, 63-81 t/s on Qwen3.6 depending on quant, and 59 t/s on Qwen3-Next 80B, with the same API style as Ollama |
 | Using kyuz0 containers | **kyuz0** -- they auto-rebuild on llama.cpp updates, best of both worlds |
 | Benchmarking | **llama-bench** -- eliminates all overhead, pure GPU measurement |
@@ -1968,7 +1972,7 @@ Linux gives the best-tested performance and the strongest native Vulkan/RADV evi
 <details>
 <summary><strong>How does this compare to a Mac Studio?</strong></summary>
 
-Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro price snapshot is $4,399 and this guide measures 50.51-101.0 t/s on the larger current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row, and smaller active-parameter MoE scouts can be higher. Apple Silicon usually wins per-model bandwidth-sensitive inference. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
+Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro price snapshot is $4,399 and this guide measures 71.82-101.0 t/s on the larger current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row, and smaller active-parameter MoE scouts can be higher. Apple Silicon usually wins per-model bandwidth-sensitive inference. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
 
 </details>
 
@@ -1978,7 +1982,7 @@ Prices, availability, and external benchmark numbers change quickly; treat this 
 Common causes:
 1. **tuned not running or power-profiles-daemon active** -- Run `tuned-adm active` and `systemctl is-active power-profiles-daemon`. `tuned` should show `accelerator-performance`; `power-profiles-daemon` should be inactive. This alone is worth several percent.
 2. **Old Mesa drivers** -- Check `vulkaninfo --summary | grep driverInfo`. Should be Mesa 26.0.2+ from the kisak-mesa PPA; exact driver metadata is recorded per run when available.
-3. **Using Ollama instead of llama-bench** -- Qwen3.6 is about 19-20% slower through Ollama 0.23.1 than direct llama-bench on the current data. The 96-100 t/s Qwen rows are via llama-bench direct, not Ollama.
+3. **Using Ollama instead of llama-bench** -- Ollama and direct `llama-bench` are different claim categories. The older installed-service Ollama 0.23.1 Qwen3.6 row measured 50.51 t/s, while a user-local Ollama 0.31.1 sanity check measured 71.82 t/s with `OLLAMA_IGPU_ENABLE=1`. The 96-101 t/s Qwen rows are direct `llama-bench`, not Ollama.
 4. **GPU clock stuck low** -- Check `cat /sys/class/drm/card*/device/pp_dpm_sclk`. Should show 2900Mhz with asterisk.
 5. **Wrong BIOS VRAM setting** -- Check `free -h`. On a 128GB system it should show roughly ~124-126GiB OS-visible memory; a 96GB system will be lower. If a 128GB box only shows ~31GiB, lower the UMA Frame Buffer reserve in BIOS. Use 512MB if available; if your vendor minimum is 2GB, leave it at 2GB.
 6. **Different model/quantization** -- The 100.99 t/s Qwen3-Coder result is specifically Qwen3-Coder-30B-A3B Q4_K_S via RADV on official b9851 Vulkan. The older strict-clean b9179 row for the same speed-first quant remains 98.51 t/s. The 100.04 t/s result is a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS route. The balanced Qwen3-Coder UD-Q4_K_XL row is 96-99.6 t/s depending on build/repeat length. Larger or denser models are slower.
@@ -2054,6 +2058,13 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 
 ## Changelog
 
+### 2026-07-02 -- Ollama 0.31.1 Buyer Path And b9859 Runtime Control
+
+- **Ollama easy-path sanity check updated:** a user-local Ollama 0.31.1 binary on port 11435 measured **71.82 t/s** warm API generation mean on `qwen3.6:35b-a3b`, with a 71.62-72.05 t/s warm range after one cold run. This is Ollama API / buyer-path evidence, not direct `llama-bench`.
+- **Important setup fix:** current Ollama builds can drop the Strix Halo iGPU during GPU discovery unless `OLLAMA_IGPU_ENABLE=1` is set. The setup script and README environment guidance now include that variable.
+- **Official b9859 Vulkan sentinel checked:** Qwen3-Coder 30B-A3B `Q4_K_S` measured **1413.38 pp512 / 98.48 tg128 r50** on b9859 with the b9851-matching command shape, and **99.09 t/s** generation-only. `UD-Q4_K_XL` measured **1411.76 pp512 / 97.01 tg128 r5**; Gemma 4 26B-A4B `UD-Q4_K_M` measured **1323.39 pp512 / 54.18 tg128 r5**.
+- **Claim boundary preserved:** b9859 is a useful current-runtime control, but it does not replace the stronger b9851 Qwen3-Coder **100.99 t/s** speed-first headline.
+
 ### 2026-07-01 -- Corsair MiMo V2.5 Capacity Evidence
 
 - **Fail-Safe added a Corsair MiMo V2.5 capacity row:** issue #26 reports MiMo-V2.5 `UD-IQ2_M`, described by `llama-bench` as `mimo2 310B.A15B IQ2_M - 2.7 bpw`, on Corsair AI Workstation 300 `ai-2` with Fedora 44, kernel 7.0.12, Mesa RADV 25.3.6 inside the kyuz0 Vulkan container, and IOMMU off.
@@ -2069,7 +2080,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 - **Community map expanded to 11 systems/sources:** papagenic contributed a Minix Elite ER939 Ai Ollama 0.30.10 report for `qwen3.6:35b-a3b` on Ubuntu 26.04, kernel 7.0.0-22, Mesa 26.1.3, BIOS UMA 1G, and IOMMU disabled.
 - **Claim boundary preserved:** the row is useful buyer-path evidence for Minix/Ollama/Ubuntu 26.04, but it is not a direct `llama-bench` headline because backend/Vulkan ICD, script details, repeats, and warm/cold state are not yet confirmed.
 - **Public traction snapshot refreshed:** the guide reached **192 GitHub stars**, **9 forks**, and **4 watchers** in the 2026-07-02 GitHub API snapshot. This remains a small-niche demand signal; the main value is still reproducible public evidence that reduces buyer setup friction.
-- **Runtime watchlist refreshed:** the `llama.cpp` b9851 sentinel is now measured; `llama.cpp` b9859 and Ollama 0.31.1 are the next current-runtime sanity-check targets because the local installed Ollama service is still 0.23.1.
+- **Runtime watchlist refreshed:** the `llama.cpp` b9851 sentinel is now measured; the later 2026-07-02 check separately measured `llama.cpp` b9859 and a user-local Ollama 0.31.1 sanity path.
 
 ### 2026-06-21 -- Traction Snapshot And ROCmFP4 Watch Lane
 
@@ -2125,7 +2136,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 
 ### 2026-06-01 -- Watchlist, Controls, And Sharing Hygiene
 
-- **Upstream watch rechecked:** ROCm production remains **7.2.4**, vLLM has moved to **0.22.1**, and the previous isolated Ollama **0.24.0** check still does not change the installed Ollama 0.23.1 guidance.
+- **Upstream watch rechecked:** ROCm production remains **7.2.4**, vLLM has moved to **0.22.1**, and the previous isolated Ollama **0.24.0** check did not change the then-installed Ollama 0.23.1 guidance at that time.
 - **No new headline from latest llama.cpp direct reruns:** the 2026-06-01 `de6f727aa` Qwen3-Coder direct check measured **95.55 t/s** tg128 with `mmap=0`, so the direct headline stays at **98.51 t/s** on the b9179 strict-clean speed-first row.
 - **Qwen3.6 27B MTP control confirmed:** the latest-build rerun measured **7.61 t/s** without MTP and **14.69 t/s** with MTP, so the official dense 27B Q8_0 route remains useful negative evidence rather than a speed candidate. Details live in [`PERFORMANCE_NOTES.md`](PERFORMANCE_NOTES.md).
 - **Community hygiene improved:** responsible-sharing guidance was added to [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`SHARE.md`](SHARE.md), and Fail-Safe's `.gitignore` PR added macOS/Windows cache-file ignores for cleaner community contributions.

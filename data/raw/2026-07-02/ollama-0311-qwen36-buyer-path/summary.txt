@@ -1,0 +1,13 @@
+# Summary
+
+runs: 10
+warm_runs: 9
+warm_eval_tps_mean: 71.82
+warm_eval_tps_min: 71.62
+warm_eval_tps_max: 72.05
+warm_prompt_eval_tps_mean: 944.17
+cold_eval_tps: 71.03
+all_eval_tps_mean: 71.74
+
+Claim boundary: Ollama API buyer-path sanity check, not direct llama-bench.
+Server: local Ollama 0.31.1 binary on 127.0.0.1:11435, Vulkan/RADV, OLLAMA_IGPU_ENABLE=1.
