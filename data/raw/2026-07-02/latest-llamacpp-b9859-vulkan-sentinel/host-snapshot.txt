@@ -1,0 +1,110 @@
+# Host snapshot
+2026-07-02T16:07:25+02:00
+Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+
+## llama-bench path
+/home/hoge-heer/benchmark-tools/llama-b9859/llama-b9859/llama-b9859/llama-bench
+
+## active benchmark-relevant processes
+   2645 bash            bash /home/hoge-heer/t3-code-ops/scripts/t3_react185_semantic_proxy_healthcheck.sh --loop
+   2648 bash            bash /home/hoge-heer/t3-code-ops/scripts/t3_upstream_guard.sh --loop
+ 180201 bash            /bin/bash -c cd /home/hoge-heer/benchmark-tools/ollama-0.31.1 export OLLAMA_HOST=127.0.0.1:11435 export OLLAMA_MODELS=/usr/share/ollama/.ollama/models export OLLAMA_VULKAN=1 export OLLAMA_IGPU_ENABLE=1 export HIP_VISIBLE_DEVICES=-1 export OLLAMA_FLASH_ATTENTION=1 export OLLAMA_CONTEXT_LENGTH=65536 export AMD_VULKAN_ICD=RADV export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json export OLLAMA_NUM_BATCH=512 export OLLAMA_NUM_PARALLEL=1 export OLLAMA_MAX_LOADED_MODELS=2 ./bin/ollama serve 2>&1 | tee /tmp/ollama-0.31.1-11435.log
+ 189318 bash            /bin/bash -c set -euo pipefail RAW=data/raw/2026-07-02/latest-llamacpp-b9859-vulkan-sentinel mkdir -p "$RAW" BENCH=/home/hoge-heer/benchmark-tools/llama-b9859/llama-b9859/llama-b9859/llama-bench if [ ! -x "$BENCH" ]; then BENCH=/home/hoge-heer/benchmark-tools/llama-b9859/llama-b9859/llama-bench; fi "$BENCH" --version | tee "$RAW/llama-bench-version.txt" || true {   echo '# Host snapshot'   date -Is   uname -a   echo   echo '## llama-bench path'   echo "$BENCH"   echo   echo '## active benchmark-relevant processes'   ps -eo pid,comm,args --sort=comm | rg -i 't3|ollama|hermes|rustdesk|docflock|ffmpeg|qemu-system' || true   echo   free -h   echo   vulkaninfo --summary 2>/dev/null || true } > "$RAW/host-snapshot.txt" Q4=/home/hoge-heer/models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf UD=/home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf GEM=/home/hoge-heer/models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf "$BENCH" -m "$Q4" -p 512 -n 128 -r 50 -ngl 999 -fa 0 -o csv -dev Vulkan0 | tee "$RAW/qwen3-coder-q4ks-b9859-p512-n128-r50.csv" "$BENCH" -m "$Q4" -p 0 -n 128 -r 50 -ngl 999 -fa 0 -o csv -dev Vulkan0 | tee "$RAW/qwen3-coder-q4ks-b9859-p0-n128-r50.csv" "$BENCH" -m "$UD" -p 512 -n 128 -r 5 -ngl 999 -fa 0 -o csv -dev Vulkan0 | tee "$RAW/qwen3-coder-udq4kxl-b9859-r5.csv" "$BENCH" -m "$GEM" -p 512 -n 128 -r 5 -ngl 999 -fa 0 -o csv -dev Vulkan0 | tee "$RAW/gemma4-26b-a4b-udq4km-b9859-r5.csv"
+   2869 fusermount3     fusermount3 -o rw,nosuid,nodev,fsname=portal,auto_unmount,subtype=portal -- /run/user/1000/doc
+1489784 hermes          /opt/hermes/.venv/bin/python3 /opt/hermes/.venv/bin/hermes gateway run
+ 181905 llama-server    /home/hoge-heer/benchmark-tools/ollama-0.31.1/lib/ollama/llama-server --model /usr/share/ollama/.ollama/models/blobs/sha256-f5ee307a2982106a6eb82b62b2c00b575c9072145a759ae4660378acda8dcf2d --port 46547 --host 127.0.0.1 --no-webui --offline -c 2048 -np 1 --log-verbosity 4 --no-log-prefix --no-log-timestamps --no-jinja --chat-template chatml --mmproj /usr/share/ollama/.ollama/models/blobs/sha256-f5ee307a2982106a6eb82b62b2c00b575c9072145a759ae4660378acda8dcf2d --no-mmproj-offload --flash-attn on -b 512 -ub 512 --context-shift --keep 4
+   2874 node            /home/hoge-heer/.nvm/versions/node/v22.22.1/bin/node /home/hoge-heer/t3-code-ops/scripts/t3_react185_semantic_proxy.mjs --listen 0.0.0.0:3773 --upstream http://127.0.0.1:3774 --server-origin http://192.168.2.13:3774
+   4520 ollama          /usr/local/bin/ollama serve
+ 180204 ollama          ./bin/ollama serve
+ 189327 rg              rg -i t3|ollama|hermes|rustdesk|docflock|ffmpeg|qemu-system
+   2317 rustdesk        /usr/bin/rustdesk --service
+ 158197 rustdesk        /usr/share/rustdesk/rustdesk --server
+ 158204 rustdesk        /usr/share/rustdesk/rustdesk --tray
+ 158876 rustdesk        /usr/share/rustdesk/rustdesk --cm
+ 158196 sudo            sudo -E XDG_RUNTIME_DIR=/run/user/1000 -u hoge-heer /usr/share/rustdesk/rustdesk --server
+2010398 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --disable-gpu --disable-gpu-compositing --disable-gpu-rasterization --disable-accelerated-2d-canvas --disable-accelerated-video-decode --disable-features=UseSkiaRenderer,Vulkan,CanvasOopRasterization,VaapiVideoDecoder
+2010409 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote --no-zygote-sandbox
+2010410 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote
+2010412 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote
+2010454 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote --no-zygote-sandbox
+2010458 t3code          /proc/self/exe --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --enable-crash-reporter=d26cb034-6a32-49d0-89c4-afe91d0206fd,no_channel --user-data-dir=/home/hoge-heer/.config/t3code --standard-schemes=t3 --secure-schemes=t3 --cors-schemes=t3 --fetch-schemes=t3 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,6934014954448224335,10128050134325604690,262144 --enable-features=PdfUseShowSaveFilePicker --disable-features=CanvasOopRasterization,DropInputEventsWhilePaintHolding,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation,UseSkiaRenderer,VaapiVideoDecoder,Vulkan --variations-seed-version --pseudonymization-salt-handle=7,i,3549296010727828155,11123899091577430635,4 --trace-process-track-uuid=3190708989122997041
+2010646 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/resources/app.asar/apps/server/dist/bin.mjs --bootstrap-fd 3
+2012039 t3code          /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote
+ 180205 tee             tee /tmp/ollama-0.31.1-11435.log
+1489683 tini            /usr/bin/tini -g -- /opt/hermes/docker/entrypoint.sh gateway run
+
+               total        used        free      shared  buff/cache   available
+Mem:           124Gi        31Gi        44Gi        78Mi        49Gi        93Gi
+Swap:          8.0Gi          0B       8.0Gi
+
+==========
+VULKANINFO
+==========
+
+Vulkan Instance Version: 1.3.275
+
+
+Instance Extensions: count = 25
+-------------------------------
+VK_EXT_acquire_drm_display             : extension revision 1
+VK_EXT_acquire_xlib_display            : extension revision 1
+VK_EXT_debug_report                    : extension revision 10
+VK_EXT_debug_utils                     : extension revision 2
+VK_EXT_direct_mode_display             : extension revision 1
+VK_EXT_display_surface_counter         : extension revision 1
+VK_EXT_headless_surface                : extension revision 1
+VK_EXT_layer_settings                  : extension revision 2
+VK_EXT_surface_maintenance1            : extension revision 1
+VK_EXT_swapchain_colorspace            : extension revision 5
+VK_KHR_device_group_creation           : extension revision 1
+VK_KHR_display                         : extension revision 23
+VK_KHR_external_fence_capabilities     : extension revision 1
+VK_KHR_external_memory_capabilities    : extension revision 1
+VK_KHR_external_semaphore_capabilities : extension revision 1
+VK_KHR_get_display_properties2         : extension revision 1
+VK_KHR_get_physical_device_properties2 : extension revision 2
+VK_KHR_get_surface_capabilities2       : extension revision 1
+VK_KHR_portability_enumeration         : extension revision 1
+VK_KHR_surface                         : extension revision 25
+VK_KHR_surface_protected_capabilities  : extension revision 1
+VK_KHR_wayland_surface                 : extension revision 6
+VK_KHR_xcb_surface                     : extension revision 6
+VK_KHR_xlib_surface                    : extension revision 6
+VK_LUNARG_direct_driver_loading        : extension revision 1
+
+Instance Layers: count = 5
+--------------------------
+VK_LAYER_INTEL_nullhw       INTEL NULL HW                                                1.1.73   version 1
+VK_LAYER_MESA_anti_lag      Open-source implementation of the VK_AMD_anti_lag extension. 1.4.303  version 1
+VK_LAYER_MESA_device_select Linux device selection layer                                 1.4.303  version 1
+VK_LAYER_MESA_overlay       Mesa Overlay layer                                           1.4.303  version 1
+VK_LAYER_MESA_screenshot    Mesa Screenshot layer                                        1.4.303  version 1
+
+Devices:
+========
+GPU0:
+	apiVersion         = 1.4.348
+	driverVersion      = 26.1.3
+	vendorID           = 0x1002
+	deviceID           = 0x1586
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = Radeon 8060S Graphics (RADV STRIX_HALO)
+	driverID           = DRIVER_ID_MESA_RADV
+	driverName         = radv
+	driverInfo         = Mesa 26.1.3 - kisak-mesa PPA
+	conformanceVersion = 1.4.0.0
+	deviceUUID         = 00000000-c600-0000-0000-000000000000
+	driverUUID         = 414d442d-4d45-5341-2d44-525600000000
+GPU1:
+	apiVersion         = 1.4.348
+	driverVersion      = 26.1.3
+	vendorID           = 0x10005
+	deviceID           = 0x0000
+	deviceType         = PHYSICAL_DEVICE_TYPE_CPU
+	deviceName         = llvmpipe (LLVM 20.1.8, 256 bits)
+	driverID           = DRIVER_ID_MESA_LLVMPIPE
+	driverName         = llvmpipe
+	driverInfo         = Mesa 26.1.3 - kisak-mesa PPA (LLVM 20.1.8)
+	conformanceVersion = 1.3.1.1
+	deviceUUID         = 6d657361-3236-2e31-2e33-202d206b6900
+	driverUUID         = 6c6c766d-7069-7065-5555-494400000000

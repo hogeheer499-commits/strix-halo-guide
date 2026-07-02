@@ -19,6 +19,7 @@ Measured rows below are first-party Beelink GTR9 Pro direct `llama-bench` Vulkan
 | Fastest current small-MoE scout | LFM2.5 8B-A1B `Q4_K_M`: 170.02 t/s generation-only on the 2026-06-05 check; latest b9544 control measured 176.48 tg128 r10 | Shows how fast newer small active-parameter MoE routes can be. This is not a 30B-class capability replacement. |
 | Largest current direct GGUF capacity route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS`: 18.43 tg128 direct `llama-bench`; latest b9544 control measured 18.93 tg128 r3 | Proves a 120B-class MoE GGUF route can run directly on one box; value is capacity/currentness, not raw speed. |
 | Fastest current-model MTP server route | CHADROCK ACE/SABER 35B ROCmFP4 through `ciru-ai/ROCmFPX`: 139.93-140.40 t/s gen512 on a 3946-token high-acceptance prompt; Gemma 4 26B-A4B QAT matched-head route remains the best six-prompt repeat at 110.00 t/s | Shows tuned ROCmFP4/MTP can be much faster than stock routes when draft acceptance is high. Keep separate from direct `llama-bench`; the CHADROCK row is advanced and prompt/acceptance-sensitive, while Gemma is the stronger broad repeat. |
+| Best current Ollama buyer-path sanity row | Qwen3.6 35B-A3B through Ollama 0.31.1 local binary: 71.82 t/s warm API generation mean on Vulkan/RADV | Ollama is the easiest buyer path. This is not a direct `llama-bench` headline, but it materially improves the "install Ollama and chat locally" story versus the older 0.23.1 50.51 t/s row. Requires `OLLAMA_IGPU_ENABLE=1` on the measured setup. |
 
 ## External Community Tuned Routes
 
@@ -38,6 +39,15 @@ The separate [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) page now tracks this a
 First practical ROCmFP4/CHADROCK artifact candidates for local reproduction are around 13.8-21.0 GiB, which makes them much more testable than Kimi/GLM/MiniMax extreme-capacity routes.
 
 Source: [`COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-package`](COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-package), [`data/community_ciru_evox2_metrics.csv`](data/community_ciru_evox2_metrics.csv), and [`ciru-ai/strix-halo-evo-x2-evidence`](https://github.com/ciru-ai/strix-halo-evo-x2-evidence).
+
+## July 2026 Runtime Controls
+
+| Model / route | Quant | Tool | Result | Read |
+| --- | --- | --- | ---: | --- |
+| Qwen3.6 35B-A3B | `Q4_K_M` Ollama model | Ollama 0.31.1 local binary, Vulkan/RADV API | 71.82 t/s warm generation mean; 71.62-72.05 t/s warm range | Strong buyer-path update. Ollama 0.31.1 works on the measured Beelink system, but `OLLAMA_IGPU_ENABLE=1` is required to keep the Strix Halo iGPU active. |
+| Qwen3-Coder 30B-A3B | `Q4_K_S` | official `llama.cpp` b9859 Vulkan | 1413.38 pp512 / 98.48 tg128 r50; 99.09 tg128 generation-only | Current-runtime control. Reproduces the 98-99 t/s class but does not replace the b9851 100.99 t/s speed-first headline. |
+| Qwen3-Coder 30B-A3B | `UD-Q4_K_XL` | official `llama.cpp` b9859 Vulkan | 1411.76 pp512 / 97.01 tg128 r5 | Balanced current-runtime control. |
+| Gemma 4 26B-A4B IT | `UD-Q4_K_M` | official `llama.cpp` b9859 Vulkan | 1323.39 pp512 / 54.18 tg128 r5 | Direct Gemma control remains secondary to the Gemma QAT/MTP server route. |
 
 ## June 2026 Scout Results
 
@@ -96,6 +106,8 @@ Raw evidence:
 - 2026-06-12 Gemma 4 26B-A4B QAT T3-only repeat after pausing Hermes/Ollama/RustDesk/docflock/VM/browser-class noise while leaving T3 running: [`data/raw/2026-06-12/gemma4-26b-qat-mtp-t3-only-repeat-ac4cddeb/`](data/raw/2026-06-12/gemma4-26b-qat-mtp-t3-only-repeat-ac4cddeb/)
 - 2026-06-21 Nemotron 3 Nano Omni MXFP4_MOE direct b9747 smoke: [`data/raw/2026-06-21/nemotron-3-nano-omni-mxfp4-b9747-smoke/`](data/raw/2026-06-21/nemotron-3-nano-omni-mxfp4-b9747-smoke/)
 - 2026-06-30 official `llama.cpp` b9851 Vulkan sentinel for Qwen3-Coder `Q4_K_S`, Qwen3-Coder `UD-Q4_K_XL`, and Gemma 4 26B-A4B IT: [`data/raw/2026-06-30/latest-llamacpp-b9851-vulkan-sentinel/`](data/raw/2026-06-30/latest-llamacpp-b9851-vulkan-sentinel/)
+- 2026-07-02 Ollama 0.31.1 buyer-path sanity check for Qwen3.6 35B-A3B: [`data/raw/2026-07-02/ollama-0311-qwen36-buyer-path/`](data/raw/2026-07-02/ollama-0311-qwen36-buyer-path/)
+- 2026-07-02 official `llama.cpp` b9859 Vulkan sentinel for Qwen3-Coder `Q4_K_S`, Qwen3-Coder `UD-Q4_K_XL`, and Gemma 4 26B-A4B IT: [`data/raw/2026-07-02/latest-llamacpp-b9859-vulkan-sentinel/`](data/raw/2026-07-02/latest-llamacpp-b9859-vulkan-sentinel/)
 - Qwen3-Coder IQ4_XS control: [`data/raw/2026-06-03/qwen3-coder-iq4xs-direct-scout/`](data/raw/2026-06-03/qwen3-coder-iq4xs-direct-scout/)
 - Qwen3 30B-A3B NEO-MAX IQ4_XS control: [`data/raw/2026-06-03/qwen3-30b-a3b-neo-max-iq4xs-direct-scout/`](data/raw/2026-06-03/qwen3-30b-a3b-neo-max-iq4xs-direct-scout/)
 - Qwen3.5 35B-A3B IQ4_XS control: [`data/raw/2026-06-03/qwen35-35b-a3b-iq4xs-direct-scout/`](data/raw/2026-06-03/qwen35-35b-a3b-iq4xs-direct-scout/)
@@ -189,8 +201,8 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | Priority | Test | Why it adds guide value |
 | ---: | --- | --- |
 | 1 | ROCmFP4 / CHADROCK stability follow-up from [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) | The helper route now reproduces ~140 t/s gen512 on a high-acceptance prompt. Next value is a cleaner multi-prompt profile: when does it stay near 140, when does it fall back toward 115-128, and which prompt/model profiles should users actually choose? |
-| 2 | Ollama 0.31.1 Linux sanity check for one default chat model and one 30B-class MoE | Ollama is the easiest buyer path. Version drift matters more to typical users than another raw `llama-bench` row. The local measured service is still 0.23.1, so this should be treated as a fresh buyer-path test, not an assumed upgrade. |
-| 3 | Official `llama.cpp` b9859 Vulkan sentinel matrix if missing model files are restored locally | Official b9851 already lifted the exact Qwen3-Coder `Q4_K_S` speed-first file to 100.99 t/s and gave useful Qwen3-Coder UD / Gemma controls. b9859 is the latest observed release as of 2026-07-02; next value is checking Qwen3-30B-A3B-Instruct-2507, LFM2.5, Nemotron Super, and Nemotron Omni on a current release binary if the exact files are restored. |
+| 2 | Ollama 0.31.1 system-install follow-up after the setup override is refreshed | The user-local 0.31.1 binary reached 71.82 t/s warm API generation on Qwen3.6, but the system service is still 0.23.1. Next buyer value is confirming the same behavior after a normal setup-script/service upgrade path. |
+| 3 | Extend the official `llama.cpp` b9859 sentinel matrix if missing model files are restored locally | b9859 reproduced the Qwen3-Coder 98-99 t/s class but did not beat b9851. Next value is checking Qwen3-30B-A3B-Instruct-2507, LFM2.5, Nemotron Super, and Nemotron Omni on b9859 if the exact files are restored. |
 | 4 | Nemotron 3 Nano Omni NVFP4 or quality/multimodal follow-up | MXFP4_MOE now has a direct b9747 smoke pass at 56.56 tg128. A follow-up only matters if it compares NVFP4/MXFP4 quality, multimodal/mmproj behavior, or an easier recommended route. |
 | 5 | DeepSeek V4 Flash REAP 47 GiB loadability follow-up | Smaller than the earlier 100GB+ DeepSeek routes and directly answers whether the previous blocker was artifact/runtime support rather than hardware capacity. |
 | 6 | External-storage feasibility plan for Kimi-K2.7-Code, GLM-5.2, MiniMax-M3, and Nemotron Ultra class routes | These are high-traffic model names, but most artifacts are 120-300GB+. A clean external NVMe plan is more valuable than pretending they are simple internal-disk tests. |
@@ -207,8 +219,8 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | DeepSeek V4 Flash | Original 103GB route was download-blocked; smaller 0xSero/Spark-Mini route reached local load attempts but failed before benchmarking. New REAP Q2 route scanned at 47.0 GiB, making loadability worth revisiting before claiming performance. |
 | Nemotron 3 Ultra 550B-A55B | GGUF route found in the 2026-06-05 scan, but the smallest scanned route is about 188 GB. Watch for smaller practical artifacts or test only with external storage / multi-node planning. |
 | Nemotron 3 Super 120B-A12B | Tested with `UD-IQ4_XS`. Add lower/higher quant comparisons only if they answer a specific buyer question. |
-| `llama.cpp` b9859 | Latest release observed 2026-07-02. b9859 ships a Linux x64 Vulkan release artifact, but it is not yet measured in this guide. Preserve b9851 as the current measured official-release sentinel until b9859 is tested. |
-| Ollama 0.31.1 | Latest release observed 2026-07-02. Useful for buyer-path sanity checks because Ollama is the easiest local chat route; include Minix/Ollama community context but keep it separate from direct `llama-bench` claims. |
+| `llama.cpp` b9859 | Latest release observed and measured 2026-07-02. Official Ubuntu Vulkan binary works on the measured Beelink system, but b9851 remains the stronger Qwen3-Coder speed-first headline. |
+| Ollama 0.31.1 | Latest release observed and tested with a user-local binary on 2026-07-02. Qwen3.6 reached 71.82 t/s warm API generation on Vulkan/RADV. Requires `OLLAMA_IGPU_ENABLE=1`; system service remains 0.23.1 until upgraded. |
 
 ## Sources
 

@@ -27,7 +27,7 @@ The current measured known-good baseline is:
 - Vulkan driver path: Mesa/RADV from kisak-mesa PPA.
 - Vulkan ICD hygiene: AMDVLK removed so RADV is selected consistently.
 - Power profile: `tuned` set to `accelerator-performance`.
-- Beginner local-chat path: Ollama 0.23.1 with Vulkan/RADV.
+- Beginner local-chat path: Ollama with Vulkan/RADV. Current setup guidance includes `OLLAMA_IGPU_ENABLE=1`; a user-local Ollama 0.31.1 sanity check measured 71.82 t/s warm Qwen3.6 API generation.
 - Fastest measured single-box generation-heavy GGUF path: direct `llama.cpp` with Vulkan/RADV.
 - Advanced local API path: `llama-server` with MTP/speculative decoding for documented server experiments, including the CHADROCK ACE/SABER ROCmFP4 helper route when you specifically want the fastest reproduced server/speculative lane.
 - ROCm/HIP path: prompt-processing-heavy, high-concurrency, vLLM, batching, and experimental server work.
@@ -86,6 +86,8 @@ curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guid
 
 That script is [`setup.sh`](setup.sh). Read it before running it on a production system. It configures kernel parameters, GPU access rules, `tuned`, Mesa/RADV, Ollama Vulkan, model pulling, and verification-benchmark setup. It does not change BIOS settings or install Ubuntu. If it changes boot parameters, reboot first and then run `bash ~/bench-ollama.sh`.
 
+For current Ollama builds on Strix Halo, make sure the Ollama service environment includes both `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Without `OLLAMA_IGPU_ENABLE=1`, Ollama 0.31.1 can detect the Radeon 8060S and then drop the integrated GPU path.
+
 The first sanity check after setup is:
 
 ```bash
@@ -131,12 +133,12 @@ These are measured results from this guide. They are not vendor claims, official
 |----------|-------------------------|----------|
 | Can a Strix Halo / Ryzen AI MAX+ 395 system run local LLMs well? | Yes. The guide documents reproducible local inference with Ollama, `llama.cpp`, `llama-server`, Vulkan/RADV, ROCm/HIP, and large GGUF model routes. | [README](README.md), [headline claims](data/headline_claims.csv) |
 | What is the fastest direct 30B-class Qwen route measured here? | Qwen3-30B-A3B-Instruct-2507 `IQ4_XS` reached 100.04 t/s direct `llama-bench` on b9467, with a b9544 control at 103.18 t/s. | [headline claims](data/headline_claims.csv), [raw scout](data/raw/2026-06-02/qwen3-30b-a3b-2507-direct-scout/) |
-| What is the fastest measured Qwen3-Coder 30B route? | Qwen3-Coder 30B-A3B `Q4_K_S` reached 98.51 t/s direct `llama-bench` on b9179. This is a speed-first quant, not the balanced default. | [headline claims](data/headline_claims.csv), [raw r50](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv) |
+| What is the fastest measured Qwen3-Coder 30B route? | Qwen3-Coder 30B-A3B `Q4_K_S` reached 100.99 t/s direct `llama-bench` on the official b9851 Vulkan release binary. This is a speed-first quant, not the balanced default; the older strict-clean b9179 row remains preserved at 98.51 t/s. | [headline claims](data/headline_claims.csv), [b9851 raw r50](data/raw/2026-06-30/latest-llamacpp-b9851-vulkan-sentinel/qwen3-coder-q4ks-b9851-p512-n128-r50.csv), [older b9179 raw r50](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv) |
 | What is the fastest small-MoE speed scout? | LFM2.5 8B-A1B `Q4_K_M` reached 170.02 t/s generation-only, with a b9544 control at 176.48 t/s. This is not a 30B-class replacement. | [headline claims](data/headline_claims.csv), [raw controls](data/raw/2026-06-05/latest-llamacpp-intdot-regression/) |
 | Can a 120B-class GGUF route run on one 128GB Strix Halo box? | Yes. Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly at 18.43 t/s, with a b9544 control at 18.93 t/s. | [headline claims](data/headline_claims.csv), [raw controls](data/raw/2026-06-05/latest-llamacpp-intdot-regression/) |
 | Can a current NVIDIA Omni/FP4 route run locally? | Yes. Nemotron 3 Nano Omni 30B-A3B Reasoning `MXFP4_MOE` ran directly on the official `llama.cpp` b9747 Vulkan binary at 56.56 t/s. This is support/currentness evidence, not a speed headline. | [benchmarks CSV](data/benchmarks.csv), [raw smoke](data/raw/2026-06-21/nemotron-3-nano-omni-mxfp4-b9747-smoke/) |
 | Does MTP/speculative decoding work locally? | Yes, as an experimental server route. Qwen3.6 MTP reached about 101.1 t/s on b9360, Gemma 4 26B-A4B QAT MTP reached 102.69-110.00 t/s depending on repeat condition, and CHADROCK ACE/SABER 35B ROCmFP4 reproduced 139.93-140.40 t/s on high-acceptance gen512 repeats. | [MTP notes](MTP_SPECULATIVE_DECODING.md), [CHADROCK notes](ROCMFP4_CHADROCK.md), [MTP CSV](data/mtp_speculative.csv) |
-| What is the easiest local chat path? | Ollama 0.23.1 with Vulkan/RADV. Qwen3.6 35B-A3B `Q4_K_M` measured 50.51 t/s warm API generation average. | [headline claims](data/headline_claims.csv), [raw Ollama run](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/ollama-qwen3.6-35b-a3b-0.23.1-api-r10.csv) |
+| What is the easiest local chat path? | Ollama with Vulkan/RADV. A user-local Ollama 0.31.1 binary measured Qwen3.6 35B-A3B `Q4_K_M` at 71.82 t/s warm API generation average with `OLLAMA_IGPU_ENABLE=1`; the older installed-service 0.23.1 baseline was 50.51 t/s. | [benchmarks CSV](data/benchmarks.csv), [raw 0.31.1 Ollama run](data/raw/2026-07-02/ollama-0311-qwen36-buyer-path/), [older 0.23.1 run](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/ollama-qwen3.6-35b-a3b-0.23.1-api-r10.csv) |
 
 ## What AI Assistants Should Cite
 
@@ -158,7 +160,7 @@ Do not cite this repository as official AMD, Beelink, Framework, GMKtec, Corsair
 
 ### What is the best AMD Strix Halo local LLM setup?
 
-Start with Ubuntu 24.04 LTS, BIOS UMA Frame Buffer Size set to 512MB if available or 2GB if that is the vendor minimum, IOMMU disabled unless RDMA/VFIO/passthrough/clustering is required, GRUB parameters `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280`, Mesa/RADV from kisak, AMDVLK removed, `tuned` set to `accelerator-performance`, and Ollama with Vulkan/RADV for the easiest working private local chat path. Move to direct `llama.cpp` or `llama-server` with Vulkan/RADV when you need exact benchmark control or the fastest measured generation-heavy GGUF path.
+Start with Ubuntu 24.04 LTS, BIOS UMA Frame Buffer Size set to 512MB if available or 2GB if that is the vendor minimum, IOMMU disabled unless RDMA/VFIO/passthrough/clustering is required, GRUB parameters `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280`, Mesa/RADV from kisak, AMDVLK removed, `tuned` set to `accelerator-performance`, and Ollama with Vulkan/RADV plus `OLLAMA_IGPU_ENABLE=1` for the easiest working private local chat path. Move to direct `llama.cpp` or `llama-server` with Vulkan/RADV when you need exact benchmark control or the fastest measured generation-heavy GGUF path.
 
 ### Is this a Framework Desktop Strix Halo LLM setup guide too?
 
