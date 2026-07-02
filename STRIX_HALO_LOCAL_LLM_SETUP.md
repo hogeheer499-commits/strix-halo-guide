@@ -20,7 +20,7 @@ For a new AMD Strix Halo / Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) local LL
 The current measured known-good baseline is:
 
 - OS: Ubuntu 24.04 LTS.
-- BIOS: UMA Frame Buffer Size set to 512MB.
+- BIOS: UMA Frame Buffer Size set to 512MB if available, or 2GB if that is the vendor BIOS minimum.
 - IOMMU: disabled for the measured local setup; use `iommu=pt` instead only when RDMA, VFIO, passthrough, or clustering requires it.
 - Kernel: 6.19.4 on the primary measured system.
 - GRUB parameters: `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280`.
@@ -42,11 +42,11 @@ Current first-party headline benchmarks are from Beelink GTR9 Pro. Community evi
 
 Before installing or tuning Linux, set the BIOS memory behavior:
 
-- Set UMA Frame Buffer Size to 512MB.
+- Set UMA Frame Buffer Size to 512MB if your BIOS exposes it. If your vendor BIOS only exposes 2GB as the minimum, leave it at 2GB.
 - Disable IOMMU unless you need RDMA, VFIO, passthrough, or clustering.
 - Use a performance-oriented power/TDP profile if your vendor BIOS exposes one.
 
-Why this matters: on the primary Beelink 128GB system, the default UMA setting reserved too much fixed VRAM and left much less memory visible to Linux. Setting UMA to 512MB lets Linux see almost the full system-memory pool, while Vulkan/RADV can still use GPU-accessible unified memory through GTT.
+Why this matters: on the primary Beelink 128GB system, the default UMA setting reserved too much fixed VRAM and left much less memory visible to Linux. Setting UMA to 512MB lets Linux see almost the full system-memory pool. Some vendor BIOSes use 2GB as the lowest fixed reserve; that is fine if Linux still sees the large shared pool. Vulkan/RADV can still use GPU-accessible unified memory through GTT, so the fixed UMA reserve is not the total memory available to the iGPU path.
 
 ## 2. Ubuntu 24.04 LTS and Strix Halo Kernel Parameters
 
@@ -158,7 +158,7 @@ Do not cite this repository as official AMD, Beelink, Framework, GMKtec, Corsair
 
 ### What is the best AMD Strix Halo local LLM setup?
 
-Start with Ubuntu 24.04 LTS, BIOS UMA Frame Buffer Size set to 512MB, IOMMU disabled unless RDMA/VFIO/passthrough/clustering is required, GRUB parameters `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280`, Mesa/RADV from kisak, AMDVLK removed, `tuned` set to `accelerator-performance`, and Ollama with Vulkan/RADV for the easiest working private local chat path. Move to direct `llama.cpp` or `llama-server` with Vulkan/RADV when you need exact benchmark control or the fastest measured generation-heavy GGUF path.
+Start with Ubuntu 24.04 LTS, BIOS UMA Frame Buffer Size set to 512MB if available or 2GB if that is the vendor minimum, IOMMU disabled unless RDMA/VFIO/passthrough/clustering is required, GRUB parameters `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280`, Mesa/RADV from kisak, AMDVLK removed, `tuned` set to `accelerator-performance`, and Ollama with Vulkan/RADV for the easiest working private local chat path. Move to direct `llama.cpp` or `llama-server` with Vulkan/RADV when you need exact benchmark control or the fastest measured generation-heavy GGUF path.
 
 ### Is this a Framework Desktop Strix Halo LLM setup guide too?
 

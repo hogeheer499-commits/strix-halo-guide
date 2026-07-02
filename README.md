@@ -73,7 +73,7 @@ What you get:
 
 For those who want to get running as fast as possible:
 
-1. **BIOS:** Set UMA Frame Buffer to 512MB, disable IOMMU.
+1. **BIOS:** Set UMA Frame Buffer to 512MB if available; if your BIOS minimum is 2GB, leave it at 2GB. Disable IOMMU unless you need it.
 2. **Install Ubuntu 24.04 LTS**, switch to X11.
 3. **Kernel params:** Add `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280` to GRUB.
 4. **Performance:** Install tuned, set `accelerator-performance` profile, upgrade Mesa via kisak PPA.
@@ -84,7 +84,7 @@ Use the setup script below for the automated path. The phases later in this READ
 
 ## Setup Script
 
-If you've already set your BIOS (UMA = 512MB, IOMMU = off) and installed Ubuntu 24.04:
+If you've already set your BIOS (UMA = 512MB if available, or 2GB if that is your vendor minimum; IOMMU = off unless needed) and installed Ubuntu 24.04:
 
 ```bash
 git clone https://github.com/hogeheer499-commits/strix-halo-guide
@@ -192,7 +192,7 @@ Best current AMD Strix Halo / Ryzen AI MAX+ 395 local LLM setup from this guide'
 If you are new, do this first:
 
 1. Use Ubuntu 24.04.
-2. Set BIOS UMA Frame Buffer Size to 512MB.
+2. Set BIOS UMA Frame Buffer Size to 512MB if available, or 2GB if that is your vendor minimum.
 3. Disable IOMMU unless you need RDMA, VFIO, passthrough, or clustering.
 4. Use the [setup script](#setup-script) to install the Vulkan/RADV + Ollama path.
 5. Start with Ollama for chat, then add [Open WebUI](#chatgpt-like-web-interface-open-webui) if you want a browser UI.
@@ -848,9 +848,9 @@ Do this BEFORE installing the OS.
 
 ### Step 1.1: Set UMA Frame Buffer Size
 
-Navigate to `Integrated Graphics` then `UMA Frame Buffer Size` and set to **512MB**.
+Navigate to `Integrated Graphics` then `UMA Frame Buffer Size` and set it to **512MB** if your BIOS exposes that option. If your vendor BIOS only exposes **2GB** as the minimum, leave it at 2GB; do not flash or fight the BIOS only to chase 512MB.
 
-> **Why?** On the primary Beelink 128GB system, the default BIOS setting reserved ~97GB for GPU VRAM and left only ~31GB visible to the OS. Setting UMA to 512MB lets Linux see almost all system RAM. This does NOT reduce Vulkan LLM performance -- Vulkan uses GTT (system memory), so the GPU still has access to the unified memory pool. We benchmarked before and after: **zero speed difference**.
+> **Why?** On the primary Beelink 128GB system, the default BIOS setting reserved ~97GB for GPU VRAM and left only ~31GB visible to the OS. Setting UMA to 512MB lets Linux see almost all system RAM. Some vendor BIOSes use 2GB as the lowest fixed reserve; that is fine if Linux still sees the large system-memory pool. Vulkan/RADV uses GTT system memory, so the fixed UMA reserve is not the total memory available to the iGPU path. The practical check is `free -h`: a 128GB box should show roughly 124-126GiB usable, not ~31GiB.
 
 ### Step 1.2: Disable IOMMU in BIOS
 
@@ -1400,7 +1400,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | `iommu=pt` for speed | "Use pass-through for performance" | No benefit over default ([lhl](https://github.com/lhl/strix-halo-testing)) | Same speed as `iommu=on`, wastes a kernel param |
 | AMDVLK for all workloads | "AMDVLK is fastest" | [Project discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025). RADV beats AMDVLK on both pp (+63%) and tg. **Worse: even if you don't use AMDVLK, its ICD file (`/etc/vulkan/icd.d/amd_icd64.json`) silently hijacks Vulkan and halves your pp speed.** You won't see an error -- just mysteriously slow prompt processing | **Uninstall it completely:** `sudo dpkg -r amdvlk && sudo rm -f /etc/vulkan/icd.d/amd_icd64.json`. Verify with llama-bench: RADV shows `(RADV STRIX_HALO)` with `shared memory: 65536`. AMDVLK shows `(AMD open-source driver)` with `shared memory: 32768` |
 | rocWMMA on upstream llama.cpp | "Enable for 2x speed" | [73% regression](https://github.com/ggml-org/llama.cpp/issues/19984) on ROCm 7.2 | Massively slower prompt processing |
-| BIOS VRAM increase for speed | "More GPU VRAM = faster" | Zero speed difference, but you lose OS-visible RAM and GTT capacity. Set to 512MB or your system is crippled (31GB usable instead of 125GB). | OS sees only 31GB RAM, large models won't load at all |
+| BIOS VRAM increase for speed | "More GPU VRAM = faster" | Zero speed difference, but a very large fixed UMA reserve can cripple OS-visible RAM and GTT capacity. Use 512MB if available; 2GB is fine when that is the vendor minimum. | If Linux only sees ~31GB on a 128GB box, large models will not load |
 | ROCm 7.0 RC | "Use ROCm 7 RC" | Segfaults on kernel 6.18.14+ | `HSA_STATUS_ERROR` crash |
 | Kernel 6.19.x with ROCm (without fix) | "Just use latest kernel" | GPU misidentified as gfx1100 without HSA override | Segfaults unless you set `HSA_OVERRIDE_GFX_VERSION=11.5.1` |
 | linux-firmware-20251125 | Auto-update | Breaks ROCm on Strix Halo | Instability, crashes |
@@ -1417,7 +1417,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | tuned accelerator-performance | **+5-8% overall** | `sudo tuned-adm profile accelerator-performance` |
 | RADV over AMDVLK | **+63% pp, +1.2% tg** | Uninstall AMDVLK entirely (see above). `AMD_VULKAN_ICD=RADV` works too but is easy to forget |
 | `amd_iommu=off` | **+6% memory bandwidth** | GRUB parameter |
-| BIOS VRAM to 512MB | OS sees 125GB vs 31GB, GTT gets full 128GB | No speed change, but **required** -- without this, models >31GB won't load |
+| BIOS UMA/VRAM reserve low enough | OS sees ~124-126GiB instead of ~31GiB on 128GB systems; GTT gets the large shared pool | No speed change from 512MB vs sane low reserves, but required to avoid losing most system RAM. Use 512MB if available; 2GB is fine when that is the vendor minimum |
 | `HIP_VISIBLE_DEVICES=-1` | Fixes Ollama crash | Required for Vulkan-only mode |
 | LLVM unroll workaround | Restores ROCm 7+ perf | `-mllvm --amdgpu-unroll-threshold-local=600` |
 | lhl's rocWMMA-tuned | **2X tg at 32K context** | Custom branch, requires manual build |
@@ -1980,7 +1980,7 @@ Common causes:
 2. **Old Mesa drivers** -- Check `vulkaninfo --summary | grep driverInfo`. Should be Mesa 26.0.2+ from the kisak-mesa PPA; exact driver metadata is recorded per run when available.
 3. **Using Ollama instead of llama-bench** -- Qwen3.6 is about 19-20% slower through Ollama 0.23.1 than direct llama-bench on the current data. The 96-100 t/s Qwen rows are via llama-bench direct, not Ollama.
 4. **GPU clock stuck low** -- Check `cat /sys/class/drm/card*/device/pp_dpm_sclk`. Should show 2900Mhz with asterisk.
-5. **Wrong BIOS VRAM setting** -- Check `free -h`. On a 128GB system it should show roughly ~124GiB OS-visible memory; a 96GB system will be lower. If a 128GB box only shows ~31GiB, set UMA Frame Buffer to 512MB in BIOS.
+5. **Wrong BIOS VRAM setting** -- Check `free -h`. On a 128GB system it should show roughly ~124-126GiB OS-visible memory; a 96GB system will be lower. If a 128GB box only shows ~31GiB, lower the UMA Frame Buffer reserve in BIOS. Use 512MB if available; if your vendor minimum is 2GB, leave it at 2GB.
 6. **Different model/quantization** -- The 100.99 t/s Qwen3-Coder result is specifically Qwen3-Coder-30B-A3B Q4_K_S via RADV on official b9851 Vulkan. The older strict-clean b9179 row for the same speed-first quant remains 98.51 t/s. The 100.04 t/s result is a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS route. The balanced Qwen3-Coder UD-Q4_K_XL row is 96-99.6 t/s depending on build/repeat length. Larger or denser models are slower.
 
 </details>
@@ -2265,7 +2265,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 - At that time, prices were verified against current retail (March 2026 snapshot)
 - DGX Spark comparison is now apples-to-apples (same model, same context)
 - Fixed 12 outdated "ROCm broken on 6.19.x" references
-- BIOS VRAM 512MB is mandatory, not just speed-neutral
+- A low BIOS UMA reserve is mandatory, not just speed-neutral: use 512MB if available, but 2GB is fine when that is the vendor minimum
 - Vulkan Driver Comparison updated with b8460 data
 - RADV_PERFTEST env vars (cswave32, nogttspill) tested and found to be -10% slower. Don't use.
 - Posted findings on [llama.cpp Vulkan discussion](https://github.com/ggml-org/llama.cpp/discussions/10879#discussioncomment-16235771)
