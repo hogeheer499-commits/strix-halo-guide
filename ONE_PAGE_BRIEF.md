@@ -10,7 +10,7 @@ High-end local-AI hardware can be technically strong but commercially under-leve
 
 The repo already includes a technical proof layer:
 
-- Public GitHub demand signal: 188 stars in a small hardware/software niche as of the 2026-07-01 GitHub API snapshot; use this as supporting context, not the main claim.
+- Public GitHub demand signal: 192 stars in a small hardware/software niche as of the 2026-07-02 GitHub API snapshot; use this as supporting context, not the main claim.
 - Setup and workflow guide: [`README.md`](README.md).
 - Current benchmark snapshot: [`BENCHMARKS.md`](BENCHMARKS.md).
 - Reproducibility notes: [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).

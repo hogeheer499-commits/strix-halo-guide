@@ -12,7 +12,7 @@ That uncertainty creates adoption friction. A technically strong AI PC can still
 
 This guide reduces setup friction, provides reproducible benchmark evidence, and helps buyers evaluate AMD local-AI hardware with clearer expectations. It gives developers and buyers a practical path from "what should I install?" to "which backend, model, and settings should I try first?"
 
-The repo also has a visible demand signal: 188 GitHub stars and 11 Strix Halo-class systems/sources represented as of the 2026-07-01 GitHub/project snapshot. That should not be treated as the main value proposition. The main value is the proof layer below: reproducible public evidence that makes the hardware easier to evaluate, trust, support, review, and buy.
+The repo also has a visible demand signal: 192 GitHub stars and 11 Strix Halo-class systems/sources represented as of the 2026-07-02 GitHub/project snapshot. That should not be treated as the main value proposition. The main value is the proof layer below: reproducible public evidence that makes the hardware easier to evaluate, trust, support, review, and buy.
 
 The technical proof layer already includes:
 

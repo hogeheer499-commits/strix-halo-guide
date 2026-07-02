@@ -189,8 +189,8 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | Priority | Test | Why it adds guide value |
 | ---: | --- | --- |
 | 1 | ROCmFP4 / CHADROCK stability follow-up from [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) | The helper route now reproduces ~140 t/s gen512 on a high-acceptance prompt. Next value is a cleaner multi-prompt profile: when does it stay near 140, when does it fall back toward 115-128, and which prompt/model profiles should users actually choose? |
-| 2 | Ollama 0.30.11 Linux sanity check for one default chat model and one 30B-class MoE | Ollama is the easiest buyer path. Version drift matters more to typical users than another raw `llama-bench` row. |
-| 3 | Complete the `llama.cpp` b9851 sentinel matrix if missing model files are restored locally | Official b9851 already lifted the exact Qwen3-Coder `Q4_K_S` speed-first file to 100.99 t/s and gave useful Qwen3-Coder UD / Gemma controls. Next value is checking Qwen3-30B-A3B-Instruct-2507, LFM2.5, Nemotron Super, and Nemotron Omni on the same release binary if the exact files are restored. |
+| 2 | Ollama 0.31.1 Linux sanity check for one default chat model and one 30B-class MoE | Ollama is the easiest buyer path. Version drift matters more to typical users than another raw `llama-bench` row. The local measured service is still 0.23.1, so this should be treated as a fresh buyer-path test, not an assumed upgrade. |
+| 3 | Official `llama.cpp` b9859 Vulkan sentinel matrix if missing model files are restored locally | Official b9851 already lifted the exact Qwen3-Coder `Q4_K_S` speed-first file to 100.99 t/s and gave useful Qwen3-Coder UD / Gemma controls. b9859 is the latest observed release as of 2026-07-02; next value is checking Qwen3-30B-A3B-Instruct-2507, LFM2.5, Nemotron Super, and Nemotron Omni on a current release binary if the exact files are restored. |
 | 4 | Nemotron 3 Nano Omni NVFP4 or quality/multimodal follow-up | MXFP4_MOE now has a direct b9747 smoke pass at 56.56 tg128. A follow-up only matters if it compares NVFP4/MXFP4 quality, multimodal/mmproj behavior, or an easier recommended route. |
 | 5 | DeepSeek V4 Flash REAP 47 GiB loadability follow-up | Smaller than the earlier 100GB+ DeepSeek routes and directly answers whether the previous blocker was artifact/runtime support rather than hardware capacity. |
 | 6 | External-storage feasibility plan for Kimi-K2.7-Code, GLM-5.2, MiniMax-M3, and Nemotron Ultra class routes | These are high-traffic model names, but most artifacts are 120-300GB+. A clean external NVMe plan is more valuable than pretending they are simple internal-disk tests. |
@@ -207,8 +207,8 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | DeepSeek V4 Flash | Original 103GB route was download-blocked; smaller 0xSero/Spark-Mini route reached local load attempts but failed before benchmarking. New REAP Q2 route scanned at 47.0 GiB, making loadability worth revisiting before claiming performance. |
 | Nemotron 3 Ultra 550B-A55B | GGUF route found in the 2026-06-05 scan, but the smallest scanned route is about 188 GB. Watch for smaller practical artifacts or test only with external storage / multi-node planning. |
 | Nemotron 3 Super 120B-A12B | Tested with `UD-IQ4_XS`. Add lower/higher quant comparisons only if they answer a specific buyer question. |
-| `llama.cpp` b9851 | Latest release observed 2026-06-30. Qwen3-Coder `Q4_K_S`, Qwen3-Coder `UD-Q4_K_XL`, and Gemma 4 26B-A4B IT have first-party Vulkan sentinel rows. Restore missing model files before claiming a complete b9851 matrix. |
-| Ollama 0.30.11 | Latest release observed 2026-06-25. Useful for buyer-path sanity checks because Ollama is the easiest local chat route; include Minix/Ollama community context but keep it separate from direct `llama-bench` claims. |
+| `llama.cpp` b9859 | Latest release observed 2026-07-02. b9859 ships a Linux x64 Vulkan release artifact, but it is not yet measured in this guide. Preserve b9851 as the current measured official-release sentinel until b9859 is tested. |
+| Ollama 0.31.1 | Latest release observed 2026-07-02. Useful for buyer-path sanity checks because Ollama is the easiest local chat route; include Minix/Ollama community context but keep it separate from direct `llama-bench` claims. |
 
 ## Sources
 
@@ -229,6 +229,8 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 - Nemotron 3 Nano Omni MXFP4 GGUF: <https://huggingface.co/unsloth/NVIDIA-Nemotron-3-Nano-Omni-30B-A3B-Reasoning-GGUF>
 - Nemotron 3 Nano Omni NVFP4 GGUF: <https://huggingface.co/FreedomAISVR/Nemotron-3-30B-Nano-Omni-NVFP4-GGUF>
 - DeepSeek V4 Flash REAP Q2 GGUF: <https://huggingface.co/sleepyeldrazi/deepseek-v4-flash-reap-k128-Q2-GGUF>
-- `llama.cpp` b9851: <https://github.com/ggml-org/llama.cpp/releases/tag/b9851>
+- `llama.cpp` b9859: <https://github.com/ggml-org/llama.cpp/releases/tag/b9859>
+- `llama.cpp` b9851 measured sentinel: <https://github.com/ggml-org/llama.cpp/releases/tag/b9851>
 - `llama.cpp` b9747: <https://github.com/ggml-org/llama.cpp/releases/tag/b9747>
-- Ollama 0.30.11: <https://github.com/ollama/ollama/releases/tag/v0.30.11>
+- Ollama 0.31.1: <https://github.com/ollama/ollama/releases/tag/v0.31.1>
+- Ollama 0.30.11 historical watch target: <https://github.com/ollama/ollama/releases/tag/v0.30.11>
