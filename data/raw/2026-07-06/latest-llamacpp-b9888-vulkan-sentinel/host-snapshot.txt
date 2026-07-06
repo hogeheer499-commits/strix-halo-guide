@@ -1,0 +1,54 @@
+# Host snapshot
+
+Date: 2026-07-06T22:44:32+02:00
+
+System:
+
+```text
+Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 GNU/Linux
+```
+
+Tool:
+
+```text
+official llama.cpp b9888 Ubuntu Vulkan release binary
+build_commit: cb295bf59
+```
+
+Backend/device probe:
+
+```text
+ggml_vulkan: Found 1 Vulkan devices:
+ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: dot2 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 1 | matrix cores: KHR_coopmat
+Available devices:
+  Vulkan0: Radeon 8060S Graphics (RADV STRIX_HALO) (131584 MiB, 129272 MiB free)
+```
+
+Memory snapshot:
+
+```text
+Mem: 124Gi total, 15Gi used, 21Gi free, 90Gi buff/cache, 109Gi available
+Swap: 8.0Gi total, 6.4Gi used, 1.6Gi free
+```
+
+Vulkan summary:
+
+```text
+Vulkan Instance Version: 1.3.275
+GPU0:
+  apiVersion         = 1.4.354
+  driverVersion      = 26.1.4
+  vendorID           = 0x1002
+  deviceID           = 0x1586
+  deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+  deviceName         = Radeon 8060S Graphics (RADV STRIX_HALO)
+  driverID           = DRIVER_ID_MESA_RADV
+  driverName         = radv
+  driverInfo         = Mesa 26.1.4 - kisak-mesa PPA
+```
+
+Redaction note:
+
+```text
+Original broad process/path capture was reduced to benchmark-relevant host, tool, memory, and Vulkan data only. Private process paths, VM command lines, and local user paths are intentionally omitted.
+```
