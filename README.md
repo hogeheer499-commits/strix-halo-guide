@@ -15,6 +15,8 @@ A complete, practical guide to running large language models locally on AMD Stri
 
 Covers BIOS config, Ubuntu 24.04/kernel setup, Ollama, `llama.cpp` Vulkan/RADV, ROCm/HIP experiments, vLLM notes, 70B/120B GGUF model evidence, benchmarks, raw logs, and reproducibility checks.
 
+AMD now publicly frames Ryzen AI Halo-class systems as a local-AI and developer-platform direction. This repository is the independent practical layer: copyable setup, measured rows, raw evidence, failures, and community reproductions. It is not official AMD or OEM endorsement. See [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).
+
 What you get:
 
 - Copyable Ubuntu + Vulkan/RADV setup for Ollama and `llama.cpp`.
@@ -26,7 +28,7 @@ What you get:
 
 > Measured primarily on one Beelink GTR9 Pro. Community results are kept separate from local headline claims. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights. Raw evidence, commands, caveats, and corrections are linked so results can be checked instead of taken on trust.
 
-[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [Short Setup Answer](STRIX_HALO_LOCAL_LLM_SETUP.md) | [What Runs](#what-you-can-run-quick-snapshot) | [Current Models](CURRENT_MODELS.md) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [Feedback](COMMUNITY_FEEDBACK.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
+[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [Short Setup Answer](STRIX_HALO_LOCAL_LLM_SETUP.md) | [AI Halo Context](RYZEN_AI_HALO_CONTEXT.md) | [What Runs](#what-you-can-run-quick-snapshot) | [Current Models](CURRENT_MODELS.md) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [Feedback](COMMUNITY_FEEDBACK.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
 
 ---
 
@@ -43,6 +45,7 @@ What you get:
 |-------------------|------------|
 | Apply the setup without reading everything | [Quick Start](#quick-start-6-steps), then [Setup Script](#setup-script). |
 | Need the short current setup answer | [`STRIX_HALO_LOCAL_LLM_SETUP.md`](STRIX_HALO_LOCAL_LLM_SETUP.md): concise Strix Halo / Ryzen AI MAX+ 395 local LLM setup, benchmark highlights, and source-of-truth links. |
+| Understand why this guide matters now | [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md): how AMD's public Ryzen AI Halo / Developer Platform direction maps to this guide's independent setup and benchmark evidence. |
 | Decide what to run on your Strix Halo machine | [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot), then [Use This If You Want](#use-this-if-you-want): practical model and backend choices for a local AI PC. |
 | Skip the community-data deep dive | [Community-Tested Rules Of Thumb](#community-tested-rules-of-thumb): practical decisions extracted from the Beelink data plus Corsair, GMKtec, MS-S1-Max, Nimo, NixOS/NPU, and ROCmFP4 community reports. |
 | See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |

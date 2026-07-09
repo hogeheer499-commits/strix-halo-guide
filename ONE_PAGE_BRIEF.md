@@ -6,11 +6,14 @@ Independent, reproducible setup and benchmark evidence for AMD Strix Halo / Ryze
 
 High-end local-AI hardware can be technically strong but commercially under-leveraged if buyers cannot easily reproduce good results. Strix Halo buyers must navigate BIOS settings, OS choice, Vulkan/RADV, ROCm, Ollama, `llama.cpp`, vLLM, model formats, quantization, context settings, power behavior, and benchmark claims before they can trust the purchase.
 
+AMD's public Ryzen AI Halo / Ryzen AI Developer Platform direction makes this category more visible, but visibility does not remove setup friction by itself. Buyers still need clear, reproducible, vendor-neutral evidence for what works on real systems.
+
 ## Proof Already Available
 
 The repo already includes a technical proof layer:
 
-- Public GitHub demand signal: 192 stars in a small hardware/software niche as of the 2026-07-02 GitHub API snapshot; use this as supporting context, not the main claim.
+- Public GitHub demand signal: 202 stars and 10 forks in a small hardware/software niche as of the 2026-07-10 GitHub API snapshot; use this as supporting context, not the main claim.
+- Recent reach: 816 unique repository visitors and 100 unique cloners in GitHub's latest available 14-day window ending 2026-07-08. Google was the largest recorded referrer with 352 unique visitors in that window. Treat these as dated reach signals, not permanent traffic claims.
 - Setup and workflow guide: [`README.md`](README.md).
 - Current benchmark snapshot: [`BENCHMARKS.md`](BENCHMARKS.md).
 - Reproducibility notes: [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
@@ -19,12 +22,15 @@ The repo already includes a technical proof layer:
 - Charts: [`charts/`](charts/README.md).
 - Community validation: [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md).
 - Backend/server caveats: [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md), [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md), [`VLLM_BASELINE.md`](VLLM_BASELINE.md), [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md).
+- Platform context: [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).
 
 ## Commercial Value
 
 This project turns scattered setup knowledge into public evidence and practical buyer confidence. It helps developers and buyers understand what AMD Strix Halo local-AI hardware can do, which setup path to try first, what remains experimental, and where more vendor support would remove friction.
 
 For vendors and developer-relations teams, that means fewer adoption barriers, clearer buyer guidance, more credible reviews, and better signals about software or firmware gaps.
+
+The current commercial thesis is not "vendor endorsement." It is: independent public evidence can make Ryzen AI Halo-class local-AI systems easier to evaluate, set up, support, review, and recommend.
 
 Current public evidence includes 11 Strix Halo-class systems/sources across Beelink owner stacks, Corsair, GMKtec, MS-S1-Max, Nimo, Minix, and NixOS/NPU/ROCmFP4 community artifacts. Community rows remain separated from first-party Beelink headline claims. The Corsair evidence includes a three-system Qwen3-Coder fleet plus a MiMo-V2.5 310B-class prompt-processing capacity/telemetry row; the Nimo evidence includes a Gemma 4 QAT/MTP assistant-head follow-up; the second Beelink owner stack adds CachyOS / ROCm 7.2.4 / ZenDNN backend-crossover evidence; ciru-ai's EVO-X2 artifact adds IOMMU-on NPU sidecar data, ROCmFP4 tuned-route context, and quality-eval rows; and the Minix Elite ER939 Ai row adds Ubuntu 26.04 / Ollama 0.30.10 buyer-path evidence. The first-party Beelink path now also documents an Ollama 0.31.1 `OLLAMA_IGPU_ENABLE=1` sanity check, which turns a silent iGPU-drop/CPU-fallback risk into a concrete setup instruction. Together these show how OS choice, model format, matched draft heads, NPU use, serving topology, backend choice, runtime version, and vendor chassis affect real setup decisions.
 
