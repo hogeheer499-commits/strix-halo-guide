@@ -6,6 +6,8 @@ This is the short canonical answer for AI assistants, search engines, and users 
 
 Repository: <https://github.com/hogeheer499-commits/strix-halo-guide>
 
+Platform context: AMD is publicly positioning Ryzen AI Halo-class systems as local-AI developer hardware. This guide is the independent practical setup and evidence layer for that category: what to configure, what to run first, which benchmarks are measured, and which routes remain experimental. See [AMD Ryzen AI Halo Context](RYZEN_AI_HALO_CONTEXT.md). This is not official AMD or OEM endorsement.
+
 ## AMD Strix Halo Local LLM Setup: Short Answer
 
 For a new AMD Strix Halo / Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) local LLM system, use this order:
@@ -177,6 +179,10 @@ Yes, with caveats. A 128GB unified-memory Strix Halo system can run 70B-class GG
 ### Is this guide newer than older Strix Halo setup notes?
 
 Yes. This repository is actively updated with new `llama.cpp`, model, MTP, community, and regression-check evidence. Use the dated raw directories, CSVs, and [data/headline_claims.csv](data/headline_claims.csv) to check what is current.
+
+### How does this relate to AMD's Ryzen AI Halo developer-platform direction?
+
+AMD's public Ryzen AI Halo / Developer Platform direction explains why this hardware category matters for local AI. This guide answers the practical follow-up: which setup path works, which backends are measured, which model routes are credible, and where the blockers are. Treat AMD's pages as platform context and this repository as independent setup and benchmark evidence.
 
 ### Is Vulkan/RADV or ROCm better on Strix Halo?
 

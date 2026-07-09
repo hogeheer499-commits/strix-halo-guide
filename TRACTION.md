@@ -6,19 +6,22 @@ Do not invent traction numbers. Fill the TODOs only from current public GitHub d
 
 ## Current Public GitHub Stats
 
-Snapshot date: 2026-06-30.
+Snapshot date: 2026-07-10. Traffic covers GitHub's latest available 14-day window ending 2026-07-08.
 
 | Metric | Current value | Source |
 |--------|---------------|--------|
-| Stars | 187 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
-| Forks | 9 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| Stars | 202 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| Forks | 10 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
 | Watchers | 4 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
-| Open issues | 1 | [GitHub Issues](https://github.com/hogeheer499-commits/strix-halo-guide/issues) |
-| Open pull requests | 1 | [GitHub Pull Requests](https://github.com/hogeheer499-commits/strix-halo-guide/pulls) |
+| Open issues | 7 | [GitHub Issues](https://github.com/hogeheer499-commits/strix-halo-guide/issues) |
+| Open pull requests | 0 | [GitHub Pull Requests](https://github.com/hogeheer499-commits/strix-halo-guide/pulls) |
 | Releases | 5 | [GitHub Releases](https://github.com/hogeheer499-commits/strix-halo-guide/releases) |
 | GitHub contributors | 3 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
 | External benchmark submitters credited | 7 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
 | Strix Halo-class systems/sources represented | 11 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) |
+| Repository views | 1,837 total / 816 unique | GitHub Traffic API snapshot, 2026-07-10 |
+| Repository clones | 169 total / 100 unique | GitHub Traffic API snapshot, 2026-07-10 |
+| Largest recorded referrer | Google: 548 views / 352 unique visitors | GitHub Traffic API snapshot, 2026-07-10 |
 
 Read the star count as a small-niche demand signal, not the main argument. The stronger vendor evidence is the technical proof layer: reproducible commands, raw logs, CSVs, claim indexes, community rows, and documented failures.
 

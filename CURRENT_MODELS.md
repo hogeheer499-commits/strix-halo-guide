@@ -42,6 +42,8 @@ Source: [`COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-packag
 
 ## July 2026 Runtime Controls
 
+Latest observed upstream releases as of 2026-07-10: `llama.cpp` b9946 and Ollama 0.31.2. These are watch/update signals, not measured guide claims yet. The measured latest-runtime sentinel rows below still use the exact versions listed in the table.
+
 | Model / route | Quant | Tool | Result | Read |
 | --- | --- | --- | ---: | --- |
 | Qwen3.6 35B-A3B | `Q4_K_M` Ollama model | Ollama 0.31.1 local binary, Vulkan/RADV API | 71.82 t/s warm generation mean; 71.62-72.05 t/s warm range | Strong buyer-path update. Ollama 0.31.1 works on the measured Beelink system, but `OLLAMA_IGPU_ENABLE=1` is required to keep the Strix Halo iGPU active. |
