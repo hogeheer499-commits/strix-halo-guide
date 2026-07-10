@@ -1,0 +1,24 @@
+0.00.168.325 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+	Command being timed: "/home/hoge-heer/benchmark-tools/llama-b9946-patched-src/build-vulkan/bin/llama-batched-bench -m /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf -c 32768 -ngl 999 -fa on -ctk q4_0 -ctv q4_0 --no-mmap -npp 512 -ntg 128 -npl 1,2,4,8,9,12,16,24,32 --output-format jsonl"
+	User time (seconds): 38.51
+	System time (seconds): 3.65
+	Percent of CPU this job got: 41%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:40.91
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 221888
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 45
+	Minor (reclaiming a frame) page faults: 56405
+	Voluntary context switches: 4103
+	Involuntary context switches: 2175
+	Swaps: 0
+	File system inputs: 558984
+	File system outputs: 1064
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
