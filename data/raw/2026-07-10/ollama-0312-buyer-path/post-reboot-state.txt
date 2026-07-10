@@ -1,0 +1,21 @@
+checked_at=2026-07-10T14:01:02+02:00
+boot_started=2026-07-10 13:56:03
+boot_id=3f715c94-baed-4de1-b0c6-443951b47cab
+ollama_version=0.31.2
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin OLLAMA_IGPU_ENABLE=1 OLLAMA_HOST=0.0.0.0:11434 OLLAMA_VULKAN=1 HIP_VISIBLE_DEVICES=-1 OLLAMA_FLASH_ATTENTION=1 OLLAMA_CONTEXT_LENGTH=65536 AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json OLLAMA_NUM_BATCH=512 OLLAMA_NUM_PARALLEL=2 OLLAMA_MAX_LOADED_MODELS=1
+ActiveState=active
+SubState=running
+UnitFileState=enabled
+user_services:
+docflock-backend.service=active
+hogeheer-portfolio.service=active
+hermes-gateway.service=active
+t3-react185-semantic-proxy.service=active
+t3-react185-semantic-proxy-healthcheck.service=active
+t3-upstream-guard.service=active
+system_services:
+ollama.service=active
+rustdesk.service=active
+nxserver.service=active
+gnome-remote-desktop.service=active
+power-profiles-daemon.service=active
