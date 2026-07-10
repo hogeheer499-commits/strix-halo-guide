@@ -1,4 +1,4 @@
-name=patched-vulkan-b9946-density-threshold
+name=patched-vulkan-b9946-flat-threshold
 start=2026-07-10T01:49:19,433715439+02:00
 end=2026-07-10T01:51:00,358367315+02:00
 exit_status=0

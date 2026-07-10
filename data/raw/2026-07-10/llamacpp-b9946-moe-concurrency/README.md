@@ -12,11 +12,11 @@ not the literal artifact name shown in the issue.
 | Route | np8 decode | np9 decode | np32 decode | Read |
 | --- | ---: | ---: | ---: | --- |
 | Official b9946 Vulkan | 214.23 t/s | 143.05 t/s | 321.97 t/s | Reproduces the sharp 8-to-9 cliff. |
-| b9946 Vulkan with issue threshold patch | 202.73 t/s | 195.38 t/s | 321.02 t/s | Removes most of the cliff; experimental source build. |
+| b9946 Vulkan with flat threshold patch | 202.73 t/s | 195.38 t/s | 321.02 t/s | Changes the dense 8-to-16 and expert-dispatch 8-to-32 cutoffs; removes most of the cliff in this sweep. This is not the later density-gate design. |
 | Official b9946 ROCm 7.2 | 77.30 t/s | 81.03 t/s | 97.58 t/s | Runs, but is much slower on this workload. |
 | Lemonade ROCm b1259 | 184.93 t/s | 191.24 t/s | 354.59 t/s | Avoids the cliff and is competitive at high concurrency. |
 
-The sysfs telemetry is GPU/APU telemetry, not wall power. The patched Vulkan
+The sysfs telemetry is GPU/APU telemetry, not wall power. The flat-threshold Vulkan
 sweep reached a recorded 98 C maximum, so this one-pass result is not a default
 setup recommendation or a thermal-safety conclusion. The official b9946 ROCm
 run's `gpu_busy_percent` counter stayed at 1% despite active compute and should
