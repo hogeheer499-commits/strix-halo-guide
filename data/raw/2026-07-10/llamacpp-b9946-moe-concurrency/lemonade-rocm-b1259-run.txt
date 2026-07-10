@@ -1,0 +1,5 @@
+name=lemonade-rocm-b1259
+start=2026-07-10T02:01:50,015813549+02:00
+end=2026-07-10T02:03:33,019147387+02:00
+exit_status=0
+command=/home/hoge-heer/strix-halo-bench-tools/lemonade-llamacpp-rocm-b1259-gfx1151/extracted/llama-batched-bench -m /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf -c 32768 -ngl 999 -fa on -ctk q4_0 -ctv q4_0 --no-mmap -npp 512 -ntg 128 -npl 1\,2\,4\,8\,9\,12\,16\,24\,32 --output-format jsonl 

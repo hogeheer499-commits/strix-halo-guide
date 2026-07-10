@@ -1,0 +1,10 @@
+parallel1:
+warm_mean_tps=60.708
+warm_min_tps=60.205
+warm_max_tps=61.209
+warm_n=9
+parallel2:
+warm_mean_tps=60.568
+warm_min_tps=60.003
+warm_max_tps=61.219
+warm_n=9

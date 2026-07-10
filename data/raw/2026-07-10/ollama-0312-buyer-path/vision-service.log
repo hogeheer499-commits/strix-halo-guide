@@ -1,0 +1,220 @@
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load: control-looking token: 151659 '<|fim_prefix|>' was not control-type; this is probably a bug in the model. its type will be overridden
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load: control-looking token: 151662 '<|fim_pad|>' was not control-type; this is probably a bug in the model. its type will be overridden
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load: control-looking token: 151663 '<|repo_name|>' was not control-type; this is probably a bug in the model. its type will be overridden
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load: control-looking token: 151661 '<|fim_suffix|>' was not control-type; this is probably a bug in the model. its type will be overridden
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load: 0 unused tokens
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load: printing all EOG tokens:
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load:   - 128247 ('</s>')
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load:   - 151643 ('<|endoftext|>')
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load:   - 151645 ('<|im_end|>')
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load:   - 151662 ('<|fim_pad|>')
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load:   - 151663 ('<|repo_name|>')
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load:   - 151664 ('<|file_sep|>')
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load: special tokens cache size = 422
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load: token to piece cache size = 0.9340 MB
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: arch                  = qwen2vl
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: vocab_only            = 0
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: no_alloc              = 0
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_ctx_train           = 128000
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_embd_inp            = 3584
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_embd                = 3584
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_embd_out            = 3584
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_layer               = 28
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_layer_all           = 28
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_head                = 28
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_head_kv             = 4
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_rot                 = 128
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_swa                 = 0
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: is_swa_any            = 0
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_embd_head_k         = 128
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_embd_head_v         = 128
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_gqa                 = 7
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_embd_k_gqa          = 512
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_embd_v_gqa          = 512
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: f_norm_eps            = 0.0e+00
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: f_norm_rms_eps        = 0.0e+00
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: f_clamp_kqv           = 0.0e+00
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: f_max_alibi_bias      = 0.0e+00
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: f_logit_scale         = 0.0e+00
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: f_attn_scale          = 0.0e+00
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: f_attn_value_scale    = 0.0000
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_ff                  = 18944
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_expert              = 0
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_expert_used         = 0
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_expert_groups       = 0
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_group_used          = 0
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: causal attn           = 1
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: pooling type          = -1
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: rope type             = 8
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: rope scaling          = linear
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: freq_base_train       = 1000000.0
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: freq_scale_train      = 1
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_ctx_orig_yarn       = 128000
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: rope_yarn_log_mul     = 0.0000
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: rope_finetuned        = unknown
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: mrope sections        = [16, 24, 24, 0]
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: model type            = ?B
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: model params          = 7.62 B
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: general.name          = n/a
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: vocab type            = BPE
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_vocab               = 152064
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: n_merges              = 151387
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: BOS token             = 11 ','
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: EOS token             = 151645 '<|im_end|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: EOT token             = 151645 '<|im_end|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: PAD token             = 151643 '<|endoftext|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: LF token              = 198 'Ċ'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: FIM PRE token         = 151659 '<|fim_prefix|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: FIM SUF token         = 151661 '<|fim_suffix|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: FIM MID token         = 151660 '<|fim_middle|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: FIM PAD token         = 151662 '<|fim_pad|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: FIM REP token         = 151663 '<|repo_name|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: FIM SEP token         = 151664 '<|file_sep|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: EOG token             = 128247 '</s>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: EOG token             = 151643 '<|endoftext|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: EOG token             = 151645 '<|im_end|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: EOG token             = 151662 '<|fim_pad|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: EOG token             = 151663 '<|repo_name|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: EOG token             = 151664 '<|file_sep|>'
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: print_info: max token length      = 256
+Jul 10 02:19:43 hoge-heer-GTR-Pro ollama[777731]: load_tensors: loading model tensors, this can take a while... (mmap = true, direct_io = false)
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_tensors: offloading output layer to GPU
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_tensors: offloading 27 repeating layers to GPU
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_tensors: offloaded 29/29 layers to GPU
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_tensors:   CPU_Mapped model buffer size =   292.36 MiB
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_tensors:      Vulkan0 model buffer size =  4168.09 MiB
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: cmn  common_init_: added </s> logit bias = -inf
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: cmn  common_init_: added <|endoftext|> logit bias = -inf
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: cmn  common_init_: added <|im_end|> logit bias = -inf
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: cmn  common_init_: added <|fim_pad|> logit bias = -inf
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: cmn  common_init_: added <|repo_name|> logit bias = -inf
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: cmn  common_init_: added <|file_sep|> logit bias = -inf
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: constructing llama_context
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: n_seq_max     = 2
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: n_ctx         = 4096
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: n_ctx_seq     = 2048
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: n_batch       = 512
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: n_ubatch      = 512
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: causal_attn   = 1
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: flash_attn    = enabled
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: kv_unified    = false
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: freq_base     = 1000000.0
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: freq_scale    = 1
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: n_rs_seq      = 0
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: n_outputs_max = 2
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: n_ctx_seq (2048) < n_ctx_train (128000) -- the full capacity of the model will not be utilized
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_context: Vulkan_Host  output buffer size =     1.16 MiB
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_kv_cache:    Vulkan0 KV buffer size =   224.00 MiB
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_kv_cache: size =  224.00 MiB (  2048 cells,  28 layers,  2/2 seqs), K (f16):  112.00 MiB, V (f16):  112.00 MiB
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_kv_cache: attn_rot_k = 0, n_embd_head_k_all = 128
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: llama_kv_cache: attn_rot_v = 0, n_embd_head_k_all = 128
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: sched_reserve: reserving ...
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: sched_reserve: resolving fused Gated Delta Net support:
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: sched_reserve: fused Gated Delta Net (autoregressive) enabled
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: sched_reserve: fused Gated Delta Net (chunked) enabled
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: sched_reserve:    Vulkan0 compute buffer size =   127.02 MiB
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: sched_reserve: Vulkan_Host compute buffer size =    16.02 MiB
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: sched_reserve: graph nodes  = 1014
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: sched_reserve: graph splits = 2
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: sched_reserve: reserve took 9.55 ms, sched copies = 1
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: cmn  common_init_: KV cache shifting is not supported for this context, disabling KV cache shifting
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: cmn  common_init_: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: handle_qwen25vl_clip: detected Ollama-format qwen25vl GGUF used as mmproj; translating
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: clip_model_loader: model name:
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: clip_model_loader: description:
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: clip_model_loader: GGUF version: 3
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: clip_model_loader: alignment:    32
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: clip_model_loader: n_tensors:    858
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: clip_model_loader: n_kv:         53
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: clip_model_loader: has vision encoder
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: clip_ctx: CLIP using Vulkan0 backend
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: projector:          qwen2.5vl_merger
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: n_embd:             1280
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: n_head:             16
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: n_ff:               3420
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: n_layer:            32
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: ffn_op:             silu
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: projection_dim:     3584
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: --- vision hparams ---
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: image_size:         560
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: patch_size:         14
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: has_llava_proj:     0
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: minicpmv_version:   0
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: n_merge:            2
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: n_wa_pattern: 8
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: image_min_pixels:   802816 (custom value)
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: image_max_pixels:   3211264
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: model size:         5689.29 MiB
+Jul 10 02:19:48 hoge-heer-GTR-Pro ollama[777731]: load_hparams: metadata size:      0.30 MiB
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: compat tensor transform: op=F16->F32 promote tensor=v.patch_embd.weight bytes=3010560 duration_ms=2.280 total_ops=1 total_bytes=3010560 total_ms=2.280
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: compat tensor transform: op=F16->F32 promote tensor=v.patch_embd.weight.1 bytes=3010560 duration_ms=1.695 total_ops=2 total_bytes=6021120 total_ms=3.975
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: get_dummy_batch: warmup with image size = 1288 x 1288
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: get_dummy_batch: warmup with image size = 1288 x 1288
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: reserve_compute_meta:    Vulkan0 compute buffer size =   622.13 MiB
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: reserve_compute_meta:        CPU compute buffer size =   292.41 MiB
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: reserve_compute_meta: graph splits = 1, nodes = 1119
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: warmup: flash attention is enabled
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv    load_model: loaded multimodal model, '/usr/share/ollama/.ollama/models/blobs/sha256-a99b7f834d754b88f122d865f32758ba9f0994a83f8363df2c1e71c17605a025'
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv    load_model: initializing, n_slots = 2, n_ctx_slot = 2048, kv_unified = 'false'
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: spec common_specu: no implementations specified for speculative decoding
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: slot   load_model: id  0 | task -1 | new slot, n_ctx = 2048
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: slot   load_model: id  1 | task -1 | new slot, n_ctx = 2048
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv    load_model: use `--cache-ram 0` to disable the prompt cache
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv    load_model: context checkpoints enabled, max = 32, min spacing = 8192
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv          init: idle slots will be saved to prompt cache upon starting a new task
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv          init: init: chat template, example_format: '<|im_start|>system
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: You are a helpful assistant<|im_end|>
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: <|im_start|>user
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: Hello<|im_end|>
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: <|im_start|>assistant
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: Hi there<|im_end|>
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: <|im_start|>user
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: How are you?<|im_end|>
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: <|im_start|>assistant
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: '
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv          init: init: chat template, thinking = 0
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv  llama_server: model loaded
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv  llama_server: listening on http://127.0.0.1:39519
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv  update_slots: all slots are idle
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: time=2026-07-10T02:19:49.474+02:00 level=INFO source=llama_server.go:1315 msg="llama-server started in 7.03 seconds"
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: time=2026-07-10T02:19:49.501+02:00 level=INFO source=images.go:373 msg="template selection" model=registry.ollama.ai/library/qwen2.5vl:7b selected=go_template renderer="" parser="" go_template="[completion vision]" chat_template="[completion vision]" harmony=null renderer_parser=null
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: time=2026-07-10T02:19:49.501+02:00 level=INFO source=sched.go:739 msg="loaded runners" count=1
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: time=2026-07-10T02:19:49.501+02:00 level=INFO source=llama_server.go:1248 msg="waiting for llama-server to start responding"
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: time=2026-07-10T02:19:49.502+02:00 level=INFO source=llama_server.go:1315 msg="llama-server started in 7.06 seconds"
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: slot get_availabl: id  1 | task -1 | selected slot by LRU, t_last = -1
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: updating prompt cache
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv          load:  - looking for better prompt, base f_keep = -1.000, sim = 0.000
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv        update:  - cache state: 0 prompts, 0.000 MiB (limits: 8192.000 MiB, 4096 tokens, 8589934592 est)
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: prompt cache update took 0.02 ms
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  1 | task -1 | sampler chain: logits -> penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  1 | task -1 | sampler params:
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]:         repeat_last_n = 64, repeat_penalty = 1.100, frequency_penalty = 0.000, presence_penalty = 0.000
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 2048
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]:         top_k = 40, top_p = 0.900, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  1 | task 0 | processing task, is_child = 0
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: slot process_sing: id  0 | task -1 | saving idle slot to prompt cache
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  1 | task 0 | new prompt, n_ctx_slot = 2048, n_keep = 4, task.n_tokens = 1092
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  1 | task 0 | cached n_tokens = 0, memory_seq_rm [0, end)
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: srv  stream_sessi: conv_id= (empty=1)
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  1 | task 0 | cached n_tokens = 15, memory_seq_rm [15, end)
+Jul 10 02:19:49 hoge-heer-GTR-Pro ollama[777731]: slot process_mtmd: id  1 | task 0 | encoding mtmd batch from idx = 15, n_chunks = 1
+Jul 10 02:19:50 hoge-heer-GTR-Pro ollama[777731]: decoding image batch 1/3, n_tokens_batch = 512
+Jul 10 02:19:50 hoge-heer-GTR-Pro ollama[777731]: image decoded (batch 1/3) in 244 ms
+Jul 10 02:19:50 hoge-heer-GTR-Pro ollama[777731]: decoding image batch 2/3, n_tokens_batch = 512
+Jul 10 02:19:51 hoge-heer-GTR-Pro ollama[777731]: image decoded (batch 2/3) in 277 ms
+Jul 10 02:19:51 hoge-heer-GTR-Pro ollama[777731]: decoding image batch 3/3, n_tokens_batch = 34
+Jul 10 02:19:51 hoge-heer-GTR-Pro ollama[777731]: image decoded (batch 3/3) in 505 ms
+Jul 10 02:19:51 hoge-heer-GTR-Pro ollama[777731]: slot init_sampler: id  1 | task 0 | init sampler, took 0.04 ms, tokens: text = 34, total = 1092
+Jul 10 02:19:53 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  1 | task 0 | prompt eval time =    2157.08 ms /  1092 tokens (    1.98 ms per token,   506.24 tokens per second)
+Jul 10 02:19:53 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  1 | task 0 |        eval time =    2122.45 ms /    84 tokens (   25.27 ms per token,    39.58 tokens per second)
+Jul 10 02:19:53 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  1 | task 0 |       total time =    4279.52 ms /  1176 tokens
+Jul 10 02:19:53 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  1 | task 0 |    graphs reused =         83
+Jul 10 02:19:53 hoge-heer-GTR-Pro ollama[777731]: slot      release: id  1 | task 0 | stop processing: n_tokens = 1175, truncated = 0
+Jul 10 02:19:53 hoge-heer-GTR-Pro ollama[777731]: srv  update_slots: all slots are idle
+Jul 10 02:19:53 hoge-heer-GTR-Pro ollama[777731]: [GIN] 2026/07/10 - 02:19:53 | 200 | 11.707481949s |       127.0.0.1 | POST     "/api/chat"
+Jul 10 02:19:53 hoge-heer-GTR-Pro ollama[777731]: [GIN] 2026/07/10 - 02:19:53 | 200 |      45.499µs |       127.0.0.1 | HEAD     "/"
+Jul 10 02:19:53 hoge-heer-GTR-Pro ollama[777731]: [GIN] 2026/07/10 - 02:19:53 | 200 |      69.877µs |       127.0.0.1 | GET      "/api/ps"

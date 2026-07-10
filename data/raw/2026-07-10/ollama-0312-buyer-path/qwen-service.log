@@ -1,0 +1,250 @@
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: updating prompt cache
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: srv   prompt_save:  - saving prompt with length 153, total state size = 65.805 MiB (draft: 0.000 MiB)
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: srv          load:  - looking for better prompt, base f_keep = 0.170, sim = 1.000
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: srv        update:  - cache state: 2 prompts, 257.236 MiB (limits: 8192.000 MiB, 2048 tokens, 9744 est)
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x23e51a70:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x241fa0a0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: prompt cache update took 20.88 ms
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler params:
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 1.500
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 2048
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]:         top_k = 20, top_p = 0.950, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task 259 | processing task, is_child = 0
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 259 | new prompt, n_ctx_slot = 2048, n_keep = 4, task.n_tokens = 26
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 259 | checking checkpoint with [21, 21] against 25...
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 259 | restored context checkpoint (pos_min = 21, pos_max = 21, n_tokens = 22, n_past = 22, size = 62.813 MiB)
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 259 | cached n_tokens = 22, memory_seq_rm [22, end)
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: srv  stream_sessi: conv_id= (empty=1)
+Jul 10 02:17:26 hoge-heer-GTR-Pro ollama[777731]: slot init_sampler: id  0 | task 259 | init sampler, took 0.01 ms, tokens: text = 26, total = 26
+Jul 10 02:17:28 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 259 | prompt eval time =      32.53 ms /     4 tokens (    8.13 ms per token,   122.96 tokens per second)
+Jul 10 02:17:28 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 259 |        eval time =    2133.22 ms /   128 tokens (   16.67 ms per token,    60.00 tokens per second)
+Jul 10 02:17:28 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 259 |       total time =    2165.76 ms /   132 tokens
+Jul 10 02:17:28 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 259 |    graphs reused =        379
+Jul 10 02:17:28 hoge-heer-GTR-Pro ollama[777731]: slot      release: id  0 | task 259 | stop processing: n_tokens = 153, truncated = 0
+Jul 10 02:17:28 hoge-heer-GTR-Pro ollama[777731]: srv  update_slots: all slots are idle
+Jul 10 02:17:28 hoge-heer-GTR-Pro ollama[777731]: [GIN] 2026/07/10 - 02:17:28 | 200 |  2.516985512s |       127.0.0.1 | POST     "/api/generate"
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.170
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: updating prompt cache
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: srv   prompt_save:  - saving prompt with length 153, total state size = 65.805 MiB (draft: 0.000 MiB)
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: srv          load:  - looking for better prompt, base f_keep = 0.170, sim = 1.000
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: srv        update:  - cache state: 3 prompts, 385.854 MiB (limits: 8192.000 MiB, 2048 tokens, 9744 est)
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x23e51a70:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x241fa0a0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x24142890:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: prompt cache update took 21.34 ms
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler params:
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 1.500
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 2048
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]:         top_k = 20, top_p = 0.950, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task 388 | processing task, is_child = 0
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 388 | new prompt, n_ctx_slot = 2048, n_keep = 4, task.n_tokens = 26
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 388 | checking checkpoint with [21, 21] against 25...
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 388 | restored context checkpoint (pos_min = 21, pos_max = 21, n_tokens = 22, n_past = 22, size = 62.813 MiB)
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 388 | cached n_tokens = 22, memory_seq_rm [22, end)
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: srv  stream_sessi: conv_id= (empty=1)
+Jul 10 02:17:29 hoge-heer-GTR-Pro ollama[777731]: slot init_sampler: id  0 | task 388 | init sampler, took 0.01 ms, tokens: text = 26, total = 26
+Jul 10 02:17:31 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 388 | prompt eval time =      32.10 ms /     4 tokens (    8.03 ms per token,   124.61 tokens per second)
+Jul 10 02:17:31 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 388 |        eval time =    2104.84 ms /   128 tokens (   16.44 ms per token,    60.81 tokens per second)
+Jul 10 02:17:31 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 388 |       total time =    2136.94 ms /   132 tokens
+Jul 10 02:17:31 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 388 |    graphs reused =        505
+Jul 10 02:17:31 hoge-heer-GTR-Pro ollama[777731]: slot      release: id  0 | task 388 | stop processing: n_tokens = 153, truncated = 0
+Jul 10 02:17:31 hoge-heer-GTR-Pro ollama[777731]: srv  update_slots: all slots are idle
+Jul 10 02:17:31 hoge-heer-GTR-Pro ollama[777731]: [GIN] 2026/07/10 - 02:17:31 | 200 |  2.471338985s |       127.0.0.1 | POST     "/api/generate"
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.170
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: updating prompt cache
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: srv   prompt_save:  - saving prompt with length 153, total state size = 65.805 MiB (draft: 0.000 MiB)
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: srv          load:  - looking for better prompt, base f_keep = 0.170, sim = 1.000
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: srv        update:  - cache state: 4 prompts, 514.471 MiB (limits: 8192.000 MiB, 2048 tokens, 9744 est)
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x23e51a70:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x241fa0a0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x24142890:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x2624dbc0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: prompt cache update took 21.28 ms
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler params:
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 1.500
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 2048
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]:         top_k = 20, top_p = 0.950, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task 517 | processing task, is_child = 0
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 517 | new prompt, n_ctx_slot = 2048, n_keep = 4, task.n_tokens = 26
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 517 | checking checkpoint with [21, 21] against 25...
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 517 | restored context checkpoint (pos_min = 21, pos_max = 21, n_tokens = 22, n_past = 22, size = 62.813 MiB)
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 517 | cached n_tokens = 22, memory_seq_rm [22, end)
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: srv  stream_sessi: conv_id= (empty=1)
+Jul 10 02:17:33 hoge-heer-GTR-Pro ollama[777731]: slot init_sampler: id  0 | task 517 | init sampler, took 0.01 ms, tokens: text = 26, total = 26
+Jul 10 02:17:35 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 517 | prompt eval time =      32.27 ms /     4 tokens (    8.07 ms per token,   123.93 tokens per second)
+Jul 10 02:17:35 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 517 |        eval time =    2108.86 ms /   128 tokens (   16.48 ms per token,    60.70 tokens per second)
+Jul 10 02:17:35 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 517 |       total time =    2141.13 ms /   132 tokens
+Jul 10 02:17:35 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 517 |    graphs reused =        631
+Jul 10 02:17:35 hoge-heer-GTR-Pro ollama[777731]: slot      release: id  0 | task 517 | stop processing: n_tokens = 153, truncated = 0
+Jul 10 02:17:35 hoge-heer-GTR-Pro ollama[777731]: srv  update_slots: all slots are idle
+Jul 10 02:17:35 hoge-heer-GTR-Pro ollama[777731]: [GIN] 2026/07/10 - 02:17:35 | 200 |  2.475320296s |       127.0.0.1 | POST     "/api/generate"
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.170
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: updating prompt cache
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: srv   prompt_save:  - saving prompt with length 153, total state size = 65.805 MiB (draft: 0.000 MiB)
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: srv          load:  - looking for better prompt, base f_keep = 0.170, sim = 1.000
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: srv        update:  - cache state: 5 prompts, 643.089 MiB (limits: 8192.000 MiB, 2048 tokens, 9744 est)
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x23e51a70:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x241fa0a0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x24142890:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x2624dbc0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x240b0d10:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: prompt cache update took 22.48 ms
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler params:
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 1.500
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 2048
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]:         top_k = 20, top_p = 0.950, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task 646 | processing task, is_child = 0
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 646 | new prompt, n_ctx_slot = 2048, n_keep = 4, task.n_tokens = 26
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 646 | checking checkpoint with [21, 21] against 25...
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 646 | restored context checkpoint (pos_min = 21, pos_max = 21, n_tokens = 22, n_past = 22, size = 62.813 MiB)
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 646 | cached n_tokens = 22, memory_seq_rm [22, end)
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: srv  stream_sessi: conv_id= (empty=1)
+Jul 10 02:17:36 hoge-heer-GTR-Pro ollama[777731]: slot init_sampler: id  0 | task 646 | init sampler, took 0.02 ms, tokens: text = 26, total = 26
+Jul 10 02:17:38 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 646 | prompt eval time =      33.51 ms /     4 tokens (    8.38 ms per token,   119.36 tokens per second)
+Jul 10 02:17:38 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 646 |        eval time =    2115.11 ms /   128 tokens (   16.52 ms per token,    60.52 tokens per second)
+Jul 10 02:17:38 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 646 |       total time =    2148.62 ms /   132 tokens
+Jul 10 02:17:38 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 646 |    graphs reused =        757
+Jul 10 02:17:38 hoge-heer-GTR-Pro ollama[777731]: slot      release: id  0 | task 646 | stop processing: n_tokens = 153, truncated = 0
+Jul 10 02:17:38 hoge-heer-GTR-Pro ollama[777731]: srv  update_slots: all slots are idle
+Jul 10 02:17:38 hoge-heer-GTR-Pro ollama[777731]: [GIN] 2026/07/10 - 02:17:38 | 200 |   2.49492701s |       127.0.0.1 | POST     "/api/generate"
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.170
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: updating prompt cache
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: srv   prompt_save:  - saving prompt with length 153, total state size = 65.805 MiB (draft: 0.000 MiB)
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: srv          load:  - looking for better prompt, base f_keep = 0.170, sim = 1.000
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: srv        update:  - cache state: 6 prompts, 771.707 MiB (limits: 8192.000 MiB, 2048 tokens, 9744 est)
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x23e51a70:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x241fa0a0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x24142890:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x2624dbc0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x240b0d10:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x1e795230:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: prompt cache update took 19.81 ms
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler params:
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 1.500
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 2048
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]:         top_k = 20, top_p = 0.950, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task 775 | processing task, is_child = 0
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 775 | new prompt, n_ctx_slot = 2048, n_keep = 4, task.n_tokens = 26
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 775 | checking checkpoint with [21, 21] against 25...
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 775 | restored context checkpoint (pos_min = 21, pos_max = 21, n_tokens = 22, n_past = 22, size = 62.813 MiB)
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 775 | cached n_tokens = 22, memory_seq_rm [22, end)
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: srv  stream_sessi: conv_id= (empty=1)
+Jul 10 02:17:40 hoge-heer-GTR-Pro ollama[777731]: slot init_sampler: id  0 | task 775 | init sampler, took 0.01 ms, tokens: text = 26, total = 26
+Jul 10 02:17:42 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 775 | prompt eval time =      33.42 ms /     4 tokens (    8.35 ms per token,   119.70 tokens per second)
+Jul 10 02:17:42 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 775 |        eval time =    2090.87 ms /   128 tokens (   16.33 ms per token,    61.22 tokens per second)
+Jul 10 02:17:42 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 775 |       total time =    2124.28 ms /   132 tokens
+Jul 10 02:17:42 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 775 |    graphs reused =        883
+Jul 10 02:17:42 hoge-heer-GTR-Pro ollama[777731]: slot      release: id  0 | task 775 | stop processing: n_tokens = 153, truncated = 0
+Jul 10 02:17:42 hoge-heer-GTR-Pro ollama[777731]: srv  update_slots: all slots are idle
+Jul 10 02:17:42 hoge-heer-GTR-Pro ollama[777731]: [GIN] 2026/07/10 - 02:17:42 | 200 |  2.461041115s |       127.0.0.1 | POST     "/api/generate"
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.170
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: updating prompt cache
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: srv   prompt_save:  - saving prompt with length 153, total state size = 65.805 MiB (draft: 0.000 MiB)
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: srv         alloc:  - prompt is already in the cache, skipping
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: srv          load:  - looking for better prompt, base f_keep = 0.170, sim = 1.000
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: srv        update:  - cache state: 6 prompts, 771.707 MiB (limits: 8192.000 MiB, 2048 tokens, 9744 est)
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x23e51a70:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x241fa0a0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x24142890:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x2624dbc0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x240b0d10:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x1e795230:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: prompt cache update took 0.04 ms
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler params:
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 1.500
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 2048
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]:         top_k = 20, top_p = 0.950, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task 904 | processing task, is_child = 0
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 904 | new prompt, n_ctx_slot = 2048, n_keep = 4, task.n_tokens = 26
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 904 | checking checkpoint with [21, 21] against 25...
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 904 | restored context checkpoint (pos_min = 21, pos_max = 21, n_tokens = 22, n_past = 22, size = 62.813 MiB)
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 904 | cached n_tokens = 22, memory_seq_rm [22, end)
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: srv  stream_sessi: conv_id= (empty=1)
+Jul 10 02:17:43 hoge-heer-GTR-Pro ollama[777731]: slot init_sampler: id  0 | task 904 | init sampler, took 0.01 ms, tokens: text = 26, total = 26
+Jul 10 02:17:45 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 904 | prompt eval time =      32.59 ms /     4 tokens (    8.15 ms per token,   122.74 tokens per second)
+Jul 10 02:17:45 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 904 |        eval time =    2109.20 ms /   128 tokens (   16.48 ms per token,    60.69 tokens per second)
+Jul 10 02:17:45 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 904 |       total time =    2141.79 ms /   132 tokens
+Jul 10 02:17:45 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 904 |    graphs reused =       1009
+Jul 10 02:17:45 hoge-heer-GTR-Pro ollama[777731]: slot      release: id  0 | task 904 | stop processing: n_tokens = 153, truncated = 0
+Jul 10 02:17:45 hoge-heer-GTR-Pro ollama[777731]: srv  update_slots: all slots are idle
+Jul 10 02:17:45 hoge-heer-GTR-Pro ollama[777731]: [GIN] 2026/07/10 - 02:17:45 | 200 |  2.463679949s |       127.0.0.1 | POST     "/api/generate"
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.170
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: updating prompt cache
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: srv   prompt_save:  - saving prompt with length 153, total state size = 65.805 MiB (draft: 0.000 MiB)
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: srv         alloc:  - prompt is already in the cache, skipping
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: srv          load:  - looking for better prompt, base f_keep = 0.170, sim = 1.000
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: srv        update:  - cache state: 6 prompts, 771.707 MiB (limits: 8192.000 MiB, 2048 tokens, 9744 est)
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x23e51a70:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x241fa0a0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x24142890:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x2624dbc0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x240b0d10:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x1e795230:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: prompt cache update took 0.05 ms
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler params:
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 1.500
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 2048
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]:         top_k = 20, top_p = 0.950, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task 1033 | processing task, is_child = 0
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 1033 | new prompt, n_ctx_slot = 2048, n_keep = 4, task.n_tokens = 26
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 1033 | checking checkpoint with [21, 21] against 25...
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 1033 | restored context checkpoint (pos_min = 21, pos_max = 21, n_tokens = 22, n_past = 22, size = 62.813 MiB)
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 1033 | cached n_tokens = 22, memory_seq_rm [22, end)
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: srv  stream_sessi: conv_id= (empty=1)
+Jul 10 02:17:47 hoge-heer-GTR-Pro ollama[777731]: slot init_sampler: id  0 | task 1033 | init sampler, took 0.01 ms, tokens: text = 26, total = 26
+Jul 10 02:17:49 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 1033 | prompt eval time =      34.10 ms /     4 tokens (    8.53 ms per token,   117.29 tokens per second)
+Jul 10 02:17:49 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 1033 |        eval time =    2119.16 ms /   128 tokens (   16.56 ms per token,    60.40 tokens per second)
+Jul 10 02:17:49 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 1033 |       total time =    2153.27 ms /   132 tokens
+Jul 10 02:17:49 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 1033 |    graphs reused =       1135
+Jul 10 02:17:49 hoge-heer-GTR-Pro ollama[777731]: slot      release: id  0 | task 1033 | stop processing: n_tokens = 153, truncated = 0
+Jul 10 02:17:49 hoge-heer-GTR-Pro ollama[777731]: srv  update_slots: all slots are idle
+Jul 10 02:17:49 hoge-heer-GTR-Pro ollama[777731]: [GIN] 2026/07/10 - 02:17:49 | 200 |  2.492247688s |       127.0.0.1 | POST     "/api/generate"
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: slot get_availabl: id  0 | task -1 | selected slot by LCP similarity, sim_best = 1.000 (> 0.100 thold), f_keep = 0.170
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: updating prompt cache
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: srv   prompt_save:  - saving prompt with length 153, total state size = 65.805 MiB (draft: 0.000 MiB)
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: srv         alloc:  - prompt is already in the cache, skipping
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: srv          load:  - looking for better prompt, base f_keep = 0.170, sim = 1.000
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: srv        update:  - cache state: 6 prompts, 771.707 MiB (limits: 8192.000 MiB, 2048 tokens, 9744 est)
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x23e51a70:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x241fa0a0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x24142890:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x2624dbc0:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x240b0d10:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: srv        update:    - prompt 0x1e795230:     153 tokens, checkpoints:  1,   128.618 MiB
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: srv  get_availabl: prompt cache update took 0.04 ms
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler chain: logits -> penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> ?min-p -> ?xtc -> temp-ext -> dist
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task -1 | sampler params:
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]:         repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 1.500
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]:         dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 2048
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]:         top_k = 20, top_p = 0.950, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]:         mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: slot launch_slot_: id  0 | task 1162 | processing task, is_child = 0
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 1162 | new prompt, n_ctx_slot = 2048, n_keep = 4, task.n_tokens = 26
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 1162 | checking checkpoint with [21, 21] against 25...
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 1162 | restored context checkpoint (pos_min = 21, pos_max = 21, n_tokens = 22, n_past = 22, size = 62.813 MiB)
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: slot   operator(): id  0 | task 1162 | cached n_tokens = 22, memory_seq_rm [22, end)
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: srv  stream_sessi: conv_id= (empty=1)
+Jul 10 02:17:50 hoge-heer-GTR-Pro ollama[777731]: slot init_sampler: id  0 | task 1162 | init sampler, took 0.01 ms, tokens: text = 26, total = 26
+Jul 10 02:17:52 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 1162 | prompt eval time =      33.16 ms /     4 tokens (    8.29 ms per token,   120.65 tokens per second)
+Jul 10 02:17:52 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 1162 |        eval time =    2124.35 ms /   128 tokens (   16.60 ms per token,    60.25 tokens per second)
+Jul 10 02:17:52 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 1162 |       total time =    2157.51 ms /   132 tokens
+Jul 10 02:17:52 hoge-heer-GTR-Pro ollama[777731]: slot print_timing: id  0 | task 1162 |    graphs reused =       1261
+Jul 10 02:17:52 hoge-heer-GTR-Pro ollama[777731]: slot      release: id  0 | task 1162 | stop processing: n_tokens = 153, truncated = 0
+Jul 10 02:17:52 hoge-heer-GTR-Pro ollama[777731]: srv  update_slots: all slots are idle
+Jul 10 02:17:52 hoge-heer-GTR-Pro ollama[777731]: [GIN] 2026/07/10 - 02:17:52 | 200 |  2.494204937s |       127.0.0.1 | POST     "/api/generate"
+Jul 10 02:18:41 hoge-heer-GTR-Pro ollama[777731]: [GIN] 2026/07/10 - 02:18:41 | 200 |     204.682µs |       127.0.0.1 | HEAD     "/"
+Jul 10 02:18:41 hoge-heer-GTR-Pro ollama[777731]: [GIN] 2026/07/10 - 02:18:41 | 200 |      71.932µs |       127.0.0.1 | GET      "/api/ps"

@@ -1,0 +1,5 @@
+route,samples,power_mean_w,power_max_w,temp_mean_c,temp_max_c,gpu_busy_mean_percent,gpu_busy_max_percent
+lemonade-rocm-b1259,99,133.127,152.003,85.000,93.000,94.46,100.00
+patched-vulkan-b9946-density-threshold,99,146.443,172.093,85.434,98.000,91.08,100.00
+rocm-b9946,492,117.858,120.015,61.913,64.000,1.00,1.00
+stock-vulkan-b9946,103,136.371,158.094,78.010,89.000,94.65,100.00

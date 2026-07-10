@@ -1,0 +1,5 @@
+name=stock-vulkan-b9946
+start=2026-07-10T01:46:51,484886214+02:00
+end=2026-07-10T01:48:37,082913967+02:00
+exit_status=0
+command=/home/hoge-heer/benchmark-tools/llama-b9946/llama-b9946/llama-batched-bench -m /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf -c 32768 -ngl 999 -fa on -ctk q4_0 -ctv q4_0 --no-mmap -npp 512 -ntg 128 -npl 1\,2\,4\,8\,9\,12\,16\,24\,32 --output-format jsonl 

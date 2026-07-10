@@ -1,0 +1,29 @@
+2026-07-10T02:30:13+02:00
+Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Ubuntu 24.04.4 LTS
+               total        used        free      shared  buff/cache   available
+Mem:           124Gi        34Gi       3.3Gi       1.4Gi        89Gi        90Gi
+Swap:          8.0Gi       7.3Gi       739Mi
+ollama version is 0.31.2
+{"version":"0.31.2"}
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin OLLAMA_IGPU_ENABLE=1 OLLAMA_HOST=0.0.0.0:11434 OLLAMA_VULKAN=1 HIP_VISIBLE_DEVICES=-1 OLLAMA_FLASH_ATTENTION=1 OLLAMA_CONTEXT_LENGTH=65536 AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json OLLAMA_NUM_BATCH=512 OLLAMA_NUM_PARALLEL=2 OLLAMA_MAX_LOADED_MODELS=1
+ActiveState=active
+SubState=running
+UnitFileState=enabled
+NAME                                                                    ID              SIZE      MODIFIED     
+deepseek-v4-flash:cloud                                                 ea027821675c    -         2 days ago      
+qwen3.6:27b                                                             a50eda8ed977    17 GB     6 days ago      
+qwen3.6:35b-a3b                                                         07d35212591f    23 GB     3 weeks ago     
+qwen2.5-coder:7b                                                        dae161e27b0e    4.7 GB    3 weeks ago     
+devstral-small-2:latest                                                 24277f07f62d    15 GB     6 weeks ago     
+gpt-oss:20b                                                             17052f91a42e    13 GB     6 weeks ago     
+fredrezones55/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive:latest     f9efe74933bc    22 GB     2 months ago    
+hf.co/CorryL/piccolo_gorgone:latest                                     88d33b66efd1    5.6 GB    2 months ago    
+hf.co/HauhauCS/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive:Q4_K_M    5bc355c7f631    22 GB     2 months ago    
+qwen2.5vl:32b                                                           3edc3a52fe98    21 GB     3 months ago    
+qwen3-coder:30b-a3b-q8_0                                                7b438a19895a    32 GB     3 months ago    
+qwen3-coder-next:latest                                                 ca06e9e4087c    51 GB     3 months ago    
+qwen2.5vl:7b                                                            5ced39dfa4ba    6.0 GB    3 months ago    
+llama2:latest                                                           78e26419b446    3.8 GB    4 months ago    
+2c88f0f31a959bac5a3cad4cc5296ec568551d4aa79f548f554adb2b575b3133  /home/hoge-heer/benchmark-tools/ollama-0.31.2/downloads/ollama-linux-amd64.tar.zst
+f0fad39e184daab11d172a855580abd7338b2f049afa462435fee15d76b4e437  /home/hoge-heer/benchmark-tools/ollama-0.31.2/downloads/ollama-linux-amd64-rocm.tar.zst
