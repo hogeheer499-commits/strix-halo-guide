@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560" viewBox="0 0 980 560" role="img">
+<style>
+text{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#17202a}
+.title{font-size:26px;font-weight:700}
+.subtitle{font-size:14px;fill:#52616f}
+.axis{font-size:12px;fill:#52616f}
+.tick{font-size:11px;fill:#52616f}
+.legend{font-size:13px;fill:#17202a}
+.note{font-size:12px;fill:#52616f}
+.grid{stroke:#dce3ea;stroke-width:1}
+.axis-line{stroke:#6b7a89;stroke-width:1.2}
+</style>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="82" y="40" class="title">Qwen3-Coder 30B-A3B: AMD MoE concurrency crossover</text>
+<text x="82" y="64" class="subtitle">b9979 Vulkan stock vs opt-in AMD/RADV gates; Lemonade b1259 is a different ROCm build</text>
+<line x1="82" y1="468.0" x2="938" y2="468.0" class="grid"/>
+<text x="72" y="472.0" text-anchor="end" class="tick">0</text>
+<line x1="82" y1="392.8" x2="938" y2="392.8" class="grid"/>
+<text x="72" y="396.8" text-anchor="end" class="tick">100</text>
+<line x1="82" y1="317.6" x2="938" y2="317.6" class="grid"/>
+<text x="72" y="321.6" text-anchor="end" class="tick">200</text>
+<line x1="82" y1="242.4" x2="938" y2="242.4" class="grid"/>
+<text x="72" y="246.4" text-anchor="end" class="tick">300</text>
+<line x1="82" y1="167.2" x2="938" y2="167.2" class="grid"/>
+<text x="72" y="171.2" text-anchor="end" class="tick">400</text>
+<line x1="82" y1="92.0" x2="938" y2="92.0" class="grid"/>
+<text x="72" y="96.0" text-anchor="end" class="tick">500</text>
+<line x1="82" y1="92" x2="82" y2="468" class="axis-line"/>
+<line x1="82" y1="468" x2="938" y2="468" class="axis-line"/>
+<text x="20" y="280.0" class="axis" transform="rotate(-90 20 280.0)">aggregate decode tokens/s</text>
+<text x="82.0" y="494" text-anchor="middle" class="tick">1</text>
+<text x="167.6" y="494" text-anchor="middle" class="tick">2</text>
+<text x="253.2" y="494" text-anchor="middle" class="tick">4</text>
+<text x="338.8" y="494" text-anchor="middle" class="tick">8</text>
+<text x="424.4" y="494" text-anchor="middle" class="tick">9</text>
+<text x="510.0" y="494" text-anchor="middle" class="tick">12</text>
+<text x="595.6" y="494" text-anchor="middle" class="tick">16</text>
+<text x="681.2" y="494" text-anchor="middle" class="tick">24</text>
+<text x="766.8" y="494" text-anchor="middle" class="tick">32</text>
+<text x="852.4" y="494" text-anchor="middle" class="tick">48</text>
+<text x="938.0" y="494" text-anchor="middle" class="tick">64</text>
+<polyline fill="none" stroke="#1f77b4" stroke-width="3" points="82.0,398.9 167.6,365.3 253.2,330.5 338.8,296.4 424.4,357.3 510.0,334.9 595.6,308.1 681.2,266.8 766.8,219.2 852.4,212.9 938.0,149.3"/>
+<circle cx="82.0" cy="398.9" r="4.5" fill="#1f77b4"/>
+<text x="82.0" y="389.9" text-anchor="middle" class="tick">91.9</text>
+<circle cx="167.6" cy="365.3" r="4.5" fill="#1f77b4"/>
+<text x="167.6" y="356.3" text-anchor="middle" class="tick">136.6</text>
+<circle cx="253.2" cy="330.5" r="4.5" fill="#1f77b4"/>
+<text x="253.2" y="321.5" text-anchor="middle" class="tick">182.8</text>
+<circle cx="338.8" cy="296.4" r="4.5" fill="#1f77b4"/>
+<text x="338.8" y="287.4" text-anchor="middle" class="tick">228.2</text>
+<circle cx="424.4" cy="357.3" r="4.5" fill="#1f77b4"/>
+<text x="424.4" y="348.3" text-anchor="middle" class="tick">147.2</text>
+<circle cx="510.0" cy="334.9" r="4.5" fill="#1f77b4"/>
+<text x="510.0" y="325.9" text-anchor="middle" class="tick">177.0</text>
+<circle cx="595.6" cy="308.1" r="4.5" fill="#1f77b4"/>
+<text x="595.6" y="299.1" text-anchor="middle" class="tick">212.7</text>
+<circle cx="681.2" cy="266.8" r="4.5" fill="#1f77b4"/>
+<text x="681.2" y="257.8" text-anchor="middle" class="tick">267.5</text>
+<circle cx="766.8" cy="219.2" r="4.5" fill="#1f77b4"/>
+<text x="766.8" y="210.2" text-anchor="middle" class="tick">330.9</text>
+<circle cx="852.4" cy="212.9" r="4.5" fill="#1f77b4"/>
+<text x="852.4" y="203.9" text-anchor="middle" class="tick">339.2</text>
+<circle cx="938.0" cy="149.3" r="4.5" fill="#1f77b4"/>
+<text x="938.0" y="140.3" text-anchor="middle" class="tick">423.8</text>
+<rect x="82" y="514" width="18" height="4" fill="#1f77b4"/>
+<text x="108" y="520" class="legend">Vulkan stock</text>
+<polyline fill="none" stroke="#d62728" stroke-width="3" points="82.0,397.7 167.6,365.3 253.2,329.1 338.8,296.3 424.4,310.0 510.0,290.0 595.6,267.9 681.2,245.3 766.8,221.6 852.4,209.5 938.0,149.7"/>
+<circle cx="82.0" cy="397.7" r="4.5" fill="#d62728"/>
+<text x="82.0" y="388.7" text-anchor="middle" class="tick">93.5</text>
+<circle cx="167.6" cy="365.3" r="4.5" fill="#d62728"/>
+<text x="167.6" y="356.3" text-anchor="middle" class="tick">136.6</text>
+<circle cx="253.2" cy="329.1" r="4.5" fill="#d62728"/>
+<text x="253.2" y="320.1" text-anchor="middle" class="tick">184.8</text>
+<circle cx="338.8" cy="296.3" r="4.5" fill="#d62728"/>
+<text x="338.8" y="287.3" text-anchor="middle" class="tick">228.4</text>
+<circle cx="424.4" cy="310.0" r="4.5" fill="#d62728"/>
+<text x="424.4" y="301.0" text-anchor="middle" class="tick">210.1</text>
+<circle cx="510.0" cy="290.0" r="4.5" fill="#d62728"/>
+<text x="510.0" y="281.0" text-anchor="middle" class="tick">236.7</text>
+<circle cx="595.6" cy="267.9" r="4.5" fill="#d62728"/>
+<text x="595.6" y="258.9" text-anchor="middle" class="tick">266.1</text>
+<circle cx="681.2" cy="245.3" r="4.5" fill="#d62728"/>
+<text x="681.2" y="236.3" text-anchor="middle" class="tick">296.1</text>
+<circle cx="766.8" cy="221.6" r="4.5" fill="#d62728"/>
+<text x="766.8" y="212.6" text-anchor="middle" class="tick">327.7</text>
+<circle cx="852.4" cy="209.5" r="4.5" fill="#d62728"/>
+<text x="852.4" y="200.5" text-anchor="middle" class="tick">343.8</text>
+<circle cx="938.0" cy="149.7" r="4.5" fill="#d62728"/>
+<text x="938.0" y="140.7" text-anchor="middle" class="tick">423.3</text>
+<rect x="302" y="514" width="18" height="4" fill="#d62728"/>
+<text x="328" y="520" class="legend">Vulkan density gate</text>
+<polyline fill="none" stroke="#2ca02c" stroke-width="3" points="82.0,397.6 167.6,365.3 253.2,329.5 338.8,296.5 424.4,291.9 510.0,282.9 595.6,297.1 681.2,246.2 766.8,222.2 852.4,209.3 938.0,149.8"/>
+<circle cx="82.0" cy="397.6" r="4.5" fill="#2ca02c"/>
+<text x="82.0" y="388.6" text-anchor="middle" class="tick">93.6</text>
+<circle cx="167.6" cy="365.3" r="4.5" fill="#2ca02c"/>
+<text x="167.6" y="356.3" text-anchor="middle" class="tick">136.6</text>
+<circle cx="253.2" cy="329.5" r="4.5" fill="#2ca02c"/>
+<text x="253.2" y="320.5" text-anchor="middle" class="tick">184.2</text>
+<circle cx="338.8" cy="296.5" r="4.5" fill="#2ca02c"/>
+<text x="338.8" y="287.5" text-anchor="middle" class="tick">228.1</text>
+<circle cx="424.4" cy="291.9" r="4.5" fill="#2ca02c"/>
+<text x="424.4" y="282.9" text-anchor="middle" class="tick">234.1</text>
+<circle cx="510.0" cy="282.9" r="4.5" fill="#2ca02c"/>
+<text x="510.0" y="273.9" text-anchor="middle" class="tick">246.1</text>
+<circle cx="595.6" cy="297.1" r="4.5" fill="#2ca02c"/>
+<text x="595.6" y="288.1" text-anchor="middle" class="tick">227.2</text>
+<circle cx="681.2" cy="246.2" r="4.5" fill="#2ca02c"/>
+<text x="681.2" y="237.2" text-anchor="middle" class="tick">294.9</text>
+<circle cx="766.8" cy="222.2" r="4.5" fill="#2ca02c"/>
+<text x="766.8" y="213.2" text-anchor="middle" class="tick">326.8</text>
+<circle cx="852.4" cy="209.3" r="4.5" fill="#2ca02c"/>
+<text x="852.4" y="200.3" text-anchor="middle" class="tick">344.1</text>
+<circle cx="938.0" cy="149.8" r="4.5" fill="#2ca02c"/>
+<text x="938.0" y="140.8" text-anchor="middle" class="tick">423.2</text>
+<rect x="522" y="514" width="18" height="4" fill="#2ca02c"/>
+<text x="548" y="520" class="legend">Vulkan density + dense16</text>
+<polyline fill="none" stroke="#9467bd" stroke-width="3" points="82.0,419.6 167.6,396.1 253.2,367.3 338.8,323.8 424.4,316.9 510.0,286.9 595.6,251.7 681.2,232.1 766.8,190.4 852.4,162.7 938.0,147.8"/>
+<circle cx="82.0" cy="419.6" r="4.5" fill="#9467bd"/>
+<text x="82.0" y="410.6" text-anchor="middle" class="tick">64.4</text>
+<circle cx="167.6" cy="396.1" r="4.5" fill="#9467bd"/>
+<text x="167.6" y="387.1" text-anchor="middle" class="tick">95.6</text>
+<circle cx="253.2" cy="367.3" r="4.5" fill="#9467bd"/>
+<text x="253.2" y="358.3" text-anchor="middle" class="tick">133.9</text>
+<circle cx="338.8" cy="323.8" r="4.5" fill="#9467bd"/>
+<text x="338.8" y="314.8" text-anchor="middle" class="tick">191.8</text>
+<circle cx="424.4" cy="316.9" r="4.5" fill="#9467bd"/>
+<text x="424.4" y="307.9" text-anchor="middle" class="tick">200.9</text>
+<circle cx="510.0" cy="286.9" r="4.5" fill="#9467bd"/>
+<text x="510.0" y="277.9" text-anchor="middle" class="tick">240.8</text>
+<circle cx="595.6" cy="251.7" r="4.5" fill="#9467bd"/>
+<text x="595.6" y="242.7" text-anchor="middle" class="tick">287.6</text>
+<circle cx="681.2" cy="232.1" r="4.5" fill="#9467bd"/>
+<text x="681.2" y="223.1" text-anchor="middle" class="tick">313.7</text>
+<circle cx="766.8" cy="190.4" r="4.5" fill="#9467bd"/>
+<text x="766.8" y="181.4" text-anchor="middle" class="tick">369.1</text>
+<circle cx="852.4" cy="162.7" r="4.5" fill="#9467bd"/>
+<text x="852.4" y="153.7" text-anchor="middle" class="tick">405.9</text>
+<circle cx="938.0" cy="147.8" r="4.5" fill="#9467bd"/>
+<text x="938.0" y="138.8" text-anchor="middle" class="tick">425.9</text>
+<rect x="774" y="514" width="18" height="4" fill="#9467bd"/>
+<text x="800" y="520" class="legend">Lemonade ROCm</text>
+<text x="82" y="548" class="note">Source: data/moe_density_gate_summary.csv; np8/9/12/16 use controlled repeats</text>
+</svg>

@@ -18,5 +18,7 @@ python3 scripts/generate_charts.py
 - `backend_spot_check.svg`: May 2026 Vulkan RADV versus ROCm HIP short-context tg spot check.
 - `backend_crossover_prefill.svg`: HIP versus Vulkan prompt-processing spot check at pp16384.
 - `backend_crossover_generation.svg`: HIP versus Vulkan token-generation spot check at tg128.
+- `moe_density_gate_30b.svg`: Qwen3-Coder 30B aggregate decode across concurrency 1-64 for b9979 stock/density/dense16 Vulkan and Lemonade ROCm.
+- `moe_density_gate_80b.svg`: Qwen3-Next 80B version of the same concurrency crossover.
 
 The SVGs are publishable summaries. The CSVs and raw logs remain the source of truth.

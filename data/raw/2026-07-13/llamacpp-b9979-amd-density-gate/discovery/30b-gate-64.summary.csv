@@ -1,0 +1,2 @@
+label,status,monitor_status,elapsed_s,samples,min_temp_mC,max_temp_mC,avg_temp_mC,min_ppt_uW,max_ppt_uW,avg_ppt_uW
+30b-gate-64,0,0,45,44,49000,85000,78977,17033000,154078000,139872227

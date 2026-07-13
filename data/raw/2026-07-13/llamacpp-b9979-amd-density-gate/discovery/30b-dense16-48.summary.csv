@@ -1,0 +1,2 @@
+label,status,monitor_status,elapsed_s,samples,min_temp_mC,max_temp_mC,avg_temp_mC,min_ppt_uW,max_ppt_uW,avg_ppt_uW
+30b-dense16-48,0,0,38,38,50000,83000,77105,20007000,155080000,135867237

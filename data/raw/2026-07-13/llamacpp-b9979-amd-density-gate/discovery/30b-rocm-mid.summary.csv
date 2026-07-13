@@ -1,0 +1,2 @@
+label,status,monitor_status,elapsed_s,samples,min_temp_mC,max_temp_mC,avg_temp_mC,min_ppt_uW,max_ppt_uW,avg_ppt_uW
+30b-rocm-mid,0,0,46,45,49000,79000,72311,19012000,135002000,117738133

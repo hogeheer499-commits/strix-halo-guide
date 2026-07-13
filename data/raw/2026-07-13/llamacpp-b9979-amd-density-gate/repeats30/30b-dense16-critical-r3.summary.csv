@@ -1,0 +1,2 @@
+label,status,monitor_status,elapsed_s,samples,min_temp_mC,max_temp_mC,avg_temp_mC,min_ppt_uW,max_ppt_uW,avg_ppt_uW
+30b-dense16-critical-r3,0,0,43,43,49000,85000,78674,18021000,155081000,139536488

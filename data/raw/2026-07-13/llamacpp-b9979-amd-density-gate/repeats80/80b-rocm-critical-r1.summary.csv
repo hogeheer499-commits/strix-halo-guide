@@ -1,0 +1,2 @@
+label,status,monitor_status,elapsed_s,samples,min_temp_mC,max_temp_mC,avg_temp_mC,min_ppt_uW,max_ppt_uW,avg_ppt_uW
+80b-rocm-critical-r1,0,0,113,112,49000,85000,65259,19088000,141049000,91036866

@@ -1,0 +1,33 @@
+
+
+Loading model... 
+
+▄▄ ▄▄
+██ ██
+██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄
+██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██
+██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀
+                                    ██    ██
+                                    ▀▀    ▀▀
+
+build      : b1-4114ba1
+model      : /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
+ftype      : Q4_K - Medium
+modalities : text
+
+available commands:
+  /exit or Ctrl+C     stop or exit
+  /regen              regenerate the last response
+  /clear              clear the chat history
+  /read <file>        add a text file
+  /glob <pattern>     add text files using globbing pattern
+
+
+
+> Return exactly one short sentence explaining why reproducible benchmarks matter.
+Reproducible benchmarks ensure that performance comparisons are fair, accurate, and trustworthy across different implementations and environments.
+
+[ Prompt: 199.5 t/s | Generation: 99.2 t/s ]
+
+
+Exiting...

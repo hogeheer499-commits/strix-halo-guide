@@ -22,6 +22,7 @@ The repo already includes a technical proof layer:
 - Charts: [`charts/`](charts/README.md).
 - Community validation: [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md).
 - Backend/server caveats: [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md), [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md), [`VLLM_BASELINE.md`](VLLM_BASELINE.md), [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md).
+- Multi-user software-bottleneck evidence: [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md) reproduces the official b9979 Vulkan 8-to-9 MoE cliff on 30B and 80B expert shapes, validates an opt-in AMD/RADV recovery path, and translates it into model-specific Vulkan/ROCm buyer guidance.
 - Platform context: [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).
 
 ## Commercial Value

@@ -1,0 +1,2 @@
+label,status,monitor_status,elapsed_s,samples,min_temp_mC,max_temp_mC,avg_temp_mC,min_ppt_uW,max_ppt_uW,avg_ppt_uW
+80b-stock-critical-r3,0,0,117,115,49000,81000,65513,17071000,142068000,93004243

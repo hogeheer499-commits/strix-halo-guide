@@ -1,0 +1,2 @@
+0.00.132.990 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.37.963.001 W llama_context: n_ctx is not divisible by n_seq_max - rounding down to 73728

@@ -1,0 +1,7 @@
+
+main: n_kv_max = 73728, n_batch = 2048, n_ubatch = 512, flash_attn = 1, is_pp_shared = 0, is_tg_separate = 0, n_gpu_layers = 999, n_threads = 16, n_threads_batch = 16
+
+|    PP |     TG |    B |   N_KV |   T_PP s | S_PP t/s |   T_TG s | S_TG t/s |      T s |    S t/s |
+|-------|--------|------|--------|----------|----------|----------|----------|----------|----------|
+|   512 |    128 |   48 |  30720 |   18.852 |  1303.63 |   15.136 |   405.92 |   33.988 |   903.85 |
+
