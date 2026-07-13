@@ -116,7 +116,7 @@ Use this split until a newer polished same-build local comparison replaces it:
 | Easy chat and model pulling | Ollama Vulkan/RADV | lowest setup friction and measured 50.51 t/s warm Qwen3.6 API average |
 | Coding, scripts, short responses | llama.cpp or `llama-server` Vulkan/RADV | fastest measured local generation path |
 | RAG ingestion, long prompts, summarization | keep a ROCm/HIP path available | local and external data both show HIP can win prompt processing |
-| Many local clients hitting one API | compare Vulkan/RADV and Lemonade ROCm at target concurrency | existing server sweep shows Lemonade ROCm wins aggregate throughput at 8-16 parallel requests |
+| Many local clients hitting one API | compare the exact model and target concurrency | b9979 density-gate evidence shows Lemonade ROCm wins the tested 30B route at np16+, while tuned Vulkan remains faster on the tested 80B route through np64 |
 | vLLM/AWQ/DFlash experiments | container only, not host Python | promising but not yet reproduced locally in this guide |
 
 ## Next Clean Test
@@ -128,3 +128,17 @@ The next publishable upgrade is not another broad argument; it is a more polishe
 3. Ensure both binaries embed the correct build id.
 4. Test pp512, pp2048, pp8192, pp16384, tg128, and at least one real long-prompt request.
 5. Keep Gemma 4 as a load/support check, not a speed claim unless HIP loads cleanly.
+
+## b9979 AMD MoE Density-Gate Crossover
+
+The 2026-07-13 campaign adds a more precise multi-user rule. Official b9979 Vulkan has a reproducible 8-to-9 concurrency cliff on both a 128-expert/top-8 Qwen3-Coder 30B model and a 512-expert/top-10 Qwen3-Next 80B model. An opt-in AMD/RADV density gate recovers 42.7% and 25.3% respectively at np9 while leaving np8 effectively unchanged.
+
+The backend crossover is model-specific:
+
+- 30B at np16: density Vulkan 266.07 aggregate t/s; Lemonade ROCm 287.64 t/s
+- 80B at np16: density Vulkan 150.82 aggregate t/s; Lemonade ROCm 143.32 t/s
+- density+dense16 is strongest at np9-12 but falls behind density alone at np16 on both models
+
+That replaces the broad "ROCm for 8-16" shortcut with a better instruction: benchmark the exact model topology at the concurrency you intend to serve.
+
+Full decision table, repeat statistics, correctness results, charts, and raw telemetry: [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md).

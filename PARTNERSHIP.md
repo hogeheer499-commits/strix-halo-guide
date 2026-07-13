@@ -20,6 +20,7 @@ The technical proof layer already includes:
 - Current buyer-path setup checks, including the Ollama 0.31.1 `OLLAMA_IGPU_ENABLE=1` Vulkan/RADV sanity row that turns a silent iGPU-drop risk into a documented setup instruction.
 - Reproducibility notes in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
 - Current benchmark snapshot in [`BENCHMARKS.md`](BENCHMARKS.md).
+- A current multi-user engineering case in [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md): official b9979 Vulkan loses 30.9-35.5% aggregate decode from concurrency 8 to 9 on two tested MoE shapes; an opt-in AMD/RADV density policy recovers 25.3-42.7% at np9 without changing np8 materially.
 - Claim-to-evidence mapping in [`data/headline_claims.csv`](data/headline_claims.csv).
 - Structured data in [`data/`](data/README.md).
 - Raw logs and CSVs in [`data/raw/`](data/raw/).
@@ -68,6 +69,7 @@ These are options, not demands. The useful collaboration is access to hardware, 
 - Benchmark report with command lines, versions, settings, caveats, and interpretation.
 - Raw logs, CSVs, generated charts, and claim-to-evidence links.
 - Troubleshooting notes for failed paths, regressions, firmware issues, and driver blockers.
+- Reproducible software-bottleneck reports that connect an upstream backend issue to buyer-facing guidance, second-system validation requests, and firmware/fan/engineering questions.
 - Buyer use-case documentation that translates technical results into practical decisions.
 - Disclosure-compliant public writeup for sponsored, loaned, gifted, or early-access work.
 - Vendor-neutral technical findings, including negative results when they are accurate.

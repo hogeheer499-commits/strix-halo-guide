@@ -42,10 +42,13 @@ Source: [`COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-packag
 
 ## July 2026 Runtime Controls
 
-Latest observed upstream releases as of 2026-07-10: `llama.cpp` b9946 and Ollama 0.31.2. Both now have measured first-party controls below; route-specific caveats still matter.
+Latest observed upstream releases as of 2026-07-13: `llama.cpp` b9979 and Ollama 0.31.2. Both now have measured first-party controls below; route-specific caveats still matter.
 
 | Model / route | Quant | Tool | Result | Read |
 | --- | --- | --- | ---: | --- |
+| Qwen3-Coder 30B-A3B concurrency repeats | `UD-Q4_K_XL`, Q4_0 KV, 128 experts/top-8 | official b9979 stock vs opt-in AMD/RADV density gate | np9 mean: 147.19 t/s stock, 210.07 density, 234.12 density+dense16; five repeats | Density recovers 42.7% at np9 without changing np8. Dense16 reaches +59.1% at np9 but regresses versus density alone at np16, so it is not a universal default. |
+| Qwen3-Next 80B-A3B concurrency repeats | `UD-Q4_K_XL`, Q4_0 KV, 512 experts/top-10 | official b9979 stock vs opt-in AMD/RADV density gate | np9 mean: 100.15 t/s stock, 125.48 density, 142.72 density+dense16; three repeats | Confirms the dispatch cliff and recovery on the many-expert/top-10 shape; same caveat about dense16 at np16. |
+| 30B/80B backend crossover | same workloads | b9979 Vulkan modes vs Lemonade ROCm b1259 | 30B ROCm leads at np16 with 287.64 t/s; 80B density Vulkan leads at np16 with 150.82 t/s | Backend choice depends on the model topology and target concurrency. There is no universal batching winner. |
 | Qwen3-Coder 30B-A3B concurrency sweep | `UD-Q4_K_XL`, Q4_0 KV | official `llama.cpp` b9946 Vulkan | Aggregate decode 214.23 t/s at np8, 143.05 at np9, and 321.97 at np32 | Reproduces the issue #25356 8-to-9 cliff on a same-family local artifact. |
 | Qwen3-Coder 30B-A3B concurrency sweep | same artifact and workload | b9946 Vulkan with flat threshold patch | Aggregate decode 202.73 t/s at np8, 195.38 at np9, and 321.02 at np32 | Experimental 8-to-16 / 8-to-32 cutoff patch removes most of the cliff, but is not the later density-gate design; one sweep reached 98 C sysfs temperature, so this is not default guidance. |
 | Qwen3-Coder 30B-A3B concurrency sweep | same artifact and workload | Lemonade ROCm b1259 | Aggregate decode 184.93 t/s at np8, 191.24 at np9, and 354.59 at np32 | No 8-to-9 cliff and strongest np32 comparator in this sweep. Official ROCm b9946 was much slower. |
@@ -118,6 +121,7 @@ Raw evidence:
 - 2026-07-02 official `llama.cpp` b9859 Vulkan sentinel for Qwen3-Coder `Q4_K_S`, Qwen3-Coder `UD-Q4_K_XL`, and Gemma 4 26B-A4B IT: [`data/raw/2026-07-02/latest-llamacpp-b9859-vulkan-sentinel/`](data/raw/2026-07-02/latest-llamacpp-b9859-vulkan-sentinel/)
 - 2026-07-06 official `llama.cpp` b9888 Vulkan sentinel for Qwen3-Coder `Q4_K_S` and `UD-Q4_K_XL`: [`data/raw/2026-07-06/latest-llamacpp-b9888-vulkan-sentinel/`](data/raw/2026-07-06/latest-llamacpp-b9888-vulkan-sentinel/)
 - 2026-07-10 `llama.cpp` b9946 stock/patched Vulkan and ROCm/Lemonade MoE concurrency sweep: [`data/moe_concurrency.csv`](data/moe_concurrency.csv), [`raw evidence`](data/raw/2026-07-10/llamacpp-b9946-moe-concurrency/)
+- 2026-07-13 `llama.cpp` b9979 AMD/RADV density-gate correctness, 30B/80B concurrency repeats, thermals, and ROCm crossover: [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md), [`detail CSV`](data/moe_density_gate.csv), [`summary CSV`](data/moe_density_gate_summary.csv), [`raw evidence`](data/raw/2026-07-13/llamacpp-b9979-amd-density-gate/)
 - 2026-07-10 Ollama 0.31.2 installed-service Qwen3.6 and vision buyer-path check: [`data/raw/2026-07-10/ollama-0312-buyer-path/`](data/raw/2026-07-10/ollama-0312-buyer-path/)
 - Qwen3-Coder IQ4_XS control: [`data/raw/2026-06-03/qwen3-coder-iq4xs-direct-scout/`](data/raw/2026-06-03/qwen3-coder-iq4xs-direct-scout/)
 - Qwen3 30B-A3B NEO-MAX IQ4_XS control: [`data/raw/2026-06-03/qwen3-30b-a3b-neo-max-iq4xs-direct-scout/`](data/raw/2026-06-03/qwen3-30b-a3b-neo-max-iq4xs-direct-scout/)

@@ -462,6 +462,42 @@ def chart_backend_crossover() -> None:
     )
 
 
+def chart_density_gate() -> None:
+    rows = read_csv("moe_density_gate_summary.csv")
+    labels = {
+        "vulkan-b9979-stock": "Vulkan stock",
+        "vulkan-b9979-density": "Vulkan density gate",
+        "vulkan-b9979-density-dense16": "Vulkan density + dense16",
+        "lemonade-rocm-b1259": "Lemonade ROCm",
+    }
+    route_order = list(labels)
+    for model, filename, short_name in (
+        ("Qwen3-Coder 30B-A3B", "moe_density_gate_30b.svg", "Qwen3-Coder 30B-A3B"),
+        ("Qwen3-Next 80B-A3B", "moe_density_gate_80b.svg", "Qwen3-Next 80B-A3B"),
+    ):
+        selected = [row for row in rows if row["model"] == model]
+        concurrencies = sorted({int(row["concurrency"]) for row in selected})
+        by_route: dict[str, dict[int, float]] = defaultdict(dict)
+        for row in selected:
+            by_route[row["tool_route"]][int(row["concurrency"])] = as_float(row, "mean_aggregate_decode_tps")
+        series = [
+            {
+                "name": labels[route],
+                "values": [by_route[route].get(concurrency) for concurrency in concurrencies],
+            }
+            for route in route_order
+        ]
+        line_chart(
+            filename,
+            f"{short_name}: AMD MoE concurrency crossover",
+            "b9979 Vulkan stock vs opt-in AMD/RADV gates; Lemonade b1259 is a different ROCm build",
+            [str(concurrency) for concurrency in concurrencies],
+            series,
+            "aggregate decode tokens/s",
+            note="Source: data/moe_density_gate_summary.csv; np8/9/12/16 use controlled repeats",
+        )
+
+
 def main() -> None:
     chart_multi_user()
     chart_long_context_prompt()
@@ -470,6 +506,7 @@ def main() -> None:
     chart_real_vs_synthetic()
     chart_backend_spot_check()
     chart_backend_crossover()
+    chart_density_gate()
 
 
 if __name__ == "__main__":

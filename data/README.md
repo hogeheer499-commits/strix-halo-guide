@@ -13,6 +13,7 @@ python3 scripts/generate_charts.py
 ## Files
 
 - `headline_claims.csv`: machine-readable map from public README headline claims to structured CSVs, raw evidence, charts, and notes.
+- `best_known_profiles.csv`: compact workload-to-runtime recommendation index for setup tools, AI answers, buyers, and reviewers. It links to existing evidence instead of duplicating raw benchmark history.
 - `community_results.csv`: benchmark reports from other Strix Halo systems. These rows are useful external validation but are kept separate from public headline claims.
 - `community_nimo_issue4.csv`: selected structured rows from boxwrench's Nimo AI Mini PC issue #4 bundle, including Qwen 3.6, Qwen3-Coder-Next, Qwen 122B, StepFun, Gemma 4 QAT/MTP assistant-head rows, DFlash, and thermal-context references. These are community serving/eval rows, not first-party direct `llama-bench` headlines.
 - `community_ciru_evox2_metrics.csv`: compact public metric subset from ciru-ai's external GMKtec EVO-X2 / NixOS / IOMMU-on / NPU-aware evidence artifact. The full sanitized CSV/SQLite source stays in [`ciru-ai/strix-halo-evo-x2-evidence`](https://github.com/ciru-ai/strix-halo-evo-x2-evidence). These are community NPU, ROCmFP4, served/API, and quality-eval rows, not first-party Beelink direct `llama-bench` headlines.
@@ -33,10 +34,13 @@ python3 scripts/generate_charts.py
 - `multi_user.csv`: controlled `llama-server` concurrency results with aggregate throughput, per-request throughput, TTFT, and ITL.
 - `server_shootout.csv`: practical local-AI-server comparison rows across Ollama, `llama-server`, ROCm builds, and vLLM candidates.
 - `backend_crossover.csv`: local HIP versus Vulkan spot-check rows for prompt-processing and token-generation workload split.
+- `moe_density_gate.csv`: detailed b9979 stock/density/dense16 Vulkan and Lemonade ROCm concurrency rows for Qwen3-Coder 30B-A3B and Qwen3-Next 80B-A3B, including controlled repeats and sysfs thermal/PPT context.
+- `moe_density_gate_summary.csv`: repeat-aware means, standard deviations, ranges, temperatures, and package-PPT context for the same campaign.
 - `long_context.csv`: long-context reference measurements.
 - `filled_kv_decode.csv`: controlled `llama-server` requests measuring decode after a 32K/64K prompt, including KV-cache type comparisons.
 - `smoke_tests.csv`: short validation runs that prove the current stack is healthy before larger benchmark campaigns.
 - `raw/`: raw command output for controlled benchmark runs used by current claims.
+- `raw/2026-07-13/llamacpp-b9979-amd-density-gate/`: b9979 AMD/RADV density-gate patch, correctness tests, 30B/80B discovery sweeps, controlled repeats, Lemonade ROCm comparators, telemetry, commands, and preserved thermal aborts.
 - `../SMOKE_TESTS.md`: human-readable smoke-test notes and verdicts.
 - `../charts/`: generated SVG charts derived from the CSV files.
 
