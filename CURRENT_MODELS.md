@@ -33,6 +33,7 @@ The separate [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) page now tracks this a
 | Qwopus3.6 27B Chadrock | 0.9451 HumanEval+ and about 2.85x lower recorded request-generation time than the stored original Qwopus comparator | Strong tuned 27B quality-plus-speed evidence; keep as community served-route evidence. |
 | Ace Saber 35B ROCmFP4 MTP | 0.9024 HumanEval+ in community data; first-party helper-route repro reached 140.40 and 139.93 predicted tok/s on gen512 high-acceptance repeats | Interesting high-quality 35B tuned-route evidence; local route works and the high-speed shape is reproducible when draft acceptance stays near 100%. |
 | Gemma 4 26B-A4B QAT/MTP | 122.8 decode tok/s after TTFP on a 512-token API row and 0.9207 HumanEval+ | Strong current Google-model community route; keep separate from the first-party Gemma 4 26B QAT MTP repeat. |
+| StepFun Step-3.7-Flash ROCmFPX Q3 QualityPlus | 81.77GiB target shards; community card reports 29.39 t/s at 4k MTP, 85/100 on HermesAgent-20 at 35.31 t/s, and a 256k target-plus-draft load proof | High-value 198B-class capacity/agent target built for 128GB Strix Halo. Requires the pinned ROCmFPX runner and a separate Q8 MTP draft; first-party Beelink reproduction is still pending. |
 | CrownV7 Qwen3.6 35B dynamic route | 515.33 tok/s prompt processing at 128k, 0.83 BFCL v4 non-live accuracy | Useful long-context and tool/function-calling signal. |
 | Crown Halo Qwen3.6 35B dynamic MTP Beelink smoke | short server 60.66 predicted t/s with 76/152 accepted; long structured server 57.61 predicted t/s with 168/344 accepted | First-party load/API/MTP smoke succeeded, but high-speed dynamic-MTP behavior remains a reproduction target. |
 
@@ -218,16 +219,18 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | ---: | --- | --- |
 | 1 | Focused official `llama.cpp` b10005 Vulkan sentinel | Recheck the 30B np8/np9 stock boundary and the existing Nemotron Omni MXFP4 artifact. This answers whether the open multi-user cliff persists and whether b10005's native E2M1/E4M3 Vulkan conversions change a current FP4 route without rerunning the full matrix. |
 | 2 | ROCmFP4 / CHADROCK stability follow-up from [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) | The helper route now reproduces ~140 t/s gen512 on a high-acceptance prompt. Next value is a cleaner multi-prompt profile: when does it stay near 140, when does it fall back toward 115-128, and which prompt/model profiles should users actually choose? |
-| 3 | Ollama 0.31.2 regression isolation plus a minimal 0.32.0 service smoke | The normal 0.31.2 system-service path passes iGPU, Qwen3.6, vision, and restart checks, but measured 60.57 t/s versus 71.82 t/s on the separate 0.31.1 local binary. First isolate that runner delta; treat 0.32.0 as a compatibility smoke unless its inference path materially differs. |
-| 4 | Nemotron 3 Nano Omni NVFP4 quality/multimodal follow-up | MXFP4_MOE now has a direct b9747 smoke pass at 56.56 tg128. A follow-up only matters if it compares NVFP4/MXFP4 quality, multimodal/mmproj behavior, or an easier recommended route. |
-| 5 | Hy3 GGUF/artifact feasibility scan | Official b10005 adds Hy3 with MTP support. The model is 295B total / 21B active with a 3.8B MTP layer, while the official BF16 artifact is about 598GB. Scan practical GGUF/reduced routes before any download; this is a high-interest capacity/MTP target, not yet a one-box recommendation. |
-| 6 | DeepSeek V4 Flash route follow-up with planned storage/runtime | Current route scan found three different blockers: ordinary GGUF routes around 92.8-162GB, a slow 92.8GiB `IQ2_M` download candidate, and a smaller 46.98GiB REAP route that needs ds4 runtime support. Next value is a planned external-storage or ds4 test, not another blind partial download. |
-| 7 | External-storage feasibility plan for Kimi-K2.7-Code, GLM-5.2, MiniMax-M3, and Nemotron Ultra class routes | These are high-traffic model names, but most artifacts are 120-300GB+. A clean external NVMe plan is more valuable than pretending they are simple internal-disk tests. |
+| 3 | StepFun Step-3.7-Flash ROCmFPX Q3 QualityPlus first-party repro | The new 81.77GiB target is materially smaller than the existing Step 3.7 Q3/ROCmFP4 routes and is explicitly tuned for 128GB Strix Halo. Reproduce the pinned runner, no-spec/MTP behavior, acceptance, memory use, 4k/16k speed, a practical 64k agent run, and quality smoke before promoting it beyond community evidence. |
+| 4 | Ollama 0.31.2 regression isolation plus a minimal 0.32.0 service smoke | The normal 0.31.2 system-service path passes iGPU, Qwen3.6, vision, and restart checks, but measured 60.57 t/s versus 71.82 t/s on the separate 0.31.1 local binary. First isolate that runner delta; treat 0.32.0 as a compatibility smoke unless its inference path materially differs. |
+| 5 | Nemotron 3 Nano Omni NVFP4 quality/multimodal follow-up | MXFP4_MOE now has a direct b9747 smoke pass at 56.56 tg128. A follow-up only matters if it compares NVFP4/MXFP4 quality, multimodal/mmproj behavior, or an easier recommended route. |
+| 6 | Hy3 GGUF/artifact feasibility scan | Official b10005 adds Hy3 with MTP support. The model is 295B total / 21B active with a 3.8B MTP layer, while the official BF16 artifact is about 598GB. Scan practical GGUF/reduced routes before any download; this is a high-interest capacity/MTP target, not yet a one-box recommendation. |
+| 7 | DeepSeek V4 Flash route follow-up with planned storage/runtime | Current route scan found three different blockers: ordinary GGUF routes around 92.8-162GB, a slow 92.8GiB `IQ2_M` download candidate, and a smaller 46.98GiB REAP route that needs ds4 runtime support. Next value is a planned external-storage or ds4 test, not another blind partial download. |
+| 8 | External-storage feasibility plan for Kimi-K2.7-Code, GLM-5.2, MiniMax-M3, and Nemotron Ultra class routes | These are high-traffic model names, but most artifacts are 120-300GB+. A clean external NVMe plan is more valuable than pretending they are simple internal-disk tests. |
 
 ## Watch List
 
 | Target | Status |
 | --- | --- |
+| StepFun Step-3.7-Flash ROCmFPX Q3 QualityPlus | New 81.77GiB, 3.57-BPW community artifact for a 198B sparse MoE with about 11B active parameters and 256k context. The model card reports strong local quality and fit results on Strix Halo, but it requires pinned `ciru-ai/ROCmFPX` support plus a separate Q8 MTP draft. Existing Nimo Step 3.7 evidence remains separate; first-party reproduction is the next step. |
 | Hy3 295B-A21B + MTP | Official `llama.cpp` b10005 adds initial Hy3 and split-MTP support. Tencent describes 295B total, 21B active, 3.8B MTP, and 256K context; the official BF16 repository is about 598GB. Treat as a new artifact-scan/external-storage target until a compatible one-box route is identified and measured. |
 | Qwen3.6 new quants/sources | Already important in the guide. Add only if a new source answers a new question. |
 | Kimi-K2.7-Code | Very high viral value and active GGUF ecosystem. Smallest scanned routes remain huge: AesSedai `IQ2_XXS` about 262.8 GiB, Unsloth `UD-IQ1_M` about 283.0 GiB, and a pruned `deep55` route about 188.7 GiB. Treat as external-storage/watchlist, not a quick local default. |
@@ -254,6 +257,8 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 - Nemotron 3 Ultra BF16: <https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-BF16>
 - Nemotron 3 Ultra NVFP4: <https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-NVFP4>
 - ROCmFP4 / CHADROCK route: <https://github.com/charlie12345/rocmfp4-llama>
+- StepFun Step-3.7-Flash: <https://github.com/stepfun-ai/Step-3.7-Flash>
+- StepFun Step-3.7-Flash ROCmFPX Q3 QualityPlus: <https://huggingface.co/jcbtc/Step-3.7-Flash-ROCmFPX-Q3-QualityPlus>
 - Kimi-K2.7-Code GGUF: <https://huggingface.co/unsloth/Kimi-K2.7-Code-GGUF>
 - GLM-5.2 GGUF: <https://huggingface.co/unsloth/GLM-5.2-GGUF>
 - MiniMax-M3 GGUF: <https://huggingface.co/unsloth/MiniMax-M3-GGUF>

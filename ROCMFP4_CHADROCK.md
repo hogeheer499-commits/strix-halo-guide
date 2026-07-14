@@ -44,6 +44,7 @@ These are artifact scans, not first-party Beelink benchmark claims.
 | [`jcbtc/chadrock-35b-ace-saber-rocmfp4-mtp`](https://huggingface.co/jcbtc/chadrock-35b-ace-saber-rocmfp4-mtp) | 17.7 GiB | 35B-class tuned ROCmFP4/MTP route; useful because ciru's evidence includes quality-plus-speed signals. |
 | [`jcbtc/CHADROCK3.6-35B-UNCENSORED-MTP-STRIX-LEAN`](https://huggingface.co/jcbtc/CHADROCK3.6-35B-UNCENSORED-MTP-STRIX-LEAN) | 17.7 GiB | Earlier 35B STRIX_LEAN candidate; useful for format/runtime checks. |
 | [`jcbtc/qwen3.6-35b-a3b-crown-halo-mtp-dynamic`](https://huggingface.co/jcbtc/qwen3.6-35b-a3b-crown-halo-mtp-dynamic) | 21.0 GiB | CrownV7-style dynamic route; useful for tool/function-calling and long-context behavior if reproduced cleanly. |
+| [`jcbtc/Step-3.7-Flash-ROCmFPX-Q3-QualityPlus`](https://huggingface.co/jcbtc/Step-3.7-Flash-ROCmFPX-Q3-QualityPlus) | 81.77 GiB target shards, plus separate Q8 MTP draft | 198B-class / ~11B-active capacity and agent route built for 128GB Strix Halo. The smaller Q3 footprint leaves more room for KV cache and long context, but requires the pinned ROCmFPX runner and is not a stock `llama.cpp` artifact. |
 
 ## First Repro Plan
 
@@ -62,6 +63,35 @@ Record:
 - whether the route loads cleanly without breaking the default Vulkan/RADV setup
 
 The first useful result can be negative. A clean "does not build", "loads but crashes", "runs but slower than Vulkan", or "needs IOMMU-on/ROCm tuning" result still removes setup friction.
+
+## Step 3.7 Q3 QualityPlus Repro Target
+
+The new [`Step 3.7 Q3 QualityPlus artifact`](https://huggingface.co/jcbtc/Step-3.7-Flash-ROCmFPX-Q3-QualityPlus) is a high-value second-system target, not yet a first-party Beelink result. [`StepFun`](https://github.com/stepfun-ai/Step-3.7-Flash) describes Step 3.7 Flash as a 198B sparse MoE with about 11B active parameters, native vision, and 256k context. The community artifact reduces the language-model shards to 81.77GiB at 3.57 effective BPW, versus roughly 95.46GiB for the original Q3_K_L split and 97.70GiB for the local ROCmFP4 STRIX_LEAN build.
+
+The model card reports these community results on Strix Halo:
+
+- 29.39 t/s MTP decode at a 4k prompt and 26.26 t/s at 16k
+- 85/100 on HermesAgent-20 at 35.31 t/s decode
+- about 96.3GiB peak pooled GPU memory on a 64k MTP agent run
+- a 256k target-plus-draft load proof at about 99.04GiB pooled GPU memory; this is a load proof, not a 256k prompt benchmark
+
+Reproduction requirements:
+
+- target: the nine `Step-3.7-Flash-ROCmFPX-Q3-QualityPlus` GGUF shards
+- draft: separate `Step-3.7-Flash-MTP-Q8_0.gguf`
+- runner: `ciru-ai/ROCmFPX` pinned by the model card to `221402af8574faf652b101b6afe225a3f329561f` as observed on 2026-07-14
+- backend: ROCmFPX tensor support with `Vulkan0` target and draft serving
+- tested profile: one slot, Q8 target/draft KV, `draft-mtp`, `n_max=2`, `p_min=0.75`, batch 8192, ubatch 2048
+
+The useful local sequence is:
+
+1. Verify all shard and draft hashes and record the exact runner pin.
+2. Confirm clean load plus a short no-spec baseline.
+3. Repeat 4k and 16k MTP rows with acceptance and pooled-memory telemetry.
+4. Run one practical 64k agent/tool workload and a small quality smoke.
+5. Attempt the 256k allocation proof only after the 64k route is stable.
+
+Keep the existing Nimo Step 3.7 Vulkan/MTP rows separate. They prove the model family already runs on another 128GB Strix Halo system; this new test asks whether the smaller ROCmFPX Q3 build improves practical fit, long-context headroom, and quality-per-byte on the Beelink path.
 
 ## First-Party Beelink Smoke
 
