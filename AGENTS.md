@@ -88,6 +88,7 @@ For new benchmark, update, or "is there news?" work, do not load the full README
 
 - `AGENTS.md`
 - `CURRENT_MODELS.md`
+- `data/current_test_queue.csv`
 - `data/best_known_profiles.csv`
 - `data/headline_claims.csv`
 - `data/mtp_speculative.csv`

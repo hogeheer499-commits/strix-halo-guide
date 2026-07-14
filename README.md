@@ -51,6 +51,7 @@ What you get:
 | Understand why this guide matters now | [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md): how AMD's public Ryzen AI Halo / Developer Platform direction maps to this guide's independent setup and benchmark evidence. |
 | Decide what to run on your Strix Halo machine | [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot), then [Use This If You Want](#use-this-if-you-want): practical model and backend choices for a local AI PC. |
 | Need a machine-readable known-good route | [`BEST_KNOWN_PROFILES.md`](BEST_KNOWN_PROFILES.md) and [`data/best_known_profiles.csv`](data/best_known_profiles.csv): compact workload-to-runtime recommendations that link back to the full evidence. |
+| See what should be tested next | [`CURRENT_MODELS.md`](CURRENT_MODELS.md) and [`data/current_test_queue.csv`](data/current_test_queue.csv): current candidates, practical artifact sizes, blockers, and the buyer question each test should answer. |
 | Skip the community-data deep dive | [Community-Tested Rules Of Thumb](#community-tested-rules-of-thumb): practical decisions extracted from the Beelink data plus Corsair, GMKtec, MS-S1-Max, Nimo, NixOS/NPU, and ROCmFP4 community reports. |
 | See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
 | Check whether the numbers are real | [Reproduce One Headline Result](#reproduce-one-headline-result), [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md), and [`data/headline_claims.csv`](data/headline_claims.csv). |
@@ -313,6 +314,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`POWER_BASELINE.md`](POWER_BASELINE.md) | Local amdgpu `PPT` telemetry status and Beelink power-sampling caveats. |
 | [`PERFORMANCE_NOTES.md`](PERFORMANCE_NOTES.md) | Narrow notes on strict-stack reruns, failed headline reproduction attempts, and useful negative model results. |
 | [`CURRENT_MODELS.md`](CURRENT_MODELS.md) | Current-model triage: latest model scouts, speed versus capability framing, and practical next-test value. |
+| [`data/current_test_queue.csv`](data/current_test_queue.csv) | Machine-readable current test priorities, readiness, artifact size, blockers, and evidence questions. |
 | [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md) | Fast-moving ROCm/vLLM upstream issue and release watchlist. |
 | [`BENCHMARKS.md`](BENCHMARKS.md) | Compact benchmark source-of-truth for current README numbers. |
 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md) | Independent benchmark reports from other Strix Halo systems, kept separate from headline claims. |

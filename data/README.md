@@ -14,6 +14,7 @@ python3 scripts/generate_charts.py
 
 - `headline_claims.csv`: machine-readable map from public README headline claims to structured CSVs, raw evidence, charts, and notes.
 - `best_known_profiles.csv`: compact workload-to-runtime recommendation index for setup tools, AI answers, buyers, and reviewers. It links to existing evidence instead of duplicating raw benchmark history.
+- `current_test_queue.csv`: prioritized candidate/runtime queue with readiness, estimated artifact size, blockers, and the buyer question each unmeasured test should answer. It is not a benchmark-claim file.
 - `community_results.csv`: benchmark reports from other Strix Halo systems. These rows are useful external validation but are kept separate from public headline claims.
 - `community_nimo_issue4.csv`: selected structured rows from boxwrench's Nimo AI Mini PC issue #4 bundle, including Qwen 3.6, Qwen3-Coder-Next, Qwen 122B, StepFun, Gemma 4 QAT/MTP assistant-head rows, DFlash, and thermal-context references. These are community serving/eval rows, not first-party direct `llama-bench` headlines.
 - `community_ciru_evox2_metrics.csv`: compact public metric subset from ciru-ai's external GMKtec EVO-X2 / NixOS / IOMMU-on / NPU-aware evidence artifact. The full sanitized CSV/SQLite source stays in [`ciru-ai/strix-halo-evo-x2-evidence`](https://github.com/ciru-ai/strix-halo-evo-x2-evidence). These are community NPU, ROCmFP4, served/API, and quality-eval rows, not first-party Beelink direct `llama-bench` headlines.
