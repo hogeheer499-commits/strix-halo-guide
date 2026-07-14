@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
+from pathlib import Path
+
 from PIL import Image, ImageDraw, ImageFont
+
+ROOT = Path(__file__).resolve().parent
+DOCS_ASSETS = ROOT / "docs" / "assets"
 
 W, H = 1280, 640
 BG = "#0d1117"
@@ -19,8 +24,8 @@ draw.rectangle([0, 0, W, 4], fill=ACCENT)
 
 # Three big numbers side by side
 stats = [
-    ("100.0", "t/s", "Direct 30B Qwen"),
-    ("55.6", "t/s", "gpt-oss-120b"),
+    ("101.0", "t/s", "Direct Qwen3-Coder"),
+    ("140.4", "t/s", "CHADROCK MTP server"),
     ("128", "GB", "unified memory"),
 ]
 
@@ -67,7 +72,7 @@ bbox = draw.textbbox((0, 0), title, font=title_font)
 draw.text(((W - bbox[2] + bbox[0]) // 2, 380), title, fill=WHITE, font=title_font)
 
 # Punchline
-punch = "100.0 t/s direct Qwen MoE · 98.5 t/s Qwen3-Coder · raw CSV/log evidence"
+punch = "Copyable setup · cross-OEM validation · raw CSV/log evidence"
 punch_font = font_reg(26)
 bbox = draw.textbbox((0, 0), punch, font=punch_font)
 draw.text(((W - bbox[2] + bbox[0]) // 2, 435), punch, fill=ACCENT, font=punch_font)
@@ -78,5 +83,29 @@ handle_font = font_reg(18)
 bbox = draw.textbbox((0, 0), handle, font=handle_font)
 draw.text(((W - bbox[2] + bbox[0]) // 2, H - 50), handle, fill=DIM, font=handle_font)
 
-img.save("/home/hoge-heer/strix-halo-guide/social-preview.png", "PNG")
-print("Done: social-preview.png (1280x640)")
+DOCS_ASSETS.mkdir(parents=True, exist_ok=True)
+preview_outputs = [ROOT / "social-preview.png", DOCS_ASSETS / "social-preview.png"]
+for output in preview_outputs:
+    img.save(output, "PNG", optimize=True)
+
+# A stable, square icon for browser tabs and eligible search-result favicons.
+icon_size = 512
+icon = Image.new("RGB", (icon_size, icon_size), BG)
+icon_draw = ImageDraw.Draw(icon)
+icon_draw.rectangle([0, 0, icon_size, 12], fill=ACCENT)
+
+icon_font = font_black(210)
+icon_text = "SH"
+icon_bbox = icon_draw.textbbox((0, 0), icon_text, font=icon_font)
+icon_x = (icon_size - (icon_bbox[2] - icon_bbox[0])) // 2
+icon_y = 92
+icon_draw.text((icon_x, icon_y), icon_text, fill=WHITE, font=icon_font)
+
+llm_font = font_bold(54)
+llm_text = "LOCAL AI"
+llm_bbox = icon_draw.textbbox((0, 0), llm_text, font=llm_font)
+llm_x = (icon_size - (llm_bbox[2] - llm_bbox[0])) // 2
+icon_draw.text((llm_x, 355), llm_text, fill=ACCENT, font=llm_font)
+icon.save(DOCS_ASSETS / "favicon.png", "PNG", optimize=True)
+
+print("Done: social-preview.png and docs/assets SEO images")

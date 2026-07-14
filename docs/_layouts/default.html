@@ -4,7 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {% seo %}
+  {% if page.seo.date_modified %}<meta property="article:modified_time" content="{{ page.seo.date_modified | date_to_xmlschema }}">{% endif %}
+  <meta name="theme-color" content="#0d1117">
+  <link rel="icon" type="image/png" sizes="512x512" href="{{ '/assets/favicon.png' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/assets/favicon.png' | relative_url }}">
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.6;
@@ -13,6 +20,26 @@
       padding: 2rem 1rem;
       color: #111827;
       background: #ffffff;
+    }
+    a {
+      color: #0969da;
+    }
+    a:focus-visible {
+      outline: 3px solid #58a6ff;
+      outline-offset: 3px;
+    }
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      z-index: 100;
+      padding: 0.75rem 1rem;
+      color: #ffffff;
+      background: #0d1117;
+    }
+    .skip-link:focus {
+      left: 1rem;
+      top: 1rem;
     }
     code, pre {
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -38,11 +65,23 @@
       padding-left: 1rem;
       color: #374151;
     }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid #d1d5db;
+      color: #4b5563;
+      font-size: 0.95rem;
+    }
   </style>
 </head>
 <body>
-  <main>
+  <a class="skip-link" href="#main-content">Skip to the guide</a>
+  <main id="main-content">
     {{ content }}
   </main>
+  <footer>
+    Independent AMD Strix Halo setup and benchmark evidence.
+    <a href="https://github.com/hogeheer499-commits/strix-halo-guide">View the canonical GitHub repository and raw evidence.</a>
+  </footer>
 </body>
 </html>

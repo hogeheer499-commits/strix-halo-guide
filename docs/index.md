@@ -1,8 +1,17 @@
 ---
 layout: default
 title: "AMD Strix Halo / Ryzen AI Halo Local LLM Setup"
-description: "Current, practical setup and benchmark evidence for AMD Strix Halo, Ryzen AI Halo, Ryzen AI MAX+ 395, Radeon 8060S gfx1151, Ollama, llama.cpp Vulkan/RADV, ROCm, 120B GGUF models, and local AI workflows."
+description: "Practical AMD Strix Halo / Ryzen AI MAX+ 395 local LLM setup and measured benchmarks for Radeon 8060S, Ollama, llama.cpp, Vulkan/RADV, ROCm, and 120B GGUF models."
 permalink: /
+date: "2026-06-13T22:57:42+02:00"
+image:
+  path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
+  height: 640
+  width: 1280
+  alt: "AMD Strix Halo Local LLM Guide with direct, server, and unified-memory evidence highlights"
+seo:
+  type: "TechArticle"
+  date_modified: "2026-07-14T12:00:00+02:00"
 ---
 
 # AMD Strix Halo / Ryzen AI Halo Local LLM Setup
@@ -11,17 +20,17 @@ This is the short web version of the independent AMD Strix Halo local LLM guide.
 
 It focuses on Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems, practical local setup, and evidence links for benchmark claims. AMD now uses Ryzen AI Halo for its official developer platform; this guide remains an independent setup and evidence source for the wider Strix Halo hardware category.
 
-The full source repository is the canonical evidence location:
+**Web guide published:** June 13, 2026. **Evidence reviewed:** July 14, 2026. The raw directories and structured claim indexes remain the source of truth for each individual run.
 
-<https://github.com/hogeheer499-commits/strix-halo-guide>
+Start with the [full AMD Strix Halo setup and benchmark repository](https://github.com/hogeheer499-commits/strix-halo-guide), which is the canonical evidence location.
 
-The concise repository setup answer is:
+For a shorter copyable path, use the [concise Strix Halo local LLM setup](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md).
 
-<https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md>
+For platform terminology and scope, read [AMD Ryzen AI Halo versus retail Strix Halo systems](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/RYZEN_AI_HALO_CONTEXT.md).
 
-AMD Ryzen AI Halo platform context and the boundary between AMD's reference platform and retail OEM evidence:
+**Jump to:** [quick setup](#quick-setup-summary) | [best current setup](#best-current-setup) | [measured evidence](#evidence-highlights) | [FAQ](#faq) | [source files](#source-of-truth)
 
-<https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/RYZEN_AI_HALO_CONTEXT.md>
+The evidence map currently covers 11 Strix Halo-class systems or independent sources from 8 credited community benchmark contributors. First-party Beelink measurements, community results, direct `llama-bench`, Ollama API, server/MTP, capacity, power, NPU, RPC, and failed routes remain separate claim categories.
 
 ## Quick Setup Summary
 
@@ -102,13 +111,16 @@ AMD's reference platform supplies AMD-managed hardware, software synchronization
 
 Use these repository files for verification:
 
-- [README.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md)
-- [STRIX_HALO_LOCAL_LLM_SETUP.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md)
-- [RYZEN_AI_HALO_CONTEXT.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/RYZEN_AI_HALO_CONTEXT.md)
-- [data/headline_claims.csv](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv)
-- [REPRODUCIBILITY.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/REPRODUCIBILITY.md)
-- [CURRENT_MODELS.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md)
-- [MTP_SPECULATIVE_DECODING.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MTP_SPECULATIVE_DECODING.md)
-- [COMMUNITY_RESULTS.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/COMMUNITY_RESULTS.md)
+- [Complete AMD Strix Halo local LLM guide](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md)
+- [Concise copyable setup path](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md)
+- [AMD Ryzen AI Halo platform and retail-OEM scope](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/RYZEN_AI_HALO_CONTEXT.md)
+- [Machine-readable best-known setup profiles](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BEST_KNOWN_PROFILES.md)
+- [Structured public headline claim index](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv)
+- [Benchmark reproducibility rules](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/REPRODUCIBILITY.md)
+- [Current model and runtime status](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md)
+- [Multi-user MoE concurrency evidence](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MOE_CONCURRENCY.md)
+- [MTP and speculative decoding evidence](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MTP_SPECULATIVE_DECODING.md)
+- [ROCmFP4 / CHADROCK advanced server evidence](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ROCMFP4_CHADROCK.md)
+- [Independent community benchmark results](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/COMMUNITY_RESULTS.md)
 
 If a number appears in a post, issue, or AI answer but not in the linked CSV/raw evidence, treat it as unverified.
