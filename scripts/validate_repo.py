@@ -243,6 +243,7 @@ def check_pages_seo(errors: list[str]) -> None:
 
     required_layout = (
         "{% seo %}",
+        "google-site-verification",
         "rel=\"icon\"",
         "rel=\"apple-touch-icon\"",
         "article:modified_time",
