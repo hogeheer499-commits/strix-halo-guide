@@ -42,7 +42,7 @@ Source: [`COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-packag
 
 ## July 2026 Runtime Controls
 
-Latest observed upstream releases as of 2026-07-13: `llama.cpp` b9979 and Ollama 0.31.2. Both now have measured first-party controls below; route-specific caveats still matter.
+Latest observed upstream releases as of 2026-07-14 are `llama.cpp` b10005 and Ollama 0.32.0. The latest measured first-party baselines remain b9979 and Ollama 0.31.2. b10005 adds native Vulkan E2M1/E4M3 conversion support relevant to MXFP4/NVFP4 and initial Hy3/MTP support; neither change has a first-party Strix Halo result here yet. Ollama 0.32.0 is primarily an agent/CLI integration release, so it does not replace the measured 0.31.2 buyer path without a local regression check.
 
 | Model / route | Quant | Tool | Result | Read |
 | --- | --- | --- | ---: | --- |
@@ -216,17 +216,19 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 
 | Priority | Test | Why it adds guide value |
 | ---: | --- | --- |
-| 1 | ROCmFP4 / CHADROCK stability follow-up from [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) | The helper route now reproduces ~140 t/s gen512 on a high-acceptance prompt. Next value is a cleaner multi-prompt profile: when does it stay near 140, when does it fall back toward 115-128, and which prompt/model profiles should users actually choose? |
-| 2 | Ollama 0.31.2 regression follow-up | The normal system-service path now passes iGPU, Qwen3.6, vision, and restart checks, but Qwen3.6 measured 60.57 t/s versus 71.82 t/s on the separate 0.31.1 local-binary run. Next value is isolating the runtime/model-runner delta. |
-| 3 | Extend the latest official `llama.cpp` sentinel matrix if missing model files are restored locally | b9888 reproduced the Qwen3-Coder 98 t/s class but did not beat b9851. Next value is checking Qwen3-30B-A3B-Instruct-2507, LFM2.5, Nemotron Super, and Nemotron Omni on the latest official Vulkan release if the exact files are restored. |
-| 4 | Nemotron 3 Nano Omni NVFP4 or quality/multimodal follow-up | MXFP4_MOE now has a direct b9747 smoke pass at 56.56 tg128. A follow-up only matters if it compares NVFP4/MXFP4 quality, multimodal/mmproj behavior, or an easier recommended route. |
-| 5 | DeepSeek V4 Flash route follow-up with planned storage/runtime | Current route scan found three different blockers: ordinary GGUF routes around 92.8-162GB, a slow 92.8GiB `IQ2_M` download candidate, and a smaller 46.98GiB REAP route that needs ds4 runtime support. Next value is a planned external-storage or ds4 test, not another blind partial download. |
-| 6 | External-storage feasibility plan for Kimi-K2.7-Code, GLM-5.2, MiniMax-M3, and Nemotron Ultra class routes | These are high-traffic model names, but most artifacts are 120-300GB+. A clean external NVMe plan is more valuable than pretending they are simple internal-disk tests. |
+| 1 | Focused official `llama.cpp` b10005 Vulkan sentinel | Recheck the 30B np8/np9 stock boundary and the existing Nemotron Omni MXFP4 artifact. This answers whether the open multi-user cliff persists and whether b10005's native E2M1/E4M3 Vulkan conversions change a current FP4 route without rerunning the full matrix. |
+| 2 | ROCmFP4 / CHADROCK stability follow-up from [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) | The helper route now reproduces ~140 t/s gen512 on a high-acceptance prompt. Next value is a cleaner multi-prompt profile: when does it stay near 140, when does it fall back toward 115-128, and which prompt/model profiles should users actually choose? |
+| 3 | Ollama 0.31.2 regression isolation plus a minimal 0.32.0 service smoke | The normal 0.31.2 system-service path passes iGPU, Qwen3.6, vision, and restart checks, but measured 60.57 t/s versus 71.82 t/s on the separate 0.31.1 local binary. First isolate that runner delta; treat 0.32.0 as a compatibility smoke unless its inference path materially differs. |
+| 4 | Nemotron 3 Nano Omni NVFP4 quality/multimodal follow-up | MXFP4_MOE now has a direct b9747 smoke pass at 56.56 tg128. A follow-up only matters if it compares NVFP4/MXFP4 quality, multimodal/mmproj behavior, or an easier recommended route. |
+| 5 | Hy3 GGUF/artifact feasibility scan | Official b10005 adds Hy3 with MTP support. The model is 295B total / 21B active with a 3.8B MTP layer, while the official BF16 artifact is about 598GB. Scan practical GGUF/reduced routes before any download; this is a high-interest capacity/MTP target, not yet a one-box recommendation. |
+| 6 | DeepSeek V4 Flash route follow-up with planned storage/runtime | Current route scan found three different blockers: ordinary GGUF routes around 92.8-162GB, a slow 92.8GiB `IQ2_M` download candidate, and a smaller 46.98GiB REAP route that needs ds4 runtime support. Next value is a planned external-storage or ds4 test, not another blind partial download. |
+| 7 | External-storage feasibility plan for Kimi-K2.7-Code, GLM-5.2, MiniMax-M3, and Nemotron Ultra class routes | These are high-traffic model names, but most artifacts are 120-300GB+. A clean external NVMe plan is more valuable than pretending they are simple internal-disk tests. |
 
 ## Watch List
 
 | Target | Status |
 | --- | --- |
+| Hy3 295B-A21B + MTP | Official `llama.cpp` b10005 adds initial Hy3 and split-MTP support. Tencent describes 295B total, 21B active, 3.8B MTP, and 256K context; the official BF16 repository is about 598GB. Treat as a new artifact-scan/external-storage target until a compatible one-box route is identified and measured. |
 | Qwen3.6 new quants/sources | Already important in the guide. Add only if a new source answers a new question. |
 | Kimi-K2.7-Code | Very high viral value and active GGUF ecosystem. Smallest scanned routes remain huge: AesSedai `IQ2_XXS` about 262.8 GiB, Unsloth `UD-IQ1_M` about 283.0 GiB, and a pruned `deep55` route about 188.7 GiB. Treat as external-storage/watchlist, not a quick local default. |
 | GLM-5.2 | Very high viral value. Unsloth GGUF exists with smallest scanned `UD-IQ1_S` about 201.8 GiB; REAP50 Q2 route scanned at 129.4 GiB; MXFP4/NVFP4 routes are about 400GB+. External-storage/watchlist unless a smaller compatible route appears. |
@@ -235,8 +237,9 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | DeepSeek V4 Flash | Original 103GB route was download-blocked; smaller 0xSero/Spark-Mini route reached local load attempts but failed before benchmarking. A 2026-07-06 scan found new ordinary-GGUF routes, including a 92.8GiB `IQ2_M` candidate, but the local download attempt was too slow to complete. REAP Q2 remains smaller at 46.98GiB but requires a ds4 runtime path. |
 | Nemotron 3 Ultra 550B-A55B | GGUF route found in the 2026-06-05 scan, but the smallest scanned route is about 188 GB. Watch for smaller practical artifacts or test only with external storage / multi-node planning. |
 | Nemotron 3 Super 120B-A12B | Tested with `UD-IQ4_XS`. Add lower/higher quant comparisons only if they answer a specific buyer question. |
-| `llama.cpp` b9888 | Latest official release observed and measured 2026-07-06. Official Ubuntu Vulkan binary works on the measured Beelink system and reproduces the Qwen3-Coder 98 t/s class, but b9851 remains the stronger Qwen3-Coder speed-first headline. |
-| Ollama 0.31.2 | Current system service installed and tested on 2026-07-10. Qwen3.6 reached 60.57 t/s warm API generation, Qwen2.5-VL 7B vision worked with Vulkan offload, and both service-restart and full-host-reboot persistence passed. Requires `OLLAMA_IGPU_ENABLE=1`; slower than the separate 0.31.1 local-binary run. |
+| `llama.cpp` b10005 | Latest official release observed 2026-07-14; not yet measured here. Its native Vulkan E2M1/E4M3 conversion change makes the existing MXFP4/NVFP4 route the highest-value narrow sentinel. b9979 remains the measured multi-user baseline and b9851 the Qwen3-Coder speed-first headline. |
+| Ollama 0.32.0 | Latest release observed 2026-07-14; not yet measured here. Release notes focus on the interactive agent/CLI experience and integration changes, so 0.31.2 remains the current measured system-service buyer path pending a minimal smoke check. |
+| Ollama 0.31.2 | Measured system service installed and tested on 2026-07-10. Qwen3.6 reached 60.57 t/s warm API generation, Qwen2.5-VL 7B vision worked with Vulkan offload, and both service-restart and full-host-reboot persistence passed. Requires `OLLAMA_IGPU_ENABLE=1`; slower than the separate 0.31.1 local-binary run. |
 
 ## Sources
 
@@ -256,14 +259,17 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 - MiniMax-M3 GGUF: <https://huggingface.co/unsloth/MiniMax-M3-GGUF>
 - Nemotron 3 Nano Omni MXFP4 GGUF: <https://huggingface.co/unsloth/NVIDIA-Nemotron-3-Nano-Omni-30B-A3B-Reasoning-GGUF>
 - Nemotron 3 Nano Omni NVFP4 GGUF: <https://huggingface.co/FreedomAISVR/Nemotron-3-30B-Nano-Omni-NVFP4-GGUF>
+- Hy3 official model and MTP documentation: <https://huggingface.co/tencent/Hy3>
 - DeepSeek V4 Flash GGUF: <https://huggingface.co/unsloth/DeepSeek-V4-Flash-GGUF>
 - DeepSeek V4 Flash IQ2_M GGUF: <https://huggingface.co/ilintar/DeepSeek-V4-Flash-GGUF>
 - DeepSeek V4 Flash REAP Q2 GGUF: <https://huggingface.co/sleepyeldrazi/deepseek-v4-flash-reap-k128-Q2-GGUF>
 - `llama.cpp` b9888: <https://github.com/ggml-org/llama.cpp/releases/tag/b9888>
+- `llama.cpp` b10005: <https://github.com/ggml-org/llama.cpp/releases/tag/b10005>
 - `llama.cpp` b9859: <https://github.com/ggml-org/llama.cpp/releases/tag/b9859>
 - `llama.cpp` b9851 measured sentinel: <https://github.com/ggml-org/llama.cpp/releases/tag/b9851>
 - `llama.cpp` b9747: <https://github.com/ggml-org/llama.cpp/releases/tag/b9747>
 - Ollama 0.31.1: <https://github.com/ollama/ollama/releases/tag/v0.31.1>
 - Ollama 0.31.2: <https://github.com/ollama/ollama/releases/tag/v0.31.2>
+- Ollama 0.32.0: <https://github.com/ollama/ollama/releases/tag/v0.32.0>
 - `llama.cpp` issue #25356: <https://github.com/ggml-org/llama.cpp/issues/25356>
 - Ollama 0.30.11 historical watch target: <https://github.com/ollama/ollama/releases/tag/v0.30.11>
