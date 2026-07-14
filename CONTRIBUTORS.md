@@ -4,6 +4,8 @@ This guide is maintained as an evidence-first Strix Halo local AI reference. Com
 
 ## Community Benchmark Contributors
 
+As of 2026-07-14, this section credits eight community benchmark contributors. This count is separate from GitHub's commit-contributor count and from the eleven systems or independent sources represented in the evidence map.
+
 ### [Fail-Safe](https://github.com/Fail-Safe)
 
 Fail-Safe materially expanded the guide's evidence base with a Corsair AI Workstation 300 Strix Halo fleet:
