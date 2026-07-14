@@ -1,6 +1,6 @@
 # ROCm and vLLM Bugwatch
 
-Status: current as of 2026-07-06.
+Status: current as of 2026-07-13 for locally measured runtime paths. External release rows retain their own checked dates.
 
 This file tracks fast-moving upstream items that affect Strix Halo local AI work. It is intentionally separate from the README so the public guide stays stable even when upstream ROCm/vLLM issues move.
 
@@ -17,6 +17,12 @@ This file tracks fast-moving upstream items that affect Strix Halo local AI work
 | Qwen ROCm load/hang report | [`ROCm/ROCm#6027`](https://github.com/ROCm/ROCm/issues/6027) is closed. | Historical context for why the guide keeps ROCm notes conservative. |
 | vLLM ROCm non-causal attention | [`vllm-project/vllm#40176`](https://github.com/vllm-project/vllm/pull/40176) is merged. | Relevant to ROCm attention support and newer vLLM container paths. |
 | vLLM DFlash SWA support | [`vllm-project/vllm#40898`](https://github.com/vllm-project/vllm/pull/40898) remains open. | Relevant to Qwen3.6 DFlash speculative decoding repos; not a local guide claim yet. |
+
+## 2026-07-13 Local Runtime Recheck
+
+- The normal Ollama system service was upgraded and measured on 0.31.2. Qwen3.6 reached 60.57 t/s warm API generation with full iGPU offload; Qwen2.5-VL 7B vision, service restart, and full-host-reboot persistence passed. The separate user-local 0.31.1 comparator remains faster at 71.82 t/s.
+- Official `llama.cpp` b9979 was measured in the multi-user MoE campaign. The resulting Vulkan dispatch cliff and opt-in AMD/RADV recovery evidence are documented in [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md).
+- These measured updates supersede the easy-path/runtime statements in the dated 2026-07-06 section below; that section remains as a historical watch snapshot.
 
 ## 2026-07-06 Watch Recheck
 

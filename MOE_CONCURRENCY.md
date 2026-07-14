@@ -113,3 +113,9 @@ Upstream issue: [`ggml-org/llama.cpp#25356`](https://github.com/ggml-org/llama.c
 - machine-readable detail: [`data/moe_density_gate.csv`](data/moe_density_gate.csv)
 - repeat-aware summary: [`data/moe_density_gate_summary.csv`](data/moe_density_gate_summary.csv)
 - raw logs, telemetry, patch, commands, correctness output, and host snapshot: [`data/raw/2026-07-13/llamacpp-b9979-amd-density-gate/`](data/raw/2026-07-13/llamacpp-b9979-amd-density-gate/)
+
+Related practical pages:
+
+- beginner setup: [`README.md#quick-start-6-steps`](README.md#quick-start-6-steps)
+- workload recommendations: [`BEST_KNOWN_PROFILES.md`](BEST_KNOWN_PROFILES.md)
+- current runtime and model status: [`CURRENT_MODELS.md`](CURRENT_MODELS.md)

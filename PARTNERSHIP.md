@@ -12,12 +12,12 @@ That uncertainty creates adoption friction. A technically strong AI PC can still
 
 This guide reduces setup friction, provides reproducible benchmark evidence, and helps buyers evaluate AMD local-AI hardware with clearer expectations. It gives developers and buyers a practical path from "what should I install?" to "which backend, model, and settings should I try first?"
 
-The repo also has a visible demand signal: 202 GitHub stars, 10 forks, and 11 Strix Halo-class systems/sources represented as of the 2026-07-10 GitHub/project snapshot. GitHub's latest available 14-day window ending 2026-07-08 recorded 816 unique repository visitors and 100 unique cloners. These should not be treated as the main value proposition. The main value is the proof layer below: reproducible public evidence that makes the hardware easier to evaluate, trust, support, review, and buy.
+The repo also has a visible demand signal: 215 GitHub stars, 10 forks, 8 credited community benchmark contributors, and 11 Strix Halo-class systems/sources represented as of the 2026-07-14 GitHub/project snapshot. GitHub's latest available 14-day window ending 2026-07-08 recorded 816 unique repository visitors and 100 unique cloners. These should not be treated as the main value proposition. The main value is the proof layer below: reproducible public evidence that makes the hardware easier to evaluate, trust, support, review, and buy.
 
 The technical proof layer already includes:
 
 - Setup and workflow guidance in [`README.md`](README.md).
-- Current buyer-path setup checks, including the Ollama 0.31.1 `OLLAMA_IGPU_ENABLE=1` Vulkan/RADV sanity row that turns a silent iGPU-drop risk into a documented setup instruction.
+- Current buyer-path setup checks, including the normal Ollama 0.31.2 system-service route with `OLLAMA_IGPU_ENABLE=1`, 60.57 t/s Qwen3.6 generation, working vision, and restart/reboot persistence. The faster user-local 0.31.1 comparator remains documented separately.
 - Reproducibility notes in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
 - Current benchmark snapshot in [`BENCHMARKS.md`](BENCHMARKS.md).
 - A current multi-user engineering case in [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md): official b9979 Vulkan loses 30.9-35.5% aggregate decode from concurrency 8 to 9 on two tested MoE shapes; an opt-in AMD/RADV density policy recovers 25.3-42.7% at np9 without changing np8 materially.

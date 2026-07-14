@@ -12,7 +12,7 @@ AMD's public Ryzen AI Halo / Ryzen AI Developer Platform direction makes this ca
 
 The repo already includes a technical proof layer:
 
-- Public GitHub demand signal: 202 stars and 10 forks in a small hardware/software niche as of the 2026-07-10 GitHub API snapshot; use this as supporting context, not the main claim.
+- Public GitHub demand signal: 215 stars and 10 forks in a small hardware/software niche as of the 2026-07-14 GitHub API snapshot; use this as supporting context, not the main claim.
 - Recent reach: 816 unique repository visitors and 100 unique cloners in GitHub's latest available 14-day window ending 2026-07-08. Google was the largest recorded referrer with 352 unique visitors in that window. Treat these as dated reach signals, not permanent traffic claims.
 - Setup and workflow guide: [`README.md`](README.md).
 - Current benchmark snapshot: [`BENCHMARKS.md`](BENCHMARKS.md).
@@ -33,9 +33,15 @@ For vendors and developer-relations teams, that means fewer adoption barriers, c
 
 The current commercial thesis is not "vendor endorsement." It is: independent public evidence can make Ryzen AI Halo-class local-AI systems easier to evaluate, set up, support, review, and recommend.
 
-Current public evidence includes 11 Strix Halo-class systems/sources across Beelink owner stacks, Corsair, GMKtec, MS-S1-Max, Nimo, Minix, and NixOS/NPU/ROCmFP4 community artifacts. Community rows remain separated from first-party Beelink headline claims. The Corsair evidence includes a three-system Qwen3-Coder fleet plus a MiMo-V2.5 310B-class prompt-processing capacity/telemetry row; the Nimo evidence includes a Gemma 4 QAT/MTP assistant-head follow-up; the second Beelink owner stack adds CachyOS / ROCm 7.2.4 / ZenDNN backend-crossover evidence; ciru-ai's EVO-X2 artifact adds IOMMU-on NPU sidecar data, ROCmFP4 tuned-route context, and quality-eval rows; and the Minix Elite ER939 Ai row adds Ubuntu 26.04 / Ollama 0.30.10 buyer-path evidence. The first-party Beelink path now also documents an Ollama 0.31.1 `OLLAMA_IGPU_ENABLE=1` sanity check, which turns a silent iGPU-drop/CPU-fallback risk into a concrete setup instruction. Together these show how OS choice, model format, matched draft heads, NPU use, serving topology, backend choice, runtime version, and vendor chassis affect real setup decisions.
+The public evidence map currently covers:
 
-Public technical feedback also exposes trust friction. When benchmark framing feels promotional, unsupported, or too polished, technical readers push back even if the measurements are real. The guide uses that feedback to improve the proof layer: raw logs first, exact artifacts and commands, clear caveats, separated claim types, and corrected routes when the community finds a gap. See [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md).
+- **11 Strix Halo-class systems or independent sources**, counted explicitly in the README's [`Evidence Coverage`](README.md#evidence-coverage-11-systems-or-independent-sources) table.
+- **8 credited community benchmark contributors**, listed in [`CONTRIBUTORS.md`](CONTRIBUTORS.md), in addition to the primary first-party Beelink measurements.
+- Beelink owner stacks, a three-system Corsair fleet, several independent GMKtec sources, MS-S1-Max, Nimo, and Minix evidence across Linux, Windows, Vulkan/RADV, ROCm, NPU, MTP, power, thermal, RPC, and large-model capacity routes.
+
+The normal first-party buyer path now includes an Ollama 0.31.2 system-service check at 60.57 t/s with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. A separate user-local 0.31.1 comparator reached 71.82 t/s and remains documented as a faster but non-default route. Community rows remain separated from first-party headline claims.
+
+Community corrections and negative results improve the proof layer rather than being hidden: exact artifacts and commands, raw logs, separated claim types, explicit caveats, and corrected routes remain public. See [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md).
 
 ## Collaboration Ask
 
