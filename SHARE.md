@@ -14,6 +14,12 @@ Social preview image in this repo:
 social-preview.png
 ```
 
+The same current preview is published for GitHub Pages at `docs/assets/social-preview.png`, with `docs/assets/favicon.png` used for the browser/search icon. Regenerate all three reproducibly with:
+
+```bash
+python3 generate_preview.py
+```
+
 ## Share Responsibly
 
 Please do not brigade, coordinate upvotes, or require anyone to share this repo as a condition of contributing. Sharing is useful only when it adds evidence or helps another owner reproduce a result.

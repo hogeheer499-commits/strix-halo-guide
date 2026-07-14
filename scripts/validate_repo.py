@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import csv
 import re
+import struct
 import subprocess
 import sys
 import urllib.parse
@@ -178,6 +179,98 @@ def check_forbidden_text(files: list[Path], errors: list[str]) -> None:
                 errors.append(f"{rel} contains {name}")
 
 
+def png_dimensions(path: Path) -> tuple[int, int] | None:
+    """Read PNG dimensions without adding an image-library CI dependency."""
+    try:
+        with path.open("rb") as handle:
+            header = handle.read(24)
+    except OSError:
+        return None
+    if len(header) != 24 or header[:8] != b"\x89PNG\r\n\x1a\n":
+        return None
+    return struct.unpack(">II", header[16:24])
+
+
+def check_pages_seo(errors: list[str]) -> None:
+    config_path = ROOT / "docs" / "_config.yml"
+    index_path = ROOT / "docs" / "index.md"
+    layout_path = ROOT / "docs" / "_layouts" / "default.html"
+    preview_path = ROOT / "social-preview.png"
+    pages_preview_path = ROOT / "docs" / "assets" / "social-preview.png"
+    favicon_path = ROOT / "docs" / "assets" / "favicon.png"
+
+    required_files = (
+        config_path,
+        index_path,
+        layout_path,
+        preview_path,
+        pages_preview_path,
+        favicon_path,
+    )
+    for path in required_files:
+        if not path.exists():
+            errors.append(f"missing Pages SEO file: {path.relative_to(ROOT)}")
+    if any(not path.exists() for path in required_files):
+        return
+
+    config = config_path.read_text(encoding="utf-8")
+    index = index_path.read_text(encoding="utf-8")
+    layout = layout_path.read_text(encoding="utf-8")
+
+    required_config = (
+        'title: "Strix Halo Guide"',
+        'url: "https://hogeheer499-commits.github.io"',
+        'baseurl: "/strix-halo-guide"',
+        "jekyll-seo-tag",
+        "jekyll-sitemap",
+        'logo: "/assets/favicon.png"',
+    )
+    for fragment in required_config:
+        if fragment not in config:
+            errors.append(f"docs/_config.yml missing SEO setting: {fragment}")
+
+    required_index = (
+        'permalink: /',
+        'date: "',
+        'type: "TechArticle"',
+        'date_modified: "',
+        'https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png',
+        "**Evidence reviewed:**",
+    )
+    for fragment in required_index:
+        if fragment not in index:
+            errors.append(f"docs/index.md missing SEO field or visible evidence: {fragment}")
+
+    required_layout = (
+        "{% seo %}",
+        "rel=\"icon\"",
+        "rel=\"apple-touch-icon\"",
+        "article:modified_time",
+        "id=\"main-content\"",
+    )
+    for fragment in required_layout:
+        if fragment not in layout:
+            errors.append(f"docs/_layouts/default.html missing SEO/accessibility markup: {fragment}")
+
+    preview_size = png_dimensions(preview_path)
+    pages_preview_size = png_dimensions(pages_preview_path)
+    favicon_size = png_dimensions(favicon_path)
+    if preview_size != (1280, 640):
+        errors.append(f"social-preview.png must be 1280x640, found {preview_size}")
+    if pages_preview_size != (1280, 640):
+        errors.append(
+            "docs/assets/social-preview.png must be 1280x640, "
+            f"found {pages_preview_size}"
+        )
+    if favicon_size != (512, 512):
+        errors.append(f"docs/assets/favicon.png must be 512x512, found {favicon_size}")
+    if preview_path.read_bytes() != pages_preview_path.read_bytes():
+        errors.append(
+            "social-preview.png and docs/assets/social-preview.png differ; "
+            "rerun python3 generate_preview.py"
+        )
+
+
 def main() -> int:
     errors: list[str] = []
     files = tracked_files()
@@ -187,6 +280,7 @@ def main() -> int:
     check_csv_widths(files, errors)
     check_headline_claim_paths(errors)
     check_forbidden_text(files, errors)
+    check_pages_seo(errors)
 
     if errors:
         print("Repository validation failed:")

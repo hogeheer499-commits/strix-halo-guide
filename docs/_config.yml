@@ -1,8 +1,20 @@
-title: "AMD Strix Halo Local LLM Setup"
-description: "Practical AMD Strix Halo / Ryzen AI MAX+ 395 local LLM setup guide for Radeon 8060S gfx1151, 96GB/128GB unified memory, Ollama, llama.cpp Vulkan/RADV, ROCm/HIP, vLLM, and 70B/120B GGUF evidence."
+title: "Strix Halo Guide"
+tagline: "Independent local-AI setup and benchmark evidence"
+description: "Practical AMD Strix Halo / Ryzen AI MAX+ 395 local LLM setup and measured benchmarks for Radeon 8060S, Ollama, llama.cpp, Vulkan/RADV, ROCm, and 120B GGUF models."
 url: "https://hogeheer499-commits.github.io"
 baseurl: "/strix-halo-guide"
 repository: "hogeheer499-commits/strix-halo-guide"
+locale: "en_US"
+logo: "/assets/favicon.png"
+
+author:
+  name: "hogeheer499-commits"
+  url: "https://github.com/hogeheer499-commits"
+
+social:
+  name: "Strix Halo Guide"
+  links:
+    - "https://github.com/hogeheer499-commits/strix-halo-guide"
 
 plugins:
   - jekyll-seo-tag

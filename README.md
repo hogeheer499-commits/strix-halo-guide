@@ -17,6 +17,8 @@ Covers BIOS config, Ubuntu 24.04/kernel setup, Ollama, `llama.cpp` Vulkan/RADV, 
 
 AMD now publicly frames Ryzen AI Halo-class systems as a local-AI and developer-platform direction. This repository is the independent practical layer: copyable setup, measured rows, raw evidence, failures, and community reproductions. It is not official AMD or OEM endorsement. See [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).
 
+Web setup summary: <https://hogeheer499-commits.github.io/strix-halo-guide/>. Exact claims and reproduction artifacts remain canonical in this GitHub repository.
+
 What you get:
 
 - Copyable Ubuntu + Vulkan/RADV setup for Ollama and `llama.cpp`.
