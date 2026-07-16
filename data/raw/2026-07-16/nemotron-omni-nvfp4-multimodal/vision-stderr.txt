@@ -1,0 +1,16 @@
+0.03.010.780 I mtmd_cli_context: chat template example:
+<|im_start|>system
+You are a helpful assistant<|im_end|>
+<|im_start|>user
+Hello<|im_end|>
+<|im_start|>assistant
+Hi there<|im_end|>
+<|im_start|>user
+How are you?<|im_end|>
+<|im_start|>assistant
+
+0.03.807.420 I main: loading model: /home/hoge-heer/benchmark-models/2026-07-16/omni-nvfp4/nemotron-3-30b-NVFP4.gguf
+0.03.807.624 W WARN: This is an experimental CLI for testing multimodal capability.
+0.03.807.625 W       For normal use cases, please use the standard llama-cli
+0.03.981.568 I encoding mtmd batch, n_chunks = 1 (done = 1, total = 3)
+0.04.201.045 I mtmd batch encoding done in 220 ms

@@ -87,3 +87,7 @@ date,system,model,tool_route,concurrency,n,mean_aggregate_decode_tps,stddev_aggr
 2026-07-13,Beelink GTR9 Pro,Qwen3-Next 80B-A3B,vulkan-b9979-stock,32,1,162.916,n/a,162.916,162.916,82.0,96.689,data/raw/2026-07-13/llamacpp-b9979-amd-density-gate
 2026-07-13,Beelink GTR9 Pro,Qwen3-Next 80B-A3B,vulkan-b9979-stock,48,1,164.889,n/a,164.889,164.889,78.0,90.972,data/raw/2026-07-13/llamacpp-b9979-amd-density-gate
 2026-07-13,Beelink GTR9 Pro,Qwen3-Next 80B-A3B,vulkan-b9979-stock,64,1,186.372,n/a,186.372,186.372,81.0,98.368,data/raw/2026-07-13/llamacpp-b9979-amd-density-gate
+2026-07-16,Beelink GTR9 Pro,Qwen3-Coder 30B-A3B,vulkan-b10034-stock-sentinel,8,3,232.692,4.970,226.995,236.140,79.0,113.504,data/raw/2026-07-16/llamacpp-b10034-vulkan-sentinel
+2026-07-16,Beelink GTR9 Pro,Qwen3-Coder 30B-A3B,vulkan-b10034-stock-sentinel,9,3,145.795,0.167,145.613,145.941,79.0,113.504,data/raw/2026-07-16/llamacpp-b10034-vulkan-sentinel
+2026-07-16,Beelink GTR9 Pro,Qwen3-Next 80B-A3B,vulkan-b10034-stock-sentinel,8,3,144.607,2.760,141.542,146.896,76.0,72.319,data/raw/2026-07-16/llamacpp-b10034-vulkan-sentinel
+2026-07-16,Beelink GTR9 Pro,Qwen3-Next 80B-A3B,vulkan-b10034-stock-sentinel,9,3,98.781,0.389,98.486,99.222,76.0,72.319,data/raw/2026-07-16/llamacpp-b10034-vulkan-sentinel

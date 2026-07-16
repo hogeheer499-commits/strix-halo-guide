@@ -6,22 +6,22 @@ Do not invent traction numbers. Fill the TODOs only from current public GitHub d
 
 ## Current Public GitHub Stats
 
-Repository-stat snapshot date: 2026-07-14. Traffic remains the separately dated GitHub 14-day window ending 2026-07-08.
+Repository-stat snapshot date: 2026-07-16. Traffic uses GitHub's available 14-day window ending 2026-07-15. The aggregate API responses are preserved in [`data/raw/2026-07-16/github-traction-snapshot/`](data/raw/2026-07-16/github-traction-snapshot/).
 
 | Metric | Current value | Source |
 |--------|---------------|--------|
-| Stars | 215 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
-| Forks | 10 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
-| Watchers | 4 | [GitHub repository page](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| Stars | 218 | [GitHub API snapshot](data/raw/2026-07-16/github-traction-snapshot/repository.json) |
+| Forks | 11 | [GitHub API snapshot](data/raw/2026-07-16/github-traction-snapshot/repository.json) |
+| Watchers | 5 | [GitHub API snapshot](data/raw/2026-07-16/github-traction-snapshot/repository.json) |
 | Open issues | 7 | [GitHub Issues](https://github.com/hogeheer499-commits/strix-halo-guide/issues) |
 | Open pull requests | 0 | [GitHub Pull Requests](https://github.com/hogeheer499-commits/strix-halo-guide/pulls) |
 | Releases | 5 | [GitHub Releases](https://github.com/hogeheer499-commits/strix-halo-guide/releases) |
 | GitHub contributors | 3 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
 | Community benchmark contributors credited | 8 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
 | Strix Halo-class systems/sources represented | 11 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) |
-| Repository views | 1,837 total / 816 unique | GitHub Traffic API snapshot, 2026-07-10 |
-| Repository clones | 169 total / 100 unique | GitHub Traffic API snapshot, 2026-07-10 |
-| Largest recorded referrer | Google: 548 views / 352 unique visitors | GitHub Traffic API snapshot, 2026-07-10 |
+| Repository views | 1,888 total / 867 unique | [GitHub Traffic API snapshot](data/raw/2026-07-16/github-traction-snapshot/views.json), window ending 2026-07-15 |
+| Repository clones | 281 total / 132 unique | [GitHub Traffic API snapshot](data/raw/2026-07-16/github-traction-snapshot/clones.json), window ending 2026-07-15 |
+| Largest recorded referrer | Google: 621 views / 400 unique visitors | [GitHub referrer snapshot](data/raw/2026-07-16/github-traction-snapshot/referrers.json) |
 
 Read the star count as a small-niche demand signal, not the main argument. The stronger vendor evidence is the technical proof layer: reproducible commands, raw logs, CSVs, claim indexes, community rows, and documented failures.
 

@@ -1,0 +1,5 @@
+target_repo=jcbtc/Step-3.7-Flash-ROCmFPX-Q3-QualityPlus
+target_revision=fa311ca5a82bf82a2338151c4790e3f659abd88d
+draft_repo=notSnix/Step-3.7-Flash-MTP-Draft-GGUF
+draft_revision=c7bc8526b2b7004ce045112edebdf13a9eceb7eb
+221402af8574faf652b101b6afe225a3f329561f

@@ -10,7 +10,7 @@ The public claim index is [`data/headline_claims.csv`](data/headline_claims.csv)
 
 ## Primary Machine
 
-| Component | Measured state |
+| Component | Selected measured states; use the linked raw directory for an exact run |
 |-----------|----------------|
 | System | Beelink GTR9 Pro |
 | CPU | AMD Ryzen AI MAX+ 395, 16 cores / 32 threads |
@@ -18,15 +18,15 @@ The public claim index is [`data/headline_claims.csv`](data/headline_claims.csv)
 | Memory | 128GB LPDDR5X-8000 unified memory; about 124GiB OS-visible |
 | OS | Ubuntu 24.04 |
 | Kernel | `6.19.4-061904-generic` |
-| Mesa/RADV | Mesa 26.0.6 for the main May 7 headline rows; Mesa 26.1.1 for the May 26/27 MTP spot checks; Mesa 26.1.2 for the June 7 b9544 regression controls; all from kisak-mesa PPA where recorded |
-| llama.cpp | b9179 `b81c2cdd7` for the Qwen3-Coder speed-first peak; b9049 `2496f9c14` for the balanced UD headline rerun; b9360 `6b4e4bd58` for the Qwen3.6 MTP 100+ server route; b9467 `1fd5f4803` for the first direct Qwen3-30B-A3B-Instruct-2507 100+ row; b9544 for regression controls; ac4cddeb0 build 9592 for the June 11/12 current-model and Gemma QAT MTP rows |
-| Ollama | 0.23.1 for the current Ollama API baseline |
+| Mesa/RADV | Mesa 26.0.6 for the main May 7 headline rows; Mesa 26.1.1 for the May 26/27 MTP spot checks; Mesa 26.1.2 for the June 7 b9544 controls; Mesa 26.1.4 for the July 16 b10034 and current-model runs; kisak-mesa PPA where recorded |
+| llama.cpp | b9179 `b81c2cdd7` for the Qwen3-Coder speed-first peak; b9049 `2496f9c14` for the balanced UD headline rerun; b9360 `6b4e4bd58` for the Qwen3.6 MTP 100+ server route; b9467 `1fd5f4803` for the first direct Qwen3-30B-A3B-Instruct-2507 100+ row; b9979 for the AMD/RADV density-gate campaign; official b10034 `505b1ed15` for the July 16 Vulkan sentinel and current-model checks |
+| Ollama | 0.31.2 for the fully qualified installed-service buyer path; isolated 0.31.1/0.31.2/0.32.0 binaries for the controlled July 16 version comparison |
 | BIOS UMA | 512MB for the measured local setup |
 | IOMMU | Disabled for the measured local setup |
 | AMDVLK | Removed; RADV should be the selected Vulkan ICD |
-| Power profile | `tuned` profile `accelerator-performance` active; `power-profiles-daemon` inactive for publishable runs |
-| GPU clock | 2900 MHz selected during current readiness checks |
-| Firmware | `linux-firmware` 20240318.git3b128b60-0ubuntu2.27 |
+| Power profile | Main historical headline runs used `tuned accelerator-performance`; the July 16 b10034 sentinel recorded the desktop power profile as `performance`, `tuned` inactive, and amdgpu DPM forced to `high`. Never infer one policy from another run. |
+| GPU clock | 2900 MHz was selected during earlier readiness checks; use each raw host snapshot and telemetry file for current clock behavior |
+| Firmware | `linux-firmware` 20240318.git3b128b60-0ubuntu2.27 was recorded for the earlier baseline; later runs must use their own package or host snapshot |
 
 Per-run CSVs and raw directories are the source of truth for exact host metadata. Some later current-model rows intentionally record kernel or Mesa as `not recorded`; do not inherit an older system snapshot unless the raw evidence for that run says so.
 
@@ -54,7 +54,7 @@ scripts/check_benchmark_cleanliness.sh
 
 The hygiene script is read-only. On the maintainer workstation it also checks local workflow dependencies. If you are reproducing on another machine, record equivalent background load, remote desktop state, VMs, local AI servers, power profile, GPU clock, and selected Vulkan ICD.
 
-On Ubuntu, `tuned` conflicts with `power-profiles-daemon`. If `power-profiles-daemon` starts, it can stop `tuned` and leave the machine in a desktop power profile. For publishable numbers, verify `tuned` is active and `power-profiles-daemon` is inactive before running `llama-bench`. Avoid running `powerprofilesctl` during benchmark prep unless you intentionally want to test that path.
+On Ubuntu, `tuned` conflicts with `power-profiles-daemon`. If `power-profiles-daemon` starts, it can stop `tuned` and change the active power policy. For headline reproductions, match the exact policy recorded by that run; the main historical headline path used `tuned accelerator-performance`. If a campaign intentionally uses another fixed policy, as the July 16 b10034 sentinel did, record it explicitly and keep its comparisons within that campaign. Avoid changing power policy during a run.
 
 ## Benchmark Commands
 

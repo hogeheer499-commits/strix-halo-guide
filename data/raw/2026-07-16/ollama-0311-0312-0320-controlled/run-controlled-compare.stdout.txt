@@ -1,0 +1,67 @@
+{"version_label": "0.31.1", "repeat": 1, "phase": "cold", "prompt_eval_count": 25, "prompt_eval_duration_ns": 214157000, "prompt_tps": 116.73678656312892, "eval_count": 128, "eval_duration_ns": 1792464000, "generation_tps": 71.4100813182301, "total_duration_ns": 22933786930, "load_duration_ns": 20925290302}
+{"version_label": "0.31.1", "repeat": 2, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 27233000, "prompt_tps": 918.0038923365036, "eval_count": 128, "eval_duration_ns": 1769036000, "generation_tps": 72.35579151583121, "total_duration_ns": 2011965383, "load_duration_ns": 197920876}
+{"version_label": "0.31.1", "repeat": 3, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 27301000, "prompt_tps": 915.7173729900004, "eval_count": 128, "eval_duration_ns": 1768094000, "generation_tps": 72.39434102485501, "total_duration_ns": 2014504577, "load_duration_ns": 200568192}
+{"version_label": "0.31.1", "repeat": 4, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28940000, "prompt_tps": 863.8562543192812, "eval_count": 128, "eval_duration_ns": 1762763000, "generation_tps": 72.61327813211419, "total_duration_ns": 1992101654, "load_duration_ns": 199281471}
+{"version_label": "0.31.1", "repeat": 5, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 29183000, "prompt_tps": 856.6631257924134, "eval_count": 128, "eval_duration_ns": 1762650000, "generation_tps": 72.6179332255411, "total_duration_ns": 1987329897, "load_duration_ns": 194286658}
+{"version_label": "0.31.1", "repeat": 6, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28797000, "prompt_tps": 868.1459874292461, "eval_count": 128, "eval_duration_ns": 1762477000, "generation_tps": 72.62506120647248, "total_duration_ns": 1988972852, "load_duration_ns": 195956906}
+{"version_label": "0.31.1", "repeat": 7, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28853000, "prompt_tps": 866.4610265830242, "eval_count": 128, "eval_duration_ns": 1761671000, "generation_tps": 72.6582886361869, "total_duration_ns": 1989023974, "load_duration_ns": 196871831}
+{"version_label": "0.31.1", "repeat": 8, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28717000, "prompt_tps": 870.5644740049448, "eval_count": 128, "eval_duration_ns": 1762429000, "generation_tps": 72.62703916015907, "total_duration_ns": 1991055944, "load_duration_ns": 198476043}
+{"version_label": "0.31.1", "repeat": 9, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28732000, "prompt_tps": 870.1099819017123, "eval_count": 128, "eval_duration_ns": 1762616000, "generation_tps": 72.61933398993314, "total_duration_ns": 1987496362, "load_duration_ns": 193825394}
+{"version_label": "0.31.1", "repeat": 10, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28978000, "prompt_tps": 862.7234453723514, "eval_count": 128, "eval_duration_ns": 1766664000, "generation_tps": 72.45293955160687, "total_duration_ns": 1993856149, "load_duration_ns": 197038507}
+{"version_label": "0.31.2", "repeat": 1, "phase": "cold", "prompt_eval_count": 25, "prompt_eval_duration_ns": 137515000, "prompt_tps": 181.7983492709886, "eval_count": 128, "eval_duration_ns": 1757146000, "generation_tps": 72.84539816270248, "total_duration_ns": 22830723428, "load_duration_ns": 20934284530}
+{"version_label": "0.31.2", "repeat": 2, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 27927000, "prompt_tps": 895.1910337666058, "eval_count": 128, "eval_duration_ns": 1752410000, "generation_tps": 73.04226750589189, "total_duration_ns": 2007674747, "load_duration_ns": 209351757}
+{"version_label": "0.31.2", "repeat": 3, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 26997000, "prompt_tps": 926.0288180168167, "eval_count": 128, "eval_duration_ns": 1746856000, "generation_tps": 73.2745000160288, "total_duration_ns": 1996510357, "load_duration_ns": 202260215}
+{"version_label": "0.31.2", "repeat": 4, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28740000, "prompt_tps": 869.8677800974252, "eval_count": 128, "eval_duration_ns": 1747756000, "generation_tps": 73.23676760371585, "total_duration_ns": 1987568802, "load_duration_ns": 209583340}
+{"version_label": "0.31.2", "repeat": 5, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28605000, "prompt_tps": 873.9730816290859, "eval_count": 128, "eval_duration_ns": 1748119000, "generation_tps": 73.22155985948325, "total_duration_ns": 1988015848, "load_duration_ns": 209820415}
+{"version_label": "0.31.2", "repeat": 6, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28717000, "prompt_tps": 870.5644740049448, "eval_count": 128, "eval_duration_ns": 1748035000, "generation_tps": 73.22507844522563, "total_duration_ns": 1987893617, "load_duration_ns": 209441752}
+{"version_label": "0.31.2", "repeat": 7, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28946000, "prompt_tps": 863.6771920127134, "eval_count": 128, "eval_duration_ns": 1746788000, "generation_tps": 73.27735248925457, "total_duration_ns": 1981568779, "load_duration_ns": 204683272}
+{"version_label": "0.31.2", "repeat": 8, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28893000, "prompt_tps": 865.2614820198664, "eval_count": 128, "eval_duration_ns": 1749610000, "generation_tps": 73.15916118449255, "total_duration_ns": 1984107621, "load_duration_ns": 204238720}
+{"version_label": "0.31.2", "repeat": 9, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28821000, "prompt_tps": 867.4230595746158, "eval_count": 128, "eval_duration_ns": 1747657000, "generation_tps": 73.24091626675029, "total_duration_ns": 1989067255, "load_duration_ns": 211280964}
+{"version_label": "0.31.2", "repeat": 10, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28675000, "prompt_tps": 871.8395815170009, "eval_count": 128, "eval_duration_ns": 1752229000, "generation_tps": 73.04981255303959, "total_duration_ns": 1993757013, "load_duration_ns": 211047188}
+{"version_label": "0.32.0", "repeat": 1, "phase": "cold", "prompt_eval_count": 25, "prompt_eval_duration_ns": 133363000, "prompt_tps": 187.458290530357, "eval_count": 128, "eval_duration_ns": 1756542000, "generation_tps": 72.87044659336355, "total_duration_ns": 22576305698, "load_duration_ns": 20684421504}
+{"version_label": "0.32.0", "repeat": 2, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 26966000, "prompt_tps": 927.0933768449158, "eval_count": 128, "eval_duration_ns": 1750471000, "generation_tps": 73.12317656219383, "total_duration_ns": 2001806358, "load_duration_ns": 200992262}
+{"version_label": "0.32.0", "repeat": 3, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 27055000, "prompt_tps": 924.0436148586214, "eval_count": 128, "eval_duration_ns": 1752938000, "generation_tps": 73.02026654679173, "total_duration_ns": 2011500497, "load_duration_ns": 200697665}
+{"version_label": "0.32.0", "repeat": 4, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 29125000, "prompt_tps": 858.3690987124463, "eval_count": 128, "eval_duration_ns": 1745546000, "generation_tps": 73.32949117353539, "total_duration_ns": 1973740613, "load_duration_ns": 197830699}
+{"version_label": "0.32.0", "repeat": 5, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28529000, "prompt_tps": 876.3013074415506, "eval_count": 128, "eval_duration_ns": 1744619000, "generation_tps": 73.368454659728, "total_duration_ns": 1973446006, "load_duration_ns": 198984288}
+{"version_label": "0.32.0", "repeat": 6, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28526000, "prompt_tps": 876.3934656103204, "eval_count": 128, "eval_duration_ns": 1743877000, "generation_tps": 73.39967210990224, "total_duration_ns": 1976751801, "load_duration_ns": 202905599}
+{"version_label": "0.32.0", "repeat": 7, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28287000, "prompt_tps": 883.7982111924206, "eval_count": 128, "eval_duration_ns": 1744225000, "generation_tps": 73.3850277343806, "total_duration_ns": 1974925442, "load_duration_ns": 201186721}
+{"version_label": "0.32.0", "repeat": 8, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28632000, "prompt_tps": 873.1489242805253, "eval_count": 128, "eval_duration_ns": 1751865000, "generation_tps": 73.06499073844161, "total_duration_ns": 1986073881, "load_duration_ns": 204271936}
+{"version_label": "0.32.0", "repeat": 9, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28491000, "prompt_tps": 877.470078270331, "eval_count": 128, "eval_duration_ns": 1757323000, "generation_tps": 72.83806107357611, "total_duration_ns": 1996716808, "load_duration_ns": 209295025}
+{"version_label": "0.32.0", "repeat": 10, "phase": "warm", "prompt_eval_count": 25, "prompt_eval_duration_ns": 28494000, "prompt_tps": 877.3776935495192, "eval_count": 128, "eval_duration_ns": 1747583000, "generation_tps": 73.24401759458635, "total_duration_ns": 1977975738, "load_duration_ns": 200216793}
+{
+  "summary": [
+    {
+      "requested_version": "0.31.1",
+      "reported_server_version": "0.31.1",
+      "cold_generation_tps": 71.4100813182301,
+      "warm_repeats": 9,
+      "warm_generation_tps_mean": 72.5515562714111,
+      "warm_generation_tps_min": 72.35579151583121,
+      "warm_generation_tps_max": 72.6582886361869,
+      "warm_generation_tps_sd": 0.11622579189928085,
+      "warm_prompt_tps_mean": 876.9161734143864
+    },
+    {
+      "requested_version": "0.31.2",
+      "reported_server_version": "0.31.2",
+      "cold_generation_tps": 72.84539816270248,
+      "warm_repeats": 9,
+      "warm_generation_tps_mean": 73.1919351026536,
+      "warm_generation_tps_min": 73.04226750589189,
+      "warm_generation_tps_max": 73.27735248925457,
+      "warm_generation_tps_sd": 0.08956258158200152,
+      "warm_prompt_tps_mean": 878.202944737675
+    },
+    {
+      "requested_version": "0.32.0",
+      "reported_server_version": "0.32.0",
+      "cold_generation_tps": 72.87044659336355,
+      "warm_repeats": 9,
+      "warm_generation_tps_mean": 73.1970175770151,
+      "warm_generation_tps_min": 72.83806107357611,
+      "warm_generation_tps_max": 73.39967210990224,
+      "warm_generation_tps_sd": 0.19638606345278303,
+      "warm_prompt_tps_mean": 885.9995300845168
+    }
+  ]
+}

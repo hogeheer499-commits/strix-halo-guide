@@ -1,0 +1,12 @@
+{
+  "files": [
+    "telemetry.csv"
+  ],
+  "samples": 183,
+  "temperature_c_mean": 67.89071038251366,
+  "temperature_c_max": 82.0,
+  "amdgpu_ppt_w_mean": 104.40909836065573,
+  "amdgpu_ppt_w_max": 134.041,
+  "gpu_busy_pct_mean": 76.89071038251366,
+  "telemetry_scope": "amdgpu driver telemetry; not wall power"
+}

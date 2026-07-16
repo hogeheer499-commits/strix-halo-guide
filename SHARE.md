@@ -50,7 +50,7 @@ Everyone should post this link.
 
 ## One-Line Summary
 
-Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 96-128GB unified memory: setup, model choices, direct 101.0 t/s Qwen3-Coder speed-first evidence, direct 100.0 t/s 30B-class Qwen MoE evidence, 170.0 t/s LFM2.5 small-MoE evidence, 18.4 t/s Nemotron 3 Super 120B direct GGUF capacity evidence, 81.3 t/s Qwen3.6 speed-first, 55.6 t/s gpt-oss-120b, 128K context, MTP speculative decoding at 101.1 t/s on Qwen3.6, a 107-110 t/s Gemma 4 26B-A4B QAT repeat range, and a reproduced 139.9-140.4 t/s CHADROCK ACE/SABER ROCmFP4 high-acceptance server row, CSVs, raw logs, reproducibility notes, community validation across Corsair, GMKtec, MS-S1-Max, Nimo, Beelink owner, and NixOS/NPU/ROCmFP4 sources, command-flag sensitivity notes, Windows LM Studio evidence, tuned thermal/power-policy evidence, Nimo large-model serving evidence, NPU sidecar evidence, and first wall-power efficiency rows.
+Measured Strix Halo local LLM guide for Ryzen AI MAX+ 395 / Radeon 8060S / 96-128GB unified memory: setup, model choices, direct 101.0 t/s Qwen3-Coder speed-first evidence, direct 100.0 t/s 30B-class Qwen MoE evidence, 170.0 t/s LFM2.5 small-MoE evidence, direct 120B and low-bit 284B GGUF capacity evidence, current agent/reasoning/multimodal scouts, 128K context, MTP speculative decoding at 101.1 t/s on Qwen3.6, a 107-110 t/s Gemma 4 26B-A4B QAT repeat range, and a repeat-confirmed 141.37 t/s CHADROCK ACE/SABER ROCmFP4 reference profile, CSVs, raw logs, reproducibility notes, community validation across Corsair, GMKtec, MS-S1-Max, Nimo, Beelink owner, and NixOS/NPU/ROCmFP4 sources, command-flag sensitivity notes, Windows LM Studio evidence, tuned thermal/power-policy evidence, Nimo large-model serving evidence, NPU sidecar evidence, and first wall-power efficiency rows.
 
 ## Short Share Text
 
@@ -63,11 +63,12 @@ Highlights:
 - Qwen3-30B-A3B-Instruct-2507 IQ4_XS: 100.04 t/s direct llama.cpp Vulkan/RADV on b9467. This is a separate general-instruct Qwen route, not the Qwen3-Coder headline.
 - LFM2.5 8B-A1B Q4_K_M: 168.96 t/s in pp512/tg128 and 170.02 t/s generation-only in the 2026-06-05 latest/int-dot check. This is a small active-parameter MoE speed row, not a 30B-class replacement.
 - Nemotron 3 Super 120B-A12B UD-IQ4_XS: 18.43 t/s direct llama.cpp Vulkan/RADV in the 2026-06-05 latest/int-dot check. This is a 120B-class GGUF capacity/current-model row, not a speed headline.
+- DeepSeek V4 Flash 284B UD-IQ2_XXS: pinned 90.86GB ordinary GGUF loaded and generated directly at 13.27 tg128 on official b10034, with a basic deterministic answer pass. This is low-bit capacity/current-model evidence, not a speed or broad quality claim.
 - Qwen3.6 35B-A3B: 62.56 t/s direct llama.cpp Vulkan/RADV on current b9049.
 - Qwen3.6 35B-A3B Q4_0: 81.30 t/s direct llama.cpp Vulkan/RADV as a speed-first quant row.
 - Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn: 101.16 t/s best local Beelink average over six `llama-server` prompts on b9360, with repeated t16 runs around 101.1 t/s; first GMKtec community reproduction reached 93.29 t/s on b9235. Best local prompt was 117.53 t/s. This is speculative server evidence, not a direct `llama-bench` headline.
 - Gemma 4 26B-A4B QAT with matched MTP head: 107.42 t/s T3-only repeat and 110.00 t/s best repeat on ac4cddeb0; 73.96 t/s no-spec baseline and 102.69 t/s cold repeat are documented in the evidence notes. This is current-model server/speculative evidence, not a direct `llama-bench` headline.
-- CHADROCK ACE/SABER 35B ROCmFP4 through `ciru-ai/ROCmFPX`: 139.93-140.40 t/s gen512 high-acceptance repeats, plus a 127.77 t/s gen2048 check. This is an advanced prompt/acceptance-sensitive server route, not a beginner setup path.
+- CHADROCK ACE/SABER 35B ROCmFP4 through `ciru-ai/ROCmFPX`: 141.37 t/s mean over three exact 3946-token-profile repeats at 100% draft acceptance. Separate 1K/8K/16K profiles were slower, so this is an advanced reference profile, not a beginner setup path or universal speed.
 - gpt-oss-120b MXFP4: 55.57 t/s direct llama.cpp Vulkan/RADV on current b9049.
 - Qwen3.6 through Ollama 0.23.1 API: 50.51 t/s warm average.
 - 128K context tested on Qwen3.6 without truncation.
@@ -106,7 +107,7 @@ Headline results:
 - Qwen3.6 35B-A3B Q4_0: 81.30 t/s direct llama.cpp Vulkan/RADV as a speed-first quant row
 - Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn: 101.16 t/s best local average over six llama-server prompts on b9360; repeated t16 runs around 101.1 t/s; 93.29 t/s in the first GMKtec community reproduction on b9235; best local prompt 117.53 t/s, scoped as speculative server evidence
 - Gemma 4 26B-A4B QAT matched-head MTP: 107.42 t/s T3-only repeat and 110.00 t/s best repeat on ac4cddeb0, with the 102.69 t/s cold repeat documented in the evidence notes; scoped as speculative server evidence
-- CHADROCK ACE/SABER 35B ROCmFP4 through `ciru-ai/ROCmFPX`: 139.93-140.40 t/s gen512 high-acceptance repeats and 127.77 t/s gen2048 check; scoped as advanced speculative server evidence
+- CHADROCK ACE/SABER 35B ROCmFP4 through `ciru-ai/ROCmFPX`: 141.37 t/s exact reference-profile mean with separate lower-acceptance profiles; scoped as advanced speculative server evidence
 - gpt-oss-120b MXFP4 split GGUF: 55.57 t/s direct llama.cpp Vulkan/RADV on current b9049
 - Qwen3.6 35B-A3B through Ollama 0.23.1 API: 50.51 t/s warm average
 - Qwen3.6 128K filled-context decode completed at 32.23 t/s without truncation
@@ -151,7 +152,7 @@ Repo: https://github.com/hogeheer499-commits/strix-halo-guide
 Strix Halo local LLM guide with measured setup + raw benchmark evidence:
 https://github.com/hogeheer499-commits/strix-halo-guide
 
-Highlights: 100.99 t/s direct Qwen3-Coder 30B-A3B Q4_K_S on official b9851 Vulkan, 100.04 t/s direct Qwen3-30B-A3B-Instruct-2507 IQ4_XS, 170.02 t/s generation-only LFM2.5 small-MoE scout, 18.43 t/s Nemotron 3 Super 120B direct GGUF capacity scout, 96.76 t/s balanced Qwen3-Coder direct row on b9049 plus a 99.55 t/s b9851 short control, 101.16 t/s local Qwen3.6 MTP server average on b9360, 107.42-110.00 t/s repeat range for the Gemma 4 26B-A4B QAT matched-head MTP server route on ac4cddeb0, 139.93-140.40 t/s CHADROCK ACE/SABER ROCmFP4 high-acceptance server repeats through `ciru-ai/ROCmFPX`, 93.29 t/s GMKtec community MTP reproduction on b9235, 55.57 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included, N=3 Corsair validation at 93.55-95.50 t/s, GMKtec EVO-X2 native Ubuntu Qwen3.6 validation within 2%, GMKtec Qwen3-Coder b9235 follow-up data, Windows MS-S1-Max LM Studio evidence, a tuned Reddit GMKtec 99.9-100.0 t/s Qwen3-Coder report, ciru-ai NixOS/IOMMU-on/NPU/ROCmFP4 artifact evidence, community wall-power rows, a community 3-node USB4 llama.cpp RPC matrix, and USB4 latency tuning data.
+Highlights: 100.99 t/s direct Qwen3-Coder 30B-A3B Q4_K_S on official b9851 Vulkan, 100.04 t/s direct Qwen3-30B-A3B-Instruct-2507 IQ4_XS, 170.02 t/s generation-only LFM2.5 small-MoE scout, 18.43 t/s Nemotron 3 Super 120B direct GGUF capacity scout, 96.76 t/s balanced Qwen3-Coder direct row on b9049 plus a 99.55 t/s b9851 short control, 101.16 t/s local Qwen3.6 MTP server average on b9360, 107.42-110.00 t/s repeat range for the Gemma 4 26B-A4B QAT matched-head MTP server route on ac4cddeb0, 141.37 t/s repeat-confirmed CHADROCK ACE/SABER ROCmFP4 reference profile through `ciru-ai/ROCmFPX`, 93.29 t/s GMKtec community MTP reproduction on b9235, 64.26 t/s current Nemotron Omni MXFP4 plus a separate image-capable NVFP4 smoke, 55.57 t/s gpt-oss-120b MXFP4, 128K context tested, server shootout included, N=3 Corsair validation at 93.55-95.50 t/s, GMKtec EVO-X2 native Ubuntu Qwen3.6 validation within 2%, GMKtec Qwen3-Coder b9235 follow-up data, Windows MS-S1-Max LM Studio evidence, a tuned Reddit GMKtec 99.9-100.0 t/s Qwen3-Coder report, ciru-ai NixOS/IOMMU-on/NPU/ROCmFP4 artifact evidence, community wall-power rows, a community 3-node USB4 llama.cpp RPC matrix, and USB4 latency tuning data.
 ```
 
 ## Partner / Reviewer Sharing Snippet

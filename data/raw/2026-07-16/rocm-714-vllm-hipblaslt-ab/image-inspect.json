@@ -1,0 +1,738 @@
+[
+     {
+          "Id": "baf1680495dd879f872f8732a2a3701f975e558764409e47f7e563f8b2aed4ba",
+          "Digest": "sha256:5b0389109bb2db9346d3f0f971c4c99eba7e5e72cfa57e9a2a9b4ac67477771d",
+          "RepoTags": [],
+          "RepoDigests": [
+               "docker.io/rocm/vllm@sha256:5b0389109bb2db9346d3f0f971c4c99eba7e5e72cfa57e9a2a9b4ac67477771d"
+          ],
+          "Parent": "",
+          "Comment": "",
+          "Created": "2026-07-15T20:08:46.480337423Z",
+          "Config": {
+               "Env": [
+                    "PATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel/bin:/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel/lib/llvm/bin:/opt/python/lib/python3.14/site-packages/_rocm_sdk_core/bin:/opt/python/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                    "PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201",
+                    "AITER_ROCM_ARCH=",
+                    "MAX_JOBS=64",
+                    "HSA_NO_SCRATCH_RECLAIM=1",
+                    "DEBIAN_FRONTEND=noninteractive",
+                    "FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE",
+                    "UV_PYTHON=/opt/python/bin/python",
+                    "UV_HTTP_TIMEOUT=500",
+                    "UV_INDEX_STRATEGY=unsafe-best-match",
+                    "UV_LINK_MODE=copy",
+                    "SCCACHE_BUCKET=",
+                    "SCCACHE_REGION=",
+                    "SCCACHE_S3_NO_CREDENTIALS=",
+                    "SCCACHE_IDLE_TIMEOUT=",
+                    "SCCACHE_ENDPOINT=",
+                    "SCCACHE_S3_KEY_PREFIX=",
+                    "SCCACHE_S3_USE_SSL=",
+                    "PIP_EXTRA_INDEX_URL=https://repo.amd.com/rocm/whl-multi-arch",
+                    "SITE_PACKAGES=/opt/python/lib/python3.14/site-packages",
+                    "ROCM_PATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel",
+                    "ROCM_HOME=/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel",
+                    "HIP_PATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel",
+                    "HIP_CLANG_PATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel/lib/llvm/bin",
+                    "HIP_DEVICE_LIB_PATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_core/lib/llvm/amdgcn/bitcode",
+                    "LD_LIBRARY_PATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel/lib:/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel/lib/rocm_sysdeps/lib:/opt/python/lib/python3.14/site-packages/_rocm_sdk_core/lib:/opt/python/lib/python3.14/site-packages/_rocm_sdk_core/lib/rocm_sysdeps/lib",
+                    "PYTHONPATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_core/share/amd_smi:",
+                    "RAY_EXPERIMENTAL_NOSET_ROCR_VISIBLE_DEVICES=1",
+                    "RAY_EXPERIMENTAL_NOSET_HIP_VISIBLE_DEVICES=1",
+                    "ROCM_VERSION=7.14.0",
+                    "TOKENIZERS_PARALLELISM=false",
+                    "SAFETENSORS_FAST_GPU=1",
+                    "HIP_FORCE_DEV_KERNARG=1",
+                    "KINETO_CONFIG=/app/libkineto.conf"
+               ],
+               "Cmd": [
+                    "/bin/bash"
+               ],
+               "WorkingDir": "/app",
+               "Labels": {
+                    "org.opencontainers.image.version": "24.04"
+               },
+               "ArgsEscaped": true
+          },
+          "Version": "",
+          "Author": "",
+          "Architecture": "amd64",
+          "Os": "linux",
+          "Size": 48638920161,
+          "VirtualSize": 48638920161,
+          "GraphDriver": {
+               "Name": "overlay",
+               "Data": {
+                    "LowerDir": "/home/hoge-heer/.local/share/containers/storage/overlay/af215787d91f0dc85c91235a731282aaba24a15faa4255b37e1e148587872f1b/diff:/home/hoge-heer/.local/share/containers/storage/overlay/5cd945e350a173fd83eb23cfac2aac179742b13cdb0277e89862b4ee3945be08/diff:/home/hoge-heer/.local/share/containers/storage/overlay/7d625533592515c65367e3d5f3e47ab7fdc46bc1fabd1d434e8e9fcaff81e322/diff:/home/hoge-heer/.local/share/containers/storage/overlay/0a102d0b997dc448d5e2dcbe34320827b6a5c940b23b4b74e3ac4a5ceeeed72c/diff:/home/hoge-heer/.local/share/containers/storage/overlay/73cf38e076581d2e4ac49410f6bd50b7531c466f6614c8a33079c9f1d9248145/diff:/home/hoge-heer/.local/share/containers/storage/overlay/84013c9184fb12673800b56e56c5170ce85981a776d768518020663aa45ab1b0/diff:/home/hoge-heer/.local/share/containers/storage/overlay/6dc61affb314c4a64b99c9969588a2c880e6def55233a576477669dec6e3813d/diff:/home/hoge-heer/.local/share/containers/storage/overlay/c4bdf15454f2b6467281ca23cf2df63e140d51d846e6d80e437cb870273b8d79/diff:/home/hoge-heer/.local/share/containers/storage/overlay/1da0c74dac6fdba44d27dcb68648b9f51682da1d3e1ae9630eee94d9db0ca499/diff:/home/hoge-heer/.local/share/containers/storage/overlay/13d349b8d6c06fc2011b1182c33632b53cb233b0d31a066fd55715816f9694e3/diff:/home/hoge-heer/.local/share/containers/storage/overlay/c427d635f5cbb9624f77960b6d2423dbae4ebc69d2b3a4fa1e37b7ccf3cb128b/diff:/home/hoge-heer/.local/share/containers/storage/overlay/68bd6fbb48e6512f076a17670513fcc6ebac18afa9c76077223a23cc0bb1906e/diff:/home/hoge-heer/.local/share/containers/storage/overlay/1112d447ac9ab5bded9999778452ea11f91ac05c45c8cacb5882ac4e59677d34/diff:/home/hoge-heer/.local/share/containers/storage/overlay/d0cef523d194e75130dd1201f3a6e8008e10d98a06e923c0ca3295489aacb8ee/diff:/home/hoge-heer/.local/share/containers/storage/overlay/f37e7d1bf07945670b914b0126575343b57d4bc29423804930b8b6c7534da883/diff:/home/hoge-heer/.local/share/containers/storage/overlay/7e0ec1341d184420c36d263c86697c9d7d6244ef438e13534658886cc55da287/diff:/home/hoge-heer/.local/share/containers/storage/overlay/d1c00dbf79eb71e1a4bec001651be677cdc062964f2438d1baac31a8ec2360fe/diff:/home/hoge-heer/.local/share/containers/storage/overlay/0c132c20c8ca2510695220428f58c2d91729a70a26d11a241b0ad247d184b71f/diff:/home/hoge-heer/.local/share/containers/storage/overlay/ff705ee08c222e0edc250b92ec565207ff0c2d4c3ad1da5d8387c7698a5c82da/diff:/home/hoge-heer/.local/share/containers/storage/overlay/9f43432cf441b660a926317cfe802454c0bff94d2534b09e4f979ce0ee2b397e/diff:/home/hoge-heer/.local/share/containers/storage/overlay/4c2c0fdc63f97eb9621b2e194593a26fb2071ccc4ecae6027d3d3d55b506f2ee/diff:/home/hoge-heer/.local/share/containers/storage/overlay/77df95019896f8d3079c33acf5e0599fb09ec38ee997c35db6c3a919e092d1d8/diff:/home/hoge-heer/.local/share/containers/storage/overlay/dfe453a88d08fcbe886b044e3ffb9de5fce0ae64620c17a6980b8502012f5f49/diff:/home/hoge-heer/.local/share/containers/storage/overlay/33e60c4311d5c7575e637c23c1ceb469d78e3639e903eb551e36e9dd4b802ef6/diff:/home/hoge-heer/.local/share/containers/storage/overlay/c60ad3a92579bf3fd825a9dcf05e19dd58a97a48ab9f0ee95393c22077687e9e/diff:/home/hoge-heer/.local/share/containers/storage/overlay/3e9e20d01a4bf179e0946b5dac2525ea182f0ffc3cb9c113ec8af2eba54b4d81/diff:/home/hoge-heer/.local/share/containers/storage/overlay/669b23f5a3f118ef741bfab21ba91922f823aef3e5c50e9d1b3b467b0522dbed/diff:/home/hoge-heer/.local/share/containers/storage/overlay/662fff824c65876b5012107893793778217f8d8f65f6fc76008e7bc61b89ea77/diff:/home/hoge-heer/.local/share/containers/storage/overlay/c884f013b8cd16c7650e31cece4115198a4c2c2ca34f7f255ca1c33c8aa468df/diff:/home/hoge-heer/.local/share/containers/storage/overlay/f103cd120fdd6cbc7f3d0e1d5bfb3e16290c32ead7b822d15c34460ecdf64b29/diff",
+                    "UpperDir": "/home/hoge-heer/.local/share/containers/storage/overlay/9285e0493d2ef613995b8f7bb8fd9126431baa117f4e7f4a138604c874d716cc/diff",
+                    "WorkDir": "/home/hoge-heer/.local/share/containers/storage/overlay/9285e0493d2ef613995b8f7bb8fd9126431baa117f4e7f4a138604c874d716cc/work"
+               }
+          },
+          "RootFS": {
+               "Type": "layers",
+               "Layers": [
+                    "sha256:f103cd120fdd6cbc7f3d0e1d5bfb3e16290c32ead7b822d15c34460ecdf64b29",
+                    "sha256:1a2580b81b7a287dff4fcf621000e8191fdcc2355750d4151b6ebe058ca526ea",
+                    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                    "sha256:5baec3919236692fb29d0d6b4c4a21fb80b99f392ab063c689e93899c1abaf5c",
+                    "sha256:f0bea64f76654d62f4b37b5a421484a6941901b5049638a3708d07eb3e580398",
+                    "sha256:360e3c5cfb855a546770a007bccb14ff23fe9ecd52a22254d2b178b1d6828afa",
+                    "sha256:4063dc51500a04ac2d16462a60992874f118691f0dea66c602c6c55a3f5818bf",
+                    "sha256:4d10aae8e76fe8c7b034008aedcccf3f8b8263f41a017007e1655b7d2fa0b841",
+                    "sha256:254f0ae5338a7dc97a921ef91a3e772d092b9fe2b01cf6283672974e4d679257",
+                    "sha256:14c6519801aa37fea318ee9225dc50cee5d743e2566b65e26286600220ce994e",
+                    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                    "sha256:747e4797057b68f2576ca10b3277790eb8af79ed37fe0fbd5eff31909036fbf4",
+                    "sha256:620ef9f011d466750d40953af46f966b7055df7bf37fd02cae6e0c3c648b9f29",
+                    "sha256:7193f72f5ef8d946a5fe9effe07f49f7cc2a751b8b86c0f54f05b4aefb110f27",
+                    "sha256:b0b0374839b57561a7329b827747d8a8743eb89c579ff6524e4ae5cf7ca04490",
+                    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                    "sha256:f9c307bd788d0fc3152a622d84e3ce40df0bf3fe4a7e5115161b76f785755a14",
+                    "sha256:24e85d9ee024693ab513e9a80c602a3229f88015ee6613907cdd386f68093bb6",
+                    "sha256:edd647edd69ea2a2f056e5b30507e72928ed2f5653bc41480febfd3ad3913b6a",
+                    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                    "sha256:81fc05477cf32fa7dcaaa89fc0c6efa9120b01f138862029cf311ca19c42afd6",
+                    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                    "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                    "sha256:2aac6a8f077808e818ac765f6b78e81e7b3073fdd02e20b818df9e88b6f5fbcb",
+                    "sha256:084f45d0bf90d53c79ca21cfba3293d8e4d8636e04673647fe03bf6922e1394f",
+                    "sha256:204e87ae7cc7ec747b5f72d5d172c7e6501f0e5dde80f5094403c49df424cc88",
+                    "sha256:ac98f7edbac5ba472c935d689bfdb4605e0f70ba5ac4dc0b4efcf6373cf461ba",
+                    "sha256:8f859a53ee3d97ec2688476dde0ba6a6571ad87f9ba2d9562c9ac2f1d13f5bf9",
+                    "sha256:e7e786d8cdd0cc670483f82f4d4f2907da34cf779385e8cec35c5bec7849d03b",
+                    "sha256:e7f26a4a9112646cebde3f1a28ec15251682cc86c0420900fdae4a6110fb53f9",
+                    "sha256:e4ef855bc395727b97040dc06f14ce569088a9e71a3193931ec111d745677d18"
+               ]
+          },
+          "Labels": {
+               "org.opencontainers.image.version": "24.04"
+          },
+          "Annotations": {},
+          "ManifestType": "application/vnd.docker.distribution.manifest.v2+json",
+          "User": "",
+          "History": [
+               {
+                    "created": "2026-06-22T21:24:17.951780796Z",
+                    "created_by": "/bin/sh -c #(nop)  ARG RELEASE",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-06-22T21:24:18.023102067Z",
+                    "created_by": "/bin/sh -c #(nop)  ARG LAUNCHPAD_BUILD_ARCH",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-06-22T21:24:18.058110708Z",
+                    "created_by": "/bin/sh -c #(nop)  LABEL org.opencontainers.image.version=24.04",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-06-22T21:24:20.812462217Z",
+                    "created_by": "/bin/sh -c #(nop) ADD file:8c609c85109d07bf47cf268a175b3be8bbe34fc0c41d15d99b090d099f4dc837 in / "
+               },
+               {
+                    "created": "2026-06-22T21:24:21.32740137Z",
+                    "created_by": "/bin/sh -c #(nop)  CMD [\"/bin/bash\"]",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:22:10.94566171Z",
+                    "created_by": "ARG PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:22:10.94566171Z",
+                    "created_by": "ENV PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:22:10.94566171Z",
+                    "created_by": "ARG AITER_ROCM_ARCH=",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:22:10.94566171Z",
+                    "created_by": "ENV AITER_ROCM_ARCH=",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:22:10.94566171Z",
+                    "created_by": "ARG PREBUILD_KERNELS=0",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:22:10.94566171Z",
+                    "created_by": "ARG DEVICE_EXTRAS=device-all-rdna",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:22:10.94566171Z",
+                    "created_by": "ARG PYTHON_VERSION=3.14",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:22:10.94566171Z",
+                    "created_by": "ARG MAX_JOBS=64",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:22:10.94566171Z",
+                    "created_by": "ENV MAX_JOBS=64",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:22:10.94566171Z",
+                    "created_by": "ENV HSA_NO_SCRATCH_RECLAIM=1",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:22:10.94566171Z",
+                    "created_by": "RUN |6 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 /bin/sh -c mkdir -p /app # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:22:11.084813066Z",
+                    "created_by": "WORKDIR /app",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:22:11.084813066Z",
+                    "created_by": "ENV DEBIAN_FRONTEND=noninteractive",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:27:42.772121675Z",
+                    "created_by": "RUN |6 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 /bin/sh -c apt-get update -y     && apt-get install -y software-properties-common build-essential git curl sudo vim less libopenmpi-dev libpci-dev pkg-config libdrm-dev # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:27:46.528592403Z",
+                    "created_by": "RUN |6 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 /bin/sh -c curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR=\"/usr/local/bin\" sh # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:27:49.653778949Z",
+                    "created_by": "RUN |6 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 /bin/sh -c uv python install ${PYTHON_VERSION} # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:27:51.507054365Z",
+                    "created_by": "RUN |6 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 /bin/sh -c uv venv /opt/python --python ${PYTHON_VERSION} --seed # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:27:51.507054365Z",
+                    "created_by": "ENV PATH=/opt/python/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:27:51.507054365Z",
+                    "created_by": "ENV FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:27:51.507054365Z",
+                    "created_by": "ENV UV_PYTHON=/opt/python/bin/python",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:27:51.507054365Z",
+                    "created_by": "ENV UV_HTTP_TIMEOUT=500",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:27:51.507054365Z",
+                    "created_by": "ENV UV_INDEX_STRATEGY=unsafe-best-match",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:27:51.507054365Z",
+                    "created_by": "ENV UV_LINK_MODE=copy",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:27:55.866707236Z",
+                    "created_by": "RUN |6 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 /bin/sh -c uv pip install -U packaging 'cmake<4' ninja wheel 'setuptools<80' pybind11 # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:27:56.63311562Z",
+                    "created_by": "RUN |6 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 /bin/sh -c CMAKE_REAL=$(python3 -c \"import cmake, os; print(os.path.join(os.path.dirname(cmake.__file__), 'data', 'bin', 'cmake'))\")     && ln -sf \"$CMAKE_REAL\" /opt/python/bin/cmake # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:28:21.406330658Z",
+                    "created_by": "RUN |6 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 /bin/sh -c apt-get update && apt-get install -y libjpeg-dev libsox-dev libsox-fmt-all sox && rm -rf /var/lib/apt/lists/* # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:28:21.406330658Z",
+                    "created_by": "ARG USE_SCCACHE=0",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:28:21.406330658Z",
+                    "created_by": "ARG SCCACHE_DOWNLOAD_URL",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:28:21.406330658Z",
+                    "created_by": "ARG SCCACHE_ENDPOINT=https://minio-frameworks.amd.com",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:28:21.406330658Z",
+                    "created_by": "ARG SCCACHE_BUCKET_NAME=ufb-cache-vllm",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:28:21.406330658Z",
+                    "created_by": "ARG SCCACHE_REGION_NAME=us-east-1",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:28:21.406330658Z",
+                    "created_by": "ARG SCCACHE_S3_NO_CREDENTIALS=0",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "RUN |12 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 USE_SCCACHE=0 SCCACHE_DOWNLOAD_URL= SCCACHE_ENDPOINT=https://minio-frameworks.amd.com SCCACHE_BUCKET_NAME=ufb-cache-vllm SCCACHE_REGION_NAME=us-east-1 SCCACHE_S3_NO_CREDENTIALS=0 /bin/sh -c if [ \"$USE_SCCACHE\" = \"1\" ]; then         echo \"Installing sccache...\"         && SCCACHE_ARCH=\"x86_64\"         && SCCACHE_VERSION=\"v0.14.0\"         && SCCACHE_DL_URL=\"${SCCACHE_DOWNLOAD_URL:-https://github.com/mozilla/sccache/releases/download/${SCCACHE_VERSION}/sccache-${SCCACHE_VERSION}-${SCCACHE_ARCH}-unknown-linux-musl.tar.gz}\"         && curl -L -o /tmp/sccache.tar.gz ${SCCACHE_DL_URL}         && tar -xzf /tmp/sccache.tar.gz -C /tmp         && mv /tmp/sccache-${SCCACHE_VERSION}-${SCCACHE_ARCH}-unknown-linux-musl/sccache /usr/bin/sccache         && chmod +x /usr/bin/sccache         && rm -rf /tmp/sccache.tar.gz /tmp/sccache-${SCCACHE_VERSION}-${SCCACHE_ARCH}-unknown-linux-musl         && sccache --version;     fi # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ARG USE_SCCACHE=0",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ARG SCCACHE_S3_KEY_PREFIX=rocm/device-all-rdna/",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ENV SCCACHE_BUCKET=ufb-cache-vllm",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ENV SCCACHE_REGION=us-east-1",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ENV SCCACHE_S3_NO_CREDENTIALS=0",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ENV SCCACHE_IDLE_TIMEOUT=0",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ENV SCCACHE_ENDPOINT=https://minio-frameworks.amd.com",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ENV SCCACHE_S3_KEY_PREFIX=rocm/device-all-rdna/",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ENV SCCACHE_S3_USE_SSL=on",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ARG PIP_EXTRA_INDEX_URL=https://repo.amd.com/rocm/whl-multi-arch",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ENV PIP_EXTRA_INDEX_URL=https://repo.amd.com/rocm/whl-multi-arch",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ARG ROCM_SDK_VERSION=7.14.0",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ARG TORCH_VERSION=2.11.0",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ARG TORCHAUDIO_VERSION=2.11.0",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ARG TORCHVISION_VERSION=0.26.0",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.08417502Z",
+                    "created_by": "ARG DEVICE_EXTRAS=device-all-rdna",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:44:35.095070939Z",
+                    "created_by": "COPY docker/install_pytorch_wheels.py /tmp/install_pytorch_wheels.py # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:44:35.103412785Z",
+                    "created_by": "COPY docker/detect_device_arches.py /tmp/detect_device_arches.py # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:53:27.556725741Z",
+                    "created_by": "RUN |18 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 USE_SCCACHE=0 SCCACHE_DOWNLOAD_URL= SCCACHE_ENDPOINT=https://minio-frameworks.amd.com SCCACHE_BUCKET_NAME=ufb-cache-vllm SCCACHE_REGION_NAME=us-east-1 SCCACHE_S3_NO_CREDENTIALS=0 SCCACHE_S3_KEY_PREFIX=rocm/device-all-rdna/ PIP_EXTRA_INDEX_URL=https://repo.amd.com/rocm/whl-multi-arch ROCM_SDK_VERSION=7.14.0 TORCH_VERSION=2.11.0 TORCHAUDIO_VERSION=2.11.0 TORCHVISION_VERSION=0.26.0 /bin/sh -c if [ -n \"${DEVICE_EXTRAS}\" ]; then         if [ -z \"${ROCM_SDK_VERSION}\" ]; then             echo \"ERROR: ROCM_SDK_VERSION is required for multi-arch builds\" && exit 1;         fi         && echo \"Multi-arch install: explicit device packages via install_pytorch_wheels.py\"         && uv pip install --index-url ${PIP_EXTRA_INDEX_URL}            \"rocm[libraries,devel]==${ROCM_SDK_VERSION}\"         && rocm-sdk init         && python /tmp/install_pytorch_wheels.py            --index-url \"${PIP_EXTRA_INDEX_URL}\"            --amdgpu-family \"device-all\"            --device-targets \"device-all\"            --rocm-version \"${ROCM_SDK_VERSION}\"            --torch-version \"${TORCH_VERSION:-2.11.0}+rocm${ROCM_SDK_VERSION}\"            --torchaudio-version \"${TORCHAUDIO_VERSION:-2.11.0}+rocm${ROCM_SDK_VERSION}\"            --torchvision-version \"${TORCHVISION_VERSION:-0.26.0}+rocm${ROCM_SDK_VERSION}\"            --no-break-system-packages            --skip-apex            --skip-verify         && rm -f /tmp/install_pytorch_wheels.py /tmp/detect_device_arches.py;     else         uv pip install --index-url ${PIP_EXTRA_INDEX_URL}            \"rocm[libraries,devel]${ROCM_SDK_VERSION:+==${ROCM_SDK_VERSION}}\"         && rocm-sdk init         && if [ -n \"${ROCM_SDK_VERSION}\" ]; then              if echo \"${ROCM_SDK_VERSION}\" | grep -q '\\.dev0'; then                ROCM_TORCH_SUFFIX=\"+devrocm$(echo ${ROCM_SDK_VERSION} | tr '+' '.')\";              else                ROCM_TORCH_SUFFIX=\"+rocm${ROCM_SDK_VERSION}\";              fi;              uv pip install --index-url ${PIP_EXTRA_INDEX_URL}                \"torch==${TORCH_VERSION:-2.11.0}${ROCM_TORCH_SUFFIX}\"                \"torchaudio==${TORCHAUDIO_VERSION:-2.11.0}${ROCM_TORCH_SUFFIX}\"                \"torchvision==${TORCHVISION_VERSION:-0.26.0}${ROCM_TORCH_SUFFIX}\";            else              uv pip install --index-url ${PIP_EXTRA_INDEX_URL}                torch torchaudio torchvision;            fi;     fi # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:53:27.556725741Z",
+                    "created_by": "ENV SITE_PACKAGES=/opt/python/lib/python3.14/site-packages",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:53:27.556725741Z",
+                    "created_by": "ENV ROCM_PATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel ROCM_HOME=/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel HIP_PATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel HIP_CLANG_PATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel/lib/llvm/bin HIP_DEVICE_LIB_PATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_core/lib/llvm/amdgcn/bitcode",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:53:27.556725741Z",
+                    "created_by": "ENV LD_LIBRARY_PATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel/lib:/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel/lib/rocm_sysdeps/lib:/opt/python/lib/python3.14/site-packages/_rocm_sdk_core/lib:/opt/python/lib/python3.14/site-packages/_rocm_sdk_core/lib/rocm_sysdeps/lib",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:53:27.556725741Z",
+                    "created_by": "ENV PATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel/bin:/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel/lib/llvm/bin:/opt/python/lib/python3.14/site-packages/_rocm_sdk_core/bin:/opt/python/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:53:27.556725741Z",
+                    "created_by": "ENV FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:53:30.066236414Z",
+                    "created_by": "RUN |18 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 USE_SCCACHE=0 SCCACHE_DOWNLOAD_URL= SCCACHE_ENDPOINT=https://minio-frameworks.amd.com SCCACHE_BUCKET_NAME=ufb-cache-vllm SCCACHE_REGION_NAME=us-east-1 SCCACHE_S3_NO_CREDENTIALS=0 SCCACHE_S3_KEY_PREFIX=rocm/device-all-rdna/ PIP_EXTRA_INDEX_URL=https://repo.amd.com/rocm/whl-multi-arch ROCM_SDK_VERSION=7.14.0 TORCH_VERSION=2.11.0 TORCHAUDIO_VERSION=2.11.0 TORCHVISION_VERSION=0.26.0 /bin/sh -c cd $SITE_PACKAGES/_rocm_sdk_core/share/amd_smi && uv pip install . # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:53:30.066236414Z",
+                    "created_by": "ENV PYTHONPATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_core/share/amd_smi:",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:53:30.066236414Z",
+                    "created_by": "ARG USE_SCCACHE=0",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:53:30.190992835Z",
+                    "created_by": "RUN |18 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 USE_SCCACHE=0 SCCACHE_DOWNLOAD_URL= SCCACHE_ENDPOINT=https://minio-frameworks.amd.com SCCACHE_BUCKET_NAME=ufb-cache-vllm SCCACHE_REGION_NAME=us-east-1 SCCACHE_S3_NO_CREDENTIALS=0 SCCACHE_S3_KEY_PREFIX=rocm/device-all-rdna/ PIP_EXTRA_INDEX_URL=https://repo.amd.com/rocm/whl-multi-arch ROCM_SDK_VERSION=7.14.0 TORCH_VERSION=2.11.0 TORCHAUDIO_VERSION=2.11.0 TORCHVISION_VERSION=0.26.0 /bin/sh -c if [ \"$USE_SCCACHE\" = \"1\" ]; then         echo \"Setting up sccache wrappers for HIP compilation...\"         && mkdir -p /opt/sccache-wrappers         && REAL_CLANGXX=\"\"         && for p in              \"${ROCM_PATH}/lib/llvm/bin/clang++\"              \"${ROCM_PATH}/bin/clang++\"              \"/opt/rocm/lib/llvm/bin/clang++\"              \"/opt/rocm/llvm/bin/clang++\"              \"$(which clang++ 2>/dev/null || true)\"; do              if [ -n \"$p\" ] && [ -x \"$p\" ]; then REAL_CLANGXX=\"$p\"; break; fi;            done         && REAL_CLANG=\"\"         && for p in              \"${ROCM_PATH}/lib/llvm/bin/clang\"              \"${ROCM_PATH}/bin/clang\"              \"/opt/rocm/lib/llvm/bin/clang\"              \"/opt/rocm/llvm/bin/clang\"              \"$(which clang 2>/dev/null || true)\"; do              if [ -n \"$p\" ] && [ -x \"$p\" ]; then REAL_CLANG=\"$p\"; break; fi;            done         && echo \"Found clang++: ${REAL_CLANGXX}\"         && echo \"Found clang:   ${REAL_CLANG}\"         && if [ -z \"$REAL_CLANGXX\" ]; then echo \"ERROR: clang++ not found\"; exit 1; fi         && printf '#!/bin/bash\\nsccache %s \"$@\"\\nret=$?\\nif [ $ret -eq 2 ] || [ $ret -eq 254 ]; then\\n  exec %s \"$@\"\\nfi\\nexit $ret\\n'              \"${REAL_CLANGXX}\" \"${REAL_CLANGXX}\" > /opt/sccache-wrappers/clang++         && chmod +x /opt/sccache-wrappers/clang++         && printf '#!/bin/bash\\nsccache %s \"$@\"\\nret=$?\\nif [ $ret -eq 2 ] || [ $ret -eq 254 ]; then\\n  exec %s \"$@\"\\nfi\\nexit $ret\\n'              \"${REAL_CLANG}\" \"${REAL_CLANG}\" > /opt/sccache-wrappers/clang         && chmod +x /opt/sccache-wrappers/clang         && echo \"sccache wrappers created (with fallback):\"         && cat /opt/sccache-wrappers/clang++;     fi # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:54:08.807009829Z",
+                    "created_by": "RUN |18 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 USE_SCCACHE=0 SCCACHE_DOWNLOAD_URL= SCCACHE_ENDPOINT=https://minio-frameworks.amd.com SCCACHE_BUCKET_NAME=ufb-cache-vllm SCCACHE_REGION_NAME=us-east-1 SCCACHE_S3_NO_CREDENTIALS=0 SCCACHE_S3_KEY_PREFIX=rocm/device-all-rdna/ PIP_EXTRA_INDEX_URL=https://repo.amd.com/rocm/whl-multi-arch ROCM_SDK_VERSION=7.14.0 TORCH_VERSION=2.11.0 TORCHAUDIO_VERSION=2.11.0 TORCHVISION_VERSION=0.26.0 /bin/sh -c uv pip install /install/*.whl # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T16:54:08.807009829Z",
+                    "created_by": "ARG BASE_IMAGE=ubuntu:24.04",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:54:08.807009829Z",
+                    "created_by": "ARG FA_BRANCH=0e60e394",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:54:08.807009829Z",
+                    "created_by": "ARG FA_REPO=https://github.com/Dao-AILab/flash-attention.git",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:54:08.807009829Z",
+                    "created_by": "ARG AITER_BRANCH=release/v0.1.13.post1",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:54:08.807009829Z",
+                    "created_by": "ARG AITER_REPO=https://github.com/ROCm/aiter.git",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T16:54:08.93553434Z",
+                    "created_by": "RUN |23 PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 AITER_ROCM_ARCH= PREBUILD_KERNELS=0 DEVICE_EXTRAS=device-all-rdna PYTHON_VERSION=3.14 MAX_JOBS=64 USE_SCCACHE=0 SCCACHE_DOWNLOAD_URL= SCCACHE_ENDPOINT=https://minio-frameworks.amd.com SCCACHE_BUCKET_NAME=ufb-cache-vllm SCCACHE_REGION_NAME=us-east-1 SCCACHE_S3_NO_CREDENTIALS=0 SCCACHE_S3_KEY_PREFIX=rocm/device-all-rdna/ PIP_EXTRA_INDEX_URL=https://repo.amd.com/rocm/whl-multi-arch ROCM_SDK_VERSION=7.14.0 TORCH_VERSION=2.11.0 TORCHAUDIO_VERSION=2.11.0 TORCHVISION_VERSION=0.26.0 BASE_IMAGE=ubuntu:24.04 FA_BRANCH=0e60e394 FA_REPO=https://github.com/Dao-AILab/flash-attention.git AITER_BRANCH=release/v0.1.13.post1 AITER_REPO=https://github.com/ROCm/aiter.git /bin/sh -c echo \"BASE_IMAGE: ${BASE_IMAGE}\" > /app/versions.txt     && echo \"FA_BRANCH: ${FA_BRANCH}\" >> /app/versions.txt     && echo \"FA_REPO: ${FA_REPO}\" >> /app/versions.txt     && echo \"AITER_BRANCH: ${AITER_BRANCH}\" >> /app/versions.txt     && echo \"AITER_REPO: ${AITER_REPO}\" >> /app/versions.txt # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T17:25:59.242063099Z",
+                    "created_by": "ENV FLASH_ATTENTION_TRITON_AMD_ENABLE=TRUE",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T17:25:59.242063099Z",
+                    "created_by": "ARG ARG_PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T17:25:59.242063099Z",
+                    "created_by": "ENV PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T17:25:59.242063099Z",
+                    "created_by": "ENV RAY_EXPERIMENTAL_NOSET_ROCR_VISIBLE_DEVICES=1",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T17:25:59.242063099Z",
+                    "created_by": "ENV RAY_EXPERIMENTAL_NOSET_HIP_VISIBLE_DEVICES=1",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T17:25:59.242063099Z",
+                    "created_by": "RUN |1 ARG_PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 /bin/sh -c apt-get update -q -y && apt-get install -q -y     sqlite3 libsqlite3-dev libfmt-dev libmsgpack-dev libsuitesparse-dev     apt-transport-https ca-certificates wget curl # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T17:25:59.242063099Z",
+                    "created_by": "ARG COMMON_WORKDIR=/app",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T17:25:59.471336922Z",
+                    "created_by": "WORKDIR /app",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T18:46:00.310917582Z",
+                    "created_by": "RUN |2 ARG_PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 COMMON_WORKDIR=/app /bin/sh -c python3 -m pip install --upgrade pip && rm -rf /var/lib/apt/lists/* # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T18:46:00.471752106Z",
+                    "created_by": "RUN |2 ARG_PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 COMMON_WORKDIR=/app /bin/sh -c rm -f /usr/bin/sccache || true     && rm -rf /opt/sccache-wrappers || true # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T18:46:00.471752106Z",
+                    "created_by": "ENV SCCACHE_BUCKET=",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T18:46:00.471752106Z",
+                    "created_by": "ENV SCCACHE_REGION=",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T18:46:00.471752106Z",
+                    "created_by": "ENV SCCACHE_S3_NO_CREDENTIALS=",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T18:46:00.471752106Z",
+                    "created_by": "ENV SCCACHE_IDLE_TIMEOUT=",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T18:46:00.471752106Z",
+                    "created_by": "ENV SCCACHE_ENDPOINT=",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T18:46:00.471752106Z",
+                    "created_by": "ENV SCCACHE_S3_KEY_PREFIX=",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T18:46:00.471752106Z",
+                    "created_by": "ENV SCCACHE_S3_USE_SSL=",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T18:46:00.588039243Z",
+                    "created_by": "RUN |2 ARG_PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 COMMON_WORKDIR=/app /bin/sh -c case \"$(which python3)\" in         *\"/opt/conda/envs/py_3.9\"*)             rm -rf /opt/conda/envs/py_3.9/lib/python3.9/site-packages/numpy-1.20.3.dist-info/;;         *) ;; esac # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T18:46:03.302634288Z",
+                    "created_by": "RUN |2 ARG_PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 COMMON_WORKDIR=/app /bin/sh -c uv pip install --upgrade huggingface-hub[cli] # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T20:07:40.683722038Z",
+                    "created_by": "RUN |2 ARG_PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 COMMON_WORKDIR=/app /bin/sh -c cd /install     && uv pip install -r requirements/rocm.txt     && pip uninstall -y vllm     && uv pip install *.whl # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T20:07:40.683722038Z",
+                    "created_by": "ARG PYTHON_VERSION=3.14",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T20:07:40.851169668Z",
+                    "created_by": "RUN |3 ARG_PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 COMMON_WORKDIR=/app PYTHON_VERSION=3.14 /bin/sh -c PY_MAJOR=\"${PYTHON_VERSION%%.*}\"; PY_MINOR=\"${PYTHON_VERSION#*.}\"; PY_MINOR=\"${PY_MINOR%%.*}\";     if [ \"${PY_MAJOR}\" -gt 3 ] || { [ \"${PY_MAJOR}\" -eq 3 ] && [ \"${PY_MINOR}\" -ge 14 ]; }; then         echo \"Python ${PYTHON_VERSION} >= 3.14: upgrading tensorizer>=2.12.0\";         uv pip install \"tensorizer>=2.12.0\";     else         echo \"Python ${PYTHON_VERSION} < 3.14: keeping vLLM-pinned tensorizer\";     fi # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T20:07:51.498197343Z",
+                    "created_by": "RUN |3 ARG_PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 COMMON_WORKDIR=/app PYTHON_VERSION=3.14 /bin/sh -c uv pip install \"ray[cgraph]>=2.48.0\" # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T20:07:51.498197343Z",
+                    "created_by": "ARG COMMON_WORKDIR=/app",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T20:07:51.498197343Z",
+                    "created_by": "ARG BASE_IMAGE=rocm/ufb-private:vllm-base-ubuntu24.04-py3.14-release-device-all-rdna-rocm7.14.0-9ddef71179",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T20:07:51.498197343Z",
+                    "created_by": "ARG ROCM_VERSION=7.14.0",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T20:07:51.498197343Z",
+                    "created_by": "ENV ROCM_VERSION=7.14.0",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T20:08:46.020999984Z",
+                    "created_by": "COPY /app/vllm /app/vllm # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T20:08:46.29499082Z",
+                    "created_by": "RUN |5 ARG_PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 COMMON_WORKDIR=/app PYTHON_VERSION=3.14 BASE_IMAGE=rocm/ufb-private:vllm-base-ubuntu24.04-py3.14-release-device-all-rdna-rocm7.14.0-9ddef71179 ROCM_VERSION=7.14.0 /bin/sh -c rm -rf ${COMMON_WORKDIR}/vllm/.git ${COMMON_WORKDIR}/vllm/build ${COMMON_WORKDIR}/vllm/dist ${COMMON_WORKDIR}/vllm/*.egg-info # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T20:08:46.29499082Z",
+                    "created_by": "ENV TOKENIZERS_PARALLELISM=false",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T20:08:46.29499082Z",
+                    "created_by": "ENV SAFETENSORS_FAST_GPU=1",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T20:08:46.29499082Z",
+                    "created_by": "ENV HIP_FORCE_DEV_KERNARG=1",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T20:08:46.397107466Z",
+                    "created_by": "RUN |5 ARG_PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 COMMON_WORKDIR=/app PYTHON_VERSION=3.14 BASE_IMAGE=rocm/ufb-private:vllm-base-ubuntu24.04-py3.14-release-device-all-rdna-rocm7.14.0-9ddef71179 ROCM_VERSION=7.14.0 /bin/sh -c echo \"ROCTRACER_MAX_EVENTS=10000000\" > ${COMMON_WORKDIR}/libkineto.conf # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T20:08:46.397107466Z",
+                    "created_by": "ENV KINETO_CONFIG=/app/libkineto.conf",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               },
+               {
+                    "created": "2026-07-15T20:08:46.480337423Z",
+                    "created_by": "RUN |5 ARG_PYTORCH_ROCM_ARCH=gfx1100;gfx1101;gfx1102;gfx1103;gfx1150;gfx1151;gfx1152;gfx1153;gfx1200;gfx1201 COMMON_WORKDIR=/app PYTHON_VERSION=3.14 BASE_IMAGE=rocm/ufb-private:vllm-base-ubuntu24.04-py3.14-release-device-all-rdna-rocm7.14.0-9ddef71179 ROCM_VERSION=7.14.0 /bin/sh -c echo \"VLLM_BASE_IMAGE=${BASE_IMAGE}\" >> ${COMMON_WORKDIR}/versions.txt # buildkit",
+                    "comment": "buildkit.dockerfile.v0"
+               },
+               {
+                    "created": "2026-07-15T20:08:46.480337423Z",
+                    "created_by": "CMD [\"/bin/bash\"]",
+                    "comment": "buildkit.dockerfile.v0",
+                    "empty_layer": true
+               }
+          ],
+          "NamesHistory": [
+               "docker.io/rocm/vllm@sha256:5b0389109bb2db9346d3f0f971c4c99eba7e5e72cfa57e9a2a9b4ac67477771d"
+          ]
+     }
+]

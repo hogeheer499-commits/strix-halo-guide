@@ -1,0 +1,141 @@
+captured_at=2026-07-16T05:31:30+02:00
+hostname=hoge-heer-GTR-Pro
+kernel=Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+binaries:
+cd0f8bac72d0441ae75bdb182f1f75a7b8dfa63f2e1d16bc31fa570523b1d7c9  /home/hoge-heer/benchmark-tools/ollama-0.31.1/bin/ollama
+c7ff3fc14739850ae2c57cda8eb6fb354cf4e436595cdf1946172e4ebc517661  /usr/local/bin/ollama
+e010ce570cfa04334b30867c228a45781857b2ff5071630f3f59ef7cc2513d1f  /home/hoge-heer/benchmark-tools/ollama-0.32.0/bin/ollama
+release_assets:
+d297381efc136451f6fabb9dd644a67f70fe51c16815a0c4a95ff0e327a3afb4  /home/hoge-heer/benchmark-tools/ollama-0.31.1/ollama-linux-amd64.tar.zst
+56362d7609dfa9e35aaebb7c9cab25605d8f0528ec3d5d585dc83d6642002bab  /home/hoge-heer/benchmark-tools/ollama-0.32.0/downloads/ollama-linux-amd64.tar.zst
+system_service_version:
+{"version":"0.31.2"}system_service_loaded_models:
+{"models":[]}os_release:
+PRETTY_NAME="Ubuntu 24.04.4 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04.4 LTS (Noble Numbat)"
+VERSION_CODENAME=noble
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=noble
+LOGO=ubuntu-logo
+memory:
+               total        used        free      shared  buff/cache   available
+Mem:           124Gi        37Gi       2.1Gi       197Mi        86Gi        87Gi
+Swap:          8.0Gi       936Mi       7.1Gi
+vulkan:
+==========
+VULKANINFO
+==========
+
+Vulkan Instance Version: 1.3.275
+
+
+Instance Extensions: count = 25
+-------------------------------
+VK_EXT_acquire_drm_display             : extension revision 1
+VK_EXT_acquire_xlib_display            : extension revision 1
+VK_EXT_debug_report                    : extension revision 10
+VK_EXT_debug_utils                     : extension revision 2
+VK_EXT_direct_mode_display             : extension revision 1
+VK_EXT_display_surface_counter         : extension revision 1
+VK_EXT_headless_surface                : extension revision 1
+VK_EXT_layer_settings                  : extension revision 2
+VK_EXT_surface_maintenance1            : extension revision 1
+VK_EXT_swapchain_colorspace            : extension revision 5
+VK_KHR_device_group_creation           : extension revision 1
+VK_KHR_display                         : extension revision 23
+VK_KHR_external_fence_capabilities     : extension revision 1
+VK_KHR_external_memory_capabilities    : extension revision 1
+VK_KHR_external_semaphore_capabilities : extension revision 1
+VK_KHR_get_display_properties2         : extension revision 1
+VK_KHR_get_physical_device_properties2 : extension revision 2
+VK_KHR_get_surface_capabilities2       : extension revision 1
+VK_KHR_portability_enumeration         : extension revision 1
+VK_KHR_surface                         : extension revision 25
+VK_KHR_surface_protected_capabilities  : extension revision 1
+VK_KHR_wayland_surface                 : extension revision 6
+VK_KHR_xcb_surface                     : extension revision 6
+VK_KHR_xlib_surface                    : extension revision 6
+VK_LUNARG_direct_driver_loading        : extension revision 1
+
+Instance Layers: count = 5
+--------------------------
+VK_LAYER_INTEL_nullhw       INTEL NULL HW                                                1.1.73   version 1
+VK_LAYER_MESA_anti_lag      Open-source implementation of the VK_AMD_anti_lag extension. 1.4.303  version 1
+VK_LAYER_MESA_device_select Linux device selection layer                                 1.4.303  version 1
+VK_LAYER_MESA_overlay       Mesa Overlay layer                                           1.4.303  version 1
+VK_LAYER_MESA_screenshot    Mesa Screenshot layer                                        1.4.303  version 1
+
+Devices:
+========
+GPU0:
+	apiVersion         = 1.4.354
+	driverVersion      = 26.1.4
+	vendorID           = 0x1002
+	deviceID           = 0x1586
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = Radeon 8060S Graphics (RADV STRIX_HALO)
+	driverID           = DRIVER_ID_MESA_RADV
+	driverName         = radv
+	driverInfo         = Mesa 26.1.4 - kisak-mesa PPA
+	conformanceVersion = 1.4.0.0
+	deviceUUID         = 00000000-c600-0000-0000-000000000000
+	driverUUID         = 414d442d-4d45-5341-2d44-525600000000
+GPU1:
+	apiVersion         = 1.4.354
+	driverVersion      = 26.1.4
+	vendorID           = 0x10005
+	deviceID           = 0x0000
+	deviceType         = PHYSICAL_DEVICE_TYPE_CPU
+	deviceName         = llvmpipe (LLVM 20.1.8, 256 bits)
+	driverID           = DRIVER_ID_MESA_LLVMPIPE
+	driverName         = llvmpipe
+	driverInfo         = Mesa 26.1.4 - kisak-mesa PPA (LLVM 20.1.8)
+	conformanceVersion = 1.3.1.1
+	deviceUUID         = 6d657361-3236-2e31-2e34-202d206b6900
+	driverUUID         = 6c6c766d-7069-7065-5555-494400000000
+power_profile:
+performance
+tuned:
+It seems that tuned daemon is not running, preset profile is not activated.
+Preset profile: balanced
+paused_user_processes:
+USER         PID STAT COMMAND         %CPU %MEM
+hoge-he+ 1127148 T    zoom             0.0  0.0
+hoge-he+ 1127150 TLl  zoom             4.8  0.7
+hoge-he+ 1127624 TLl  ZoomClips        0.3  0.2
+hoge-he+ 1611717 TLl  ffmpeg          1767  0.2
+hoge-he+ 2392188 Tl   chrome           0.0  0.1
+hoge-he+ 2591951 Tl   chrome           0.6  0.3
+hoge-he+ 2591968 T    chrome           0.0  0.0
+hoge-he+ 2591969 T    chrome           0.0  0.0
+hoge-he+ 2591971 T    chrome           0.0  0.0
+hoge-he+ 2591996 Tl   chrome           0.0  0.1
+hoge-he+ 2591998 Tl   chrome           0.0  0.0
+hoge-he+ 2592013 Tl   chrome           0.0  0.0
+hoge-he+ 2592176 Tl   chrome           0.0  0.2
+hoge-he+ 2594024 Tl   chrome           0.0  0.0
+hoge-he+ 2909252 Tl   chrome           0.0  0.0
+hoge-he+ 3457041 Tl   chrome           0.0  0.1
+hoge-he+ 3457458 Tl   chrome           0.0  0.1
+hoge-he+ 3551131 Tl   chrome           0.0  0.1
+hoge-he+ 3980219 Tl   firefox          0.2  0.4
+hoge-he+ 4025294 Tl   rustdesk         4.7  0.3
+hoge-he+ 4025301 Tl   rustdesk         0.0  0.0
+hoge-he+ 4025964 Tl   rustdesk         1.9  0.1
+t3_processes:
+2458317 /bin/bash -c set -e OUT=data/raw/2026-07-16/ollama-0311-0312-0320-controlled python3 -m py_compile "$OUT/run-controlled-compare.py" {   echo "captured_at=$(date -Is)"   echo "hostname=$(hostname)"   echo "kernel=$(uname -a)"   echo 'binaries:'   sha256sum /home/hoge-heer/benchmark-tools/ollama-0.31.1/bin/ollama /usr/local/bin/ollama /home/hoge-heer/benchmark-tools/ollama-0.32.0/bin/ollama   echo 'release_assets:'   sha256sum /home/hoge-heer/benchmark-tools/ollama-0.31.1/ollama-linux-amd64.tar.zst /home/hoge-heer/benchmark-tools/ollama-0.32.0/downloads/ollama-linux-amd64.tar.zst   echo 'system_service_version:'; curl -fsS http://127.0.0.1:11434/api/version   echo 'system_service_loaded_models:'; curl -fsS http://127.0.0.1:11434/api/ps   echo 'os_release:'; cat /etc/os-release   echo 'memory:'; free -h   echo 'vulkan:'; vulkaninfo --summary 2>/dev/null   echo 'power_profile:'; powerprofilesctl get 2>/dev/null || true   echo 'tuned:'; tuned-adm active 2>/dev/null || true   echo 'paused_user_processes:'; ps -o user,pid,stat,comm,%cpu,%mem -p "$(paste -sd, /tmp/strix-halo-paused-2026-07-16.pids)" 2>/dev/null || true   echo 't3_processes:'; pgrep -af t3code || true } > "$OUT/host-snapshot.txt" PYTHONUNBUFFERED=1 python3 "$OUT/run-controlled-compare.py" | tee "$OUT/run-controlled-compare.stdout.txt"
+2592251 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --disable-gpu --disable-gpu-compositing --disable-gpu-rasterization --disable-accelerated-2d-canvas --disable-accelerated-video-decode --disable-features=UseSkiaRenderer,Vulkan,CanvasOopRasterization,VaapiVideoDecoder
+2592266 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote --no-zygote-sandbox
+2592268 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote
+2592272 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote
+2592322 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote --no-zygote-sandbox
+2592329 /proc/self/exe --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --enable-crash-reporter=d26cb034-6a32-49d0-89c4-afe91d0206fd,no_channel --user-data-dir=/home/hoge-heer/.config/t3code --standard-schemes=t3 --secure-schemes=t3 --cors-schemes=t3 --fetch-schemes=t3 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,3662029411786077527,16787607204844215957,262144 --enable-features=PdfUseShowSaveFilePicker --disable-features=CanvasOopRasterization,DropInputEventsWhilePaintHolding,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation,UseSkiaRenderer,VaapiVideoDecoder,Vulkan --variations-seed-version --pseudonymization-salt-handle=7,i,18105499973406386778,3360745484770433846,4 --trace-process-track-uuid=3190708989122997041
+2592505 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/resources/app/apps/server/dist/bin.mjs --bootstrap-fd 3
+2594046 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote

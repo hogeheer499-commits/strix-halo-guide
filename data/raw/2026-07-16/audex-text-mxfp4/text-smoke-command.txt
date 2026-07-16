@@ -1,0 +1,1 @@
+/home/hoge-heer/benchmark-tools/llama-b10034/llama-b10034/llama-cli -m /home/hoge-heer/benchmark-models/2026-07-16/audex/quants/audex-30b-a3b-textonly-MXFP4_MOE.gguf -ngl 999 -fa on -c 4096 -n 192 --temp 0 --single-turn --simple-io -p A\ farmer\ has\ 12\ sheep.\ All\ but\ 9\ run\ away.\ Reply\ with\ only\ the\ number\ of\ sheep\ remaining. 

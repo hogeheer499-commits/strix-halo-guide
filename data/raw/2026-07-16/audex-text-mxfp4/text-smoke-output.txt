@@ -1,0 +1,39 @@
+
+
+Loading model... 
+
+▄▄ ▄▄
+██ ██
+██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄
+██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██
+██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀
+                                    ██    ██
+                                    ▀▀    ▀▀
+
+build      : b10034-505b1ed15
+model      : /home/hoge-heer/benchmark-models/2026-07-16/audex/quants/audex-30b-a3b-textonly-MXFP4_MOE.gguf
+ftype      : MXFP4 MoE
+modalities : text
+
+available commands:
+  /exit or Ctrl+C     stop or exit
+  /regen              regenerate the last response
+  /clear              clear the chat history
+  /read <file>        add a text file
+  /glob <pattern>     add text files using globbing pattern
+
+
+
+> A farmer has 12 sheep. All but 9 run away. Reply with only the number of sheep remaining.
+
+[Start thinking]
+
+We need to parse: "All but 9 run away." Means that all except 9 run away, so 9 remain. The farmer has 12 sheep, but all but 9 run away, so 9 remain. The answer: 9. Output only the number.
+[End thinking]
+
+9
+
+[ Prompt: 72.6 t/s | Generation: 60.1 t/s ]
+
+
+Exiting...

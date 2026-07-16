@@ -1,0 +1,30 @@
+	Command being timed: "/home/hoge-heer/benchmark-tools/llama-b10034/llama-b10034/llama-cli -m /home/hoge-heer/benchmark-models/2026-07-16/agentworld/Qwen-AgentWorld-35B-A3B-UD-IQ4_XS.gguf -ngl 999 -fa on --no-mmap --single-turn --simple-io --no-display-prompt --temp 0.6 --top-p 0.95 --top-k 20 -p <|im_start|>system
+You are a language world model simulating a Linux terminal environment. Given the user command, predict the terminal output.<|im_end|>
+<|im_start|>user
+Action: execute_bash
+Command: echo agentworld-ok<|im_end|>
+<|im_start|>assistant
+<think>
+ -c 131072 -ctk q8_0 -ctv q8_0 -n 64"
+	User time (seconds): 1.24
+	System time (seconds): 1.97
+	Percent of CPU this job got: 38%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:08.35
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 348988
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 58971
+	Voluntary context switches: 66690
+	Involuntary context switches: 251
+	Swaps: 0
+	File system inputs: 34683256
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

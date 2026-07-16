@@ -1,0 +1,41 @@
+0.00.052.058 I log_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.052.061 I device_info:
+0.00.052.116 I   - ROCm0   : Radeon 8060S Graphics (63969 MiB, 116853 MiB free)
+0.00.052.216 I   - Vulkan0 : Radeon 8060S Graphics (RADV GFX1151) (131584 MiB, 130048 MiB free)
+0.00.052.219 I   - CPU     : AMD RYZEN AI MAX+ 395 w/ Radeon 8060S (127938 MiB, 127938 MiB free)
+0.00.052.255 I system_info: n_threads = 16 (n_threads_batch = 16) / 32 | ROCm : FORCE_MMQ = 1 | NO_VMM = 1 | PEER_MAX_BATCH_SIZE = 128 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX_VNNI = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | AVX512 = 1 | AVX512_VBMI = 1 | AVX512_VNNI = 1 | AVX512_BF16 = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+0.00.052.273 I srv          init: running without SSL
+0.00.052.292 I srv          init: using 31 threads for HTTP server
+0.00.052.297 I srv          init: the WebUI is disabled
+0.00.052.352 I srv         start: binding port with default address family
+0.00.053.489 I srv          main: loading model
+0.00.053.492 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/2026-07-16/step37/target/Step-3.7-Flash-ROCmFPX-Q3-QualityPlus-00001-of-00009.gguf'
+0.00.053.510 I common_init_result: fitting params to device memory ...
+0.00.053.511 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+1.14.513.085 W common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+1.15.456.410 I srv    load_model: loading draft model '/home/hoge-heer/benchmark-models/2026-07-16/step37/draft/Step-3.7-Flash-MTP-Q8_0.gguf'
+1.18.640.612 I srv    load_model: initializing slots, n_slots = 1
+1.19.827.979 I common_speculative_init: adding speculative implementation 'draft-mtp'
+1.19.827.988 I common_speculative_state_draft_mtp: adding speculative implementation 'draft-mtp'
+1.19.827.994 I common_speculative_state_draft_mtp: - n_max=2, n_min=0, p_min=0.75, n_embd=4096, backend_sampling=1
+1.19.827.995 I common_speculative_state_draft_mtp: - gpu_layers=-2, cache_k=q8_0, cache_v=q8_0, ctx_tgt=yes, ctx_dft=yes
+1.19.828.115 I srv    load_model: speculative decoding context initialized
+1.19.828.116 I slot   load_model: id  0 | task -1 | new slot, n_ctx = 262144
+1.19.828.156 I srv    load_model: prompt cache is disabled - use `--cache-ram N` to enable it
+1.19.828.158 I srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+1.19.828.175 W srv          init: --cache-idle-slots requires --cache-ram, disabling
+1.19.834.229 I init: chat template, example_format: '<|im_start|>system
+You are a helpful assistant<|im_end|>
+<|im_start|>user
+Hello<|im_end|>
+<|im_start|>assistant
+Hi there<|im_end|>
+<|im_start|>user
+How are you?<|im_end|>
+<|im_start|>assistant
+<think>
+'
+1.19.838.483 I srv          init: init: chat template, thinking = 1
+1.19.838.539 I srv          main: model loaded
+1.19.838.546 I srv          main: server is listening on http://127.0.0.1:18037
+1.19.838.553 I srv  update_slots: all slots are idle

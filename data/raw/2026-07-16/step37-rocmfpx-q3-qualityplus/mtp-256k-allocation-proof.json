@@ -1,0 +1,52 @@
+{
+  "models": [
+    {
+      "name": "step-3.7-flash-rocmfpx-q3-qualityplus-mtp-256k-allocation",
+      "model": "step-3.7-flash-rocmfpx-q3-qualityplus-mtp-256k-allocation",
+      "modified_at": "",
+      "size": "",
+      "digest": "",
+      "type": "model",
+      "description": "",
+      "tags": [
+        ""
+      ],
+      "capabilities": [
+        "completion"
+      ],
+      "parameters": "",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "",
+        "families": [
+          ""
+        ],
+        "parameter_size": "",
+        "quantization_level": ""
+      }
+    }
+  ],
+  "object": "list",
+  "data": [
+    {
+      "id": "step-3.7-flash-rocmfpx-q3-qualityplus-mtp-256k-allocation",
+      "aliases": [
+        "step-3.7-flash-rocmfpx-q3-qualityplus-mtp-256k-allocation"
+      ],
+      "tags": [],
+      "object": "model",
+      "created": 1784209034,
+      "owned_by": "llamacpp",
+      "meta": {
+        "vocab_type": 2,
+        "n_vocab": 128896,
+        "n_ctx": 262144,
+        "n_ctx_train": 262144,
+        "n_embd": 4096,
+        "n_params": 196956130432,
+        "size": 87793160704
+      }
+    }
+  ]
+}

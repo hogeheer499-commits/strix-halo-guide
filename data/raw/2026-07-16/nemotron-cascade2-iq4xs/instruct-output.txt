@@ -1,0 +1,48 @@
+
+
+Loading model... 
+
+▄▄ ▄▄
+██ ██
+██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄
+██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██
+██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀
+                                    ██    ██
+                                    ▀▀    ▀▀
+
+build      : b10034-505b1ed15
+model      : /home/hoge-heer/benchmark-models/2026-07-16/cascade2/nvidia_Nemotron-Cascade-2-30B-A3B-IQ4_XS.gguf
+ftype      : IQ4_XS - 4.25 bpw
+modalities : text
+
+available commands:
+  /exit or Ctrl+C     stop or exit
+  /regen              regenerate the last response
+  /clear              clear the chat history
+  /read <file>        add a text file
+  /glob <pattern>     add text files using globbing pattern
+
+
+
+> <|im_start|>system
+You are a helpful and harmless assistant.
+
+You are not allowed to use any tools<|im_end|>
+<|im_start|>user
+A farmer has 17 sheep. All but 9 run away. How many sheep remain? Give the final answer clearly.<|im_end|>
+<|im_start|>assistant
+<think></think>
+
+[Start thinking]
+
+We need to answer: farmer has 17 sheep. All but 9 run away. How many remain? "All but 9" means 9 remain. So answer: 9 sheep remain. Provide final answer clearly.
+[End thinking]
+
+The phrase “all but 9 run away” means that 9 sheep did **not** run away; they stayed with the farmer.
+
+**Number of sheep remaining:** **9**.
+
+[ Prompt: 257.8 t/s | Generation: 78.7 t/s ]
+
+
+Exiting...

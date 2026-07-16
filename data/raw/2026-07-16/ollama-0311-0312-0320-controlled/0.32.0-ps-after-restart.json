@@ -1,0 +1,42 @@
+{
+  "models": [
+    {
+      "name": "qwen2.5vl:7b",
+      "model": "qwen2.5vl:7b",
+      "size": 5273540360,
+      "digest": "5ced39dfa4bac325dc183dd1e4febaa1c46b3ea28bce48896c8e69c1e79611cc",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen25vl",
+        "families": [
+          "qwen25vl"
+        ],
+        "parameter_size": "8.3B",
+        "quantization_level": "Q4_K_M"
+      },
+      "expires_at": "2026-07-16T05:40:45.566660067+02:00",
+      "size_vram": 5273540360,
+      "context_length": 2048
+    },
+    {
+      "name": "qwen3.6:35b-a3b",
+      "model": "qwen3.6:35b-a3b",
+      "size": 23188723464,
+      "digest": "07d35212591fc27746f0a317c975a6d68754fb38e9053d82e25f06057af28522",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen35moe",
+        "families": [
+          "qwen35moe"
+        ],
+        "parameter_size": "36.0B",
+        "quantization_level": "Q4_K_M"
+      },
+      "expires_at": "2026-07-16T05:40:41.506857023+02:00",
+      "size_vram": 23188723464,
+      "context_length": 2048
+    }
+  ]
+}

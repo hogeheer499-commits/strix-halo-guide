@@ -1,6 +1,6 @@
 # AMD MoE Concurrency: Density-Gate Evidence
 
-Status: measured first-party evidence on 2026-07-13; the Vulkan changes remain experimental and opt-in.
+Status: controlled b9979 optimization evidence on 2026-07-13 plus an official b10034 regression sentinel on 2026-07-16; the Vulkan changes remain experimental and opt-in.
 
 This page answers a practical server question:
 
@@ -9,6 +9,19 @@ This page answers a practical server question:
 The short answer is that this is a fixable Vulkan dispatch problem, not a Strix Halo memory-capacity limit. Official `llama.cpp` b9979 still uses fixed eight-column thresholds. An AMD/RADV density gate removes most of the 8-to-9 cliff on both tested MoE shapes without changing concurrency 1-8. A separate dense threshold of 16 helps most at concurrency 9-12, but regresses the 30B and 80B rows at concurrency 16 versus the density gate alone, so it is not a universal default.
 
 Do not compare these aggregate server numbers with direct single-stream `llama-bench` headlines. At concurrency 9, nine sequences contribute to the reported aggregate decode rate.
+
+## Latest Official Runtime Sentinel
+
+Official `llama.cpp` b10034 was retested with the same two exact model artifacts, Q4_0 KV, pp512/tg128 per sequence, and concurrency 8/9 shape. Each model received three cooled repeats.
+
+| Model | b10034 np8 | b10034 np9 | Change |
+| --- | ---: | ---: | ---: |
+| Qwen3-Coder 30B-A3B | 232.69 t/s | 145.79 t/s | **-37.34%** |
+| Qwen3-Next 80B-A3B | 144.61 t/s | 98.78 t/s | **-31.69%** |
+
+The latest measured official Vulkan release therefore does not remove the 8-to-9 cliff. b10035 adds only a CUDA extraction change, so it does not require a separate Vulkan sentinel. The b9979 campaign below remains the source for the opt-in density-gate A/B, correctness, and backend comparison; this newer run is deliberately a narrow stock-runtime regression check.
+
+Raw evidence: [`data/raw/2026-07-16/llamacpp-b10034-vulkan-sentinel/`](data/raw/2026-07-16/llamacpp-b10034-vulkan-sentinel/).
 
 ## What Was Tested
 

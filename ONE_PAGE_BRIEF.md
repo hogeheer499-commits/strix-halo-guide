@@ -12,8 +12,8 @@ AMD's public Ryzen AI Halo / Ryzen AI Developer Platform direction makes this ca
 
 The repo already includes a technical proof layer:
 
-- Public GitHub demand signal: 215 stars and 10 forks in a small hardware/software niche as of the 2026-07-14 GitHub API snapshot; use this as supporting context, not the main claim.
-- Recent reach: 816 unique repository visitors and 100 unique cloners in GitHub's latest available 14-day window ending 2026-07-08. Google was the largest recorded referrer with 352 unique visitors in that window. Treat these as dated reach signals, not permanent traffic claims.
+- Public GitHub demand signal: 218 stars, 11 forks, and 5 watchers in a small hardware/software niche as of the 2026-07-16 GitHub API snapshot; use this as supporting context, not the main claim.
+- Recent reach: 867 unique repository visitors and 132 unique cloners in GitHub's available 14-day window ending 2026-07-15. Google was the largest recorded referrer with 400 unique visitors in that window. Treat these as dated reach signals, not permanent traffic claims. The aggregate API responses are preserved in [`data/raw/2026-07-16/github-traction-snapshot/`](data/raw/2026-07-16/github-traction-snapshot/).
 - Setup and workflow guide: [`README.md`](README.md).
 - Current benchmark snapshot: [`BENCHMARKS.md`](BENCHMARKS.md).
 - Reproducibility notes: [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
@@ -22,7 +22,11 @@ The repo already includes a technical proof layer:
 - Charts: [`charts/`](charts/README.md).
 - Community validation: [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md).
 - Backend/server caveats: [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md), [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md), [`VLLM_BASELINE.md`](VLLM_BASELINE.md), [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md).
-- Multi-user software-bottleneck evidence: [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md) reproduces the official b9979 Vulkan 8-to-9 MoE cliff on 30B and 80B expert shapes, validates an opt-in AMD/RADV recovery path, and translates it into model-specific Vulkan/ROCm buyer guidance.
+- Multi-user software-bottleneck evidence: [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md) reproduces the Vulkan 8-to-9 MoE cliff on 30B and 80B expert shapes, confirms that it persists on official b10034, validates an opt-in AMD/RADV recovery path on b9979, and translates the result into model-specific Vulkan/ROCm buyer guidance.
+- Frontier-size agent evidence: a first-party Step 3.7 Flash 198B-total / about 11B-active ROCmFPX target plus MTP draft measured 34.50 t/s at 4K and 33.83 t/s at 16K, allocated 256K context, and returned a native tool call on one 128GB Beelink. This is scoped server/capacity evidence, not a direct speed headline.
+- Frontier-size direct GGUF evidence: a pinned 90.86GB DeepSeek V4 Flash 284.33B `UD-IQ2_XXS` artifact loaded, generated, and passed a basic deterministic check through official `llama.cpp` b10034 Vulkan/RADV on one 128GB Beelink. The 13.27 tg128 row is capacity/current-model evidence with a low-bit quality caveat, not a speed claim.
+- Ryzen AI server-optimization evidence: an isolated official ROCm 7.14 / PyTorch 2.11 / vLLM FP16 A/B reproduced AMD's documented batch-8+ hipBLASLt workaround on `gfx1151`, improving aggregate throughput by 40.50%, 38.96%, and 41.54% at concurrency 8, 9, and 16. This is scoped small-model server evidence, not a universal backend claim.
+- Current HIP compatibility evidence: official `llama.cpp` b10046 locally reproduced merged integrated-device host-buffer support on `gfx1151`, detecting the full UMA pool and using `ROCm_Host` buffers without a gfx-version override. The remaining manual runtime-library-path requirement is documented as setup friction rather than hidden.
 - Platform context: [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).
 
 ## Commercial Value
@@ -39,7 +43,7 @@ The public evidence map currently covers:
 - **8 credited community benchmark contributors**, listed in [`CONTRIBUTORS.md`](CONTRIBUTORS.md), in addition to the primary first-party Beelink measurements.
 - Beelink owner stacks, a three-system Corsair fleet, several independent GMKtec sources, MS-S1-Max, Nimo, and Minix evidence across Linux, Windows, Vulkan/RADV, ROCm, NPU, MTP, power, thermal, RPC, and large-model capacity routes.
 
-The normal first-party buyer path now includes an Ollama 0.31.2 system-service check at 60.57 t/s with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. A separate user-local 0.31.1 comparator reached 71.82 t/s and remains documented as a faster but non-default route. Community rows remain separated from first-party headline claims.
+The normal first-party buyer path includes an Ollama 0.31.2 system-service check at 60.57 t/s with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. A controlled same-port/same-cache follow-up put isolated 0.31.1, 0.31.2, and 0.32.0 local binaries in the same 72.55-73.20 t/s generation class; 0.32.0 also passed iGPU vision and process-restart checks. The installed 0.31.2 service remains the beginner default because the 0.32.0 test was not a system-package/full-reboot qualification. Community rows remain separated from first-party headline claims.
 
 Community corrections and negative results improve the proof layer rather than being hidden: exact artifacts and commands, raw logs, separated claim types, explicit caveats, and corrected routes remain public. See [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md).
 

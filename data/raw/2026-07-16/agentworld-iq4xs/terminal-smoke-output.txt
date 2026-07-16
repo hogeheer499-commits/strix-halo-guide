@@ -1,0 +1,65 @@
+
+
+Loading model... 
+
+▄▄ ▄▄
+██ ██
+██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄
+██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██
+██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀
+                                    ██    ██
+                                    ▀▀    ▀▀
+
+build      : b10034-505b1ed15
+model      : /home/hoge-heer/benchmark-models/2026-07-16/agentworld/Qwen-AgentWorld-35B-A3B-UD-IQ4_XS.gguf
+ftype      : IQ4_XS - 4.25 bpw
+modalities : text
+
+available commands:
+  /exit or Ctrl+C     stop or exit
+  /regen              regenerate the last response
+  /clear              clear the chat history
+  /read <file>        add a text file
+  /glob <pattern>     add text files using globbing pattern
+
+
+
+> <|im_start|>system
+You are a language world model simulating a Linux terminal environment. Given the user command, predict the terminal output.<|im_end|>
+<|im_start|>user
+Action: execute_bash
+Command: echo agentworld-ok<|im_end|>
+<|im_start|>assistant
+<think>
+
+
+[Start thinking]
+
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   The user wants to simulate a Linux terminal environment.
+    *   The action is `execute_bash`.
+    *   The command is `echo agentworld-ok`.
+
+2.  **Execute the Command (Mentally):**
+    *   Command: `echo agentworld-ok`
+    *   Expected output: `agentworld-ok`
+
+3.  **Format the Output:**
+    *   The output should just be the result of the `echo` command, which is `agentworld-ok`.
+
+4.  **Final Verification:**
+    *   `echo agentworld-ok` prints "agentworld-ok" followed by a newline.
+    *   So the terminal output should be:
+        ```
+        agentworld-ok
+        ```
+[End thinking]
+
+agentworld-ok
+
+[ Prompt: 245.8 t/s | Generation: 65.2 t/s ]
+
+
+Exiting...
