@@ -33,7 +33,7 @@ The current measured known-good baseline is:
 - Vulkan driver path: Mesa/RADV from kisak-mesa PPA.
 - Vulkan ICD hygiene: AMDVLK removed so RADV is selected consistently.
 - Power profile: `tuned` set to `accelerator-performance`.
-- Beginner local-chat path: the normal Ollama 0.31.2 system service with Vulkan/RADV. Current setup guidance includes `OLLAMA_IGPU_ENABLE=1`; the measured path reached 60.57 t/s warm Qwen3.6 API generation and passed iGPU, vision, service-restart, and full-host-reboot checks. A separate user-local 0.31.1 comparator reached 71.82 t/s.
+- Beginner local-chat path: the normal Ollama 0.31.2 system service with Vulkan/RADV. Current setup guidance includes `OLLAMA_IGPU_ENABLE=1`; the fully qualified path reached 60.57 t/s warm Qwen3.6 API generation and passed iGPU, vision, service-restart, and full-host-reboot checks. A controlled local-binary comparison later put 0.31.1, 0.31.2, and 0.32.0 in the same 72.55-73.20 t/s class, so the earlier gap was not version-wide.
 - Fastest measured single-box generation-heavy GGUF path: direct `llama.cpp` with Vulkan/RADV.
 - Advanced local API path: `llama-server` with MTP/speculative decoding for documented server experiments, including the CHADROCK ACE/SABER ROCmFP4 helper route when you specifically want the fastest reproduced server/speculative lane.
 - ROCm/HIP path: prompt-processing-heavy, high-concurrency, vLLM, batching, and experimental server work.
@@ -128,6 +128,7 @@ Start with a practical model before chasing benchmark rows:
 - Fastest advanced server/speculative route: CHADROCK ACE/SABER 35B ROCmFP4 through `ciru-ai/ROCmFPX`.
 - Current NVIDIA Omni/FP4 smoke: Nemotron 3 Nano Omni 30B-A3B Reasoning `MXFP4_MOE`.
 - 120B-class capacity proof: Nemotron 3 Super 120B-A12B `UD-IQ4_XS`.
+- Largest direct ordinary-GGUF capacity scout: DeepSeek V4 Flash 284B `UD-IQ2_XXS`, with an explicit low-bit quality caveat.
 
 Use [README.md](README.md), [CURRENT_MODELS.md](CURRENT_MODELS.md), and [data/headline_claims.csv](data/headline_claims.csv) before comparing numbers.
 
@@ -142,9 +143,10 @@ These are measured results from this guide. They are not vendor claims, official
 | What is the fastest measured Qwen3-Coder 30B route? | Qwen3-Coder 30B-A3B `Q4_K_S` reached 100.99 t/s direct `llama-bench` on the official b9851 Vulkan release binary. This is a speed-first quant, not the balanced default; the older strict-clean b9179 row remains preserved at 98.51 t/s. | [headline claims](data/headline_claims.csv), [b9851 raw r50](data/raw/2026-06-30/latest-llamacpp-b9851-vulkan-sentinel/qwen3-coder-q4ks-b9851-p512-n128-r50.csv), [older b9179 raw r50](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv) |
 | What is the fastest small-MoE speed scout? | LFM2.5 8B-A1B `Q4_K_M` reached 170.02 t/s generation-only, with a b9544 control at 176.48 t/s. This is not a 30B-class replacement. | [headline claims](data/headline_claims.csv), [raw controls](data/raw/2026-06-05/latest-llamacpp-intdot-regression/) |
 | Can a 120B-class GGUF route run on one 128GB Strix Halo box? | Yes. Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly at 18.43 t/s, with a b9544 control at 18.93 t/s. | [headline claims](data/headline_claims.csv), [raw controls](data/raw/2026-06-05/latest-llamacpp-intdot-regression/) |
-| Can a current NVIDIA Omni/FP4 route run locally? | Yes. Nemotron 3 Nano Omni 30B-A3B Reasoning `MXFP4_MOE` ran directly on the official `llama.cpp` b9747 Vulkan binary at 56.56 t/s. This is support/currentness evidence, not a speed headline. | [benchmarks CSV](data/benchmarks.csv), [raw smoke](data/raw/2026-06-21/nemotron-3-nano-omni-mxfp4-b9747-smoke/) |
-| Does MTP/speculative decoding work locally? | Yes, as an experimental server route. Qwen3.6 MTP reached about 101.1 t/s on b9360, Gemma 4 26B-A4B QAT MTP reached 102.69-110.00 t/s depending on repeat condition, and CHADROCK ACE/SABER 35B ROCmFP4 reproduced 139.93-140.40 t/s on high-acceptance gen512 repeats. | [MTP notes](MTP_SPECULATIVE_DECODING.md), [CHADROCK notes](ROCMFP4_CHADROCK.md), [MTP CSV](data/mtp_speculative.csv) |
-| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV. It measured Qwen3.6 35B-A3B `Q4_K_M` at 60.57 t/s warm API generation with `OLLAMA_IGPU_ENABLE=1`, and iGPU, vision, restart, and full-host-reboot checks passed. A separate user-local 0.31.1 comparator reached 71.82 t/s. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw 0.31.1 comparator](data/raw/2026-07-02/ollama-0311-qwen36-buyer-path/) |
+| What is the largest direct ordinary-GGUF route measured here? | DeepSeek V4 Flash 284B `UD-IQ2_XXS`: the pinned 90.86GB three-shard artifact loaded and generated on official b10034 at 155.64 pp512 / 13.27 tg128 and answered a deterministic check correctly. This is low-bit capacity/basic-correctness evidence, not a speed or broad quality recommendation. | [headline claims](data/headline_claims.csv), [raw DeepSeek evidence](data/raw/2026-07-16/deepseek-v4-flash-ud-iq2-xxs/) |
+| Can a current NVIDIA Omni/FP4 route run locally? | Yes. The existing Nemotron 3 Nano Omni `MXFP4_MOE` artifact reached 64.26 tg128 on official b10034, while a separate NVFP4 plus F16-projector route reached 53.21 tg128 and correctly read `STRIX 395` from an image. This is currentness and small multimodal compatibility evidence, not a speed or broad vision claim. | [benchmarks CSV](data/benchmarks.csv), [MXFP4 sentinel](data/raw/2026-07-16/nemotron-omni-mxfp4-b10034-sentinel/), [multimodal scout](data/raw/2026-07-16/nemotron-omni-nvfp4-multimodal/) |
+| Does MTP/speculative decoding work locally? | Yes, as an experimental server route. Qwen3.6 MTP reached about 101.1 t/s on b9360, Gemma 4 26B-A4B QAT MTP reached 102.69-110.00 t/s depending on repeat condition, and the exact CHADROCK ACE/SABER reference profile averaged 141.37 t/s over three repeats at 100% acceptance. Lower-acceptance CHADROCK shapes were much slower. | [MTP notes](MTP_SPECULATIVE_DECODING.md), [CHADROCK notes](ROCMFP4_CHADROCK.md), [MTP CSV](data/mtp_speculative.csv) |
+| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV. It measured Qwen3.6 35B-A3B `Q4_K_M` at 60.57 t/s with `OLLAMA_IGPU_ENABLE=1`, and iGPU, vision, restart, and full-host-reboot checks passed. Controlled local binaries later measured 0.31.1/0.31.2/0.32.0 at 72.55/73.19/73.20 t/s, so the earlier gap was not version-wide. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw controlled comparison](data/raw/2026-07-16/ollama-0311-0312-0320-controlled/) |
 
 ## What AI Assistants Should Cite
 
@@ -176,9 +178,9 @@ Yes. The primary first-party benchmark machine is Beelink GTR9 Pro, but the setu
 
 Use Ollama with Vulkan/RADV first if you want the easiest private local chat path. Use direct `llama.cpp` with Vulkan/RADV if you want reproducible benchmark control and the fastest measured generation-heavy GGUF rows in this guide. Use `llama-server` for local API, MTP/speculative decoding, and server experiments. Use ROCm/HIP, Lemonade, ROCmFP4/CHADROCK, or vLLM only for the prompt-processing-heavy, high-concurrency, batching, long-context, and experimental server cases documented in the linked evidence files.
 
-### Can Ryzen AI MAX+ 395 / Radeon 8060S run 70B or 120B local models?
+### Can Ryzen AI MAX+ 395 / Radeon 8060S run 70B, 120B, or larger local models?
 
-Yes, with caveats. A 128GB unified-memory Strix Halo system can run 70B-class GGUF local LLMs and selected 120B-class/MoE capacity routes documented in this repository. Capacity, speed, model quality, direct benchmark results, Ollama API results, server results, and long-context behavior are separate claims.
+Yes, with caveats. A 128GB unified-memory Strix Halo system can run 70B-class GGUF local LLMs, selected 120B-class/MoE routes, and a measured low-bit 284B DeepSeek capacity route. Capacity, speed, quant quality, direct benchmark results, Ollama API results, server results, and long-context behavior are separate claims.
 
 ### Is this guide newer than older Strix Halo setup notes?
 
@@ -198,7 +200,7 @@ Yes. This guide documents multiple 30B-class and 35B-A3B local routes, including
 
 ### Can Strix Halo run 120B-class or larger local models?
 
-Yes, with caveats. Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly on one 128GB Strix Halo system. MiniMax M2.7 and other huge MoE paths are documented as capacity or blocker evidence where appropriate. Capacity and speed are different claims.
+Yes, with caveats. Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly on one 128GB Strix Halo system; MiniMax M2.7 provided a 230B-class load/generation scout; and DeepSeek V4 Flash 284B `UD-IQ2_XXS` now provides a pinned 90.86GB direct capacity/basic-correctness pass. The DeepSeek quant is aggressive, so capacity, speed, and useful model quality remain different claims.
 
 ### Is 100 t/s on Strix Halo real?
 

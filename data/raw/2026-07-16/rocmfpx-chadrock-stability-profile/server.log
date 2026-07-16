@@ -1,0 +1,284 @@
+0.00.237.406 I log_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.237.408 I device_info:
+0.00.238.035 I   - ROCm0   : Radeon 8060S Graphics (63969 MiB, 112041 MiB free)
+0.00.238.103 I   - Vulkan0 : Radeon 8060S Graphics (RADV GFX1151) (131584 MiB, 129804 MiB free)
+0.00.238.107 I   - CPU     : AMD RYZEN AI MAX+ 395 w/ Radeon 8060S (127938 MiB, 127938 MiB free)
+0.00.238.343 I system_info: n_threads = 16 (n_threads_batch = 32) / 32 | ROCm : FORCE_MMQ = 1 | NO_VMM = 1 | PEER_MAX_BATCH_SIZE = 128 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX_VNNI = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | AVX512 = 1 | AVX512_VBMI = 1 | AVX512_VNNI = 1 | AVX512_BF16 = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+0.00.238.694 I srv          init: running without SSL
+0.00.239.092 I srv          init: using 31 threads for HTTP server
+0.00.239.296 I srv          init: the WebUI is disabled
+0.00.239.844 I srv         start: binding port with default address family
+0.00.241.255 I srv          main: loading model
+0.00.241.260 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/rocmfpx-chadrock/ace-saber-35b/Qwen3.6-35B-A3B-NSC-ACE-SABER-MTP-F16-to-ROCmFP4-STRIX_LEAN.gguf'
+0.00.242.034 I common_init_result: fitting params to device memory ...
+0.00.242.035 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+0.03.223.016 W llama_context: n_ctx_seq (32768) < n_ctx_train (262144) -- the full capacity of the model will not be utilized
+0.03.371.231 W common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+0.03.567.835 I srv    load_model: creating MTP draft context against the target model '/home/hoge-heer/benchmark-models/rocmfpx-chadrock/ace-saber-35b/Qwen3.6-35B-A3B-NSC-ACE-SABER-MTP-F16-to-ROCmFP4-STRIX_LEAN.gguf'
+0.03.567.862 W llama_context: n_ctx_seq (32768) < n_ctx_train (262144) -- the full capacity of the model will not be utilized
+0.03.610.438 I srv    load_model: initializing slots, n_slots = 1
+0.03.642.101 I common_context_can_seq_rm: the context supports bounded partial sequence removal
+0.03.816.011 I common_speculative_init: adding speculative implementation 'draft-mtp'
+0.03.816.025 I common_speculative_state_draft_mtp: adding speculative implementation 'draft-mtp'
+0.03.816.030 I common_speculative_state_draft_mtp: - n_max=4, n_min=0, p_min=0.25, n_embd=2048, backend_sampling=0
+0.03.816.031 I common_speculative_state_draft_mtp: - gpu_layers=-2, cache_k=f16, cache_v=f16, ctx_tgt=yes, ctx_dft=yes
+0.03.816.142 I srv    load_model: speculative decoding context initialized
+0.03.816.143 I slot   load_model: id  0 | task -1 | new slot, n_ctx = 32768
+0.03.816.197 I srv    load_model: prompt cache is disabled - use `--cache-ram N` to enable it
+0.03.816.197 I srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+0.03.816.212 W srv          init: --cache-idle-slots requires --cache-ram, disabling
+0.03.828.830 I init: chat template, example_format: '<|im_start|>system
+You are a helpful assistant<|im_end|>
+<|im_start|>user
+Hello<|im_end|>
+<|im_start|>assistant
+Hi there<|im_end|>
+<|im_start|>user
+How are you?<|im_end|>
+<|im_start|>assistant
+<think>
+
+</think>
+
+'
+0.03.834.583 I srv          init: init: chat template, thinking = 0
+0.03.834.612 I srv          main: model loaded
+0.03.834.616 I srv          main: server is listening on http://127.0.0.1:18001
+0.03.834.623 I srv  update_slots: all slots are idle
+1.40.845.104 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = -1
+1.40.845.150 I slot launch_slot_: id  0 | task 0 | processing task, is_child = 0
+1.41.355.147 I slot create_check: id  0 | task 0 | created context checkpoint 1 of 32 (pos_min = 467, pos_max = 467, n_tokens = 468, size = 0.010 MiB)
+1.41.875.193 I slot create_check: id  0 | task 0 | created context checkpoint 2 of 32 (pos_min = 979, pos_max = 979, n_tokens = 980, size = 0.019 MiB)
+1.43.223.003 I slot print_timing: id  0 | task 0 | n_decoded =    100, tg =  75.96 t/s
+1.46.237.181 I slot print_timing: id  0 | task 0 | n_decoded =    316, tg =  72.97 t/s
+1.48.700.462 I slot print_timing: id  0 | task 0 | 
+prompt eval time =    1061.24 ms /   984 tokens (    1.08 ms per token,   927.22 tokens per second)
+       eval time =    6794.05 ms /   512 tokens (   13.27 ms per token,    75.36 tokens per second)
+      total time =    7855.28 ms /  1496 tokens
+1.48.700.470 I slot print_timing: id  0 | task 0 | draft acceptance = 0.39920 (  299 accepted /   749 generated), mean acceptance length =  2.45, acceptance rate per position = (0.714, 0.383, 0.228, 0.126)
+1.48.723.981 I statistics        draft-mtp: #calls(b,g,a) =    1    211    206, #gen drafts =    206, #acc drafts =   147, #gen tokens =    749, #acc tokens =   299, #mean acc len = 2.45, #acc rate/pos = (0.714, 0.383, 0.228, 0.126), dur(b,g,a) = 0.003, 1515.602, 0.144 ms
+1.48.724.023 I slot      release: id  0 | task 0 | stop processing: n_tokens = 1495, truncated = 0
+1.48.724.030 I srv  update_slots: all slots are idle
+1.51.744.336 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 393798436047
+1.51.744.379 I slot launch_slot_: id  0 | task 216 | processing task, is_child = 0
+1.51.744.394 W slot update_slots: id  0 | task 216 | erased invalidated context checkpoint (pos_min = 467, pos_max = 467, n_tokens = 468, n_swa = 0, pos_next = 0, size = 0.010 MiB)
+1.51.744.403 W slot update_slots: id  0 | task 216 | erased invalidated context checkpoint (pos_min = 979, pos_max = 979, n_tokens = 980, n_swa = 0, pos_next = 0, size = 0.019 MiB)
+1.55.120.883 I slot print_timing: id  0 | task 216 | prompt processing, n_tokens =   3430, progress = 0.87, t =   3.38 s / 1015.85 tokens per second
+1.55.130.555 I slot create_check: id  0 | task 216 | created context checkpoint 1 of 32 (pos_min = 3429, pos_max = 3429, n_tokens = 3430, size = 0.066 MiB)
+1.55.614.889 I slot print_timing: id  0 | task 216 | prompt processing, n_tokens =   3942, progress = 1.00, t =   3.87 s / 1018.48 tokens per second
+1.55.628.468 I slot create_check: id  0 | task 216 | created context checkpoint 2 of 32 (pos_min = 3941, pos_max = 3941, n_tokens = 3942, size = 0.076 MiB)
+1.56.354.351 I slot print_timing: id  0 | task 216 | n_decoded =    101, tg = 144.84 t/s
+1.59.267.886 I slot print_timing: id  0 | task 216 | 
+prompt eval time =    3912.58 ms /  3946 tokens (    0.99 ms per token,  1008.54 tokens per second)
+       eval time =    3610.90 ms /   512 tokens (    7.05 ms per token,   141.79 tokens per second)
+      total time =    7523.49 ms /  4458 tokens
+1.59.267.895 I slot print_timing: id  0 | task 216 | draft acceptance = 1.00000 (  408 accepted /   408 generated), mean acceptance length =  5.00, acceptance rate per position = (1.000, 1.000, 1.000, 1.000)
+1.59.267.918 I statistics        draft-mtp: #calls(b,g,a) =    2    313    308, #gen drafts =    308, #acc drafts =   249, #gen tokens =   1157, #acc tokens =   707, #mean acc len = 3.30, #acc rate/pos = (0.808, 0.588, 0.484, 0.416), dur(b,g,a) = 0.004, 2305.059, 0.162 ms
+1.59.267.963 I slot      release: id  0 | task 216 | stop processing: n_tokens = 4457, truncated = 0
+1.59.267.971 I srv  update_slots: all slots are idle
+2.02.277.812 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 393808979987
+2.02.277.857 I slot launch_slot_: id  0 | task 324 | processing task, is_child = 0
+2.02.277.872 W slot update_slots: id  0 | task 324 | erased invalidated context checkpoint (pos_min = 3429, pos_max = 3429, n_tokens = 3430, n_swa = 0, pos_next = 0, size = 0.066 MiB)
+2.02.277.874 W slot update_slots: id  0 | task 324 | erased invalidated context checkpoint (pos_min = 3941, pos_max = 3941, n_tokens = 3942, n_swa = 0, pos_next = 0, size = 0.076 MiB)
+2.05.989.228 I slot print_timing: id  0 | task 324 | prompt processing, n_tokens =   4096, progress = 0.52, t =   3.71 s / 1103.64 tokens per second
+2.07.955.908 I slot print_timing: id  0 | task 324 | prompt processing, n_tokens =   6144, progress = 0.78, t =   5.68 s / 1082.07 tokens per second
+2.09.277.641 I slot print_timing: id  0 | task 324 | prompt processing, n_tokens =   7377, progress = 0.93, t =   7.00 s / 1053.89 tokens per second
+2.09.288.443 I slot create_check: id  0 | task 324 | created context checkpoint 1 of 32 (pos_min = 7376, pos_max = 7376, n_tokens = 7377, size = 0.141 MiB)
+2.09.802.840 I slot print_timing: id  0 | task 324 | prompt processing, n_tokens =   7889, progress = 1.00, t =   7.52 s / 1048.38 tokens per second
+2.09.820.030 I slot create_check: id  0 | task 324 | created context checkpoint 2 of 32 (pos_min = 7888, pos_max = 7888, n_tokens = 7889, size = 0.151 MiB)
+2.10.650.738 I slot print_timing: id  0 | task 324 | n_decoded =    101, tg = 126.10 t/s
+2.13.663.657 I slot print_timing: id  0 | task 324 | n_decoded =    348, tg =  91.25 t/s
+2.15.795.539 I slot print_timing: id  0 | task 324 | 
+prompt eval time =    7571.90 ms /  7893 tokens (    0.96 ms per token,  1042.41 tokens per second)
+       eval time =    5945.72 ms /   512 tokens (   11.61 ms per token,    86.11 tokens per second)
+      total time =   13517.63 ms /  8405 tokens
+2.15.795.546 I slot print_timing: id  0 | task 324 | draft acceptance = 0.52969 (  339 accepted /   640 generated), mean acceptance length =  3.01, acceptance rate per position = (0.751, 0.574, 0.402, 0.278)
+2.15.795.564 I statistics        draft-mtp: #calls(b,g,a) =    3    485    477, #gen drafts =    477, #acc drafts =   376, #gen tokens =   1797, #acc tokens =  1046, #mean acc len = 3.19, #acc rate/pos = (0.788, 0.583, 0.455, 0.367), dur(b,g,a) = 0.004, 3627.314, 0.246 ms
+2.15.795.636 I slot      release: id  0 | task 324 | stop processing: n_tokens = 8404, truncated = 0
+2.15.795.643 I srv  update_slots: all slots are idle
+2.18.811.891 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 393825507660
+2.18.811.936 I slot launch_slot_: id  0 | task 503 | processing task, is_child = 0
+2.18.811.949 W slot update_slots: id  0 | task 503 | erased invalidated context checkpoint (pos_min = 7376, pos_max = 7376, n_tokens = 7377, n_swa = 0, pos_next = 0, size = 0.141 MiB)
+2.18.811.951 W slot update_slots: id  0 | task 503 | erased invalidated context checkpoint (pos_min = 7888, pos_max = 7888, n_tokens = 7889, n_swa = 0, pos_next = 0, size = 0.151 MiB)
+2.22.531.611 I slot print_timing: id  0 | task 503 | prompt processing, n_tokens =   4096, progress = 0.26, t =   3.72 s / 1101.18 tokens per second
+2.24.483.219 I slot print_timing: id  0 | task 503 | prompt processing, n_tokens =   6144, progress = 0.39, t =   5.67 s / 1083.36 tokens per second
+2.26.519.748 I slot print_timing: id  0 | task 503 | prompt processing, n_tokens =   8192, progress = 0.52, t =   7.71 s / 1062.82 tokens per second
+2.26.519.948 I slot update_slots: id  0 | task 503 | 8192 tokens since last checkpoint at 0, creating new checkpoint during processing at position 10240
+2.26.537.066 I slot create_check: id  0 | task 503 | created context checkpoint 1 of 32 (pos_min = 8191, pos_max = 8191, n_tokens = 8192, size = 0.157 MiB)
+2.28.634.520 I slot print_timing: id  0 | task 503 | prompt processing, n_tokens =  10240, progress = 0.65, t =   9.82 s / 1042.50 tokens per second
+2.30.860.655 I slot print_timing: id  0 | task 503 | prompt processing, n_tokens =  12288, progress = 0.78, t =  12.05 s / 1019.86 tokens per second
+2.33.143.258 I slot print_timing: id  0 | task 503 | prompt processing, n_tokens =  14336, progress = 0.91, t =  14.33 s / 1000.33 tokens per second
+2.34.247.251 I slot print_timing: id  0 | task 503 | prompt processing, n_tokens =  15271, progress = 0.97, t =  15.44 s / 989.36 tokens per second
+2.34.272.636 I slot create_check: id  0 | task 503 | created context checkpoint 2 of 32 (pos_min = 15270, pos_max = 15270, n_tokens = 15271, size = 0.292 MiB)
+2.34.876.141 I slot print_timing: id  0 | task 503 | prompt processing, n_tokens =  15783, progress = 1.00, t =  16.06 s / 982.50 tokens per second
+2.34.904.921 I slot create_check: id  0 | task 503 | created context checkpoint 3 of 32 (pos_min = 15782, pos_max = 15782, n_tokens = 15783, size = 0.302 MiB)
+2.35.841.728 I slot print_timing: id  0 | task 503 | n_decoded =    101, tg = 113.02 t/s
+2.38.871.898 I slot print_timing: id  0 | task 503 | n_decoded =    482, tg = 122.84 t/s
+2.39.104.605 I slot print_timing: id  0 | task 503 | 
+prompt eval time =   16136.00 ms / 15787 tokens (    1.02 ms per token,   978.37 tokens per second)
+       eval time =    4156.62 ms /   512 tokens (    8.12 ms per token,   123.18 tokens per second)
+      total time =   20292.62 ms / 16299 tokens
+2.39.104.611 I slot print_timing: id  0 | task 503 | draft acceptance = 0.97837 (  407 accepted /   416 generated), mean acceptance length =  4.91, acceptance rate per position = (0.990, 0.990, 0.971, 0.962)
+2.39.104.630 I statistics        draft-mtp: #calls(b,g,a) =    4    589    581, #gen drafts =    581, #acc drafts =   479, #gen tokens =   2213, #acc tokens =  1453, #mean acc len = 3.50, #acc rate/pos = (0.824, 0.656, 0.547, 0.473), dur(b,g,a) = 0.006, 4554.668, 0.269 ms
+2.39.104.795 I slot      release: id  0 | task 503 | stop processing: n_tokens = 16298, truncated = 0
+2.39.104.806 I srv  update_slots: all slots are idle
+2.42.108.750 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 393848816819
+2.42.108.786 I slot launch_slot_: id  0 | task 618 | processing task, is_child = 0
+2.42.108.799 W slot update_slots: id  0 | task 618 | erased invalidated context checkpoint (pos_min = 8191, pos_max = 8191, n_tokens = 8192, n_swa = 0, pos_next = 0, size = 0.157 MiB)
+2.42.108.801 W slot update_slots: id  0 | task 618 | erased invalidated context checkpoint (pos_min = 15270, pos_max = 15270, n_tokens = 15271, n_swa = 0, pos_next = 0, size = 0.292 MiB)
+2.42.108.802 W slot update_slots: id  0 | task 618 | erased invalidated context checkpoint (pos_min = 15782, pos_max = 15782, n_tokens = 15783, n_swa = 0, pos_next = 0, size = 0.302 MiB)
+2.42.556.733 I slot create_check: id  0 | task 618 | created context checkpoint 1 of 32 (pos_min = 467, pos_max = 467, n_tokens = 468, size = 0.010 MiB)
+2.43.020.238 I slot create_check: id  0 | task 618 | created context checkpoint 2 of 32 (pos_min = 979, pos_max = 979, n_tokens = 980, size = 0.019 MiB)
+2.44.221.469 I slot print_timing: id  0 | task 618 | n_decoded =    102, tg =  87.06 t/s
+2.47.232.890 I slot print_timing: id  0 | task 618 | n_decoded =    330, tg =  78.89 t/s
+2.49.396.387 I slot print_timing: id  0 | task 618 | 
+prompt eval time =     941.07 ms /   984 tokens (    0.96 ms per token,  1045.62 tokens per second)
+       eval time =    6346.48 ms /   512 tokens (   12.40 ms per token,    80.67 tokens per second)
+      total time =    7287.55 ms /  1496 tokens
+2.49.396.394 I slot print_timing: id  0 | task 618 | draft acceptance = 0.44180 (  315 accepted /   713 generated), mean acceptance length =  2.66, acceptance rate per position = (0.732, 0.453, 0.295, 0.179)
+2.49.396.412 I statistics        draft-mtp: #calls(b,g,a) =    5    785    771, #gen drafts =    771, #acc drafts =   618, #gen tokens =   2926, #acc tokens =  1768, #mean acc len = 3.29, #acc rate/pos = (0.802, 0.606, 0.485, 0.401), dur(b,g,a) = 0.007, 5968.110, 0.358 ms
+2.49.396.434 I slot      release: id  0 | task 618 | stop processing: n_tokens = 1495, truncated = 0
+2.49.396.443 I srv  update_slots: all slots are idle
+2.52.402.419 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 393859108458
+2.52.402.455 I slot launch_slot_: id  0 | task 818 | processing task, is_child = 0
+2.52.402.468 W slot update_slots: id  0 | task 818 | erased invalidated context checkpoint (pos_min = 467, pos_max = 467, n_tokens = 468, n_swa = 0, pos_next = 0, size = 0.010 MiB)
+2.52.402.470 W slot update_slots: id  0 | task 818 | erased invalidated context checkpoint (pos_min = 979, pos_max = 979, n_tokens = 980, n_swa = 0, pos_next = 0, size = 0.019 MiB)
+2.55.532.361 I slot print_timing: id  0 | task 818 | prompt processing, n_tokens =   3430, progress = 0.87, t =   3.13 s / 1095.89 tokens per second
+2.55.543.642 I slot create_check: id  0 | task 818 | created context checkpoint 1 of 32 (pos_min = 3429, pos_max = 3429, n_tokens = 3430, size = 0.066 MiB)
+2.56.026.733 I slot print_timing: id  0 | task 818 | prompt processing, n_tokens =   3942, progress = 1.00, t =   3.62 s / 1087.67 tokens per second
+2.56.040.507 I slot create_check: id  0 | task 818 | created context checkpoint 2 of 32 (pos_min = 3941, pos_max = 3941, n_tokens = 3942, size = 0.076 MiB)
+2.56.762.500 I slot print_timing: id  0 | task 818 | n_decoded =    101, tg = 145.62 t/s
+2.59.687.476 I slot print_timing: id  0 | task 818 | 
+prompt eval time =    3666.43 ms /  3946 tokens (    0.93 ms per token,  1076.25 tokens per second)
+       eval time =    3618.56 ms /   512 tokens (    7.07 ms per token,   141.49 tokens per second)
+      total time =    7285.00 ms /  4458 tokens
+2.59.687.482 I slot print_timing: id  0 | task 818 | draft acceptance = 1.00000 (  408 accepted /   408 generated), mean acceptance length =  5.00, acceptance rate per position = (1.000, 1.000, 1.000, 1.000)
+2.59.687.508 I statistics        draft-mtp: #calls(b,g,a) =    6    887    873, #gen drafts =    873, #acc drafts =   720, #gen tokens =   3334, #acc tokens =  2176, #mean acc len = 3.49, #acc rate/pos = (0.825, 0.652, 0.545, 0.471), dur(b,g,a) = 0.008, 6758.518, 0.373 ms
+2.59.687.549 I slot      release: id  0 | task 818 | stop processing: n_tokens = 4457, truncated = 0
+2.59.687.562 I srv  update_slots: all slots are idle
+3.02.697.066 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 393869399573
+3.02.697.104 I slot launch_slot_: id  0 | task 926 | processing task, is_child = 0
+3.02.697.117 W slot update_slots: id  0 | task 926 | erased invalidated context checkpoint (pos_min = 3429, pos_max = 3429, n_tokens = 3430, n_swa = 0, pos_next = 0, size = 0.066 MiB)
+3.02.697.120 W slot update_slots: id  0 | task 926 | erased invalidated context checkpoint (pos_min = 3941, pos_max = 3941, n_tokens = 3942, n_swa = 0, pos_next = 0, size = 0.076 MiB)
+3.06.409.666 I slot print_timing: id  0 | task 926 | prompt processing, n_tokens =   4096, progress = 0.52, t =   3.71 s / 1103.29 tokens per second
+3.08.359.997 I slot print_timing: id  0 | task 926 | prompt processing, n_tokens =   6144, progress = 0.78, t =   5.66 s / 1084.96 tokens per second
+3.09.676.724 I slot print_timing: id  0 | task 926 | prompt processing, n_tokens =   7377, progress = 0.93, t =   6.98 s / 1056.94 tokens per second
+3.09.687.566 I slot create_check: id  0 | task 926 | created context checkpoint 1 of 32 (pos_min = 7376, pos_max = 7376, n_tokens = 7377, size = 0.141 MiB)
+3.10.201.326 I slot print_timing: id  0 | task 926 | prompt processing, n_tokens =   7889, progress = 1.00, t =   7.50 s / 1051.28 tokens per second
+3.10.218.391 I slot create_check: id  0 | task 926 | created context checkpoint 2 of 32 (pos_min = 7888, pos_max = 7888, n_tokens = 7889, size = 0.151 MiB)
+3.11.079.300 I slot print_timing: id  0 | task 926 | n_decoded =    101, tg = 121.60 t/s
+3.14.080.471 I slot print_timing: id  0 | task 926 | n_decoded =    318, tg =  82.99 t/s
+3.16.704.683 I slot print_timing: id  0 | task 926 | 
+prompt eval time =    7551.54 ms /  7893 tokens (    0.96 ms per token,  1045.22 tokens per second)
+       eval time =    6456.01 ms /   512 tokens (   12.61 ms per token,    79.31 tokens per second)
+      total time =   14007.55 ms /  8405 tokens
+3.16.704.690 I slot print_timing: id  0 | task 926 | draft acceptance = 0.47470 (  319 accepted /   672 generated), mean acceptance length =  2.74, acceptance rate per position = (0.732, 0.481, 0.322, 0.208)
+3.16.704.709 I statistics        draft-mtp: #calls(b,g,a) =    7   1078   1056, #gen drafts =   1056, #acc drafts =   854, #gen tokens =   4006, #acc tokens =  2495, #mean acc len = 3.36, #acc rate/pos = (0.809, 0.622, 0.507, 0.425), dur(b,g,a) = 0.009, 8188.987, 0.483 ms
+3.16.704.791 I slot      release: id  0 | task 926 | stop processing: n_tokens = 8404, truncated = 0
+3.16.704.801 I srv  update_slots: all slots are idle
+3.19.722.220 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 393886416815
+3.19.722.273 I slot launch_slot_: id  0 | task 1125 | processing task, is_child = 0
+3.19.722.289 W slot update_slots: id  0 | task 1125 | erased invalidated context checkpoint (pos_min = 7376, pos_max = 7376, n_tokens = 7377, n_swa = 0, pos_next = 0, size = 0.141 MiB)
+3.19.722.291 W slot update_slots: id  0 | task 1125 | erased invalidated context checkpoint (pos_min = 7888, pos_max = 7888, n_tokens = 7889, n_swa = 0, pos_next = 0, size = 0.151 MiB)
+3.23.437.759 I slot print_timing: id  0 | task 1125 | prompt processing, n_tokens =   4096, progress = 0.26, t =   3.72 s / 1102.42 tokens per second
+3.25.386.889 I slot print_timing: id  0 | task 1125 | prompt processing, n_tokens =   6144, progress = 0.39, t =   5.66 s / 1084.63 tokens per second
+3.27.425.249 I slot print_timing: id  0 | task 1125 | prompt processing, n_tokens =   8192, progress = 0.52, t =   7.70 s / 1063.49 tokens per second
+3.27.425.432 I slot update_slots: id  0 | task 1125 | 8192 tokens since last checkpoint at 0, creating new checkpoint during processing at position 10240
+3.27.442.732 I slot create_check: id  0 | task 1125 | created context checkpoint 1 of 32 (pos_min = 8191, pos_max = 8191, n_tokens = 8192, size = 0.157 MiB)
+3.29.550.504 I slot print_timing: id  0 | task 1125 | prompt processing, n_tokens =  10240, progress = 0.65, t =   9.83 s / 1041.90 tokens per second
+3.31.767.330 I slot print_timing: id  0 | task 1125 | prompt processing, n_tokens =  12288, progress = 0.78, t =  12.05 s / 1020.17 tokens per second
+3.34.044.108 I slot print_timing: id  0 | task 1125 | prompt processing, n_tokens =  14336, progress = 0.91, t =  14.32 s / 1000.99 tokens per second
+3.35.149.273 I slot print_timing: id  0 | task 1125 | prompt processing, n_tokens =  15271, progress = 0.97, t =  15.43 s / 989.89 tokens per second
+3.35.174.793 I slot create_check: id  0 | task 1125 | created context checkpoint 2 of 32 (pos_min = 15270, pos_max = 15270, n_tokens = 15271, size = 0.292 MiB)
+3.35.772.206 I slot print_timing: id  0 | task 1125 | prompt processing, n_tokens =  15783, progress = 1.00, t =  16.05 s / 983.37 tokens per second
+3.35.801.297 I slot create_check: id  0 | task 1125 | created context checkpoint 3 of 32 (pos_min = 15782, pos_max = 15782, n_tokens = 15783, size = 0.302 MiB)
+3.36.814.822 I slot print_timing: id  0 | task 1125 | n_decoded =    101, tg = 104.16 t/s
+3.39.831.703 I slot print_timing: id  0 | task 1125 | n_decoded =    321, tg =  80.52 t/s
+3.42.371.073 I slot print_timing: id  0 | task 1125 | 
+prompt eval time =   16122.78 ms / 15787 tokens (    1.02 ms per token,   979.17 tokens per second)
+       eval time =    6526.00 ms /   512 tokens (   12.75 ms per token,    78.46 tokens per second)
+      total time =   22648.77 ms / 16299 tokens
+3.42.371.085 I slot print_timing: id  0 | task 1125 | draft acceptance = 0.53577 (  337 accepted /   629 generated), mean acceptance length =  2.99, acceptance rate per position = (0.769, 0.527, 0.391, 0.308)
+3.42.371.121 I statistics        draft-mtp: #calls(b,g,a) =    8   1251   1225, #gen drafts =   1225, #acc drafts =   984, #gen tokens =   4635, #acc tokens =  2832, #mean acc len = 3.31, #acc rate/pos = (0.803, 0.609, 0.491, 0.409), dur(b,g,a) = 0.013, 9693.280, 0.565 ms
+3.42.371.249 I slot      release: id  0 | task 1125 | stop processing: n_tokens = 16298, truncated = 0
+3.42.371.258 I srv  update_slots: all slots are idle
+3.45.375.059 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 393912083273
+3.45.375.098 I slot launch_slot_: id  0 | task 1310 | processing task, is_child = 0
+3.45.375.113 W slot update_slots: id  0 | task 1310 | erased invalidated context checkpoint (pos_min = 8191, pos_max = 8191, n_tokens = 8192, n_swa = 0, pos_next = 0, size = 0.157 MiB)
+3.45.375.115 W slot update_slots: id  0 | task 1310 | erased invalidated context checkpoint (pos_min = 15270, pos_max = 15270, n_tokens = 15271, n_swa = 0, pos_next = 0, size = 0.292 MiB)
+3.45.375.116 W slot update_slots: id  0 | task 1310 | erased invalidated context checkpoint (pos_min = 15782, pos_max = 15782, n_tokens = 15783, n_swa = 0, pos_next = 0, size = 0.302 MiB)
+3.45.824.108 I slot create_check: id  0 | task 1310 | created context checkpoint 1 of 32 (pos_min = 467, pos_max = 467, n_tokens = 468, size = 0.010 MiB)
+3.46.285.483 I slot create_check: id  0 | task 1310 | created context checkpoint 2 of 32 (pos_min = 979, pos_max = 979, n_tokens = 980, size = 0.019 MiB)
+3.47.549.922 I slot print_timing: id  0 | task 1310 | n_decoded =    102, tg =  82.62 t/s
+3.50.557.715 I slot print_timing: id  0 | task 1310 | n_decoded =    329, tg =  77.55 t/s
+3.52.881.922 I slot print_timing: id  0 | task 1310 | 
+prompt eval time =     940.25 ms /   984 tokens (    0.96 ms per token,  1046.53 tokens per second)
+       eval time =    6566.52 ms /   512 tokens (   12.83 ms per token,    77.97 tokens per second)
+      total time =    7506.77 ms /  1496 tokens
+3.52.881.929 I slot print_timing: id  0 | task 1310 | draft acceptance = 0.41678 (  308 accepted /   739 generated), mean acceptance length =  2.53, acceptance rate per position = (0.721, 0.433, 0.244, 0.134)
+3.52.881.948 I statistics        draft-mtp: #calls(b,g,a) =    9   1454   1426, #gen drafts =   1426, #acc drafts =  1129, #gen tokens =   5374, #acc tokens =  3140, #mean acc len = 3.20, #acc rate/pos = (0.792, 0.584, 0.456, 0.370), dur(b,g,a) = 0.015, 11166.866, 0.658 ms
+3.52.881.970 I slot      release: id  0 | task 1310 | stop processing: n_tokens = 1495, truncated = 0
+3.52.881.981 I srv  update_slots: all slots are idle
+3.55.887.444 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 393922593994
+3.55.887.482 I slot launch_slot_: id  0 | task 1517 | processing task, is_child = 0
+3.55.887.495 W slot update_slots: id  0 | task 1517 | erased invalidated context checkpoint (pos_min = 467, pos_max = 467, n_tokens = 468, n_swa = 0, pos_next = 0, size = 0.010 MiB)
+3.55.887.497 W slot update_slots: id  0 | task 1517 | erased invalidated context checkpoint (pos_min = 979, pos_max = 979, n_tokens = 980, n_swa = 0, pos_next = 0, size = 0.019 MiB)
+3.59.016.262 I slot print_timing: id  0 | task 1517 | prompt processing, n_tokens =   3430, progress = 0.87, t =   3.13 s / 1096.28 tokens per second
+3.59.027.249 I slot create_check: id  0 | task 1517 | created context checkpoint 1 of 32 (pos_min = 3429, pos_max = 3429, n_tokens = 3430, size = 0.066 MiB)
+3.59.511.493 I slot print_timing: id  0 | task 1517 | prompt processing, n_tokens =   3942, progress = 1.00, t =   3.62 s / 1087.75 tokens per second
+3.59.525.201 I slot create_check: id  0 | task 1517 | created context checkpoint 2 of 32 (pos_min = 3941, pos_max = 3941, n_tokens = 3942, size = 0.076 MiB)
+4.00.251.861 I slot print_timing: id  0 | task 1517 | n_decoded =    101, tg = 144.69 t/s
+4.03.189.218 I slot print_timing: id  0 | task 1517 | 
+prompt eval time =    3666.29 ms /  3946 tokens (    0.93 ms per token,  1076.29 tokens per second)
+       eval time =    3635.42 ms /   512 tokens (    7.10 ms per token,   140.84 tokens per second)
+      total time =    7301.71 ms /  4458 tokens
+4.03.189.225 I slot print_timing: id  0 | task 1517 | draft acceptance = 1.00000 (  408 accepted /   408 generated), mean acceptance length =  5.00, acceptance rate per position = (1.000, 1.000, 1.000, 1.000)
+4.03.189.251 I statistics        draft-mtp: #calls(b,g,a) =   10   1556   1528, #gen drafts =   1528, #acc drafts =  1231, #gen tokens =   5782, #acc tokens =  3548, #mean acc len = 3.32, #acc rate/pos = (0.806, 0.612, 0.492, 0.412), dur(b,g,a) = 0.017, 11964.291, 0.686 ms
+4.03.189.295 I slot      release: id  0 | task 1517 | stop processing: n_tokens = 4457, truncated = 0
+4.03.189.307 I srv  update_slots: all slots are idle
+4.06.198.193 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 393932901319
+4.06.198.225 I slot launch_slot_: id  0 | task 1625 | processing task, is_child = 0
+4.06.198.235 W slot update_slots: id  0 | task 1625 | erased invalidated context checkpoint (pos_min = 3429, pos_max = 3429, n_tokens = 3430, n_swa = 0, pos_next = 0, size = 0.066 MiB)
+4.06.198.236 W slot update_slots: id  0 | task 1625 | erased invalidated context checkpoint (pos_min = 3941, pos_max = 3941, n_tokens = 3942, n_swa = 0, pos_next = 0, size = 0.076 MiB)
+4.09.913.704 I slot print_timing: id  0 | task 1625 | prompt processing, n_tokens =   4096, progress = 0.52, t =   3.72 s / 1102.42 tokens per second
+4.11.863.842 I slot print_timing: id  0 | task 1625 | prompt processing, n_tokens =   6144, progress = 0.78, t =   5.67 s / 1084.44 tokens per second
+4.13.181.043 I slot print_timing: id  0 | task 1625 | prompt processing, n_tokens =   7377, progress = 0.93, t =   6.98 s / 1056.45 tokens per second
+4.13.190.088 I slot create_check: id  0 | task 1625 | created context checkpoint 1 of 32 (pos_min = 7376, pos_max = 7376, n_tokens = 7377, size = 0.141 MiB)
+4.13.703.110 I slot print_timing: id  0 | task 1625 | prompt processing, n_tokens =   7889, progress = 1.00, t =   7.50 s / 1051.19 tokens per second
+4.13.719.896 I slot create_check: id  0 | task 1625 | created context checkpoint 2 of 32 (pos_min = 7888, pos_max = 7888, n_tokens = 7889, size = 0.151 MiB)
+4.14.583.280 I slot print_timing: id  0 | task 1625 | n_decoded =    102, tg = 122.29 t/s
+4.17.587.209 I slot print_timing: id  0 | task 1625 | n_decoded =    343, tg =  89.37 t/s
+4.19.693.276 I slot print_timing: id  0 | task 1625 | 
+prompt eval time =    7550.90 ms /  7893 tokens (    0.96 ms per token,  1045.31 tokens per second)
+       eval time =    5944.13 ms /   512 tokens (   11.61 ms per token,    86.14 tokens per second)
+      total time =   13495.02 ms /  8405 tokens
+4.19.693.285 I slot print_timing: id  0 | task 1625 | draft acceptance = 0.53407 (  337 accepted /   631 generated), mean acceptance length =  3.02, acceptance rate per position = (0.743, 0.545, 0.413, 0.317)
+4.19.693.305 I statistics        draft-mtp: #calls(b,g,a) =   11   1729   1695, #gen drafts =   1695, #acc drafts =  1355, #gen tokens =   6413, #acc tokens =  3885, #mean acc len = 3.29, #acc rate/pos = (0.799, 0.605, 0.484, 0.403), dur(b,g,a) = 0.018, 13284.126, 0.749 ms
+4.19.693.380 I slot      release: id  0 | task 1625 | stop processing: n_tokens = 8404, truncated = 0
+4.19.693.391 I srv  update_slots: all slots are idle
+4.22.709.437 I slot get_availabl: id  0 | task -1 | selected slot by LRU, t_last = 393949405404
+4.22.709.474 I slot launch_slot_: id  0 | task 1806 | processing task, is_child = 0
+4.22.709.485 W slot update_slots: id  0 | task 1806 | erased invalidated context checkpoint (pos_min = 7376, pos_max = 7376, n_tokens = 7377, n_swa = 0, pos_next = 0, size = 0.141 MiB)
+4.22.709.486 W slot update_slots: id  0 | task 1806 | erased invalidated context checkpoint (pos_min = 7888, pos_max = 7888, n_tokens = 7889, n_swa = 0, pos_next = 0, size = 0.151 MiB)
+4.26.421.057 I slot print_timing: id  0 | task 1806 | prompt processing, n_tokens =   4096, progress = 0.26, t =   3.71 s / 1103.58 tokens per second
+4.28.370.232 I slot print_timing: id  0 | task 1806 | prompt processing, n_tokens =   6144, progress = 0.39, t =   5.66 s / 1085.37 tokens per second
+4.30.406.091 I slot print_timing: id  0 | task 1806 | prompt processing, n_tokens =   8192, progress = 0.52, t =   7.70 s / 1064.37 tokens per second
+4.30.406.239 I slot update_slots: id  0 | task 1806 | 8192 tokens since last checkpoint at 0, creating new checkpoint during processing at position 10240
+4.30.423.312 I slot create_check: id  0 | task 1806 | created context checkpoint 1 of 32 (pos_min = 8191, pos_max = 8191, n_tokens = 8192, size = 0.157 MiB)
+4.32.532.674 I slot print_timing: id  0 | task 1806 | prompt processing, n_tokens =  10240, progress = 0.65, t =   9.82 s / 1042.43 tokens per second
+4.34.751.525 I slot print_timing: id  0 | task 1806 | prompt processing, n_tokens =  12288, progress = 0.78, t =  12.04 s / 1020.43 tokens per second
+4.37.030.837 I slot print_timing: id  0 | task 1806 | prompt processing, n_tokens =  14336, progress = 0.91, t =  14.32 s / 1001.03 tokens per second
+4.38.138.121 I slot print_timing: id  0 | task 1806 | prompt processing, n_tokens =  15271, progress = 0.97, t =  15.43 s / 989.78 tokens per second
+4.38.164.020 I slot create_check: id  0 | task 1806 | created context checkpoint 2 of 32 (pos_min = 15270, pos_max = 15270, n_tokens = 15271, size = 0.292 MiB)
+4.38.763.293 I slot print_timing: id  0 | task 1806 | prompt processing, n_tokens =  15783, progress = 1.00, t =  16.05 s / 983.13 tokens per second
+4.38.791.768 I slot create_check: id  0 | task 1806 | created context checkpoint 3 of 32 (pos_min = 15782, pos_max = 15782, n_tokens = 15783, size = 0.302 MiB)
+4.39.837.577 I slot print_timing: id  0 | task 1806 | n_decoded =    101, tg = 100.75 t/s
+4.42.875.015 I slot print_timing: id  0 | task 1806 | n_decoded =    484, tg = 119.80 t/s
+4.43.099.493 I slot print_timing: id  0 | task 1806 | 
+prompt eval time =   16125.54 ms / 15787 tokens (    1.02 ms per token,   979.01 tokens per second)
+       eval time =    4264.43 ms /   512 tokens (    8.33 ms per token,   120.06 tokens per second)
+      total time =   20389.96 ms / 16299 tokens
+4.43.099.500 I slot print_timing: id  0 | task 1806 | draft acceptance = 0.99512 (  408 accepted /   410 generated), mean acceptance length =  4.96, acceptance rate per position = (1.000, 1.000, 0.990, 0.971)
+4.43.099.526 I statistics        draft-mtp: #calls(b,g,a) =   12   1832   1798, #gen drafts =   1798, #acc drafts =  1458, #gen tokens =   6823, #acc tokens =  4293, #mean acc len = 3.39, #acc rate/pos = (0.811, 0.628, 0.513, 0.435), dur(b,g,a) = 0.021, 14277.123, 0.771 ms
+4.43.099.639 I slot      release: id  0 | task 1806 | stop processing: n_tokens = 16298, truncated = 0
+4.43.099.648 I srv  update_slots: all slots are idle

@@ -1,0 +1,35 @@
+[
+  {
+    "requested_version": "0.31.1",
+    "reported_server_version": "0.31.1",
+    "cold_generation_tps": 71.4100813182301,
+    "warm_repeats": 9,
+    "warm_generation_tps_mean": 72.5515562714111,
+    "warm_generation_tps_min": 72.35579151583121,
+    "warm_generation_tps_max": 72.6582886361869,
+    "warm_generation_tps_sd": 0.11622579189928085,
+    "warm_prompt_tps_mean": 876.9161734143864
+  },
+  {
+    "requested_version": "0.31.2",
+    "reported_server_version": "0.31.2",
+    "cold_generation_tps": 72.84539816270248,
+    "warm_repeats": 9,
+    "warm_generation_tps_mean": 73.1919351026536,
+    "warm_generation_tps_min": 73.04226750589189,
+    "warm_generation_tps_max": 73.27735248925457,
+    "warm_generation_tps_sd": 0.08956258158200152,
+    "warm_prompt_tps_mean": 878.202944737675
+  },
+  {
+    "requested_version": "0.32.0",
+    "reported_server_version": "0.32.0",
+    "cold_generation_tps": 72.87044659336355,
+    "warm_repeats": 9,
+    "warm_generation_tps_mean": 73.1970175770151,
+    "warm_generation_tps_min": 72.83806107357611,
+    "warm_generation_tps_max": 73.39967210990224,
+    "warm_generation_tps_sd": 0.19638606345278303,
+    "warm_prompt_tps_mean": 885.9995300845168
+  }
+]

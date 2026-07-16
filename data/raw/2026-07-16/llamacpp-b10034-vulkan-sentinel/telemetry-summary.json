@@ -1,0 +1,17 @@
+{
+  "files": [
+    "qwen30-stock-r1.telemetry.csv",
+    "qwen30-stock-r2.telemetry.csv",
+    "qwen30-stock-r3.telemetry.csv",
+    "qwen80-stock-r1.telemetry.csv",
+    "qwen80-stock-r2.telemetry.csv",
+    "qwen80-stock-r3.telemetry.csv"
+  ],
+  "samples": 270,
+  "temperature_c_mean": 61.46296296296296,
+  "temperature_c_max": 79.0,
+  "amdgpu_ppt_w_mean": 83.45745185185186,
+  "amdgpu_ppt_w_max": 149.046,
+  "gpu_busy_pct_mean": 54.48518518518519,
+  "telemetry_scope": "amdgpu driver telemetry; not wall power"
+}

@@ -1,0 +1,2 @@
+repo=unsloth/DeepSeek-V4-Flash-GGUF
+revision=e3aa0d6a5fa4f820d9e132ac1fd1d01e1b2b49e0

@@ -1,0 +1,3 @@
+{"n_kv_max": 66816, "n_batch": 2048, "n_ubatch": 512, "flash_attn": 1, "is_pp_shared": 0, "n_gpu_layers": 999, "n_threads": 16, "n_threads_batch": 16, "pp": 512, "tg": 128, "pl": 8, "n_kv": 5120, "t_pp": 5.540153, "speed_pp": 739.329773, "t_tg": 7.234581, "speed_tg": 141.542404, "t": 12.774734, "speed": 400.791107}
+{"n_kv_max": 66816, "n_batch": 2048, "n_ubatch": 512, "flash_attn": 1, "is_pp_shared": 0, "n_gpu_layers": 999, "n_threads": 16, "n_threads_batch": 16, "pp": 512, "tg": 128, "pl": 9, "n_kv": 5760, "t_pp": 6.107364, "speed_pp": 754.498962, "t_tg": 11.679335, "speed_tg": 98.635757, "t": 17.786699, "speed": 323.837494}
+

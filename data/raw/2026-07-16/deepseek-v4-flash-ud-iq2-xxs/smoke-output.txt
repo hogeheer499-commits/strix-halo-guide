@@ -1,0 +1,39 @@
+
+
+Loading model... 
+
+▄▄ ▄▄
+██ ██
+██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄
+██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██
+██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀
+                                    ██    ██
+                                    ▀▀    ▀▀
+
+build      : b10034-505b1ed15
+model      : /home/hoge-heer/benchmark-models/2026-07-16/deepseek-v4-flash/UD-IQ2_XXS/DeepSeek-V4-Flash-UD-IQ2_XXS-00001-of-00003.gguf
+ftype      : IQ2_XXS - 2.0625 bpw
+modalities : text
+
+available commands:
+  /exit or Ctrl+C     stop or exit
+  /regen              regenerate the last response
+  /clear              clear the chat history
+  /read <file>        add a text file
+  /glob <pattern>     add text files using globbing pattern
+
+
+
+> Answer with only the number: if a machine has 12 drives and 3 fail, how many remain?
+
+[Start thinking]
+
+We need to answer with only the number. The question: if a machine has 12 drives and 3 fail, how many remain? Simple subtraction: 12 - 3 = 9. So answer is 9.
+[End thinking]
+
+9
+
+[ Prompt: 21.5 t/s | Generation: 13.6 t/s ]
+
+
+Exiting...

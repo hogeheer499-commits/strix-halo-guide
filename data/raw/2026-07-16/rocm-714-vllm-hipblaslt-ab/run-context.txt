@@ -1,0 +1,6 @@
+prepared_utc=2026-07-16T16:55:53Z
+image=docker.io/rocm/vllm@sha256:5b0389109bb2db9346d3f0f971c4c99eba7e5e72cfa57e9a2a9b4ac67477771d
+image_tag_context=rocm7.14.0_rdna_ubuntu24.04_py3.14_pytorch_2.11.0_vllm_0.23.0
+model_snapshot=/home/hoge-heer/distrobox/vllm-gfx1151/.cache/huggingface/hub/models--Qwen--Qwen3-0.6B/snapshots/c1899de289a04d12100db370d81485cdf75e47ca
+kernel=6.19.4-061904-generic
+cmdline=BOOT_IMAGE=/boot/vmlinuz-6.19.4-061904-generic root=UUID=94525afc-3e5d-4d2b-90e7-0d0bc14b5dc4 ro quiet splash amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0 amdgpu.cwsr_enable=0 amdgpu.cwsr_enable=0 vt.handoff=7

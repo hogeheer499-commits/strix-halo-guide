@@ -1,0 +1,1 @@
+/home/hoge-heer/benchmark-tools/llama-b10034/llama-b10034/llama-bench -m /home/hoge-heer/benchmark-models/2026-07-16/audex/quants/audex-30b-a3b-textonly-MXFP4_MOE.gguf -ngl 999 -fa on -mmp 0 -p 512 -n 128 -r 3 -o csv 

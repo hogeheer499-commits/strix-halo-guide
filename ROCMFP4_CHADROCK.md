@@ -64,34 +64,29 @@ Record:
 
 The first useful result can be negative. A clean "does not build", "loads but crashes", "runs but slower than Vulkan", or "needs IOMMU-on/ROCm tuning" result still removes setup friction.
 
-## Step 3.7 Q3 QualityPlus Repro Target
+## Step 3.7 Q3 QualityPlus First-Party Reproduction
 
-The new [`Step 3.7 Q3 QualityPlus artifact`](https://huggingface.co/jcbtc/Step-3.7-Flash-ROCmFPX-Q3-QualityPlus) is a high-value second-system target, not yet a first-party Beelink result. [`StepFun`](https://github.com/stepfun-ai/Step-3.7-Flash) describes Step 3.7 Flash as a 198B sparse MoE with about 11B active parameters, native vision, and 256k context. The community artifact reduces the language-model shards to 81.77GiB at 3.57 effective BPW, versus roughly 95.46GiB for the original Q3_K_L split and 97.70GiB for the local ROCmFP4 STRIX_LEAN build.
+On 2026-07-16, the guide reproduced [`Step 3.7 Q3 QualityPlus`](https://huggingface.co/jcbtc/Step-3.7-Flash-ROCmFPX-Q3-QualityPlus) on the Beelink GTR9 Pro. [`StepFun`](https://github.com/stepfun-ai/Step-3.7-Flash) describes the model as a 198B sparse MoE with about 11B active parameters and 256K context. The tested package used 81.76GiB for the target and 85.22GiB for target, separate Q8 MTP draft, and templates together.
 
-The model card reports these community results on Strix Halo:
+Read the raw evidence: [`data/raw/2026-07-16/step37-rocmfpx-q3-qualityplus/`](data/raw/2026-07-16/step37-rocmfpx-q3-qualityplus/)
 
-- 29.39 t/s MTP decode at a 4k prompt and 26.26 t/s at 16k
-- 85/100 on HermesAgent-20 at 35.31 t/s decode
-- about 96.3GiB peak pooled GPU memory on a 64k MTP agent run
-- a 256k target-plus-draft load proof at about 99.04GiB pooled GPU memory; this is a load proof, not a 256k prompt benchmark
+Pinned route:
 
-Reproduction requirements:
+- target revision: `fa311ca5a82bf82a2338151c4790e3f659abd88d`
+- draft revision: `c7bc8526b2b7004ce045112edebdf13a9eceb7eb`
+- `ciru-ai/ROCmFPX`: `221402af8574faf652b101b6afe225a3f329561f`
+- `Vulkan0`, one slot, Q8 KV, `n_max=2`, `p_min=0.75`, batch 8192, ubatch 2048
 
-- target: the nine `Step-3.7-Flash-ROCmFPX-Q3-QualityPlus` GGUF shards
-- draft: separate `Step-3.7-Flash-MTP-Q8_0.gguf`
-- runner: `ciru-ai/ROCmFPX` pinned by the model card to `221402af8574faf652b101b6afe225a3f329561f` as observed on 2026-07-14
-- backend: ROCmFPX tensor support with `Vulkan0` target and draft serving
-- tested profile: one slot, Q8 target/draft KV, `draft-mtp`, `n_max=2`, `p_min=0.75`, batch 8192, ubatch 2048
+| Profile | Result | Acceptance |
+| --- | ---: | ---: |
+| 4,109-token no-spec baseline, three repeats | 23.84 t/s mean | n/a |
+| 4,109-token MTP, three repeats | 34.50 t/s mean, **+44.68%** | 100.00% |
+| 16,401-token MTP, three repeats | 33.83 t/s mean | 99.61% |
+| 49,175-token MTP, one repeat | 28.06 t/s | 97.56% |
 
-The useful local sequence is:
+The target and draft also allocated the full 262,144-token context. A native tool-call smoke returned the requested `terminal` call with the exact `printf step37-ok` argument. The allocation result is not a filled-256K quality benchmark, and the 48K row has only one repeat.
 
-1. Verify all shard and draft hashes and record the exact runner pin.
-2. Confirm clean load plus a short no-spec baseline.
-3. Repeat 4k and 16k MTP rows with acceptance and pooled-memory telemetry.
-4. Run one practical 64k agent/tool workload and a small quality smoke.
-5. Attempt the 256k allocation proof only after the 64k route is stable.
-
-Keep the existing Nimo Step 3.7 Vulkan/MTP rows separate. They prove the model family already runs on another 128GB Strix Halo system; this new test asks whether the smaller ROCmFPX Q3 build improves practical fit, long-context headroom, and quality-per-byte on the Beelink path.
+This is valuable capacity and agent evidence: one 128GB Strix Halo box can hold a current 198B sparse target, its speculative draft, long-context KV headroom, and a working tool-call path. It remains an advanced pinned ROCmFPX route, not a beginner default or a direct `llama-bench` headline. Keep the separate Nimo and community Step 3.7 rows labeled as independent systems.
 
 ## First-Party Beelink Smoke
 
@@ -164,6 +159,21 @@ Interpretation: the high-speed CHADROCK path is real and reproduced locally when
 
 For guide purposes, this is now strong positive evidence for the ROCmFP4/CHADROCK lane. It should still stay separate from direct `llama-bench` headline rows.
 
+## 2026-07-16 Prompt-Shape Stability Profile
+
+The same pinned runner and exact ACE/SABER model were retested across four prompt shapes with three repeats per shape. Every request generated 512 tokens at temperature zero with prompt caching disabled.
+
+| Profile | Prompt tokens | Decode mean | Range | Mean draft acceptance |
+| --- | ---: | ---: | ---: | ---: |
+| Approx. 1K | 984 | 78.00 t/s | 75.36-80.67 | 41.93% |
+| Exact reference | 3,946 | **141.37 t/s** | **140.84-141.79** | **100.00%** |
+| Approx. 8K | 7,893 | 83.85 t/s | 79.31-86.14 | 51.28% |
+| Approx. 16K | 15,787 | 107.23 t/s | 78.46-123.18 | 83.64% |
+
+This confirms the highest reference shape more rigorously, but it also changes the recommendation: prompt length alone does not predict CHADROCK throughput. Draft acceptance and the generated-token pattern dominate. Operators should profile representative requests and treat 141.37 t/s as an exact repeat-confirmed profile, not as the speed of every 4K chat.
+
+Raw requests, responses, acceptance rows, telemetry, hashes, and the harness are in [`data/raw/2026-07-16/rocmfpx-chadrock-stability-profile/`](data/raw/2026-07-16/rocmfpx-chadrock-stability-profile/).
+
 ## How To Use This In The Guide
 
 Use ROCmFP4 / CHADROCK as:
@@ -182,4 +192,4 @@ Do not use it as:
 
 ## Status
 
-Status as of 2026-06-21: first-party Beelink load/API/MTP smoke succeeded for both the Crown Halo dynamic artifact and the corrected CHADROCK ACE/SABER route. The ACE/SABER helper route reproduced a local 139.93-140.40 t/s gen512 high-acceptance band on a 3946-token prompt, while longer and lower-acceptance repeats were slower.
+Status as of 2026-07-16: first-party Beelink load/API/MTP smoke succeeded for the Crown Halo dynamic artifact and the corrected CHADROCK ACE/SABER route. The follow-up CHADROCK stability profile showed that lower acceptance materially reduces speed. The separate Step 3.7 Q3 QualityPlus campaign is now complete: target plus draft fit, 4K/16K/48K served rows were measured, and 256K allocation plus native tool-call smokes passed.

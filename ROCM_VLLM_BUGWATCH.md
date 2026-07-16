@@ -1,6 +1,6 @@
 # ROCm and vLLM Bugwatch
 
-Status: current as of 2026-07-13 for locally measured runtime paths. External release rows retain their own checked dates.
+Status: current as of 2026-07-16 for locally measured runtime paths and upstream release triage. External release rows retain their own checked dates.
 
 This file tracks fast-moving upstream items that affect Strix Halo local AI work. It is intentionally separate from the README so the public guide stays stable even when upstream ROCm/vLLM issues move.
 
@@ -8,9 +8,10 @@ This file tracks fast-moving upstream items that affect Strix Halo local AI work
 
 | Area | Current status | Why it matters |
 |------|----------------|----------------|
-| ROCm production release | [`ROCm 7.2.4`](https://github.com/ROCm/ROCm/releases/tag/rocm-7.2.4) is the latest production ROCm release checked here, published 2026-05-29. | Production docs now point to 7.2.4 for normal use. This guide did not install it host-wide. |
-| ROCm preview release | [`ROCm 7.13.0 Preview`](https://rocm.docs.amd.com/en/7.13.0-preview/about/release-notes.html) is the latest preview stream checked here, published 2026-05-15. | It adds official gfx1151/vLLM image coverage and RCCL multi-node optimization for AMD Ryzen AI Max 300 series, but it is a preview stream and should stay isolated from the host. |
-| vLLM release | [`vLLM 0.24.0`](https://github.com/vllm-project/vllm/releases/tag/v0.24.0) is the latest normal upstream vLLM release checked here, published 2026-06-29. ROCm 7.13.0 Preview also documents vLLM 0.19.1 images for gfx1151/gfx1150/gfx1152. | Useful signal for future containers; do not pip-install into the host Python environment for this guide. |
+| ROCm production release | [`ROCm 7.14.0`](https://github.com/ROCm/ROCm/releases/tag/rocm-7.14.0) is the latest production ROCm release checked here, published 2026-07-16. | It focuses on AI inference across Instinct, Radeon, and Ryzen AI and moves the earlier 7.13 preview lane into a production release. This guide has not installed it host-wide. |
+| ROCm Ryzen AI inference note | ROCm 7.14.0 documents lower-than-expected LLM inference on Ryzen AI MAX / MAX+ with PyTorch earlier than 2.14 in some FP16 vLLM workloads at batch 8+, with `TORCH_BLAS_PREFER_HIPBLASLT=1` as the workaround. | The isolated local A/B reproduced the expected threshold: +40.50%, +38.96%, and +41.54% aggregate throughput at concurrency 8, 9, and 16, with no material gain at 1 and a -0.77% result at 4. This remains an FP16 vLLM rule, not universal llama.cpp or Vulkan tuning. |
+| vLLM release | [`vLLM 0.25.1`](https://github.com/vllm-project/vllm/releases/tag/v0.25.1) is the latest normal upstream release checked here, published 2026-07-14. ROCm 7.14.0 validates vLLM 0.23.0, which is not the same as claiming that upstream 0.25.1 is validated on this machine. | Use a pinned ROCm image or isolated environment and record both ROCm and vLLM versions. Do not pip-install into the host Python environment. |
+| SGLang release | [`SGLang 0.5.15.post1`](https://github.com/sgl-project/sglang/releases/tag/v0.5.15.post1) is the latest upstream release checked here, published 2026-07-14. ROCm 7.14.0 validates SGLang 0.5.13. | Useful serving watch signal; no local Strix Halo performance claim is made from version availability alone. |
 | Strix Halo unified memory reporting | [`ROCm/hip#3892`](https://github.com/ROCm/hip/issues/3892) is now closed as of 2026-05-29. | Still verify inside any ROCm/vLLM container before making a capacity/autoscheduling claim; closed upstream does not prove every local bundle has the fix. |
 | Older 15.5GB VRAM aperture issue | [`ROCm/ROCm#5444`](https://github.com/ROCm/ROCm/issues/5444) is closed. | Keep as troubleshooting context; not a current headline blocker. |
 | MES memory-access fault report | [`ROCm/ROCm#5724`](https://github.com/ROCm/ROCm/issues/5724) is closed. | Still relevant when diagnosing firmware/kernel regressions. |
@@ -20,9 +21,20 @@ This file tracks fast-moving upstream items that affect Strix Halo local AI work
 
 ## 2026-07-13 Local Runtime Recheck
 
-- The normal Ollama system service was upgraded and measured on 0.31.2. Qwen3.6 reached 60.57 t/s warm API generation with full iGPU offload; Qwen2.5-VL 7B vision, service restart, and full-host-reboot persistence passed. The separate user-local 0.31.1 comparator remains faster at 71.82 t/s.
+- The normal Ollama system service was upgraded and measured on 0.31.2. Qwen3.6 reached 60.57 t/s warm API generation with full iGPU offload; Qwen2.5-VL 7B vision, service restart, and full-host-reboot persistence passed. A separate user-local 0.31.1 run reached 71.82 t/s, but the controlled comparison below shows that this was not a version-wide 0.31.2 regression.
 - Official `llama.cpp` b9979 was measured in the multi-user MoE campaign. The resulting Vulkan dispatch cliff and opt-in AMD/RADV recovery evidence are documented in [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md).
 - These measured updates supersede the easy-path/runtime statements in the dated 2026-07-06 section below; that section remains as a historical watch snapshot.
+
+## 2026-07-16 Release And Runtime Recheck
+
+- ROCm 7.14.0 is now the current production release. The release adds newer AI framework coverage and publishes a specific Ryzen AI MAX / MAX+ performance note for some FP16 vLLM workloads at batch 8 or greater.
+- The official workaround is `TORCH_BLAS_PREFER_HIPBLASLT=1` when using PyTorch versions earlier than 2.14. An isolated official ROCm 7.14 / PyTorch 2.11 / vLLM A/B on this `gfx1151` system measured 480.98 versus 675.79 aggregate t/s at concurrency 8, 540.67 versus 751.33 at 9, and 896.83 versus 1269.40 at 16. At concurrency 1 the change was +0.10%; at 4 it was -0.77%.
+- This is a successful reproduction of the release-note workaround for the pinned FP16 Qwen3-0.6B server workload. It is not interchangeable with the older llama.cpp `ROCBLAS_USE_HIPBLASLT=1` evidence and is not a universal recommendation for quantized models or low concurrency. Raw evidence is under [`data/raw/2026-07-16/rocm-714-vllm-hipblaslt-ab/`](data/raw/2026-07-16/rocm-714-vllm-hipblaslt-ab/); the compact A/B is [`data/rocm_714_hipblaslt_ab.csv`](data/rocm_714_hipblaslt_ab.csv).
+- vLLM 0.25.1 and SGLang 0.5.15.post1 are newer upstream than the versions validated in ROCm 7.14.0. Record that distinction instead of presenting the newest package combination as supported by default.
+- ROCm 7.14 lists significantly longer LLM warmup times on some Radeon GPUs with vLLM 0.21.0 through 0.25.0; AMD's published workaround is to use a release before 0.21.0 or 0.26.0 and later. The latest upstream version checked here is still 0.25.1, so cache/warmup timing must remain part of every local vLLM report.
+- ROCm 7.14 also marks Radeon SGLang support as initial. For the validated image family, AMD advises `SGLANG_USE_AITER=false` and `SGLANG_ROCM_FUSED_DECODE_MLA=false`; some MoE and Qwen3-ASR routes still need newer upstream fixes. Treat these as official setup caveats, not local performance claims.
+- A controlled same-cache Ollama comparison measured 0.31.1, 0.31.2, and 0.32.0 at 72.55, 73.19, and 73.20 t/s respectively over nine warm requests. The earlier 60.57-versus-71.82 observation was not a version-wide regression.
+- Official llama.cpp b10046 is the latest release checked. It includes merged PR #24233, which restores the integrated-device property for HIP builds. The official b10046 ROCm binary locally detected 120,124 MiB free UMA and used `ROCm_Host` model, output, and compute buffers on `gfx1151` without `HSA_OVERRIDE_GFX_VERSION`. The release binary needed the existing Ollama ROCm library path on this host; this is a compatibility/setup result, not a replacement Vulkan speed run.
 
 ## 2026-07-06 Watch Recheck
 
@@ -54,6 +66,8 @@ Available ROCm paths:
 | `/usr/local/lib/ollama/rocm` | Ollama-bundled ROCm runtime libraries; includes HIP/rocBLAS/hipBLAS 7.2-series libraries used by local HIP spot checks. |
 | `rocm/dev-ubuntu-24.04:7.2-complete` | Docker image is present locally. Useful for isolated experiments, not used as a host install. |
 | Lemonade `llamacpp-rocm` b1259 bundle | Measured server path with ROCm 7.13-era bundled libraries; strongest measured aggregate throughput at 8-16 parallel Qwen3.6 requests. |
+| Official ROCm 7.14 RDNA vLLM image | Isolated image digest `sha256:5b0389109bb2db9346d3f0f971c4c99eba7e5e72cfa57e9a2a9b4ac67477771d` initialized on `gfx1151`; PyTorch 2.11 / HIP 7.14 / vLLM 0.23.1.dev1 FP16 A/B completed without request errors. The host ROCm stack was not changed. |
+| Official llama.cpp b10046 ROCm binary | Merged HIP integrated-device support reproduced on `gfx1151`: full UMA discovery plus real `ROCm_Host` model/output/compute allocations without a gfx override. Required `LD_LIBRARY_PATH=/usr/local/lib/ollama/rocm_v7_2` on this host. |
 
 Do not install ROCm, PyTorch, TheRock, or vLLM directly into the host Python environment for this guide. Prefer containers or self-contained extracted bundles so failed experiments do not corrupt the workstation setup.
 
@@ -144,13 +158,16 @@ The README recommendation should stay conservative:
 
 - Vulkan/RADV remains the default for easiest chat and fastest measured generation.
 - ROCm/HIP is no longer treated as broken; it is relevant for prompt-heavy workloads, high-concurrency server paths, vLLM, AWQ/DFlash, and future tuned rocWMMA work.
-- vLLM is promising but still experimental in this guide until a comparable 27B/35B throughput run is reproduced locally.
+- vLLM is now locally reproduced for an isolated Qwen3-0.6B FP16 hipBLASLt A/B, but it remains experimental for the guide's practical 27B/35B model class until a comparable larger-model serving run is measured.
 - Host-wide ROCm upgrades should be avoided during benchmark campaigns unless the whole run is dedicated to testing that stack.
 
 ## Next Watch Items
 
-1. Verify local memory reporting inside any ROCm 7.2.4, ROCm 7.13 Preview, TheRock, or vLLM container before making a capacity/autoscheduling claim.
-2. Recheck `vllm-project/vllm#40898` before trying to reproduce DFlash/SWA behavior.
-3. Test ROCm 7.13 Preview vLLM images only through a container or isolated environment.
-4. Recheck ROCm 7.13 Preview RCCL notes before any future multi-node Strix Halo claim.
-5. If installing ROCm 7.2.4 or preview ROCm host-wide becomes necessary, treat it as a dedicated maintenance window and record a new system snapshot before publishing numbers.
+1. Repeat the measured ROCm 7.14 hipBLASLt A/B on a practical 27B/35B FP16 or supported low-precision model before promoting it from a small-model server proof to a normal operator profile.
+2. Repeat the b10046 HIP host-buffer path with a practical 27B/35B GGUF and record whether a self-contained package can avoid the manual Ollama library path.
+3. Recheck vLLM 0.26.0-or-later availability and warmup behavior before treating 0.25.x as the current Radeon default.
+4. Recheck `vllm-project/vllm#40898` before trying to reproduce DFlash/SWA behavior.
+5. Use the ROCm 7.14 Radeon SGLang environment overrides for the next isolated smoke and keep affected MoE/ASR routes labeled experimental.
+6. Verify local memory reporting inside the exact ROCm 7.14.0, TheRock, or vLLM container before making a capacity/autoscheduling claim.
+7. Recheck ROCm 7.14.0 RCCL notes before any future multi-node Strix Halo claim.
+8. If installing ROCm 7.14.0 host-wide becomes necessary, treat it as a dedicated maintenance window and record a new system snapshot before publishing numbers.

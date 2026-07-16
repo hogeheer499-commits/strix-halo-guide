@@ -4,7 +4,7 @@ This file is the compact benchmark source-of-truth for numbers already published
 
 ## Current System Snapshot
 
-Latest live audit on 2026-06-07:
+Latest measured host audit on 2026-07-16:
 
 | Component | Current State |
 |-----------|---------------|
@@ -13,14 +13,36 @@ Latest live audit on 2026-06-07:
 | GPU | Radeon 8060S, gfx1151, RADV STRIX_HALO |
 | RAM | 124GiB OS-visible unified memory |
 | Kernel | 6.19.4-061904-generic |
-| Mesa RADV | 26.1.2, kisak-mesa PPA |
-| Ollama | 0.23.1 |
+| Mesa RADV | 26.1.4, kisak-mesa PPA |
+| Ollama | 0.31.2 installed service; 0.31.1/0.31.2/0.32.0 isolated comparison |
 | AMDVLK | Removed |
 | linux-firmware | 20240318.git3b128b60-0ubuntu2.27 |
-| GPU clock | 2900 MHz selected |
-| tuned | `accelerator-performance` active |
+| GPU clock | 2900 MHz selected during measured runs |
+| July 16 measured power state | Desktop `performance`; AMDGPU DPM `high`; nonessential desktop processes paused for the controlled sentinel campaigns |
 
-Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 2026-04-26 with `tuned accelerator-performance` active. The 2026-05-07 latest-stack rerun confirms `tuned accelerator-performance` active, Mesa RADV 26.0.6, AMDVLK absent, linux-firmware safe, GPU clock at 2900 MHz, llama.cpp b9049, and Ollama 0.23.1. The 2026-05-16 spot check tested llama.cpp b9172 and an isolated Ollama 0.24.0 binary without changing the installed Ollama service. The 2026-05-26 spot check used Mesa RADV 26.1.1 and llama.cpp b9334. The 2026-05-27 spot check used the same Mesa/RADV stack and llama.cpp b9360. The 2026-05-31 spot check tested latest llama.cpp b9442 for the direct Qwen3-Coder speed-first path and found no new headline. The 2026-06-01 spot check updated the same latest-stack worktree to `de6f727aa` and again found no new Qwen3-Coder headline. The 2026-06-02 b9467 scout found a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS direct route above 100 t/s. The 2026-06-05 latest/int-dot scout added LFM2.5 small-MoE speed evidence and Nemotron 3 Super 120B-class direct GGUF capacity evidence. The 2026-06-07 b9544 regression control showed no regression on the Vulkan/RADV sentinel rows and redownloaded the exact Qwen3-Coder `Q4_K_S` speed-first file for a current-build control. The 2026-06-11 ac4cddeb0 controls kept the direct Qwen3-30B route above 100 t/s, kept LFM2.5 in the 170 t/s class, kept Nemotron Super directly runnable, added Gemma 4 12B/26B QAT direct rows, and documented Qwen3.6 27B NVFP4 as a negative speed route. The 2026-06-11/12 Gemma 4 26B-A4B QAT matched-head MTP runs are server/speculative rows and are summarized in [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md), not merged into direct `llama-bench` claims. The 2026-07-13 b9979 campaign is a separate aggregate-concurrency track: it validates an opt-in AMD/RADV density gate on 30B 128-expert/top-8 and 80B 512-expert/top-10 models and is summarized in [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md), not merged into direct single-stream headlines.
+Historical benchmark runs below were measured on 2026-03-20, 2026-03-21, and 2026-04-26 with `tuned accelerator-performance` active. The 2026-05-07 latest-stack rerun confirms `tuned accelerator-performance` active, Mesa RADV 26.0.6, AMDVLK absent, linux-firmware safe, GPU clock at 2900 MHz, llama.cpp b9049, and Ollama 0.23.1. The 2026-05-16 spot check tested llama.cpp b9172 and an isolated Ollama 0.24.0 binary without changing the installed Ollama service. The 2026-05-26 spot check used Mesa RADV 26.1.1 and llama.cpp b9334. The 2026-05-27 spot check used the same Mesa/RADV stack and llama.cpp b9360. The 2026-05-31 spot check tested latest llama.cpp b9442 for the direct Qwen3-Coder speed-first path and found no new headline. The 2026-06-01 spot check updated the same latest-stack worktree to `de6f727aa` and again found no new Qwen3-Coder headline. The 2026-06-02 b9467 scout found a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS direct route above 100 t/s. The 2026-06-05 latest/int-dot scout added LFM2.5 small-MoE speed evidence and Nemotron 3 Super 120B-class direct GGUF capacity evidence. The 2026-06-07 b9544 regression control showed no regression on the Vulkan/RADV sentinel rows and redownloaded the exact Qwen3-Coder `Q4_K_S` speed-first file for a current-build control. The 2026-06-11 ac4cddeb0 controls kept the direct Qwen3-30B route above 100 t/s, kept LFM2.5 in the 170 t/s class, kept Nemotron Super directly runnable, added Gemma 4 12B/26B QAT direct rows, and documented Qwen3.6 27B NVFP4 as a negative speed route. The 2026-06-11/12 Gemma 4 26B-A4B QAT matched-head MTP runs are server/speculative rows and are summarized in [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md), not merged into direct `llama-bench` claims. The 2026-07-13 b9979 campaign is a separate aggregate-concurrency track: it validates an opt-in AMD/RADV density gate on 30B 128-expert/top-8 and 80B 512-expert/top-10 models and is summarized in [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md), not merged into direct single-stream headlines. On 2026-07-16, an official b10034 Vulkan sentinel confirmed that the stock 8-to-9 sequence cliff still exists on both model shapes; a controlled Ollama 0.31.1/0.31.2/0.32.0 comparison found no material version regression; and current Nemotron, AgentWorld, Omni, Audex, and CHADROCK routes were rechecked. The same campaign reproduced Step 3.7 Flash as a separate 198B agent/MTP capacity route with 4K/16K/48K served rows, native tool calling, and 256K allocation, then replaced the old DeepSeek V4 ordinary-GGUF blocker with a direct 284.33B load/basic-correctness pass. Those dated results are summarized below and in [`CURRENT_MODELS.md`](CURRENT_MODELS.md).
+
+## 2026-07-16 Current Runtime And Model Sentinel
+
+These rows answer three practical questions: whether the multi-user Vulkan cliff still exists, whether the current Ollama version is slower, and which recent local-AI model routes are genuinely runnable on one 128 GB Strix Halo system. Direct, server/speculative, text-only, and multimodal results remain separate.
+
+| Route | Result | Practical read |
+| --- | ---: | --- |
+| Official llama.cpp b10034, Qwen3-Coder 30B-A3B, stock Vulkan np8 to np9 | 232.69 to 145.79 aggregate t/s | The 8-to-9 cliff persists: -37.34%. |
+| Official llama.cpp b10034, Qwen3-Next 80B-A3B, stock Vulkan np8 to np9 | 144.61 to 98.78 aggregate t/s | A second MoE shape confirms the cliff: -31.69%. |
+| Ollama 0.31.1 / 0.31.2 / 0.32.0, same cache and prompt | 72.55 / 73.19 / 73.20 t/s | No material version regression in this controlled check. The installed buyer path remains 0.31.2 until a normal package upgrade and host reboot are tested. |
+| CHADROCK ACE/SABER ROCmFPX MTP, exact 3946-token reference shape | 141.37 t/s mean, 100% draft acceptance | Highest repeat-confirmed server/speculative profile here, but prompt-shape sensitive and not a direct `llama-bench` result. |
+| Step 3.7 Flash 198B-A11B ROCmFPX Q3 plus Q8 MTP draft | 23.84 t/s 4K no-spec; 34.50 t/s 4K MTP; 33.83 t/s 16K MTP | 44.68% MTP uplift on the matched 4K server baseline. Native tool call and 256K allocation also passed; server/capacity evidence, not direct `llama-bench`. |
+| DeepSeek V4 Flash 284B `UD-IQ2_XXS`, b10034 | 155.64 pp512 / 13.27 tg128 | Pinned 90.86GB ordinary GGUF loaded, generated, and answered a deterministic check correctly. Low-bit current capacity evidence, not a speed or broad quality recommendation. |
+| ROCm 7.14 / PyTorch 2.11 / vLLM, Qwen3-0.6B FP16, hipBLASLt on versus off | +40.50% / +38.96% / +41.54% aggregate throughput at concurrency 8/9/16 | Reproduces AMD's Ryzen AI batch-8+ workaround in an isolated official image. Small-model server A/B; no direct GGUF or practical 27B/35B claim. |
+| Official `llama.cpp` b10046 ROCm/HIP, Qwen3-0.6B Q8_0 | 4666.05 pp512 / 208.73 tg128; 120,124 MiB free UMA detected | Small-model runtime sentinel for merged HIP integrated-device support. A CPU-heavy smoke logged real `ROCm_Host` model/output/compute buffers; compatibility evidence, not a Vulkan speed comparison. |
+| Nemotron 3 Nano Omni 30B-A3B MXFP4, b10034 | 64.26 tg128 | Exact-artifact runtime improvement versus the earlier 56.56 t/s b9747 row. |
+| Nemotron Cascade 2 30B-A3B IQ4_XS | 78.95 tg128 | Current NVIDIA-branded direct text route with small correctness checks. |
+| Qwen AgentWorld 35B-A3B IQ4_XS | 65.65 tg128 | Runnable agent/environment route with a 128K Q8 KV allocation smoke. |
+| Nemotron 3 Nano Omni NVFP4 plus F16 projector | 53.21 tg128 plus image OCR smoke | Experimental multimodal route; OCR smoke is not a broad vision or audio quality claim. |
+| Audex text GGUF MXFP4 | 60.73 tg128 | Portable text route only. Full audio requires a separate runtime, and the model license is NVIDIA OneWay Noncommercial. |
+
+Raw evidence: [`data/raw/2026-07-16/`](data/raw/2026-07-16/). The structured concurrency sentinel is in [`data/moe_density_gate_summary.csv`](data/moe_density_gate_summary.csv); direct rows, including the b10046 HIP compatibility sentinel, are in [`data/benchmarks.csv`](data/benchmarks.csv); server/speculative rows are in [`data/mtp_speculative.csv`](data/mtp_speculative.csv); and the ROCm 7.14 vLLM A/B is in [`data/rocm_714_hipblaslt_ab.csv`](data/rocm_714_hipblaslt_ab.csv).
 
 ## Top-Line Model Results
 

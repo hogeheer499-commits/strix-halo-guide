@@ -1,0 +1,117 @@
+{
+  "index": 0,
+  "content": "\n\n<think>\n\n</think>\n\nIt appears there is a significant factual premise error in your request that needs to be addressed before proceeding with any technical analysis.\n\n**1. \"AMD Strix Halo\" does not exist.**\n*   **AMD** does not have a product line called \"Strix.\" \"Strix\" is a well-known brand of **ASUS** (specifically their ROG Strix line of gaming laptops, motherboards, and graphics cards).\n*   **\"Halo\"** is not an AMD product name. AMD\u2019s current high-performance mobile/desktop GPU architectures are based on **RDNA 3** (e.g., RX 7000 series) and upcoming **RDNA 4**. Their AI/accelerator lines are **CDNA** (data center) and **Ryzen AI** (consumer).\n*   There is no official \"AMD Strix Halo\" hardware. This appears to be a conflation of ASUS ROG Strix hardware and possibly Halo (the Microsoft franchise) or Halo (the orbital ring structure), or potentially a confusion with **Intel Arc** or **NVIDIA** products.\n\n**2. \"ROCmFPX\" is not a standard AMD technology.**\n*   AMD\u2019s ROCm (Radeon Open Compute) stack supports **FP16**, **BF16**, **FP32**, and **INT8** precision.\n*   There is no official AMD specification or hardware feature called \"ROCmFPX.\" This may be a confusion with:\n    *   **FP8** (Emerging precision for AI, supported in some NVIDIA H100/H200 and emerging in AMD CDNA4/MI300X).\n    *   **FPX** as a generic term for extended precision.\n    *   A typo for **FP16** or **BF16**.\n\n**3. \"MTP\" in this context is ambiguous.**\n*   In AI/LLM contexts, **MTP** is not a standard benchmarking term. It may refer to:\n    *   **Multi-Token Prediction** (a speculative decoding technique).\n    *   **Message Transfer Protocol** (networking, not relevant to local AI inference).\n    *   A typo for **TPU** (Google), **NPU** (Neural Processing Unit), or **MTBF** (Mean Time Between Failures).\n    *   **Mamba** (state space models) or **",
+  "tokens": [],
+  "id_slot": 0,
+  "stop": true,
+  "model": "rocmfpx-mtp",
+  "tokens_predicted": 512,
+  "tokens_evaluated": 984,
+  "generation_settings": {
+    "seed": 123,
+    "temperature": 0.0,
+    "dynatemp_range": 0.0,
+    "dynatemp_exponent": 1.0,
+    "top_k": 20,
+    "top_p": 0.949999988079071,
+    "min_p": 0.05000000074505806,
+    "top_n_sigma": -1.0,
+    "xtc_probability": 0.0,
+    "xtc_threshold": 0.10000000149011612,
+    "typical_p": 1.0,
+    "repeat_last_n": 64,
+    "repeat_penalty": 1.0,
+    "presence_penalty": 0.0,
+    "frequency_penalty": 0.0,
+    "dry_multiplier": 0.0,
+    "dry_base": 1.75,
+    "dry_allowed_length": 2,
+    "dry_penalty_last_n": 32768,
+    "dry_sequence_breakers": [
+      "\n",
+      ":",
+      "\"",
+      "*"
+    ],
+    "mirostat": 0,
+    "mirostat_tau": 5.0,
+    "mirostat_eta": 0.10000000149011612,
+    "stop": [],
+    "max_tokens": 512,
+    "n_predict": 512,
+    "n_keep": 0,
+    "n_discard": 0,
+    "ignore_eos": true,
+    "stream": false,
+    "logit_bias": [
+      {
+        "bias": null,
+        "token": 248044
+      },
+      {
+        "bias": null,
+        "token": 248046
+      },
+      {
+        "bias": null,
+        "token": 248063
+      },
+      {
+        "bias": null,
+        "token": 248064
+      },
+      {
+        "bias": null,
+        "token": 248065
+      }
+    ],
+    "n_probs": 0,
+    "min_keep": 0,
+    "grammar": "",
+    "grammar_lazy": false,
+    "grammar_triggers": [],
+    "preserved_tokens": [],
+    "chat_format": "Content-only",
+    "reasoning_format": "none",
+    "reasoning_in_content": false,
+    "generation_prompt": "",
+    "samplers": [
+      "penalties",
+      "dry",
+      "top_n_sigma",
+      "top_k",
+      "typ_p",
+      "top_p",
+      "min_p",
+      "xtc",
+      "temperature"
+    ],
+    "speculative.types": "none,draft-mtp",
+    "speculative.n_max": 4,
+    "speculative.n_min": 0,
+    "speculative.p_min": 0.25,
+    "timings_per_token": false,
+    "post_sampling_probs": false,
+    "backend_sampling": false,
+    "lora": []
+  },
+  "prompt": "You are reviewing an AMD Strix Halo local AI benchmark route. Explain the setup, what was measured, why draft acceptance matters, and how to decide whether a local inference path is stable enough to recommend. Include practical caveats about Vulkan/RADV, ROCmFPX, MTP, prompt length, generated tokens, and raw evidence. Keep the response technical and concrete.\n\nYou are reviewing an AMD Strix Halo local AI benchmark route. Explain the setup, what was measured, why draft acceptance matters, and how to decide whether a local inference path is stable enough to recommend. Include practical caveats about Vulkan/RADV, ROCmFPX, MTP, prompt length, generated tokens, and raw evidence. Keep the response technical and concrete.\n\nYou are reviewing an AMD Strix Halo local AI benchmark route. Explain the setup, what was measured, why draft acceptance matters, and how to decide whether a local inference path is stable enough to recommend. Include practical caveats about Vulkan/RADV, ROCmFPX, MTP, prompt length, generated tokens, and raw evidence. Keep the response technical and concrete.\n\nYou are reviewing an AMD Strix Halo local AI benchmark route. Explain the setup, what was measured, why draft acceptance matters, and how to decide whether a local inference path is stable enough to recommend. Include practical caveats about Vulkan/RADV, ROCmFPX, MTP, prompt length, generated tokens, and raw evidence. Keep the response technical and concrete.\n\nYou are reviewing an AMD Strix Halo local AI benchmark route. Explain the setup, what was measured, why draft acceptance matters, and how to decide whether a local inference path is stable enough to recommend. Include practical caveats about Vulkan/RADV, ROCmFPX, MTP, prompt length, generated tokens, and raw evidence. Keep the response technical and concrete.\n\nYou are reviewing an AMD Strix Halo local AI benchmark route. Explain the setup, what was measured, why draft acceptance matters, and how to decide whether a local inference path is stable enough to recommend. Include practical caveats about Vulkan/RADV, ROCmFPX, MTP, prompt length, generated tokens, and raw evidence. Keep the response technical and concrete.\n\nYou are reviewing an AMD Strix Halo local AI benchmark route. Explain the setup, what was measured, why draft acceptance matters, and how to decide whether a local inference path is stable enough to recommend. Include practical caveats about Vulkan/RADV, ROCmFPX, MTP, prompt length, generated tokens, and raw evidence. Keep the response technical and concrete.\n\nYou are reviewing an AMD Strix Halo local AI benchmark route. Explain the setup, what was measured, why draft acceptance matters, and how to decide whether a local inference path is stable enough to recommend. Include practical caveats about Vulkan/RADV, ROCmFPX, MTP, prompt length, generated tokens, and raw evidence. Keep the response technical and concrete.\n\nYou are reviewing an AMD Strix Halo local AI benchmark route. Explain the setup, what was measured, why draft acceptance matters, and how to decide whether a local inference path is stable enough to recommend. Include practical caveats about Vulkan/RADV, ROCmFPX, MTP, prompt length, generated tokens, and raw evidence. Keep the response technical and concrete.\n\nYou are reviewing an AMD Strix Halo local AI benchmark route. Explain the setup, what was measured, why draft acceptance matters, and how to decide whether a local inference path is stable enough to recommend. Include practical caveats about Vulkan/RADV, ROCmFPX, MTP, prompt length, generated tokens, and raw evidence. Keep the response technical and concrete.\n\nYou are reviewing an AMD Strix Halo local AI benchmark route. Explain the setup, what was measured, why draft acceptance matters, and how to decide whether a local inference path is stable enough to recommend. Include practical caveats about Vulkan/RADV, ROCmFPX, MTP, prompt length, generated tokens, and raw evidence. Keep the response technical and concrete.\n\nYou are reviewing an AMD Strix Halo local AI benchmark route. Explain the setup, what was measured, why draft acceptance matters, and how to decide whether a local inference path is stable enough to recommend. Include practical caveats about Vulkan/RADV, ROCmFPX, MTP, prompt length, generated tokens, and raw evidence. Keep the response technical and concrete.\n\nYou are reviewing an AMD Strix Halo local AI benchmark route. Explain the setup, what was measured, why draft acceptance matters, and how to decide whether a local inference path is stable enough to recommend. Include practical caveats about Vulkan/RADV, ROCmFPX, MTP, prompt length, generated tokens, and raw evidence. Keep the response techni",
+  "has_new_line": true,
+  "truncated": false,
+  "stop_type": "limit",
+  "stopping_word": "",
+  "tokens_cached": 1495,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 984,
+    "prompt_ms": 941.07,
+    "prompt_per_token_ms": 0.9563719512195122,
+    "prompt_per_second": 1045.618285568555,
+    "predicted_n": 512,
+    "predicted_ms": 6346.478,
+    "predicted_per_token_ms": 12.39546484375,
+    "predicted_per_second": 80.67466711457914,
+    "draft_n": 713,
+    "draft_n_accepted": 315
+  }
+}

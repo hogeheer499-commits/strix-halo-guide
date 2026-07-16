@@ -1,0 +1,8 @@
+ggml_cuda_init: found 1 ROCm devices (Total VRAM: 122880 MiB):
+  Device 0: Radeon 8060S Graphics, gfx1151 (0x1151), VMM: no, Wave Size: 32, VRAM: 122880 MiB
+load_backend: loaded ROCm backend from /home/hoge-heer/benchmark-tools/llama-b10046-rocm/llama-b10046/libggml-hip.so
+load_backend: loaded RPC backend from /home/hoge-heer/benchmark-tools/llama-b10046-rocm/llama-b10046/libggml-rpc.so
+load_backend: loaded CPU backend from /home/hoge-heer/benchmark-tools/llama-b10046-rocm/llama-b10046/libggml-cpu-zen4.so
+ggml_backend_cuda_get_available_uma_memory: final available_memory_kb: 123007692
+Available devices:
+  ROCm0: Radeon 8060S Graphics (122880 MiB, 120124 MiB free)

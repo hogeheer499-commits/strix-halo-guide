@@ -1,0 +1,32 @@
+{
+  "model": "step-3.7-flash-rocmfpx-q3-qualityplus-mtp-64k",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Call the terminal tool with the exact command: printf step37-ok"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "terminal",
+        "description": "Run one shell command.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "command": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "command"
+          ]
+        }
+      }
+    }
+  ],
+  "tool_choice": "required",
+  "temperature": 0,
+  "max_tokens": 256
+}

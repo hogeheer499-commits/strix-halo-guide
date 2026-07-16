@@ -12,15 +12,16 @@ That uncertainty creates adoption friction. A technically strong AI PC can still
 
 This guide reduces setup friction, provides reproducible benchmark evidence, and helps buyers evaluate AMD local-AI hardware with clearer expectations. It gives developers and buyers a practical path from "what should I install?" to "which backend, model, and settings should I try first?"
 
-The repo also has a visible demand signal: 215 GitHub stars, 10 forks, 8 credited community benchmark contributors, and 11 Strix Halo-class systems/sources represented as of the 2026-07-14 GitHub/project snapshot. GitHub's latest available 14-day window ending 2026-07-08 recorded 816 unique repository visitors and 100 unique cloners. These should not be treated as the main value proposition. The main value is the proof layer below: reproducible public evidence that makes the hardware easier to evaluate, trust, support, review, and buy.
+The repo also has a visible demand signal: 218 GitHub stars, 11 forks, 5 watchers, 8 credited community benchmark contributors, and 11 Strix Halo-class systems/sources represented as of the 2026-07-16 GitHub/project snapshot. GitHub's available 14-day window ending 2026-07-15 recorded 867 unique repository visitors and 132 unique cloners; Google was the largest recorded referrer with 400 unique visitors. These dated figures are preserved in [`data/raw/2026-07-16/github-traction-snapshot/`](data/raw/2026-07-16/github-traction-snapshot/) and should not be treated as the main value proposition. The main value is the proof layer below: reproducible public evidence that makes the hardware easier to evaluate, trust, support, review, and buy.
 
 The technical proof layer already includes:
 
 - Setup and workflow guidance in [`README.md`](README.md).
-- Current buyer-path setup checks, including the normal Ollama 0.31.2 system-service route with `OLLAMA_IGPU_ENABLE=1`, 60.57 t/s Qwen3.6 generation, working vision, and restart/reboot persistence. The faster user-local 0.31.1 comparator remains documented separately.
+- Current buyer-path setup checks, including the normal Ollama 0.31.2 system-service route with `OLLAMA_IGPU_ENABLE=1`, 60.57 t/s Qwen3.6 generation, working vision, and restart/reboot persistence. A controlled same-port/same-cache comparison also puts isolated 0.31.1, 0.31.2, and 0.32.0 local binaries in the same 72.55-73.20 t/s class without pretending that the isolated 0.32.0 check is a full system-service qualification.
 - Reproducibility notes in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
 - Current benchmark snapshot in [`BENCHMARKS.md`](BENCHMARKS.md).
-- A current multi-user engineering case in [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md): official b9979 Vulkan loses 30.9-35.5% aggregate decode from concurrency 8 to 9 on two tested MoE shapes; an opt-in AMD/RADV density policy recovers 25.3-42.7% at np9 without changing np8 materially.
+- A current multi-user engineering case in [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md): official b10034 still loses 31.7-37.3% aggregate decode from concurrency 8 to 9 on two tested MoE shapes; a separate controlled b9979 campaign shows an opt-in AMD/RADV density policy recovering 25.3-42.7% at np9 without changing np8 materially.
+- Direct current-model capacity evidence: a pinned 90.86GB DeepSeek V4 Flash 284.33B ordinary GGUF loaded and generated on one 128GB Beelink through official b10034 Vulkan/RADV. This is explicitly scoped as low-bit capacity/basic-correctness evidence rather than a speed or broad quality claim.
 - Claim-to-evidence mapping in [`data/headline_claims.csv`](data/headline_claims.csv).
 - Structured data in [`data/`](data/README.md).
 - Raw logs and CSVs in [`data/raw/`](data/raw/).

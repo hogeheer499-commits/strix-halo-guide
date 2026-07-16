@@ -1,0 +1,13 @@
+
+<think>
+The user wants me to identify the large black text in the image.
+1.  **Analyze the image:** I see a white rectangular area in the center, surrounded by black bars at the top and bottom.
+2.  **Locate the text:** Inside the white area, there is large, bold, black text.
+3.  **Read the text:** The text reads "STRIX 395".
+4.  **Format the output:** The user requested "only that text".
+
+So the final answer is "STRIX 395".
+</think>
+STRIX 395
+
+

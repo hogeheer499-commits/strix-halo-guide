@@ -1,0 +1,198 @@
+captured_at=2026-07-16T04:45:27+02:00
+hostname=hoge-heer-GTR-Pro
+kernel=Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+llama_release=b10034
+llama_commit=505b1ed15ca80e2a19f12ff4ac365e40fb374053
+release_asset_sha256=cec255e083eb5617a08f1923c0b043a391a53b5d09d573675f697a8053008d73
+binary_version:
+version: 10034 (505b1ed15)
+built with GNU 11.4.0 for Linux x86_64
+binary_sha256:
+3b70e62c5c5cf43c8c436622a845ad4b80c01837d6ba3a10c90e39b219bbd2ab  /home/hoge-heer/benchmark-tools/llama-b10034/llama-b10034/llama-batched-bench
+model_files:
+17665334432 /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
+46067137312 /home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf
+known_model_sha256_from_b9979_campaign:
+2841aa314d916434860cfb8990347528dcdfe5c350dbcb9d1461dbee88ff2533  Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
+49e554f954afbfc9f627b8be236adf16c1e51d8e5ecaa0e65ac8ede4e2c41a56  Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf
+os_release:
+PRETTY_NAME="Ubuntu 24.04.4 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04.4 LTS (Noble Numbat)"
+VERSION_CODENAME=noble
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=noble
+LOGO=ubuntu-logo
+memory:
+               total        used        free      shared  buff/cache   available
+Mem:           124Gi        16Gi        34Gi       195Mi        74Gi       108Gi
+Swap:          8.0Gi       365Mi       7.6Gi
+cpu:
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           48 bits physical, 48 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  32
+On-line CPU(s) list:                     0-31
+Vendor ID:                               AuthenticAMD
+Model name:                              AMD RYZEN AI MAX+ 395 w/ Radeon 8060S
+CPU family:                              26
+Model:                                   112
+Thread(s) per core:                      2
+Core(s) per socket:                      16
+Socket(s):                               1
+Stepping:                                0
+Frequency boost:                         enabled
+CPU(s) scaling MHz:                      58%
+CPU max MHz:                             5187.5000
+CPU min MHz:                             625.0000
+BogoMIPS:                                5988.79
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good amd_lbr_v2 nopl xtopology nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpuid_fault cpb cat_l3 cdp_l3 hw_pstate ssbd mba perfmon_v2 ibrs ibpb stibp ibrs_enhanced vmmcall fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local user_shstk avx_vnni avx512_bf16 clzero irperf xsaveerptr rdpru wbnoinvd cppc arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif x2avic v_spec_ctrl vnmi avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid bus_lock_detect movdiri movdir64b overflow_recov succor smca fsrm avx512_vp2intersect flush_l1d amd_lbr_pmc_freeze
+Virtualization:                          AMD-V
+L1d cache:                               768 KiB (16 instances)
+L1i cache:                               512 KiB (16 instances)
+L2 cache:                                16 MiB (16 instances)
+L3 cache:                                64 MiB (2 instances)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0-31
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Ghostwrite:                Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Not affected
+Vulnerability Old microcode:             Not affected
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Not affected
+Vulnerability Spec rstack overflow:      Mitigation; IBPB on VMEXIT only
+Vulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; STIBP always-on; PBRSB-eIBRS Not affected; BHI Not affected
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Not affected
+Vulnerability Vmscape:                   Mitigation; IBPB on VMEXIT
+vulkan:
+==========
+VULKANINFO
+==========
+
+Vulkan Instance Version: 1.3.275
+
+
+Instance Extensions: count = 25
+-------------------------------
+VK_EXT_acquire_drm_display             : extension revision 1
+VK_EXT_acquire_xlib_display            : extension revision 1
+VK_EXT_debug_report                    : extension revision 10
+VK_EXT_debug_utils                     : extension revision 2
+VK_EXT_direct_mode_display             : extension revision 1
+VK_EXT_display_surface_counter         : extension revision 1
+VK_EXT_headless_surface                : extension revision 1
+VK_EXT_layer_settings                  : extension revision 2
+VK_EXT_surface_maintenance1            : extension revision 1
+VK_EXT_swapchain_colorspace            : extension revision 5
+VK_KHR_device_group_creation           : extension revision 1
+VK_KHR_display                         : extension revision 23
+VK_KHR_external_fence_capabilities     : extension revision 1
+VK_KHR_external_memory_capabilities    : extension revision 1
+VK_KHR_external_semaphore_capabilities : extension revision 1
+VK_KHR_get_display_properties2         : extension revision 1
+VK_KHR_get_physical_device_properties2 : extension revision 2
+VK_KHR_get_surface_capabilities2       : extension revision 1
+VK_KHR_portability_enumeration         : extension revision 1
+VK_KHR_surface                         : extension revision 25
+VK_KHR_surface_protected_capabilities  : extension revision 1
+VK_KHR_wayland_surface                 : extension revision 6
+VK_KHR_xcb_surface                     : extension revision 6
+VK_KHR_xlib_surface                    : extension revision 6
+VK_LUNARG_direct_driver_loading        : extension revision 1
+
+Instance Layers: count = 5
+--------------------------
+VK_LAYER_INTEL_nullhw       INTEL NULL HW                                                1.1.73   version 1
+VK_LAYER_MESA_anti_lag      Open-source implementation of the VK_AMD_anti_lag extension. 1.4.303  version 1
+VK_LAYER_MESA_device_select Linux device selection layer                                 1.4.303  version 1
+VK_LAYER_MESA_overlay       Mesa Overlay layer                                           1.4.303  version 1
+VK_LAYER_MESA_screenshot    Mesa Screenshot layer                                        1.4.303  version 1
+
+Devices:
+========
+GPU0:
+	apiVersion         = 1.4.354
+	driverVersion      = 26.1.4
+	vendorID           = 0x1002
+	deviceID           = 0x1586
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = Radeon 8060S Graphics (RADV STRIX_HALO)
+	driverID           = DRIVER_ID_MESA_RADV
+	driverName         = radv
+	driverInfo         = Mesa 26.1.4 - kisak-mesa PPA
+	conformanceVersion = 1.4.0.0
+	deviceUUID         = 00000000-c600-0000-0000-000000000000
+	driverUUID         = 414d442d-4d45-5341-2d44-525600000000
+GPU1:
+	apiVersion         = 1.4.354
+	driverVersion      = 26.1.4
+	vendorID           = 0x10005
+	deviceID           = 0x0000
+	deviceType         = PHYSICAL_DEVICE_TYPE_CPU
+	deviceName         = llvmpipe (LLVM 20.1.8, 256 bits)
+	driverID           = DRIVER_ID_MESA_LLVMPIPE
+	driverName         = llvmpipe
+	driverInfo         = Mesa 26.1.4 - kisak-mesa PPA (LLVM 20.1.8)
+	conformanceVersion = 1.3.1.1
+	deviceUUID         = 6d657361-3236-2e31-2e34-202d206b6900
+	driverUUID         = 6c6c766d-7069-7065-5555-494400000000
+power_profile:
+performance
+tuned:
+It seems that tuned daemon is not running, preset profile is not activated.
+Preset profile: balanced
+dpm:
+high
+paused_user_processes:
+USER         PID STAT COMMAND         %CPU %MEM
+hoge-he+ 1127148 T    zoom             0.0  0.0
+hoge-he+ 1127150 TLl  zoom             5.2  0.7
+hoge-he+ 1127624 TLl  ZoomClips        0.4  0.2
+hoge-he+ 1611717 TLl  ffmpeg          1983  0.2
+hoge-he+ 2392188 Tl   chrome           0.0  0.1
+hoge-he+ 2591951 Tl   chrome           0.6  0.3
+hoge-he+ 2591968 T    chrome           0.0  0.0
+hoge-he+ 2591969 T    chrome           0.0  0.0
+hoge-he+ 2591971 T    chrome           0.0  0.0
+hoge-he+ 2591996 Tl   chrome           0.0  0.1
+hoge-he+ 2591998 Tl   chrome           0.0  0.1
+hoge-he+ 2592013 Tl   chrome           0.0  0.0
+hoge-he+ 2592176 Tl   chrome           0.0  0.2
+hoge-he+ 2594024 Tl   chrome           0.0  0.0
+hoge-he+ 2909252 Tl   chrome           0.0  0.0
+hoge-he+ 3457041 Tl   chrome           0.0  0.1
+hoge-he+ 3457458 Tl   chrome           0.0  0.2
+hoge-he+ 3551131 Tl   chrome           0.0  0.1
+hoge-he+ 3980219 Tl   firefox          0.2  0.5
+hoge-he+ 4025294 Tl   rustdesk         4.8  0.3
+hoge-he+ 4025301 Tl   rustdesk         0.0  0.0
+hoge-he+ 4025964 Tl   rustdesk         2.0  0.1
+ollama_service:
+USER         PID STAT COMMAND         %CPU %MEM COMMAND
+ollama   1820891 Ssl  ollama           0.0  0.0 /usr/local/bin/ollama serve
+t3_processes:
+2390238 /bin/bash -c set -e OUT=data/raw/2026-07-16/llamacpp-b10034-vulkan-sentinel mkdir -p "$OUT" {   echo "captured_at=$(date -Is)"   echo "hostname=$(hostname)"   echo "kernel=$(uname -a)"   echo "llama_release=b10034"   echo "llama_commit=505b1ed15ca80e2a19f12ff4ac365e40fb374053"   echo "release_asset_sha256=cec255e083eb5617a08f1923c0b043a391a53b5d09d573675f697a8053008d73"   echo 'binary_version:'   LD_LIBRARY_PATH=/home/hoge-heer/benchmark-tools/llama-b10034/llama-b10034 /home/hoge-heer/benchmark-tools/llama-b10034/llama-b10034/llama-batched-bench --version 2>&1 | head -5   echo 'binary_sha256:'   sha256sum /home/hoge-heer/benchmark-tools/llama-b10034/llama-b10034/llama-batched-bench   echo 'model_files:'   stat -c '%s %n' /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf /home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf   echo 'known_model_sha256_from_b9979_campaign:'   echo '2841aa314d916434860cfb8990347528dcdfe5c350dbcb9d1461dbee88ff2533  Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf'   echo '49e554f954afbfc9f627b8be236adf16c1e51d8e5ecaa0e65ac8ede4e2c41a56  Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf'   echo 'os_release:'; cat /etc/os-release   echo 'memory:'; free -h   echo 'cpu:'; lscpu   echo 'vulkan:'; vulkaninfo --summary 2>/dev/null   echo 'power_profile:'; powerprofilesctl get 2>/dev/null || true   echo 'tuned:'; tuned-adm active 2>/dev/null || true   echo 'dpm:'; cat /sys/class/drm/card1/device/power_dpm_force_performance_level 2>/dev/null || true   echo 'paused_user_processes:'; ps -o user,pid,stat,comm,%cpu,%mem -p "$(paste -sd, /tmp/strix-halo-paused-2026-07-16.pids)" 2>/dev/null || true   echo 'ollama_service:'; ps -o user,pid,stat,comm,%cpu,%mem,args -p "$(pgrep -d, -x ollama 2>/dev/null)" 2>/dev/null || true   echo 't3_processes:'; pgrep -af t3code || true } > "$OUT/host-snapshot.txt" chmod +x "$OUT/run-b10034-sentinel.sh" "$OUT/run-b10034-sentinel.sh"
+2592251 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --disable-gpu --disable-gpu-compositing --disable-gpu-rasterization --disable-accelerated-2d-canvas --disable-accelerated-video-decode --disable-features=UseSkiaRenderer,Vulkan,CanvasOopRasterization,VaapiVideoDecoder
+2592266 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote --no-zygote-sandbox
+2592268 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote
+2592272 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote
+2592322 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote --no-zygote-sandbox
+2592329 /proc/self/exe --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --enable-crash-reporter=d26cb034-6a32-49d0-89c4-afe91d0206fd,no_channel --user-data-dir=/home/hoge-heer/.config/t3code --standard-schemes=t3 --secure-schemes=t3 --cors-schemes=t3 --fetch-schemes=t3 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,3662029411786077527,16787607204844215957,262144 --enable-features=PdfUseShowSaveFilePicker --disable-features=CanvasOopRasterization,DropInputEventsWhilePaintHolding,LocalNetworkAccessChecks,ScreenAIOCREnabled,SpareRendererForSitePerProcess,TraceSiteInstanceGetProcessCreation,UseSkiaRenderer,VaapiVideoDecoder,Vulkan --variations-seed-version --pseudonymization-salt-handle=7,i,18105499973406386778,3360745484770433846,4 --trace-process-track-uuid=3190708989122997041
+2592505 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/resources/app/apps/server/dist/bin.mjs --bootstrap-fd 3
+2594046 /home/hoge-heer/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote

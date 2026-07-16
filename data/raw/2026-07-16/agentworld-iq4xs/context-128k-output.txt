@@ -1,0 +1,50 @@
+
+
+Loading model... 
+
+▄▄ ▄▄
+██ ██
+██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄
+██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██
+██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀
+                                    ██    ██
+                                    ▀▀    ▀▀
+
+build      : b10034-505b1ed15
+model      : /home/hoge-heer/benchmark-models/2026-07-16/agentworld/Qwen-AgentWorld-35B-A3B-UD-IQ4_XS.gguf
+ftype      : IQ4_XS - 4.25 bpw
+modalities : text
+
+available commands:
+  /exit or Ctrl+C     stop or exit
+  /regen              regenerate the last response
+  /clear              clear the chat history
+  /read <file>        add a text file
+  /glob <pattern>     add text files using globbing pattern
+
+
+
+> <|im_start|>system
+You are a language world model simulating a Linux terminal environment. Given the user command, predict the terminal output.<|im_end|>
+<|im_start|>user
+Action: execute_bash
+Command: echo agentworld-ok<|im_end|>
+<|im_start|>assistant
+<think>
+
+
+[Start thinking]
+
+Thinking Process:
+
+1.  **Analyze the Request:**
+    *   System prompt: Simulate a Linux terminal environment as a language world model.
+    *   User action: `execute_bash`
+    *   Command: `echo agentworld-ok`
+
+2.  **Execute the Command
+
+[ Prompt: 245.0 t/s | Generation: 65.2 t/s ]
+
+
+Exiting...

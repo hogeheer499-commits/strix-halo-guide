@@ -34,6 +34,7 @@ python3 scripts/generate_charts.py
 - `max_performance_campaign.csv`: 2026-05-07 "push the Beelink further" campaign summary, including quant sweeps, same-source HIP/Vulkan, gpt-oss long-context, vLLM AWQ smoke, and negative results.
 - `multi_user.csv`: controlled `llama-server` concurrency results with aggregate throughput, per-request throughput, TTFT, and ITL.
 - `server_shootout.csv`: practical local-AI-server comparison rows across Ollama, `llama-server`, ROCm builds, and vLLM candidates.
+- `rocm_714_hipblaslt_ab.csv`: processed first-party FP16 vLLM A/B for ROCm 7.14's Ryzen AI batch-8+ hipBLASLt workaround at concurrency 1/4/8/9/16. Keep separate from direct GGUF and Vulkan claims.
 - `backend_crossover.csv`: local HIP versus Vulkan spot-check rows for prompt-processing and token-generation workload split.
 - `moe_density_gate.csv`: detailed b9979 stock/density/dense16 Vulkan and Lemonade ROCm concurrency rows for Qwen3-Coder 30B-A3B and Qwen3-Next 80B-A3B, including controlled repeats and sysfs thermal/PPT context.
 - `moe_density_gate_summary.csv`: repeat-aware means, standard deviations, ranges, temperatures, and package-PPT context for the same campaign.
@@ -42,6 +43,20 @@ python3 scripts/generate_charts.py
 - `smoke_tests.csv`: short validation runs that prove the current stack is healthy before larger benchmark campaigns.
 - `raw/`: raw command output for controlled benchmark runs used by current claims.
 - `raw/2026-07-13/llamacpp-b9979-amd-density-gate/`: b9979 AMD/RADV density-gate patch, correctness tests, 30B/80B discovery sweeps, controlled repeats, Lemonade ROCm comparators, telemetry, commands, and preserved thermal aborts.
+- `raw/2026-07-16/llamacpp-b10034-vulkan-sentinel/`: official b10034 three-repeat np8/np9 sentinel for Qwen3-Coder 30B-A3B and Qwen3-Next 80B-A3B. It confirms that the sharp multi-user MoE cliff persists on the latest measured Vulkan release.
+- `raw/2026-07-16/ollama-0311-0312-0320-controlled/`: same-port, same-cache, same-prompt controlled Ollama comparison with nine warm Qwen3.6 requests per version plus 0.32.0 iGPU, vision, and process-restart checks.
+- `raw/2026-07-16/rocmfpx-chadrock-stability-profile/`: four-shape, three-repeat CHADROCK ACE/SABER ROCmFPX profile. The exact 3946-token reference averaged 141.37 t/s at 100% draft acceptance; lower-acceptance shapes were materially slower.
+- `raw/2026-07-16/step37-rocmfpx-q3-qualityplus/`: first-party Beelink reproduction of the Step 3.7 Flash 198B-A11B ROCmFPX Q3 target plus Q8 MTP draft. Includes matched no-spec/MTP 4K rows, repeat-confirmed 16K MTP, a one-repeat 48K scout, native tool-call output, 256K allocation proof, hashes, exact commands, and a lifecycle-corrected harness. Server/capacity evidence, not direct `llama-bench`.
+- `raw/2026-07-16/rocm-714-vllm-hipblaslt-ab/`: isolated official ROCm 7.14 / PyTorch 2.11 / vLLM FP16 A/B on `gfx1151`. Enabling hipBLASLt changed aggregate throughput by +40.50%, +38.96%, and +41.54% at concurrency 8, 9, and 16; no material gain appeared at 1 and concurrency 4 regressed slightly.
+- `raw/2026-07-16/llamacpp-b10046-rocm-integrated-host-buffer/`: official b10046 ROCm/HIP compatibility pass for merged PR #24233. The binary detected the full Strix Halo UMA pool and used `ROCm_Host` model, output, and compute buffers without a gfx-version override; includes the required local runtime-library-path caveat.
+- `raw/2026-07-16/nemotron-cascade2-iq4xs/`: current Nemotron Cascade 2 direct speed plus small reasoning/instruct correctness checks.
+- `raw/2026-07-16/agentworld-iq4xs/`: Qwen AgentWorld direct speed, terminal-environment simulation, and 128K Q8 KV allocation smoke.
+- `raw/2026-07-16/nemotron-omni-mxfp4-b10034-sentinel/`: exact-artifact runtime sentinel showing the existing Omni MXFP4 route at 64.26 tg128 on b10034 versus 56.56 on b9747.
+- `raw/2026-07-16/nemotron-omni-nvfp4-multimodal/`: NVFP4 language benchmark plus F16-projector image OCR smoke through the experimental multimodal CLI.
+- `raw/2026-07-16/audex-text-mxfp4/`: Audex portable text-only GGUF speed and correctness smoke, with full-audio runtime and noncommercial-license caveats.
+- `raw/2026-07-16/current-model-runtime-triage/`: dated runtime/model scan recording measured, blocked-before-download, specialized-runtime, and external-storage targets.
+- `raw/2026-07-16/github-traction-snapshot/`: dated GitHub repository, traffic, clone, and referrer API responses behind the current partnership reach figures. Aggregate demand context only, not benchmark or sales-impact evidence.
+- `raw/2026-07-16/deepseek-v4-flash-ud-iq2-xxs/`: pinned three-shard DeepSeek V4 Flash `UD-IQ2_XXS` direct pass on official b10034. The 284.33B-parameter, 90.86GB artifact measured 155.64 pp512 / 13.27 tg128 over three repeats and answered the deterministic correctness smoke; capacity/current-model evidence, not a speed or broad quality claim.
 - `../SMOKE_TESTS.md`: human-readable smoke-test notes and verdicts.
 - `../charts/`: generated SVG charts derived from the CSV files.
 
