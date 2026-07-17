@@ -12,6 +12,20 @@ It is not a leaderboard. The goal is to separate three questions that often get 
 
 Measured rows below are first-party Beelink GTR9 Pro direct `llama-bench` Vulkan/RADV scouts unless stated otherwise. Most model scouts used a practical workstation state; controlled server, runtime, and regression campaigns record their own background-load and power conditions in the linked raw evidence. Do not inherit one campaign's host state for another.
 
+## Community Tests Wanted
+
+These are the highest-value open tests where another Strix Halo owner can add evidence without repeating work already completed here. Comment on the linked source before starting a large download or long campaign so the model, runtime, command, and required evidence can be aligned first.
+
+| Test | Why it matters | Best volunteer setup | Status / start here |
+| --- | --- | --- | --- |
+| ROCm 7.14 practical 27B/35B hipBLASLt follow-up | Checks whether the measured 39-42% batch gain on the small FP16 sentinel carries to a model class buyers would actually serve. | Strix Halo with a pinned ROCm 7.14 vLLM environment and a supported practical model artifact. | Needs a supported artifact; see [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md). |
+| Official `llama.cpp` HIP/UMA practical-model follow-up | Tests whether the b10046 integrated-host-buffer fix remains stable on a useful 27B/35B model and whether the manual runtime-library path can be avoided. | Strix Halo owner able to build or run official ROCm/HIP `llama.cpp`. | Ready for a controlled run; see the [`b10046 raw note`](data/raw/2026-07-16/llamacpp-b10046-rocm-integrated-host-buffer/). |
+| Corsair/Sixunited sustained-inference SCLK validation | Could turn a three-node hard-lock report into scoped thermal/stability guidance and a concrete OEM support question. It must not become a universal clock-cap recommendation without raw logs and independent confirmation. | Corsair AI Workstation 300 or another clearly identified Sixunited AXB35 revision with sustained-load monitoring. | WIP community report; coordinate in [issue #24](https://github.com/hogeheer499-commits/strix-halo-guide/issues/24). |
+| Same-machine Windows versus Linux buyer path | Answers a common purchase question with a fair comparison instead of mixing different machines, model files, and power states. | One dual-boot Strix Halo system that can run the same model and prompt through comparable local runtimes. | Test window needed; start with [`STRIX_HALO_LOCAL_LLM_SETUP.md`](STRIX_HALO_LOCAL_LLM_SETUP.md). |
+| Wall-power efficiency pass | Adds buyer- and vendor-relevant tokens-per-watt evidence without confusing wall power, package PPT, or inferred efficiency. | Any Strix Halo system with a reliable external wall meter and synchronized benchmark telemetry. | Hardware needed; follow [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md). |
+
+The complete machine-readable queue, including blocked model downloads and maintainer-only runtime checks, remains in [`data/current_test_queue.csv`](data/current_test_queue.csv). Proven recommendations remain separate in [`BEST_KNOWN_PROFILES.md`](BEST_KNOWN_PROFILES.md).
+
 ## Best Current Headline Rows
 
 | Question | Best current row | Why it matters |
