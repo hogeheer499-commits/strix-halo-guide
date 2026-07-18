@@ -71,7 +71,7 @@ What you get:
 | Current 120B-class direct GGUF route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly at 18.43 tg128, with a b9544 control at 18.93 tg128. It remains a useful more-balanced 120B-class capacity route. |
 | Experimental speculative server path | MTP works on current `llama.cpp`/ROCmFPX routes. The best local Qwen3.6 MTP server route uses IQ4_XS-Q8nextn and reached about 101.1 t/s across six prompts on b9360; Gemma 4 26B-A4B QAT reached up to 110.0 t/s best-repeat; the exact CHADROCK ACE/SABER reference profile averaged 141.37 t/s over three repeats at 100% draft acceptance. These are server/speculative results, not direct `llama-bench` headlines. CHADROCK's separate 1K and 8K profiles were much slower, so operators must profile real prompts. |
 | Frontier-size local agent path | Step 3.7 Flash ROCmFPX Q3 QualityPlus runs as a 198B-total / about 11B-active target plus separate Q8 MTP draft: 34.50 t/s at 4K, 33.83 t/s at 16K, native tool-call pass, and full 256K allocation. This is advanced server/capacity evidence, not direct `llama-bench`; the 256K result is allocation, not a filled-context quality test. |
-| Current runtime status | The normal Ollama 0.31.2 service path passed Qwen3.6, iGPU, vision, restart, and full-reboot checks at 60.57 t/s. A controlled same-port/same-cache comparison then put local Ollama 0.31.1, 0.31.2, and 0.32.0 binaries in the same 72.55-73.20 t/s class; 0.32.0 also passed iGPU vision and process-restart checks. Official `llama.cpp` b10034 still shows the multi-user Vulkan MoE np8-to-np9 cliff on both tested model shapes. See [`CURRENT_MODELS.md`](CURRENT_MODELS.md) and [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md). |
+| Current runtime status | The normal Ollama 0.31.2 service path passed Qwen3.6, iGPU, vision, restart, and full-reboot checks at 60.57 t/s. Stable Ollama 0.32.1 is the next installed-service qualification target; the controlled 0.32.0 binary already matched 0.31.1/0.31.2 performance and passed iGPU vision plus process restart. Official `llama.cpp` b10066 is the current upstream test target and adds automatic DFlash/EAGLE3 sidecar discovery; the measured Vulkan concurrency sentinel remains b10034 until a controlled rerun. See [`CURRENT_MODELS.md`](CURRENT_MODELS.md) and [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md). |
 | Current HIP/UMA compatibility status | Official `llama.cpp` b10046 locally detected 120,124 MiB free UMA and used real `ROCm_Host` model, output, and compute buffers on `gfx1151` without a gfx-version override. The release binary needed the existing Ollama ROCm library path on this host. This validates merged HIP integrated-device support; it does not replace Vulkan/RADV as the beginner path. |
 | Large local model checks | gpt-oss-120b MXFP4 loaded at 55.57 tg128; Nemotron 3 Super 120B-A12B at 18.43 tg128; MiniMax M2.7 230B-class MoE loaded and generated; and DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded directly at 13.27 tg128. These are different capacity/quality tradeoffs, not interchangeable speed claims. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
@@ -85,9 +85,9 @@ What you get:
 
 For those who want to get running as fast as possible:
 
-1. **BIOS:** Set UMA Frame Buffer to 512MB if available; if your BIOS minimum is 2GB, leave it at 2GB. Disable IOMMU unless you need it.
+1. **BIOS:** Set UMA Frame Buffer to 512MB if available; if your BIOS minimum is 2GB, leave it at 2GB. Keep IOMMU enabled/default for laptops, suspend, and NPU use. Disabling it is an optional desktop benchmark profile.
 2. **Install Ubuntu 24.04 LTS**, switch to X11.
-3. **Kernel params:** Add `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280` to GRUB.
+3. **Kernel params:** Add `amdgpu.gttsize=131072 ttm.pages_limit=31457280` to GRUB. Add `amd_iommu=off` only for the optional desktop benchmark profile after reading [Choose the IOMMU policy](#step-12-choose-the-iommu-policy).
 4. **Performance:** Install tuned, set `accelerator-performance` profile, upgrade Mesa via kisak PPA.
 5. **Ollama:** Install, configure Vulkan backend with `OLLAMA_VULKAN=1` and `HIP_VISIBLE_DEVICES=-1`.
 6. **Test:** `ollama run qwen3.6:35b-a3b` -- the measured Ollama 0.31.2 system-service path reached about 60 t/s generation. Exact speed depends on runtime, model, power state, and background load.
@@ -96,7 +96,7 @@ Use the setup script below for the automated path. The phases later in this READ
 
 ## Setup Script
 
-If you've already set your BIOS (UMA = 512MB if available, or 2GB if that is your vendor minimum; IOMMU = off unless needed) and installed Ubuntu 24.04:
+If you've already set your BIOS (UMA = 512MB if available, or 2GB if that is your vendor minimum; leave IOMMU enabled/default unless you deliberately choose the desktop benchmark profile) and installed Ubuntu 24.04:
 
 ```bash
 git clone https://github.com/hogeheer499-commits/strix-halo-guide
@@ -171,7 +171,7 @@ These are the practical decisions extracted from the primary Beelink runs plus c
 | Seeing Qwen3-Coder around 100 t/s on another Strix Halo box | Treat it as a tuned-system clue, not a default claim. Capture thermals, power policy, Vulkan device line, `glslc --version`, driver/toolchain details, and exact command. | A Reddit GMKtec EVO-X2 report saw most `Q4_K_S -p 0 -n 128` runs around 99.90 t/s and a best 100.0 t/s after repasting, reseating memory pads, and using GPU `high` plus CPU EPP `performance`. Local Beelink b9467 follow-ups stayed around 95.27-96.72 t/s, so thermals/power/toolchain still need to be separated before calling this generally reproducible. | [`COMMUNITY_RESULTS.md#reddit-gmktec-evo-x2-tuned-100-ts-report`](COMMUNITY_RESULTS.md#reddit-gmktec-evo-x2-tuned-100-ts-report), [`PERFORMANCE_NOTES.md#vulkan-integer-dot-and-100-ts-reproduction-status`](PERFORMANCE_NOTES.md#vulkan-integer-dot-and-100-ts-reproduction-status), [`raw reproduction`](data/raw/2026-06-02/reddit-look-int-dot-reproduction/) |
 | Starting on Windows | LM Studio Vulkan is now a documented Windows path, but keep it separate from Linux `llama-bench`. | The first Windows MS-S1-Max report measured a 89.49 tok/s script average through LM Studio with `n_parallel=4` and 262K context; the long 512-token prompt rows were around 69-70 tok/s. This is useful Windows buyer evidence, not a same-machine Windows-vs-Linux comparison. | [`COMMUNITY_RESULTS.md#windows-lm-studio-ms-s1-max-report`](COMMUNITY_RESULTS.md#windows-lm-studio-ms-s1-max-report), [`raw Windows report`](data/raw/2026-06-02/community-windows-lmstudio-issue3/) |
 | Evaluating a compact non-Beelink chassis | Look for setup metadata, thermal context, and large-model feasibility, not only headline t/s. | The Nimo AI Mini PC issue #4 bundle adds Ubuntu 25.04 / Mesa 25.2.8 / ROCm rows, Qwen 122B-class serving, StepFun 198B-class serving, Qwen3-Coder-Next server rows, DFlash negative/control evidence, Gemma 4 QAT/MTP assistant-head follow-up data, and supplemental fan/power/temperature telemetry. | [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`data/community_nimo_issue4.csv`](data/community_nimo_issue4.csv), [`raw Nimo bundle`](data/raw/2026-06-03/community-nimo-issue4/), [`Gemma QAT follow-up`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/) |
-| Keeping IOMMU on for NPU workflows | Do this only if you need the NPU/RDMA/VFIO/cluster path; otherwise keep the beginner path simple. | The default guide path still disables IOMMU for lowest-friction Vulkan/RADV work. ciru-ai's GMKtec EVO-X2 NixOS artifact is valuable because it shows an advanced IOMMU-on stack where the NPU can run sidecar work with low measured main-workload impact. | [`COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-package`](COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-package), [`data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/`](data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/) |
+| Choosing an IOMMU policy | Keep IOMMU enabled/default for normal systems, NPU work, and mobile suspend. Use `amd_iommu=off` only for the optional always-on desktop benchmark profile. | The Beelink headline profile preserves the measured performance route, while the safer general default avoids silently losing the NPU or deep laptop/tablet sleep. ciru-ai's GMKtec EVO-X2 NixOS artifact also shows an IOMMU-on stack where the NPU can run sidecar work with low measured main-workload impact. | [setup policy](#step-12-choose-the-iommu-policy), [`COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-package`](COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-package) |
 | Testing MTP/speculative decoding | Treat MTP as an advanced server route, not a direct benchmark replacement. | The Qwen3.6 MTP IQ4_XS-Q8nextn route has a local b9360 rerun at 101.16 t/s and a GMKtec b9235 reproduction at 93.29 t/s. The Gemma 4 26B-A4B QAT route adds a current Google-model matched-head example at 102.69-110.00 t/s. The exact CHADROCK ACE/SABER reference profile averaged 141.37 t/s over three repeats at 100% acceptance, while lower-acceptance shapes were much slower. | [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md), [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md), [`data/mtp_speculative.csv`](data/mtp_speculative.csv), [#18](https://github.com/hogeheer499-commits/strix-halo-guide/issues/18) |
 | The model fits on one Strix Halo box | Do not use `llama.cpp` RPC for raw single-stream speed. | 2-node RPC lost about 14-22% tg128 on fits-on-one models; 3-node was slower again. | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`data/community_rpc.csv`](data/community_rpc.csv) |
 | A huge GGUF does not fit on one box | Try ROCm RPC first, starting with the smallest node count that fits. | In the tested MiniMax-M2.7 140.8GB case, one box failed, 2-node ROCm worked, and 3-node ROCm was slower. This is a capacity rule from that case, not a universal speedup rule. | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) |
@@ -209,7 +209,7 @@ If you are new, do this first:
 
 1. Use Ubuntu 24.04.
 2. Set BIOS UMA Frame Buffer Size to 512MB if available, or 2GB if that is your vendor minimum.
-3. Disable IOMMU unless you need RDMA, VFIO, passthrough, or clustering.
+3. Keep IOMMU enabled/default if you use suspend, the NPU, RDMA, VFIO, passthrough, or clustering. On an always-on desktop benchmark box, `amd_iommu=off` remains an optional measured performance profile.
 4. Use the [setup script](#setup-script) to install the Vulkan/RADV + Ollama path.
 5. Start with Ollama for chat, then add [Open WebUI](#chatgpt-like-web-interface-open-webui) if you want a browser UI.
 6. Move to direct `llama.cpp` only when you want exact benchmark control or the fastest measured single-box path.
@@ -889,11 +889,13 @@ Navigate to `Integrated Graphics` then `UMA Frame Buffer Size` and set it to **5
 
 > **Why?** On the primary Beelink 128GB system, the default BIOS setting reserved ~97GB for GPU VRAM and left only ~31GB visible to the OS. Setting UMA to 512MB lets Linux see almost all system RAM. Some vendor BIOSes use 2GB as the lowest fixed reserve; that is fine if Linux still sees the large system-memory pool. Vulkan/RADV uses GTT system memory, so the fixed UMA reserve is not the total memory available to the iGPU path. The practical check is `free -h`: a 128GB box should show roughly 124-126GiB usable, not ~31GiB.
 
-### Step 1.2: Disable IOMMU in BIOS
+### Step 1.2: Choose the IOMMU policy
 
-Find the IOMMU setting and set to **Disabled**.
+For a normal system, leave IOMMU **Enabled** or at the firmware default. This preserves NPU access, RDMA/VFIO/passthrough support, and mobile suspend behavior.
 
-> **Why?** [lhl's memory bandwidth testing](https://github.com/lhl/strix-halo-testing) shows `amd_iommu=off` gives ~6% better memory reads compared to default (234 vs 221 GB/s). `iommu=pt` (pass-through, recommended by some guides) gives **no benefit** over default. We use `amd_iommu=off` in the kernel command line as well, but disabling in BIOS ensures it's completely off. Only re-enable if you need VFIO/GPU passthrough or RDMA clustering. A GMKtec EVO-X2 community Vulkan/RADV run matched the guide within about 2% with IOMMU translated mode, so this is a primary-Beelink reproducibility setting rather than a universal requirement.
+Use `amd_iommu=off` only as an optional profile for an always-on desktop benchmark box where the NPU and suspend do not matter. [lhl's memory-bandwidth testing](https://github.com/lhl/strix-halo-testing) measured about 6% faster memory reads with IOMMU off (234 vs 221 GB/s), and this guide's primary Beelink headline runs used that profile. It is a reproducibility choice, not a universal requirement: a GMKtec EVO-X2 community Vulkan/RADV run with translated IOMMU mode reproduced the guide within about 2%.
+
+> **Laptop/tablet and NPU warning:** a reproduced ROG Flow Z13 case found that `amd_iommu=off` prevented s0i3 hardware sleep, leaving 0% s0ix residency, spinning fans, heat, and battery drain. The Linux `amdxdna` driver also now refuses to run without IOMMU because the NPU firmware requires it. See [kyuz0 issue #104](https://github.com/kyuz0/amd-strix-halo-toolboxes/issues/104) and [Linux commit `a8878e19`](https://github.com/torvalds/linux/commit/a8878e19d2f5205ad1f170fc230c2cc25a3b9390).
 
 ---
 
@@ -942,7 +944,7 @@ uname -r
 
 ```bash
 sudo tee /tmp/grub_update.txt << 'EOF'
-GRUB_CMDLINE_LINUX_DEFAULT="quiet splash amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0"
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0"
 EOF
 ```
 
@@ -950,12 +952,12 @@ Then edit `/etc/default/grub` and replace the `GRUB_CMDLINE_LINUX_DEFAULT` line 
 
 | Parameter | Purpose | Impact |
 |-----------|---------|--------|
-| `amd_iommu=off` | Disable IOMMU completely | +6% memory bandwidth ([lhl](https://github.com/lhl/strix-halo-testing)) |
+| `amd_iommu=off` | Optional always-on desktop benchmark profile | About +6% memory reads in lhl's test; disables NPU access and can break deep suspend on mobile systems |
 | `amdgpu.gttsize=131072` | Set GTT (GPU-accessible system memory) to 128GB | Required for large models |
 | `ttm.pages_limit=31457280` | Set TTM page limit to ~120GB | Required for large models |
 | `amdgpu.cwsr_enable=0` | Disable compute wave save/restore | Not needed for LLM inference |
 
-> **Note:** kyuz0's toolboxes use `iommu=pt` instead of `amd_iommu=off`. We use `off` based on lhl's benchmark data showing ~6% better memory bandwidth. The difference is documented in [kyuz0 issue #66](https://github.com/kyuz0/amd-strix-halo-toolboxes/issues/66). If you need RDMA clustering, use `iommu=pt` instead (RDMA NICs require IOMMU for DMA remapping).
+> **Optional desktop benchmark profile:** to match the primary Beelink headline environment, add `amd_iommu=off` to the line above. Do not use that profile when you need the NPU, RDMA/VFIO/passthrough, or reliable laptop/tablet suspend. kyuz0's toolboxes use `iommu=pt`; the performance difference is documented in [issue #66](https://github.com/kyuz0/amd-strix-halo-toolboxes/issues/66), while the mobile suspend failure is documented in [issue #104](https://github.com/kyuz0/amd-strix-halo-toolboxes/issues/104).
 
 Apply:
 
@@ -1436,7 +1438,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | Issue | Common Advice | Reality | What Happens If You Try |
 |-------|---------------|---------|------------------------|
 | ~~Ollama HIP/ROCm~~ | ~~"Use ROCm backend"~~ | **Fixed in Ollama 0.20+** with `HSA_OVERRIDE_GFX_VERSION=11.5.1`. Works but ~9% slower tg than Vulkan | Use Vulkan for best speed, ROCm if you need vLLM compatibility |
-| `iommu=pt` for speed | "Use pass-through for performance" | No benefit over default ([lhl](https://github.com/lhl/strix-halo-testing)) | Same speed as `iommu=on`, wastes a kernel param |
+| `iommu=pt` for speed alone | "Use pass-through only for more speed" | No benefit over default in lhl's memory-read test | Still useful when IOMMU-dependent NPU, suspend, RDMA, VFIO, or passthrough behavior matters |
 | AMDVLK for all workloads | "AMDVLK is fastest" | [Project discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025). RADV beats AMDVLK on both pp (+63%) and tg. **Worse: even if you don't use AMDVLK, its ICD file (`/etc/vulkan/icd.d/amd_icd64.json`) silently hijacks Vulkan and halves your pp speed.** You won't see an error -- just mysteriously slow prompt processing | **Uninstall it completely:** `sudo dpkg -r amdvlk && sudo rm -f /etc/vulkan/icd.d/amd_icd64.json`. Verify with llama-bench: RADV shows `(RADV STRIX_HALO)` with `shared memory: 65536`. AMDVLK shows `(AMD open-source driver)` with `shared memory: 32768` |
 | rocWMMA on upstream llama.cpp | "Enable for 2x speed" | [73% regression](https://github.com/ggml-org/llama.cpp/issues/19984) on ROCm 7.2 | Massively slower prompt processing |
 | BIOS VRAM increase for speed | "More GPU VRAM = faster" | Zero speed difference, but a very large fixed UMA reserve can cripple OS-visible RAM and GTT capacity. Use 512MB if available; 2GB is fine when that is the vendor minimum. | If Linux only sees ~31GB on a 128GB box, large models will not load |
@@ -1456,7 +1458,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | tuned accelerator-performance | **+5-8% overall** | `sudo tuned-adm profile accelerator-performance` |
 | RADV over AMDVLK | **+63% pp, +1.2% tg** | Uninstall AMDVLK entirely (see above). `AMD_VULKAN_ICD=RADV` works too but is easy to forget |
 | `OLLAMA_IGPU_ENABLE=1` | Avoids CPU-only Ollama on current builds | Required for both the Ollama 0.31.1 local-binary comparator and the normal 0.31.2 service path on the measured Beelink system |
-| `amd_iommu=off` | **+6% memory bandwidth** | GRUB parameter |
+| `amd_iommu=off` | **About +6% memory reads in one measured desktop test** | Optional benchmark profile; do not use for NPU or mobile suspend workflows |
 | BIOS UMA/VRAM reserve low enough | OS sees ~124-126GiB instead of ~31GiB on 128GB systems; GTT gets the large shared pool | No speed change from 512MB vs sane low reserves, but required to avoid losing most system RAM. Use 512MB if available; 2GB is fine when that is the vendor minimum |
 | `HIP_VISIBLE_DEVICES=-1` | Fixes Ollama crash | Required for Vulkan-only mode |
 | LLVM unroll workaround | Restores ROCm 7+ perf | `-mllvm --amdgpu-unroll-threshold-local=600` |
@@ -1679,7 +1681,7 @@ After completing setup, verify each item:
 - [ ] `ollama --version` returns without error
 - [ ] `ollama run qwen3.6:35b-a3b "hello"` generates at 50+ t/s
 - [ ] `systemctl show ollama | grep Environment` includes `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`
-- [ ] `cat /etc/default/grub | grep CMDLINE` includes `amd_iommu=off`
+- [ ] `cat /etc/default/grub | grep CMDLINE` includes the GTT/TTM parameters; `amd_iommu=off` appears only if you deliberately selected the optional desktop benchmark profile
 - [ ] `uname -r` shows 6.18.x+ (ROCm on 6.19.x requires HSA override -- see Known Issues)
 - [ ] `dpkg -l | grep linux-firmware` does NOT show 20251125
 
@@ -2352,7 +2354,7 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 - Updated: All benchmark numbers re-measured
 - Updated: Replaced `nano` instructions with `tee` for copy-paste ready commands
 - Corrected: rocWMMA is no longer blanket "don't use" -- lhl's tuned branch is best for long context
-- Corrected: `iommu=pt` has no benefit -- use `amd_iommu=off` instead
+- Historical benchmark correction: `iommu=pt` did not improve the measured memory-read result; later buyer guidance separated the faster `amd_iommu=off` desktop profile from NPU and mobile-suspend requirements
 
 ### Initial Release
 

@@ -71,8 +71,17 @@ SESSION_REFRESH_REQUIRED=0
 GRUB_FILE="/etc/default/grub"
 CURRENT_CMDLINE=$(grep "^GRUB_CMDLINE_LINUX_DEFAULT" "$GRUB_FILE" 2>/dev/null || echo "")
 
-NEEDED_PARAMS="amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0"
+# Keep IOMMU at the firmware/kernel default on the general buyer path. Disabling
+# it is an optional desktop benchmark profile: it removes NPU access and can
+# break s0i3/s2idle on mobile Strix Halo systems.
+NEEDED_PARAMS="amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0"
 MISSING_PARAMS=""
+
+if grep -q "amd_iommu=off" /proc/cmdline 2>/dev/null || echo "$CURRENT_CMDLINE" | grep -q "amd_iommu=off"; then
+    warn "amd_iommu=off is configured. This matches the optional desktop benchmark profile,"
+    warn "but disables the NPU and can prevent deep s0i3/s2idle sleep on laptops/tablets."
+    warn "See README Phase 1.2 before keeping it on a mobile or NPU-enabled system."
+fi
 
 for param in $NEEDED_PARAMS; do
     key=$(echo "$param" | cut -d= -f1)
