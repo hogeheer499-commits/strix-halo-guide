@@ -1,0 +1,16 @@
+
+<|channel>thought
+1.  **Analyze the user's request:** The user wants me to read the large text in the provided image and return *only* that text.
+
+2.  **Examine the image:**
+    *   The image is a simple white rectangle with a black border.
+    *   Inside the rectangle, there is large, bold, black text.
+    *   The text reads "STRIX 395".
+
+3.  **Extract the text:**
+    *   The first word is "STRIX".
+    *   The second part is "395".
+    *   Combined, it's "STRIX 395".
+
+4.  **Format the output:** The user requested *only* the text.
+    *   Final output: STRIX 395.<channel|>STRIX 395

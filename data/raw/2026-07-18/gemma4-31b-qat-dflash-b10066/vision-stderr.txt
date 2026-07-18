@@ -1,0 +1,20 @@
+0.01.140.435 W load: control-looking token:    212 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.01.141.110 W load: control-looking token:     50 '<|tool_response>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.01.186.848 W load: special_eog_ids contains '<|tool_response>', removing '</s>' token from EOG list
+0.06.896.560 I mtmd_cli_context: chat template example:
+<|turn>system
+<|think|>
+You are a helpful assistant<turn|>
+<|turn>user
+Hello<turn|>
+<|turn>model
+Hi there<turn|>
+<|turn>user
+How are you?<turn|>
+<|turn>model
+
+0.08.290.527 I main: loading model: /home/hoge-heer/benchmark-models/gemma-4-31b-qat-dflash/gemma-4-31B-it-Q4_0.gguf
+0.08.290.870 W WARN: This is an experimental CLI for testing multimodal capability.
+0.08.290.871 W       For normal use cases, please use the standard llama-cli
+0.08.311.895 I encoding mtmd batch, n_chunks = 1 (done = 1, total = 3)
+0.08.548.847 I mtmd batch encoding done in 237 ms

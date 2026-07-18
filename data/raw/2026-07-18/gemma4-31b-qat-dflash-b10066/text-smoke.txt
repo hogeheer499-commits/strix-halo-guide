@@ -1,0 +1,35 @@
+
+
+Loading model...
+
+▄▄ ▄▄
+██ ██
+██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄
+██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██
+██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀
+                                    ██    ██
+                                    ▀▀    ▀▀
+
+build      : b10066-86a9c79f8
+model      : /home/hoge-heer/benchmark-models/gemma-4-31b-qat-dflash/gemma-4-31B-it-Q4_0.gguf
+ftype      : Q4_0
+modalities : text
+
+available commands:
+  /exit or Ctrl+C     stop or exit
+  /regen              regenerate the last response
+  /clear              clear the chat history
+  /read <file>        add a text file
+  /glob <pattern>     add text files using globbing pattern
+
+
+
+> Return exactly three concise bullet points explaining why unified memory helps a local AI PC.
+* **Eliminates Data Bottlenecks:** Removes the need to copy large model weights between separate CPU RAM and GPU VRAM, drastically reducing latency.
+* **Expands Available VRAM:** Allows the GPU to access a much larger pool of shared system memory, enabling the execution of larger LLMs that wouldn't fit on a discrete card.
+* **Increases Efficiency:** Reduces power consumption and physical footprint by using a single high-bandwidth memory architecture for all processing tasks.
+
+[ Prompt: 81.7 t/s | Generation: 11.4 t/s ]
+
+
+Exiting...

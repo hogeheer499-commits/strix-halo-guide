@@ -2,7 +2,7 @@
 
 This is an experimental `llama-server` route for practical local API speed. It is not the same benchmark as the direct non-speculative `llama-bench` headline.
 
-Short version: MTP works on Strix Halo with Vulkan/RADV and current `llama.cpp`/ROCmFPX routes. It improves server generation on the tested Qwen3.6 35B MTP GGUFs, a matched Gemma 4 26B-A4B QAT assistant-head route, and the tuned CHADROCK ACE/SABER ROCmFP4 route. The Qwen3.6 local b9360 run crossed 100 t/s across the six-prompt harness, Gemma 4 26B-A4B QAT measured 102.7 t/s cold / 107.4 t/s T3-only / 110.0 t/s best-repeat on ac4cddeb0, and the exact CHADROCK reference profile averaged 141.37 t/s over three repeats at 100% draft acceptance. Keep these separate from direct `llama-bench`: the guide has a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS direct 100.04 t/s row and a Qwen3-Coder direct speed-first row at 100.99 t/s on b9851.
+Short version: speculative decoding works on Strix Halo with Vulkan/RADV and current `llama.cpp`/ROCmFPX routes, but it is not automatically faster. It improves server generation on the tested Qwen3.6 35B MTP GGUFs, a matched Gemma 4 26B-A4B QAT assistant-head route, and the tuned CHADROCK ACE/SABER ROCmFP4 route. The Qwen3.6 local b9360 run crossed 100 t/s across the six-prompt harness, Gemma 4 26B-A4B QAT measured 102.7 t/s cold / 107.4 t/s T3-only / 110.0 t/s best-repeat on ac4cddeb0, and the exact CHADROCK reference profile averaged 141.37 t/s over three repeats at 100% draft acceptance. Conversely, Gemma 4 31B DFlash was slower on two synthetic long-prompt shapes when acceptance stayed near 11-14%. Keep all of these separate from direct `llama-bench`.
 
 ## Current Result
 
@@ -37,6 +37,10 @@ Local rows were measured on the Beelink GTR9 Pro with Mesa/RADV. Qwen3.6 rows us
 | Gemma 4 26B-A4B QAT `UD-Q4_K_XL` + matched `Q4_0` MTP head, ac4cddeb0 | MTP `draft-n=3`, `--poll 50`, `-ub 512` repeat | **110.00 t/s** | 93.57-127.33 | Best repeat-confirmed Gemma MTP average; server/speculative result. |
 | Gemma 4 26B-A4B QAT `UD-Q4_K_XL` + matched `Q4_0` MTP head, ac4cddeb0 | MTP `draft-n=3`, `--poll 50`, `-ub 512` cold repeat | **102.69 t/s** | 86.76-118.77 | Cold repeat after stopping nonessential docflock/VM workload while leaving T3 and Hermes untouched; confirms useful 100+ t/s-class route but shows cold/warm variability. |
 | Gemma 4 26B-A4B QAT `UD-Q4_K_XL` + matched `Q4_0` MTP head, ac4cddeb0 | MTP `draft-n=3`, `--poll 50`, `-ub 512` T3-only repeat | **107.42 t/s** | 91.30-124.71 | Repeat after stopping Hermes/Ollama/RustDesk/docflock/VM/browser-class noise while leaving T3 running; shows the 110 t/s best repeat is mainly host-workload sensitive, not a different route. |
+| Gemma 4 31B QAT Q4_0, b10066 | no speculative decoding, 5,471 prompt tokens | 10.30 t/s | 10.26-10.35 | Three-repeat autoregressive server baseline; separate direct row was 11.38 tg128. |
+| Gemma 4 31B QAT Q4_0 + matched Q8_0 DFlash, b10066 | DFlash `n_max=8`, 5,471 prompt tokens | 9.73 t/s | 9.12-10.22 | Mean draft acceptance 14.12%; 5.54% slower than matched no-spec. |
+| Gemma 4 31B QAT Q4_0, b10066 | no speculative decoding, 21,855 prompt tokens | 9.40 t/s | 9.33-9.46 | Three-repeat autoregressive long-prompt baseline. |
+| Gemma 4 31B QAT Q4_0 + matched Q8_0 DFlash, b10066 | DFlash `n_max=8`, 21,855 prompt tokens | 7.48 t/s | 7.40-7.58 | Mean draft acceptance 10.91%; 20.42% slower than matched no-spec. |
 | CHADROCK ACE/SABER 35B ROCmFP4, ROCmFPX `deaa996` | MTP `n_max=4`, `p_min=0.25`, exact 3946-token reference profile, gen512 | **141.37 t/s** | 140.84-141.79 | Three-repeat mean with 100% draft acceptance. Fastest repeat-confirmed reference profile; not a universal 4K speed. |
 | CHADROCK ACE/SABER 35B ROCmFP4, ROCmFPX `deaa996` | MTP `n_max=4`, `p_min=0.25`, gen2048 check | 127.77 t/s | 127.77 | Same 3946-token prompt with longer generation; 1595/1753 draft tokens accepted. |
 | GMKtec EVO-X2 `localweights` IQ4_XS-Q8nextn, b9235 | no MTP | 74.72 t/s | 65.57-114.89 | Community exact-model baseline from mottledMantis. |
@@ -65,6 +69,8 @@ The most honest public summary is:
 MTP is valuable because it can improve real `llama-server` generation, not because it automatically raises every direct `llama-bench` number. The speedup depends on draft-token acceptance rate, prompt shape, generation length, quantization, and server flags.
 
 The Gemma 4 QAT repeats also show that single-stream server/MTP speed is sensitive to host workload. The same route measured 102.69 t/s with T3 and Hermes left running after stopping docflock/VM noise, 107.42 t/s with only T3 left among the known local services, and 110.00 t/s in the best repeat. CHADROCK has a different sensitivity: the exact 3946-token profile averaged 141.37 t/s at 100% acceptance, while the 984- and 7893-token profiles averaged 78.00 and 83.85 t/s at 41.93% and 51.28% acceptance. For public claims, use the exact profile and acceptance rather than only the highest number.
+
+The official Gemma 4 31B DFlash scout reinforces that rule. The sidecar loaded and both server profiles produced the correct native calculator tool call, but the synthetic 5.5K and 21.9K prompt shapes only accepted about 14% and 11% of drafted tokens. The speculative profile therefore lost speed instead of gaining it. A sidecar being supported is not enough; benchmark the intended workload and publish acceptance with throughput.
 
 Step 3.7 demonstrates the capacity side of MTP. Its 4K uplift was large and acceptance stayed at 99.61-100% through the repeat-confirmed 4K/16K profiles, but absolute decode was lower because the target is a 198B sparse agent model. Use this route to answer whether a frontier-size target, draft, long context, and tools fit together on one box, not to compete with 35B speed profiles.
 
@@ -109,6 +115,14 @@ Gemma 4 26B-A4B QAT matched-head route:
 - Draft file: `gemma-4-26B-A4B-it-Q4_0-MTP.gguf`
 - Build: `llama.cpp` ac4cddeb0 build 9592
 - Status: first-party Beelink `llama-server` route with direct baseline, no-spec server baseline, warm MTP repeat, and cold MTP repeat. This is not an Atomic TurboQuant community row and not direct `llama-bench`.
+
+Gemma 4 31B official QAT and DFlash route:
+
+- Target source: `ggml-org/gemma-4-31B-it-GGUF`, official Google QAT Q4_0 target.
+- Draft source: matched `dflash-gemma-4-31B-it-Q8_0.gguf` from the same GGUF repository, derived from `z-lab/gemma-4-31B-it-DFlash`.
+- Projector: matched `mmproj-gemma-4-31B-it-Q8_0.gguf`.
+- Build: official `llama.cpp` b10066 (`86a9c79f8`) with Vulkan/RADV.
+- Status: text, vision, native tool call, direct `llama-bench`, and matched no-spec/DFlash server comparison completed. DFlash is currently a workload-specific negative result, not a recommended speed profile. [`raw evidence`](data/raw/2026-07-18/gemma4-31b-qat-dflash-b10066/)
 
 Step 3.7 Flash capacity/agent route:
 
