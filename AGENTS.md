@@ -57,6 +57,13 @@ Higher t/s is useful, but it is not the only priority. Treat benchmarks as the p
 - Keep wall-power, board-power, amdgpu `PPT`, and inferred efficiency claims separate.
 - Keep Windows, WSL2, native Linux, ROCm, Vulkan/RADV, vLLM, MTP, RPC, and NPU claims scoped to the exact evidence.
 
+## Background-Load Policy
+
+- Routine compatibility checks, model scouts, smoke tests, and non-headline benchmark runs may keep a known low-load CPU-only background workload running when it does not open the GPU render device. Record that background load in the host snapshot or run notes.
+- Do not stop a known low-load background workload merely to make every routine test artificially clean. Consistent real-world conditions are useful evidence too.
+- Use controlled background conditions for strict-clean headline claims, small A/B regressions, cold model-load or storage tests, power/efficiency measurements, thermal or sustained-clock tests, and concurrency-cliff investigations. Pause nonessential workloads for those runs and record exactly what remained active.
+- Recheck the process rather than relying on its name: if its CPU, GPU, memory, or I/O behavior has materially changed, treat it as an unknown workload until measured again.
+
 ## Disclosure Rules
 
 - Disclose sponsored, loaned, gifted, affiliate, or early-access work near the relevant results.
