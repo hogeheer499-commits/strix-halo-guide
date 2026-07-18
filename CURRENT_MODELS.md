@@ -281,10 +281,12 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | DeepSeek V4 Flash | **Measured locally:** pinned Unsloth `UD-IQ2_XXS` at 90.86GB loaded and generated directly on official b10034 at 155.64 pp512 / 13.27 tg128 and answered the deterministic smoke correctly. This resolves the ordinary-GGUF blocker, but remains low-bit capacity evidence rather than a speed or quality recommendation. The 46.98GiB REAP path still requires its separate ds4 runtime. |
 | Nemotron 3 Ultra 550B-A55B | GGUF route found in the 2026-06-05 scan, but the smallest scanned route is about 188 GB. Watch for smaller practical artifacts or test only with external storage / multi-node planning. |
 | Nemotron 3 Super 120B-A12B | Tested with `UD-IQ4_XS`. Add lower/higher quant comparisons only if they answer a specific buyer question. |
-| `llama.cpp` b10034 / b10046 | Official b10034 remains the measured Vulkan concurrency/model sentinel. Official b10046 was separately reproduced on ROCm/HIP: it detected the full UMA pool and used `ROCm_Host` model/output/compute buffers without a gfx-version override, validating merged PR #24233 locally. This is a HIP compatibility result, not a replacement Vulkan speed run. b9979 remains the source for the experimental density-gate recovery matrix; b9851 remains the direct Qwen3-Coder speed-first headline. |
+| `llama.cpp` b10034 / b10046 / b10066 | Official b10034 remains the measured Vulkan concurrency/model sentinel. Official b10046 was separately reproduced on ROCm/HIP: it detected the full UMA pool and used `ROCm_Host` model/output/compute buffers without a gfx-version override. b10066 is the current upstream release and includes automatic Hugging Face discovery/download for `dflash-` and `eagle3-` sidecars; it is the pinned target for the new Gemma 4 direct-versus-DFlash campaign, not yet a measured replacement headline. |
 | ROCm 7.14.0 | New production release checked on 2026-07-16. AMD documents lower-than-expected inference on Ryzen AI MAX / MAX+ in some FP16 vLLM batch-8+ workloads with PyTorch earlier than 2.14 and recommends `TORCH_BLAS_PREFER_HIPBLASLT=1`. Treat this as an isolated vLLM/PyTorch A/B target, not a host-upgrade or universal backend recommendation. |
 | Ollama 0.32.0 | Controlled local-binary pass on 2026-07-16: Qwen3.6 averaged 73.20 t/s over nine warm requests, fully offloaded to the iGPU, and Qwen2.5-VL vision worked before and after a process restart. This does not yet replace the installed 0.31.2 system-service buyer profile because no package upgrade or full-host reboot was performed. |
-| Ollama 0.32.1 | **Prerelease watch only:** improves Gemma 4 tool calling/multi-turn continuation and fixes an MLX cache leak. No stable Strix Halo buyer-path change or local benchmark claim is made from this prerelease. |
+| Ollama 0.32.1 | **Stable release, not yet service-qualified here:** improves Gemma 4 tool calling and multi-turn reasoning and fixes an MLX cache leak. The existing 0.31.2 installed-service profile remains the buyer default until 0.32.1 passes the same iGPU, vision, restart, and full-reboot checks. |
+| Gemma 4 official QAT GGUF + DFlash | **Highest-priority current-model campaign:** Google now publishes official 12B, 26B-A4B, and 31B QAT Q4_0 GGUFs. Current b10066 can discover matched DFlash sidecars automatically. The first target is 31B direct text/vision/tool smoke plus direct-versus-DFlash 4K/16K serving; no performance claim exists until the local run completes. |
+| `llama.cpp` PR #25666 | **Open AMD/RADV A/B target:** the author reports 75.2 to 84.9 t/s speculative decode and higher acceptance on Ryzen AI MAX+ 395 by avoiding MMVQ for small speculative steps. This is not merged guidance. Test in an isolated worktree and report reproduction data on the existing PR; no new PR is required. |
 | Ollama 0.31.2 | Measured system service installed and tested on 2026-07-10. Qwen3.6 reached 60.57 t/s warm API generation, Qwen2.5-VL 7B vision worked with Vulkan offload, and both service-restart and full-host-reboot persistence passed. Requires `OLLAMA_IGPU_ENABLE=1`; slower than the separate 0.31.1 local-binary run. |
 
 ## Sources
@@ -322,7 +324,12 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 - `llama.cpp` b10012: <https://github.com/ggml-org/llama.cpp/releases/tag/b10012>
 - `llama.cpp` b10034: <https://github.com/ggml-org/llama.cpp/releases/tag/b10034>
 - `llama.cpp` b10046: <https://github.com/ggml-org/llama.cpp/releases/tag/b10046>
+- `llama.cpp` b10066: <https://github.com/ggml-org/llama.cpp/releases/tag/b10066>
 - `llama.cpp` HIP integrated-device fix PR #24233: <https://github.com/ggml-org/llama.cpp/pull/24233>
+- `llama.cpp` DFlash sidecar auto-discovery PR #25811: <https://github.com/ggml-org/llama.cpp/pull/25811>
+- `llama.cpp` AMD speculative-decode PR #25666: <https://github.com/ggml-org/llama.cpp/pull/25666>
+- Google Gemma 4 31B QAT Q4_0 GGUF: <https://huggingface.co/google/gemma-4-31B-it-qat-q4_0-gguf>
+- ggml-org Gemma 4 31B target and DFlash sidecars: <https://huggingface.co/ggml-org/gemma-4-31B-it-GGUF>
 - ROCm 7.14.0: <https://github.com/ROCm/ROCm/releases/tag/rocm-7.14.0>
 - vLLM 0.25.1: <https://github.com/vllm-project/vllm/releases/tag/v0.25.1>
 - SGLang 0.5.15.post1: <https://github.com/sgl-project/sglang/releases/tag/v0.5.15.post1>
@@ -332,6 +339,6 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 - Ollama 0.31.1: <https://github.com/ollama/ollama/releases/tag/v0.31.1>
 - Ollama 0.31.2: <https://github.com/ollama/ollama/releases/tag/v0.31.2>
 - Ollama 0.32.0: <https://github.com/ollama/ollama/releases/tag/v0.32.0>
-- Ollama 0.32.1 prerelease: <https://github.com/ollama/ollama/releases/tag/v0.32.1>
+- Ollama 0.32.1: <https://github.com/ollama/ollama/releases/tag/v0.32.1>
 - `llama.cpp` issue #25356: <https://github.com/ggml-org/llama.cpp/issues/25356>
 - Ollama 0.30.11 historical watch target: <https://github.com/ollama/ollama/releases/tag/v0.30.11>
