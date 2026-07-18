@@ -1,0 +1,86 @@
+{
+  "wall_s": 6.714470683946274,
+  "request": {
+    "model": "gemma4-31b-nospec",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Use the calculator tool to add 395 and 128."
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "calculator",
+          "description": "Add two integers.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "a": {
+                "type": "integer"
+              },
+              "b": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "a",
+              "b"
+            ]
+          }
+        }
+      }
+    ],
+    "tool_choice": "auto",
+    "temperature": 0,
+    "max_tokens": 128
+  },
+  "response": {
+    "choices": [
+      {
+        "finish_reason": "tool_calls",
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "",
+          "reasoning_content": "The user wants to add two numbers: 395 and 128.\nI should use the `calculator` tool with `a=395` and `b=128`.",
+          "tool_calls": [
+            {
+              "type": "function",
+              "function": {
+                "name": "calculator",
+                "arguments": "{\"a\":395,\"b\":128}"
+              },
+              "id": "6iPUiQdiNWi1MofQqsyH6QIYbs7EyJ3b"
+            }
+          ]
+        }
+      }
+    ],
+    "created": 1784384430,
+    "model": "gemma4-31b-nospec",
+    "system_fingerprint": "b10066-86a9c79f8",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 66,
+      "prompt_tokens": 83,
+      "total_tokens": 149,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "id": "chatcmpl-40c3xYqWj8Q0sQT6zStDDSFvwQSTm01i",
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 83,
+      "prompt_ms": 545.654,
+      "prompt_per_token_ms": 6.574144578313253,
+      "prompt_per_second": 152.1110447279778,
+      "predicted_n": 66,
+      "predicted_ms": 5778.156,
+      "predicted_per_token_ms": 87.54781818181819,
+      "predicted_per_second": 11.422329199834689
+    }
+  }
+}

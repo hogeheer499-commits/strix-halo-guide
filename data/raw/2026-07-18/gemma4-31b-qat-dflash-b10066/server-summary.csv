@@ -1,0 +1,5 @@
+profile,prompt_tokens,repeats,mean_pp_tps,mean_tg_tps,min_tg_tps,max_tg_tps,mean_draft_acceptance,read
+no-spec,5471,3,275.51,10.30,10.26,10.35,n/a,Matched autoregressive server baseline
+dflash-n8,5471,3,263.17,9.73,9.12,10.22,0.1412,DFlash was 5.54 percent slower on this synthetic prompt shape
+no-spec,21855,3,209.83,9.40,9.33,9.46,n/a,Matched autoregressive server baseline
+dflash-n8,21855,3,201.52,7.48,7.40,7.58,0.1091,DFlash was 20.42 percent slower on this synthetic prompt shape
