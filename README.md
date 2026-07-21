@@ -56,6 +56,7 @@ What you get:
 | See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
 | Check whether the numbers are real | [Reproduce One Headline Result](#reproduce-one-headline-result), [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md), and [`data/headline_claims.csv`](data/headline_claims.csv). |
 | Compare against other Strix Halo systems | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md): independent benchmark reports kept separate from headline claims, including native Linux, WSL2/HIP, Windows LM Studio, power, tuned thermal/power-policy rows, and Nimo large-model serving evidence. [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md): multi-node USB4 RPC results. [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md): cluster latency tuning. |
+| Diagnose sustained thermal or custom fan-control trouble | [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md): scoped Corsair/Sixunited three-system evidence, post-kernel-update checks, cap tradeoffs, stock controls, and the upstream fan-reset patch. |
 | See how public corrections change the guide | [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md): trust/framing lessons, corrected routes, and examples of community pushback turning into better evidence. |
 
 ## 20-Second Summary
@@ -76,6 +77,7 @@ What you get:
 | Large local model checks | gpt-oss-120b MXFP4 loaded at 55.57 tg128; Nemotron 3 Super 120B-A12B at 18.43 tg128; MiniMax M2.7 230B-class MoE loaded and generated; and DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded directly at 13.27 tg128. These are different capacity/quality tradeoffs, not interchangeable speed claims. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
 | Latest multi-user MoE finding | Official b10034 confirms that the concurrency-8-to-9 cliff persists: -37.34% aggregate decode on Qwen3-Coder 30B-A3B and -31.69% on Qwen3-Next 80B-A3B. The separate b9979 campaign shows an opt-in AMD/RADV density gate recovering 42.7% at 30B np9 and 25.3% at 80B np9; dense16 is not a universal default. See [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md). |
+| Current community thermal/stability finding | On Fail-Safe's three matched Corsair systems, 2400 MHz was the best measured conservative SCLK tradeoff: generation stayed within about 1% of higher caps and retained runs stayed at or below 75 C. This is fleet-specific, not a universal cap. Bounded stock controls saw 0/3 locks, while historical logs exposed a missing custom EC/fan module after kernel updates as a plausible major confounder. See [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md). |
 | Backend split | Vulkan/RADV wins measured generation on the current single-box Qwen rows; ROCm/HIP can win prompt-processing-heavy work, and ROCm RPC is required for the tested MiniMax capacity case. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) and [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md). |
 | Community validation | The evidence map covers 11 systems or independent sources from 8 credited community benchmark contributors, with first-party and community claims kept separate. It includes same-SKU variance, cross-OEM Linux and Windows routes, wall power, USB4 RPC, NPU sidecars, ROCmFP4, large-model capacity, thermals, and failed paths. See the counted [`Evidence Coverage`](#evidence-coverage-11-systems-or-independent-sources) table and [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md). |
 | Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
@@ -157,6 +159,7 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 | Prompt-heavy ROCm experiments | Keep a reproducible ROCm/HIP + ZenDNN path available, but do not treat it as a decode-speed headline. | A community Beelink GTR9 Pro on CachyOS / kernel 7.0.11 / ROCm 7.2.4 / ZenDNN measured Qwen3.6 27B MTP `UD-Q6_K_XL` at 303.20 pp5000 on ROCm versus 155.89 pp5000 on Vulkan, while decode stayed around 8 t/s on both backends. | [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md#community-beelink-cachyos-rocmzendnn-crossover), [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md#beelink-gtr9-pro-cachyos-rocmzendnn-crossover) |
 | NPU sidecar work | Treat the NPU as a possible low-overhead sidecar, not as a replacement for the main iGPU LLM path. | A ciru-ai GMKtec EVO-X2 NixOS artifact kept IOMMU enabled and measured only +3.29% main 64k iGPU workload latency with concurrent NPU load, versus +68.96% with a comparable iGPU auxiliary load. The same package reports FastFlowLM-NPU LFM2.5 1.2B at 32k around 1646 prompt tok/s, 38.18 decode tok/s, and about 2.09GiB RSS. | [`COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-package`](COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-package), [`data/community_ciru_evox2_metrics.csv`](data/community_ciru_evox2_metrics.csv) |
 | vLLM-style serving experiments | Start with isolated ROCm containers; for ROCm 7.14 plus PyTorch before 2.14, A/B `TORCH_BLAS_PREFER_HIPBLASLT=1` at batch 8+ | The local Qwen3-0.6B FP16 A/B measured about 39-42% more aggregate throughput at concurrency 8/9/16. This validates the setting and container path, but no practical 27B/35B vLLM throughput claim exists yet. | [`processed A/B`](data/rocm_714_hipblaslt_ab.csv), [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md) |
+| Sustained inference on a Corsair/Sixunited AXB35 system | Verify the expected EC/fan module and dependent services after every kernel update before applying a clock cap. | A strict three-system campaign found a useful 2400 MHz fleet tradeoff, but historical journals also showed missing `ec_su_axb35` modules and failed fan services after updates. The root cause remains unresolved and the cap is not universal. | [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md), [`data/community_thermal_sclk.csv`](data/community_thermal_sclk.csv) |
 
 ## Community-Tested Rules Of Thumb
 
@@ -331,6 +334,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) | Nimo AI Mini PC community bundle with large-model, MTP, StepFun, Qwen 122B, Gemma 4 QAT/MTP assistant-head, and thermal context. |
 | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) | Community multi-node `llama.cpp` RPC over USB4 results, kept separate from single-machine headline claims. |
 | [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md) | Community USB4 latency tuning for active Strix Halo cluster nodes. |
+| [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md) | Scoped Corsair/Sixunited sustained-inference evidence: SCLK tradeoffs, bounded stock controls, fan-module/service checks, raw telemetry, and upstream safety work. |
 | [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) | Advanced ROCmFP4 / CHADROCK tuned-GGUF route tracking. The exact first-party reference profile averaged 141.37 t/s across three repeats at 100% acceptance, but other prompt shapes were much slower; it is not the beginner/default setup path or a direct `llama-bench` replacement. |
 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) | Community benchmark contributor credits and contribution path. |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | What data is most useful, which issue template to use, and how community reports become structured evidence. |
@@ -411,7 +415,7 @@ The count includes separately measured owner systems or independently sourced re
 | Evidence source | Systems/sources counted | Running total | Evidence |
 |-----------------|------------------------:|--------------:|----------|
 | Primary Beelink GTR9 Pro | 1 | 1 | First-party raw evidence throughout this repository |
-| Corsair AI Workstation 300 fleet | 3 | 4 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`data/community_results.csv`](data/community_results.csv) |
+| Corsair AI Workstation 300 fleet | 3 | 4 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md), [`data/community_results.csv`](data/community_results.csv) |
 | GMKtec EVO-X2 native contributor system | 1 | 5 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`data/raw/2026-05-14/community-gmktec-native-issue16/`](data/raw/2026-05-14/community-gmktec-native-issue16/) |
 | GMKtec EVO-X2 tuned Reddit report | 1 | 6 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`raw note`](data/raw/2026-06-02/community-reddit-look-qwen-coder/) |
 | Minisforum MS-S1-Max | 1 | 7 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`raw report`](data/raw/2026-06-02/community-windows-lmstudio-issue3/) |
@@ -1471,6 +1475,12 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 
 ## Known Issues
 
+### Corsair/Sixunited Custom Fan Control After Kernel Updates (Community Evidence)
+
+Fail-Safe's three-system Corsair AI Workstation 300 campaign found that two systems had previously booted without the out-of-tree `ec_su_axb35` module after a kernel update, causing dependent custom fan/power services to fail. That is a plausible major contributor to the earlier sustained-load event, not a proven sole root cause and not evidence that every Corsair or Strix Halo system needs a clock cap.
+
+If you use this custom fan path, verify the module and services after kernel updates before sustained inference. The contributor's measured 2400 MHz tradeoff is scoped to the tested fleet. See [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md) for commands, charts, raw evidence, limitations, and the open upstream fan-reset candidate.
+
 ### Kernel 6.19.x ROCm GPU Misidentification (March 2026 -- FIXED)
 
 **Symptoms:** Without the fix, ROCm containers segfault. `ggml_cuda_init` reports `gfx1100 (0x1100)` instead of `gfx1151`.
@@ -1664,6 +1674,8 @@ Based on community testing and our own findings:
 Beelink wall-power efficiency is not published yet. `powercap` is empty on this system, but `amdgpu` exposes `PPT` telemetry through `power1_average` / `power1_input`. A 2026-05-16 local PPT run measured roughly 111-113 W during Qwen3-Coder/Qwen3.6 Vulkan workloads, but this is GPU/APU telemetry, not wall power.
 
 Community wall-power data does exist from Corsair AI Workstation 300 systems. The current issue #6 cross-section measures about 150 W / 1.6 J/token for Qwen3-Coder, 148 W / 2.0 J/token for Qwen3.6, 174 W / 3.1 J/token for gpt-oss-120b, and 137 W / 3.4 J/token for Qwen3-Coder-Next during sustained generation. Use that as practical community context, not as a Beelink claim.
+
+A separate three-system Corsair thermal/SCLK campaign reports Linux AMDGPU socket-power telemetry from 80.90 W at a 2200 MHz cap to 118.71 W at 2600 MHz, plus 119.54 W mean in bounded stock controls. Those are socket-power readings, not wall power or Beelink measurements. See [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md).
 
 See [`POWER_BASELINE.md`](POWER_BASELINE.md), [`COMMUNITY_RESULTS.md#whole-system-power`](COMMUNITY_RESULTS.md#whole-system-power), [`data/community_power.csv`](data/community_power.csv), [`data/beelink_power_telemetry.csv`](data/beelink_power_telemetry.csv), and `scripts/sample_power.py` before adding tokens-per-watt claims.
 
@@ -2096,6 +2108,12 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 ---
 
 ## Changelog
+
+### 2026-07-21 -- Corsair Thermal/SCLK Evidence And Fan-Control Correction
+
+- **Strict three-system campaign imported:** Fail-Safe's matched Corsair AI Workstation 300 sweep now has normalized CSV rows, two generated charts, a complete raw bundle, analyzer, contamination checks, cap/reset harness, and bounded stock controls.
+- **Scoped buyer guidance:** 2400 MHz was the best measured conservative tradeoff on this fleet; moving to 2600 MHz added 6.39% prompt throughput and 0.87% generation while mean AMDGPU socket power increased 21.70%. This is not a universal cap recommendation.
+- **Root-cause framing corrected:** historical logs showed missing `ec_su_axb35` modules and failed dependent services after kernel updates on two systems. The guide records this as a plausible major confounder, keeps the root cause unresolved, and tracks the open upstream fan-reset patch.
 
 ### 2026-07-16 -- Current Runtime, Frontier Capacity, And ROCm 7.14
 

@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CAP=2400
+FLOOR=600
+
+GPU=""
+for _ in $(seq 1 30); do
+  for d in /sys/bus/pci/devices/*/pp_od_clk_voltage; do
+    [ -e "$d" ] && { GPU="$(dirname "$d")"; break; }
+  done
+  [ -n "$GPU" ] && break
+  sleep 1
+done
+if [ -z "$GPU" ]; then
+  echo "strix-sclk-cap: no amdgpu OD node — is amdgpu.ppfeaturemask=0xffffffff on the cmdline?" >&2
+  exit 1
+fi
+
+mode="$(cat "$GPU/power_dpm_force_performance_level" 2>/dev/null || true)"
+floor="$(awk '/^0:/{gsub(/[^0-9]/,"",$2);print $2}' "$GPU/pp_od_clk_voltage" 2>/dev/null || true)"
+ceil="$(awk '/^1:/{gsub(/[^0-9]/,"",$2);print $2}' "$GPU/pp_od_clk_voltage" 2>/dev/null || true)"
+if [ "$mode" = "manual" ] && [ "$floor" = "$FLOOR" ] && [ "$ceil" = "$CAP" ]; then
+  exit 0
+fi
+
+echo manual         > "$GPU/power_dpm_force_performance_level"
+echo "s 0 ${FLOOR}" > "$GPU/pp_od_clk_voltage"
+echo "s 1 ${CAP}"   > "$GPU/pp_od_clk_voltage"
+echo c              > "$GPU/pp_od_clk_voltage"
+logger -t strix-sclk-cap "applied SCLK range ${FLOOR}-${CAP} MHz on ${GPU##*/}"

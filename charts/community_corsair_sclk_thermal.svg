@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560" viewBox="0 0 980 560" role="img">
+<style>
+text{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#17202a}
+.title{font-size:26px;font-weight:700}
+.subtitle{font-size:14px;fill:#52616f}
+.axis{font-size:12px;fill:#52616f}
+.tick{font-size:11px;fill:#52616f}
+.legend{font-size:13px;fill:#17202a}
+.note{font-size:12px;fill:#52616f}
+.grid{stroke:#dce3ea;stroke-width:1}
+.axis-line{stroke:#6b7a89;stroke-width:1.2}
+</style>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="82" y="40" class="title">Corsair fleet: socket power and edge temperature</text>
+<text x="82" y="64" class="subtitle">Strict 30-minute-under-load soaks; stock is auto mode with a 2900 MHz ceiling</text>
+<line x1="82" y1="468.0" x2="938" y2="468.0" class="grid"/>
+<text x="72" y="472.0" text-anchor="end" class="tick">0</text>
+<line x1="82" y1="392.8" x2="938" y2="392.8" class="grid"/>
+<text x="72" y="396.8" text-anchor="end" class="tick">40</text>
+<line x1="82" y1="317.6" x2="938" y2="317.6" class="grid"/>
+<text x="72" y="321.6" text-anchor="end" class="tick">80</text>
+<line x1="82" y1="242.4" x2="938" y2="242.4" class="grid"/>
+<text x="72" y="246.4" text-anchor="end" class="tick">120</text>
+<line x1="82" y1="167.2" x2="938" y2="167.2" class="grid"/>
+<text x="72" y="171.2" text-anchor="end" class="tick">160</text>
+<line x1="82" y1="92.0" x2="938" y2="92.0" class="grid"/>
+<text x="72" y="96.0" text-anchor="end" class="tick">200</text>
+<line x1="82" y1="92" x2="82" y2="468" class="axis-line"/>
+<line x1="82" y1="468" x2="938" y2="468" class="axis-line"/>
+<text x="20" y="280.0" class="axis" transform="rotate(-90 20 280.0)">amdgpu reading (W or C)</text>
+<text x="82.0" y="494" text-anchor="middle" class="tick">2200 MHz</text>
+<text x="296.0" y="494" text-anchor="middle" class="tick">2400 MHz</text>
+<text x="510.0" y="494" text-anchor="middle" class="tick">2500 MHz</text>
+<text x="724.0" y="494" text-anchor="middle" class="tick">2600 MHz</text>
+<text x="938.0" y="494" text-anchor="middle" class="tick">Stock</text>
+<polyline fill="none" stroke="#1f77b4" stroke-width="3" points="82.0,315.9 296.0,284.6 510.0,266.0 724.0,244.8 938.0,243.3"/>
+<circle cx="82.0" cy="315.9" r="4.5" fill="#1f77b4"/>
+<text x="82.0" y="306.9" text-anchor="middle" class="tick">80.9</text>
+<circle cx="296.0" cy="284.6" r="4.5" fill="#1f77b4"/>
+<text x="296.0" y="275.6" text-anchor="middle" class="tick">97.5</text>
+<circle cx="510.0" cy="266.0" r="4.5" fill="#1f77b4"/>
+<text x="510.0" y="257.0" text-anchor="middle" class="tick">107.4</text>
+<circle cx="724.0" cy="244.8" r="4.5" fill="#1f77b4"/>
+<text x="724.0" y="235.8" text-anchor="middle" class="tick">118.7</text>
+<circle cx="938.0" cy="243.3" r="4.5" fill="#1f77b4"/>
+<text x="938.0" y="234.3" text-anchor="middle" class="tick">119.5</text>
+<rect x="82" y="514" width="18" height="4" fill="#1f77b4"/>
+<text x="108" y="520" class="legend">Mean socket power (W)</text>
+<polyline fill="none" stroke="#d62728" stroke-width="3" points="82.0,334.5 296.0,327.0 510.0,321.4 724.0,310.1 938.0,293.2"/>
+<circle cx="82.0" cy="334.5" r="4.5" fill="#d62728"/>
+<text x="82.0" y="325.5" text-anchor="middle" class="tick">71.0</text>
+<circle cx="296.0" cy="327.0" r="4.5" fill="#d62728"/>
+<text x="296.0" y="318.0" text-anchor="middle" class="tick">75.0</text>
+<circle cx="510.0" cy="321.4" r="4.5" fill="#d62728"/>
+<text x="510.0" y="312.4" text-anchor="middle" class="tick">78.0</text>
+<circle cx="724.0" cy="310.1" r="4.5" fill="#d62728"/>
+<text x="724.0" y="301.1" text-anchor="middle" class="tick">84.0</text>
+<circle cx="938.0" cy="293.2" r="4.5" fill="#d62728"/>
+<text x="938.0" y="284.2" text-anchor="middle" class="tick">93.0</text>
+<rect x="310" y="514" width="18" height="4" fill="#d62728"/>
+<text x="336" y="520" class="legend">Worst edge temperature (C)</text>
+<text x="82" y="548" class="note">Socket power is amdgpu telemetry, not wall power; source: data/community_thermal_sclk.csv</text>
+</svg>

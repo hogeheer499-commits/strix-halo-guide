@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Run llama-bench inside the pinned GPU-enabled Strix Halo container.
+set -euo pipefail
+
+# Pin the campaign runtime by digest. Override only when intentionally starting
+# a new, separately documented campaign.
+IMAGE="${STRIX_BENCH_IMAGE:-docker.io/kyuz0/amd-strix-halo-toolboxes@sha256:646283d9607d7d678b500c85e3bb397742a20ec75a9bbf536ce0418d27b6a11f}"
+CONTAINER_NAME="${STRIX_BENCH_CONTAINER_NAME:-strix-bench}"
+
+# --name + --replace guarantee exactly one benchmark container. The calling
+# harness also explicitly reaps this name during cleanup because killing the
+# Podman client alone does not guarantee that the container stops.
+exec podman run --rm --name "$CONTAINER_NAME" --replace --pull=never \
+  --network=none \
+  --device /dev/dri --device /dev/kfd \
+  --group-add keep-groups \
+  --security-opt seccomp=unconfined \
+  -e AMD_VULKAN_ICD=RADV \
+  -e VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.x86_64.json \
+  -v "$HOME":"$HOME" -v /data:/data -w "$HOME" \
+  --entrypoint llama-bench \
+  "$IMAGE" "$@"

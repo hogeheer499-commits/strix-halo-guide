@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+die() {
+  echo "strix-bench-control: $*" >&2
+  exit 1
+}
+
+is_uint() {
+  [[ "$1" =~ ^[0-9]+$ ]]
+}
+
+find_gpu() {
+  local od dev
+  GPU=""
+  for od in /sys/bus/pci/devices/*/pp_od_clk_voltage; do
+    [[ -e "$od" ]] || continue
+    dev="${od%/pp_od_clk_voltage}"
+    [[ "$(cat "$dev/vendor" 2>/dev/null)" == "0x1002" ]] || continue
+    GPU="$dev"
+    break
+  done
+  [[ -n "$GPU" ]] || die "no AMD overdrive node found"
+  OD_FILE="$GPU/pp_od_clk_voltage"
+  PERF_FILE="$GPU/power_dpm_force_performance_level"
+}
+
+validate_range() {
+  local floor="$1" cap="$2"
+  if ! is_uint "$floor" || ! is_uint "$cap"; then
+    die "clock values must be integers"
+  fi
+  (( floor >= 100 && cap >= floor && cap <= 3000 )) \
+    || die "refusing invalid SCLK range ${floor}-${cap} MHz"
+}
+
+set_range() {
+  local floor="$1" cap="$2"
+  validate_range "$floor" "$cap"
+  echo manual        > "$PERF_FILE"
+  echo "s 0 $floor" > "$OD_FILE"
+  echo "s 1 $cap"   > "$OD_FILE"
+  echo c             > "$OD_FILE"
+}
+
+action="${1:-}"
+shift || true
+
+case "$action" in
+  check)
+    [[ "$#" == 0 ]] || die "check takes no arguments"
+    find_gpu
+    ;;
+  timer-stop)
+    [[ "$#" == 0 ]] || die "timer-stop takes no arguments"
+    /usr/bin/systemctl stop strix-sclk-cap.timer
+    ;;
+  timer-start)
+    [[ "$#" == 0 ]] || die "timer-start takes no arguments"
+    /usr/bin/systemctl start strix-sclk-cap.timer
+    ;;
+  set-cap)
+    [[ "$#" == 2 ]] || die "set-cap requires FLOOR CAP"
+    find_gpu
+    set_range "$1" "$2"
+    ;;
+  set-stock)
+    [[ "$#" == 0 ]] || die "set-stock takes no arguments"
+    find_gpu
+    echo manual > "$PERF_FILE"
+    echo r      > "$OD_FILE"
+    echo auto   > "$PERF_FILE"
+    ;;
+  restore)
+    [[ "$#" == 3 ]] || die "restore requires FLOOR CAP MODE"
+    [[ "$3" == "manual" || "$3" == "auto" ]] || die "mode must be manual or auto"
+    find_gpu
+    set_range "$1" "$2"
+    echo "$3" > "$PERF_FILE"
+    ;;
+  *)
+    die "usage: $0 {check|timer-stop|timer-start|set-cap FLOOR CAP|set-stock|restore FLOOR CAP MODE}"
+    ;;
+esac

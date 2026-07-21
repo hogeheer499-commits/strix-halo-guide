@@ -1,0 +1,182 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+  <rect width="1600" height="1200" fill="#f8fafc"/>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #172033; }
+    .title { font-size: 27px; font-weight: 600; }
+    .label { font-size: 20px; }
+    .value { font-size: 19px; font-weight: 600; }
+    .axis { font-size: 17px; fill: #637083; }
+    .note { font-size: 17px; fill: #637083; }
+    .panel { fill: #ffffff; stroke: #d7dee8; stroke-width: 2; }
+    .grid { stroke: #d7dee8; stroke-width: 2; }
+    .neutral { fill: #cbd5e1; }
+    .recommended { fill: #3273dc; }
+    .stock { fill: #d97706; }
+    .estimate { fill: #fde7c2; stroke: #d97706; stroke-width: 4; stroke-dasharray: 10 7; }
+  </style>
+
+  <!-- Prompt processing -->
+  <g transform="translate(24 24)">
+    <rect class="panel" width="752" height="552" rx="16"/>
+    <text class="title" x="32" y="48">Time to process 1,000 input tokens</text>
+    <text class="axis" x="690" y="78" text-anchor="end">seconds · lower is better</text>
+    <g>
+      <line class="grid" x1="228" y1="92" x2="228" y2="444"/>
+      <line class="grid" x1="382" y1="92" x2="382" y2="444"/>
+      <line class="grid" x1="536" y1="92" x2="536" y2="444"/>
+      <line class="grid" x1="690" y1="92" x2="690" y2="444"/>
+      <text class="axis" x="228" y="468" text-anchor="middle">0</text>
+      <text class="axis" x="382" y="468" text-anchor="middle">3</text>
+      <text class="axis" x="536" y="468" text-anchor="middle">6</text>
+      <text class="axis" x="690" y="468" text-anchor="middle">9</text>
+    </g>
+    <g>
+      <text class="label" x="210" y="124" text-anchor="end">2,200 cap</text>
+      <rect class="neutral" x="228" y="102" width="440" height="28" rx="4"/>
+      <text class="value" x="720" y="124" text-anchor="end">8.57 s</text>
+
+      <text class="label" x="210" y="181" text-anchor="end">2,400 cap</text>
+      <rect class="recommended" x="228" y="159" width="409" height="28" rx="4"/>
+      <text class="value" x="720" y="181" text-anchor="end">7.97 s</text>
+
+      <text class="label" x="210" y="238" text-anchor="end">2,500 cap</text>
+      <rect class="neutral" x="228" y="216" width="396" height="28" rx="4"/>
+      <text class="value" x="720" y="238" text-anchor="end">7.72 s</text>
+
+      <text class="label" x="210" y="295" text-anchor="end">2,600 cap</text>
+      <rect class="neutral" x="228" y="273" width="384" height="28" rx="4"/>
+      <text class="value" x="720" y="295" text-anchor="end">7.49 s</text>
+
+      <text class="label" x="210" y="352" text-anchor="end">Stock*</text>
+      <rect class="stock" x="228" y="330" width="384" height="28" rx="4"/>
+      <text class="value" x="720" y="352" text-anchor="end">~7.5 s</text>
+
+      <text class="label" x="210" y="409" text-anchor="end">Forced 2,900 est.</text>
+      <rect class="estimate" x="228" y="387" width="349" height="28" rx="4"/>
+      <text class="value" x="720" y="409" text-anchor="end">6.7–6.9 s</text>
+    </g>
+    <text class="note" x="32" y="505">* Inferred from stock’s 2,604 MHz loaded average.</text>
+    <text class="note" x="32" y="530">Estimate only; forced 2,900 MHz was not tested.</text>
+  </g>
+
+  <!-- Sustained power -->
+  <g transform="translate(824 24)">
+    <rect class="panel" width="752" height="552" rx="16"/>
+    <text class="title" x="32" y="48">Average sustained socket power</text>
+    <text class="axis" x="690" y="78" text-anchor="end">watts · lower is better</text>
+    <g>
+      <line class="grid" x1="228" y1="92" x2="228" y2="410"/>
+      <line class="grid" x1="370" y1="92" x2="370" y2="410"/>
+      <line class="grid" x1="512" y1="92" x2="512" y2="410"/>
+      <line class="grid" x1="654" y1="92" x2="654" y2="410"/>
+      <text class="axis" x="228" y="438" text-anchor="middle">0</text>
+      <text class="axis" x="370" y="438" text-anchor="middle">40</text>
+      <text class="axis" x="512" y="438" text-anchor="middle">80</text>
+      <text class="axis" x="654" y="438" text-anchor="middle">120</text>
+    </g>
+    <g>
+      <text class="label" x="210" y="127" text-anchor="end">2,200 cap</text>
+      <rect class="neutral" x="228" y="105" width="287" height="30" rx="4"/>
+      <text class="value" x="720" y="127" text-anchor="end">80.90 W</text>
+
+      <text class="label" x="210" y="190" text-anchor="end">2,400 cap</text>
+      <rect class="recommended" x="228" y="168" width="346" height="30" rx="4"/>
+      <text class="value" x="720" y="190" text-anchor="end">97.54 W</text>
+
+      <text class="label" x="210" y="253" text-anchor="end">2,500 cap</text>
+      <rect class="neutral" x="228" y="231" width="381" height="30" rx="4"/>
+      <text class="value" x="720" y="253" text-anchor="end">107.43 W</text>
+
+      <text class="label" x="210" y="316" text-anchor="end">2,600 cap</text>
+      <rect class="neutral" x="228" y="294" width="421" height="30" rx="4"/>
+      <text class="value" x="720" y="316" text-anchor="end">118.71 W</text>
+
+      <text class="label" x="210" y="379" text-anchor="end">Stock*</text>
+      <rect class="stock" x="228" y="357" width="424" height="30" rx="4"/>
+      <text class="value" x="720" y="379" text-anchor="end">119.54 W</text>
+    </g>
+    <text class="note" x="32" y="488">Stock allowed a 2,900 MHz ceiling but averaged</text>
+    <text class="note" x="32" y="514">about 2,604 MHz under sustained load.</text>
+  </g>
+
+  <!-- Temperature -->
+  <g transform="translate(24 624)">
+    <rect class="panel" width="752" height="552" rx="16"/>
+    <text class="title" x="32" y="48">Worst observed edge temperature</text>
+    <text class="axis" x="690" y="78" text-anchor="end">°C · lower is better</text>
+    <g>
+      <line class="grid" x1="228" y1="92" x2="228" y2="410"/>
+      <line class="grid" x1="344" y1="92" x2="344" y2="410"/>
+      <line class="grid" x1="459" y1="92" x2="459" y2="410"/>
+      <line class="grid" x1="575" y1="92" x2="575" y2="410"/>
+      <line class="grid" x1="690" y1="92" x2="690" y2="410"/>
+      <text class="axis" x="228" y="438" text-anchor="middle">0</text>
+      <text class="axis" x="344" y="438" text-anchor="middle">25</text>
+      <text class="axis" x="459" y="438" text-anchor="middle">50</text>
+      <text class="axis" x="575" y="438" text-anchor="middle">75</text>
+      <text class="axis" x="690" y="438" text-anchor="middle">100</text>
+    </g>
+    <g>
+      <text class="label" x="210" y="127" text-anchor="end">2,200 cap</text>
+      <rect class="neutral" x="228" y="105" width="328" height="30" rx="4"/>
+      <text class="value" x="720" y="127" text-anchor="end">71 °C</text>
+
+      <text class="label" x="210" y="190" text-anchor="end">2,400 cap</text>
+      <rect class="recommended" x="228" y="168" width="347" height="30" rx="4"/>
+      <text class="value" x="720" y="190" text-anchor="end">75 °C</text>
+
+      <text class="label" x="210" y="253" text-anchor="end">2,500 cap</text>
+      <rect class="neutral" x="228" y="231" width="360" height="30" rx="4"/>
+      <text class="value" x="720" y="253" text-anchor="end">78 °C</text>
+
+      <text class="label" x="210" y="316" text-anchor="end">2,600 cap</text>
+      <rect class="neutral" x="228" y="294" width="388" height="30" rx="4"/>
+      <text class="value" x="720" y="316" text-anchor="end">84 °C</text>
+
+      <text class="label" x="210" y="379" text-anchor="end">Stock*</text>
+      <rect class="stock" x="228" y="357" width="430" height="30" rx="4"/>
+      <text class="value" x="720" y="379" text-anchor="end">93 °C</text>
+    </g>
+    <text class="note" x="32" y="488">Maximum recorded across the three systems during</text>
+    <text class="note" x="32" y="514">each 30-minute soak.</text>
+  </g>
+
+  <!-- Generation throughput -->
+  <g transform="translate(824 624)">
+    <rect class="panel" width="752" height="552" rx="16"/>
+    <text class="title" x="32" y="48">Generation throughput</text>
+    <text class="axis" x="690" y="78" text-anchor="end">tokens/s · higher is better</text>
+    <g>
+      <line class="grid" x1="228" y1="92" x2="228" y2="355"/>
+      <line class="grid" x1="372" y1="92" x2="372" y2="355"/>
+      <line class="grid" x1="517" y1="92" x2="517" y2="355"/>
+      <line class="grid" x1="661" y1="92" x2="661" y2="355"/>
+      <text class="axis" x="228" y="383" text-anchor="middle">0</text>
+      <text class="axis" x="372" y="383" text-anchor="middle">10</text>
+      <text class="axis" x="517" y="383" text-anchor="middle">20</text>
+      <text class="axis" x="661" y="383" text-anchor="middle">30</text>
+    </g>
+    <g>
+      <text class="label" x="210" y="127" text-anchor="end">2,200 cap</text>
+      <rect class="neutral" x="228" y="105" width="431" height="30" rx="4"/>
+      <text class="value" x="720" y="127" text-anchor="end">29.84 tok/s</text>
+
+      <text class="label" x="210" y="190" text-anchor="end">2,400 cap</text>
+      <rect class="recommended" x="228" y="168" width="435" height="30" rx="4"/>
+      <text class="value" x="720" y="190" text-anchor="end">30.12 tok/s</text>
+
+      <text class="label" x="210" y="253" text-anchor="end">2,500 cap</text>
+      <rect class="neutral" x="228" y="231" width="437" height="30" rx="4"/>
+      <text class="value" x="720" y="253" text-anchor="end">30.25 tok/s</text>
+
+      <text class="label" x="210" y="316" text-anchor="end">2,600 cap</text>
+      <rect class="neutral" x="228" y="294" width="439" height="30" rx="4"/>
+      <text class="value" x="720" y="316" text-anchor="end">30.39 tok/s</text>
+    </g>
+    <text class="note" x="32" y="442">Only +0.9% from 2,400 to 2,600 MHz.</text>
+    <rect x="32" y="465" width="28" height="10" fill="#3273dc"/>
+    <text class="note" x="74" y="478">Recommended 2,400 MHz operating point</text>
+    <rect x="32" y="503" width="28" height="10" fill="#d97706"/>
+    <text class="note" x="74" y="516">Stock / estimated stock behavior</text>
+  </g>
+</svg>

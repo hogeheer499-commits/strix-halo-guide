@@ -22,12 +22,16 @@ Fail-Safe materially expanded the guide's evidence base with a Corsair AI Workst
 - USB4 latency tuning, MTU comparison, `pm_qos` idle-power measurement, and experimental thunderbolt throttle patch notes
 - Qwen3.6 GGUF source/build follow-up showing source effects, build effects, and guide-flag effects separately
 - MiMo-V2.5 310B-total / 15B-active `UD-IQ2_M` capacity row on Corsair `ai-2`, including prompt-processing-only `llama-bench` output and wall-power/GPU telemetry
+- strict three-system 2200-2600 MHz SCLK campaign with matched software/model state, retained-run contamination checks, socket-power and thermal telemetry, bounded stock controls, and a complete analysis bundle
+- important root-cause correction showing that two systems had booted without the out-of-tree `ec_su_axb35` module after a kernel update, leaving dependent fan/power services failed; preserved as a plausible contributor rather than a falsely proven sole cause
+- evidence that led to an upstream candidate patch resetting fans to `AUTO` when the EC module unloads
 
 Relevant docs:
 
 - [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md)
 - [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md)
 - [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md)
+- [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md)
 - [`data/community_results.csv`](data/community_results.csv)
 - [`data/community_power.csv`](data/community_power.csv)
 - [`data/raw/2026-06-21/community-failsafe-corsair-mimo25-issue26/`](data/raw/2026-06-21/community-failsafe-corsair-mimo25-issue26/)
@@ -37,6 +41,8 @@ Relevant docs:
 - [`data/community_rpc_model_hashes.csv`](data/community_rpc_model_hashes.csv)
 - [`data/community_usb4_latency.csv`](data/community_usb4_latency.csv)
 - [`data/community_usb4_idle_power.csv`](data/community_usb4_idle_power.csv)
+- [`data/community_thermal_sclk.csv`](data/community_thermal_sclk.csv)
+- [`data/raw/2026-07-18/community-failsafe-corsair-thermal-sclk-issue24/`](data/raw/2026-07-18/community-failsafe-corsair-thermal-sclk-issue24/)
 
 ### [mottledMantis](https://github.com/mottledMantis)
 

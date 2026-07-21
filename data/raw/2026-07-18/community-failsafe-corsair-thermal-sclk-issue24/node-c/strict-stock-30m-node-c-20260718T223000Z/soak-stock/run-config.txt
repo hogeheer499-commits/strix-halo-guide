@@ -1,0 +1,13 @@
+run_id=strict-stock-30m-node-c-20260718T223000Z
+node_label=node-c
+target=stock
+duration_under_load_s=1800
+max_safe_temp_c=95
+sample_interval_s=2
+load_power_threshold_w=40
+background_condition=zero-running-containers
+model=MiMo-V2.5-UD-IQ2_M-00001-of-00003.gguf
+pp=512
+tg=512
+ngl=99
+extra_args=-fa on -mmp 0 -ctk q8_0 -ctv q8_0 -b 4096 -ub 256

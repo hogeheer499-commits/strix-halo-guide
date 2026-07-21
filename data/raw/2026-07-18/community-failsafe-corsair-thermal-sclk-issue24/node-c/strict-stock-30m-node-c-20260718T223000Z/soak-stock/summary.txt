@@ -1,0 +1,14 @@
+exit_reason=completed
+samples_total=918
+samples_under_load=898
+loaded_duration_s=1811
+edge_max_c=74.000
+edge_final_c=72.000
+edge_first_third_avg_c=70.753
+edge_last_third_avg_c=71.532
+edge_first_to_last_delta_c=+0.779
+edge_late_slope_c_per_10m=+1.046
+power_avg_w=119.571
+power_max_w=139.042
+sclk_avg_mhz=2620.9
+verdict=still-creeping

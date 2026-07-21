@@ -1,0 +1,14 @@
+run_id=strict-sweep-20260718T184554Z
+node_label=node-b
+caps=2200 2400 2500 2600
+max_safe_temp_c=98
+sample_interval_s=1
+settle_seconds=20
+cooldown_delta_c=5
+background_condition=zero-running-containers
+model=MiMo-V2.5-UD-IQ2_M-00001-of-00003.gguf
+pp=512
+tg=128
+repetitions=10
+ngl=99
+extra_args=-fa on -mmp 0 -ctk q8_0 -ctv q8_0 -b 4096 -ub 256
