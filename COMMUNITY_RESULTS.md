@@ -14,6 +14,7 @@ Structured data:
 - [`data/community_rpc_model_hashes.csv`](data/community_rpc_model_hashes.csv)
 - [`data/community_usb4_latency.csv`](data/community_usb4_latency.csv)
 - [`data/community_usb4_idle_power.csv`](data/community_usb4_idle_power.csv)
+- [`data/community_thermal_sclk.csv`](data/community_thermal_sclk.csv)
 - [`CONTRIBUTORS.md`](CONTRIBUTORS.md)
 
 Raw community follow-up artifacts:
@@ -37,6 +38,7 @@ Raw community follow-up artifacts:
 - GMKtec EVO-X2 NixOS / NPU / ROCmFP4 artifact: [`data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/`](data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/), full source artifact at [`ciru-ai/strix-halo-evo-x2-evidence`](https://github.com/ciru-ai/strix-halo-evo-x2-evidence)
 - Corsair AI Workstation 300 MiMo V2.5 capacity/telemetry row: [`data/raw/2026-06-21/community-failsafe-corsair-mimo25-issue26/`](data/raw/2026-06-21/community-failsafe-corsair-mimo25-issue26/)
 - Minix Elite ER939 Ai Ollama 0.30.10 report: [`data/raw/2026-06-24/community-minix-er939-ollama-issue27/`](data/raw/2026-06-24/community-minix-er939-ollama-issue27/)
+- Corsair three-system thermal/SCLK campaign: [`data/raw/2026-07-18/community-failsafe-corsair-thermal-sclk-issue24/`](data/raw/2026-07-18/community-failsafe-corsair-thermal-sclk-issue24/), summarized in [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md)
 
 Short version: these reports add trust signals the primary Beelink results cannot provide alone:
 
@@ -58,6 +60,7 @@ Short version: these reports add trust signals the primary Beelink results canno
 - first GMKtec EVO-X2 NixOS / IOMMU-on / NPU-sidecar artifact linked to the guide, with sanitized CSV/SQLite exports, ROCmFP4 tuned-route metrics, quality-eval rows, and a concrete NPU contention result
 - first Corsair MiMo V2.5 310B-total / 15B-active direct `llama-bench` capacity row with wall-power, GPU-temperature, and socket-power telemetry; prompt-processing only, not a generation headline
 - first Minix Elite ER939 Ai owner report, adding an Ubuntu 26.04 / kernel 7.0.0-22 / Mesa 26.1.3 / Ollama 0.30.10 buyer-path row
+- first strict three-system Corsair thermal/SCLK campaign, including bounded stock controls, a scoped 2400 MHz fleet tradeoff, a corrected fan-module/service confounder, and an upstream fan-reset safety patch
 
 For the shortest practical decision layer, see the README section [Community-Tested Rules Of Thumb](README.md#community-tested-rules-of-thumb).
 
@@ -83,6 +86,17 @@ For the shortest practical decision layer, see the README section [Community-Tes
 | 2026-06-14 | ciru-ai | GMKtec EVO-X2 / NucBox_EVO-X2, Ryzen AI MAX+ 395, 128GB-class | NixOS 26.05 pre-release, Linux 7.0.1, Mesa 26.0.5, Vulkan 1.4.341, RADV STRIX_HALO, IOMMU enabled with `iommu.passthrough=0`, NPU exposed at `/dev/accel/accel0` | NPU sidecar, FastFlowLM-NPU LFM2.5, Qwopus/Chadrock/Qwen3.6 ROCmFP4, Gemma 4 QAT/MTP, CrownV7 | NPU contention: +3.29% main 64k iGPU latency with concurrent NPU load vs +68.96% with iGPU auxiliary load. FastFlowLM-NPU LFM2.5 1.2B at 32k: 1646 prompt tok/s, 38.18 decode tok/s, ~2.09GiB RSS. Selected quality/speed rows include 0.9451 HumanEval+ 27B routes, Gemma 4 26B QAT/MTP 122.8 decode tok/s after TTFP, and CrownV7 128k pp at 515.33 tok/s. | Adds a second GMKtec EVO-X2 owner/source with a different OS and setup philosophy. The main value is not a single t/s headline; it is an auditable artifact showing IOMMU-on NPU sidecar behavior, ROCmFP4 tuned-route evidence, and quality metrics tied to Strix Halo buyer workflows. | [artifact](https://github.com/ciru-ai/strix-halo-evo-x2-evidence), [`raw note`](data/raw/2026-06-14/community-ciru-evox2-nixos-npu-rocmfp4/), [`structured`](data/community_ciru_evox2_metrics.csv) |
 | 2026-06-21 | Fail-Safe | Corsair AI Workstation 300 ai-2, Ryzen AI MAX+ 395, 128GB-class | Fedora 44 Server, kernel 7.0.12, Mesa RADV 25.3.6 inside kyuz0 Vulkan container, IOMMU off | MiMo-V2.5 310B.A15B `UD-IQ2_M` | 30.65 pp512; pasted CSV row has `n_gen=0`, so no tg128 result was captured. Telemetry summary: wall power 29.7-162.4 W, mean 114.14 W; GPU edge 40-75 C; GPU socket power 14.098-104.021 W. | Adds a huge-MoE Corsair capacity and telemetry row. Useful for vendor/buyer questions about whether a 310B-total / 15B-active GGUF route can load and run directly, but not a speed headline until a generation row and model source/hash are captured. | [#26](https://github.com/hogeheer499-commits/strix-halo-guide/issues/26), [`raw`](data/raw/2026-06-21/community-failsafe-corsair-mimo25-issue26/), [`structured`](data/community_results.csv) |
 | 2026-06-24 | papagenic | Minix Elite ER939 Ai, 128GB-class reported as `128GI` | Ubuntu 26.04 LTS, kernel 7.0.0-22-generic, Mesa 26.1.3 kisak, BIOS UMA 1G, IOMMU disabled, Ollama 0.30.10 | Qwen3.6 35B-A3B via `qwen3.6:35b-a3b` | `bench-ollama.sh` report: 97.4 t/s prompt eval over 14 tokens, 30.5 t/s generation over 206 tokens, 16.74s total. | First Minix Elite ER939 Ai community report. Useful as an Ollama 0.30.10 / Ubuntu 26.04 buyer-path row, not as a headline speed comparison. Backend/Vulkan ICD, repeats, script details, and warm/cold state are still incomplete, so keep it separate from direct `llama-bench` rows. | [#27](https://github.com/hogeheer499-commits/strix-halo-guide/issues/27), [`raw`](data/raw/2026-06-24/community-minix-er939-ollama-issue27/), [`structured`](data/community_results.csv) |
+| 2026-07-18 | Fail-Safe | 3x Corsair AI Workstation 300 / Sixunited AXB35 | Matched managed fleet; zero background containers/model processes in retained cap runs; custom `ec_su_axb35` fan-control path audited separately | Sustained local-AI cap sweep plus 30-minute stock controls | At 2400 MHz: 125.42 prompt t/s, 30.12 generation t/s, 97.54 W mean AMDGPU socket power, worst edge temperature 75 C. Moving to 2600 MHz added 6.39% prompt and 0.87% generation but 21.70% mean socket power; bounded stock controls saw 0/3 locks and a 93 C worst transient. | Converts an intermittent lock report into scoped buyer/support guidance. The 2400 MHz cap is a fleet-specific conservative tradeoff, not a universal fix. Historical logs show a missing out-of-tree EC module and failed fan services after kernel updates as a plausible major confounder; root cause remains unresolved. | [#24](https://github.com/hogeheer499-commits/strix-halo-guide/issues/24), [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md), [`structured`](data/community_thermal_sclk.csv), [`raw`](data/raw/2026-07-18/community-failsafe-corsair-thermal-sclk-issue24/) |
+
+## Corsair Three-System Thermal And SCLK Campaign
+
+Fail-Safe followed the original Corsair sustained-inference lock report with a strict three-system cap sweep, retained-run contamination checks, 30-minute stock controls, raw telemetry, an executable analyzer, and a documented cap/reset harness. This is the same three-system Corsair fleet already counted in the guide, so it adds evidence depth rather than another system.
+
+The practical result is narrower and more useful than a universal clock-cap rule. On this fleet, 2400 MHz kept generation within about 1% of the higher caps while staying at or below 75 C. The higher 2600 MHz policy added much more socket power than generation throughput. Stock did not lock in the bounded 3x30-minute control, but one system reached a 93 C transient and the original intermittent failure was not disproved.
+
+Historical journals also corrected the first root-cause framing: two systems had booted a new kernel without the out-of-tree `ec_su_axb35` module, so dependent custom fan/power services failed. That is a plausible major contributor, not a proven sole cause. The evidence led to an [upstream candidate patch](https://github.com/cmetz/ec-su_axb35-linux/pull/31) that resets fans to `AUTO` when the module unloads.
+
+Buyer guidance, charts, commands, limitations, and the complete source bundle are in [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md).
 
 ## Corsair AI Workstation 300 MiMo V2.5 Capacity Row
 

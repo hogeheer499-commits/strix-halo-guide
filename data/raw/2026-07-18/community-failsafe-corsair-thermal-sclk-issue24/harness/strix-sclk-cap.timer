@@ -1,0 +1,11 @@
+[Unit]
+Description=Re-apply Strix Halo iGPU SCLK cap (guards against GPU-reset revert)
+
+[Timer]
+OnBootSec=30
+OnUnitActiveSec=60s
+AccuracySec=5s
+Unit=strix-sclk-cap.service
+
+[Install]
+WantedBy=timers.target

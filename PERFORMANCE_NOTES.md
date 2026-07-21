@@ -209,6 +209,14 @@ Local interpretation:
 
 Raw local logs: [`data/raw/2026-06-02/high-power-policy-test/`](data/raw/2026-06-02/high-power-policy-test/). Community provenance note: [`data/raw/2026-06-02/community-reddit-look-qwen-coder/`](data/raw/2026-06-02/community-reddit-look-qwen-coder/).
 
+## Corsair/Sixunited Strict Thermal And SCLK Follow-Up
+
+Fail-Safe later supplied a much stronger three-system campaign for the Corsair AI Workstation 300 / Sixunited AXB35 platform. It includes matched retained runs at 2200-2600 MHz, 30-minute stock controls, socket-power and temperature telemetry, contamination checks, raw logs, and an executable analyzer.
+
+The scoped conclusion is that 2400 MHz was the best conservative tradeoff on this specific fleet: generation remained within about 1% of the higher caps while worst retained edge temperature stayed at or below 75 C. It is not a default cap for Beelink, GMKtec, Framework, every Corsair revision, or Strix Halo generally.
+
+The campaign also corrected the initial root-cause story. Historical logs showed the out-of-tree `ec_su_axb35` fan-control module missing after a kernel update on two systems, leaving dependent services failed. That is a plausible major confounder rather than proof of a sole cause. See [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md) for buyer checks, charts, raw evidence, and the open upstream fan-reset patch.
+
 ## Modern-Model Anti-Cherry-Pick Follow-Up
 
 Reddit feedback correctly pointed out that the direct 98.51 t/s Qwen3-Coder 30B row should not be framed as the newest-model claim. The current framing is:

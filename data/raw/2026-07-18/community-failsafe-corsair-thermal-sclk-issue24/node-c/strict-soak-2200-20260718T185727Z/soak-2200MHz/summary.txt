@@ -1,0 +1,14 @@
+exit_reason=completed
+samples_total=919
+samples_under_load=899
+loaded_duration_s=1810
+edge_max_c=65.000
+edge_final_c=59.000
+edge_first_third_avg_c=61.124
+edge_last_third_avg_c=59.555
+edge_first_to_last_delta_c=-1.569
+edge_late_slope_c_per_10m=-1.451
+power_avg_w=79.801
+power_max_w=89.008
+sclk_avg_mhz=2200.0
+verdict=stabilized

@@ -1,0 +1,9 @@
+[Unit]
+Description=Cap Strix Halo iGPU SCLK at 2400 MHz (power/thermal control)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/strix-sclk-cap
+
+[Install]
+WantedBy=multi-user.target

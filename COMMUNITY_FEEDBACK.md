@@ -42,6 +42,10 @@ The corrected Nemotron map is:
 - Super 120B-A12B: runnable middle route for capacity/current-model testing.
 - Nano 30B-A3B: faster smaller route.
 
+The 2026-07 Corsair thermal/SCLK report is a second example. The initial report associated sustained hard locks with stock clock behavior. Fail-Safe then supplied a strict three-system sweep, bounded stock controls, raw telemetry, and an analyzer. Historical journals subsequently showed that two systems had booted without the out-of-tree `ec_su_axb35` fan-control module after a kernel update, leaving dependent services failed.
+
+The guide therefore does not call 2400 MHz a universal fix. It records it as the best conservative tradeoff measured on that fleet, keeps the root cause unresolved, adds a concrete post-update fan-service check, and tracks the resulting upstream fan-reset patch. See [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md). The correction is more valuable to buyers and vendors than defending the first hypothesis would have been.
+
 ## Writing Rules From This Feedback
 
 - Put artifact, quant, backend, and command context before broad interpretation.

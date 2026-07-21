@@ -498,6 +498,43 @@ def chart_density_gate() -> None:
         )
 
 
+def chart_community_thermal_sclk() -> None:
+    rows = read_csv("community_thermal_sclk.csv")
+    capped = [row for row in rows if row["clock_mode"] == "manual-cap"]
+    capped.sort(key=lambda row: int(row["sclk_cap_mhz"]))
+    caps = [row["sclk_cap_mhz"] for row in capped]
+
+    line_chart(
+        "community_corsair_sclk_throughput.svg",
+        "Corsair fleet: throughput by iGPU SCLK cap",
+        "Three matched systems; strict 10-repetition throughput sweep",
+        [f"{cap} MHz" for cap in caps],
+        [
+            {"name": "Prompt processing", "values": [as_float(row, "prompt_tps_mean") for row in capped]},
+            {"name": "Generation", "values": [as_float(row, "generation_tps_mean") for row in capped]},
+        ],
+        "tokens/s (three-system mean)",
+        y_max=150,
+        note="Community evidence from Fail-Safe; source: data/community_thermal_sclk.csv",
+    )
+
+    stock = next(row for row in rows if row["clock_mode"] == "stock-auto")
+    thermal_rows = [*capped, stock]
+    line_chart(
+        "community_corsair_sclk_thermal.svg",
+        "Corsair fleet: socket power and edge temperature",
+        "Strict 30-minute-under-load soaks; stock is auto mode with a 2900 MHz ceiling",
+        [*[f"{cap} MHz" for cap in caps], "Stock"],
+        [
+            {"name": "Mean socket power (W)", "values": [as_float(row, "mean_socket_power_w") for row in thermal_rows]},
+            {"name": "Worst edge temperature (C)", "values": [as_float(row, "worst_edge_temp_c") for row in thermal_rows]},
+        ],
+        "amdgpu reading (W or C)",
+        y_max=140,
+        note="Socket power is amdgpu telemetry, not wall power; source: data/community_thermal_sclk.csv",
+    )
+
+
 def main() -> None:
     chart_multi_user()
     chart_long_context_prompt()
@@ -507,6 +544,7 @@ def main() -> None:
     chart_backend_spot_check()
     chart_backend_crossover()
     chart_density_gate()
+    chart_community_thermal_sclk()
 
 
 if __name__ == "__main__":

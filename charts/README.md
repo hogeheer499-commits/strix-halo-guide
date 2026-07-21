@@ -20,5 +20,9 @@ python3 scripts/generate_charts.py
 - `backend_crossover_generation.svg`: HIP versus Vulkan token-generation spot check at tg128.
 - `moe_density_gate_30b.svg`: Qwen3-Coder 30B aggregate decode across concurrency 1-64 for b9979 stock/density/dense16 Vulkan and Lemonade ROCm.
 - `moe_density_gate_80b.svg`: Qwen3-Next 80B version of the same concurrency crossover.
+- `community_corsair_sclk_throughput.svg`: Fail-Safe's strict three-system
+  Corsair prompt/generation throughput sweep across 2200-2600 MHz SCLK caps.
+- `community_corsair_sclk_thermal.svg`: the same campaign's 30-minute socket
+  power and worst edge-temperature tradeoff, including bounded stock controls.
 
 The SVGs are publishable summaries. The CSVs and raw logs remain the source of truth.
