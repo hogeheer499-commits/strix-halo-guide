@@ -129,6 +129,8 @@ python3 scripts/generate_charts.py
 - `raw/2026-06-21/nemotron-3-nano-omni-mxfp4-b9747-smoke/`: first-party Beelink direct `llama-bench` smoke for `unsloth/NVIDIA-Nemotron-3-Nano-Omni-30B-A3B-Reasoning-GGUF` `MXFP4_MOE` on the official `llama.cpp` b9747 Vulkan binary. It measured 1277.60 pp512 / 56.56 tg128. Useful current NVIDIA Omni/FP4 support evidence, not a speed headline.
 - `raw/2026-06-02/modern-model-clean-followup/`: modern-model follow-up after Reddit feedback. Qwen3-Coder-Next 80B-A3B IQ4_XS measured 61.91 t/s tg128 and 738.98 t/s pp512 on b9467. A Qwen3.6 MTP b9360 repeat averaged 97.08 t/s across six prompts, with code prompts above 105 t/s; useful nuance for the experimental server/speculative route, not a new direct headline.
 - `raw/2026-06-02/qwen3-coder-next-iq4xs/`: earlier modern Qwen3-Coder-Next 80B-A3B IQ4_XS Vulkan/RADV row. It measured 61.68 t/s tg128 and 735.72 t/s pp512, useful for current-model context but superseded by the b9467 repeat in `raw/2026-06-02/modern-model-clean-followup/`.
+- `raw/2026-07-21/unsloth-rocm72-train-export-smoke/`: pinned first-party Unsloth/ROCm workflow qualification. Radeon GPU detection, one-step SFT, checkpoint inference, `Q4_K_M` export, ROCm `llama.cpp` inference, and post-restart loading from the host-persisted artifact passed. This is workflow compatibility evidence, not useful fine-tuning quality or a speed headline.
+- `raw/2026-07-21/github-traction-snapshot/`: dated GitHub API demand/reach snapshot used by the partner brief. These figures are supporting context, not benchmark evidence or a permanent traffic claim.
 
 ## Status Values
 

@@ -12,7 +12,7 @@ That uncertainty creates adoption friction. A technically strong AI PC can still
 
 This guide reduces setup friction, provides reproducible benchmark evidence, and helps buyers evaluate AMD local-AI hardware with clearer expectations. It gives developers and buyers a practical path from "what should I install?" to "which backend, model, and settings should I try first?"
 
-The repo also has a visible demand signal: 218 GitHub stars, 11 forks, 5 watchers, 8 credited community benchmark contributors, and 11 Strix Halo-class systems/sources represented as of the 2026-07-16 GitHub/project snapshot. GitHub's available 14-day window ending 2026-07-15 recorded 867 unique repository visitors and 132 unique cloners; Google was the largest recorded referrer with 400 unique visitors. These dated figures are preserved in [`data/raw/2026-07-16/github-traction-snapshot/`](data/raw/2026-07-16/github-traction-snapshot/) and should not be treated as the main value proposition. The main value is the proof layer below: reproducible public evidence that makes the hardware easier to evaluate, trust, support, review, and buy.
+The repo also has a visible demand signal: 228 GitHub stars, 13 forks, 5 watchers, 8 credited community benchmark contributors, and 11 Strix Halo-class systems/sources represented as of the 2026-07-21 GitHub/project snapshot. GitHub's available traffic window captured 928 unique repository visitors and 156 unique cloners; Google was the largest recorded referrer with 406 unique visitors. These dated figures are preserved in [`data/raw/2026-07-21/github-traction-snapshot/`](data/raw/2026-07-21/github-traction-snapshot/) and should not be treated as the main value proposition. The main value is the proof layer below: reproducible public evidence that makes the hardware easier to evaluate, trust, support, review, and buy.
 
 The technical proof layer already includes:
 
@@ -22,6 +22,7 @@ The technical proof layer already includes:
 - Current benchmark snapshot in [`BENCHMARKS.md`](BENCHMARKS.md).
 - A current multi-user engineering case in [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md): official b10034 still loses 31.7-37.3% aggregate decode from concurrency 8 to 9 on two tested MoE shapes; a separate controlled b9979 campaign shows an opt-in AMD/RADV density policy recovering 25.3-42.7% at np9 without changing np8 materially.
 - Direct current-model capacity evidence: a pinned 90.86GB DeepSeek V4 Flash 284.33B ordinary GGUF loaded and generated on one 128GB Beelink through official b10034 Vulkan/RADV. This is explicitly scoped as low-bit capacity/basic-correctness evidence rather than a speed or broad quality claim.
+- End-to-end local model-development evidence in [`UNSLOTH_STRIX_HALO.md`](UNSLOTH_STRIX_HALO.md): a digest-pinned ROCm 7.2 route passed Radeon GPU detection, one-step SFT, checkpoint inference, `Q4_K_M` GGUF export, ROCm `llama.cpp` inference, artifact persistence, and post-restart loading. The tiny smoke remains explicitly separated from useful fine-tuning quality or performance claims.
 - Claim-to-evidence mapping in [`data/headline_claims.csv`](data/headline_claims.csv).
 - Structured data in [`data/`](data/README.md).
 - Raw logs and CSVs in [`data/raw/`](data/raw/).
@@ -71,6 +72,7 @@ These are options, not demands. The useful collaboration is access to hardware, 
 - Raw logs, CSVs, generated charts, and claim-to-evidence links.
 - Troubleshooting notes for failed paths, regressions, firmware issues, and driver blockers.
 - Reproducible software-bottleneck reports that connect an upstream backend issue to buyer-facing guidance, second-system validation requests, and firmware/fan/engineering questions.
+- Reproducible local fine-tuning, export, and deployment workflows for a named system and task.
 - Buyer use-case documentation that translates technical results into practical decisions.
 - Disclosure-compliant public writeup for sponsored, loaned, gifted, or early-access work.
 - Vendor-neutral technical findings, including negative results when they are accurate.

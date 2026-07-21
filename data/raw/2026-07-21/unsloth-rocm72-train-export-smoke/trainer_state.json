@@ -1,0 +1,19 @@
+{
+  "epoch": 1.9319938176197837e-05,
+  "global_step": 1,
+  "log_history": [
+    {
+      "epoch": 1.9319938176197837e-05,
+      "grad_norm": 0.0,
+      "learning_rate": 0.0,
+      "loss": 2.6169,
+      "num_input_tokens_seen": 87,
+      "step": 1,
+      "train_runtime": 2.3397,
+      "train_tokens_per_second": 37.185
+    }
+  ],
+  "max_steps": 1,
+  "num_input_tokens_seen": 87,
+  "train_batch_size": 1
+}

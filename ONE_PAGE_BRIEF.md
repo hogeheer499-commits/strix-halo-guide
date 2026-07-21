@@ -12,8 +12,8 @@ AMD's public Ryzen AI Halo / Ryzen AI Developer Platform direction makes this ca
 
 The repo already includes a technical proof layer:
 
-- Public GitHub demand signal: 218 stars, 11 forks, and 5 watchers in a small hardware/software niche as of the 2026-07-16 GitHub API snapshot; use this as supporting context, not the main claim.
-- Recent reach: 867 unique repository visitors and 132 unique cloners in GitHub's available 14-day window ending 2026-07-15. Google was the largest recorded referrer with 400 unique visitors in that window. Treat these as dated reach signals, not permanent traffic claims. The aggregate API responses are preserved in [`data/raw/2026-07-16/github-traction-snapshot/`](data/raw/2026-07-16/github-traction-snapshot/).
+- Public GitHub demand signal: 228 stars, 13 forks, and 5 watchers in a small hardware/software niche as of the 2026-07-21 GitHub API snapshot; use this as supporting context, not the main claim.
+- Recent reach: 928 unique repository visitors and 156 unique cloners in GitHub's available traffic window captured 2026-07-21. Google was the largest recorded referrer with 406 unique visitors. Treat these as dated reach signals, not permanent traffic claims. The API responses are preserved in [`data/raw/2026-07-21/github-traction-snapshot/`](data/raw/2026-07-21/github-traction-snapshot/).
 - Setup and workflow guide: [`README.md`](README.md).
 - Current benchmark snapshot: [`BENCHMARKS.md`](BENCHMARKS.md).
 - Reproducibility notes: [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
@@ -28,6 +28,7 @@ The repo already includes a technical proof layer:
 - Frontier-size direct GGUF evidence: a pinned 90.86GB DeepSeek V4 Flash 284.33B `UD-IQ2_XXS` artifact loaded, generated, and passed a basic deterministic check through official `llama.cpp` b10034 Vulkan/RADV on one 128GB Beelink. The 13.27 tg128 row is capacity/current-model evidence with a low-bit quality caveat, not a speed claim.
 - Ryzen AI server-optimization evidence: an isolated official ROCm 7.14 / PyTorch 2.11 / vLLM FP16 A/B reproduced AMD's documented batch-8+ hipBLASLt workaround on `gfx1151`, improving aggregate throughput by 40.50%, 38.96%, and 41.54% at concurrency 8, 9, and 16. This is scoped small-model server evidence, not a universal backend claim.
 - Current HIP compatibility evidence: official `llama.cpp` b10046 locally reproduced merged integrated-device host-buffer support on `gfx1151`, detecting the full UMA pool and using `ROCm_Host` buffers without a gfx-version override. The remaining manual runtime-library-path requirement is documented as setup friction rather than hidden.
+- Local model-development evidence: a digest-pinned ROCm 7.2 Unsloth workflow on the retail Beelink passed Radeon GPU detection, one-step SFT, checkpoint inference, `Q4_K_M` GGUF export, ROCm `llama.cpp` inference, artifact persistence, and a post-restart reload. The public guide preserves the exact commands and two real path/export failures without presenting the tiny smoke as useful model quality or training speed. See [`UNSLOTH_STRIX_HALO.md`](UNSLOTH_STRIX_HALO.md).
 - Platform context: [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).
 
 ## Commercial Value
@@ -63,6 +64,7 @@ Useful collaboration can include technical contacts, review or loaner systems, e
 - Windows versus Linux comparison.
 - Power and efficiency report.
 - ROCm/vLLM/NPU blocker or progress report.
+- Reproducible local fine-tuning, export, and deployment workflow for a named system and task.
 - Disclosure-compliant public writeup.
 
 ## Disclosure And Independence
