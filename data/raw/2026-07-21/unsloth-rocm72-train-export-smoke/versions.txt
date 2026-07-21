@@ -1,0 +1,16 @@
+community_source=https://github.com/Justin-Noel/amd-strix-halo-unsloth-toolboxes
+community_source_commit=3e82176d034e7d8357db457747d47144db9ff843
+image=ghcr.io/justin-noel/amd-strix-halo-unsloth-toolboxes:rocm-7.2
+image_digest=sha256:8285eac06bf33398ad2605387e98d77eba30379cf690af755e238967ef238c3d
+image_id=7d47153be1cac24305fe9d6b8390889918875ffb4ab9faa277cc77bc28f947c8
+image_uncompressed_bytes=22674809043
+torch=2.13.0+rocm7.2
+torch_hip=7.2.53211
+torch_device=AMD Radeon 8060S
+transformers=4.57.6
+triton=3.7.1
+bitsandbytes=0.50.0.dev0
+unsloth=2026.7.3
+llama_cpp_version=10043
+llama_cpp_commit=cbedbd493
+llama_cpp_compiler=Clang 23.0.0

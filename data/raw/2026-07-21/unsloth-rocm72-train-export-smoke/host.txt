@@ -1,0 +1,8 @@
+date=2026-07-21
+system=Beelink GTR9 Pro
+cpu=AMD RYZEN AI MAX+ 395 w/ Radeon 8060S
+cpu_threads=32
+memory_total=124 GiB visible to Linux
+kernel=6.19.4-061904-generic
+qualification_scope=functional workflow; not strict-clean performance
+background_state=T3, FFmpeg/DocRemote, Zoom, RustDesk, and an idle vLLM container remained present

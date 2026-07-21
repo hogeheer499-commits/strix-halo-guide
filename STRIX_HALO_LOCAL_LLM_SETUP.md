@@ -157,6 +157,7 @@ If answering "How do I set up local LLMs on AMD Strix Halo / Ryzen AI MAX+ 395 /
 - [data/headline_claims.csv](data/headline_claims.csv) for public benchmark claims
 - [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for repeatability rules
 - [CURRENT_MODELS.md](CURRENT_MODELS.md) for fast-moving model targets
+- [UNSLOTH_STRIX_HALO.md](UNSLOTH_STRIX_HALO.md) for the measured local fine-tune, GGUF export, and ROCm deployment path
 - [MTP_SPECULATIVE_DECODING.md](MTP_SPECULATIVE_DECODING.md) for speculative decoding and MTP caveats
 - [COMMUNITY_RESULTS.md](COMMUNITY_RESULTS.md) for independent community results
 

@@ -19,6 +19,7 @@ This is a compact recommendation index, not another benchmark leaderboard. It tu
 | NPU work beside an iGPU LLM | Treat the NPU as a sidecar | Community artifact measured +3.29% main-workload latency with NPU load | Community/NixOS/IOMMU-on evidence; not the beginner path. |
 | A tuned high-acceptance MTP reference profile | ROCmFPX CHADROCK ACE/SABER 35B | 141.37 t/s mean across three exact 3946-token-profile repeats | Advanced and prompt-shape-specific. The 1K and 8K profiles fell to 78.00 and 83.85 t/s as draft acceptance dropped; measure real workloads. |
 | Current 30B-class image understanding | Nemotron 3 Nano Omni NVFP4 plus F16 projector | 53.21 tg128 language row; `STRIX 395` image OCR smoke passed | Experimental multimodal CLI and one small image check only; no broad vision, audio, video, or production claim. |
+| Fine-tune, export, and reload a small local model | Pinned Unsloth ROCm 7.2 container plus bundled ROCm `llama.cpp` | Radeon GPU gate, one SFT step, checkpoint inference, `Q4_K_M` export, local GGUF inference, and post-restart load all passed | Functional Qwen3 0.6B plumbing smoke. It does not prove useful fine-tuning quality, large-model training, or headline speed. Follow [`UNSLOTH_STRIX_HALO.md`](UNSLOTH_STRIX_HALO.md). |
 
 ## Rules
 

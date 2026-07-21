@@ -31,7 +31,7 @@ What you get:
 
 > Measured primarily on one Beelink GTR9 Pro. Community results are kept separate from local headline claims. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights. Raw evidence, commands, caveats, and corrections are linked so results can be checked instead of taken on trust.
 
-[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [Short Setup Answer](STRIX_HALO_LOCAL_LLM_SETUP.md) | [AI Halo Context](RYZEN_AI_HALO_CONTEXT.md) | [What Runs](#what-you-can-run-quick-snapshot) | [Profiles](BEST_KNOWN_PROFILES.md) | [Current Models](CURRENT_MODELS.md) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Concurrency](MOE_CONCURRENCY.md) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [Feedback](COMMUNITY_FEEDBACK.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
+[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [Short Setup Answer](STRIX_HALO_LOCAL_LLM_SETUP.md) | [AI Halo Context](RYZEN_AI_HALO_CONTEXT.md) | [What Runs](#what-you-can-run-quick-snapshot) | [Profiles](BEST_KNOWN_PROFILES.md) | [Current Models](CURRENT_MODELS.md) | [Fine-Tune](UNSLOTH_STRIX_HALO.md) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Concurrency](MOE_CONCURRENCY.md) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [Feedback](COMMUNITY_FEEDBACK.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
 
 ---
 
@@ -52,6 +52,7 @@ What you get:
 | Decide what to run on your Strix Halo machine | [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot), then [Use This If You Want](#use-this-if-you-want): practical model and backend choices for a local AI PC. |
 | Need a machine-readable known-good route | [`BEST_KNOWN_PROFILES.md`](BEST_KNOWN_PROFILES.md) and [`data/best_known_profiles.csv`](data/best_known_profiles.csv): compact workload-to-runtime recommendations that link back to the full evidence. |
 | See what should be tested next | [`CURRENT_MODELS.md`](CURRENT_MODELS.md) and [`data/current_test_queue.csv`](data/current_test_queue.csv): current candidates, practical artifact sizes, blockers, and the buyer question each test should answer. |
+| Fine-tune and export a model locally | [`UNSLOTH_STRIX_HALO.md`](UNSLOTH_STRIX_HALO.md): measured ROCm GPU gate, one-step Unsloth training smoke, GGUF export, local ROCm inference, persistence, and the two setup failures found along the way. |
 | Skip the community-data deep dive | [Community-Tested Rules Of Thumb](#community-tested-rules-of-thumb): practical decisions extracted from the Beelink data plus Corsair, GMKtec, MS-S1-Max, Nimo, NixOS/NPU, and ROCmFP4 community reports. |
 | See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
 | Check whether the numbers are real | [Reproduce One Headline Result](#reproduce-one-headline-result), [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md), and [`data/headline_claims.csv`](data/headline_claims.csv). |
@@ -66,6 +67,7 @@ What you get:
 | What was tested? | Local LLM inference and local API serving on Strix Halo, mainly Vulkan/RADV llama.cpp, Ollama, ROCm/HIP, Lemonade `llamacpp-rocm`, and early vLLM smoke tests. |
 | Primary hardware | Beelink GTR9 Pro, Ryzen AI MAX+ 395, Radeon 8060S `gfx1151`, 128GB LPDDR5X-8000 unified memory. |
 | Best easy path | The normal Ollama 0.31.2 system service with Vulkan/RADV for chat, model pulling, vision, and Open WebUI. It measured 60.57 t/s warm Qwen3.6 API generation and survived service restart plus a full host reboot. A controlled same-port/same-cache comparison later put isolated 0.31.1, 0.31.2, and 0.32.0 binaries in the same 72.55-73.20 t/s class, so the earlier gap was not a version-wide regression. |
+| Local training/export path | A pinned ROCm 7.2 Unsloth container detected the Radeon 8060S, completed a one-step Qwen3 0.6B SFT smoke, loaded the checkpoint, exported `Q4_K_M` GGUF, loaded it through ROCm `llama.cpp`, and loaded the host-persisted artifact again after restart. This proves the workflow, not useful fine-tuning quality or large-model training speed. |
 | Fastest measured short-context path | Direct llama.cpp / `llama-server` with Vulkan/RADV. Current Qwen3-Coder Q4_K_S speed-first row reached 100.99 t/s r50 on the official b9851 Vulkan release binary. The older strict-clean b9179 Qwen3-Coder row remains in the evidence at 98.51 t/s r50, and a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS row reached 100.04 t/s r50 on b9467 with a b9544 control at 103.18 tg128 r10. |
 | Fastest current small-MoE scout | LFM2.5 8B-A1B Q4_K_M reached 168.96 tg128 in a pp512/tg128 run and 170.02 t/s generation-only on the 2026-06-05 latest/int-dot check; the 2026-06-07 b9544 control measured 176.48 tg128 r10. This is a small active-parameter MoE speed result, not a 30B-class capability replacement. |
 | Largest current direct GGUF capacity route | DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded as a pinned 90.86GB ordinary GGUF and measured 155.64 pp512 / 13.27 tg128 on official b10034. It answered a deterministic smoke correctly, but the low-bit quant and visible thinking block make this capacity/current-model evidence rather than a speed or broad quality recommendation. |
@@ -128,6 +130,7 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 | Fast balanced local coding model | Qwen3-Coder 30B-A3B UD-Q4_K_XL: 96.76 t/s direct llama.cpp Vulkan/RADV on current b9049 | Strong first model for coding scripts, editors, and agent loops. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv) |
 | Newer Qwen coding model | Qwen3-Coder-Next 80B-A3B IQ4_XS: 61.91 t/s direct llama.cpp Vulkan/RADV on b9467 | Modern coding-model row for people who want current Qwen Coder-Next rather than the older 30B speed headline. Use it for capability/currentness, not maximum raw t/s. | [`benchmarks CSV`](data/benchmarks.csv), [`raw run`](data/raw/2026-06-02/modern-model-clean-followup/) |
 | Easy private chat setup | Qwen3.6 35B-A3B Q4_K_M: 60.57 t/s warm API generation through the normal Ollama 0.31.2 system service with `OLLAMA_IGPU_ENABLE=1`; vision, service restart, and full-host reboot persistence passed | This is the copyable default for model pulling, Open WebUI, vision, and simple local chat. A later controlled local-binary comparison measured 0.31.1/0.31.2/0.32.0 at 72.55/73.19/73.20 t/s, so do not treat the earlier 60.57-versus-71.82 gap as a version-wide regression. | [`headline claims`](data/headline_claims.csv), [`raw service run`](data/raw/2026-07-10/ollama-0312-buyer-path/), [`raw controlled comparison`](data/raw/2026-07-16/ollama-0311-0312-0320-controlled/) |
+| Fine-tune, export, and reload a local model | Pinned ROCm 7.2 Unsloth route: Radeon GPU gate, one SFT step, checkpoint inference, `Q4_K_M` GGUF export, ROCm `llama.cpp` inference, and post-restart artifact load all passed | End-to-end developer workflow evidence on a retail box. The Qwen3 0.6B one-step run is a plumbing smoke, not a quality or performance headline. | [`Unsloth guide`](UNSLOTH_STRIX_HALO.md), [`raw evidence`](data/raw/2026-07-21/unsloth-rocm72-train-export-smoke/) |
 | Fast all-rounder direct path | Qwen3.6 35B-A3B UD-Q4_K_M: 62.56 t/s direct llama.cpp Vulkan/RADV on current b9049 | Use this when you care more about speed and control than the easiest UI. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/qwen36-35b-b9049-clean-r20.csv) |
 | Fastest Qwen3.6 direct path | Qwen3.6 35B-A3B Q4_0: 81.30 t/s direct llama.cpp Vulkan/RADV on current b9049 | Speed-first option. Use the default/balanced quant if quality matters more than raw t/s. | [`max campaign`](data/max_performance_campaign.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen36-top-confirm-r20/q4-0-ub2048.csv) |
 | Qwen3.6 27B dense control | Official Qwen3.6 27B MTP Q8_0: 7.61-7.74 t/s without MTP, 14.59-14.69 t/s with the best MTP setting; a direct b9467 `llama-bench` follow-up measured 7.70 t/s tg128 | Useful practical row for people comparing 27B versus 35B-A3B. It runs, but this dense Q8 route is much slower than the 35B-A3B MoE paths and is not a speed candidate. | [`Performance notes`](PERFORMANCE_NOTES.md#qwen36-27b-mtp-q8_0-status), [`MTP CSV`](data/mtp_speculative.csv), [`raw b9235`](data/raw/2026-05-19/qwen36-27b-mtp-q8-llamacpp-9235/), [`raw latest`](data/raw/2026-06-01/qwen36-27b-mtp-latest-de6f727/), [`raw b9467`](data/raw/2026-06-02/reddit-look-int-dot-reproduction/) |
@@ -326,6 +329,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`POWER_BASELINE.md`](POWER_BASELINE.md) | Local amdgpu `PPT` telemetry status and Beelink power-sampling caveats. |
 | [`PERFORMANCE_NOTES.md`](PERFORMANCE_NOTES.md) | Narrow notes on strict-stack reruns, failed headline reproduction attempts, and useful negative model results. |
 | [`CURRENT_MODELS.md`](CURRENT_MODELS.md) | Current-model triage: latest model scouts, speed versus capability framing, and practical next-test value. |
+| [`UNSLOTH_STRIX_HALO.md`](UNSLOTH_STRIX_HALO.md) | Measured local fine-tuning, GGUF export, ROCm deployment, persistence, and troubleshooting path. |
 | [`data/current_test_queue.csv`](data/current_test_queue.csv) | Machine-readable current test priorities, readiness, artifact size, blockers, and evidence questions. |
 | [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md) | Fast-moving ROCm/vLLM upstream issue and release watchlist. |
 | [`BENCHMARKS.md`](BENCHMARKS.md) | Compact benchmark source-of-truth for current README numbers. |
@@ -1841,6 +1845,18 @@ ollama pull nomic-embed-text
 #    or set up LangChain + ChromaDB for custom pipelines
 ```
 
+The guide's next modern retrieval qualification is NVIDIA Nemotron 3 Embed 1B BF16 on ROCm/PyTorch. It is tracked in [`CURRENT_MODELS.md`](CURRENT_MODELS.md) until a local throughput, memory, retrieval-correctness, and restart pass exists; do not treat the NVIDIA NVFP4/vLLM route as an AMD result.
+
+### Fine-Tuning And GGUF Export
+
+The measured [Unsloth Strix Halo path](UNSLOTH_STRIX_HALO.md) uses an isolated ROCm 7.2 container. It completed a Radeon GPU gate, one-step SFT smoke, checkpoint inference, `Q4_K_M` export, ROCm `llama.cpp` inference, and a post-restart load from the host-persisted artifact.
+
+Start there before attempting a longer QLoRA campaign. The smoke proves the workflow, not useful adaptation quality or large-model training performance.
+
+### Speech Recognition
+
+Qwen3-ASR 0.6B/1.7B is tracked as the next local transcription qualification because it adds a practical function that chat-model benchmarks do not cover. It supports Dutch and broader multilingual ASR, but no Strix Halo ROCm result is claimed here until real-time factor, memory, transcript correctness, and restart behavior are measured.
+
 ### Image Generation
 
 kyuz0's [ComfyUI toolboxes](https://github.com/kyuz0/amd-strix-halo-gfx1151-toolboxes) provide ROCm containers for Flux, Wan 2.2, and Hunyuan on gfx1151. For Vulkan-only: `stable-diffusion.cpp` works with the RADV driver.
@@ -2066,7 +2082,7 @@ Yes. kyuz0's [ComfyUI toolboxes](https://github.com/kyuz0/amd-strix-halo-gfx1151
 <details>
 <summary><strong>Can I fine-tune models on this hardware?</strong></summary>
 
-Yes, with limitations. QLoRA fine-tuning of 7B-30B models works via kyuz0's [fine-tuning toolbox](https://github.com/kyuz0/amd-strix-halo-gfx1151-toolboxes). Full fine-tuning of large models is not practical due to memory bandwidth constraints compared to datacenter GPUs.
+Yes, with limitations. The guide now has a measured [Unsloth/ROCm train-to-GGUF path](UNSLOTH_STRIX_HALO.md): GPU detection, a one-step SFT smoke, checkpoint inference, GGUF export, ROCm `llama.cpp` inference, and post-restart artifact loading all passed on the retail Beelink. That proves the toolchain, not useful training quality or large-model speed. For longer campaigns, kyuz0's [fine-tuning toolbox](https://github.com/kyuz0/amd-strix-halo-gfx1151-toolboxes) remains another ecosystem route. Full fine-tuning of large models is not practical compared with datacenter GPUs; use LoRA/QLoRA and validate held-out quality.
 
 </details>
 

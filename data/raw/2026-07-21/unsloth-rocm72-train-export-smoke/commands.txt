@@ -1,0 +1,48 @@
+# Create the pinned Distrobox.
+distrobox create -n unsloth-rocm-7.2-guide \
+  --image ghcr.io/justin-noel/amd-strix-halo-unsloth-toolboxes@sha256:8285eac06bf33398ad2605387e98d77eba30379cf690af755e238967ef238c3d \
+  --additional-flags "--device /dev/dri --device /dev/kfd --group-add video --group-add render --security-opt seccomp=unconfined"
+
+distrobox enter unsloth-rocm-7.2-guide
+
+# Hard GPU gate.
+/opt/unsloth/studio/unsloth_studio/bin/python -c \
+  "import torch; print(torch.__version__, torch.version.hip); print(torch.cuda.get_device_name(0)); print(torch.tensor([1.0], device='cuda'))"
+
+# One-step SFT smoke. The output dir must remain relative.
+/opt/unsloth/studio/unsloth_studio/bin/unsloth train \
+  --model unsloth/Qwen3-0.6B-unsloth-bnb-4bit \
+  --dataset yahma/alpaca-cleaned \
+  --format-type alpaca \
+  --training-type sft \
+  --max-seq-length 256 \
+  --load-in-4bit \
+  --output-dir guide-qwen3-06b-smoke \
+  --max-steps 1 \
+  --batch-size 1 \
+  --gradient-accumulation-steps 1 \
+  --save-steps 1 \
+  --lora-r 8 \
+  --lora-alpha 16 \
+  --no-enable-wandb
+
+# Export from a writable CWD because a temporary BF16 GGUF is written there.
+cd /opt/unsloth/studio/outputs
+/opt/unsloth/studio/unsloth_studio/bin/unsloth export \
+  /opt/unsloth/studio/outputs/guide-qwen3-06b-smoke \
+  /opt/unsloth/studio/outputs/guide-qwen3-06b-smoke-gguf \
+  --format gguf \
+  --quantization q4_k_m \
+  --max-seq-length 256
+
+# Noninteractive ROCm GGUF smoke.
+/opt/unsloth/studio/llama.cpp/build/bin/llama-cli \
+  --model /opt/unsloth/studio/outputs/guide-qwen3-06b-smoke-gguf/guide-qwen3-06b-smoke.Q4_K_M.gguf \
+  --gpu-layers 999 --ctx-size 256 --no-mmap \
+  --temp 0 --predict 64 \
+  --prompt 'Reply with exactly: STRIX HALO GGUF PASS' \
+  --no-display-prompt --single-turn --simple-io --reasoning off
+
+# Persist artifacts before container refresh/removal.
+cp -a /opt/unsloth/studio/outputs/guide-qwen3-06b-smoke "$HOME/unsloth-guide-artifacts-2026-07-21/"
+cp -a /opt/unsloth/studio/outputs/guide-qwen3-06b-smoke-gguf "$HOME/unsloth-guide-artifacts-2026-07-21/"

@@ -1,0 +1,2 @@
+e2c6471fedf92223e6bd28ac296e720f1ab91cecb531bc91c7cfe03b52daff98  guide-qwen3-06b-smoke/model.safetensors
+f6cdf85982ce229982120d3ae5b93653fb16fa45d3205fbcbf3ce64cc0983612  guide-qwen3-06b-smoke-gguf/guide-qwen3-06b-smoke.Q4_K_M.gguf
