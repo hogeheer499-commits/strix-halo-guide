@@ -1,6 +1,6 @@
 # ROCm and vLLM Bugwatch
 
-Status: current as of 2026-07-16 for locally measured runtime paths and upstream release triage. External release rows retain their own checked dates.
+Status: current as of 2026-07-24 for locally measured runtime paths and upstream release triage. External release rows retain their own checked dates.
 
 This file tracks fast-moving upstream items that affect Strix Halo local AI work. It is intentionally separate from the README so the public guide stays stable even when upstream ROCm/vLLM issues move.
 
@@ -8,6 +8,8 @@ This file tracks fast-moving upstream items that affect Strix Halo local AI work
 
 | Area | Current status | Why it matters |
 |------|----------------|----------------|
+| `llama.cpp` release | [`llama.cpp` b10098](https://github.com/ggml-org/llama.cpp/releases/tag/b10098) is the latest upstream release audited here. | It includes Vulkan queue work, server validation fixes, speculative-draft sidecar/type handling, Qwen3-VL vision fixes, and DeepSeek4 fixes. None of those changes replaces a measured guide result until the relevant route is rerun. |
+| Ollama release | [`Ollama 0.32.3`](https://github.com/ollama/ollama/releases/tag/v0.32.3) is the latest stable release audited here; 0.32.2 was withdrawn. | It includes a model-download stall fix and lower memory use on Linux CUDA/ROCm iGPUs. The installed, fully qualified beginner route remains 0.31.2 until 0.32.3 passes the same iGPU, vision, restart, and full-reboot checks. |
 | ROCm production release | [`ROCm 7.14.0`](https://github.com/ROCm/ROCm/releases/tag/rocm-7.14.0) is the latest production ROCm release checked here, published 2026-07-16. | It focuses on AI inference across Instinct, Radeon, and Ryzen AI and moves the earlier 7.13 preview lane into a production release. This guide has not installed it host-wide. |
 | ROCm Ryzen AI inference note | ROCm 7.14.0 documents lower-than-expected LLM inference on Ryzen AI MAX / MAX+ with PyTorch earlier than 2.14 in some FP16 vLLM workloads at batch 8+, with `TORCH_BLAS_PREFER_HIPBLASLT=1` as the workaround. | The isolated local A/B reproduced the expected threshold: +40.50%, +38.96%, and +41.54% aggregate throughput at concurrency 8, 9, and 16, with no material gain at 1 and a -0.77% result at 4. This remains an FP16 vLLM rule, not universal llama.cpp or Vulkan tuning. |
 | vLLM release | [`vLLM 0.25.1`](https://github.com/vllm-project/vllm/releases/tag/v0.25.1) is the latest normal upstream release checked here, published 2026-07-14. ROCm 7.14.0 validates vLLM 0.23.0, which is not the same as claiming that upstream 0.25.1 is validated on this machine. | Use a pinned ROCm image or isolated environment and record both ROCm and vLLM versions. Do not pip-install into the host Python environment. |
@@ -18,6 +20,19 @@ This file tracks fast-moving upstream items that affect Strix Halo local AI work
 | Qwen ROCm load/hang report | [`ROCm/ROCm#6027`](https://github.com/ROCm/ROCm/issues/6027) is closed. | Historical context for why the guide keeps ROCm notes conservative. |
 | vLLM ROCm non-causal attention | [`vllm-project/vllm#40176`](https://github.com/vllm-project/vllm/pull/40176) is merged. | Relevant to ROCm attention support and newer vLLM container paths. |
 | vLLM DFlash SWA support | [`vllm-project/vllm#40898`](https://github.com/vllm-project/vllm/pull/40898) remains open. | Relevant to Qwen3.6 DFlash speculative decoding repos; not a local guide claim yet. |
+
+## Current Strix Halo Compatibility Alerts
+
+These are narrowly scoped upstream reports, not blanket claims about Strix Halo, Linux, ROCm, or the named runtimes. Check the exact operating system, kernel, deployment type, backend, and environment-variable behavior before applying a workaround.
+
+| Scope | Upstream status | Practical reading |
+| --- | --- | --- |
+| Kernel 7.0.0-28 + ComfyUI + PyTorch/ROCm unified-memory FLUX loading | [`ROCm/ROCm#6508`](https://github.com/ROCm/ROCm/issues/6508) is open. The report reproduces a silent KFD work-queue deadlock on kernel 7.0.0-28 while kernel 6.17.0-35 works on the same 128GB Strix Halo system. Smaller PyTorch tests and a 23GB ROCm `llama.cpp` load still worked. | Do not generalize this to every kernel-7.0 or ROCm workload. If a FLUX workflow stalls at VAE load after a kernel update, preserve the working kernel as a boot option and compare there before changing the model or reinstalling the full stack. |
+| ROCm/HIP `mmap` above 64GB on Ubuntu 26.04 | [`ROCm/ROCm#6501`](https://github.com/ROCm/ROCm/issues/6501) is open. One `gfx1151` report says Vulkan works, ROCm works with `--no-mmap`, and an HRX HIP binding also allows the allocation. | For a large ROCm GGUF that stalls during mapping, try the exact same artifact with `--no-mmap` before concluding that it does not fit. Keep this separate from Vulkan guidance and from the guide's older prompt-processing `--no-mmap` measurements. |
+| Ollama 0.30+ ROCm container memory detection | [`ollama/ollama#16462`](https://github.com/ollama/ollama/issues/16462) remains open and is explicitly about Docker/Podman deployments that expose roughly 2GB instead of the full unified-memory pool. Community workarounds include Vulkan or unified-memory environment settings. | This is not evidence that the guide's native Ollama system-service path is broken. Container users should verify the startup memory report and actual offload before pulling a large model. |
+| Unsloth Windows ROCm prebuilt b10079 | [`unslothai/unsloth#7371`](https://github.com/unslothai/unsloth/issues/7371) reports roughly 11 tok/s on b10079 versus 39 tok/s on b10069 for two Qwen3.6 MTP routes. | Treat this as a Windows/prebuilt regression report, not a Linux or generic Unsloth result. Pin a known-good prebuilt when comparing speeds and record the exact bundled `llama.cpp` build. |
+| DeepSeek V4 through ROCm/HIP `llama.cpp` | [`ggml-org/llama.cpp#25436`](https://github.com/ggml-org/llama.cpp/issues/25436) reports garbled output on Strix Halo. A key follow-up notes that defining `GGML_CUDA_ENABLE_UNIFIED_MEMORY=0` can still enable the code path because the implementation checks whether the variable exists. | If output is corrupted, remove the variable completely for the control run; do not assume assigning `0` disables it. Vulkan working on the same model is a useful comparator, not proof that every ROCm build is broken. |
+| AMD Unsloth playbook NaN loss on `gfx1151` | [`amd/playbooks#611`](https://github.com/amd/playbooks/issues/611) reports NaNs with an older ROCm 7.2 environment. AMD replied that the current playbook uses ROCm 7.14 and passes on Strix Halo in its CI. | Match the playbook's pinned wheel versions before adding compiler workarounds. The guide's measured pinned workflow remains a functional smoke, not proof that every Unsloth/ROCm combination is safe. |
 
 ## 2026-07-13 Local Runtime Recheck
 
@@ -163,11 +178,15 @@ The README recommendation should stay conservative:
 
 ## Next Watch Items
 
-1. Repeat the measured ROCm 7.14 hipBLASLt A/B on a practical 27B/35B FP16 or supported low-precision model before promoting it from a small-model server proof to a normal operator profile.
-2. Repeat the b10046 HIP host-buffer path with a practical 27B/35B GGUF and record whether a self-contained package can avoid the manual Ollama library path.
-3. Recheck vLLM 0.26.0-or-later availability and warmup behavior before treating 0.25.x as the current Radeon default.
-4. Recheck `vllm-project/vllm#40898` before trying to reproduce DFlash/SWA behavior.
-5. Use the ROCm 7.14 Radeon SGLang environment overrides for the next isolated smoke and keep affected MoE/ASR routes labeled experimental.
-6. Verify local memory reporting inside the exact ROCm 7.14.0, TheRock, or vLLM container before making a capacity/autoscheduling claim.
-7. Recheck ROCm 7.14.0 RCCL notes before any future multi-node Strix Halo claim.
-8. If installing ROCm 7.14.0 host-wide becomes necessary, treat it as a dedicated maintenance window and record a new system snapshot before publishing numbers.
+1. Qualify Ollama 0.32.3 through the normal system-service path, including model pulling, iGPU detection, vision, service restart, and a full host reboot.
+2. Recheck a relevant Vulkan/server route on `llama.cpp` b10098 without replacing the b10034 concurrency or b10066 DFlash sentinels prematurely.
+3. Repeat the measured ROCm 7.14 hipBLASLt A/B on a practical 27B/35B FP16 or supported low-precision model before promoting it from a small-model server proof to a normal operator profile.
+4. Repeat the b10046 HIP host-buffer path with a practical 27B/35B GGUF and record whether a self-contained package can avoid the manual Ollama library path.
+5. Recheck vLLM 0.26.0-or-later availability and warmup behavior before treating 0.25.x as the current Radeon default.
+6. Recheck `vllm-project/vllm#40898` before trying to reproduce DFlash/SWA behavior.
+7. Use the ROCm 7.14 Radeon SGLang environment overrides for the next isolated smoke and keep affected MoE/ASR routes labeled experimental.
+8. Verify local memory reporting inside the exact ROCm 7.14.0, TheRock, vLLM, or Ollama container before making a capacity or autoscheduling claim.
+9. Preserve a known-working kernel as a boot option during ComfyUI/FLUX kernel qualification, and compare there before rebuilding the whole stack.
+10. For DeepSeek ROCm controls, remove `GGML_CUDA_ENABLE_UNIFIED_MEMORY` from the environment instead of setting it to `0`.
+11. Recheck ROCm 7.14.0 RCCL notes before any future multi-node Strix Halo claim.
+12. If installing ROCm 7.14.0 host-wide becomes necessary, treat it as a dedicated maintenance window and record a new system snapshot before publishing numbers.
