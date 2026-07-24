@@ -58,6 +58,7 @@ What you get:
 | Check whether the numbers are real | [Reproduce One Headline Result](#reproduce-one-headline-result), [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md), and [`data/headline_claims.csv`](data/headline_claims.csv). |
 | Compare against other Strix Halo systems | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md): independent benchmark reports kept separate from headline claims, including native Linux, WSL2/HIP, Windows LM Studio, power, tuned thermal/power-policy rows, and Nimo large-model serving evidence. [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md): multi-node USB4 RPC results. [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md): cluster latency tuning. |
 | Diagnose sustained thermal or custom fan-control trouble | [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md): scoped Corsair/Sixunited three-system evidence, post-kernel-update checks, cap tradeoffs, stock controls, and the upstream fan-reset patch. |
+| Check current ROCm, kernel, container, or runtime compatibility alerts | [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md#current-strix-halo-compatibility-alerts): narrowly scoped upstream reports with safe troubleshooting boundaries. |
 | See how public corrections change the guide | [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md): trust/framing lessons, corrected routes, and examples of community pushback turning into better evidence. |
 
 ## 20-Second Summary
@@ -74,7 +75,7 @@ What you get:
 | Current 120B-class direct GGUF route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly at 18.43 tg128, with a b9544 control at 18.93 tg128. It remains a useful more-balanced 120B-class capacity route. |
 | Experimental speculative server path | MTP works on current `llama.cpp`/ROCmFPX routes. The best local Qwen3.6 MTP server route uses IQ4_XS-Q8nextn and reached about 101.1 t/s across six prompts on b9360; Gemma 4 26B-A4B QAT reached up to 110.0 t/s best-repeat; the exact CHADROCK ACE/SABER reference profile averaged 141.37 t/s over three repeats at 100% draft acceptance. These are server/speculative results, not direct `llama-bench` headlines. CHADROCK's separate 1K and 8K profiles were much slower, so operators must profile real prompts. |
 | Frontier-size local agent path | Step 3.7 Flash ROCmFPX Q3 QualityPlus runs as a 198B-total / about 11B-active target plus separate Q8 MTP draft: 34.50 t/s at 4K, 33.83 t/s at 16K, native tool-call pass, and full 256K allocation. This is advanced server/capacity evidence, not direct `llama-bench`; the 256K result is allocation, not a filled-context quality test. |
-| Current runtime status | The normal Ollama 0.31.2 service path passed Qwen3.6, iGPU, vision, restart, and full-reboot checks at 60.57 t/s. Stable Ollama 0.32.1 is the next installed-service qualification target; the controlled 0.32.0 binary already matched 0.31.1/0.31.2 performance and passed iGPU vision plus process restart. Official `llama.cpp` b10066 adds automatic DFlash/EAGLE3 sidecar discovery; the first b10066 Gemma 4 31B QAT pass now confirms text, vision, tool calls, and matched DFlash loading, although DFlash was slower on the measured synthetic long-prompt shapes. The measured Vulkan concurrency sentinel remains b10034 until a controlled rerun. See [`CURRENT_MODELS.md`](CURRENT_MODELS.md) and [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md). |
+| Current runtime status | The normal Ollama 0.31.2 service path passed Qwen3.6, iGPU, vision, restart, and full-reboot checks at 60.57 t/s. Ollama 0.32.3 is the next installed-service qualification target; 0.32.2 was withdrawn, and no newer release replaces the measured default until it passes the same checks. The controlled 0.32.0 binary already matched 0.31.1/0.31.2 performance and passed iGPU vision plus process restart. Official `llama.cpp` b10098 is the latest audited release, but the measured Vulkan concurrency sentinel remains b10034 and the measured Gemma 4 DFlash route remains b10066 until controlled reruns exist. See [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md), and the current [`compatibility alerts`](ROCM_VLLM_BUGWATCH.md#current-strix-halo-compatibility-alerts). |
 | Current HIP/UMA compatibility status | Official `llama.cpp` b10046 locally detected 120,124 MiB free UMA and used real `ROCm_Host` model, output, and compute buffers on `gfx1151` without a gfx-version override. The release binary needed the existing Ollama ROCm library path on this host. This validates merged HIP integrated-device support; it does not replace Vulkan/RADV as the beginner path. |
 | Large local model checks | gpt-oss-120b MXFP4 loaded at 55.57 tg128; Nemotron 3 Super 120B-A12B at 18.43 tg128; MiniMax M2.7 230B-class MoE loaded and generated; and DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded directly at 13.27 tg128. These are different capacity/quality tradeoffs, not interchangeable speed claims. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
@@ -1479,6 +1480,19 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 
 ## Known Issues
 
+### Current Upstream Compatibility Alerts
+
+Before changing kernels, ROCm containers, Ollama deployment type, or DeepSeek environment variables, check the scoped [`ROCm and vLLM bugwatch`](ROCM_VLLM_BUGWATCH.md#current-strix-halo-compatibility-alerts). It currently tracks:
+
+- one kernel-specific ComfyUI/FLUX load deadlock report;
+- a reported ROCm `mmap` limit above 64GB on one Ubuntu 26.04 setup;
+- a container-only Ollama UMA-reporting regression;
+- a Windows bare-metal `llama.cpp` ROCm performance regression;
+- a DeepSeek ROCm environment-variable trap where defining a variable as `0` can still enable its path; and
+- an older ROCm playbook failure that AMD reports as passing with current pinned wheels.
+
+These are troubleshooting signals, not proof that every Strix Halo system or every version is affected. Match the exact OS, kernel, backend, deployment type, and artifact before applying a workaround.
+
 ### Corsair/Sixunited Custom Fan Control After Kernel Updates (Community Evidence)
 
 Fail-Safe's three-system Corsair AI Workstation 300 campaign found that two systems had previously booted without the out-of-tree `ec_su_axb35` module after a kernel update, causing dependent custom fan/power services to fail. That is a plausible major contributor to the earlier sustained-load event, not a proven sole root cause and not evidence that every Corsair or Strix Halo system needs a clock cap.
@@ -1855,11 +1869,13 @@ Start there before attempting a longer QLoRA campaign. The smoke proves the work
 
 ### Speech Recognition
 
-Qwen3-ASR 0.6B/1.7B is tracked as the next local transcription qualification because it adds a practical function that chat-model benchmarks do not cover. It supports Dutch and broader multilingual ASR, but no Strix Halo ROCm result is claimed here until real-time factor, memory, transcript correctness, and restart behavior are measured.
+The consolidated official Qwen3-ASR 0.6B/1.7B `-hf` artifacts are tracked as the next local transcription qualification because they add a practical function that chat-model benchmarks do not cover. They support Dutch and broader multilingual ASR, but no Strix Halo ROCm result is claimed here until real-time factor, memory, transcript correctness, and restart behavior are measured.
 
 ### Image Generation
 
 kyuz0's [ComfyUI toolboxes](https://github.com/kyuz0/amd-strix-halo-gfx1151-toolboxes) provide ROCm containers for Flux, Wan 2.2, and Hunyuan on gfx1151. For Vulkan-only: `stable-diffusion.cpp` works with the RADV driver.
+
+AMD also publishes an [official native-Windows ComfyUI route](https://rocm.blogs.amd.com/artificial-intelligence/comfyui-windows/README.html) for Windows 11 24H2, current Adrenalin drivers, and ROCm 7.2.1, covering SDXL, Flux, and WAN workflows. That is useful official setup guidance, but this guide has not reproduced it on the Beelink or compared it with the measured Linux paths.
 
 ### Voice / TTS
 
