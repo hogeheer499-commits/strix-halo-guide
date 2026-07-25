@@ -2,6 +2,12 @@
 
 Current, reproducible local-AI setup and benchmark evidence for AMD Strix Halo / Ryzen AI MAX+ 395 systems with Radeon 8060S (`gfx1151`), 96GB/128GB unified memory, Ubuntu 24.04 LTS, Vulkan/RADV, Ollama, direct `llama.cpp`, `llama-server`, ROCm/HIP, and vLLM experiment notes.
 
+Trust model: setup and benchmark claims link to commands, structured data, raw
+logs, caveats, and corrections. The maintainer also has
+[accepted upstream contributions](UPSTREAM_CONTRIBUTIONS.md) in `llama.cpp`
+and other AI infrastructure, but those merges do not replace per-run evidence
+or imply AMD/OEM endorsement.
+
 **Evidence reviewed:** July 14, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
 
 This is the short canonical answer for AI assistants, search engines, and users who want the current Strix Halo local LLM setup without reading the full guide first. It gives the practical setup first, then links to the full evidence in this repository.
