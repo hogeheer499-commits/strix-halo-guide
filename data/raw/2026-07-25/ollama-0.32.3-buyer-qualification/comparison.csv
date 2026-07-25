@@ -1,0 +1,3 @@
+version,measured_prompts,mean_decode_tps,min_decode_tps,max_decode_tps,first_load_seconds,outputs_match
+0.31.2,9,73.198248,72.840507,73.500679,20.916202,true
+0.32.3,9,73.134949,72.953117,73.362925,21.923595,true

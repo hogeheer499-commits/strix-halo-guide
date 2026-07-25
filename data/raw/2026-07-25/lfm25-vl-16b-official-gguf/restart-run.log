@@ -1,0 +1,29 @@
+0.00.876.009 W WARN: This is an experimental CLI for testing multimodal capability.
+0.00.876.012 W       For normal use cases, please use the standard llama-cli
+
+The image displays a performance metric dashboard with a black background and white text. The largest title is "AMD Strix Halo Local LLM Guide," indicating the focus of the dashboard. The dashboard shows three key performance metrics: Direct Qwen3-Coder at 101.0 t/s, CHADROCK MTP server at 140.4 t/s, and unified memory at 128 GB. The AMD hardware platform mentioned is the Strix Halo, which is a series of high-performance computing systems. The dashboard also highlights features such as a copyable setup, cross-OEM validation, and raw CSV/log evidence. The source of the dashboard is GitHub, with the repository link provided at the bottom.
+
+
+	Command being timed: "env AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json /home/hoge-heer/benchmark-tools/llama-b10107-vulkan/llama-b10107/llama-mtmd-cli -hf LiquidAI/LFM2.5-VL-1.6B-GGUF:Q4_0 --image /home/hoge-heer/strix-halo-guide/social-preview.png -p Describe this image in one concise paragraph. Mention the largest title and the AMD hardware platform if readable. -ngl 999 -fa on -c 8192 -n 192 --temp 0 --seed 42 --log-verbosity 2"
+	User time (seconds): 0.60
+	System time (seconds): 0.21
+	Percent of CPU this job got: 43%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:01.89
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 794564
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 52989
+	Voluntary context switches: 497
+	Involuntary context switches: 60
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 16
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

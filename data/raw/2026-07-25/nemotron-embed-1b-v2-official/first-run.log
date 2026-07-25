@@ -1,0 +1,25 @@
+Loading weights:   0%|          | 0/146 [00:00<?, ?it/s]Loading weights: 100%|██████████| 146/146 [00:00<00:00, 19985.26it/s]
+{"device": "cpu", "embedding_dimension": 2048, "encode_seconds": 0.087777, "load_seconds": 161.853532, "margin": 0.37966308, "model": "nvidia/llama-nemotron-embed-1b-v2", "negative_cosine": 0.030947512, "positive_cosine": 0.410610586, "python": "3.12.3", "revision": "113abe4acafa848e77ead9c0623205e511932348", "sentence_transformers": "5.6.1", "torch": "2.13.0+cpu", "torch_threads": 16, "transformers": "5.14.1", "vector_sha256": "029923917cf3c4e94151555919869a2db9f94e02274f2c738b03e04eb7427e79"}
+	Command being timed: "/home/hoge-heer/benchmark-tools/nemotron-embed-v2-venv/bin/python data/raw/2026-07-25/nemotron-embed-1b-v2-official/run_embedding_check.py"
+	User time (seconds): 14.09
+	System time (seconds): 3.34
+	Percent of CPU this job got: 10%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:44.97
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 3022716
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 1
+	Minor (reclaiming a frame) page faults: 218224
+	Voluntary context switches: 1320371
+	Involuntary context switches: 6350
+	Swaps: 0
+	File system inputs: 904
+	File system outputs: 4827920
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

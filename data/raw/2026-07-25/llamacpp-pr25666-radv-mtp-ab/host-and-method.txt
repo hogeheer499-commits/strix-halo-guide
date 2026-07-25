@@ -1,0 +1,16 @@
+captured_at=2026-07-25T01:02:17+02:00
+hostname=hoge-heer-GTR-Pro
+kernel=7.0.0-28-generic
+os=Ubuntu 24.04.4 LTS
+model=/home/hoge-heer/benchmark-models/qwen36-mtp-iq4xs-q8nextn/Qwen3.6-35B-A3B-MTP-IQ4_XS-Q8nextn.gguf
+model_bytes=19393459552
+model_sha256=4d2349305663bc59bacab26d8eba8ed1218de84b8d1f0456208037e13efa9a98
+stock_commit=7f575c39d6a29a40c0ef22278eca6bd4a573c8a6
+pr_commit=e0649d3e02c0a2540a4a1d2b80f308083779e273
+mesa=26.1.5~kisak1~n
+vulkan_driver=driverInfo         = Mesa 26.1.5 - kisak-mesa PPA
+tuned=It seems that tuned daemon is not running, preset profile is not activated. Preset profile: balanced
+ollama_idle_process=4490,
+vm_state=paused
+docker_paused=open-webui-chat=Up 2 days (Paused);hermes-jesse=Up 2 days (Paused);hermes-anna=Up 2 days (Paused)
+test_flags=-ngl 999 -fa on --no-mmap --no-mmproj -c 32768 -np 1 -b 2048 -ub 512 -t 16 --poll 10 --jinja --no-webui --spec-type draft-mtp --spec-draft-n-max 2
