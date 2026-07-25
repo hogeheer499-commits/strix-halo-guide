@@ -86,6 +86,36 @@ Then ask for higher-leverage support:
 - Second follow-up: 10-14 business days later only if the vendor is important.
 - Stop after two unanswered follow-ups unless a new technical reason appears.
 
+## Second-Wave Hook: Accepted Upstream Engineering
+
+The accepted `llama.cpp` contribution is a legitimate new reason to contact or
+follow up with vendors, AMD teams, and reviewers. Use the recognizable project
+name to earn attention, then state the scope immediately:
+
+```text
+A fix I submitted to llama.cpp was reviewed and merged upstream. It is
+preset/router maintenance, not a Strix Halo performance patch. Its relevance
+here is engineering follow-through: reproducible software friction can become
+tested buyer guidance or a narrowly scoped upstream change.
+```
+
+For existing AMD and Beelink outreach, reply in the original thread using the
+specific follow-ups in [`OUTREACH_TEMPLATES.md`](OUTREACH_TEMPLATES.md).
+
+For a new OEM or reviewer:
+
+- include `llama.cpp` in the subject once;
+- lead the body with buyer/setup friction, not personal status;
+- link [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md);
+- ask for one concrete next step: technical routing, a second-system
+  validation, firmware context, or review/loaner access;
+- do not open a separate GitHub Discussion solely to announce contributor
+  status.
+
+The strongest vendor interpretation is not "the maintainer has a badge." It is
+"this project can move from a reproducible field problem to public guidance and
+reviewed upstream work."
+
 ## Success Criteria
 
 Good outcomes are not only sponsorship:

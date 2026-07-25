@@ -33,6 +33,35 @@ GitHub: https://github.com/hogeheer499-commits
 Email: hogeheer499@gmail.com
 ```
 
+## AMD Follow-Up After Accepted `llama.cpp` Contribution
+
+Use this as a reply to the original email so the earlier context stays in the
+same thread. If a new subject is required, use:
+
+```text
+Strix Halo guide update: accepted llama.cpp contribution
+```
+
+```text
+Hi AMD AI Developer Program team,
+
+A quick, relevant update since my earlier project submission: a small fix I submitted to llama.cpp has now been reviewed and merged upstream.
+
+https://github.com/ggml-org/llama.cpp/pull/25643
+
+It is preset/router maintenance, not a Strix Halo performance patch. The reason I am sharing it is that it shows the guide is not only collecting downstream benchmark results. When a reproducible software issue is clear enough, I can take it through implementation, focused validation, upstream review, and merge.
+
+The full verified contribution record is here:
+https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md
+
+I would still appreciate help routing the Strix Halo guide and the AMD/RADV evidence to the right Ryzen AI, RADV/Vulkan, ROCm, or project-showcase contact. The goal remains practical: reduce setup and buying friction by turning real-system findings into public guidance and, where appropriate, upstream improvements.
+
+Best,
+Jesse van Dijk
+hogeheer499-commits
+Strix Halo guide maintainer
+```
+
 ## Beelink Product Marketing Email
 
 Subject: Independent Beelink GTR9 Pro local-AI evidence and setup-friction feedback
@@ -72,9 +101,51 @@ GitHub: https://github.com/hogeheer499-commits
 Email: hogeheer499@gmail.com
 ```
 
+## Beelink Follow-Up After Accepted `llama.cpp` Contribution
+
+Send this as a reply to the first Beelink message. If it cannot remain in the
+same thread, use:
+
+```text
+GTR9 Pro guide update: accepted llama.cpp contribution
+```
+
+```text
+Hi Beelink team,
+
+A short update since my earlier GTR9 Pro collaboration email: a fix I submitted to llama.cpp has now been reviewed and merged upstream.
+
+https://github.com/ggml-org/llama.cpp/pull/25643
+
+The change itself is preset/router maintenance, not a GTR9 Pro performance claim. What it adds to the collaboration case is practical engineering follow-through: I can reproduce software friction, document it for buyers, and where the scope is clear, take a fix through validation and upstream review.
+
+The GTR9 Pro remains the primary system behind the guide. I would still like to connect with the right Beelink product or engineering contact about a better-validated “retail box to working local AI” buyer path, including BIOS/firmware guidance and possible access to a second Beelink configuration.
+
+Project:
+https://github.com/hogeheer499-commits/strix-halo-guide
+
+Verified upstream work:
+https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md
+
+Best,
+Jesse van Dijk
+hogeheer499-commits
+Strix Halo guide maintainer
+```
+
 ## OEM / System Vendor Email
 
-Subject: Reproducible Strix Halo local-AI validation for [vendor/system]
+Preferred subject:
+
+```text
+Independent Strix Halo buyer guide + accepted llama.cpp engineering
+```
+
+System-specific alternative:
+
+```text
+Reproducible Strix Halo local-AI validation for [vendor/system]
+```
 
 ```text
 Hello [name/team],
@@ -84,6 +155,10 @@ I maintain an independent AMD Strix Halo / Ryzen AI MAX+ local-AI setup and benc
 https://github.com/hogeheer499-commits/strix-halo-guide
 
 The guide helps buyers and developers answer practical questions: which OS and backend to start with, which models are realistic, how Ollama compares with direct llama.cpp, what remains experimental in ROCm/vLLM, and what benchmark claims are backed by raw evidence.
+
+I also have accepted upstream contributions in llama.cpp and other AI infrastructure. That matters for a hardware collaboration because findings do not have to stop at screenshots or downstream complaints: a well-scoped software issue can become reproducible buyer guidance and, where appropriate, reviewed upstream work.
+
+https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md
 
 I am interested in validating [vendor/system] so buyers can see how it compares with existing Beelink, Corsair, and GMKtec evidence in the repo. This would reduce adoption friction for your hardware by turning setup and benchmark work into public, reproducible technical evidence.
 
@@ -99,7 +174,7 @@ Email: hogeheer499@gmail.com
 
 ## Reviewer / Newsletter / YouTube Creator Message
 
-Subject: Evidence-backed Strix Halo local-AI guide for your coverage
+Subject: Strix Halo guide: raw benchmark evidence and upstream llama.cpp work
 
 ```text
 Hello [name],
@@ -109,6 +184,10 @@ I maintain an independent Strix Halo / Ryzen AI MAX+ 395 local-AI guide:
 https://github.com/hogeheer499-commits/strix-halo-guide
 
 It may be useful background for your AI-PC or local-AI coverage because it focuses on reproducible setup, raw benchmark evidence, backend tradeoffs, and practical buyer questions rather than only headline speed claims.
+
+The maintainer record now also includes accepted upstream work in llama.cpp and other AI infrastructure. The llama.cpp change is not a Strix Halo speed patch; its value is independent evidence that software findings can be reproduced, tested, reviewed, and merged rather than only reported downstream.
+
+https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md
 
 The main point: powerful local-AI hardware still has adoption friction when buyers cannot easily reproduce working setups. The guide documents a path through that friction with setup steps, benchmark data, raw logs, charts, community validation, and caveats.
 
@@ -136,7 +215,15 @@ Could you point me to the right person?
 
 ## Follow-Up Email After No Response
 
-Subject: Re: Independent Strix Halo local-AI guide
+Keep the existing email thread and subject. Do not send a generic bump when
+there is a real technical update; use the AMD or Beelink contribution follow-up
+above instead.
+
+Generic subject:
+
+```text
+Re: Independent Strix Halo local-AI guide
+```
 
 ```text
 Hello [name],

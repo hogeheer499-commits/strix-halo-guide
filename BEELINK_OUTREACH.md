@@ -119,6 +119,41 @@ It reduces buyer setup friction with reproducible public evidence: setup steps, 
 Could you route me to the right Beelink product/technical contact for BIOS/firmware/setup feedback, and possibly review/loaner or scoped benchmark collaboration? Results would remain independent and disclosed.
 ```
 
+## Follow-Up With A New Technical Reason
+
+Reply in the original email thread. This is stronger than a generic
+"just following up" message because the accepted contribution is new,
+independently verifiable engineering evidence.
+
+If a new subject is required:
+
+```text
+GTR9 Pro guide update: accepted llama.cpp contribution
+```
+
+```text
+Hi Beelink team,
+
+A short update since my earlier GTR9 Pro collaboration email: a fix I submitted to llama.cpp has now been reviewed and merged upstream.
+
+https://github.com/ggml-org/llama.cpp/pull/25643
+
+The change itself is preset/router maintenance, not a GTR9 Pro performance claim. What it adds to the collaboration case is practical engineering follow-through: I can reproduce software friction, document it for buyers, and where the scope is clear, take a fix through validation and upstream review.
+
+The GTR9 Pro remains the primary system behind the guide. I would still like to connect with the right Beelink product or engineering contact about a better-validated "retail box to working local AI" buyer path, including BIOS/firmware guidance and possible access to a second Beelink configuration.
+
+Project:
+https://github.com/hogeheer499-commits/strix-halo-guide
+
+Verified upstream work:
+https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md
+
+Best,
+Jesse van Dijk
+hogeheer499-commits
+Strix Halo guide maintainer
+```
+
 ## Do Not Say
 
 - Do not lead with the current star count followed by a request for hardware.
@@ -126,6 +161,8 @@ Could you route me to the right Beelink product/technical contact for BIOS/firmw
 - Do not ask for free hardware as the first sentence.
 - Do not hide known caveats, failed paths, or board/firmware concerns.
 - Do not promise positive coverage.
+- Do not call the accepted `llama.cpp` preset/router change a Strix Halo
+  performance fix or official `llama.cpp` endorsement of the guide.
 
 ## Good Framing
 
