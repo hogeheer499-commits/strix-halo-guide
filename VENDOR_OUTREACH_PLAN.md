@@ -7,7 +7,7 @@ This plan keeps vendor outreach focused on adoption-friction evidence instead of
 Do not frame the repo as:
 
 ```text
-I have 218 stars as of 2026-07-16, can I get hardware?
+I have 239 stars as of 2026-07-25, can I get hardware?
 ```
 
 Frame it as:
@@ -16,7 +16,7 @@ Frame it as:
 I maintain an independent Strix Halo local-AI setup and benchmark guide that reduces buyer setup friction with reproducible public evidence. I am looking for technical feedback, firmware/BIOS context, review or loaner access, or scoped collaboration to expand validated evidence across more systems.
 ```
 
-The 218-star 2026-07-16 snapshot is useful as a small-niche demand signal, but the primary asset is the technical proof layer:
+The 239-star 2026-07-25 snapshot is useful as a small-niche demand signal, but the primary asset is the technical proof layer:
 
 - reproducible setup steps
 - known-good configurations
@@ -24,6 +24,7 @@ The 218-star 2026-07-16 snapshot is useful as a small-niche demand signal, but t
 - raw logs and CSVs
 - claim indexes
 - community validation
+- accepted upstream engineering with direct review and merge links
 - separated direct, server, MTP, community, Windows, ROCm/vLLM, power, RPC, and failure evidence
 
 ## First-Wave Targets
@@ -63,6 +64,7 @@ Then ask for higher-leverage support:
 - One-page brief: <https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ONE_PAGE_BRIEF.md>
 - Partnership overview: <https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/PARTNERSHIP.md>
 - Traction and evidence: <https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/TRACTION.md>
+- Accepted upstream contributions: <https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md>
 - Community results: <https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/COMMUNITY_RESULTS.md>
 - Claim index: <https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv>
 - Disclosure policy: <https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/VENDOR_DISCLOSURE.md>
@@ -71,7 +73,8 @@ Then ask for higher-leverage support:
 
 - Keep the first message short.
 - Lead with buyer/setup friction, not self-promotion.
-- Mention the dated 218-star snapshot once at most.
+- Mention the dated 239-star snapshot once at most.
+- Describe the `llama.cpp` merge accurately as accepted preset/router maintenance, not as a Strix Halo performance fix.
 - Avoid claiming vendor endorsement.
 - Avoid asking for free hardware as the main point.
 - Always say results remain independent and disclosed.

@@ -19,6 +19,8 @@ AMD now publicly frames Ryzen AI Halo-class systems as a local-AI and developer-
 
 Web setup summary: <https://hogeheer499-commits.github.io/strix-halo-guide/>. Exact claims and reproduction artifacts remain canonical in this GitHub repository.
 
+Maintainer credibility is also public and reviewable: accepted upstream contributions include code and validation in [`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), LocalAI, Qwen Code, OpenTelemetry GenAI, and NVIDIA AICR, plus tested-coverage documentation in the vLLM GGUF plugin. See [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md) for exact PR links, scope, and honest boundaries. Upstream acceptance strengthens confidence in the engineering process; it does not replace the raw evidence required for each benchmark claim.
+
 What you get:
 
 - Copyable Ubuntu + Vulkan/RADV setup for Ollama and `llama.cpp`.
@@ -31,7 +33,7 @@ What you get:
 
 > Measured primarily on one Beelink GTR9 Pro. Community results are kept separate from local headline claims. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights. Raw evidence, commands, caveats, and corrections are linked so results can be checked instead of taken on trust.
 
-[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [Short Setup Answer](STRIX_HALO_LOCAL_LLM_SETUP.md) | [AI Halo Context](RYZEN_AI_HALO_CONTEXT.md) | [What Runs](#what-you-can-run-quick-snapshot) | [Profiles](BEST_KNOWN_PROFILES.md) | [Current Models](CURRENT_MODELS.md) | [Fine-Tune](UNSLOTH_STRIX_HALO.md) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Concurrency](MOE_CONCURRENCY.md) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [Feedback](COMMUNITY_FEEDBACK.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
+[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [Short Setup Answer](STRIX_HALO_LOCAL_LLM_SETUP.md) | [AI Halo Context](RYZEN_AI_HALO_CONTEXT.md) | [What Runs](#what-you-can-run-quick-snapshot) | [Profiles](BEST_KNOWN_PROFILES.md) | [Current Models](CURRENT_MODELS.md) | [Fine-Tune](UNSLOTH_STRIX_HALO.md) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Upstream Work](UPSTREAM_CONTRIBUTIONS.md) | [Concurrency](MOE_CONCURRENCY.md) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [Feedback](COMMUNITY_FEEDBACK.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
 
 ---
 
@@ -56,6 +58,7 @@ What you get:
 | Skip the community-data deep dive | [Community-Tested Rules Of Thumb](#community-tested-rules-of-thumb): practical decisions extracted from the Beelink data plus Corsair, GMKtec, MS-S1-Max, Nimo, NixOS/NPU, and ROCmFP4 community reports. |
 | See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
 | Check whether the numbers are real | [Reproduce One Headline Result](#reproduce-one-headline-result), [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md), and [`data/headline_claims.csv`](data/headline_claims.csv). |
+| Verify the maintainer's upstream engineering work | [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md): accepted changes in `llama.cpp` and other AI infrastructure, with direct PR links, validation scope, and explicit limits on what those merges prove. |
 | Compare against other Strix Halo systems | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md): independent benchmark reports kept separate from headline claims, including native Linux, WSL2/HIP, Windows LM Studio, power, tuned thermal/power-policy rows, and Nimo large-model serving evidence. [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md): multi-node USB4 RPC results. [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md): cluster latency tuning. |
 | Diagnose sustained thermal or custom fan-control trouble | [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md): scoped Corsair/Sixunited three-system evidence, post-kernel-update checks, cap tradeoffs, stock controls, and the upstream fan-reset patch. |
 | Check current ROCm, kernel, container, or runtime compatibility alerts | [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md#current-strix-halo-compatibility-alerts): narrowly scoped upstream reports with safe troubleshooting boundaries. |
@@ -341,6 +344,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md) | Community USB4 latency tuning for active Strix Halo cluster nodes. |
 | [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md) | Scoped Corsair/Sixunited sustained-inference evidence: SCLK tradeoffs, bounded stock controls, fan-module/service checks, raw telemetry, and upstream safety work. |
 | [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md) | Advanced ROCmFP4 / CHADROCK tuned-GGUF route tracking. The exact first-party reference profile averaged 141.37 t/s across three repeats at 100% acceptance, but other prompt shapes were much slower; it is not the beginner/default setup path or a direct `llama-bench` replacement. |
+| [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md) | Accepted upstream engineering work in `llama.cpp`, LocalAI, Qwen Code, OpenTelemetry GenAI, NVIDIA AICR, and vLLM GGUF tooling, with direct review links and claim boundaries. |
 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) | Community benchmark contributor credits and contribution path. |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | What data is most useful, which issue template to use, and how community reports become structured evidence. |
 | [`data/headline_claims.csv`](data/headline_claims.csv) | Machine-readable map from public headline claims to data, raw evidence, charts, and notes. |

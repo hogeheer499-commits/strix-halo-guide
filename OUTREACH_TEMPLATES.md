@@ -46,7 +46,13 @@ https://github.com/hogeheer499-commits/strix-halo-guide
 
 The guide is evidence-backed rather than promotional: it documents setup, backend choices, raw benchmark artifacts, charts, reproducibility notes, and caveats. It helps buyers understand how to get useful local-AI workloads running instead of piecing together scattered BIOS, OS, driver, backend, and model advice.
 
-The repo reached 218 GitHub stars in a small hardware/software niche as of the 2026-07-16 GitHub API snapshot, but the more important value is practical: it reduces adoption friction for buyers and reviewers. A strong AI PC is easier to evaluate, trust, recommend, and purchase when buyers can reproduce a known-good setup and understand the limits.
+The repo reached 239 GitHub stars in a small hardware/software niche as of the 2026-07-25 GitHub API snapshot, but the more important value is practical: it reduces adoption friction for buyers and reviewers. A strong AI PC is easier to evaluate, trust, recommend, and purchase when buyers can reproduce a known-good setup and understand the limits.
+
+The project is not only downstream documentation. I also have accepted
+upstream contributions in `llama.cpp` and other AI infrastructure, so
+reproducible software findings can become tested guidance or narrowly scoped
+upstream work. Verification:
+https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md
 
 Because the Beelink GTR9 Pro is the primary measured system, Beelink feedback would be especially useful on:
 

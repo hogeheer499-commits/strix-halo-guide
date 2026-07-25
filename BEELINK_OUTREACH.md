@@ -8,7 +8,13 @@ Use this as the Beelink-first context sheet before sending an email, contact-for
 
 The guide's primary measured system is the Beelink GTR9 Pro with Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory. That makes Beelink the cleanest first vendor because the existing proof layer already shows what their retail hardware can do when the setup is reproducible.
 
-This is not primarily about stars. The repo has 218 GitHub stars in a small hardware/software niche as of the 2026-07-16 GitHub API snapshot, but the stronger point is that the guide reduces buyer setup friction with public, reproducible evidence.
+This is not primarily about stars. The repo has 239 GitHub stars in a small hardware/software niche as of the 2026-07-25 GitHub API snapshot, but the stronger point is that the guide reduces buyer setup friction with public, reproducible evidence.
+
+The maintainer also has accepted upstream work in `llama.cpp` and other AI
+infrastructure. This improves the execution case for collaboration: a
+reproducible software issue can become tested guidance or a narrowly scoped
+upstream change, not just another downstream complaint. See
+[`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md).
 
 ## Value To Beelink
 
@@ -33,6 +39,7 @@ For Beelink, that can reduce support friction and make the GTR9 Pro easier to ev
 - Current model triage: [`CURRENT_MODELS.md`](CURRENT_MODELS.md)
 - Buyer-use-case translation: [`BUYER_USE_CASES.md`](BUYER_USE_CASES.md)
 - Partner brief: [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md)
+- Accepted upstream contributions: [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md)
 - Disclosure policy: [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md)
 
 Useful headline examples, kept scoped:
@@ -80,7 +87,7 @@ https://github.com/hogeheer499-commits/strix-halo-guide
 
 The guide currently uses a Beelink GTR9 Pro as the primary measured system. It is evidence-backed rather than promotional: setup steps, BIOS/driver/backend notes, raw benchmark logs, CSVs, charts, reproducibility notes, caveats, community validation, and failed paths are all public.
 
-The repo reached 218 GitHub stars in a small hardware/software niche as of the 2026-07-16 GitHub API snapshot, but the more important point is practical: the guide reduces adoption friction for buyers and reviewers who want to know what actually runs locally, which setup path works, and which claims are reproducible.
+The repo reached 239 GitHub stars in a small hardware/software niche as of the 2026-07-25 GitHub API snapshot, but the more important point is practical: the guide reduces adoption friction for buyers and reviewers who want to know what actually runs locally, which setup path works, and which claims are reproducible.
 
 Because the GTR9 Pro is the primary measured system, Beelink feedback would be especially useful on:
 
@@ -107,7 +114,7 @@ I maintain an independent Beelink GTR9 Pro / AMD Strix Halo local-AI setup and b
 
 https://github.com/hogeheer499-commits/strix-halo-guide
 
-It reduces buyer setup friction with reproducible public evidence: setup steps, backend guidance, raw logs, CSVs, charts, caveats, community validation, and failed paths. The repo had 218 GitHub stars in this small niche as of the 2026-07-16 GitHub API snapshot, but the main value is helping buyers and reviewers reproduce a working local-AI setup.
+It reduces buyer setup friction with reproducible public evidence: setup steps, backend guidance, raw logs, CSVs, charts, caveats, community validation, and failed paths. The repo had 239 GitHub stars in this small niche as of the 2026-07-25 GitHub API snapshot, but the main value is helping buyers and reviewers reproduce a working local-AI setup.
 
 Could you route me to the right Beelink product/technical contact for BIOS/firmware/setup feedback, and possibly review/loaner or scoped benchmark collaboration? Results would remain independent and disclosed.
 ```

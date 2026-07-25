@@ -12,8 +12,9 @@ AMD's public Ryzen AI Halo / Ryzen AI Developer Platform direction makes this ca
 
 The repo already includes a technical proof layer:
 
-- Public GitHub demand signal: 228 stars, 13 forks, and 5 watchers in a small hardware/software niche as of the 2026-07-21 GitHub API snapshot; use this as supporting context, not the main claim.
-- Recent reach: 928 unique repository visitors and 156 unique cloners in GitHub's available traffic window captured 2026-07-21. Google was the largest recorded referrer with 406 unique visitors. Treat these as dated reach signals, not permanent traffic claims. The API responses are preserved in [`data/raw/2026-07-21/github-traction-snapshot/`](data/raw/2026-07-21/github-traction-snapshot/).
+- Public GitHub demand signal: 239 stars, 14 forks, and 5 watchers in a small hardware/software niche as of the 2026-07-25 GitHub API snapshot; use this as supporting context, not the main claim.
+- Upstream-reviewed engineering: the maintainer has accepted contributions in `llama.cpp`, LocalAI, Qwen Code, OpenTelemetry GenAI, NVIDIA AICR, and vLLM GGUF tooling. The exact PRs, validation scope, and boundaries are listed in [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md). The `llama.cpp` merge is preset/router maintenance, not a Strix Halo performance claim.
+- Recent reach: 835 unique repository visitors and 180 unique cloners in GitHub's available traffic window captured 2026-07-25. Google was the largest recorded referrer with 324 unique visitors. Treat these as dated reach signals, not permanent traffic claims. The API responses are preserved in [`data/raw/2026-07-25/github-traction-snapshot/`](data/raw/2026-07-25/github-traction-snapshot/).
 - Setup and workflow guide: [`README.md`](README.md).
 - Current benchmark snapshot: [`BENCHMARKS.md`](BENCHMARKS.md).
 - Reproducibility notes: [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
@@ -30,6 +31,18 @@ The repo already includes a technical proof layer:
 - Current HIP compatibility evidence: official `llama.cpp` b10046 locally reproduced merged integrated-device host-buffer support on `gfx1151`, detecting the full UMA pool and using `ROCm_Host` buffers without a gfx-version override. The remaining manual runtime-library-path requirement is documented as setup friction rather than hidden.
 - Local model-development evidence: a digest-pinned ROCm 7.2 Unsloth workflow on the retail Beelink passed Radeon GPU detection, one-step SFT, checkpoint inference, `Q4_K_M` GGUF export, ROCm `llama.cpp` inference, artifact persistence, and a post-restart reload. The public guide preserves the exact commands and two real path/export failures without presenting the tiny smoke as useful model quality or training speed. See [`UNSLOTH_STRIX_HALO.md`](UNSLOTH_STRIX_HALO.md).
 - Platform context: [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).
+
+## Maintainer Capability
+
+The project is not only downstream documentation. Its maintainer has taken
+software problems through reproduction, scoped implementation, validation,
+upstream review, and merge in projects used across the local-AI stack.
+
+That reduces execution risk for a partner: technical feedback can be turned
+into public setup guidance, reproducible reports, or narrowly scoped upstream
+work instead of remaining an unverified support anecdote. Accepted upstream
+work is still separate from vendor endorsement, and every guide benchmark
+continues to require its own raw evidence.
 
 ## Commercial Value
 
