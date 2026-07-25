@@ -1,0 +1,12 @@
+0.31.2 repeat=0 prompt=python eval_tps=72.287 wall=24.857s
+0.31.2 repeat=0 prompt=explain eval_tps=73.179 wall=3.877s
+0.31.2 repeat=0 prompt=json eval_tps=73.099 wall=3.974s
+0.31.2 repeat=1 prompt=python eval_tps=73.125 wall=3.851s
+0.31.2 repeat=1 prompt=explain eval_tps=73.128 wall=3.871s
+0.31.2 repeat=1 prompt=json eval_tps=73.501 wall=3.891s
+0.31.2 repeat=2 prompt=python eval_tps=73.133 wall=3.879s
+0.31.2 repeat=2 prompt=explain eval_tps=73.163 wall=3.872s
+0.31.2 repeat=2 prompt=json eval_tps=73.488 wall=3.884s
+0.31.2 repeat=3 prompt=python eval_tps=72.841 wall=3.846s
+0.31.2 repeat=3 prompt=explain eval_tps=73.122 wall=3.873s
+0.31.2 repeat=3 prompt=json eval_tps=73.284 wall=3.895s

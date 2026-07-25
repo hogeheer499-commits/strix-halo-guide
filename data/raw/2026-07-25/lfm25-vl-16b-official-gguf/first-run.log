@@ -1,0 +1,23 @@
+0.00.018.655 W DEPRECATED: --mmap and --no-mmap are deprecated. use --load-mode mmap instead
+1.35.780.822 I mtmd_cli_context: chat template example:
+<|im_start|>system
+You are a helpful assistant<|im_end|>
+<|im_start|>user
+Hello<|im_end|>
+<|im_start|>assistant
+Hi there<|im_end|>
+<|im_start|>user
+How are you?<|im_end|>
+<|im_start|>assistant
+
+1.35.913.573 I main: loading model: /home/hoge-heer/.cache/huggingface/hub/models--LiquidAI--LFM2.5-VL-1.6B-GGUF/snapshots/0df8719db7180cedababc2bc589abfe5e8ebcd1f/LFM2.5-VL-1.6B-Q4_0.gguf
+1.35.913.609 W WARN: This is an experimental CLI for testing multimodal capability.
+1.35.913.610 W       For normal use cases, please use the standard llama-cli
+1.35.948.014 I encoding mtmd batch, n_chunks = 1 (done = 1, total = 7)
+1.36.099.958 I mtmd batch encoding done in 152 ms
+1.36.165.501 I encoding mtmd batch, n_chunks = 1 (done = 3, total = 7)
+1.36.254.342 I mtmd batch encoding done in 88 ms
+1.36.292.770 I encoding mtmd batch, n_chunks = 1 (done = 5, total = 7)
+1.36.417.296 I mtmd batch encoding done in 124 ms
+
+The image displays a performance metric dashboard with a black background and white text. The largest title is "AMD Strix Halo Local LLM Guide," indicating the focus of the dashboard. The dashboard shows three key performance metrics: Direct Qwen3-Coder at 101.0 t/s, CHADROCK MTP server at 140.4 t/s, and unified memory at 128 GB. The AMD hardware platform mentioned is the Strix Halo, which is a series of high-performance computing systems. The dashboard also highlights features such as a copyable setup, cross-OEM validation, and raw CSV/log evidence. The source of the dashboard is GitHub, with the repository link provided at the bottom.

@@ -67,7 +67,7 @@ What you get:
 |----------|----------------|
 | What was tested? | Local LLM inference and local API serving on Strix Halo, mainly Vulkan/RADV llama.cpp, Ollama, ROCm/HIP, Lemonade `llamacpp-rocm`, and early vLLM smoke tests. |
 | Primary hardware | Beelink GTR9 Pro, Ryzen AI MAX+ 395, Radeon 8060S `gfx1151`, 128GB LPDDR5X-8000 unified memory. |
-| Best easy path | The normal Ollama 0.31.2 system service with Vulkan/RADV for chat, model pulling, vision, and Open WebUI. It measured 60.57 t/s warm Qwen3.6 API generation and survived service restart plus a full host reboot. A controlled same-port/same-cache comparison later put isolated 0.31.1, 0.31.2, and 0.32.0 binaries in the same 72.55-73.20 t/s class, so the earlier gap was not a version-wide regression. |
+| Best easy path | The normal Ollama 0.31.2 system service with Vulkan/RADV for chat, model pulling, vision, and Open WebUI. It measured 60.57 t/s warm Qwen3.6 API generation and survived service restart plus a full host reboot. An isolated 0.32.3 check later measured 73.13 t/s versus 73.20 on 0.31.2, preserved exact text outputs, and passed iGPU vision plus process restart. Keep 0.31.2 as the default only until 0.32.3 completes the same normal package-upgrade and full-reboot path. |
 | Local training/export path | A pinned ROCm 7.2 Unsloth container detected the Radeon 8060S, completed a one-step Qwen3 0.6B SFT smoke, loaded the checkpoint, exported `Q4_K_M` GGUF, loaded it through ROCm `llama.cpp`, and loaded the host-persisted artifact again after restart. This proves the workflow, not useful fine-tuning quality or large-model training speed. |
 | Fastest measured short-context path | Direct llama.cpp / `llama-server` with Vulkan/RADV. Current Qwen3-Coder Q4_K_S speed-first row reached 100.99 t/s r50 on the official b9851 Vulkan release binary. The older strict-clean b9179 Qwen3-Coder row remains in the evidence at 98.51 t/s r50, and a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS row reached 100.04 t/s r50 on b9467 with a b9544 control at 103.18 tg128 r10. |
 | Fastest current small-MoE scout | LFM2.5 8B-A1B Q4_K_M reached 168.96 tg128 in a pp512/tg128 run and 170.02 t/s generation-only on the 2026-06-05 latest/int-dot check; the 2026-06-07 b9544 control measured 176.48 tg128 r10. This is a small active-parameter MoE speed result, not a 30B-class capability replacement. |
@@ -75,7 +75,7 @@ What you get:
 | Current 120B-class direct GGUF route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly at 18.43 tg128, with a b9544 control at 18.93 tg128. It remains a useful more-balanced 120B-class capacity route. |
 | Experimental speculative server path | MTP works on current `llama.cpp`/ROCmFPX routes. The best local Qwen3.6 MTP server route uses IQ4_XS-Q8nextn and reached about 101.1 t/s across six prompts on b9360; Gemma 4 26B-A4B QAT reached up to 110.0 t/s best-repeat; the exact CHADROCK ACE/SABER reference profile averaged 141.37 t/s over three repeats at 100% draft acceptance. These are server/speculative results, not direct `llama-bench` headlines. CHADROCK's separate 1K and 8K profiles were much slower, so operators must profile real prompts. |
 | Frontier-size local agent path | Step 3.7 Flash ROCmFPX Q3 QualityPlus runs as a 198B-total / about 11B-active target plus separate Q8 MTP draft: 34.50 t/s at 4K, 33.83 t/s at 16K, native tool-call pass, and full 256K allocation. This is advanced server/capacity evidence, not direct `llama-bench`; the 256K result is allocation, not a filled-context quality test. |
-| Current runtime status | The normal Ollama 0.31.2 service path passed Qwen3.6, iGPU, vision, restart, and full-reboot checks at 60.57 t/s. Ollama 0.32.3 is the next installed-service qualification target; 0.32.2 was withdrawn, and no newer release replaces the measured default until it passes the same checks. The controlled 0.32.0 binary already matched 0.31.1/0.31.2 performance and passed iGPU vision plus process restart. Official `llama.cpp` b10098 is the latest audited release, but the measured Vulkan concurrency sentinel remains b10034 and the measured Gemma 4 DFlash route remains b10066 until controlled reruns exist. See [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md), and the current [`compatibility alerts`](ROCM_VLLM_BUGWATCH.md#current-strix-halo-compatibility-alerts). |
+| Current runtime status | The normal Ollama 0.31.2 service path remains the fully reboot-qualified default. Isolated Ollama 0.32.3 preserved Qwen3.6 text speed/output and passed iGPU vision plus process restart, so only the normal service-upgrade/full-reboot step remains. Official `llama.cpp` b10107 is locally qualified for the pinned LFM2.5-VL image and Qwen3-ASR audio smokes, but those narrow checks do not replace the b10034 Vulkan concurrency sentinel. A stock-versus-PR #25666 MTP A/B preserved exact outputs and acceptance with only +0.55% warm speed, making it no-regression evidence rather than a new performance recommendation. See [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md), and the current [`compatibility alerts`](ROCM_VLLM_BUGWATCH.md#current-strix-halo-compatibility-alerts). |
 | Current HIP/UMA compatibility status | Official `llama.cpp` b10046 locally detected 120,124 MiB free UMA and used real `ROCm_Host` model, output, and compute buffers on `gfx1151` without a gfx-version override. The release binary needed the existing Ollama ROCm library path on this host. This validates merged HIP integrated-device support; it does not replace Vulkan/RADV as the beginner path. |
 | Large local model checks | gpt-oss-120b MXFP4 loaded at 55.57 tg128; Nemotron 3 Super 120B-A12B at 18.43 tg128; MiniMax M2.7 230B-class MoE loaded and generated; and DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded directly at 13.27 tg128. These are different capacity/quality tradeoffs, not interchangeable speed claims. |
 | Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
@@ -465,6 +465,8 @@ Real-world generation speeds measured on the Beelink GTR9 Pro, primarily with Vu
 | Qwen3-0.6B (Q8_0) | 0.8 GB | Dense | 266 t/s * | Ultra-fast tiny model |
 | Llama 2 7B | 3.8 GB | Dense | 48-52 t/s | Testing, lightweight tasks |
 | Qwen2.5-VL 7B | 6.0 GB | Vision | 21.4 t/s | Image understanding |
+| LFM2.5-VL 1.6B (Q4_0) | 1.19 GB with projector | Vision | functional local pass | Lightweight official-GGUF image route; one-image smoke, not a speed/quality headline |
+| Qwen3-ASR 0.6B (Q8_0) | 0.95 GB with projector | Speech | functional local pass | Short offline English transcription; experimental audio path |
 | LFM2.5 8B-A1B (Q4_K_M) | 5.1 GB | MoE | **170.0 t/s** * | Fastest current small-MoE scout; not a 30B-class replacement |
 | Gemma 4 26B-A4B IT QAT (UD-Q4_K_XL) | 14.2 GB | MoE | **74.8 t/s** direct; **102.7-110.0 t/s** MTP server | Current practical Google-model route; direct row is `llama-bench`, MTP row is server/speculative |
 | Qwen3-30B-A3B-Instruct-2507 (IQ4_XS) | 13.9 GB | MoE | **100.0 t/s** * | Fastest direct 30B-class Qwen row; general-instruct route, not Qwen3-Coder |
@@ -1859,7 +1861,7 @@ ollama pull nomic-embed-text
 #    or set up LangChain + ChromaDB for custom pipelines
 ```
 
-The guide's next modern retrieval qualification is NVIDIA Nemotron 3 Embed 1B BF16 on ROCm/PyTorch. It is tracked in [`CURRENT_MODELS.md`](CURRENT_MODELS.md) until a local throughput, memory, retrieval-correctness, and restart pass exists; do not treat the NVIDIA NVFP4/vLLM route as an AMD result.
+For a more current local embedding route, NVIDIA Llama Nemotron Embed 1B v2 now has a first-party CPU sanity pass. It ranked a relevant Strix Halo UMA passage above an unrelated passage, returned 2048-dimensional embeddings, and reproduced the exact vector in a fresh offline process. Follow the pinned [`reproduction and raw evidence`](data/raw/2026-07-25/nemotron-embed-1b-v2-official/). Keep this scoped to local functionality: a real Dutch/English corpus, long documents, batch throughput, memory, and ROCm acceleration still need measurement.
 
 ### Fine-Tuning And GGUF Export
 
@@ -1869,7 +1871,15 @@ Start there before attempting a longer QLoRA campaign. The smoke proves the work
 
 ### Speech Recognition
 
-The consolidated official Qwen3-ASR 0.6B/1.7B `-hf` artifacts are tracked as the next local transcription qualification because they add a practical function that chat-model benchmarks do not cover. They support Dutch and broader multilingual ASR, but no Strix Halo ROCm result is claimed here until real-time factor, memory, transcript correctness, and restart behavior are measured.
+The official Qwen3-ASR 0.6B Q8_0 GGUF now has a first-party `llama.cpp` b10107 Vulkan/RADV pass. It transcribed a known short English sample as `Front, center.` and returned the exact transcript after a fresh process. Use the exact command in the [`reproduction and raw evidence`](data/raw/2026-07-25/qwen3-asr-06b-official-gguf/).
+
+This proves a local load/transcription path, not general ASR quality. Dutch/multilingual accuracy, long audio, streaming, real-time factor, the 1.7B tradeoff, and word-error rate remain open; `llama.cpp` currently labels audio support experimental.
+
+### Lightweight Image Understanding
+
+The official LFM2.5-VL 1.6B Q4_0 GGUF plus Q8_0 projector now has a first-party `llama.cpp` b10107 Vulkan/RADV pass. It correctly read the guide title, AMD Strix Halo platform, `101.0 t/s`, `140.4 t/s`, and `128 GB` from the repository image, then repeated the exact answer in a fresh process. Use the exact command in the [`reproduction and raw evidence`](data/raw/2026-07-25/lfm25-vl-16b-official-gguf/).
+
+This is the low-download, lightweight vision route in the measured profiles. It is one image-functionality check, not a scored screenshot/photo/document benchmark.
 
 ### Image Generation
 
@@ -2140,6 +2150,13 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 ---
 
 ## Changelog
+
+### 2026-07-25 -- Current Runtime, Lightweight Vision, Speech, And Retrieval
+
+- **Ollama 0.32.3 isolated qualification passed:** same-cache Qwen3.6 measured **73.13 t/s** versus **73.20 t/s** on 0.31.2 with exact outputs. Qwen2.5-VL fully offloaded to the iGPU, read the test image correctly, and repeated after process restart. The installed 0.31.2 service remains the default until a normal package upgrade and full-host reboot pass.
+- **Official `llama.cpp` b10107 capability routes added:** LFM2.5-VL 1.6B correctly read the guide image and Qwen3-ASR 0.6B transcribed a short known English sample. Both reproduced exactly after a fresh process. These are scoped function/restart smokes, not broad vision or speech-quality benchmarks.
+- **Modern local embedding route added:** Llama Nemotron Embed 1B v2 ranked a relevant Strix Halo UMA passage above an unrelated passage, returned 2048-dimensional embeddings, and reproduced the exact vector offline. The measured route used CPU and remains a tiny retrieval sanity check rather than multilingual-corpus or ROCm evidence.
+- **PR #25666 independently checked:** the Qwen3.6 MTP stock-versus-PR A/B preserved exact generated outputs and **80.187%** draft acceptance. Warm repeats were only **0.55%** faster on the PR head, so the result is recorded as correctness/no-regression evidence rather than a performance headline.
 
 ### 2026-07-21 -- Corsair Thermal/SCLK Evidence And Fan-Control Correction
 

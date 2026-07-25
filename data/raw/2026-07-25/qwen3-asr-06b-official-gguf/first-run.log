@@ -1,0 +1,32 @@
+1.54.956.614 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+1.55.410.209 W init_audio: audio input is in experimental stage and may have reduced quality:
+    https://github.com/ggml-org/llama.cpp/discussions/13759
+1.55.410.299 W WARN: This is an experimental CLI for testing multimodal capability.
+1.55.410.299 W       For normal use cases, please use the standard llama-cli
+
+language English<asr_text>Front, center.
+
+
+	Command being timed: "env AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json /home/hoge-heer/benchmark-tools/llama-b10107-vulkan/llama-b10107/llama-mtmd-cli -hf ggml-org/Qwen3-ASR-0.6B-GGUF --audio /usr/share/sounds/alsa/Front_Center.wav -p Transcribe this audio exactly. Return only the spoken words. -ngl 999 -fa on -c 8192 -n 96 --temp 0 --seed 42 --log-verbosity 2"
+	User time (seconds): 0.85
+	System time (seconds): 0.87
+	Percent of CPU this job got: 1%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:55.60
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 932708
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 134441
+	Voluntary context switches: 96876
+	Involuntary context switches: 612
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 1990728
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

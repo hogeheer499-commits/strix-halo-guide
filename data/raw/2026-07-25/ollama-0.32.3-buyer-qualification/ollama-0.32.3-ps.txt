@@ -1,0 +1,2 @@
+NAME            ID              SIZE      PROCESSOR    CONTEXT    UNTIL
+qwen2.5vl:7b    5ced39dfa4ba    6.2 GB    100% GPU     8192       Forever
