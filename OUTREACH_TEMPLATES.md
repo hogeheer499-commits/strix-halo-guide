@@ -39,7 +39,7 @@ Use this as a reply to the original email so the earlier context stays in the
 same thread. If a new subject is required, use:
 
 ```text
-Strix Halo guide update: accepted llama.cpp contribution
+llama.cpp contributor: reproducible Ryzen AI Halo field evidence
 ```
 
 ```text
@@ -107,7 +107,7 @@ Send this as a reply to the first Beelink message. If it cannot remain in the
 same thread, use:
 
 ```text
-GTR9 Pro guide update: accepted llama.cpp contribution
+llama.cpp contributor: reducing GTR9 Pro local-AI buyer friction
 ```
 
 ```text
@@ -138,13 +138,13 @@ Strix Halo guide maintainer
 Preferred subject:
 
 ```text
-Independent Strix Halo buyer guide + accepted llama.cpp engineering
+llama.cpp contributor: reduce local-AI buyer friction for [system]
 ```
 
 System-specific alternative:
 
 ```text
-Reproducible Strix Halo local-AI validation for [vendor/system]
+Tested local-AI buyer path for [vendor/system]
 ```
 
 ```text
@@ -174,7 +174,7 @@ Email: hogeheer499@gmail.com
 
 ## Reviewer / Newsletter / YouTube Creator Message
 
-Subject: Strix Halo guide: raw benchmark evidence and upstream llama.cpp work
+Subject: Strix Halo buyer guide by a llama.cpp contributor
 
 ```text
 Hello [name],
