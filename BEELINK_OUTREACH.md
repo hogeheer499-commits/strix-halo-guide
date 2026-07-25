@@ -128,7 +128,7 @@ independently verifiable engineering evidence.
 If a new subject is required:
 
 ```text
-GTR9 Pro guide update: accepted llama.cpp contribution
+llama.cpp contributor: reducing GTR9 Pro local-AI buyer friction
 ```
 
 ```text

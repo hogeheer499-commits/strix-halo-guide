@@ -104,7 +104,8 @@ specific follow-ups in [`OUTREACH_TEMPLATES.md`](OUTREACH_TEMPLATES.md).
 
 For a new OEM or reviewer:
 
-- include `llama.cpp` in the subject once;
+- use `llama.cpp contributor` in the subject when it is paired immediately
+  with the vendor outcome, such as reducing local-AI buyer friction;
 - lead the body with buyer/setup friction, not personal status;
 - link [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md);
 - ask for one concrete next step: technical routing, a second-system
@@ -115,6 +116,16 @@ For a new OEM or reviewer:
 The strongest vendor interpretation is not "the maintainer has a badge." It is
 "this project can move from a reproducible field problem to public guidance and
 reviewed upstream work."
+
+Recommended subject pattern:
+
+```text
+llama.cpp contributor: reduce local-AI buyer friction for [system]
+```
+
+This is accurate because the maintainer has a merged upstream contribution. It
+must not be expanded into "core maintainer," official representative, or a
+claim that the contribution improved Strix Halo performance.
 
 ## Success Criteria
 
