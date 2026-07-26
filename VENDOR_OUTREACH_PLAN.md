@@ -2,6 +2,14 @@
 
 This plan keeps vendor outreach focused on adoption-friction evidence instead of generic sponsorship language.
 
+## Public Entry Points
+
+- Public project home: <https://strixhaloguide.com/>
+- Vendor and reviewer overview: <https://strixhaloguide.com/partners/>
+- Canonical technical evidence: <https://github.com/hogeheer499-commits/strix-halo-guide>
+
+For second-wave outreach, link the vendor overview first and the exact GitHub evidence second. The website explains the buyer-friction and collaboration case quickly; GitHub proves every technical claim. A recipient should not have to reconstruct the business case from a large repository before deciding whether to reply.
+
 ## Positioning
 
 Do not frame the repo as:

@@ -2,6 +2,12 @@
 
 Independent, reproducible setup and benchmark evidence for AMD Strix Halo / Ryzen AI MAX+ 395 local-AI systems.
 
+Public project overview: <https://strixhaloguide.com/>
+
+Vendor and reviewer overview: <https://strixhaloguide.com/partners/>
+
+Canonical technical evidence: <https://github.com/hogeheer499-commits/strix-halo-guide>
+
 ## Problem
 
 High-end local-AI hardware can be technically strong but commercially under-leveraged if buyers cannot easily reproduce good results. Strix Halo buyers must navigate BIOS settings, OS choice, Vulkan/RADV, ROCm, Ollama, `llama.cpp`, vLLM, model formats, quantization, context settings, power behavior, and benchmark claims before they can trust the purchase.

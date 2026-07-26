@@ -2,6 +2,10 @@
 
 `strix-halo-guide` is an independent, evidence-backed AMD Strix Halo / Ryzen AI MAX+ 395 local-AI setup and benchmark guide. It turns scattered setup details into reproducible instructions, benchmark reports, raw logs, CSVs, charts, and caveats so developers and buyers can evaluate real local-LLM workflows before committing time or money to a system.
 
+Public partner overview: <https://strixhaloguide.com/partners/>
+
+Canonical technical evidence: <https://github.com/hogeheer499-commits/strix-halo-guide>
+
 ## The Buyer And Developer Problem
 
 Strix Halo local-AI hardware is powerful, but the setup path is fragmented, confusing, and hard to trust. Buyers often have to piece together BIOS settings, Linux versus Windows tradeoffs, Vulkan/RADV, ROCm, Ollama, `llama.cpp`, model formats, quantization choices, context settings, server behavior, and benchmark claims from disconnected posts and issues.
