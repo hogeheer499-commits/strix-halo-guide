@@ -17,7 +17,7 @@ Covers BIOS config, Ubuntu 24.04/kernel setup, Ollama, `llama.cpp` Vulkan/RADV, 
 
 AMD now publicly frames Ryzen AI Halo-class systems as a local-AI and developer-platform direction. This repository is the independent practical layer: copyable setup, measured rows, raw evidence, failures, and community reproductions. It is not official AMD or OEM endorsement. See [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).
 
-Public project home: <https://strixhaloguide.com/>. Vendors and reviewers can start with the short collaboration overview at <https://strixhaloguide.com/partners/>. The technical web setup summary remains available at <https://hogeheer499-commits.github.io/strix-halo-guide/>. Exact claims and reproduction artifacts remain canonical in this GitHub repository.
+Project website: <https://strixhaloguide.com/>. This GitHub repository remains the source of truth for setup commands, benchmark claims, and raw evidence.
 
 Maintainer credibility is also public and reviewable: accepted upstream contributions include code and validation in [`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), LocalAI, Qwen Code, OpenTelemetry GenAI, and NVIDIA AICR, plus tested-coverage documentation in the vLLM GGUF plugin. See [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md) for exact PR links, scope, and honest boundaries. Upstream acceptance strengthens confidence in the engineering process; it does not replace the raw evidence required for each benchmark claim.
 
