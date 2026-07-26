@@ -2,7 +2,19 @@
 
 These templates are meant to be edited before sending. Keep the claims tied to the repo and avoid inventing traction, sponsors, endorsements, or buyer impact.
 
-Canonical repo:
+Public project home:
+
+```text
+https://strixhaloguide.com/
+```
+
+Vendor and reviewer overview:
+
+```text
+https://strixhaloguide.com/partners/
+```
+
+Canonical technical evidence:
 
 ```text
 https://github.com/hogeheer499-commits/strix-halo-guide
@@ -17,7 +29,7 @@ Hello [name/team],
 
 I maintain an independent AMD Strix Halo / Ryzen AI MAX+ 395 local-AI setup and benchmark guide:
 
-https://github.com/hogeheer499-commits/strix-halo-guide
+https://strixhaloguide.com/
 
 The project is primarily technical: setup steps, backend guidance, benchmark reports, raw logs, CSVs, charts, reproducibility notes, and community validation. The commercial value is that it reduces buyer and developer friction around AMD local-AI hardware. Buyers are interested in the hardware, but the setup path across BIOS settings, Linux/Windows, Vulkan/RADV, ROCm, Ollama, llama.cpp, vLLM, model formats, and quantization can be difficult to trust.
 
@@ -54,6 +66,9 @@ It is preset/router maintenance, not a Strix Halo performance patch. The reason 
 The full verified contribution record is here:
 https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md
 
+The short project and collaboration overview is here:
+https://strixhaloguide.com/partners/
+
 I would still appreciate help routing the Strix Halo guide and the AMD/RADV evidence to the right Ryzen AI, RADV/Vulkan, ROCm, or project-showcase contact. The goal remains practical: reduce setup and buying friction by turning real-system findings into public guidance and, where appropriate, upstream improvements.
 
 Best,
@@ -71,7 +86,7 @@ Hello [name/team],
 
 I maintain an independent Strix Halo local-AI guide that currently uses a Beelink GTR9 Pro as the primary measured system:
 
-https://github.com/hogeheer499-commits/strix-halo-guide
+https://strixhaloguide.com/
 
 The guide is evidence-backed rather than promotional: it documents setup, backend choices, raw benchmark artifacts, charts, reproducibility notes, and caveats. It helps buyers understand how to get useful local-AI workloads running instead of piecing together scattered BIOS, OS, driver, backend, and model advice.
 
@@ -122,6 +137,9 @@ The change itself is preset/router maintenance, not a GTR9 Pro performance claim
 The GTR9 Pro remains the primary system behind the guide. I would still like to connect with the right Beelink product or engineering contact about a better-validated “retail box to working local AI” buyer path, including BIOS/firmware guidance and possible access to a second Beelink configuration.
 
 Project:
+https://strixhaloguide.com/partners/
+
+Canonical technical evidence:
 https://github.com/hogeheer499-commits/strix-halo-guide
 
 Verified upstream work:
@@ -152,13 +170,16 @@ Hello [name/team],
 
 I maintain an independent AMD Strix Halo / Ryzen AI MAX+ local-AI setup and benchmark guide:
 
-https://github.com/hogeheer499-commits/strix-halo-guide
+https://strixhaloguide.com/
 
 The guide helps buyers and developers answer practical questions: which OS and backend to start with, which models are realistic, how Ollama compares with direct llama.cpp, what remains experimental in ROCm/vLLM, and what benchmark claims are backed by raw evidence.
 
 I also have accepted upstream contributions in llama.cpp and other AI infrastructure. That matters for a hardware collaboration because findings do not have to stop at screenshots or downstream complaints: a well-scoped software issue can become reproducible buyer guidance and, where appropriate, reviewed upstream work.
 
 https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md
+
+Canonical technical evidence:
+https://github.com/hogeheer499-commits/strix-halo-guide
 
 I am interested in validating [vendor/system] so buyers can see how it compares with existing Beelink, Corsair, and GMKtec evidence in the repo. This would reduce adoption friction for your hardware by turning setup and benchmark work into public, reproducible technical evidence.
 
@@ -181,13 +202,16 @@ Hello [name],
 
 I maintain an independent Strix Halo / Ryzen AI MAX+ 395 local-AI guide:
 
-https://github.com/hogeheer499-commits/strix-halo-guide
+https://strixhaloguide.com/
 
 It may be useful background for your AI-PC or local-AI coverage because it focuses on reproducible setup, raw benchmark evidence, backend tradeoffs, and practical buyer questions rather than only headline speed claims.
 
 The maintainer record now also includes accepted upstream work in llama.cpp and other AI infrastructure. The llama.cpp change is not a Strix Halo speed patch; its value is independent evidence that software findings can be reproduced, tested, reviewed, and merged rather than only reported downstream.
 
 https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md
+
+Canonical technical evidence:
+https://github.com/hogeheer499-commits/strix-halo-guide
 
 The main point: powerful local-AI hardware still has adoption friction when buyers cannot easily reproduce working setups. The guide documents a path through that friction with setup steps, benchmark data, raw logs, charts, community validation, and caveats.
 
@@ -204,7 +228,7 @@ Email: hogeheer499@gmail.com
 ```text
 Hi [name] - I maintain an independent AMD Strix Halo / Ryzen AI MAX+ local-AI setup and benchmark guide:
 
-https://github.com/hogeheer499-commits/strix-halo-guide
+https://strixhaloguide.com/
 
 It turns scattered setup and benchmark knowledge into reproducible public evidence: setup steps, backend guidance, raw logs/CSVs/charts, caveats, and community validation.
 
@@ -247,7 +271,7 @@ Hello [name],
 
 I maintain an independent AMD Strix Halo / Ryzen AI MAX+ local-AI setup and benchmark guide:
 
-https://github.com/hogeheer499-commits/strix-halo-guide
+https://strixhaloguide.com/
 
 It produces reproducible public evidence that reduces buyer setup friction around local-AI hardware. I am trying to reach the right person for technical feedback, review hardware, early firmware/software context, or an independent benchmark collaboration.
 

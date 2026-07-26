@@ -143,6 +143,9 @@ The change itself is preset/router maintenance, not a GTR9 Pro performance claim
 The GTR9 Pro remains the primary system behind the guide. I would still like to connect with the right Beelink product or engineering contact about a better-validated "retail box to working local AI" buyer path, including BIOS/firmware guidance and possible access to a second Beelink configuration.
 
 Project:
+https://strixhaloguide.com/partners/
+
+Canonical technical evidence:
 https://github.com/hogeheer499-commits/strix-halo-guide
 
 Verified upstream work:

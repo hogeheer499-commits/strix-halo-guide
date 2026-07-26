@@ -17,7 +17,7 @@ Covers BIOS config, Ubuntu 24.04/kernel setup, Ollama, `llama.cpp` Vulkan/RADV, 
 
 AMD now publicly frames Ryzen AI Halo-class systems as a local-AI and developer-platform direction. This repository is the independent practical layer: copyable setup, measured rows, raw evidence, failures, and community reproductions. It is not official AMD or OEM endorsement. See [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).
 
-Web setup summary: <https://hogeheer499-commits.github.io/strix-halo-guide/>. Exact claims and reproduction artifacts remain canonical in this GitHub repository.
+Public project home: <https://strixhaloguide.com/>. Vendors and reviewers can start with the short collaboration overview at <https://strixhaloguide.com/partners/>. The technical web setup summary remains available at <https://hogeheer499-commits.github.io/strix-halo-guide/>. Exact claims and reproduction artifacts remain canonical in this GitHub repository.
 
 Maintainer credibility is also public and reviewable: accepted upstream contributions include code and validation in [`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), LocalAI, Qwen Code, OpenTelemetry GenAI, and NVIDIA AICR, plus tested-coverage documentation in the vLLM GGUF plugin. See [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md) for exact PR links, scope, and honest boundaries. Upstream acceptance strengthens confidence in the engineering process; it does not replace the raw evidence required for each benchmark claim.
 
@@ -209,6 +209,8 @@ Have a Strix Halo / Ryzen AI MAX system? Please share results, even if they are 
 ## For Vendors, Partners, And Reviewers
 
 This guide is primarily a technical resource for AMD Strix Halo local-AI users. For vendors, reviewers, and partners, it also documents a reproducible way to reduce buyer setup friction and validate real-world local-AI use cases without weakening independent benchmark discipline.
+
+Start with the public [vendor and reviewer overview](https://strixhaloguide.com/partners/), then inspect the linked GitHub evidence, raw artifacts, negative results, disclosure policy, and upstream contribution record here.
 
 Start with [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md) and [`PARTNERSHIP.md`](PARTNERSHIP.md). Supporting docs cover [`BEELINK_OUTREACH.md`](BEELINK_OUTREACH.md), [`VENDOR_OUTREACH_PLAN.md`](VENDOR_OUTREACH_PLAN.md), [`SPONSORSHIP.md`](SPONSORSHIP.md), [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md), [`BUYER_USE_CASES.md`](BUYER_USE_CASES.md), [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md), [`TRACTION.md`](TRACTION.md), and [`OUTREACH_TEMPLATES.md`](OUTREACH_TEMPLATES.md).
 
