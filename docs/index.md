@@ -11,7 +11,7 @@ image:
   alt: "AMD Strix Halo Local LLM Guide with direct, server, and unified-memory evidence highlights"
 seo:
   type: "TechArticle"
-  date_modified: "2026-07-26T00:06:00+02:00"
+  date_modified: "2026-07-28T00:00:00+02:00"
 ---
 
 # AMD Strix Halo / Ryzen AI Halo Local LLM Setup
@@ -20,7 +20,7 @@ This is the short web version of the independent AMD Strix Halo local LLM guide.
 
 It focuses on Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems, practical local setup, and evidence links for benchmark claims. AMD now uses Ryzen AI Halo for its official developer platform; this guide remains an independent setup and evidence source for the wider Strix Halo hardware category.
 
-**Web guide published:** June 13, 2026. **Evidence reviewed:** July 26, 2026. The raw directories and structured claim indexes remain the source of truth for each individual run.
+**Web guide published:** June 13, 2026. **Evidence reviewed:** July 28, 2026. The raw directories and structured claim indexes remain the source of truth for each individual run.
 
 Start with the [full AMD Strix Halo setup and benchmark repository](https://github.com/hogeheer499-commits/strix-halo-guide), which is the canonical evidence location.
 
@@ -48,7 +48,7 @@ performance patch.
 
 ## Quick Setup Summary
 
-For a retail AMD Strix Halo / Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) system, start with Ubuntu 24.04 LTS, BIOS UMA Frame Buffer Size set to 512MB if available or 2GB if that is the vendor minimum, IOMMU disabled unless RDMA/VFIO/passthrough/clustering is required, GRUB parameters `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280`, Mesa/RADV from kisak, AMDVLK removed, `tuned` set to `accelerator-performance`, and Ollama with Vulkan/RADV as the easiest beginner path.
+For a retail AMD Strix Halo / Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) system, start with Ubuntu 24.04 LTS, BIOS UMA Frame Buffer Size set to 512MB if available or 2GB if that is the vendor minimum, IOMMU enabled/default, GRUB parameters `amdgpu.gttsize=131072 ttm.pages_limit=31457280`, Mesa/RADV from kisak, AMDVLK removed, `tuned` set to `accelerator-performance`, and Ollama with Vulkan/RADV as the easiest beginner path. Add `amd_iommu=off` only when deliberately reproducing the optional always-on desktop benchmark profile; it disables NPU access and can break mobile suspend.
 
 Use direct `llama.cpp` or `llama-server` with Vulkan/RADV for the fastest measured generation-heavy GGUF rows and local API/server experiments. Use ROCm/HIP, Lemonade, vLLM, MTP/speculative decoding, long-context, and multi-node/RDMA paths only for the specific documented cases in the repository.
 
@@ -66,8 +66,8 @@ Vendor BIOS labels, cooling, firmware, power modes, RAM configuration, and therm
 |---|---|
 | OS | Ubuntu 24.04 LTS |
 | BIOS memory | UMA Frame Buffer Size set to 512MB if available, or 2GB if that is the vendor BIOS minimum; AMD's reference platform uses its own Variable Graphics Memory controls |
-| IOMMU | Disabled for the measured local setup; use `iommu=pt` only when RDMA, VFIO, passthrough, or clustering requires it |
-| Kernel parameters | `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280` |
+| IOMMU | Enabled/default for normal buyers, NPU use, mobile suspend, RDMA, VFIO, passthrough, and clustering; `amd_iommu=off` is only an optional always-on desktop benchmark profile |
+| Kernel parameters | `amdgpu.gttsize=131072 ttm.pages_limit=31457280`; optionally add `amd_iommu=off` only after reading the documented IOMMU tradeoff |
 | Vulkan stack | Mesa/RADV from kisak, with AMDVLK removed for consistent RADV selection |
 | Power profile | `tuned` set to `accelerator-performance` |
 | Easiest local chat path | Ollama with Vulkan/RADV |
@@ -92,7 +92,7 @@ These are independent benchmark and setup claims from the repository. They are n
 | Fastest small-MoE speed scout | LFM2.5 8B-A1B `Q4_K_M` reached 170.02 t/s generation-only, with a b9544 control at 176.48 t/s | [headline claims](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv) |
 | Largest direct GGUF capacity route | DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded as a pinned 90.86GB ordinary GGUF and measured 155.64 pp512 / 13.27 tg128 on official b10034; this is low-bit capacity/basic-correctness evidence, not a speed or broad quality claim | [raw DeepSeek evidence](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-07-16/deepseek-v4-flash-ud-iq2-xxs) |
 | 120B-class GGUF capacity route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly at 18.43 t/s, with a b9544 control at 18.93 t/s | [headline claims](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv) |
-| Easiest normal local chat path | Qwen3.6 35B-A3B `Q4_K_M` through the Ollama 0.31.2 system service measured 60.57 t/s warm API generation on Vulkan/RADV; iGPU, vision, restart, and reboot checks passed. A controlled local-binary comparison later put Ollama 0.31.1, 0.31.2, and 0.32.0 in the same 72.55-73.20 t/s class. | [current model status](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md) |
+| Easiest normal local chat path | Qwen3.6 35B-A3B `Q4_K_M` through the fully reboot-qualified Ollama 0.31.2 system service measured 60.57 t/s warm API generation on Vulkan/RADV. Isolated Ollama 0.32.3 preserved exact text output at 73.13 t/s versus 73.20 t/s on the controlled 0.31.2 binary and passed iGPU vision plus process restart. Ollama 0.32.4 is the current unmeasured normal-service/full-reboot target. | [current model status](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md) |
 | Experimental MTP/speculative server route | Qwen3.6 MTP reached about 101.1 t/s on b9360; Gemma 4 26B-A4B QAT MTP reached 102.69 t/s cold, 107.42 t/s T3-only, and 110.00 t/s best repeat on ac4cddeb0 | [MTP notes](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MTP_SPECULATIVE_DECODING.md) |
 | Fastest measured advanced server profile | CHADROCK ACE/SABER 35B ROCmFP4 averaged 141.37 t/s over three exact reference-profile repeats at 100% draft acceptance; lower-acceptance prompt shapes were much slower, so this is not direct `llama-bench` or a beginner default | [ROCmFP4/CHADROCK notes](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ROCMFP4_CHADROCK.md) |
 | Frontier-size local agent route | Step 3.7 Flash 198B-total / about 11B-active plus its MTP draft measured 34.50 t/s at 4K and 33.83 t/s at 16K; native tool calling and 256K allocation passed on one 128GB system | [ROCmFP4/CHADROCK notes](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ROCMFP4_CHADROCK.md#step-37-q3-qualityplus-first-party-reproduction) |
@@ -102,7 +102,7 @@ These are independent benchmark and setup claims from the repository. They are n
 
 ### What is the best AMD Strix Halo local LLM setup?
 
-On a retail OEM system, start with Ubuntu 24.04 LTS, BIOS UMA Frame Buffer Size set to 512MB if available or 2GB if that is the vendor minimum, IOMMU disabled unless RDMA/VFIO/passthrough/clustering is required, GRUB parameters `amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280`, Mesa/RADV from kisak, AMDVLK removed, `tuned` set to `accelerator-performance`, and Ollama with Vulkan/RADV for the easiest working private local chat path.
+On a retail OEM system, start with Ubuntu 24.04 LTS, BIOS UMA Frame Buffer Size set to 512MB if available or 2GB if that is the vendor minimum, IOMMU enabled/default, GRUB parameters `amdgpu.gttsize=131072 ttm.pages_limit=31457280`, Mesa/RADV from kisak, AMDVLK removed, `tuned` set to `accelerator-performance`, and Ollama with Vulkan/RADV for the easiest working private local chat path. Use `amd_iommu=off` only for the optional always-on desktop benchmark profile, not for NPU or mobile suspend workflows.
 
 ### Is this a Framework Desktop Strix Halo LLM setup guide too?
 
@@ -137,6 +137,8 @@ Use these repository files for verification:
 - [Benchmark reproducibility rules](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/REPRODUCIBILITY.md)
 - [Current model and runtime status](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md)
 - [Machine-readable current test queue](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/current_test_queue.csv)
+- [Retail-box buyer-path validation protocol](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_PATH_VALIDATION.md)
+- [Machine-readable AI/search source index](https://hogeheer499-commits.github.io/strix-halo-guide/llms.txt)
 - [Multi-user MoE concurrency evidence](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MOE_CONCURRENCY.md)
 - [MTP and speculative decoding evidence](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MTP_SPECULATIVE_DECODING.md)
 - [ROCmFP4 / CHADROCK advanced server evidence](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ROCMFP4_CHADROCK.md)

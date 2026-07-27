@@ -22,7 +22,8 @@ The technical proof layer already includes:
 
 - Setup and workflow guidance in [`README.md`](README.md).
 - Accepted upstream engineering in [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md): direct merge and review links for `llama.cpp`, LocalAI, Qwen Code, OpenTelemetry GenAI, NVIDIA AICR, and vLLM GGUF work. This demonstrates the ability to move from reproduction through validation and upstream review without misrepresenting those merges as vendor endorsement or Strix Halo performance fixes.
-- Current buyer-path setup checks, including the normal Ollama 0.31.2 system-service route with `OLLAMA_IGPU_ENABLE=1`, 60.57 t/s Qwen3.6 generation, working vision, and restart/reboot persistence. A controlled same-port/same-cache comparison also puts isolated 0.31.1, 0.31.2, and 0.32.0 local binaries in the same 72.55-73.20 t/s class without pretending that the isolated 0.32.0 check is a full system-service qualification.
+- Current buyer-path setup checks, including the normal Ollama 0.31.2 system-service route with `OLLAMA_IGPU_ENABLE=1`, 60.57 t/s Qwen3.6 generation, working vision, and restart/reboot persistence. A controlled same-port/same-cache comparison puts isolated 0.31.1, 0.31.2, and 0.32.0 local binaries in the same 72.55-73.20 t/s class. A later isolated 0.32.3 qualification preserved exact output at 73.13 t/s versus 73.20 t/s on the controlled 0.31.2 binary and passed iGPU vision plus process restart. The installed 0.31.2 service remains the buyer default until current 0.32.4 completes the normal package-upgrade/full-reboot path.
+- A repeatable [`BUYER_PATH_VALIDATION.md`](BUYER_PATH_VALIDATION.md) protocol for measuring retail-box-to-working-local-AI friction through timed checkpoints, intervention counts, restart persistence, and public evidence links without inventing a current time-to-result claim.
 - Reproducibility notes in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
 - Current benchmark snapshot in [`BENCHMARKS.md`](BENCHMARKS.md).
 - A current multi-user engineering case in [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md): official b10034 still loses 31.7-37.3% aggregate decode from concurrency 8 to 9 on two tested MoE shapes; a separate controlled b9979 campaign shows an opt-in AMD/RADV density policy recovering 25.3-42.7% at np9 without changing np8 materially.
@@ -79,6 +80,7 @@ These are options, not demands. The useful collaboration is access to hardware, 
 - Reproducible software-bottleneck reports that connect an upstream backend issue to buyer-facing guidance, second-system validation requests, and firmware/fan/engineering questions.
 - Reproducible local fine-tuning, export, and deployment workflows for a named system and task.
 - Buyer use-case documentation that translates technical results into practical decisions.
+- Timed retail-box-to-working-local-AI validation with setup interventions, failures, and restart persistence documented.
 - Disclosure-compliant public writeup for sponsored, loaned, gifted, or early-access work.
 - Vendor-neutral technical findings, including negative results when they are accurate.
 

@@ -14,7 +14,7 @@ Latest measured host audit on 2026-07-16:
 | RAM | 124GiB OS-visible unified memory |
 | Kernel | 6.19.4-061904-generic |
 | Mesa RADV | 26.1.4, kisak-mesa PPA |
-| Ollama | 0.31.2 installed service; 0.31.1/0.31.2/0.32.0 isolated comparison |
+| Ollama | 0.31.2 installed service; 0.31.1/0.31.2/0.32.0 isolated comparison; isolated 0.32.3 qualification |
 | AMDVLK | Removed |
 | linux-firmware | 20240318.git3b128b60-0ubuntu2.27 |
 | GPU clock | 2900 MHz selected during measured runs |

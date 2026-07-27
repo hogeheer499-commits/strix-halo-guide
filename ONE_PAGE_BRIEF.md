@@ -36,6 +36,7 @@ The repo already includes a technical proof layer:
 - Ryzen AI server-optimization evidence: an isolated official ROCm 7.14 / PyTorch 2.11 / vLLM FP16 A/B reproduced AMD's documented batch-8+ hipBLASLt workaround on `gfx1151`, improving aggregate throughput by 40.50%, 38.96%, and 41.54% at concurrency 8, 9, and 16. This is scoped small-model server evidence, not a universal backend claim.
 - Current HIP compatibility evidence: official `llama.cpp` b10046 locally reproduced merged integrated-device host-buffer support on `gfx1151`, detecting the full UMA pool and using `ROCm_Host` buffers without a gfx-version override. The remaining manual runtime-library-path requirement is documented as setup friction rather than hidden.
 - Local model-development evidence: a digest-pinned ROCm 7.2 Unsloth workflow on the retail Beelink passed Radeon GPU detection, one-step SFT, checkpoint inference, `Q4_K_M` GGUF export, ROCm `llama.cpp` inference, artifact persistence, and a post-restart reload. The public guide preserves the exact commands and two real path/export failures without presenting the tiny smoke as useful model quality or training speed. See [`UNSLOTH_STRIX_HALO.md`](UNSLOTH_STRIX_HALO.md).
+- Buyer-friction measurement protocol: [`BUYER_PATH_VALIDATION.md`](BUYER_PATH_VALIDATION.md) defines a repeatable retail-box-to-working-local-AI campaign with timed checkpoints, intervention counts, restart persistence, failure classification, and evidence links. It is a protocol for future system campaigns, not an invented time-to-first-result claim.
 - Platform context: [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).
 
 ## Maintainer Capability
@@ -64,7 +65,7 @@ The public evidence map currently covers:
 - **8 credited community benchmark contributors**, listed in [`CONTRIBUTORS.md`](CONTRIBUTORS.md), in addition to the primary first-party Beelink measurements.
 - Beelink owner stacks, a three-system Corsair fleet, several independent GMKtec sources, MS-S1-Max, Nimo, and Minix evidence across Linux, Windows, Vulkan/RADV, ROCm, NPU, MTP, power, thermal, RPC, and large-model capacity routes.
 
-The normal first-party buyer path includes an Ollama 0.31.2 system-service check at 60.57 t/s with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. A controlled same-port/same-cache follow-up put isolated 0.31.1, 0.31.2, and 0.32.0 local binaries in the same 72.55-73.20 t/s generation class; 0.32.0 also passed iGPU vision and process-restart checks. The installed 0.31.2 service remains the beginner default because the 0.32.0 test was not a system-package/full-reboot qualification. Community rows remain separated from first-party headline claims.
+The normal first-party buyer path includes an Ollama 0.31.2 system-service check at 60.57 t/s with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. A controlled same-port/same-cache follow-up put isolated 0.31.1, 0.31.2, and 0.32.0 local binaries in the same 72.55-73.20 t/s generation class. A later isolated Ollama 0.32.3 qualification preserved exact Qwen3.6 output at 73.13 t/s versus 73.20 t/s on the controlled 0.31.2 binary and passed iGPU vision plus process restart. The installed 0.31.2 service remains the beginner default until current Ollama 0.32.4 completes a normal package upgrade and full-host reboot. Community rows remain separated from first-party headline claims.
 
 Community corrections and negative results improve the proof layer rather than being hidden: exact artifacts and commands, raw logs, separated claim types, explicit caveats, and corrected routes remain public. See [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md).
 
@@ -85,6 +86,7 @@ Useful collaboration can include technical contacts, review or loaner systems, e
 - ROCm/vLLM/NPU blocker or progress report.
 - Reproducible local fine-tuning, export, and deployment workflow for a named system and task.
 - Disclosure-compliant public writeup.
+- Timed retail-box-to-working-local-AI report with intervention and failure counts.
 
 ## Disclosure And Independence
 

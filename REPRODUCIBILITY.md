@@ -20,9 +20,9 @@ The public claim index is [`data/headline_claims.csv`](data/headline_claims.csv)
 | Kernel | `6.19.4-061904-generic` |
 | Mesa/RADV | Mesa 26.0.6 for the main May 7 headline rows; Mesa 26.1.1 for the May 26/27 MTP spot checks; Mesa 26.1.2 for the June 7 b9544 controls; Mesa 26.1.4 for the July 16 b10034 and current-model runs; kisak-mesa PPA where recorded |
 | llama.cpp | b9179 `b81c2cdd7` for the Qwen3-Coder speed-first peak; b9049 `2496f9c14` for the balanced UD headline rerun; b9360 `6b4e4bd58` for the Qwen3.6 MTP 100+ server route; b9467 `1fd5f4803` for the first direct Qwen3-30B-A3B-Instruct-2507 100+ row; b9979 for the AMD/RADV density-gate campaign; official b10034 `505b1ed15` for the July 16 Vulkan sentinel and current-model checks |
-| Ollama | 0.31.2 for the fully qualified installed-service buyer path; isolated 0.31.1/0.31.2/0.32.0 binaries for the controlled July 16 version comparison |
+| Ollama | 0.31.2 for the fully qualified installed-service buyer path; isolated 0.31.1/0.31.2/0.32.0 binaries for the controlled July 16 comparison; isolated 0.32.3 for the exact-output, iGPU-vision, and process-restart qualification; 0.32.4 remains unmeasured |
 | BIOS UMA | 512MB for the measured local setup |
-| IOMMU | Disabled for the measured local setup |
+| IOMMU | Disabled for the primary measured desktop benchmark profile; enabled/default remains the normal buyer recommendation for NPU, mobile suspend, RDMA, VFIO, passthrough, and clustering |
 | AMDVLK | Removed; RADV should be the selected Vulkan ICD |
 | Power profile | Main historical headline runs used `tuned accelerator-performance`; the July 16 b10034 sentinel recorded the desktop power profile as `performance`, `tuned` inactive, and amdgpu DPM forced to `high`. Never infer one policy from another run. |
 | GPU clock | 2900 MHz was selected during earlier readiness checks; use each raw host snapshot and telemetry file for current clock behavior |

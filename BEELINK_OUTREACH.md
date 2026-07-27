@@ -38,6 +38,7 @@ For Beelink, that can reduce support friction and make the GTR9 Pro easier to ev
 - Structured data and raw artifacts: [`data/README.md`](data/README.md), [`data/raw/`](data/raw/)
 - Current model triage: [`CURRENT_MODELS.md`](CURRENT_MODELS.md)
 - Buyer-use-case translation: [`BUYER_USE_CASES.md`](BUYER_USE_CASES.md)
+- Retail-box setup-friction protocol: [`BUYER_PATH_VALIDATION.md`](BUYER_PATH_VALIDATION.md)
 - Partner brief: [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md)
 - Accepted upstream contributions: [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md)
 - Disclosure policy: [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md)
@@ -73,6 +74,13 @@ Possible collaboration asks after the technical ask:
 - early BIOS/firmware notes where public disclosure is allowed
 - scoped benchmark campaign sponsorship
 - a second Beelink unit for repeatability, wall-power, or regression testing
+
+A named Beelink campaign can use
+[`BUYER_PATH_VALIDATION.md`](BUYER_PATH_VALIDATION.md) to measure the route
+from retail box to working local AI: elapsed time, manual interventions,
+failed steps, first response, capability checks, and restart persistence.
+The protocol currently contains no claimed time-to-result; a number becomes
+public only with a completed evidence package.
 
 ## Suggested First Email
 

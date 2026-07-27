@@ -1,6 +1,6 @@
 # ROCm and vLLM Bugwatch
 
-Status: current as of 2026-07-24 for locally measured runtime paths and upstream release triage. External release rows retain their own checked dates.
+Status: current as of 2026-07-28 for locally measured runtime paths and upstream release triage. External release rows retain their own checked dates.
 
 This file tracks fast-moving upstream items that affect Strix Halo local AI work. It is intentionally separate from the README so the public guide stays stable even when upstream ROCm/vLLM issues move.
 
@@ -8,12 +8,12 @@ This file tracks fast-moving upstream items that affect Strix Halo local AI work
 
 | Area | Current status | Why it matters |
 |------|----------------|----------------|
-| `llama.cpp` release | [`llama.cpp` b10098](https://github.com/ggml-org/llama.cpp/releases/tag/b10098) is the latest upstream release audited here. | It includes Vulkan queue work, server validation fixes, speculative-draft sidecar/type handling, Qwen3-VL vision fixes, and DeepSeek4 fixes. None of those changes replaces a measured guide result until the relevant route is rerun. |
-| Ollama release | [`Ollama 0.32.3`](https://github.com/ollama/ollama/releases/tag/v0.32.3) is the latest stable release audited here; 0.32.2 was withdrawn. | It includes a model-download stall fix and lower memory use on Linux CUDA/ROCm iGPUs. The installed, fully qualified beginner route remains 0.31.2 until 0.32.3 passes the same iGPU, vision, restart, and full-reboot checks. |
+| `llama.cpp` release | [`llama.cpp` b10154](https://github.com/ggml-org/llama.cpp/releases/tag/b10154) is the latest upstream release audited here. | It includes merged base Laguna architecture support. It has not been locally qualified and upstream does not yet provide Laguna DFlash support, so it does not replace a measured guide result. The narrow latest locally qualified build remains b10107 for the pinned LFM2.5-VL image and Qwen3-ASR smokes. |
+| Ollama release | [`Ollama 0.32.4`](https://github.com/ollama/ollama/releases/tag/v0.32.4) is the latest stable release audited here. | It adds Qwen3 mixed-expert-quant decoding fixes and requested-type quantization for speculative-draft output heads. Isolated 0.32.3 already preserved exact text output, iGPU vision, and process restart; the installed, fully reboot-qualified beginner route remains 0.31.2 until 0.32.4 passes the normal package-upgrade and full-reboot path. |
 | ROCm production release | [`ROCm 7.14.0`](https://github.com/ROCm/ROCm/releases/tag/rocm-7.14.0) is the latest production ROCm release checked here, published 2026-07-16. | It focuses on AI inference across Instinct, Radeon, and Ryzen AI and moves the earlier 7.13 preview lane into a production release. This guide has not installed it host-wide. |
 | ROCm Ryzen AI inference note | ROCm 7.14.0 documents lower-than-expected LLM inference on Ryzen AI MAX / MAX+ with PyTorch earlier than 2.14 in some FP16 vLLM workloads at batch 8+, with `TORCH_BLAS_PREFER_HIPBLASLT=1` as the workaround. | The isolated local A/B reproduced the expected threshold: +40.50%, +38.96%, and +41.54% aggregate throughput at concurrency 8, 9, and 16, with no material gain at 1 and a -0.77% result at 4. This remains an FP16 vLLM rule, not universal llama.cpp or Vulkan tuning. |
-| vLLM release | [`vLLM 0.25.1`](https://github.com/vllm-project/vllm/releases/tag/v0.25.1) is the latest normal upstream release checked here, published 2026-07-14. ROCm 7.14.0 validates vLLM 0.23.0, which is not the same as claiming that upstream 0.25.1 is validated on this machine. | Use a pinned ROCm image or isolated environment and record both ROCm and vLLM versions. Do not pip-install into the host Python environment. |
-| SGLang release | [`SGLang 0.5.15.post1`](https://github.com/sgl-project/sglang/releases/tag/v0.5.15.post1) is the latest upstream release checked here, published 2026-07-14. ROCm 7.14.0 validates SGLang 0.5.13. | Useful serving watch signal; no local Strix Halo performance claim is made from version availability alone. |
+| vLLM release | [`vLLM 0.26.0`](https://github.com/vllm-project/vllm/releases/tag/v0.26.0) is the latest normal upstream release checked here. ROCm 7.14.0 validates an older vLLM lane, which is not the same as claiming that upstream 0.26.0 is validated on this machine. | It adds AMD-relevant DeepSeek V4, sparse/prefill, MiniMax-M3, and Qwen MoE work. Use a pinned isolated environment and treat those as test targets, not transferred `gfx1151` gains. |
+| SGLang release | [`SGLang 0.5.16`](https://github.com/sgl-project/sglang/releases/tag/v0.5.16) is the latest upstream release checked here. ROCm 7.14.0 validates an older SGLang lane. | It adds AMD/ROCm fused-KV and KDA fixes plus lower-scratch ReplaySSM speculative decoding. These are useful serving targets, not local Strix Halo performance evidence. |
 | Strix Halo unified memory reporting | [`ROCm/hip#3892`](https://github.com/ROCm/hip/issues/3892) is now closed as of 2026-05-29. | Still verify inside any ROCm/vLLM container before making a capacity/autoscheduling claim; closed upstream does not prove every local bundle has the fix. |
 | Older 15.5GB VRAM aperture issue | [`ROCm/ROCm#5444`](https://github.com/ROCm/ROCm/issues/5444) is closed. | Keep as troubleshooting context; not a current headline blocker. |
 | MES memory-access fault report | [`ROCm/ROCm#5724`](https://github.com/ROCm/ROCm/issues/5724) is closed. | Still relevant when diagnosing firmware/kernel regressions. |
@@ -50,6 +50,13 @@ These are narrowly scoped upstream reports, not blanket claims about Strix Halo,
 - ROCm 7.14 also marks Radeon SGLang support as initial. For the validated image family, AMD advises `SGLANG_USE_AITER=false` and `SGLANG_ROCM_FUSED_DECODE_MLA=false`; some MoE and Qwen3-ASR routes still need newer upstream fixes. Treat these as official setup caveats, not local performance claims.
 - A controlled same-cache Ollama comparison measured 0.31.1, 0.31.2, and 0.32.0 at 72.55, 73.19, and 73.20 t/s respectively over nine warm requests. The earlier 60.57-versus-71.82 observation was not a version-wide regression.
 - Official llama.cpp b10046 is the latest release checked. It includes merged PR #24233, which restores the integrated-device property for HIP builds. The official b10046 ROCm binary locally detected 120,124 MiB free UMA and used `ROCm_Host` model, output, and compute buffers on `gfx1151` without `HSA_OVERRIDE_GFX_VERSION`. The release binary needed the existing Ollama ROCm library path on this host; this is a compatibility/setup result, not a replacement Vulkan speed run.
+
+## 2026-07-27 Release And Runtime Recheck
+
+- `llama.cpp` b10154, Ollama 0.32.4, vLLM 0.26.0, and SGLang 0.5.16 are the latest audited upstream releases in their respective lanes.
+- Isolated Ollama 0.32.3 measured 73.13 t/s versus 73.20 t/s on the controlled 0.31.2 binary with exact text outputs. Qwen2.5-VL fully offloaded to the iGPU, read the test image correctly, and repeated after a process restart. This makes 0.32.3 a clean upgrade candidate, not a full system-service qualification.
+- Ollama 0.32.4 is the current buyer-path target because it contains Qwen3 mixed-expert-quant and speculative-draft quantization fixes. Keep the installed 0.31.2 service until 0.32.4 passes the normal package upgrade, service restart, vision, tools, and full-host reboot checks.
+- vLLM 0.26.0 and SGLang 0.5.16 contain AMD-relevant changes, but their datacenter-GPU release notes do not become `gfx1151` claims without isolated local reproductions.
 
 ## 2026-07-06 Watch Recheck
 

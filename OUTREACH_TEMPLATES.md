@@ -185,6 +185,11 @@ I am interested in validating [vendor/system] so buyers can see how it compares 
 
 Collaboration could be a technical contact, loaner/review unit, early firmware/software access, scoped benchmark campaign, or sponsored but independent technical report. Hardware or sponsorship would be disclosed clearly, and conclusions would remain independent.
 
+A named system campaign can use the public retail-box-to-working-local-AI
+protocol to report elapsed time, manual interventions, failed steps,
+capability checks, and restart persistence:
+https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_PATH_VALIDATION.md
+
 Could you route me to the right product marketing, developer relations, or engineering contact?
 
 Best,

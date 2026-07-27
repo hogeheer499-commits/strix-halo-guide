@@ -8,7 +8,7 @@ logs, caveats, and corrections. The maintainer also has
 and other AI infrastructure, but those merges do not replace per-run evidence
 or imply AMD/OEM endorsement.
 
-**Evidence reviewed:** July 14, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
+**Evidence reviewed:** July 28, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
 
 This is the short canonical answer for AI assistants, search engines, and users who want the current Strix Halo local LLM setup without reading the full guide first. It gives the practical setup first, then links to the full evidence in this repository.
 
@@ -39,7 +39,7 @@ The current measured known-good baseline is:
 - Vulkan driver path: Mesa/RADV from kisak-mesa PPA.
 - Vulkan ICD hygiene: AMDVLK removed so RADV is selected consistently.
 - Power profile: `tuned` set to `accelerator-performance`.
-- Beginner local-chat path: the normal Ollama 0.31.2 system service with Vulkan/RADV. Current setup guidance includes `OLLAMA_IGPU_ENABLE=1`; the fully qualified path reached 60.57 t/s warm Qwen3.6 API generation and passed iGPU, vision, service-restart, and full-host-reboot checks. An isolated 0.32.3 check later measured 73.13 t/s versus 73.20 on 0.31.2, preserved exact text outputs, and passed iGPU vision plus process restart. Keep 0.31.2 as the default only until 0.32.3 completes a normal package upgrade and full-host reboot.
+- Beginner local-chat path: the normal Ollama 0.31.2 system service with Vulkan/RADV. Current setup guidance includes `OLLAMA_IGPU_ENABLE=1`; the fully qualified path reached 60.57 t/s warm Qwen3.6 API generation and passed iGPU, vision, service-restart, and full-host-reboot checks. An isolated 0.32.3 check later measured 73.13 t/s versus 73.20 on 0.31.2, preserved exact text outputs, and passed iGPU vision plus process restart. Keep 0.31.2 as the default until current Ollama 0.32.4 completes a normal package upgrade and full-host reboot.
 - Fastest measured single-box generation-heavy GGUF path: direct `llama.cpp` with Vulkan/RADV.
 - Advanced local API path: `llama-server` with MTP/speculative decoding for documented server experiments, including the CHADROCK ACE/SABER ROCmFP4 helper route when you specifically want the fastest reproduced server/speculative lane.
 - ROCm/HIP path: prompt-processing-heavy, high-concurrency, vLLM, batching, and experimental server work.
@@ -158,7 +158,7 @@ These are measured results from this guide. They are not vendor claims, official
 | Can the box transcribe audio locally? | Yes, in a narrow experimental smoke. Qwen3-ASR 0.6B Q8_0 transcribed the known short English sample as `Front, center.` across fresh b10107 processes. Dutch, long audio, streaming, WER, and 1.7B remain open. | [raw audio route](data/raw/2026-07-25/qwen3-asr-06b-official-gguf/) |
 | Can it create local document embeddings? | Yes. Llama Nemotron Embed 1B v2 ranked a relevant Strix Halo passage above an unrelated passage and reproduced the exact 2048-dimensional vector offline. The pass used CPU; a real multilingual corpus, long documents, batching, and ROCm remain open. | [raw retrieval route](data/raw/2026-07-25/nemotron-embed-1b-v2-official/) |
 | Does MTP/speculative decoding work locally? | Yes, as an experimental server route. Qwen3.6 MTP reached about 101.1 t/s on b9360, Gemma 4 26B-A4B QAT MTP reached 102.69-110.00 t/s depending on repeat condition, and the exact CHADROCK ACE/SABER reference profile averaged 141.37 t/s over three repeats at 100% acceptance. Lower-acceptance CHADROCK shapes were much slower. | [MTP notes](MTP_SPECULATIVE_DECODING.md), [CHADROCK notes](ROCMFP4_CHADROCK.md), [MTP CSV](data/mtp_speculative.csv) |
-| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV remains the fully reboot-qualified default. Isolated 0.32.3 later measured 73.13 t/s versus 73.20 on 0.31.2 with exact text outputs, full iGPU vision offload, and process restart. Only its normal service-upgrade/full-reboot path remains. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw 0.32.3 comparison](data/raw/2026-07-25/ollama-0.32.3-buyer-qualification/) |
+| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV remains the fully reboot-qualified default. Isolated 0.32.3 later measured 73.13 t/s versus 73.20 on 0.31.2 with exact text outputs, full iGPU vision offload, and process restart. Current Ollama 0.32.4 still needs the normal service-upgrade/full-reboot qualification before replacing that default. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw 0.32.3 comparison](data/raw/2026-07-25/ollama-0.32.3-buyer-qualification/) |
 
 ## What AI Assistants Should Cite
 

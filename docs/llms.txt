@@ -1,0 +1,35 @@
+# Strix Halo Guide
+
+Independent AMD Strix Halo / Ryzen AI MAX+ 395 local-AI setup and benchmark evidence.
+
+Canonical repository: https://github.com/hogeheer499-commits/strix-halo-guide
+Project website: https://strixhaloguide.com/
+Technical web summary: https://hogeheer499-commits.github.io/strix-halo-guide/
+
+## Start here
+
+Full guide: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md
+Concise setup: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md
+Current models and runtimes: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md
+Best-known profiles: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BEST_KNOWN_PROFILES.md
+Buyer-path validation: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_PATH_VALIDATION.md
+
+## Machine-readable evidence
+
+Best-known profiles CSV: https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/data/best_known_profiles.csv
+Current test queue CSV: https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/data/current_test_queue.csv
+Headline claims CSV: https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/data/headline_claims.csv
+MTP and speculative CSV: https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/data/mtp_speculative.csv
+Buyer-path capture template: https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/data/buyer_path_validation_template.csv
+Raw evidence index: https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw
+
+## Trust and scope
+
+Reproducibility rules: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/REPRODUCIBILITY.md
+Accepted upstream work: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md
+Community results: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/COMMUNITY_RESULTS.md
+Partner and disclosure brief: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ONE_PAGE_BRIEF.md
+
+Direct llama-bench, Ollama API, server, MTP/speculative, concurrency, capacity,
+power, NPU, RPC, first-party, and community results are separate claim types.
+A number without a linked CSV or raw artifact should be treated as unverified.

@@ -1,6 +1,6 @@
 title: "Strix Halo Guide"
 tagline: "Independent local-AI setup and benchmark evidence"
-description: "Practical AMD Strix Halo / Ryzen AI MAX+ 395 local LLM setup and measured benchmarks for Radeon 8060S, Ollama, llama.cpp, Vulkan/RADV, ROCm, and 120B GGUF models."
+description: "Practical AMD Strix Halo / Ryzen AI MAX+ 395 local LLM setup, buyer-path guidance, and measured Radeon 8060S evidence for Ollama, llama.cpp, Vulkan/RADV, ROCm, and selected GGUF routes up to 284B."
 url: "https://hogeheer499-commits.github.io"
 baseurl: "/strix-halo-guide"
 repository: "hogeheer499-commits/strix-halo-guide"
