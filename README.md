@@ -812,10 +812,10 @@ Based on our measurements and [lhl's detailed testing](https://github.com/lhl/st
 | RTX 4090 | ~1008 GB/s | 100-122 t/s | 24 GB | ~$1600 GPU only |
 | RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$800 used |
 | Apple Mac Studio M4 Max high-memory | ~546 GB/s | ~100 t/s (MLX) | 96-128 GB depending on availability | verify current Apple config |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **63-101.0 t/s current direct Qwen MoE rows; 81 t/s speed-first Qwen3.6** | **120+ GB** | **$4,399 official (June 11, 2026 snapshot)** |
+| **Beelink GTR9 Pro** | **~215 GB/s** | **63-101.0 t/s current direct Qwen MoE rows; 81 t/s speed-first Qwen3.6** | **120+ GB** | **$4,349 official (July 27, 2026 US snapshot)** |
 | NVIDIA DGX Spark | ~273 GB/s | 52-56 t/s (120B) | 128 GB | $4,699 |
 
-> **Apples-to-apples (gpt-oss-120b, same model family):** this guide now measures Strix Halo at 55.57 t/s tg128 locally via llama.cpp Vulkan/RADV b9049. External DGX Spark reports are around 52-56 t/s on comparable generation rows. At Beelink's June 11, 2026 official price snapshot, the price gap to DGX Spark is about $300 ($4,399 vs $4,699), although other Strix Halo systems remain cheaper. On smaller MoE models (Qwen3-30B), Strix Halo measures 96.76 t/s on the balanced Qwen3-Coder b9049 campaign, 100.99 t/s with Qwen3-Coder b9851 Q4_K_S, and 100.04 t/s with a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS b9467 row. The DGX Spark wins on prompt processing and long-context rows in external reports. High-memory Mac Studio pricing/availability changed quickly in May 2026, so verify current Apple configs before using it as a purchase comparison. Source: [local raw data](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/), [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
+> **Apples-to-apples (gpt-oss-120b, same model family):** this guide now measures Strix Halo at 55.57 t/s tg128 locally via llama.cpp Vulkan/RADV b9049. External DGX Spark reports are around 52-56 t/s on comparable generation rows. At Beelink's July 27, 2026 official US price snapshot, the price gap to DGX Spark is about $350 ($4,349 vs $4,699), although other Strix Halo systems remain cheaper. On smaller MoE models (Qwen3-30B), Strix Halo measures 96.76 t/s on the balanced Qwen3-Coder b9049 campaign, 100.99 t/s with Qwen3-Coder b9851 Q4_K_S, and 100.04 t/s with a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS b9467 row. The DGX Spark wins on prompt processing and long-context rows in external reports. High-memory Mac Studio pricing/availability changed quickly in May 2026, so verify current Apple configs before using it as a purchase comparison. Source: [local raw data](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/), [NVIDIA DGX Spark](https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/), [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
 
 ### Long Context Performance
 
@@ -1809,9 +1809,9 @@ ollama pull qwen3.6:35b-a3b
 
 | Scenario | System Cost | Monthly Savings | Break-even |
 |----------|------------|-----------------|------------|
-| vs ChatGPT Plus | ~$4,399 high-end Beelink example | $12/mo | ~31 years |
-| vs API heavy use (200 queries/day) | ~$4,399 high-end Beelink example | ~$50/mo | ~7.3 years |
-| vs API power use (1000+ queries/day) | ~$4,399 high-end Beelink example | ~$200/mo | **~22 months** |
+| vs ChatGPT Plus | ~$4,349 high-end Beelink example | $12/mo | ~30 years |
+| vs API heavy use (200 queries/day) | ~$4,349 high-end Beelink example | ~$50/mo | ~7.2 years |
+| vs API power use (1000+ queries/day) | ~$4,349 high-end Beelink example | ~$200/mo | **~22 months** |
 
 > **The real value is not subscription arbitrage.** It's running AI with **no rate limits, no content filters, no data leaving your machine, and no internet required**. Casual chat users should keep paying for hosted subscriptions; local hardware makes sense when privacy, offline use, heavy API usage, or large local models matter.
 
@@ -1903,30 +1903,28 @@ Qwen3-TTS and Chatterbox TTS both run on Strix Halo with GPU acceleration. lhl's
 
 Current Strix Halo systems use the same AMD Ryzen AI MAX+ 395 APU with 64GB, 96GB, or 128GB LPDDR5X-8000 depending on vendor and variant. The differentiators are memory size, form factor, cooling, ports, support, stock status, price, and how much public evidence exists for the exact chassis.
 
-Prices, coupons, and availability change quickly. Treat this as a dated buyer snapshot checked on **2026-06-11**, not a permanent ranking. The strongest recommendation in this guide is not only price: it is how much reproducible evidence exists for that chassis and workflow. Coupon and promo notes below are included only when they were visible during the check; verify final cart totals before buying.
+Prices, coupons, and availability change quickly. Treat this as a dated **US-storefront** buyer snapshot checked on **2026-07-27**, not a permanent ranking or a checkout quote. The strongest recommendation in this guide is not only price: it is how much reproducible evidence exists for that chassis and workflow. Listed prices exclude tax and may change with region, shipping, coupons, or cart configuration; verify final cart totals before buying.
 
-| System | Price/config snapshot checked 2026-06-11 | Evidence depth in this guide | Buyer read |
+| System | Price/config snapshot checked 2026-07-27 | Evidence depth in this guide | Buyer read |
 |--------|-------------------------------------------|------------------------------|------------|
-| **GMKtec EVO-X2** | EU store manual check: about EUR 1,899.99 for 64GB+1TB. For 128GB+2TB/EU, cart showed EUR 3,029.99 before coupon and EUR 2,979.99 after `GMKEVO50OFF` (-EUR 50). 96GB+2TB appeared unavailable in that view; US/UK cart totals may differ. | Strong community evidence: native Ubuntu Vulkan/RADV within about 2% of the Beelink Qwen3.6 row, WSL2/HIP baseline, Qwen3-Coder follow-ups, MTP reproduction, and tuned thermal/power-policy Reddit report. | High-value candidate when the selected memory config and cart total are favorable. Do not compare the 64GB price against 128GB systems. |
-| **Bosgame M5** | Official/search snapshot: $2,799 for the 96GB/128GB+2TB M5 page; verify the selected variant and checkout currency before treating it as a 128GB quote. | No dedicated same-shape guide benchmark row yet; likely relevant as a closely related platform, but not validated here like Beelink/Corsair/GMKtec/Nimo. | Interesting price comparator, but evidence depth is thinner. Buy on ports/support/return terms, not benchmark proof from this repo. |
-| **Framework Desktop** | 128GB mainboard snapshot: $2,859 in the official product index; full Desktop/cart pricing is regional and configuration-dependent. | External/community interest and Framework ecosystem are strong, but this guide has less same-shape imported evidence than Beelink/Corsair/GMKtec/Nimo. | Best repairability/modularity ecosystem. Needs more direct guide rows before treating it as a benchmark-proven chassis here. |
-| **Beelink GTR9 Pro** | $4,399 official 128GB+2TB pre-order snapshot; Beelink page says orders ship within 35 days. | Deepest first-party evidence: this guide's primary Beelink system produced the local headline, regression-control, power-telemetry, backend, server, and current-model rows. | Most evidence-backed choice in this repo, with premium positioning in this dated comparison. Confirm the exact board/NIC revision with the seller. |
-| **Corsair AI Workstation 300** | $3,399.99 official 128GB/4TB snapshot; official page showed out of stock. | Strongest community-validated fleet: three systems reproduced the Qwen3-Coder Vulkan/RADV path, plus wall-power rows, USB4/RPC cluster evidence, and a MiMo-V2.5 310B-class prompt-processing capacity row. | Best community validation if you value repeatability across multiple same-vendor systems. Stock status matters. |
-| **Minisforum MS-S1 MAX** | Official pages disagreed by region/page: store page showed 64GB+2TB at $2,599 and 128GB+2TB at $3,679 out of stock; another Minisforum page showed 128GB+2TB sold out at $2,919.90. A launch-day $200-off coupon prompt and code `CODEABC` were visible on one page; verify applicability to the selected SKU. | Windows LM Studio serving/API community evidence is imported for MS-S1-Max; not a same-shape native Linux comparison. | Interesting for dual 10GbE, USB4 v2, PCIe expansion, and rack/cluster experiments. Verify exact regional SKU and stock. |
-| **Nimo AI Mini PC** | Official page showed $3,999.99 regular pricing with sold-out/pre-order language and a $600-off promo note; no checkout-confirmed code was captured in this pass. | Strong compact-chassis community bundle: large-model serving, MTP, StepFun/Qwen 122B, Gemma 4 QAT/MTP assistant-head follow-up data, and thermal context. | Useful compact 128GB option if large-model feasibility and thermal context matter more than raw headline speed. |
-| **HP ZBook Ultra G1a** | HP official page confirms up to Ryzen AI MAX+ PRO 395 and 128GB unified memory, but a current HP direct price was not captured in this pass; reseller snapshot seen at $4,679.48. | No same-shape guide benchmark evidence yet. | Portable/workstation-laptop option. Treat as a different buyer category, not a mini-PC value comparison. |
+| **GMKtec EVO-X2** | Official US listing starts at $1,999.99 for 64GB+1TB. The checked 128GB+2TB selection was unavailable, so the base price is not a 128GB quote. | Strong community evidence: native Ubuntu Vulkan/RADV within about 2% of the Beelink Qwen3.6 row, WSL2/HIP baseline, Qwen3-Coder follow-ups, MTP reproduction, and tuned thermal/power-policy Reddit report. | High-value candidate when the selected 128GB configuration is available and its cart total is favorable. Do not compare the 64GB base price against 128GB systems. |
+| **Bosgame M5** | $2,899 for the listed 128GB+2TB configuration ($3,299 compare-at). | No dedicated same-shape guide benchmark row yet; likely relevant as a closely related platform, but not validated here like Beelink/Corsair/GMKtec/Nimo. | Interesting price comparator, but evidence depth is thinner. Buy on ports/support/return terms, not benchmark proof from this repo. |
+| **Framework Desktop** | $3,149 for the 128GB Ryzen AI Max+ 395 mainboard. Full Desktop/cart pricing is regional and configuration-dependent. | External/community interest and Framework ecosystem are strong, but this guide has less same-shape imported evidence than Beelink/Corsair/GMKtec/Nimo. | Best repairability/modularity ecosystem. Needs more direct guide rows before treating it as a benchmark-proven chassis here. |
+| **Beelink GTR9 Pro** | $4,349 for the listed 128GB+2TB configuration ($4,699 compare-at); current listing marks it available. | Deepest first-party evidence: this guide's primary Beelink system produced the local headline, regression-control, power-telemetry, backend, server, and current-model rows. | Most evidence-backed choice in this repo, with premium positioning in this dated comparison. Confirm the exact board/NIC revision with the seller. |
+| **Corsair AI Workstation 300** | $2,999.99 for the listed 128GB/4TB configuration ($3,399.99 original); current product page marked it in stock. | Strongest community-validated fleet: three systems reproduced the Qwen3-Coder Vulkan/RADV path, plus wall-power rows, USB4/RPC cluster evidence, and a MiMo-V2.5 310B-class prompt-processing capacity row. | Best community validation if you value repeatability across multiple same-vendor systems. Stock status matters. |
+| **Minisforum MS-S1 MAX** | $3,639 for the 128GB+2TB Max AI Compute Edition, with estimated shipping in mid-August. | Windows LM Studio serving/API community evidence is imported for MS-S1-Max; not a same-shape native Linux comparison. | Interesting for dual 10GbE, USB4 v2, PCIe expansion, and rack/cluster experiments. Verify exact regional SKU and shipping date. |
+| **Nimo AI Mini PC** | $3,899.99 for the listed 128GB+2TB configuration; page showed it in stock. | Strong compact-chassis community bundle: large-model serving, MTP, StepFun/Qwen 122B, Gemma 4 QAT/MTP assistant-head follow-up data, and thermal context. | Useful compact 128GB option if large-model feasibility and thermal context matter more than raw headline speed. |
+| **HP ZBook Ultra G1a** | HP's US configurator displayed $11,874 MSRP for the selected 128GB+1TB Ryzen AI Max+ PRO 395 configuration. | No same-shape guide benchmark evidence yet. | Portable/workstation-laptop option. Treat as a different buyer category, not a mini-PC value comparison. |
 
-> Snapshot sources checked 2026-06-11:
+> Snapshot sources checked 2026-07-27:
 > [GMKtec](https://www.gmktec.com/products/amd-ryzen%E2%84%A2-ai-max-395-evo-x2-ai-mini-pc),
 > [Bosgame](https://www.bosgamepc.com/products/bosgame-m5-ai-mini-desktop-ryzen-ai-max-395),
 > [Framework mainboard](https://frame.work/products/framework-desktop-mainboard-amd-ryzen-ai-max-300-series),
 > [Beelink](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395),
 > [Corsair](https://www.corsair.com/us/en/p/gaming-computers/cs-9080003-na/corsair-ai-workstation-300-amd-ryzen-ai-max-395-processor-amd-radeon-8060s-igpu-up-to-96gb-vram-128gb-lpddr5x-memory-4tb-2tb-2tb-m2-ssd-win11-home-cs-9080003-na),
-> [Minisforum store](https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc),
-> [Minisforum product page](https://www.minisforum.com/products/ms-s1-max),
+> [Minisforum 128GB listing](https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc?rdt_cid=4946120491028296516),
 > [Nimo](https://www.nimopc.com/products/nimos-smallest-office-gaming-ai-pc-amd-ryzen-ai-max-395-up-to-5-1-ghz-128gb-lpddr5-8000mhz-16gb-8-2tb-4tb-ssd-with-3-performance-modes-up-to-120w),
-> [HP](https://www.hp.com/us-en/workstations/zbook-ultra.html), and
-> [Best Buy HP reseller snapshot](https://www.bestbuy.com/product/hp-zbook-ultra-g1a-14-touch-amd-ryzen-ai-max-pro-395-128-gb-amd-radeon-8060s-win-11-pro-silver/JJGH2GH9HR).
+> [HP US 128GB configuration](https://www.hp.com/us-en/shop/custom/hp-zbook-ultra-g1a-mobile-workstation-pc-customizable-14-inch-amd-ryzen-ai-128gb-ram-1tb-ssd-eclipse-gray-AY8K7AV_156618?catEntryId=3074457345621963823).
 > Dynamic vendor pages can show different currency, stock, and coupon state by region.
 
 > **Board/NIC revision note (Beelink GTR9 Pro):** Some, but not all, original v1.0 systems with Intel E610-XT2 networking have reported NIC recovery/disconnection failures. Beelink has published update guidance and later introduced the v2.2 board with Realtek RTL8127 networking. Because field reports vary by unit and revision, confirm the exact board/NIC version with the seller and contact Beelink support with the serial number when troubleshooting. See the [Beelink forum thread](https://bbs.bee-link.com/d/7762-gtr-9-pro-ethernet-malfunction-under-load) and Beelink's [Q1 2026 BIOS summary](https://www.bee-link.com/blogs/all/bios-update-summary-for-q1-2026).
@@ -1938,7 +1936,7 @@ Prices, coupons, and availability change quickly. Treat this as a dated buyer sn
 - **Best already community-validated vendor fleet:** Corsair AI Workstation 300 -- three systems reproduced the Qwen3-Coder Vulkan/RADV path.
 - **Best for clustering/expansion experiments:** Minisforum MS-S1 MAX or Beelink GTR9 Pro v2.2 -- dual 10GbE for RDMA/cluster experiments, but verify stock, regional SKU, and board revision.
 - **Compact large-model community evidence:** Nimo AI Mini PC -- useful for large-model serving/MTP/thermal context.
-- **Only if you need portability:** HP ZBook Ultra G1a, with current checkout/reseller pricing verified separately.
+- **Only if you need portability:** HP ZBook Ultra G1a, with the exact regional configuration and final cart total verified separately.
 
 > **Important:** many Chinese mini PCs in this class, including Bosgame, GMKtec, and Beelink, appear to use closely related Sixunited platform designs. Do not assume every config is literally identical, but the first native GMKtec EVO-X2 community run reproduced the guide's Qwen3.6 Vulkan/RADV row within about 2%. Pick based on price, memory size, ports, cooling, and support.
 
@@ -2071,7 +2069,7 @@ Linux gives the best-tested performance and the strongest native Vulkan/RADV evi
 <details>
 <summary><strong>How does this compare to a Mac Studio?</strong></summary>
 
-Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro price snapshot is $4,399 and this guide measures 71.82-101.0 t/s on the larger current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row, and smaller active-parameter MoE scouts can be higher. Apple Silicon usually wins per-model bandwidth-sensitive inference. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
+Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro US price snapshot is $4,349 (July 27, 2026), and this guide measures 71.82-101.0 t/s on the larger current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row, and smaller active-parameter MoE scouts can be higher. Apple Silicon usually wins per-model bandwidth-sensitive inference. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
 
 </details>
 
@@ -2156,6 +2154,11 @@ Financial support may fund hardware, storage, model downloads, testing time, and
 ---
 
 ## Changelog
+
+### 2026-07-27 -- Buyer Price Snapshot Refresh
+
+- **Official US storefronts rechecked:** the buyer table now records the displayed configuration, price, and availability state for GMKtec, Bosgame, Framework, Beelink, Corsair, Minisforum, Nimo, and HP. The dated snapshot is deliberately not a tax-, shipping-, coupon-, or regional-cart quote.
+- **Material changes reflected:** Beelink's listed 128GB+2TB price is now $4,349, Corsair's listed 128GB/4TB price is $2,999.99 and in stock, and Minisforum's listed 128GB+2TB Max AI Compute Edition price is $3,639 with mid-August estimated shipping. The current Beelink value is also used in the hardware comparison and break-even examples.
 
 ### 2026-07-25 -- Current Runtime, Lightweight Vision, Speech, And Retrieval
 
