@@ -1,0 +1,23 @@
+Starting container...                   	[32m [ OK ]
+[0mInstalling basic packages...            	[32m [ OK ]
+[0mSetting up devpts mounts...             	[32m [ OK ]
+[0mSetting up read-only mounts...          	[32m [ OK ]
+[0mSetting up read-write mounts...         	[32m [ OK ]
+[0mSetting up host's sockets integration...	[32m [ OK ]
+[0mIntegrating host's themes, icons, fonts...	[32m [ OK ]
+[0mSetting up package manager exceptions...	[32m [ OK ]
+[0mSetting up rpm exceptions...            	[32m [ OK ]
+[0mSetting up distrobox profile...         	[32m [ OK ]
+[0mSetting up sudo...                      	[32m [ OK ]
+[0mSetting up user groups...               	[32m [ OK ]
+[0mSetting up kerberos integration...      	[32m [ OK ]
+[0mSetting up user's group list...         	[32m [ OK ]
+[0mSetting up existing user...             	[32m [ OK ]
+[0mSetting up user home...                 	[32m [ OK ]
+[0mEnsuring user's access...               	[32m [ OK ]
+[0m
+Container Setup Complete!
+version: 10182 (afeebe103)
+built with GNU 15.3.1 for Linux x86_64
+Available devices:
+  ROCm0: AMD Radeon 8060S Graphics (122880 MiB, 107338 MiB free)

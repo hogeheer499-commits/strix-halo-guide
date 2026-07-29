@@ -1,0 +1,4 @@
+version: 10182 (afeebe103)
+built with GNU 15.3.1 for Linux x86_64
+Available devices:
+  ROCm0: AMD Radeon 8060S Graphics (122880 MiB, 107596 MiB free)

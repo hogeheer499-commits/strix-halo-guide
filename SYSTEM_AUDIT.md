@@ -78,7 +78,7 @@ Expected state:
 
 ## ROCm Status
 
-ROCm is not "all broken" on kernel 6.19.x anymore. It works when these variables are set before ROCm/HIP commands:
+The dated b8460/kernel 6.19.4 comparison used these variables:
 
 ```bash
 export HSA_OVERRIDE_GFX_VERSION=11.5.1
@@ -91,6 +91,11 @@ Current measured comparison from the guide:
 |-----------------|-------|-------|-------|
 | Vulkan RADV, llama.cpp b8460 | 1080 | 64.85 | Fastest measured short-context MoE path |
 | ROCm HIP, llama.cpp b8460, HSA fix | 1047 | 54.67 | Works, but slower tg on this workload |
+
+For current ROCm builds, first verify native `gfx1151` detection with no
+global `HSA_OVERRIDE_GFX_VERSION`. Remove stale host overrides from shell and
+service startup files. Keep the variables above only when reproducing the
+dated b8460/kernel 6.19.4 comparison.
 
 ## Action Items Before New Tests
 

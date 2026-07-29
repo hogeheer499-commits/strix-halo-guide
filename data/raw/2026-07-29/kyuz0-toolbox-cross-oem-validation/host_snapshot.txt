@@ -1,0 +1,13 @@
+capture_date=2026-07-29
+system=Beelink GTR9 Pro
+cpu=AMD Ryzen AI MAX+ 395
+igpu=AMD Radeon 8060S
+memory_class=128GB unified memory
+os=Ubuntu 24.04.4 LTS
+kernel=7.0.0-28-generic
+container_engine=rootless Podman 4.9.3
+distrobox=1.7.0
+toolbox_source_commit=5aa1e8155d9a1ce339b94fea9b00e3abecad8939
+background_condition=real-world compatibility state
+background_workloads=Zoom VM; Zoom; FFmpeg/DocRemote; RustDesk; desktop
+scope=compatibility and same-host backend comparison; not strict-clean

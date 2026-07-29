@@ -20,7 +20,9 @@ As of the 2026-05-01 reconciliation:
 - CPU spec is corrected to Ryzen AI MAX+ 395, 16 cores / 32 threads.
 - Beelink GTR9 Pro pricing is date-bound at $4,399 official for the 128GB+2TB variant on May 1, 2026.
 - AMDVLK is documented as removed and not recommended.
-- ROCm is no longer described as globally broken on kernel 6.19.x; it works with the HSA overrides documented in the guide.
+- The dated b8460/kernel 6.19.4 ROCm route is preserved with its exact HSA
+  overrides. Current native-`gfx1151` builds start without a global
+  architecture override.
 - Mesa RADV 26.0.6, Ollama 0.21.2, kernel 6.19.4, safe linux-firmware, 2900 MHz GPU clock, and `tuned accelerator-performance` were the verified system state for that reconciliation. New benchmark campaigns must record their own exact host state.
 
 ## Benchmark Workflow

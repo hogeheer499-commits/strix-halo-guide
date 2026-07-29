@@ -1,0 +1,28 @@
+🔄 Refreshing llama-rocm-7.2.4 (image: docker.io/kyuz0/amd-strix-halo-toolboxes:rocm-7.2.4)
+🧹 Removing existing toolbox: llama-rocm-7.2.4
+Removing exported binaries...
+Removing container...
+llama-rocm-7.2.4
+⬇️ Pulling latest image: docker.io/kyuz0/amd-strix-halo-toolboxes:rocm-7.2.4
+Trying to pull docker.io/kyuz0/amd-strix-halo-toolboxes:rocm-7.2.4...
+Getting image source signatures
+Copying blob sha256:cd7b684df5f6f91b2a343f543c118c2d78496dbc04005697b5cbf24119f08049
+Copying blob sha256:cafacee32e4d76aeeac33374905abf1e854fa8d6c2105e6bc00f8e170f2b214e
+Copying blob sha256:ff8025e1e85c1335f27dbdcb9c08e6e2b67e4d48625c08f1b4fd4f94c8ec8c21
+Copying blob sha256:a2c3002e90c529434b6a9fdfde37d460c7a0234e85126e3b3f44216e3cdd8d79
+Copying blob sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1
+Copying blob sha256:d3b6184a2013da927228beb4896c6b47c493cdd83023669dab93d91b2950067a
+Copying blob sha256:07984eecf0d94564cfcb04a63c6d41a6eb0f7fefaa34f04958376e61017f5681
+Copying blob sha256:f47377bf9e293af75cb154f6c363d876eca48d476504fafe1341c16f91fab2dd
+Copying blob sha256:cd32ec080f4490bc327079710d9cc43b0c6f7f6c49b717b91e357c142abd6d39
+Copying config sha256:aab50b8862c2156e38fa0e183f5637c92e1442d372a1871e9009653ba5da340f
+Writing manifest to image destination
+aab50b8862c2156e38fa0e183f5637c92e1442d372a1871e9009653ba5da340f
+📦 Recreating toolbox: llama-rocm-7.2.4
+Creating 'llama-rocm-7.2.4' using image docker.io/kyuz0/amd-strix-halo-toolboxes:rocm-7.2.4	[32m [ OK ]
+[0mDistrobox 'llama-rocm-7.2.4' successfully created.
+To enter, run:
+
+distrobox enter llama-rocm-7.2.4
+
+✅ llama-rocm-7.2.4 refreshed

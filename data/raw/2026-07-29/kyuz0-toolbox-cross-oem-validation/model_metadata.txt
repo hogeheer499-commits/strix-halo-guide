@@ -1,0 +1,3 @@
+filename=Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
+file_bytes=17665334432
+sha256=2841aa314d916434860cfb8990347528dcdfe5c350dbcb9d1461dbee88ff2533

@@ -1,0 +1,4 @@
+[vulkan-radv]
+repo=[docker.io/kyuz0/amd-strix-halo-toolboxes:vulkan-radv] digest=sha256:dd3f8423e847d98752d799ba04fc30139a152f27e1e13e8684ad52ab7e4d39f2 id=67407c6f3a8a91a04a1af1e483669a4531e5a70dd41638465e622843cc571867 created=2026-07-29 17:27:26.776884527 +0000 UTC size=1972375599
+[rocm-7.2.4]
+repo=[docker.io/kyuz0/amd-strix-halo-toolboxes:rocm-7.2.4] digest=sha256:4b2878d02083cdb71c04dcc0ca3017a8de36bdb87221efaece0d0d45f6a8ce1c id=aab50b8862c2156e38fa0e183f5637c92e1442d372a1871e9009653ba5da340f created=2026-07-29 17:36:25.555145064 +0000 UTC size=7030920388

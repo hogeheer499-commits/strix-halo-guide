@@ -58,6 +58,26 @@ These are narrowly scoped upstream reports, not blanket claims about Strix Halo,
 - Ollama 0.32.5 is the current buyer-path target because it contains the Qwen3 mixed-expert-quant and speculative-draft quantization fixes introduced in 0.32.4. Its own release delta is MLX-only, so no AMD gain is assumed. Keep the installed 0.31.2 service until 0.32.5 passes the normal package upgrade, service restart, vision, tools, and full-host reboot checks.
 - vLLM 0.26.0 and SGLang 0.5.16 contain AMD-relevant changes, but their datacenter-GPU release notes do not become `gfx1151` claims without isolated local reproductions.
 
+## 2026-07-29 Kyuz0 Toolbox Cross-OEM Recheck
+
+- Current Kyuz0 Vulkan/RADV and ROCm 7.2.4 images loaded and served the same
+  30B Qwen GGUF on a Beelink GTR9 Pro with Ubuntu 24.04. This is a second
+  OEM/OS compatibility result, not a universal backend ranking.
+- Both images completed rootless Podman runs using only the required GPU
+  devices and a read-only model mount. No `--privileged`, host-root mount,
+  added capability, custom seccomp policy, host IPC, or host PID namespace
+  was required on this host.
+- The current Ubuntu-aware refresh script survived Distrobox
+  create/enter/refresh/re-enter cycles for both backends.
+- A stale host `HSA_OVERRIDE_GFX_VERSION=11.0.0` inherited by Distrobox forced
+  current ROCm 7.2.4 from native `gfx1151` to `gfx1100` and caused an exit-139
+  crash in `libamdhip64`. Removing the obsolete override restored native
+  detection and clean inference. Current native-`gfx1151` builds should not
+  inherit historical architecture overrides.
+- Exact image digests, model hash, raw repeats, API smokes, refresh logs, and
+  the failing/corrected ROCm outputs are under
+  [`data/raw/2026-07-29/kyuz0-toolbox-cross-oem-validation/`](data/raw/2026-07-29/kyuz0-toolbox-cross-oem-validation/).
+
 ## 2026-07-06 Watch Recheck
 
 No benchmark recommendation changed in this recheck:

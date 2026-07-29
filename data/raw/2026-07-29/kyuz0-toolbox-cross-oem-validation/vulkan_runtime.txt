@@ -1,0 +1,11 @@
+version: 10182 (afeebe103)
+built with GNU 15.3.1 for Linux x86_64
+Available devices:
+  Vulkan0: AMD Radeon 8060S Graphics (RADV GFX1151) (131584 MiB, 129871 MiB free)
+Vulkan Instance Version: 1.4.341
+	deviceName         = AMD Radeon 8060S Graphics (RADV GFX1151)
+	driverName         = radv
+	driverInfo         = Mesa 25.3.6
+	deviceName         = llvmpipe (LLVM 21.1.8, 256 bits)
+	driverName         = llvmpipe
+	driverInfo         = Mesa 25.3.6 (LLVM 21.1.8)

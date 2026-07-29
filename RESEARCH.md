@@ -55,7 +55,9 @@ This file tracks external Strix Halo research and how it relates to this guide. 
 
 **Old state:** Earlier March notes said kernel 6.19.4 made ROCm unusable because gfx1151 was detected as gfx1100 and containers segfaulted.
 
-**Current corrected state:** ROCm is no longer documented as "all broken" on kernel 6.19.x. It works when these variables are set before ROCm/HIP binaries:
+**Historical corrected state:** The measured b8460/kernel 6.19.4 route was
+not "all broken"; it worked when these variables were set before ROCm/HIP
+binaries:
 
 ```bash
 export HSA_OVERRIDE_GFX_VERSION=11.5.1
@@ -63,6 +65,12 @@ export HSA_ENABLE_SDMA=0
 ```
 
 **Measured local result:** ROCm HIP b8460 reached 1047 pp512 and 54.67 tg128 on Qwen3.5-35B-A3B Q4_K_M. Vulkan RADV b8460 remains faster on the same short-context workload at 1080 pp512 and 64.85 tg128.
+
+**Current rule:** current ROCm builds that already report native `gfx1151`
+should run without a global HSA architecture override. A 2026-07-29
+Beelink/Ubuntu Distrobox validation reproduced a crash when a stale host
+`HSA_OVERRIDE_GFX_VERSION=11.0.0` forced `gfx1100`; removing the obsolete
+override restored native detection and inference.
 
 ## Source 5: Strix Halo Wiki and llm-tracker
 

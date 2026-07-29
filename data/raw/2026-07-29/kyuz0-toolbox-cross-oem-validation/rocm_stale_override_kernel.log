@@ -1,0 +1,4 @@
+# Sanitized kernel lines from the two failed Distrobox attempts.
+# The stale HSA_OVERRIDE_GFX_VERSION=11.0.0 was present for both attempts.
+2026-07-29T21:05:46+02:00 kernel: traps: llama-bench general protection fault in libamdhip64.so.7.2.70204
+2026-07-29T21:07:06+02:00 kernel: traps: llama-bench general protection fault in libamdhip64.so.7.2.70204

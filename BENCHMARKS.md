@@ -419,7 +419,8 @@ AMDVLK is not recommended. It was installed during earlier testing and its ICD f
 
 ## ROCm Status
 
-ROCm is no longer "all broken" on kernel 6.19.x. It works when both environment variables are set before running ROCm/HIP binaries:
+The historical b8460/kernel 6.19.4 route was not "all broken." It worked when
+both environment variables were set before running ROCm/HIP binaries:
 
 ```bash
 export HSA_OVERRIDE_GFX_VERSION=11.5.1
@@ -433,6 +434,13 @@ export HSA_ENABLE_SDMA=0
 | b8301 | 6.18.14 | 488 | 996 | 48.80 | Previous reference |
 
 ROCm remains relevant for batch processing, hipBLASLt, vLLM experiments, and long-context/rocWMMA work. For current generation-heavy MoE chat/coding rows, Vulkan RADV is faster on the measured data; for prompt-processing-heavy work, HIP can win and should be tested separately.
+
+Current ROCm builds that detect `gfx1151` natively should run without a
+global HSA architecture override. A stale host
+`HSA_OVERRIDE_GFX_VERSION=11.0.0` was independently reproduced as a
+Distrobox migration failure with current ROCm 7.2.4; removing it restored
+native detection and inference. This does not change the environment recorded
+for the historical rows above.
 
 ### 2026-05-03 ROCm HIP Spot Check
 
@@ -475,5 +483,5 @@ Gemma 4 26B-A4B is a negative result on the local HIP path: Vulkan loaded and ra
 1. Direct llama.cpp with Vulkan RADV is the fastest measured short-context path for Qwen MoE models.
 2. Updating llama.cpp from b8298 to b8460 produced the largest improvement: +24% pp and +25% tg on Qwen3.5-35B-A3B.
 3. AMDVLK caused false regression reports through ICD hijacking; keep it removed.
-4. ROCm works on kernel 6.19.4 with HSA overrides. The latest measured generation rows are still behind Vulkan RADV, but HIP can win prompt processing.
+4. The dated b8460/kernel 6.19.4 ROCm rows used HSA overrides. Current native-`gfx1151` builds should be tested without a global override; HIP remains relevant for prompt processing.
 5. Before any new benchmark campaign, keep `tuned accelerator-performance` active and log raw commands/results into a single dataset.

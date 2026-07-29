@@ -1,0 +1,20 @@
+Starting container...                   	[32m [ OK ]
+[0mInstalling basic packages...            	[32m [ OK ]
+[0mSetting up devpts mounts...             	[32m [ OK ]
+[0mSetting up read-only mounts...          	[32m [ OK ]
+[0mSetting up read-write mounts...         	[32m [ OK ]
+[0mSetting up host's sockets integration...	[32m [ OK ]
+[0mIntegrating host's themes, icons, fonts...	[32m [ OK ]
+[0mSetting up package manager exceptions...	[32m [ OK ]
+[0mSetting up rpm exceptions...            	[32m [ OK ]
+[0mSetting up distrobox profile...         	[32m [ OK ]
+[0mSetting up sudo...                      	[32m [ OK ]
+[0mSetting up user groups...               	[32m [ OK ]
+[0mSetting up kerberos integration...      	[32m [ OK ]
+[0mSetting up user's group list...         	[32m [ OK ]
+[0mSetting up user home...                 	[32m [ OK ]
+[0mEnsuring user's access...               	[32m [ OK ]
+[0m
+Container Setup Complete!
+ggml_cuda_init: found 1 ROCm devices (Total VRAM: 122880 MiB):
+  Device 0: AMD Radeon 8060S Graphics, gfx1100 (0x1100), VMM: no, Wave Size: 32, VRAM: 122880 MiB
