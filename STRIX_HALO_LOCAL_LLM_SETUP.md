@@ -123,6 +123,22 @@ Do not start with ROCm or vLLM just because they sound more "GPU native". For pr
 
 See [BACKEND_CROSSOVER.md](BACKEND_CROSSOVER.md), [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md), [VLLM_BASELINE.md](VLLM_BASELINE.md), and [ROCM_VLLM_BUGWATCH.md](ROCM_VLLM_BUGWATCH.md).
 
+## How This Guide Relates To Kyuz0's Toolboxes And Llama Cockpit
+
+The projects overlap, but they solve different primary problems and can be used together.
+
+[Kyuz0's Strix Halo AI Toolboxes](https://github.com/kyuz0/amd-strix-halo-toolboxes) provide maintained container environments for `llama.cpp`, ROCm, Vulkan, vLLM, ComfyUI, fine-tuning, and related workloads. [Llama Cockpit](https://github.com/kyuz0/llama-toolboxes-cockpit) makes those `llama.cpp` toolboxes and GGUF models easier to manage. Kyuz0 also publishes host configuration, benchmarks, memory planning, troubleshooting, and distributed-inference guidance.
+
+This guide already documents Kyuz0's container images as routes for [ROCm `llama.cpp`](README.md#phase-7-rocm-with-llamacpp-containers), [vLLM](README.md#phase-8-vllm-serving), [ComfyUI](README.md#image-generation), and [fine-tuning](README.md#fine-tuning-and-gguf-export). It then compares those packaged routes with direct `llama.cpp`, Ollama, Lemonade ROCm, ROCmFPX, and other measured paths.
+
+The simplest distinction is:
+
+> Kyuz0's toolboxes solve runtime packaging. This guide solves route selection, evidence, and transferability across the whole Strix Halo system.
+
+The guide adds [workload-specific best-known profiles](BEST_KNOWN_PROFILES.md), a [buyer-use-case matrix](BUYER_USE_CASES.md), a machine-readable [claim-to-evidence index](data/headline_claims.csv), documented failures, a public [test queue](data/current_test_queue.csv), and clearly separated first-party and cross-system community evidence.
+
+If Fedora and Llama Cockpit already work for you, keep using them. Use this guide alongside that runtime when choosing a model, quant, backend, or serving profile; checking whether a result matches existing evidence; or investigating why it differs. The projects are complementary rather than mutually exclusive.
+
 ## 5. What To Run First
 
 Start with a practical model before chasing benchmark rows:
