@@ -54,6 +54,21 @@ This is not a final same-build backend shootout: Vulkan uses llama.cpp b9172, wh
 
 Takeaway: Qwen3-Next strengthens the same rule rather than replacing it. Vulkan/RADV stays the practical default for generation-heavy chat/coding on GGUF models, while HIP remains worth testing for prompt-processing-heavy work.
 
+## Qwen3-Next 80B MTP Backend Crossover On b10330
+
+Canonical first-party evidence: [`data/raw/2026-08-09/qwen3-next-80b-mtp-b10330/`](data/raw/2026-08-09/qwen3-next-80b-mtp-b10330/) and [`data/mtp_speculative.csv`](data/mtp_speculative.csv).
+
+This is the first matched Qwen3-Next speculative-decoding crossover in the guide. The same 43 GiB target, 1.40 GiB MTP-only sidecar, b10330 source, deterministic prompts, and output length were used for Vulkan/RADV and ROCm 7.14 HIP. Each result below combines three short-prompt and three 3K-prompt repeats.
+
+| Backend / mode | Combined decode mean | Per-shape result | Practical reading |
+| --- | ---: | --- | --- |
+| Vulkan direct | **60.24 t/s** | 61.33 short / 59.16 3K | Direct generation winner. |
+| Vulkan MTP `n=4`, `p=0` | 12.47 t/s | 12.37 short / 12.58 3K | Severe regression despite 95.8-99.0% acceptance. |
+| HIP direct | 50.78 t/s | 51.34 short / 50.21 3K | Slower direct control. |
+| HIP MTP `n=4`, `p=0` | **83.56 t/s** | 83.52 short / 83.60 3K | 62.7-66.5% over matched HIP direct. |
+
+All repeats preserved the observed deterministic output hash for their prompt. The new rule is more precise: Vulkan remains the better direct Qwen3-Next backend here, but HIP is the measured choice for this exact MTP route. Backend selection depends on execution shape, not only on the model or on a generic Vulkan-versus-ROCm ranking.
+
 ## Community Beelink CachyOS ROCm/ZenDNN Crossover
 
 Canonical community source: [discussion #2](https://github.com/hogeheer499-commits/strix-halo-guide/discussions/2#discussioncomment-17276639) and [`data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/`](data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/).

@@ -1,0 +1,21 @@
+0.00.021.220 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.021.417 I srv          init: The UI is disabled
+0.00.021.418 I srv          init: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+0.00.021.523 W srv  llama_server: -----------------
+0.00.021.524 W srv  llama_server: CORS is set to allow all origins ('*') and no API key is set
+0.00.021.524 W srv  llama_server: this can be a security risk (cross-origin attacks)
+0.00.021.524 W srv  llama_server: more info: https://github.com/ggml-org/llama.cpp/pull/25655
+0.00.021.525 W srv  llama_server: -----------------
+0.00.022.793 I srv    load_model: loading model '/home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf'
+0.00.350.766 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.04.743.130 I srv    load_model: initializing, n_slots = 4, n_ctx_slot = 4096, kv_unified = 'true'
+0.04.746.383 I srv  llama_server: model loaded
+0.04.746.389 I srv  llama_server: listening on http://127.0.0.1:18090
+0.28.243.409 I slot get_availabl: id  3 | task -1 | selected slot by LRU, t_last = -1
+0.28.243.471 I slot launch_slot_: id  3 | task 0 | processing task, is_child = 0
+0.30.949.371 I slot print_timing: id  3 | task 0 | prompt eval time =     171.76 ms /    19 tokens (    9.04 ms per token,   110.62 tokens per second)
+0.30.949.376 I slot print_timing: id  3 | task 0 |        eval time =    2534.08 ms /   128 tokens (   19.80 ms per token,    50.51 tokens per second)
+0.30.949.376 I slot print_timing: id  3 | task 0 |       total time =    2705.84 ms /   147 tokens
+0.30.949.384 I slot print_timing: id  3 | task 0 |    graphs reused =        126
+0.30.949.442 I slot      release: id  3 | task 0 | stop processing: n_tokens = 146, truncated = 0
+0.58.988.826 I srv    operator(): operator(): cleaning up before exit...

@@ -1,0 +1,11 @@
+Manage first-time setup state
+
+Usage: rocm setup [COMMAND]
+
+Commands:
+  status  Show first-time setup status
+  reset   Reset setup so the next TUI launch shows first-time setup again
+  help    Print this message or the help of the given subcommand(s)
+
+Options:
+  -h, --help  Print help

@@ -1,0 +1,17 @@
+Local model engines
+  Built-in engines are included with rocm-cli. External plugins are optional.
+  ROCm GPU execution is required.
+  Plugin folders:
+    1. /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/data/engines/plugins (primary)
+    2. /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/data/engines (legacy)
+* lemonade   default embedded Lemonade server with ROCm llama.cpp backend
+    adapter: built-in
+    runtime: not found
+    runtime kind: lemonade embeddable
+    note: Lemonade is not installed yet.
+  vllm       Linux/WSL ROCm GPU serving engine through external vLLM
+    adapter: built-in
+    runtime: not found
+    runtime kind: external vllm
+    note: vLLM is not installed in a Linux/WSL ROCm Python environment.
+  protocol: 0.1.0

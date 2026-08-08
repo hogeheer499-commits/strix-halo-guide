@@ -1,0 +1,53 @@
+{
+  "models": [
+    {
+      "name": "hip-mtp-n4-p000",
+      "model": "hip-mtp-n4-p000",
+      "modified_at": "",
+      "size": "",
+      "digest": "",
+      "type": "model",
+      "description": "",
+      "tags": [
+        ""
+      ],
+      "capabilities": [
+        "completion"
+      ],
+      "parameters": "",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "",
+        "families": [
+          ""
+        ],
+        "parameter_size": "",
+        "quantization_level": ""
+      }
+    }
+  ],
+  "object": "list",
+  "data": [
+    {
+      "id": "hip-mtp-n4-p000",
+      "aliases": [
+        "hip-mtp-n4-p000"
+      ],
+      "tags": [],
+      "object": "model",
+      "created": 1786227211,
+      "owned_by": "llamacpp",
+      "meta": {
+        "vocab_type": 2,
+        "n_vocab": 151936,
+        "n_ctx": 8192,
+        "n_ctx_train": 262144,
+        "n_embd": 2048,
+        "n_params": 79674391296,
+        "size": 46061151232,
+        "ftype": "Q4_K - Medium"
+      }
+    }
+  ]
+}

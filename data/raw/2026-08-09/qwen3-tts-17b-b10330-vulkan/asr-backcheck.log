@@ -1,0 +1,49 @@
+COMMAND:
+AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json llama-mtmd-cli -hf ggml-org/Qwen3-ASR-0.6B-GGUF --audio repeat.wav -p <instruction> -ngl 999 -fa on -c 8192 -n 96 --temp 0 --seed 42
+
+1.35.768.340 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+1.36.258.736 W init_audio: audio input is in experimental stage and may have reduced quality:
+    https://github.com/ggml-org/llama.cpp/discussions/13759
+1.36.261.314 I mtmd_cli_context: chat template example:
+<|im_start|>system
+You are a helpful assistant<|im_end|>
+<|im_start|>user
+Hello<|im_end|>
+<|im_start|>assistant
+Hi there<|im_end|>
+<|im_start|>user
+How are you?<|im_end|>
+<|im_start|>assistant
+
+1.36.261.316 I main: loading model: /home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-ASR-0.6B-GGUF/snapshots/928ab958557df9aa2ef1c93e0e83c7ad0933fae2/Qwen3-ASR-0.6B-Q8_0.gguf
+1.36.261.507 W WARN: This is an experimental CLI for testing multimodal capability.
+1.36.261.508 W       For normal use cases, please use the standard llama-cli
+1.36.269.710 I encoding mtmd batch, n_chunks = 1 (done = 1, total = 3)
+1.36.346.283 I mtmd batch encoding done in 77 ms
+
+language English<asr_text>Strix Halo can run local text-to-speech with Llama.CPP.
+
+
+	Command being timed: "env AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json /home/hoge-heer/local-scratch/llama.cpp-b10330/build-vulkan/bin/llama-mtmd-cli -hf ggml-org/Qwen3-ASR-0.6B-GGUF --audio /home/hoge-heer/local-scratch/qwen3-tts-b10330/repeat.wav -p Transcribe this audio exactly. Return only the spoken words. -ngl 999 -fa on -c 8192 -n 96 --temp 0 --seed 42"
+	User time (seconds): 1.35
+	System time (seconds): 2.59
+	Percent of CPU this job got: 4%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:36.51
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 923704
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 17
+	Minor (reclaiming a frame) page faults: 134387
+	Voluntary context switches: 542498
+	Involuntary context switches: 3352
+	Swaps: 0
+	File system inputs: 1456
+	File system outputs: 1990632
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

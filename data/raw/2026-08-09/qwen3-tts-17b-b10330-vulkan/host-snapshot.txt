@@ -1,0 +1,121 @@
+2026-08-09T01:08:58+02:00
+Linux hoge-heer-GTR-Pro 7.0.0-28-generic #28~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Wed Jul  1 15:50:57 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+
+BOOT_IMAGE=/boot/vmlinuz-7.0.0-28-generic root=UUID=94525afc-3e5d-4d2b-90e7-0d0bc14b5dc4 ro quiet splash amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0 amdgpu.cwsr_enable=0 amdgpu.cwsr_enable=0 vt.handoff=7
+
+==========
+VULKANINFO
+==========
+
+Vulkan Instance Version: 1.3.275
+
+
+Instance Extensions: count = 25
+-------------------------------
+VK_EXT_acquire_drm_display             : extension revision 1
+VK_EXT_acquire_xlib_display            : extension revision 1
+VK_EXT_debug_report                    : extension revision 10
+VK_EXT_debug_utils                     : extension revision 2
+VK_EXT_direct_mode_display             : extension revision 1
+VK_EXT_display_surface_counter         : extension revision 1
+VK_EXT_headless_surface                : extension revision 1
+VK_EXT_layer_settings                  : extension revision 2
+VK_EXT_surface_maintenance1            : extension revision 1
+VK_EXT_swapchain_colorspace            : extension revision 5
+VK_KHR_device_group_creation           : extension revision 1
+VK_KHR_display                         : extension revision 23
+VK_KHR_external_fence_capabilities     : extension revision 1
+VK_KHR_external_memory_capabilities    : extension revision 1
+VK_KHR_external_semaphore_capabilities : extension revision 1
+VK_KHR_get_display_properties2         : extension revision 1
+VK_KHR_get_physical_device_properties2 : extension revision 2
+VK_KHR_get_surface_capabilities2       : extension revision 1
+VK_KHR_portability_enumeration         : extension revision 1
+VK_KHR_surface                         : extension revision 25
+VK_KHR_surface_protected_capabilities  : extension revision 1
+VK_KHR_wayland_surface                 : extension revision 6
+VK_KHR_xcb_surface                     : extension revision 6
+VK_KHR_xlib_surface                    : extension revision 6
+VK_LUNARG_direct_driver_loading        : extension revision 1
+
+Instance Layers: count = 5
+--------------------------
+VK_LAYER_INTEL_nullhw       INTEL NULL HW                                                1.1.73   version 1
+VK_LAYER_MESA_anti_lag      Open-source implementation of the VK_AMD_anti_lag extension. 1.4.303  version 1
+VK_LAYER_MESA_device_select Linux device selection layer                                 1.4.303  version 1
+VK_LAYER_MESA_overlay       Mesa Overlay layer                                           1.4.303  version 1
+VK_LAYER_MESA_screenshot    Mesa Screenshot layer                                        1.4.303  version 1
+
+Devices:
+========
+GPU0:
+	apiVersion         = 1.4.354
+	driverVersion      = 26.1.6
+	vendorID           = 0x1002
+	deviceID           = 0x1586
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = Radeon 8060S Graphics (RADV STRIX_HALO)
+	driverID           = DRIVER_ID_MESA_RADV
+	driverName         = radv
+	driverInfo         = Mesa 26.1.6 - kisak-mesa PPA
+	conformanceVersion = 1.4.0.0
+	deviceUUID         = 00000000-c600-0000-0000-000000000000
+	driverUUID         = 414d442d-4d45-5341-2d44-525600000000
+GPU1:
+	apiVersion         = 1.4.354
+	driverVersion      = 26.1.6
+	vendorID           = 0x10005
+	deviceID           = 0x0000
+	deviceType         = PHYSICAL_DEVICE_TYPE_CPU
+	deviceName         = llvmpipe (LLVM 20.1.8, 256 bits)
+	driverID           = DRIVER_ID_MESA_LLVMPIPE
+	driverName         = llvmpipe
+	driverInfo         = Mesa 26.1.6 - kisak-mesa PPA (LLVM 20.1.8)
+	conformanceVersion = 1.3.1.1
+	deviceUUID         = 6d657361-3236-2e31-2e36-202d206b6900
+	driverUUID         = 6c6c766d-7069-7065-5555-494400000000
+
+               total        used        free      shared  buff/cache   available
+Mem:           124Gi       8.9Gi        28Gi       1.7Gi        90Gi       116Gi
+Swap:          8.0Gi       6.2Gi       1.8Gi
+
+    PID COMMAND         %CPU %MEM COMMAND
+1784363 rustdesk        26.2  0.1 /usr/share/rustdesk/rustdesk --server
+1678260 zoom            21.4  0.1 /opt/zoom/zoom
+   3255 qemu-system-x86 11.4  1.4 [private VM command line redacted]
+1882644 ffmpeg           9.9  0.1 ffmpeg -y -progress /tmp/docflock-progress.txt -re -i [local media path redacted] -vf subtitles=[local media path redacted] - 3 of 3 (Jul 2005)':fontsize=20:fontcolor=white:x=(w-text_w)/2:y=8:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf,drawtext=text='%{eif\:floor(t+0)/3600\:d}\:%{eif\:mod(floor((t+0)/60)\,60)\:d\:2}\:%{eif\:mod(floor(t+0)\,60)\:d\:2}':fontsize=16:fontcolor=white@0.8:x=w-text_w-10:y=10:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf,pad=1280:720:(ow-iw)/2:(oh-ih)/2,format=yuv420p -f v4l2 -video_size 1280x720 /dev/video2 -af aresample=async=1000 -acodec pcm_s16le -ar 48000 -ac 2 -f pulse virtual_speaker
+  53424 gnome-shell      7.4  0.1 /usr/bin/gnome-shell
+ 109366 gnome-terminal-  3.4  0.0 /usr/libexec/gnome-terminal-server
+  53009 Xorg             1.8  0.0 /usr/lib/xorg/Xorg vt2 -displayfd 3 -auth /run/user/1000/gdm/Xauthority -nolisten tcp -background none -noreset -keeptty -novtswitch -verbose 3
+1678566 ZoomWebviewHost  1.4  0.0 /opt/zoom/ZoomWebviewHost --type=renderer --enable-crash-reporter=, --user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.7339.185 Safari/537.36 Zoom/6.7.5 (6891) --change-stack-guard-on-fork=enable --user-data-dir=[local Zoom profile redacted] --locales-dir-path=/opt/zoom/cef/locales --log-severity=fatal --resources-dir-path=/opt/zoom/cef --force-gpu-mem-available-mb=4096 --ozone-platform=x11 --lang=en-US --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=5 --time-ticks-at-unix-epoch=-1786120918783002 --launch-time-ticks=90865208898 --shared-files=v8_context_snapshot_data:100 --metrics-shmem-handle=4,i,7801811933528780808,1471546614884099707,2097152 --field-trial-handle=3,i,509299865184141641,591082766404435140,262144 --disable-features=NetworkService --variations-seed-version --log-file=[local Zoom profile redacted]
+2064037 bash             1.4  0.0 /bin/bash -c set -euo pipefail TTS_SRC=/home/hoge-heer/local-scratch/qwen3-tts-b10330 TTS_DST=data/raw/2026-08-09/qwen3-tts-17b-b10330-vulkan ROCM_ROOT=/home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1 ROCM_DST=data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live mkdir -p "$TTS_DST" "$ROCM_DST" cp "$TTS_SRC"/first-run.log "$TTS_SRC"/first-run.exit-code "$TTS_SRC"/first.wav "$TTS_SRC"/repeat-run.log "$TTS_SRC"/repeat-run.exit-code "$TTS_SRC"/repeat.wav "$TTS_SRC"/asr-backcheck.log "$TTS_SRC"/asr-backcheck.exit-code "$TTS_DST"/ {   echo 'llama.cpp commit:'   git -C /home/hoge-heer/local-scratch/llama.cpp-b10330 rev-parse HEAD   echo   /home/hoge-heer/local-scratch/llama.cpp-b10330/build-vulkan/bin/llama-tts --version 2>&1 | head -5 } > "$TTS_DST/runtime-version.txt" {   echo 'TTS repository revision: ca27d74bc954b73dadab5b71ca265d87fc861a7c'   echo 'ASR repository revision: 928ab958557df9aa2ef1c93e0e83c7ad0933fae2'   echo   stat -Lc '%n %s bytes' /home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-TTS-12Hz-1.7B-Base-GGUF/snapshots/*/*   stat -Lc '%n %s bytes' /home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-ASR-0.6B-GGUF/snapshots/*/* } > "$TTS_DST/model-metadata.txt" {   sha256sum "$TTS_SRC"/first.wav "$TTS_SRC"/repeat.wav   sha256sum /home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-TTS-12Hz-1.7B-Base-GGUF/snapshots/*/*   sha256sum /home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-ASR-0.6B-GGUF/snapshots/*/* } > "$TTS_DST/sha256.txt" {   date --iso-8601=seconds   uname -a   echo   cat /proc/cmdline   echo   vulkaninfo --summary 2>/dev/null | sed -n '1,90p'   echo   free -h   echo   ps -eo pid,comm,%cpu,%mem,args --sort=-%cpu | head -40 } > "$TTS_DST/host-snapshot.txt" cp /tmp/pr177-external-response.json /tmp/pr177-serve-official-11470.txt /tmp/pr177-service-id.txt /tmp/pr177-services-after-serve.txt /tmp/pr177-stop.txt "$ROCM_DST"/ cp "$ROCM_ROOT/data/services/lemonade-qwen3-0-6b-gguf-1786229628081.log" "$ROCM_DST/service.log" cp "$ROCM_ROOT/data/services/lemonade-qwen3-0-6b-gguf-1786229628081.json" "$ROCM_DST/service-manifest.json" cp "$ROCM_ROOT/config/config.json" "$ROCM_DST/config.json" cp "$ROCM_ROOT/data/audit/events.jsonl" "$ROCM_DST/audit-events.jsonl" cp "$ROCM_ROOT/data/logs/cli-lifecycle.log" "$ROCM_DST/cli-lifecycle.log" {   git -C /home/hoge-heer/local-scratch/rocm-cli-pr177 rev-parse HEAD   git -C /home/hoge-heer/local-scratch/rocm-cli-pr177 log -1 --format='%H%n%ad%n%s' --date=iso-strict } > "$ROCM_DST/source-commit.txt" {   date --iso-8601=seconds   uname -a   echo   cat /proc/cmdline   echo   /home/hoge-heer/local-scratch/rocm-cli-pr177/target/release/rocm --version 2>&1 || true   echo   /home/hoge-heer/local-scratch/rocm-cli-pr177/target/release/rocm examine 2>&1 || true } > "$ROCM_DST/host-and-cli.txt" strings "$ROCM_DST/service.log" > "$ROCM_DST/service-readable.log" sha256sum "$ROCM_DST"/* > "$ROCM_DST/files.sha256" find "$TTS_DST" "$ROCM_DST" -maxdepth 1 -type f -printf '%p %s bytes\n' | sort
+   9080 codex            1.0  0.6 /home/hoge-heer/.nvm/versions/node/v22.22.1/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex -c features.code_mode_host=true app-server --listen unix://
+1679012 ZoomWebviewHost  0.9  0.0 /opt/zoom/ZoomWebviewHost --type=gpu-process --ozone-platform=x11 --enable-crash-reporter=, --user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.7339.185 Safari/537.36 Zoom/6.7.5 (6891) --change-stack-guard-on-fork=enable --user-data-dir=[local Zoom profile redacted] --locales-dir-path=/opt/zoom/cef/locales --log-severity=fatal --resources-dir-path=/opt/zoom/cef --gpu-preferences=UAAAAAAAAAAgAAAIAAAAAAAAAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAABgAAAAAAAAAAQAAAAAAAAAIAAAAAAAAAAgAAAAAAAAA --use-gl=angle --use-angle=swiftshader-webgl --shared-files --metrics-shmem-handle=4,i,10791598627057495439,11027166007377503154,262144 --field-trial-handle=3,i,509299865184141641,591082766404435140,262144 --disable-features=NetworkService --variations-seed-version --log-file=[local Zoom profile redacted]
+   2676 pipewire         0.6  0.0 /usr/bin/pipewire
+ 647830 codex            0.5  0.0 /home/hoge-heer/.nvm/versions/node/v22.22.1/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex
+1628523 gjs              0.5  0.0 gjs /usr/share/gnome-shell/extensions/ding@rastersoft.com/app/ding.js -E -P /usr/share/gnome-shell/extensions/ding@rastersoft.com/app
+1679201 cpthost          0.4  0.0 /opt/zoom/cpthost -pid 1678260 -epkey 748946201 -exitsem 7489462011678260_rpcexit-1909588489-0x781b3c000000
+   2685 pipewire-pulse   0.4  0.0 /usr/bin/pipewire-pulse
+   1407 dbus-daemon      0.4  0.0 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+1678651 ZoomClips        0.4  0.0 /opt/zoom/ZoomClips --action=preload --runasps=TRUE --ClipsRecordingType=Unknown
+2058352 kworker/1:1-wg-  0.2  0.0 [kworker/1:1-wg-crypt-intigriti]
+   1273 napi/phy0-0      0.2  0.0 [napi/phy0-0]
+ 648094 chrome           0.1  0.0 /opt/google/chrome/chrome https://auth.openai.com/codex/device
+   2325 rustdesk         0.1  0.0 /usr/bin/rustdesk --service
+ 856519 python           0.1  0.0 [local DocRemote path redacted] /home/hoge-heer/docremote-current/backend/main.py
+1978630 kworker/u129:5-  0.1  0.0 [kworker/u129:5-events_unbound]
+1951865 kworker/1:0-eve  0.1  0.0 [kworker/1:0-events]
+1820226 rustdesk         0.1  0.0 /usr/share/rustdesk/rustdesk --cm
+2017839 kworker/1:3-wg-  0.1  0.0 [kworker/1:3-wg-crypt-intigriti]
+1916558 kworker/u129:2-  0.1  0.0 [kworker/u129:2-events_unbound]
+ 126857 python3          0.1  0.0 python3 /home/hoge-heer/.local/bin/adaptive-power-guard
+   5199 python3          0.1  0.1 /usr/local/bin/python3 -m uvicorn open_webui.main:app --host 0.0.0.0 --port 8080 --forwarded-allow-ips * --workers 1
+   1272 napi/phy0-0      0.1  0.0 [napi/phy0-0]
+2053072 kworker/u128:1-  0.1  0.0 [kworker/u128:1-comp_1.1.1]
+2054898 kworker/u128:3-  0.1  0.0 [kworker/u128:3-comp_1.1.1]
+   4432 nxserver.bin     0.1  0.0 /usr/NX/bin/nxserver.bin --daemon
+   1305 mt76-tx phy0     0.1  0.0 [mt76-tx phy0]
+2063881 kworker/u128:0-  0.1  0.0 [kworker/u128:0-mt76]
+1991223 kworker/u129:0-  0.1  0.0 [kworker/u129:0-events_power_efficient]
+2027007 kworker/u129:6-  0.1  0.0 [kworker/u129:6-events_unbound]
+   2303 tailscaled       0.1  0.0 /usr/sbin/tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/run/tailscale/tailscaled.sock --port=41641

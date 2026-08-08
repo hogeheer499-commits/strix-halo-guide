@@ -1,0 +1,7 @@
+error: unexpected argument '--all' found
+
+  tip: to pass '--all' as a value, use '-- --all'
+
+Usage: rocm services stop [OPTIONS] <SERVICE_ID>
+
+For more information, try '--help'.

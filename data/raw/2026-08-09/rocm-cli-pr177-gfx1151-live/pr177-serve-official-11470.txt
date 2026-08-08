@@ -1,0 +1,18 @@
+serve plan
+  requested model: Qwen3-0.6B-GGUF
+  resolved model: Qwen3-0.6B-GGUF
+  engine: lemonade
+  engine_selection: explicit --engine
+  host: 127.0.0.1
+  port: 11470
+  env_id: lemonade-embeddable-11.5.1
+  selection_source: config_preferred_env_id
+  device_policy: gpu_required
+  gpu: auto (selected none)
+managed service launched
+  service_id: lemonade-qwen3-0-6b-gguf-1786229628081
+  process_pid: 2037706
+  endpoint: http://127.0.0.1:11470/v1
+  log_path: /home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/data/services/lemonade-qwen3-0-6b-gguf-1786229628081.log
+  manifest_path: /home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/data/services/lemonade-qwen3-0-6b-gguf-1786229628081.json
+  readiness: ready

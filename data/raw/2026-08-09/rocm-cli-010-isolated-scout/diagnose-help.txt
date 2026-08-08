@@ -1,0 +1,9 @@
+Diagnose known ROCm/PyTorch/llama.cpp failure modes against a closed catalog
+
+Usage: rocm diagnose [OPTIONS]
+
+Options:
+      --symptom <SYMPTOM>  Raw error text from the user; sharpens keyword scoring
+      --top <TOP>          Show at most this many matches (default 5) [default: 5]
+      --json               Emit the machine-readable diagnosis JSON
+  -h, --help               Print help

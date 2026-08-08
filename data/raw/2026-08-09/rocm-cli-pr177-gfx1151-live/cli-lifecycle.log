@@ -1,0 +1,7 @@
+1786228747722 level=info category=engine action=engine_install service_id=<none> message=installed engine=lemonade runtime_id=lemonade-embeddable-11.5.1 env_id=lemonade-embeddable-11.5.1 reinstall=false
+1786228828700 level=info category=service action=managed_service_launch service_id=lemonade-home-hoge-heer-models-qw-1786228783398 message=launched managed service engine=lemonade model=/home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf endpoint=http://127.0.0.1:11468/v1 readiness=starting
+1786228859419 level=info category=service action=stop_server service_id=lemonade-home-hoge-heer-models-qw-1786228783398 message=stopped managed service lemonade-home-hoge-heer-models-qw-1786228783398
+1786228935497 level=info category=service action=managed_service_launch service_id=lemonade-qwen3-0-6b-gguf-1786228890210 message=launched managed service engine=lemonade model=Qwen3-0.6B-GGUF endpoint=http://127.0.0.1:11468/v1 readiness=starting
+1786229006243 level=info category=service action=stop_server service_id=lemonade-qwen3-0-6b-gguf-1786228890210 message=stopped managed service lemonade-qwen3-0-6b-gguf-1786228890210
+1786229628336 level=info category=service action=managed_service_launch service_id=lemonade-qwen3-0-6b-gguf-1786229628081 message=launched managed service engine=lemonade model=Qwen3-0.6B-GGUF endpoint=http://127.0.0.1:11470/v1 readiness=ready
+1786229652104 level=info category=service action=stop_server service_id=lemonade-qwen3-0-6b-gguf-1786229628081 message=stopped managed service lemonade-qwen3-0-6b-gguf-1786229628081

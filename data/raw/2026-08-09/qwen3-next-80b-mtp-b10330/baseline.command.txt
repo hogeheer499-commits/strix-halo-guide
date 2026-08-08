@@ -1,0 +1,1 @@
+/home/hoge-heer/local-scratch/llama.cpp-b10330/build-vulkan/bin/llama-server -m /home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf --alias baseline --host 127.0.0.1 --port 18103 --no-ui --metrics --no-cache-prompt --parallel 1 -c 8192 -b 2048 -ub 512 -dev Vulkan0 -ngl 999

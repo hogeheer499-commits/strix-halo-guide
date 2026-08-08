@@ -1,0 +1,4 @@
+8236118df07ce5720c35887cd2ceab204b4ea2c6
+8236118df07ce5720c35887cd2ceab204b4ea2c6
+2026-08-04T12:38:24+00:00
+fix: reinstall lemonade when the pinned version changes

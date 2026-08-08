@@ -1,0 +1,11 @@
+Show recommended local models and what this machine can run
+
+Usage: rocm model [OPTIONS]
+
+Options:
+      --verbose  Show detailed recipe diagnostics
+  -h, --help     Print help
+
+EXAMPLES:
+  rocm model
+  rocm model --verbose

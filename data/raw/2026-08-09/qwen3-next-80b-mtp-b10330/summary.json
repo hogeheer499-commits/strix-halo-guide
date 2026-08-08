@@ -1,0 +1,74 @@
+[
+  {
+    "profile": "baseline",
+    "prompt": "3k",
+    "prompt_tokens": 3093,
+    "repeats": 3,
+    "decode_tps_mean": 59.155966126544826,
+    "decode_tps_min": 58.896554643579215,
+    "decode_tps_max": 59.46297500696832,
+    "prompt_tps_mean": 713.4889444886012,
+    "draft_acceptance_mean": null,
+    "unique_content_hashes": 1
+  },
+  {
+    "profile": "baseline",
+    "prompt": "short",
+    "prompt_tokens": 69,
+    "repeats": 3,
+    "decode_tps_mean": 61.33387707018283,
+    "decode_tps_min": 61.27257391722267,
+    "decode_tps_max": 61.3915645112632,
+    "prompt_tps_mean": 95.6701357150321,
+    "draft_acceptance_mean": null,
+    "unique_content_hashes": 1
+  },
+  {
+    "profile": "mtp-n2-p060",
+    "prompt": "3k",
+    "prompt_tokens": 3093,
+    "repeats": 3,
+    "decode_tps_mean": 7.990127058072912,
+    "decode_tps_min": 7.977406986239098,
+    "decode_tps_max": 8.008985080136778,
+    "prompt_tps_mean": 705.1733040953567,
+    "draft_acceptance_mean": 1.0,
+    "unique_content_hashes": 1
+  },
+  {
+    "profile": "mtp-n2-p060",
+    "prompt": "short",
+    "prompt_tokens": 69,
+    "repeats": 3,
+    "decode_tps_mean": 7.809952642446544,
+    "decode_tps_min": 7.728670529794327,
+    "decode_tps_max": 7.855785936707037,
+    "prompt_tps_mean": 100.73647455204467,
+    "draft_acceptance_mean": 1.0,
+    "unique_content_hashes": 1
+  },
+  {
+    "profile": "mtp-n4-p000",
+    "prompt": "3k",
+    "prompt_tokens": 3093,
+    "repeats": 3,
+    "decode_tps_mean": 12.57541402031094,
+    "decode_tps_min": 12.53792108926324,
+    "decode_tps_max": 12.595121456822595,
+    "prompt_tps_mean": 710.7799942186666,
+    "draft_acceptance_mean": 0.9900990099009901,
+    "unique_content_hashes": 1
+  },
+  {
+    "profile": "mtp-n4-p000",
+    "prompt": "short",
+    "prompt_tokens": 69,
+    "repeats": 3,
+    "decode_tps_mean": 12.370441411147308,
+    "decode_tps_min": 12.118539386531134,
+    "decode_tps_max": 12.545287999628346,
+    "prompt_tps_mean": 101.62432137432742,
+    "draft_acceptance_mean": 0.9575163398692811,
+    "unique_content_hashes": 1
+  }
+]

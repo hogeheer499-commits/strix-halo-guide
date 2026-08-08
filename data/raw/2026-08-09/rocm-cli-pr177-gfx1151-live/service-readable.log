@@ -1,0 +1,220 @@
+2026-08-09 00:53:48.086 [Info] (main) Persisted port=11470 to config.json
+2026-08-09 00:53:48.086 [Info] (main) Persisted host=127.0.0.1 to config.json
+2026-08-09 00:53:48.086 [Info] (main) Starting Lemonade Server...
+2026-08-09 00:53:48.086 [Info] (main)   Version: 11.5.1
+2026-08-09 00:53:48.086 [Info] (main)   Cache dir: /home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/data/engines/lemonade/runtime
+2026-08-09 00:53:48.086 [Info] (main)   Port: 11470
+2026-08-09 00:53:48.086 [Info] (main)   Host: 127.0.0.1
+2026-08-09 00:53:48.086 [Info] (main)   Log level: info
+2026-08-09 00:53:48.086 [Info] (main)   Telemetry: disabled
+2026-08-09 00:53:48.087 [Info] (ModelManager) Loading "recipe_options.json"
+2026-08-09 00:53:48.087 [Warn] (ModelManager) Could not load architecture_defaults.json: Failed to open file: /home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/data/engines/lemonade/runtime/resources/architecture_defaults.json
+2026-08-09 00:53:48.088 [Warn] (Server) Could not mount static files from: /home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/data/engines/lemonade/runtime/resources/static
+2026-08-09 00:53:48.088 [Warn] (Server) Status page assets will not be available
+2026-08-09 00:53:48.088 [Info] (Server) Web app directory not found at: /home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/data/engines/lemonade/runtime/resources/web-app
+2026-08-09 00:53:48.088 [Info] (Server) Falling back to static status page at root
+2026-08-09 00:53:48.089 [Warn] (Server) Could not mount static files from: /home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/data/engines/lemonade/runtime/resources/static
+2026-08-09 00:53:48.089 [Warn] (Server) Status page assets will not be available
+2026-08-09 00:53:48.089 [Info] (Server) Web app directory not found at: /home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/data/engines/lemonade/runtime/resources/web-app
+2026-08-09 00:53:48.089 [Info] (Server) Falling back to static status page at root
+2026-08-09 00:53:48.089 [Info] (WebSocket) Configured port: 9000
+2026-08-09 00:53:48.089 [Info] (Server) Starting HTTP server on 127.0.0.1:11470
+2026-08-09 00:53:48.089 [Info] (Server) Warming model list cache...
+2026-08-09 00:53:48.089 [Warn] (Server) Building models cache...
+2026-08-09 00:53:48.089 [Warn] (Server) resolution failed for 127.0.0.1 no IPv6 resolution found.
+2026-08-09 00:53:48.089 [Info] (Server) Host resolution: IPv4=127.0.0.1, IPv6=(none)
+2026-08-09 00:53:48.091 [Info] (WebSocket) Server started on port 9000
+2026-08-09 00:53:48.091 [Info] (Server) WebSocket server started on port 9000
+[2026/08/09 00:53:48:0918] W: _lws_smd_msg_send: rejecting message on queue depth 40
+[2026/08/09 00:53:48:0918] W: _lws_smd_msg_send: rejecting message on queue depth 40
+[2026/08/09 00:53:48:0918] W: _lws_smd_msg_send: rejecting message on queue depth 40
+[2026/08/09 00:53:48:0918] W: _lws_smd_msg_send: rejecting message on queue depth 40
+[2026/08/09 00:53:48:0918] W: _lws_smd_msg_send: rejecting message on queue depth 40
+[2026/08/09 00:53:48:0918] W: _lws_smd_msg_send: rejecting message on queue depth 40
+[2026/08/09 00:53:48:0918] W: _lws_smd_msg_send: rejecting message on queue depth 40
+[2026/08/09 00:53:48:0918] W: _lws_smd_msg_send: rejecting message on queue depth 40
+[2026/08/09 00:53:48:0918] W: _lws_smd_msg_send: rejecting message on queue depth 40
+2026-08-09 00:53:48.091 [Info] (Server) Binding IPv4 HTTP server to 127.0.0.1:11470...
+2026-08-09 00:53:48.091 [Info] (Server) IPv4 HTTP server listening on 127.0.0.1:11470
+[Server] [Net Broadcast] Broadcasting on 12 RFC1918 interface(s): 127.0.0.1 (bcast 255.255.255.255) 192.168.2.13 (bcast 192.168.2.255) 10.0.2.69 (bcast 255.255.255.255) 192.168.123.1 (bcast 192.168.123.255) 172.23.0.1 (bcast 172.23.255.255) 172.22.0.1 (bcast 172.22.255.255) 172.20.0.1 (bcast 172.20.255.255) 172.19.0.1 (bcast 172.19.255.255) 172.21.0.1 (bcast 172.21.255.255) 172.17.0.1 (bcast 172.17.255.255) 172.18.0.1 (bcast 172.18.255.255) 172.24.0.1 (bcast 172.24.255.255)
+2026-08-09 00:53:48.236 [Info] (ModelManager) Backend availability:
+2026-08-09 00:53:48.236 [Info] (ModelManager)   - NPU hardware: Yes
+2026-08-09 00:53:48.236 [Info] (ModelManager)   - System RAM: 124.9 GB (max model size: 100.0 GB)
+2026-08-09 00:53:48.236 [Info] (ModelManager)   - Largest memory pool: 0.5
+2026-08-09 00:53:48.236 [Info] (ModelManager)   - NVIDIA GPU: detection error: No NVIDIA discrete GPU found
+2026-08-09 00:53:48.336 [Info] (ModelManager) Cache built: 132 total, 1 downloaded
+2026-08-09 00:53:48.344 [Info] (Server) Auto-loading model: Qwen3-0.6B-GGUF
+2026-08-09 00:53:48.344 [Info] (Router) Auto-tune ctx_size resolved to 40960
+2026-08-09 00:53:48.345 [Info] (LlamaCpp) Loading model: Qwen3-0.6B-GGUF
+2026-08-09 00:53:48.345 [Info] (LlamaCpp) Using LlamaCpp Backend: rocm-stable
+2026-08-09 00:53:48.655 [Info] (LlamaCpp) Starting llama-server...
+2026-08-09 00:53:48.656 [Info] (ProcessManager) Process started successfully, PID: 2037879
+Waiting for llama-server to be ready (timeout: 600s)...
+2026-08-09 00:53:48.916 [Info] (Process) 0.00.254.698 I log_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+2026-08-09 00:53:48.916 [Info] (Process) 0.00.254.701 I device_info:
+2026-08-09 00:53:48.916 [Info] (Process) 0.00.254.780 I   - ROCm0   : Radeon 8060S Graphics (122880 MiB, 118949 MiB free)
+2026-08-09 00:53:48.916 [Info] (Process) 0.00.254.784 I   - CPU     : AMD RYZEN AI MAX+ 395 w/ Radeon 8060S (127939 MiB, 127939 MiB free)
+2026-08-09 00:53:48.917 [Info] (Process) 0.00.254.829 I system_info: n_threads = 16 (n_threads_batch = 16) / 32 | ROCm : NO_VMM = 1 | PEER_MAX_BATCH_SIZE = 128 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | AVX512 = 1 | AVX512_VBMI = 1 | AVX512_VNNI = 1 | AVX512_BF16 = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+2026-08-09 00:53:48.917 [Info] (Process) 0.00.254.835 I srv  llama_server: n_parallel is set to auto, using n_parallel = 4 and kv_unified = true
+2026-08-09 00:53:48.917 [Info] (Process) 0.00.254.871 I srv          init: running without SSL
+2026-08-09 00:53:48.917 [Info] (Process) 0.00.254.922 I srv          init: using 31 threads for HTTP server
+2026-08-09 00:53:48.917 [Info] (Process) 0.00.254.924 I srv          init: The UI is disabled
+2026-08-09 00:53:48.917 [Info] (Process) 0.00.254.924 I srv          init: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+2026-08-09 00:53:48.917 [Info] (Process) 0.00.255.003 I srv         start: binding port with default address family
+2026-08-09 00:53:48.918 [Info] (Process) 0.00.256.178 I srv  llama_server: loading model
+2026-08-09 00:53:48.918 [Info] (Process) 0.00.256.184 I srv    load_model: loading model '/home/hoge-heer/.cache/huggingface/hub/models--unsloth--Qwen3-0.6B-GGUF/snapshots/50968a4468ef4233ed78cd7c3de230dd1d61a56b/Qwen3-0.6B-Q4_0.gguf'
+2026-08-09 00:53:48.918 [Info] (Process) 0.00.256.225 I common_init_result: fitting params to device memory ...
+2026-08-09 00:53:48.918 [Info] (Process) 0.00.256.227 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+2026-08-09 00:53:49.227 [Info] (Process) 0.00.565.356 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+2026-08-09 00:53:49.570 [Info] (Process) 0.00.907.818 I common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+2026-08-09 00:53:49.627 [Info] (Process) 0.00.965.611 I srv    load_model: initializing slots, n_slots = 4
+2026-08-09 00:53:49.684 [Info] (Process) 0.01.022.084 W common_speculative_init: no implementations specified for speculative decoding
+2026-08-09 00:53:49.684 [Info] (Process) 0.01.022.090 I slot   load_model: id  0 | task -1 | new slot, n_ctx = 40960
+2026-08-09 00:53:49.684 [Info] (Process) 0.01.022.102 I slot   load_model: id  1 | task -1 | new slot, n_ctx = 40960
+2026-08-09 00:53:49.684 [Info] (Process) 0.01.022.103 I slot   load_model: id  2 | task -1 | new slot, n_ctx = 40960
+2026-08-09 00:53:49.684 [Info] (Process) 0.01.022.104 I slot   load_model: id  3 | task -1 | new slot, n_ctx = 40960
+2026-08-09 00:53:49.684 [Info] (Process) 0.01.022.170 I srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+2026-08-09 00:53:49.684 [Info] (Process) 0.01.022.171 I srv    load_model: use `--cache-ram 0` to disable the prompt cache
+2026-08-09 00:53:49.684 [Info] (Process) 0.01.022.171 I srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+2026-08-09 00:53:49.684 [Info] (Process) 0.01.022.172 I srv    load_model: context checkpoints enabled, max = 32, min spacing = 256
+2026-08-09 00:53:49.684 [Info] (Process) 0.01.022.191 I srv          init: idle slots will be saved to prompt cache and cleared upon starting a new task
+2026-08-09 00:53:49.690 [Info] (Process) 0.01.028.231 I init: chat template, example_format: '<|im_start|>system
+2026-08-09 00:53:49.690 [Info] (Process) You are a helpful assistant<|im_end|>
+2026-08-09 00:53:49.690 [Info] (Process) <|im_start|>user
+2026-08-09 00:53:49.690 [Info] (Process) Hello<|im_end|>
+2026-08-09 00:53:49.690 [Info] (Process) <|im_start|>assistant
+2026-08-09 00:53:49.690 [Info] (Process) Hi there<|im_end|>
+2026-08-09 00:53:49.690 [Info] (Process) <|im_start|>user
+2026-08-09 00:53:49.690 [Info] (Process) How are you?<|im_end|>
+2026-08-09 00:53:49.690 [Info] (Process) <|im_start|>assistant
+2026-08-09 00:53:49.690 [Info] (Process) '
+2026-08-09 00:53:49.693 [Info] (Process) 0.01.031.565 I srv          init: init: chat template, thinking = 1
+2026-08-09 00:53:49.693 [Info] (Process) 0.01.031.621 I srv  llama_server: model loaded
+2026-08-09 00:53:49.693 [Info] (Process) 0.01.031.626 I srv  llama_server: server is listening on http://127.0.0.1:8001
+2026-08-09 00:53:49.761 [Info] (WrappedServer) llama-server is ready!
+2026-08-09 00:53:49.761 [Info] (BackendWatchdog) Started watchdog for llama-server using http://127.0.0.1:8001/health (streaming=on, non_streaming=on)
+2026-08-09 00:53:49.761 [Info] (Router) Model loaded successfully. Total loaded: 1
+2026-08-09 00:53:49.762 [Info] (Server) Model loaded successfully: Qwen3-0.6B-GGUF
+2026-08-09 00:53:49.762 [Info] (Server) POST /api/v1/chat/completions - 200 OK
+2026-08-09 00:53:49.766 [Info] (Process) 0.01.104.127 I srv    operator(): Chat format: peg-native
+2026-08-09 00:53:49.766 [Info] (Process) 0.01.104.254 I slot get_availabl: id  3 | task -1 | selected slot by LRU, t_last = -1
+2026-08-09 00:53:49.766 [Info] (Process) 0.01.104.257 I srv  get_availabl: updating prompt cache
+2026-08-09 00:53:49.766 [Info] (Process) 0.01.104.268 I srv          load:  - looking for better prompt, base f_keep = -1.000, sim = 0.000
+2026-08-09 00:53:49.766 [Info] (Process) 0.01.104.275 I srv        update:  - cache state: 0 prompts, 0.000 MiB (limits: 8192.000 MiB, 40960 tokens, 8589934592 est)
+2026-08-09 00:53:49.766 [Info] (Process) 0.01.104.277 I srv  get_availabl: prompt cache update took 0.02 ms
+2026-08-09 00:53:49.766 [Info] (Process) 0.01.104.387 I slot launch_slot_: id  3 | task 0 | processing task, is_child = 0
+2026-08-09 00:53:49.766 [Info] (Process) 0.01.104.389 I slot process_sing: id  0 | task -1 | saving idle slot to prompt cache
+2026-08-09 00:53:49.766 [Info] (Process) 0.01.104.391 I slot prompt_clear: id  0 | task -1 | clearing prompt with 0 tokens
+2026-08-09 00:53:49.766 [Info] (Process) 0.01.104.411 I slot process_sing: id  1 | task -1 | saving idle slot to prompt cache
+2026-08-09 00:53:49.766 [Info] (Process) 0.01.104.412 I slot prompt_clear: id  1 | task -1 | clearing prompt with 0 tokens
+2026-08-09 00:53:49.766 [Info] (Process) 0.01.104.424 I slot process_sing: id  2 | task -1 | saving idle slot to prompt cache
+2026-08-09 00:53:49.766 [Info] (Process) 0.01.104.425 I slot prompt_clear: id  2 | task -1 | clearing prompt with 0 tokens
+2026-08-09 00:53:50.101 [Info] (Server) Ensuring model loaded: Qwen3-0.6B-GGUF llamacpp_backend=rocm
+2026-08-09 00:53:50.101 [Info] (ModelManager) Saving options for model: Qwen3-0.6B-GGUF
+2026-08-09 00:53:50.101 [Info] (ModelManager) Saving "recipe_options.json"
+2026-08-09 00:53:50.102 [Info] (Router) Options changed, reloading model: Qwen3-0.6B-GGUF
+2026-08-09 00:53:50.102 [Info] (Router) Evicting model: Qwen3-0.6B-GGUF
+2026-08-09 00:53:50.287 [Info] (Process) 0.01.625.476 I slot print_timing: id  3 | task 0 | prompt eval time =      27.72 ms /    24 tokens (    1.16 ms per token,   865.77 tokens per second)
+2026-08-09 00:53:50.287 [Info] (Process) 0.01.625.482 I slot print_timing: id  3 | task 0 |        eval time =     493.29 ms /   128 tokens (    3.85 ms per token,   259.48 tokens per second)
+2026-08-09 00:53:50.287 [Info] (Process) 0.01.625.482 I slot print_timing: id  3 | task 0 |       total time =     521.01 ms /   152 tokens
+2026-08-09 00:53:50.287 [Info] (Process) 0.01.625.488 I slot print_timing: id  3 | task 0 |    graphs reused =        127
+2026-08-09 00:53:50.287 [Info] (Process) 0.01.625.533 I slot      release: id  3 | task 0 | stop processing: n_tokens = 151, truncated = 0
+2026-08-09 00:53:50.288 [Info] (Telemetry) Inference completed: model=Qwen3-0.6B-GGUF, tokens=152 (in=24, out=128), ttft=0.03s, tps=259.48
+2026-08-09 00:53:50.288 [Info] (LlamaCpp) Unloading model...
+2026-08-09 00:53:50.288 [Info] (Process) 0.01.626.159 I srv    operator(): operator(): cleaning up before exit...
+2026-08-09 00:53:50.388 [Info] (ProcessManager) Process terminated, waiting for GPU driver cleanup...
+2026-08-09 00:53:52.388 [Info] (LlamaCpp) Unloading model...
+2026-08-09 00:53:52.388 [Info] (Router) Evicted model: Qwen3-0.6B-GGUF
+2026-08-09 00:53:52.389 [Info] (Router) Auto-tune ctx_size resolved to 40960
+2026-08-09 00:53:52.389 [Info] (LlamaCpp) Loading model: Qwen3-0.6B-GGUF
+2026-08-09 00:53:52.389 [Info] (LlamaCpp) Using LlamaCpp Backend: rocm-stable
+2026-08-09 00:53:52.710 [Info] (LlamaCpp) Starting llama-server...
+2026-08-09 00:53:52.711 [Info] (ProcessManager) Process started successfully, PID: 2038081
+Waiting for llama-server to be ready (timeout: 600s)...
+2026-08-09 00:53:52.834 [Info] (Process) 0.00.119.644 I log_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+2026-08-09 00:53:52.834 [Info] (Process) 0.00.119.647 I device_info:
+2026-08-09 00:53:52.834 [Info] (Process) 0.00.119.724 I   - ROCm0   : Radeon 8060S Graphics (122880 MiB, 118756 MiB free)
+2026-08-09 00:53:52.834 [Info] (Process) 0.00.119.727 I   - CPU     : AMD RYZEN AI MAX+ 395 w/ Radeon 8060S (127939 MiB, 127939 MiB free)
+2026-08-09 00:53:52.834 [Info] (Process) 0.00.119.761 I system_info: n_threads = 16 (n_threads_batch = 16) / 32 | ROCm : NO_VMM = 1 | PEER_MAX_BATCH_SIZE = 128 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | AVX512 = 1 | AVX512_VBMI = 1 | AVX512_VNNI = 1 | AVX512_BF16 = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+2026-08-09 00:53:52.834 [Info] (Process) 0.00.119.766 I srv  llama_server: n_parallel is set to auto, using n_parallel = 4 and kv_unified = true
+2026-08-09 00:53:52.834 [Info] (Process) 0.00.119.798 I srv          init: running without SSL
+2026-08-09 00:53:52.835 [Info] (Process) 0.00.119.854 I srv          init: using 31 threads for HTTP server
+2026-08-09 00:53:52.835 [Info] (Process) 0.00.119.856 I srv          init: The UI is disabled
+2026-08-09 00:53:52.835 [Info] (Process) 0.00.119.856 I srv          init: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
+2026-08-09 00:53:52.835 [Info] (Process) 0.00.119.947 I srv         start: binding port with default address family
+2026-08-09 00:53:52.836 [Info] (Process) 0.00.121.103 I srv  llama_server: loading model
+2026-08-09 00:53:52.836 [Info] (Process) 0.00.121.108 I srv    load_model: loading model '/home/hoge-heer/.cache/huggingface/hub/models--unsloth--Qwen3-0.6B-GGUF/snapshots/50968a4468ef4233ed78cd7c3de230dd1d61a56b/Qwen3-0.6B-Q4_0.gguf'
+2026-08-09 00:53:52.836 [Info] (Process) 0.00.121.140 I common_init_result: fitting params to device memory ...
+2026-08-09 00:53:52.836 [Info] (Process) 0.00.121.142 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
+2026-08-09 00:53:53.171 [Info] (Process) 0.00.456.069 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+2026-08-09 00:53:53.507 [Info] (Process) 0.00.792.758 I common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
+2026-08-09 00:53:53.568 [Info] (Process) 0.00.853.113 I srv    load_model: initializing slots, n_slots = 4
+2026-08-09 00:53:53.625 [Info] (Process) 0.00.909.970 W common_speculative_init: no implementations specified for speculative decoding
+2026-08-09 00:53:53.625 [Info] (Process) 0.00.909.977 I slot   load_model: id  0 | task -1 | new slot, n_ctx = 40960
+2026-08-09 00:53:53.625 [Info] (Process) 0.00.909.988 I slot   load_model: id  1 | task -1 | new slot, n_ctx = 40960
+2026-08-09 00:53:53.625 [Info] (Process) 0.00.909.989 I slot   load_model: id  2 | task -1 | new slot, n_ctx = 40960
+2026-08-09 00:53:53.625 [Info] (Process) 0.00.909.989 I slot   load_model: id  3 | task -1 | new slot, n_ctx = 40960
+2026-08-09 00:53:53.625 [Info] (Process) 0.00.910.052 I srv    load_model: prompt cache is enabled, size limit: 8192 MiB
+2026-08-09 00:53:53.625 [Info] (Process) 0.00.910.053 I srv    load_model: use `--cache-ram 0` to disable the prompt cache
+2026-08-09 00:53:53.625 [Info] (Process) 0.00.910.054 I srv    load_model: for more info see https://github.com/ggml-org/llama.cpp/pull/16391
+2026-08-09 00:53:53.625 [Info] (Process) 0.00.910.054 I srv    load_model: context checkpoints enabled, max = 32, min spacing = 256
+2026-08-09 00:53:53.625 [Info] (Process) 0.00.910.073 I srv          init: idle slots will be saved to prompt cache and cleared upon starting a new task
+2026-08-09 00:53:53.631 [Info] (Process) 0.00.915.947 I init: chat template, example_format: '<|im_start|>system
+2026-08-09 00:53:53.631 [Info] (Process) You are a helpful assistant<|im_end|>
+2026-08-09 00:53:53.631 [Info] (Process) <|im_start|>user
+2026-08-09 00:53:53.631 [Info] (Process) Hello<|im_end|>
+2026-08-09 00:53:53.631 [Info] (Process) <|im_start|>assistant
+2026-08-09 00:53:53.631 [Info] (Process) Hi there<|im_end|>
+2026-08-09 00:53:53.631 [Info] (Process) <|im_start|>user
+2026-08-09 00:53:53.631 [Info] (Process) How are you?<|im_end|>
+2026-08-09 00:53:53.631 [Info] (Process) <|im_start|>assistant
+2026-08-09 00:53:53.631 [Info] (Process) '
+2026-08-09 00:53:53.634 [Info] (Process) 0.00.919.158 I srv          init: init: chat template, thinking = 1
+2026-08-09 00:53:53.634 [Info] (Process) 0.00.919.204 I srv  llama_server: model loaded
+2026-08-09 00:53:53.634 [Info] (Process) 0.00.919.209 I srv  llama_server: server is listening on http://127.0.0.1:8001
+2026-08-09 00:53:53.715 [Info] (WrappedServer) llama-server is ready!
+2026-08-09 00:53:53.715 [Info] (BackendWatchdog) Started watchdog for llama-server using http://127.0.0.1:8001/health (streaming=on, non_streaming=on)
+2026-08-09 00:53:53.715 [Info] (Router) Model loaded successfully. Total loaded: 1
+2026-08-09 00:53:53.717 [Info] (Server) POST /api/v1/chat/completions - 200 OK
+2026-08-09 00:53:53.721 [Info] (Process) 0.01.006.332 I srv    operator(): Chat format: peg-native
+2026-08-09 00:53:53.721 [Info] (Process) 0.01.006.457 I slot get_availabl: id  3 | task -1 | selected slot by LRU, t_last = -1
+2026-08-09 00:53:53.721 [Info] (Process) 0.01.006.461 I srv  get_availabl: updating prompt cache
+2026-08-09 00:53:53.721 [Info] (Process) 0.01.006.472 I srv          load:  - looking for better prompt, base f_keep = -1.000, sim = 0.000
+2026-08-09 00:53:53.721 [Info] (Process) 0.01.006.481 I srv        update:  - cache state: 0 prompts, 0.000 MiB (limits: 8192.000 MiB, 40960 tokens, 8589934592 est)
+2026-08-09 00:53:53.721 [Info] (Process) 0.01.006.483 I srv  get_availabl: prompt cache update took 0.02 ms
+2026-08-09 00:53:53.721 [Info] (Process) 0.01.006.626 I slot launch_slot_: id  3 | task 0 | processing task, is_child = 0
+2026-08-09 00:53:53.721 [Info] (Process) 0.01.006.628 I slot process_sing: id  0 | task -1 | saving idle slot to prompt cache
+2026-08-09 00:53:53.721 [Info] (Process) 0.01.006.630 I slot prompt_clear: id  0 | task -1 | clearing prompt with 0 tokens
+2026-08-09 00:53:53.721 [Info] (Process) 0.01.006.657 I slot process_sing: id  1 | task -1 | saving idle slot to prompt cache
+2026-08-09 00:53:53.721 [Info] (Process) 0.01.006.658 I slot prompt_clear: id  1 | task -1 | clearing prompt with 0 tokens
+2026-08-09 00:53:53.721 [Info] (Process) 0.01.006.680 I slot process_sing: id  2 | task -1 | saving idle slot to prompt cache
+2026-08-09 00:53:53.721 [Info] (Process) 0.01.006.681 I slot prompt_clear: id  2 | task -1 | clearing prompt with 0 tokens
+2026-08-09 00:53:53.746 [Info] (Process) 0.01.031.702 I slot print_timing: id  3 | task 0 | prompt eval time =      20.52 ms /    11 tokens (    1.87 ms per token,   535.96 tokens per second)
+2026-08-09 00:53:53.746 [Info] (Process) 0.01.031.706 I slot print_timing: id  3 | task 0 |        eval time =       4.44 ms /     2 tokens (    2.22 ms per token,   450.35 tokens per second)
+2026-08-09 00:53:53.746 [Info] (Process) 0.01.031.706 I slot print_timing: id  3 | task 0 |       total time =      24.96 ms /    13 tokens
+2026-08-09 00:53:53.746 [Info] (Process) 0.01.031.711 I slot print_timing: id  3 | task 0 |    graphs reused =          1
+2026-08-09 00:53:53.746 [Info] (Process) 0.01.031.781 I slot      release: id  3 | task 0 | stop processing: n_tokens = 12, truncated = 0
+2026-08-09 00:53:53.747 [Info] (Telemetry) Inference completed: model=Qwen3-0.6B-GGUF, tokens=13 (in=11, out=2), ttft=0.02s, tps=450.35
+2026-08-09 00:54:03.063 [Info] (Server) Unload request received
+2026-08-09 00:54:03.063 [Info] (Router) Unload model called: Qwen3-0.6B-GGUF
+2026-08-09 00:54:03.063 [Info] (Router) Evicting model: Qwen3-0.6B-GGUF
+2026-08-09 00:54:03.063 [Info] (LlamaCpp) Unloading model...
+2026-08-09 00:54:03.063 [Info] (Process) 0.10.348.249 I srv    operator(): operator(): cleaning up before exit...
+2026-08-09 00:54:03.163 [Info] (ProcessManager) Process terminated, waiting for GPU driver cleanup...
+2026-08-09 00:54:05.163 [Info] (LlamaCpp) Unloading model...
+2026-08-09 00:54:05.163 [Info] (Router) Evicted model: Qwen3-0.6B-GGUF
+2026-08-09 00:54:05.163 [Info] (Server) Model 'Qwen3-0.6B-GGUF' unloaded successfully
+Shutdown signal received, exiting...
+2026-08-09 00:54:05.702 [Info] (Server) Shutdown requested, stopping server...
+2026-08-09 00:54:05.702 [Info] (Server) Stopping HTTP server...
+2026-08-09 00:54:06.099 [Info] (Server) Stopping WebSocket server...
+2026-08-09 00:54:06.101 [Info] (WebSocket) Server stopped
+2026-08-09 00:54:06.101 [Info] (Server) Unloading models and stopping backend servers...
+2026-08-09 00:54:06.101 [Info] (Router) Unload all models called
+2026-08-09 00:54:06.101 [Info] (Router) Evicting all models (0 total)
+2026-08-09 00:54:06.101 [Info] (Router) Evict all completed. Remaining tombstoned models: 0
+2026-08-09 00:54:06.101 [Info] (Server) Shutting down telemetry queue...
+2026-08-09 00:54:06.102 [Info] (Server) Cleanup complete
+2026-08-09 00:54:12.088 [Info] (Router) Unload all models called
+2026-08-09 00:54:12.088 [Info] (Router) Evicting all models (0 total)
+2026-08-09 00:54:12.088 [Info] (Router) Evict all completed. Remaining tombstoned models: 0

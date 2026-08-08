@@ -1,0 +1,19 @@
+Preparing Lemonade embeddable 10.10.0...
+Using cached lemonade-embeddable-10.10.0-ubuntu-x64.tar.gz.
+Detecting best supported Lemonade llama.cpp backend...
+Installing Lemonade llamacpp:rocm backend...
+Installing backend: llamacpp:rocm
+[1/2] llama-b9752-bin-ubuntu-rocm-7.13-x64.tar.gz
+
+[2/2] therock-dist-linux-gfx1151-7.13.0.tar.gz
+Total: 3.3 GB, 2 files
+
+Backend installed successfully: llamacpp:rocm
+engine install
+  engine: lemonade
+  runtime_id: lemonade-embeddable-10.6.0
+  reinstall: false
+  env_id: lemonade-embeddable-10.10.0
+  env_path: /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/data/engines/lemonade/runtime
+  warning: Lemonade is installed as a rocm-cli managed embeddable runtime
+  warning: Selected the best supported llama.cpp backend for this GPU: llamacpp:rocm

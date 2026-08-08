@@ -1,0 +1,18 @@
+main: using seed 1151
+|     Model arch.|                               Device|Config|   NMSE vs. CPU|Roundtrip|
+|----------------|-------------------------------------|------|---------------|---------|
+|       qwen3next|            AMD Radeon 8060S Graphics|   MoE|0.00.014.917 W load: adding 128 dummy tokens
+0.00.034.884 W llama_context: n_ctx_seq (256) > n_ctx_train (128) -- possible training context overflow
+0.00.043.628 W load: adding 128 dummy tokens
+0.00.092.351 W llama_context: n_ctx_seq (256) > n_ctx_train (128) -- possible training context overflow
+0.00.202.332 W load: adding 128 dummy tokens
+0.00.204.730 W llama_context: n_ctx_seq (256) > n_ctx_train (128) -- possible training context overflow
+  [1;32mOK[0m (9.59e-14)|       [1;32mOK[0m|
+|       qwen3next|AMD RYZEN AI MAX+ 395 w/ Radeon 8060S|   MoE|0.00.217.659 W load: adding 128 dummy tokens
+0.00.237.398 W llama_context: n_ctx_seq (256) > n_ctx_train (128) -- possible training context overflow
+0.00.244.481 W load: adding 128 dummy tokens
+0.00.244.864 W llama_context: n_ctx_seq (256) > n_ctx_train (128) -- possible training context overflow
+  [1;32mOK[0m (0.00e+00)|       [1;32mOK[0m|
+|       qwen3next|                                 Meta|   MoE|0.00.249.196 W load: adding 128 dummy tokens
+0.00.270.410 W llama_context: n_ctx_seq (256) > n_ctx_train (128) -- possible training context overflow
+  [1;32mOK[0m (9.59e-14)|     [1;33mSKIP[0m|

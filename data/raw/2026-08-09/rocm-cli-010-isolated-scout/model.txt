@@ -1,0 +1,19 @@
+Recommended models — run one with `rocm serve <model>`
+
+AMD Ryzen AI — Strix Halo (Lemonade / llama.cpp) ← your GPU
+  unsloth/Qwen3.6-35B-A3B-GGUF:Q4_K_M  Q4_K_M GGUF, ~22 GiB
+  unsloth/gemma-4-26B-A4B-it-GGUF:Q4_K_M  Q4_K_M GGUF, ~17 GiB
+
+AMD Radeon — RX 7000/9000, Radeon PRO (Lemonade / llama.cpp)
+  unsloth/Qwen3.6-35B-A3B-GGUF:Q4_K_M  Q4_K_M GGUF, ~22 GiB
+  unsloth/gemma-4-26B-A4B-it-GGUF:Q4_K_M  Q4_K_M GGUF, ~17 GiB
+
+AMD Instinct — MI300X, MI350X, MI355X (vLLM)
+  Qwen/Qwen3.6-27B  BF16, ~54 GiB (1x MI300X)
+  google/gemma-4-31B-it  BF16, ~62 GiB (1x MI300X)
+
+These are recommendations — you can serve any compatible Hugging Face model:
+  rocm serve <owner/repo>          # vLLM, e.g. Qwen/Qwen3.6-27B
+  rocm serve <owner/repo>:<quant>  # Lemonade GGUF, e.g. unsloth/Qwen3.6-35B-A3B-GGUF:Q4_K_M
+
+Use `rocm model --verbose` for details.

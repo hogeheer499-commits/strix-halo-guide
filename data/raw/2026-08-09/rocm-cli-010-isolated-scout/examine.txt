@@ -1,0 +1,54 @@
+ROCm setup check
+  AMD GPU detected
+  No ROCm installs saved yet
+  Driver: amdgpu available
+
+Details
+rocm examine
+  os: linux
+  arch: x86_64
+  kernel: 7.0.0-28-generic
+  distro: Ubuntu 24.04.4 LTS
+  cpu: AMD RYZEN AI MAX+ 395 w/ Radeon 8060S
+  system_ram: 125 GiB
+  interactive_terminal: false
+  default_engine: lemonade
+  detected_gfx_target: gfx1151
+  compatible_therock_family: gfx1151
+  detected_therock_family: <not detected>
+  driver_policy: linux_official_amd_dkms_wrapper
+  driver_status: amdgpu_available
+  driver_detail: /dev/kfd is present
+  legacy_rocm_status: not_detected
+  legacy_rocm_paths: <none>
+  legacy_rocm_detail: <unknown>
+  legacy_rocm_guidance: none
+  wsl: false
+  wsl_dxg_device: false
+  wsl_dxcore: false
+  wsl_librocdxg: false
+  wsl_rocdxg_dids: false
+  wsl_ldconfig_librocdxg: false
+  wsl_global_rocminfo: false
+  wsl_cargo: false
+  wsl_detail: <not WSL>
+  managed_runtimes: 0
+  managed_services: 0
+  model_cache_entries: 0
+  config_dir: /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/config
+  data_dir: /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/data
+  cache_dir: /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/cache
+runtime_state:
+  active_runtime_id: <unset>
+  active_runtime_key: <unset>
+  previous_runtime_key: <unset>
+  active_runtime_status: unset
+  registered_runtime_keys: <none>
+engine_inventory:
+  configured_default_engine: lemonade
+  effective_default_engine: lemonade
+  plugin_policy: first-party engines are built in; external data-dir plugins are optional overrides
+  external_plugin_policy: optional overrides only; no fallback engine is selected automatically
+  plugin_dirs: /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/data/engines/plugins, /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/data/engines
+  * lemonade adapter=built_in runtime_pref=<unset> note=default embedded Lemonade server with ROCm llama.cpp backend
+    vllm adapter=built_in runtime_pref=<unset> note=Linux/WSL ROCm GPU serving engine through external vLLM

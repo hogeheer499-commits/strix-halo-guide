@@ -1,0 +1,15 @@
+serve plan
+  requested model: unsloth/gemma-4-26B-A4B-it-GGUF:Q4_K_M
+  resolved model: unsloth/gemma-4-26B-A4B-it-GGUF:Q4_K_M
+  engine: lemonade
+  engine_selection: explicit --engine
+  host: 127.0.0.1
+  port: 11466
+  env_id: lemonade-embeddable-10.10.0
+  selection_source: config_preferred_env_id
+  device_policy: gpu_required
+  gpu: auto (selected none)
+Error: managed engine exited immediately with status exit status: 1; inspect /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/data/services/lemonade-unsloth-gemma-4-26b-a4b--1786227908928.log
+
+recent startup log output:
+Error: no GPU llama-server backend is installed under /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/data/engines/lemonade/runtime/bin/llamacpp; run `rocm engines install lemonade`

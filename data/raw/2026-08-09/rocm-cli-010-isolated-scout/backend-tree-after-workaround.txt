@@ -1,0 +1,129 @@
+d  -> 
+d llama-b9752 -> 
+f llama-b9752/LICENSE -> 
+f llama-b9752/libggml-base.so.0.15.2 -> 
+f llama-b9752/libggml-cpu-alderlake.so -> 
+f llama-b9752/libggml-cpu-cannonlake.so -> 
+f llama-b9752/libggml-cpu-cascadelake.so -> 
+f llama-b9752/libggml-cpu-cooperlake.so -> 
+f llama-b9752/libggml-cpu-haswell.so -> 
+f llama-b9752/libggml-cpu-icelake.so -> 
+f llama-b9752/libggml-cpu-ivybridge.so -> 
+f llama-b9752/libggml-cpu-piledriver.so -> 
+f llama-b9752/libggml-cpu-sandybridge.so -> 
+f llama-b9752/libggml-cpu-sapphirerapids.so -> 
+f llama-b9752/libggml-cpu-skylakex.so -> 
+f llama-b9752/libggml-cpu-sse42.so -> 
+f llama-b9752/libggml-cpu-x64.so -> 
+f llama-b9752/libggml-cpu-zen4.so -> 
+f llama-b9752/libggml-hip.so -> 
+f llama-b9752/libggml-rpc.so -> 
+f llama-b9752/libggml.so.0.15.2 -> 
+f llama-b9752/libllama-batched-bench-impl.so -> 
+f llama-b9752/libllama-bench-impl.so -> 
+f llama-b9752/libllama-cli-impl.so -> 
+f llama-b9752/libllama-common.so.0.0.9752 -> 
+f llama-b9752/libllama-completion-impl.so -> 
+f llama-b9752/libllama-fit-params-impl.so -> 
+f llama-b9752/libllama-perplexity-impl.so -> 
+f llama-b9752/libllama-quantize-impl.so -> 
+f llama-b9752/libllama-server-impl.so -> 
+f llama-b9752/libllama.so.0.0.9752 -> 
+f llama-b9752/libmtmd.so.0.0.9752 -> 
+f llama-b9752/llama -> 
+f llama-b9752/llama-batched-bench -> 
+f llama-b9752/llama-bench -> 
+f llama-b9752/llama-cli -> 
+f llama-b9752/llama-completion -> 
+f llama-b9752/llama-debug-template-parser -> 
+f llama-b9752/llama-fit-params -> 
+f llama-b9752/llama-gemma3-cli -> 
+f llama-b9752/llama-gguf-split -> 
+f llama-b9752/llama-imatrix -> 
+f llama-b9752/llama-llava-cli -> 
+f llama-b9752/llama-minicpmv-cli -> 
+f llama-b9752/llama-mtmd-cli -> 
+f llama-b9752/llama-mtmd-debug -> 
+f llama-b9752/llama-perplexity -> 
+f llama-b9752/llama-quantize -> 
+f llama-b9752/llama-qwen2vl-cli -> 
+f llama-b9752/llama-results -> 
+f llama-b9752/llama-server -> 
+f llama-b9752/llama-template-analysis -> 
+f llama-b9752/llama-tokenize -> 
+f llama-b9752/llama-tts -> 
+f llama-b9752/rpc-server -> 
+f version.txt -> 
+l LICENSE -> llama-b9752/LICENSE
+l libggml-base.so -> llama-b9752/libggml-base.so
+l libggml-base.so.0 -> llama-b9752/libggml-base.so.0
+l libggml-base.so.0.15.2 -> llama-b9752/libggml-base.so.0.15.2
+l libggml-cpu-alderlake.so -> llama-b9752/libggml-cpu-alderlake.so
+l libggml-cpu-cannonlake.so -> llama-b9752/libggml-cpu-cannonlake.so
+l libggml-cpu-cascadelake.so -> llama-b9752/libggml-cpu-cascadelake.so
+l libggml-cpu-cooperlake.so -> llama-b9752/libggml-cpu-cooperlake.so
+l libggml-cpu-haswell.so -> llama-b9752/libggml-cpu-haswell.so
+l libggml-cpu-icelake.so -> llama-b9752/libggml-cpu-icelake.so
+l libggml-cpu-ivybridge.so -> llama-b9752/libggml-cpu-ivybridge.so
+l libggml-cpu-piledriver.so -> llama-b9752/libggml-cpu-piledriver.so
+l libggml-cpu-sandybridge.so -> llama-b9752/libggml-cpu-sandybridge.so
+l libggml-cpu-sapphirerapids.so -> llama-b9752/libggml-cpu-sapphirerapids.so
+l libggml-cpu-skylakex.so -> llama-b9752/libggml-cpu-skylakex.so
+l libggml-cpu-sse42.so -> llama-b9752/libggml-cpu-sse42.so
+l libggml-cpu-x64.so -> llama-b9752/libggml-cpu-x64.so
+l libggml-cpu-zen4.so -> llama-b9752/libggml-cpu-zen4.so
+l libggml-hip.so -> llama-b9752/libggml-hip.so
+l libggml-rpc.so -> llama-b9752/libggml-rpc.so
+l libggml.so -> llama-b9752/libggml.so
+l libggml.so.0 -> llama-b9752/libggml.so.0
+l libggml.so.0.15.2 -> llama-b9752/libggml.so.0.15.2
+l libllama-batched-bench-impl.so -> llama-b9752/libllama-batched-bench-impl.so
+l libllama-bench-impl.so -> llama-b9752/libllama-bench-impl.so
+l libllama-cli-impl.so -> llama-b9752/libllama-cli-impl.so
+l libllama-common.so -> llama-b9752/libllama-common.so
+l libllama-common.so.0 -> llama-b9752/libllama-common.so.0
+l libllama-common.so.0.0.9752 -> llama-b9752/libllama-common.so.0.0.9752
+l libllama-completion-impl.so -> llama-b9752/libllama-completion-impl.so
+l libllama-fit-params-impl.so -> llama-b9752/libllama-fit-params-impl.so
+l libllama-perplexity-impl.so -> llama-b9752/libllama-perplexity-impl.so
+l libllama-quantize-impl.so -> llama-b9752/libllama-quantize-impl.so
+l libllama-server-impl.so -> llama-b9752/libllama-server-impl.so
+l libllama.so -> llama-b9752/libllama.so
+l libllama.so.0 -> llama-b9752/libllama.so.0
+l libllama.so.0.0.9752 -> llama-b9752/libllama.so.0.0.9752
+l libmtmd.so -> llama-b9752/libmtmd.so
+l libmtmd.so.0 -> llama-b9752/libmtmd.so.0
+l libmtmd.so.0.0.9752 -> llama-b9752/libmtmd.so.0.0.9752
+l llama -> llama-b9752/llama
+l llama-b9752/libggml-base.so -> libggml-base.so.0
+l llama-b9752/libggml-base.so.0 -> libggml-base.so.0.15.2
+l llama-b9752/libggml.so -> libggml.so.0
+l llama-b9752/libggml.so.0 -> libggml.so.0.15.2
+l llama-b9752/libllama-common.so -> libllama-common.so.0
+l llama-b9752/libllama-common.so.0 -> libllama-common.so.0.0.9752
+l llama-b9752/libllama.so -> libllama.so.0
+l llama-b9752/libllama.so.0 -> libllama.so.0.0.9752
+l llama-b9752/libmtmd.so -> libmtmd.so.0
+l llama-b9752/libmtmd.so.0 -> libmtmd.so.0.0.9752
+l llama-batched-bench -> llama-b9752/llama-batched-bench
+l llama-bench -> llama-b9752/llama-bench
+l llama-cli -> llama-b9752/llama-cli
+l llama-completion -> llama-b9752/llama-completion
+l llama-debug-template-parser -> llama-b9752/llama-debug-template-parser
+l llama-fit-params -> llama-b9752/llama-fit-params
+l llama-gemma3-cli -> llama-b9752/llama-gemma3-cli
+l llama-gguf-split -> llama-b9752/llama-gguf-split
+l llama-imatrix -> llama-b9752/llama-imatrix
+l llama-llava-cli -> llama-b9752/llama-llava-cli
+l llama-minicpmv-cli -> llama-b9752/llama-minicpmv-cli
+l llama-mtmd-cli -> llama-b9752/llama-mtmd-cli
+l llama-mtmd-debug -> llama-b9752/llama-mtmd-debug
+l llama-perplexity -> llama-b9752/llama-perplexity
+l llama-quantize -> llama-b9752/llama-quantize
+l llama-qwen2vl-cli -> llama-b9752/llama-qwen2vl-cli
+l llama-results -> llama-b9752/llama-results
+l llama-server -> llama-b9752/llama-server
+l llama-template-analysis -> llama-b9752/llama-template-analysis
+l llama-tokenize -> llama-b9752/llama-tokenize
+l llama-tts -> llama-b9752/llama-tts
+l rpc-server -> llama-b9752/rpc-server

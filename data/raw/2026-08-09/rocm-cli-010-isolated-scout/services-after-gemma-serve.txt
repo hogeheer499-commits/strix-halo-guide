@@ -1,0 +1,19 @@
+Local Servers
+
+Status: none ready
+
+Servers
+- lemonade-unsloth-gemma-4-26b-a4b--1786227908928
+  status: stopped
+  engine: lemonade
+  model: unsloth/gemma-4-26B-A4B-it-GGUF:Q4_K_M
+  endpoint: http://127.0.0.1:11466/v1
+  logs: rocm services logs lemonade-unsloth-gemma-4-26b-a4b--1786227908928
+  restart: rocm services restart lemonade-unsloth-gemma-4-26b-a4b--1786227908928 --yes
+- lemonade-home-hoge-heer-models-qw-1786227820734
+  status: stopped
+  engine: lemonade
+  model: /home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf
+  endpoint: http://127.0.0.1:11465/v1
+  logs: rocm services logs lemonade-home-hoge-heer-models-qw-1786227820734
+  restart: rocm services restart lemonade-home-hoge-heer-models-qw-1786227820734 --yes

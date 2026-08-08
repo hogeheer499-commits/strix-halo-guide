@@ -1,0 +1,10 @@
+{
+  "matched": [],
+  "min_score_for_match": 50,
+  "high_confidence_threshold": 75,
+  "route_when_no_match": {
+    "target": "rocm-core",
+    "url": "https://github.com/ROCm/ROCm/issues"
+  },
+  "out_of_scope": null
+}

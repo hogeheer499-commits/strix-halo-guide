@@ -1,0 +1,6 @@
+863fceca1db8d5a4c36db5b9fd1af65466f6221803030b9473f225cb5b035617  /home/hoge-heer/local-scratch/qwen3-tts-b10330/first.wav
+28b1ad4f11fa6fded4d4964d87911d6d07088dffa5e0f95b52f494be8ee4081f  /home/hoge-heer/local-scratch/qwen3-tts-b10330/repeat.wav
+8d18c94acb2addd042f97da63c98be144eafa76d0d9495177eab65130cf85129  /home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-TTS-12Hz-1.7B-Base-GGUF/snapshots/ca27d74bc954b73dadab5b71ca265d87fc861a7c/Qwen3-TTS-12Hz-1.7B-Base-Q4_K_M.gguf
+6fd65188839bcd6ecc91b277ad471e22a0edfada4699a0fe82f1165c18cfcce2  /home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-TTS-12Hz-1.7B-Base-GGUF/snapshots/ca27d74bc954b73dadab5b71ca265d87fc861a7c/mmproj-Qwen3-TTS-12Hz-1.7B-Base-Q8_0.gguf
+bca259818b50ca7c4c05e9bdb35a5dc04fa039653a6d6f3f0f331f96f6aa1971  /home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-ASR-0.6B-GGUF/snapshots/928ab958557df9aa2ef1c93e0e83c7ad0933fae2/Qwen3-ASR-0.6B-Q8_0.gguf
+41a342b5e4c514e968cb756de6cd1b7be39eff43c44c57a2ef5fc6522e36603d  /home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-ASR-0.6B-GGUF/snapshots/928ab958557df9aa2ef1c93e0e83c7ad0933fae2/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf

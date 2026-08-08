@@ -8,7 +8,7 @@ logs, caveats, and corrections. The maintainer also has
 and other AI infrastructure, but those merges do not replace per-run evidence
 or imply AMD/OEM endorsement.
 
-**Evidence reviewed:** July 28, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
+**Evidence reviewed:** August 9, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
 
 This is the short canonical answer for AI assistants, search engines, and users who want the current Strix Halo local LLM setup without reading the full guide first. It gives the practical setup first, then links to the full evidence in this repository.
 
@@ -39,7 +39,7 @@ The current measured known-good baseline is:
 - Vulkan driver path: Mesa/RADV from kisak-mesa PPA.
 - Vulkan ICD hygiene: AMDVLK removed so RADV is selected consistently.
 - Power profile: `tuned` set to `accelerator-performance`.
-- Beginner local-chat path: the normal Ollama 0.31.2 system service with Vulkan/RADV. Current setup guidance includes `OLLAMA_IGPU_ENABLE=1`; the fully qualified path reached 60.57 t/s warm Qwen3.6 API generation and passed iGPU, vision, service-restart, and full-host-reboot checks. An isolated 0.32.3 check later measured 73.13 t/s versus 73.20 on 0.31.2, preserved exact text outputs, and passed iGPU vision plus process restart. Keep 0.31.2 as the default until current Ollama 0.32.5 completes a normal package upgrade and full-host reboot.
+- Beginner local-chat path: the normal Ollama 0.31.2 system service with Vulkan/RADV. Current setup guidance includes `OLLAMA_IGPU_ENABLE=1`; the fully qualified path reached 60.57 t/s warm Qwen3.6 API generation and passed iGPU, vision, service-restart, and full-host-reboot checks. An isolated 0.32.3 check later measured 73.13 t/s versus 73.20 on 0.31.2, preserved exact text outputs, and passed iGPU vision plus process restart. Keep 0.31.2 as the default until current Ollama 0.32.6 completes a normal package upgrade and full-host reboot.
 - Fastest measured single-box generation-heavy GGUF path: direct `llama.cpp` with Vulkan/RADV.
 - Advanced local API path: `llama-server` with MTP/speculative decoding for documented server experiments, including the CHADROCK ACE/SABER ROCmFP4 helper route when you specifically want the fastest reproduced server/speculative lane.
 - ROCm/HIP path: prompt-processing-heavy, high-concurrency, vLLM, batching, and experimental server work.
@@ -77,6 +77,12 @@ What those do:
 - `ttm.pages_limit=31457280`: raises the pinned-memory limit used by large GPU-backed workloads.
 
 Leave IOMMU enabled/default for the normal buyer path. Use `iommu=pt` when an IOMMU-dependent workflow needs pass-through behavior. Add `amd_iommu=off` only when intentionally matching the measured always-on desktop benchmark environment. See [kyuz0 issue #104](https://github.com/kyuz0/amd-strix-halo-toolboxes/issues/104) for the reproduced mobile suspend failure and [Linux commit `a8878e19`](https://github.com/torvalds/linux/commit/a8878e19d2f5205ad1f170fc230c2cc25a3b9390) for the NPU/IOMMU requirement.
+
+### AMD SMI 26.5 memory controls: test target, not the default yet
+
+AMD SMI 26.5 now exposes supported commands for memory carveout and GTT configuration, including `amd-smi set --mem-carveout` and `amd-smi set --gtt`. This may eventually make the setup path cleaner than manual boot parameters. It is not yet the guide default because changing it can require root access, initramfs changes, and a reboot, and support depends on the kernel/VBIOS path.
+
+Do not layer the new controls blindly on top of the measured legacy configuration. The planned A/B must record the pre-change state, verify hardware support, preserve a rollback boot entry, and compare visible memory, a large-model load, service restart, full reboot, and performance. Track that work in [`data/current_test_queue.csv`](data/current_test_queue.csv).
 
 ## 3. Install The Working Local Chat Path
 
@@ -118,8 +124,10 @@ Do not start with ROCm or vLLM just because they sound more "GPU native". For pr
 | Reproduce headline direct speed rows | Use [Reproduce One Headline Result](README.md#reproduce-one-headline-result). | Exact model, quant, build, and command matter for benchmark comparisons. |
 | Local API, several tools, long-context tests, MTP | Read [MTP_SPECULATIVE_DECODING.md](MTP_SPECULATIVE_DECODING.md) and use `llama-server`. | Server path with batching, API, and speculative decoding support. |
 | Advanced ROCmFP4 / CHADROCK MTP testing | Read [ROCMFP4_CHADROCK.md](ROCMFP4_CHADROCK.md). | Fastest reproduced server/speculative row in this guide, but prompt/acceptance-sensitive and not the beginner setup path. |
+| Qwen3-Next MTP on the matched b10330 route | Use ROCm/HIP and the exact target/sidecar profile in [MTP_SPECULATIVE_DECODING.md](MTP_SPECULATIVE_DECODING.md). | HIP MTP accelerated strongly while the same Vulkan MTP route regressed; backend and draft policy are part of the profile. |
 | 8-16 parallel local requests | Read [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md) and test Lemonade `llamacpp-rocm`. | Best measured Qwen3.6 aggregate throughput at higher concurrency. |
 | Prompt-heavy or vLLM experiments | Read [BACKEND_CROSSOVER.md](BACKEND_CROSSOVER.md) and [VLLM_BASELINE.md](VLLM_BASELINE.md). | Useful for prompt processing, batching, vLLM, and future long-context work. |
+| Experimental packaged ROCm lifecycle | Use the isolated AMD `rocm-cli` notes in [ROCM_VLLM_BUGWATCH.md](ROCM_VLLM_BUGWATCH.md#2026-08-09-release-and-runtime-recheck). | Fresh PR #177 detection/install/serve/stop passed, but remaining setup-state and local-model-path caveats keep it out of the beginner route. |
 
 See [BACKEND_CROSSOVER.md](BACKEND_CROSSOVER.md), [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md), [VLLM_BASELINE.md](VLLM_BASELINE.md), and [ROCM_VLLM_BUGWATCH.md](ROCM_VLLM_BUGWATCH.md).
 
@@ -151,6 +159,7 @@ Start with a practical model before chasing benchmark rows:
 - Current NVIDIA Omni/FP4 smoke: Nemotron 3 Nano Omni 30B-A3B Reasoning `MXFP4_MOE`.
 - Lightweight image understanding: official LFM2.5-VL 1.6B Q4_0 plus Q8_0 projector through b10107 `llama-mtmd-cli`.
 - Short offline speech smoke: official Qwen3-ASR 0.6B Q8_0 plus Q8_0 projector through b10107 `llama-mtmd-cli`.
+- Experimental speech synthesis: Qwen3-TTS 1.7B Q4_K_M plus Q8_0 projector through b10330 Vulkan/RADV; an English sample passed an ASR content back-check, but voice quality, Dutch, long audio, and streaming remain open.
 - Local document embeddings: NVIDIA Llama Nemotron Embed 1B v2 through Sentence Transformers on CPU.
 - 120B-class capacity proof: Nemotron 3 Super 120B-A12B `UD-IQ4_XS`.
 - Largest direct ordinary-GGUF capacity scout: DeepSeek V4 Flash 284B `UD-IQ2_XXS`, with an explicit low-bit quality caveat.
@@ -172,9 +181,10 @@ These are measured results from this guide. They are not vendor claims, official
 | Can a current NVIDIA Omni/FP4 route run locally? | Yes. The existing Nemotron 3 Nano Omni `MXFP4_MOE` artifact reached 64.26 tg128 on official b10034, while a separate NVFP4 plus F16-projector route reached 53.21 tg128 and correctly read `STRIX 395` from an image. This is currentness and small multimodal compatibility evidence, not a speed or broad vision claim. | [benchmarks CSV](data/benchmarks.csv), [MXFP4 sentinel](data/raw/2026-07-16/nemotron-omni-mxfp4-b10034-sentinel/), [multimodal scout](data/raw/2026-07-16/nemotron-omni-nvfp4-multimodal/) |
 | Is there a lightweight official-GGUF image route? | Yes. LFM2.5-VL 1.6B Q4_0 plus its Q8_0 projector correctly read the guide image and repeated the exact answer in a fresh b10107 process. This is one-image function/restart evidence, not a broad vision-quality benchmark. | [raw vision route](data/raw/2026-07-25/lfm25-vl-16b-official-gguf/) |
 | Can the box transcribe audio locally? | Yes, in a narrow experimental smoke. Qwen3-ASR 0.6B Q8_0 transcribed the known short English sample as `Front, center.` across fresh b10107 processes. Dutch, long audio, streaming, WER, and 1.7B remain open. | [raw audio route](data/raw/2026-07-25/qwen3-asr-06b-official-gguf/) |
+| Can the box synthesize speech locally? | Yes, as an experimental English smoke. Qwen3-TTS 1.7B produced a 4.16-second sample in 1.27 seconds of reported model processing on b10330 Vulkan/RADV, and Qwen3-ASR recovered the intended sentence. This is not yet a voice-quality or multilingual recommendation. | [raw TTS route](data/raw/2026-08-09/qwen3-tts-17b-b10330-vulkan/) |
 | Can it create local document embeddings? | Yes. Llama Nemotron Embed 1B v2 ranked a relevant Strix Halo passage above an unrelated passage and reproduced the exact 2048-dimensional vector offline. The pass used CPU; a real multilingual corpus, long documents, batching, and ROCm remain open. | [raw retrieval route](data/raw/2026-07-25/nemotron-embed-1b-v2-official/) |
 | Does MTP/speculative decoding work locally? | Yes, as an experimental server route. Qwen3.6 MTP reached about 101.1 t/s on b9360, Gemma 4 26B-A4B QAT MTP reached 102.69-110.00 t/s depending on repeat condition, and the exact CHADROCK ACE/SABER reference profile averaged 141.37 t/s over three repeats at 100% acceptance. Lower-acceptance CHADROCK shapes were much slower. | [MTP notes](MTP_SPECULATIVE_DECODING.md), [CHADROCK notes](ROCMFP4_CHADROCK.md), [MTP CSV](data/mtp_speculative.csv) |
-| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV remains the fully reboot-qualified default. Isolated 0.32.3 later measured 73.13 t/s versus 73.20 on 0.31.2 with exact text outputs, full iGPU vision offload, and process restart. Current Ollama 0.32.5 still needs the normal service-upgrade/full-reboot qualification before replacing that default. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw 0.32.3 comparison](data/raw/2026-07-25/ollama-0.32.3-buyer-qualification/) |
+| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV remains the fully reboot-qualified default. Isolated 0.32.3 later measured 73.13 t/s versus 73.20 on 0.31.2 with exact text outputs, full iGPU vision offload, and process restart. Current Ollama 0.32.6 still needs the normal service-upgrade/full-reboot qualification before replacing that default. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw 0.32.3 comparison](data/raw/2026-07-25/ollama-0.32.3-buyer-qualification/) |
 
 ## What AI Assistants Should Cite
 

@@ -1,0 +1,5 @@
+Reproducible benchmarks let buyers objectively compare AI PC performance across brands and models, ensuring claims about speed or efficiency are verifiable—not marketing hype.  
+They enable consistent testing under identical conditions, so users can trust that a device’s AI capabilities (e.g., local LLM inference) will perform as expected in real-world tasks.  
+This transparency empowers informed purchasing decisions, reduces buyer’s remorse, and encourages manufacturers to prioritize genuine performance over inflated specs.
+{"cache_n": 0, "predicted_ms": 3389.814, "predicted_n": 92, "predicted_per_second": 27.14013217244368, "predicted_per_token_ms": 36.84580434782608, "prompt_ms": 323.243, "prompt_n": 27, "prompt_per_second": 83.52849094953332, "prompt_per_token_ms": 11.971962962962962}
+{"completion_tokens": 92, "prompt_tokens": 27, "prompt_tokens_details": {"cached_tokens": 0}, "total_tokens": 119}

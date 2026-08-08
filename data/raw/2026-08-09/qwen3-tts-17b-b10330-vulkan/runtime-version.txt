@@ -1,0 +1,5 @@
+llama.cpp commit:
+687e7789271ec1276e3470f158428e11a4f80b6f
+
+version: 1 (687e778)
+built with GNU 13.3.0 for Linux x86_64

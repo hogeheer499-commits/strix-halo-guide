@@ -1,0 +1,50 @@
+[
+  {
+    "profile": "hip-baseline",
+    "prompt": "3k",
+    "prompt_tokens": 3093,
+    "repeats": 3,
+    "decode_tps_mean": 50.21252070099611,
+    "decode_tps_min": 50.191708800253465,
+    "decode_tps_max": 50.23632659420862,
+    "prompt_tps_mean": 798.6907711528872,
+    "draft_acceptance_mean": null,
+    "unique_content_hashes": 1
+  },
+  {
+    "profile": "hip-baseline",
+    "prompt": "short",
+    "prompt_tokens": 69,
+    "repeats": 3,
+    "decode_tps_mean": 51.343031729536875,
+    "decode_tps_min": 50.983544264470765,
+    "decode_tps_max": 51.594283514618716,
+    "prompt_tps_mean": 230.83434943137127,
+    "draft_acceptance_mean": null,
+    "unique_content_hashes": 1
+  },
+  {
+    "profile": "hip-mtp-n4-p000",
+    "prompt": "3k",
+    "prompt_tokens": 3093,
+    "repeats": 3,
+    "decode_tps_mean": 83.59705143776722,
+    "decode_tps_min": 82.80635926962204,
+    "decode_tps_max": 84.15975362232128,
+    "prompt_tps_mean": 793.5180201604412,
+    "draft_acceptance_mean": 0.9900990099009901,
+    "unique_content_hashes": 1
+  },
+  {
+    "profile": "hip-mtp-n4-p000",
+    "prompt": "short",
+    "prompt_tokens": 69,
+    "repeats": 3,
+    "decode_tps_mean": 83.51980740129723,
+    "decode_tps_min": 81.84724107657257,
+    "decode_tps_max": 84.47272520890502,
+    "prompt_tps_mean": 229.28516603014506,
+    "draft_acceptance_mean": 0.9737267844431502,
+    "unique_content_hashes": 1
+  }
+]

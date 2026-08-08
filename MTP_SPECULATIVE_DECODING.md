@@ -2,11 +2,24 @@
 
 This is an experimental `llama-server` route for practical local API speed. It is not the same benchmark as the direct non-speculative `llama-bench` headline.
 
-Short version: speculative decoding works on Strix Halo with Vulkan/RADV and current `llama.cpp`/ROCmFPX routes, but it is not automatically faster. It improves server generation on the tested Qwen3.6 35B MTP GGUFs, a matched Gemma 4 26B-A4B QAT assistant-head route, and the tuned CHADROCK ACE/SABER ROCmFP4 route. The Qwen3.6 local b9360 run crossed 100 t/s across the six-prompt harness, Gemma 4 26B-A4B QAT measured 102.7 t/s cold / 107.4 t/s T3-only / 110.0 t/s best-repeat on ac4cddeb0, and the exact CHADROCK reference profile averaged 141.37 t/s over three repeats at 100% draft acceptance. Conversely, Gemma 4 31B DFlash was slower on two synthetic long-prompt shapes when acceptance stayed near 11-14%. Keep all of these separate from direct `llama-bench`.
+Short version: speculative decoding works on Strix Halo with Vulkan/RADV, ROCm/HIP, and current `llama.cpp`/ROCmFPX routes, but it is not automatically faster. It improves server generation on the tested Qwen3.6 35B MTP GGUFs, a matched Gemma 4 26B-A4B QAT assistant-head route, the tuned CHADROCK ACE/SABER ROCmFP4 route, and the new Qwen3-Next 80B MTP route on HIP. The same Qwen3-Next target and sidecar became much slower on Vulkan despite high acceptance, while Gemma 4 31B DFlash was also slower on two synthetic long-prompt shapes. Keep every server/speculative result separate from direct `llama-bench`.
 
 ## Current Result
 
-Local rows were measured on the Beelink GTR9 Pro with Mesa/RADV. Qwen3.6 rows used MTP GGUFs; the latest local Qwen3.6 MTP rerun used `llama.cpp` b9360 / `6b4e4bd58` with Mesa 26.1.1. Gemma 4 QAT rows used `llama.cpp` ac4cddeb0 build 9592 with a matched Q4_0 MTP head. CHADROCK rows used the pinned `ciru-ai/ROCmFPX` helper runner at `deaa996`. Community rows are kept separate and marked as GMKtec or Nimo reports.
+Local rows were measured on the Beelink GTR9 Pro. Historical Qwen3.6 and Gemma rows use Mesa/RADV; CHADROCK rows use the pinned `ciru-ai/ROCmFPX` helper runner at `deaa996`. The 2026-08-09 Qwen3-Next qualification uses the same b10330 main model, MTP sidecar, prompts, and deterministic output checks on both Mesa/RADV and ROCm 7.14. Community rows are kept separate and marked as GMKtec or Nimo reports.
+
+### Qwen3-Next 80B Backend Crossover On b10330
+
+This matched A/B is intentionally shown separately from the historical six-prompt leaderboard. It used two prompt shapes, three repeats each, 128 generated tokens, and normal low-load workstation conditions.
+
+| Backend / policy | Short decode | 3K-prompt decode | Draft acceptance | Interpretation |
+| --- | ---: | ---: | ---: | --- |
+| Vulkan/RADV direct | 61.33 t/s | 59.16 t/s | n/a | Fastest direct control. |
+| Vulkan/RADV MTP `n=4`, `p=0` | 12.37 t/s | 12.58 t/s | 95.8-99.0% | Correct but 78.7-79.8% slower. |
+| ROCm/HIP direct | 51.34 t/s | 50.21 t/s | n/a | Slower direct control. |
+| ROCm/HIP MTP `n=4`, `p=0` | **83.52 t/s** | **83.60 t/s** | 97.4-99.0% | 62.7-66.5% over matched HIP direct. |
+
+All repeats produced the same observed output hash for a given deterministic prompt. The useful result is therefore a backend crossover, not a universal claim that HIP or MTP is faster. Raw commands, responses, logs, and hashes are in [`data/raw/2026-08-09/qwen3-next-80b-mtp-b10330/`](data/raw/2026-08-09/qwen3-next-80b-mtp-b10330/).
 
 | Model file | Mode | Mean over 6 prompts | Range | Takeaway |
 |------------|------|--------------------:|------:|----------|
@@ -58,6 +71,7 @@ The most honest public summary is:
 - **Best local MTP server average measured here:** Qwen3.6 MTP IQ4_XS-Q8nextn at about 101.1 t/s across six practical prompts on b9360 with `draft-n=2`, `--poll 100`, and `-ub 1024`.
 - **Best current-model Gemma MTP route measured here:** Gemma 4 26B-A4B QAT with a matched MTP head at 102.69 t/s cold repeat, 107.42 t/s T3-only repeat, and 110.00 t/s best repeat across the same six-prompt harness on ac4cddeb0.
 - **Fastest repeat-confirmed local MTP server profile:** CHADROCK ACE/SABER 35B ROCmFP4 through `ciru-ai/ROCmFPX` averaged 141.37 t/s over three exact reference-profile repeats, but the 1K and 8K profiles averaged only 78.00 and 83.85 t/s as acceptance fell. This is prompt-shape-specific rather than a broad six-prompt average.
+- **Current Qwen3-Next 80B MTP profile:** b10330 ROCm/HIP reached 83.52-83.60 t/s and improved 62.7-66.5% over its matched HIP control. The same sidecar fell to 12.37-12.58 t/s on Vulkan, so this is backend-specific evidence rather than a generic MTP recommendation.
 - **Largest first-party MTP agent route:** Step 3.7 Flash ROCmFPX Q3 QualityPlus, a 198B-total / about 11B-active target plus separate Q8 draft, measured 34.50 t/s at 4K and 33.83 t/s at 16K. MTP improved the matched 4K server baseline by 44.68%; 256K allocation and native tool-call smokes passed.
 - **Best community MTP average reported so far:** the same exact route reached 93.29 t/s on mottledMantis' GMKtec EVO-X2.
 - **Fastest local MTP server prompt:** Qwen3.6 MTP IQ4_XS-Q8nextn with `draft-n=3`, `-t 16`, `--poll 100`, and `-ub 1024` reached 117.53 t/s on the best b9360 prompt.
@@ -67,6 +81,8 @@ The most honest public summary is:
 ## Why This Matters
 
 MTP is valuable because it can improve real `llama-server` generation, not because it automatically raises every direct `llama-bench` number. The speedup depends on draft-token acceptance rate, prompt shape, generation length, quantization, and server flags.
+
+The Qwen3-Next A/B adds backend implementation to that list. High draft acceptance did not rescue the Vulkan route, while the matched HIP route accelerated strongly and preserved the observed deterministic output. Select and benchmark the complete target/draft/backend combination instead of treating the model card or acceptance percentage as sufficient evidence.
 
 The Gemma 4 QAT repeats also show that single-stream server/MTP speed is sensitive to host workload. The same route measured 102.69 t/s with T3 and Hermes left running after stopping docflock/VM noise, 107.42 t/s with only T3 left among the known local services, and 110.00 t/s in the best repeat. CHADROCK has a different sensitivity: the exact 3946-token profile averaged 141.37 t/s at 100% acceptance, while the 984- and 7893-token profiles averaged 78.00 and 83.85 t/s at 41.93% and 51.28% acceptance. For public claims, use the exact profile and acceptance rather than only the highest number.
 

@@ -1,0 +1,45 @@
+{
+  "default_engine": null,
+  "default_runtime_id": null,
+  "active_runtime_key": null,
+  "previous_runtime_key": null,
+  "planner_provider": null,
+  "onboarding_dismissed": false,
+  "telemetry": {
+    "mode": "local"
+  },
+  "permissions": {
+    "mode": "ask"
+  },
+  "setup": {
+    "completed": false,
+    "therock_venv": null,
+    "cli_install_dir": null
+  },
+  "tools": {},
+  "providers": {},
+  "engines": {
+    "lemonade": {
+      "preferred_runtime_id": null,
+      "preferred_env_id": "lemonade-embeddable-11.5.1",
+      "last_installed_runtime_id": "lemonade-embeddable-11.5.1",
+      "last_installed_env_id": "lemonade-embeddable-11.5.1"
+    }
+  },
+  "automations": {
+    "daemon_enabled": false,
+    "watchers": {}
+  },
+  "dashboard": {
+    "daemon": {
+      "listen": "unix:/home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/xdg-runtime/rocmdashd.sock",
+      "gpu_tick_secs": 1.0,
+      "discovery_tick_secs": 5.0,
+      "instance_tick_secs": 2.0
+    },
+    "tui": {
+      "connect": "unix:/home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/xdg-runtime/rocmdashd.sock",
+      "theme": "default-dark"
+    }
+  }
+}

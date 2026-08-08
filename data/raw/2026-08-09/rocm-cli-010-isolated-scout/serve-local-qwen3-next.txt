@@ -1,0 +1,19 @@
+serve plan
+  requested model: /home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf
+  resolved model: /home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf
+  engine: lemonade
+  engine_selection: explicit --engine
+  host: 127.0.0.1
+  port: 11465
+  env_id: lemonade-embeddable-10.10.0
+  selection_source: config_preferred_env_id
+  device_policy: gpu_required
+  gpu: auto (selected none)
+  helper: started background automation daemon
+managed service launched
+  service_id: lemonade-home-hoge-heer-models-qw-1786227820734
+  process_pid: 1975136
+  endpoint: http://127.0.0.1:11465/v1
+  log_path: /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/data/services/lemonade-home-hoge-heer-models-qw-1786227820734.log
+  manifest_path: /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/data/services/lemonade-home-hoge-heer-models-qw-1786227820734.json
+  readiness: starting

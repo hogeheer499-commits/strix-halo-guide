@@ -1,0 +1,1 @@
+{"model":"/home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf","messages":[{"role":"user","content":"In exactly three concise sentences, explain why reproducible benchmarks matter for buyers of local AI PCs."}],"temperature":0,"seed":42,"max_tokens":128}

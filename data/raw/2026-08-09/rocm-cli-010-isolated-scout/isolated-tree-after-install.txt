@@ -1,0 +1,5 @@
+bin/.rocm-cli-manifest 139
+bin/rocm 38647400
+bin/rocmd 8762808
+config/config.json 160
+data/logs/rocm-cli.log.2026-08-08 0

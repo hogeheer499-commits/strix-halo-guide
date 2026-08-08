@@ -1,0 +1,14 @@
+7799500fd4f5149d5ec707c2657a7699465f410f0aa175e2747863e9601ae54b  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/README.md
+a0c1c0f66b003a925cf1e2b1e857e66c12221873677a0ad478404d804f4ca603  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/audit-events.jsonl
+72c772007ab56534fddb4aac4e9808fb02d7cc39bcbbaa0098ecb6f1df8b3898  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/cli-lifecycle.log
+5802ed6006f6104619cd5d773a1c68089123830d99cf537661f02cdb50d53feb  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/config.json
+8ff8415f25c6600954bcba8be8d835e609478a6d1d71ebc55ad263b34412b20c  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/host-and-cli.txt
+9ba2e04e5183f39ec58cce62b17fa43340e1e4fcdeb639d36dadda07e25fba21  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/pr177-external-response.json
+3e172ef6b05e082832d63fe89b5ba141acc9bb7b4ee7934acf02dd2ea2c3ca4c  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/pr177-serve-official-11470.txt
+8614d28e977fa390614b5dbd98a6484e1f81bb66abd868c1fd29c377582ddbad  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/pr177-service-id.txt
+da630a9d6f36443e43e50a947871a1999f07348539373185d6f0f2e2455d0989  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/pr177-services-after-serve.txt
+3827a1933720c98f6f684e4991939cb49139d9bc157e82d1cf8683603dccef5d  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/pr177-stop.txt
+de025ac77bb10ca27d33e5e7b75f5ecb007b90f0c74884c86af7c29a6dd3e019  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/service-manifest.json
+24357355c99e4331ae7375a981808325a8f931505b1032d678e296f97c1134be  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/service-readable.log
+a801765e1216c8b6ddec4ab2c540c75f5db4c8c58ac1ebc46b7d9403ed894ccb  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/service.log
+58ea939a2ee88724c736c1d48a57954171a73ec141c69c24c82aa4088cf692cc  data/raw/2026-08-09/rocm-cli-pr177-gfx1151-live/source-commit.txt

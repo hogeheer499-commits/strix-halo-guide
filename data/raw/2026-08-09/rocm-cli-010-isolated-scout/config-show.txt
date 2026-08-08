@@ -1,0 +1,18 @@
+rocm config
+  file: /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/config/config.json
+  default_engine: lemonade
+  default_runtime_id: <unset>
+  active_runtime_key: <unset>
+  previous_runtime_key: <unset>
+  onboarding_dismissed: false
+  telemetry_mode: local
+  telemetry_policy: local amd-smi inspection only; no external reporting is implemented
+  planner_provider: <off>
+  providers:
+    local: enabled
+      key: not needed
+    openai: disabled
+      key: no key saved in Secret Service keychain
+    anthropic: disabled
+      key: no key saved in Secret Service keychain
+  engines: none

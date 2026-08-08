@@ -1,0 +1,2 @@
+0dc6633f386fc06e491599c8d312e05ab95a355366c39453738adb244ef0ae11  /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/bin/rocm
+749a299b48da526531bf523cfeeb986c8f9d2f3ebf412cbba87168c4908c4e42  /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/bin/rocmd

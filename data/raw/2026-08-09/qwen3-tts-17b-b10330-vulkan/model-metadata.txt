@@ -1,0 +1,7 @@
+TTS repository revision: ca27d74bc954b73dadab5b71ca265d87fc861a7c
+ASR repository revision: 928ab958557df9aa2ef1c93e0e83c7ad0933fae2
+
+/home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-TTS-12Hz-1.7B-Base-GGUF/snapshots/ca27d74bc954b73dadab5b71ca265d87fc861a7c/Qwen3-TTS-12Hz-1.7B-Base-Q4_K_M.gguf 1035965280 bytes
+/home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-TTS-12Hz-1.7B-Base-GGUF/snapshots/ca27d74bc954b73dadab5b71ca265d87fc861a7c/mmproj-Qwen3-TTS-12Hz-1.7B-Base-Q8_0.gguf 446422912 bytes
+/home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-ASR-0.6B-GGUF/snapshots/928ab958557df9aa2ef1c93e0e83c7ad0933fae2/Qwen3-ASR-0.6B-Q8_0.gguf 804749248 bytes
+/home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-ASR-0.6B-GGUF/snapshots/928ab958557df9aa2ef1c93e0e83c7ad0933fae2/mmproj-Qwen3-ASR-0.6B-Q8_0.gguf 214392480 bytes

@@ -1,0 +1,6 @@
+The first real-model CLI attempt was invalid as a correctness sample.
+
+`llama-cli --simple-io` received EOF on stdin after generation and emitted a
+tight stream of empty `> ` prompts instead of exiting. The generated 7.4 GiB
+terminal stream was removed immediately. No performance or correctness claim
+uses that run; the real-model comparison uses the HTTP server path instead.

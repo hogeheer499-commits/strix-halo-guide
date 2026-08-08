@@ -1,0 +1,12 @@
+Local Servers
+
+Status: 1 ready
+
+Servers
+- lemonade-qwen3-0-6b-gguf-1786229628081
+  status: ready
+  engine: lemonade
+  model: Qwen3-0.6B-GGUF
+  endpoint: http://127.0.0.1:11470/v1
+  logs: rocm services logs lemonade-qwen3-0-6b-gguf-1786229628081
+  stop: rocm services stop lemonade-qwen3-0-6b-gguf-1786229628081 --yes

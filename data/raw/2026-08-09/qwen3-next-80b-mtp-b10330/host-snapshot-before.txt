@@ -1,0 +1,51 @@
+2026-08-09T00:06:22+02:00
+Linux hoge-heer-GTR-Pro 7.0.0-28-generic #28~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Wed Jul  1 15:50:57 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+BOOT_IMAGE=/boot/vmlinuz-7.0.0-28-generic root=UUID=94525afc-3e5d-4d2b-90e7-0d0bc14b5dc4 ro quiet splash amd_iommu=off amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0 amdgpu.cwsr_enable=0 amdgpu.cwsr_enable=0 vt.handoff=7
+Devices:
+========
+GPU0:
+	apiVersion         = 1.4.354
+	driverVersion      = 26.1.6
+	vendorID           = 0x1002
+	deviceID           = 0x1586
+	deviceType         = PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU
+	deviceName         = Radeon 8060S Graphics (RADV STRIX_HALO)
+	driverID           = DRIVER_ID_MESA_RADV
+	driverName         = radv
+	driverInfo         = Mesa 26.1.6 - kisak-mesa PPA
+	conformanceVersion = 1.4.0.0
+	deviceUUID         = 00000000-c600-0000-0000-000000000000
+	driverUUID         = 414d442d-4d45-5341-2d44-525600000000
+GPU1:
+	apiVersion         = 1.4.354
+	driverVersion      = 26.1.6
+	vendorID           = 0x10005
+	deviceID           = 0x0000
+	deviceType         = PHYSICAL_DEVICE_TYPE_CPU
+	deviceName         = llvmpipe (LLVM 20.1.8, 256 bits)
+	driverID           = DRIVER_ID_MESA_LLVMPIPE
+	driverName         = llvmpipe
+	driverInfo         = Mesa 26.1.6 - kisak-mesa PPA (LLVM 20.1.8)
+	conformanceVersion = 1.3.1.1
+	deviceUUID         = 6d657361-3236-2e31-2e36-202d206b6900
+	driverUUID         = 6c6c766d-7069-7065-5555-494400000000
+    PID COMMAND         %CPU   RSS COMMAND
+1678260 zoom            23.4 145920 /opt/zoom/zoom
+1784363 rustdesk        21.5 138584 /usr/share/rustdesk/rustdesk --server
+   3255 qemu-system-x86 11.1 4290908 [private VM command line redacted]
+1882644 ffmpeg          10.1 114124 ffmpeg -y -progress /tmp/docflock-progress.txt -re -i [local media path redacted] -vf subtitles=[local media path redacted] - 3 of 3 (Jul 2005)':fontsize=20:fontcolor=white:x=(w-text_w)/2:y=8:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf,drawtext=text='%{eif\:floor(t+0)/3600\:d}\:%{eif\:mod(floor((t+0)/60)\,60)\:d\:2}\:%{eif\:mod(floor(t+0)\,60)\:d\:2}':fontsize=16:fontcolor=white@0.8:x=w-text_w-10:y=10:fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf,pad=1280:720:(ow-iw)/2:(oh-ih)/2,format=yuv420p -f v4l2 -video_size 1280x720 /dev/video2 -af aresample=async=1000 -acodec pcm_s16le -ar 48000 -ac 2 -f pulse virtual_speaker
+  53424 gnome-shell      7.0 192436 /usr/bin/gnome-shell
+ 109366 gnome-terminal-  3.3 48684 /usr/libexec/gnome-terminal-server
+  53009 Xorg             1.7 47436 /usr/lib/xorg/Xorg vt2 -displayfd 3 -auth /run/user/1000/gdm/Xauthority -nolisten tcp -background none -noreset -keeptty -novtswitch -verbose 3
+1678566 ZoomWebviewHost  1.3 12980 /opt/zoom/ZoomWebviewHost --type=renderer --enable-crash-reporter=, --user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.7339.185 Safari/537.36 Zoom/6.7.5 (6891) --change-stack-guard-on-fork=enable --user-data-dir=[local Zoom profile redacted] --locales-dir-path=/opt/zoom/cef/locales --log-severity=fatal --resources-dir-path=/opt/zoom/cef --force-gpu-mem-available-mb=4096 --ozone-platform=x11 --lang=en-US --num-raster-threads=4 --enable-main-frame-before-activation --renderer-client-id=5 --time-ticks-at-unix-epoch=-1786120918783002 --launch-time-ticks=90865208898 --shared-files=v8_context_snapshot_data:100 --metrics-shmem-handle=4,i,7801811933528780808,1471546614884099707,2097152 --field-trial-handle=3,i,509299865184141641,591082766404435140,262144 --disable-features=NetworkService --variations-seed-version --log-file=[local Zoom profile redacted]
+1679012 ZoomWebviewHost  0.9 25248 /opt/zoom/ZoomWebviewHost --type=gpu-process --ozone-platform=x11 --enable-crash-reporter=, --user-agent=Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.7339.185 Safari/537.36 Zoom/6.7.5 (6891) --change-stack-guard-on-fork=enable --user-data-dir=[local Zoom profile redacted] --locales-dir-path=/opt/zoom/cef/locales --log-severity=fatal --resources-dir-path=/opt/zoom/cef --gpu-preferences=UAAAAAAAAAAgAAAIAAAAAAAAAAAAAGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAABgAAAAAAAAAAQAAAAAAAAAIAAAAAAAAAAgAAAAAAAAA --use-gl=angle --use-angle=swiftshader-webgl --shared-files --metrics-shmem-handle=4,i,10791598627057495439,11027166007377503154,262144 --field-trial-handle=3,i,509299865184141641,591082766404435140,262144 --disable-features=NetworkService --variations-seed-version --log-file=[local Zoom profile redacted]
+   9080 codex            0.8 658220 /home/hoge-heer/.nvm/versions/node/v22.22.1/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex -c features.code_mode_host=true app-server --listen unix://
+   2676 pipewire         0.5 18476 /usr/bin/pipewire
+ 647830 codex            0.5 58280 /home/hoge-heer/.nvm/versions/node/v22.22.1/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex
+1679201 cpthost          0.4 19848 /opt/zoom/cpthost -pid 1678260 -epkey 748946201 -exitsem 7489462011678260_rpcexit-1909588489-0x781b3c000000
+   2685 pipewire-pulse   0.4 30512 /usr/bin/pipewire-pulse
+1678651 ZoomClips        0.4 29284 /opt/zoom/ZoomClips --action=preload --runasps=TRUE --ClipsRecordingType=Unknown
+   1407 dbus-daemon      0.4  9248 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+1628523 gjs              0.3 41984 gjs /usr/share/gnome-shell/extensions/ding@rastersoft.com/app/ding.js -E -P /usr/share/gnome-shell/extensions/ding@rastersoft.com/app
+1919292 kworker/6:1-eve  0.2     0 [kworker/6:1-events]
+   1273 napi/phy0-0      0.2     0 [napi/phy0-0]

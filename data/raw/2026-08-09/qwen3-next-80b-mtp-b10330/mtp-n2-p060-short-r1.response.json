@@ -1,0 +1,120 @@
+{
+  "index": 0,
+  "content": " event=healthy backend=Vulkan0 model=qwen3next status=ok event=healthy backend=Vulkan0 model=qwen3next status=ok event=healthy backend=Vulkan0 model=qwen3next status=ok event=healthy backend=Vulkan0 model=qwen3next status=ok event=healthy backend=Vulkan0 model=qwen3next status=ok event=healthy backend=Vulkan0 model=qwen3next status=ok event=healthy backend=Vulkan0 model=qwen3next status=ok event=healthy backend=Vulkan0 model=qwen3next status=ok",
+  "tokens": [],
+  "id_slot": 0,
+  "stop": true,
+  "model": "mtp-n2-p060",
+  "tokens_predicted": 128,
+  "tokens_evaluated": 69,
+  "generation_settings": {
+    "seed": 42,
+    "temperature": 0.0,
+    "dynatemp_range": 0.0,
+    "dynatemp_exponent": 1.0,
+    "top_k": 20,
+    "top_p": 1.0,
+    "min_p": 0.0,
+    "top_n_sigma": -1.0,
+    "xtc_probability": 0.0,
+    "xtc_threshold": 0.10000000149011612,
+    "typical_p": 1.0,
+    "repeat_last_n": 64,
+    "repeat_penalty": 1.0,
+    "presence_penalty": 0.0,
+    "frequency_penalty": 0.0,
+    "dry_multiplier": 0.0,
+    "dry_base": 1.75,
+    "dry_allowed_length": 2,
+    "dry_penalty_last_n": 64,
+    "dry_sequence_breakers": [
+      "\n",
+      ":",
+      "\"",
+      "*"
+    ],
+    "mirostat": 0,
+    "mirostat_tau": 5.0,
+    "mirostat_eta": 0.10000000149011612,
+    "adaptive_target": -1.0,
+    "adaptive_decay": 0.8999999761581421,
+    "stop": [],
+    "max_tokens": 128,
+    "n_predict": 128,
+    "n_keep": 0,
+    "n_discard": 0,
+    "ignore_eos": true,
+    "stream": false,
+    "logit_bias": [
+      {
+        "bias": null,
+        "token": 128247
+      },
+      {
+        "bias": null,
+        "token": 151643
+      },
+      {
+        "bias": null,
+        "token": 151645
+      },
+      {
+        "bias": null,
+        "token": 151662
+      },
+      {
+        "bias": null,
+        "token": 151663
+      },
+      {
+        "bias": null,
+        "token": 151664
+      }
+    ],
+    "n_probs": 0,
+    "min_keep": 0,
+    "grammar": "",
+    "grammar_lazy": false,
+    "grammar_triggers": [],
+    "preserved_tokens": [],
+    "chat_format": "Content-only",
+    "reasoning_format": "deepseek",
+    "reasoning_in_content": false,
+    "generation_prompt": "",
+    "samplers": [
+      "penalties",
+      "dry",
+      "top_n_sigma",
+      "top_k",
+      "typ_p",
+      "top_p",
+      "min_p",
+      "xtc",
+      "temperature"
+    ],
+    "speculative.types": "none,draft-mtp",
+    "timings_per_token": false,
+    "post_sampling_probs": false,
+    "backend_sampling": false,
+    "lora": []
+  },
+  "prompt": "Read this synthetic backend log, preserve all stated constraints, and finish with a concise five-item validation checklist.\n\n event=healthy backend=Vulkan0 model=qwen3next status=ok event=healthy backend=Vulkan0 model=qwen3next status=ok event=healthy backend=Vulkan0 model=qwen3next status=ok",
+  "has_new_line": false,
+  "truncated": false,
+  "stop_type": "limit",
+  "stopping_word": "",
+  "tokens_cached": 196,
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 69,
+    "prompt_ms": 701.855,
+    "prompt_per_token_ms": 10.171811594202898,
+    "prompt_per_second": 98.31090467404236,
+    "predicted_n": 128,
+    "predicted_ms": 16561.71,
+    "predicted_per_token_ms": 129.388359375,
+    "predicted_per_second": 7.728670529794327,
+    "draft_n": 84,
+    "draft_n_accepted": 84
+  }
+}

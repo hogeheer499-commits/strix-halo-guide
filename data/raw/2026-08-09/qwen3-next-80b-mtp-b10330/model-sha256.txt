@@ -1,0 +1,2 @@
+49e554f954afbfc9f627b8be236adf16c1e51d8e5ecaa0e65ac8ede4e2c41a56  /home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf
+1f7813cd8c944d208183ff81c83de31b82d72dbea5b45d4343ba72c1d37ee4c5  /home/hoge-heer/local-scratch/models/qwen3-next-mtp/Qwen3-Next-80B-A3B-Instruct-MTP-ONLY-Q4_K_M.gguf

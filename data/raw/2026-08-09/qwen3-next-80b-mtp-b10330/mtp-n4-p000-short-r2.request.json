@@ -1,0 +1,11 @@
+{
+  "prompt": "Read this synthetic backend log, preserve all stated constraints, and finish with a concise five-item validation checklist.\n\n event=healthy backend=Vulkan0 model=qwen3next status=ok event=healthy backend=Vulkan0 model=qwen3next status=ok event=healthy backend=Vulkan0 model=qwen3next status=ok",
+  "n_predict": 128,
+  "temperature": 0,
+  "top_p": 1.0,
+  "min_p": 0.0,
+  "repeat_penalty": 1.0,
+  "ignore_eos": true,
+  "cache_prompt": false,
+  "seed": 42
+}

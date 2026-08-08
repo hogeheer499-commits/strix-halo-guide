@@ -1,0 +1,65 @@
+COMMAND:
+AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json llama-tts -hf ggml-org/Qwen3-TTS-12Hz-1.7B-Base-GGUF:Q4_K_M -p <text> --tts-lang en -ngl 999 --output first.wav
+
+2.05.359.080 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+2.05.369.065 W load: special_eos_id is not in special_eog_ids - the tokenizer config may be incorrect
+2.06.073.426 W warmup: *****************************************************************
+2.06.073.430 W warmup: WARNING: the CLIP graph uses unsupported operators by the backend
+2.06.073.431 W warmup:          the performance will be suboptimal                      
+2.06.073.432 W warmup:          list of unsupported ops (backend=Vulkan0):
+2.06.073.433 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3004 128 1 1]
+2.06.073.434 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3004 64 1 1]
+2.06.073.434 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3004 64 1 1]
+2.06.073.435 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3004 64 1 1]
+2.06.073.435 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3004 64 1 1]
+2.06.073.435 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3004 64 1 1]
+2.06.073.435 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3004 64 1 1]
+2.06.073.435 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3004 64 1 1]
+2.06.073.435 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3006 64 1 1]
+2.06.073.436 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3006 64 1 1]
+2.06.073.436 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3006 64 1 1]
+2.06.073.436 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3006 64 1 1]
+2.06.073.436 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3006 64 1 1]
+2.06.073.436 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3006 64 1 1]
+2.06.073.437 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3006 64 1 1]
+2.06.073.437 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3008 64 1 1]
+2.06.073.437 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3008 64 1 1]
+2.06.073.438 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3008 64 1 1]
+2.06.073.447 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3008 64 1 1]
+2.06.073.448 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3008 64 1 1]
+2.06.073.448 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3008 64 1 1]
+2.06.073.448 W warmup:   PAD_REFLECT_1D: type = f32, ne = [3008 64 1 1]
+2.06.073.448 W warmup: flash attention is enabled
+2.06.073.448 W warmup: please report this on github as an issue
+2.06.073.448 W warmup: ref: https://github.com/ggml-org/llama.cpp/pull/16837#issuecomment-3461676118
+2.06.073.449 W warmup: *****************************************************************
+2.06.174.422 W init_audio: audio input is in experimental stage and may have reduced quality:
+    https://github.com/ggml-org/llama.cpp/discussions/13759
+2.06.316.340 W init: embeddings required but some input tokens were not marked as outputs -> overriding
+2.07.693.814 I generated 50 frames, 192044 bytes of WAV audio (24000 Hz)
+2.07.693.822 I timings: prompt eval 0.02s + generation 1.16s + vocoder 0.20s = total 1.38s
+2.07.693.822 I          output audio = 4.00s (audio time = 2.90x process time)
+2.07.693.931 I wrote /home/hoge-heer/local-scratch/qwen3-tts-b10330/first.wav
+	Command being timed: "env AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json /home/hoge-heer/local-scratch/llama.cpp-b10330/build-vulkan/bin/llama-tts -hf ggml-org/Qwen3-TTS-12Hz-1.7B-Base-GGUF:Q4_K_M -p Strix Halo can run local text to speech with llama.cpp. --tts-lang en -ngl 999 --output /home/hoge-heer/local-scratch/qwen3-tts-b10330/first.wav"
+	User time (seconds): 2.48
+	System time (seconds): 3.78
+	Percent of CPU this job got: 4%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:07.75
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 1762136
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 30
+	Minor (reclaiming a frame) page faults: 124294
+	Voluntary context switches: 734991
+	Involuntary context switches: 4564
+	Swaps: 0
+	File system inputs: 4720
+	File system outputs: 2896248
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
