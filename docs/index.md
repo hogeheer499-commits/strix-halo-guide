@@ -1,7 +1,7 @@
 ---
 layout: default
-title: "AMD Strix Halo / Ryzen AI Halo Local LLM Setup"
-description: "Practical AMD Strix Halo / Ryzen AI MAX+ 395 local LLM setup and measured benchmarks for Radeon 8060S, Ollama, llama.cpp, Vulkan/RADV, ROCm, and GGUF models up to a selected 284B capacity route."
+title: "Strix Halo Local LLM Setup for AMD Ryzen AI MAX+ 395"
+description: "Independent Strix Halo guide to local LLM setup and measured AMD Ryzen AI MAX+ 395 benchmarks for Radeon 8060S, Ollama, llama.cpp, Vulkan/RADV, ROCm, and selected GGUF routes up to 284B."
 permalink: /
 date: "2026-06-13T22:57:42+02:00"
 image:
@@ -11,16 +11,16 @@ image:
   alt: "AMD Strix Halo Local LLM Guide with direct, server, and unified-memory evidence highlights"
 seo:
   type: "TechArticle"
-  date_modified: "2026-07-28T00:00:00+02:00"
+  date_modified: "2026-08-09T00:00:00+02:00"
 ---
 
-# AMD Strix Halo / Ryzen AI Halo Local LLM Setup
+# Strix Halo Local LLM Setup for AMD Ryzen AI MAX+ 395
 
 This is the short web version of the independent AMD Strix Halo local LLM guide.
 
 It focuses on Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems, practical local setup, and evidence links for benchmark claims. AMD now uses Ryzen AI Halo for its official developer platform; this guide remains an independent setup and evidence source for the wider Strix Halo hardware category.
 
-**Web guide published:** June 13, 2026. **Evidence reviewed:** July 28, 2026. The raw directories and structured claim indexes remain the source of truth for each individual run.
+**Web guide published:** June 13, 2026. **Evidence reviewed:** August 9, 2026. The raw directories and structured claim indexes remain the source of truth for each individual run.
 
 Start with the [full AMD Strix Halo setup and benchmark repository](https://github.com/hogeheer499-commits/strix-halo-guide), which is the canonical evidence location.
 

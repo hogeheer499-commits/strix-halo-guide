@@ -9,7 +9,7 @@
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
 [![Validate](https://img.shields.io/github/actions/workflow/status/hogeheer499-commits/strix-halo-guide/validate.yml?branch=main&label=validate&style=for-the-badge)](https://github.com/hogeheer499-commits/strix-halo-guide/actions/workflows/validate.yml)
 
-# AMD Strix Halo Local LLM Guide for Ryzen AI MAX+ 395 / Radeon 8060S (gfx1151)
+# Strix Halo Guide: AMD Ryzen AI MAX+ 395 Local LLM Setup & Benchmarks
 
 A complete, practical guide to running large language models locally on AMD Strix Halo / Ryzen AI MAX+ 395 systems with Radeon 8060S (`gfx1151`) and 96GB/128GB unified memory.
 
