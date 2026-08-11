@@ -154,6 +154,124 @@ def check_headline_claim_paths(errors: list[str]) -> None:
                     )
 
 
+def check_system_evidence_matrix(errors: list[str]) -> None:
+    """Keep the public cross-OEM count and its source paths auditable."""
+    csv_path = ROOT / "data" / "system_evidence_matrix.csv"
+    markdown_path = ROOT / "SYSTEM_EVIDENCE_MATRIX.md"
+    required_columns = (
+        "evidence_source",
+        "count",
+        "evidence_class",
+        "system",
+        "os_or_route",
+        "coverage",
+        "main_evidence",
+        "most_useful_next_validation",
+    )
+    allowed_classes = {
+        "first-party-retail",
+        "community-reported-owner",
+        "independently-sourced-report",
+        "external-public-package",
+    }
+
+    for path in (csv_path, markdown_path):
+        if not path.exists():
+            errors.append(f"missing system evidence matrix file: {path.relative_to(ROOT)}")
+    if not csv_path.exists() or not markdown_path.exists():
+        return
+
+    with csv_path.open(newline="", encoding="utf-8") as handle:
+        reader = csv.DictReader(handle)
+        if tuple(reader.fieldnames or ()) != required_columns:
+            errors.append(
+                "data/system_evidence_matrix.csv has unexpected columns: "
+                f"{reader.fieldnames}"
+            )
+            return
+        rows = list(reader)
+
+    if not rows:
+        errors.append("data/system_evidence_matrix.csv has no evidence rows")
+        return
+
+    total = 0
+    seen_sources: set[str] = set()
+    for line_number, row in enumerate(rows, start=2):
+        source = row["evidence_source"].strip()
+        if not source:
+            errors.append(f"data/system_evidence_matrix.csv line {line_number}: empty evidence_source")
+        elif source in seen_sources:
+            errors.append(
+                f"data/system_evidence_matrix.csv line {line_number}: duplicate evidence_source {source}"
+            )
+        seen_sources.add(source)
+
+        try:
+            count = int(row["count"])
+        except ValueError:
+            errors.append(
+                f"data/system_evidence_matrix.csv line {line_number}: count is not an integer"
+            )
+            continue
+        if count < 1:
+            errors.append(
+                f"data/system_evidence_matrix.csv line {line_number}: count must be positive"
+            )
+        total += count
+
+        evidence_class = row["evidence_class"].strip()
+        if evidence_class not in allowed_classes:
+            errors.append(
+                "data/system_evidence_matrix.csv line "
+                f"{line_number}: unsupported evidence_class {evidence_class}"
+            )
+
+        evidence_path = row["main_evidence"].strip()
+        if not evidence_path:
+            errors.append(
+                f"data/system_evidence_matrix.csv line {line_number}: empty main_evidence"
+            )
+        elif evidence_path.startswith(("http://", "https://")):
+            pass
+        elif not (ROOT / evidence_path).exists():
+            errors.append(
+                "data/system_evidence_matrix.csv line "
+                f"{line_number}: missing main_evidence path {evidence_path}"
+            )
+
+    public_references = {
+        "README.md": (
+            f"Evidence Coverage: {total} Systems Or Independent Sources",
+            f"{total}_systems%2Fsources",
+            "SYSTEM_EVIDENCE_MATRIX.md",
+            "data/system_evidence_matrix.csv",
+        ),
+        "SYSTEM_EVIDENCE_MATRIX.md": (
+            f"**{total} owner systems or independent sources**",
+            "data/system_evidence_matrix.csv",
+        ),
+        "data/README.md": ("system_evidence_matrix.csv",),
+        "docs/index.md": (f"covers {total} Strix Halo-class systems",),
+        "ONE_PAGE_BRIEF.md": (
+            f"**{total} Strix Halo-class systems or independent sources**",
+        ),
+        "docs/llms.txt": (
+            "SYSTEM_EVIDENCE_MATRIX.md",
+            "data/system_evidence_matrix.csv",
+        ),
+    }
+    for rel_name, fragments in public_references.items():
+        path = ROOT / rel_name
+        if not path.exists():
+            errors.append(f"missing matrix reference file: {rel_name}")
+            continue
+        text = path.read_text(encoding="utf-8")
+        for fragment in fragments:
+            if fragment not in text:
+                errors.append(f"{rel_name} missing system matrix reference: {fragment}")
+
+
 def check_forbidden_text(files: list[Path], errors: list[str]) -> None:
     for rel_name, phrases in FORBIDDEN_TEXT.items():
         path = ROOT / rel_name
@@ -280,6 +398,7 @@ def main() -> int:
     check_markdown_local_links(files, errors)
     check_csv_widths(files, errors)
     check_headline_claim_paths(errors)
+    check_system_evidence_matrix(errors)
     check_forbidden_text(files, errors)
     check_pages_seo(errors)
 

@@ -1,0 +1,51 @@
+name: Authority audit
+
+on:
+  schedule:
+    - cron: "17 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  discovery-surfaces:
+    name: Discovery surfaces and contextual links
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate repository evidence and docs
+        run: python3 scripts/validate_repo.py
+
+      - name: Audit public authority surfaces
+        run: |
+          python3 scripts/audit_authority_surface.py \
+            --network \
+            --markdown-out authority-audit.md \
+            --json-out authority-audit.json
+
+      - name: Add report to the workflow summary
+        if: always()
+        run: |
+          if test -f authority-audit.md; then
+            cat authority-audit.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: authority-audit
+          path: |
+            authority-audit.md
+            authority-audit.json
+          retention-days: 30

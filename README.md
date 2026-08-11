@@ -425,6 +425,8 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 
 The count includes separately measured owner systems or independently sourced reports, not eleven unique product models. This makes the public `11 systems/sources` claim auditable without treating every row as an equal-quality benchmark.
 
+For a reviewer-friendly cross-OEM view of what each source proves, how the evidence classes differ, and which validation is still missing, see the [`AMD Strix Halo System Evidence Matrix`](SYSTEM_EVIDENCE_MATRIX.md). A machine-readable version is available at [`data/system_evidence_matrix.csv`](data/system_evidence_matrix.csv).
+
 | Evidence source | Systems/sources counted | Running total | Evidence |
 |-----------------|------------------------:|--------------:|----------|
 | Primary Beelink GTR9 Pro | 1 | 1 | First-party raw evidence throughout this repository |

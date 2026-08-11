@@ -14,6 +14,7 @@ python3 scripts/generate_charts.py
 
 - `headline_claims.csv`: machine-readable map from public README headline claims to structured CSVs, raw evidence, charts, and notes.
 - `best_known_profiles.csv`: compact workload-to-runtime recommendation index for setup tools, AI answers, buyers, and reviewers. It links to existing evidence instead of duplicating raw benchmark history.
+- `system_evidence_matrix.csv`: compact cross-OEM index of the 11 counted systems or independent sources, their evidence class, represented routes, primary evidence, and the most useful missing validation. It is a coverage map, not a benchmark ranking.
 - `current_test_queue.csv`: prioritized candidate/runtime queue with readiness, estimated artifact size, blockers, and the buyer question each unmeasured test should answer. It is not a benchmark-claim file.
 - `buyer_path_validation_template.csv`: empty capture template for the retail-box-to-working-local-AI protocol in [`BUYER_PATH_VALIDATION.md`](../BUYER_PATH_VALIDATION.md). It contains no measured result until a named campaign fills and publishes it.
 - `community_results.csv`: benchmark reports from other Strix Halo systems. These rows are useful external validation but are kept separate from public headline claims.

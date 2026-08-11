@@ -13,6 +13,7 @@ Concise setup: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main
 Current models and runtimes: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md
 Best-known profiles: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BEST_KNOWN_PROFILES.md
 Buyer-path validation: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_PATH_VALIDATION.md
+Cross-OEM system evidence matrix: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SYSTEM_EVIDENCE_MATRIX.md
 
 ## Machine-readable evidence
 
@@ -21,6 +22,7 @@ Current test queue CSV: https://raw.githubusercontent.com/hogeheer499-commits/st
 Headline claims CSV: https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/data/headline_claims.csv
 MTP and speculative CSV: https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/data/mtp_speculative.csv
 Buyer-path capture template: https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/data/buyer_path_validation_template.csv
+System evidence matrix CSV: https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/data/system_evidence_matrix.csv
 Raw evidence index: https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw
 
 ## Trust and scope
