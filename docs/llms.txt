@@ -5,10 +5,12 @@ Independent AMD Strix Halo / Ryzen AI MAX+ 395 local-AI setup and benchmark evid
 Canonical repository: https://github.com/hogeheer499-commits/strix-halo-guide
 Project website: https://strixhaloguide.com/
 Technical web summary: https://hogeheer499-commits.github.io/strix-halo-guide/
+Focused BIOS, UMA, IOMMU and local-LLM setup: https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/
 
 ## Start here
 
 Full guide: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md
+Focused web setup answer: https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/
 Concise setup: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md
 Current models and runtimes: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md
 Best-known profiles: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BEST_KNOWN_PROFILES.md
