@@ -238,6 +238,10 @@ The first-party Beelink update adds the missing local counterpart: Gemma 4 26B-A
 
 Qwen3.5 9B is useful only as a community-discussion comparator. For current Qwen framing, prefer the existing Qwen3.6 rows in this guide.
 
+Qwen3.8 is now an official frontier release, but the official artifact is `Qwen3.8-2.4T-A95B`: 2.4T total parameters, 95B activated parameters, and 262K native context. The official full repository is about 4.89 TB decimal and the official FP8 repository is still about 2.50 TB decimal. Active parameters affect compute per token; all model weights still determine storage and memory requirements. This is therefore a multi-node/runtime-research target, not a one-box 128GB Strix Halo download.
+
+Two community pages labelled `Qwen3.8-27B` do not change that conclusion as of the 2026-08-14 artifact scan. `Pluto-AI-Labs/Qwen3.8-27B-MLX` contains only a README and `.gitattributes`, says "Coming Soon," and targets Apple MLX rather than AMD. `Youssoufal/Qwen3.8-27B-MTPLX-Bare-Speed` was not publicly inspectable during the scan. Neither page is evidence that an official 27B Qwen3.8 model, downloadable weights, or a working Strix Halo route exists. See the [artifact scout](data/raw/2026-08-14/qwen38-artifact-scout/).
+
 ### Capacity
 
 MiniMax M2.7 remains useful 230B-class MoE capacity evidence: a 108 GB GGUF route loaded and generated locally. DeepSeek V4 Flash now extends the direct ordinary-GGUF map to 284.33B at a smaller 90.86GB artifact size, but with a much more aggressive low-bit quant. These are useful buyer tradeoffs even though neither is a speed-first recommendation.
@@ -302,6 +306,7 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | Qwen3.6 new quants/sources | Already important in the guide. Add only if a new source answers a new question. |
 | Laguna S 2.1 | **Current one-box capacity scout.** Poolside documents 118B total / ~8B active parameters, a 1M context window, interleaved reasoning, and a current official 96.03GB Q4_K_M blob plus a 2.23GB DFlash draft. Base Laguna architecture support merged in llama.cpp PR #25165 and is included in b10330, but upstream DFlash support is still pending. Test the target on official b10330 Vulkan/RADV first; test DFlash separately with Poolside's pinned fork. The combined files are about 91.52GiB, leaving materially less context/KV headroom than the earlier artifact listing suggested. |
 | Microsoft Fara 1.5 27B | **Practical local computer-use scout.** Microsoft documents a 27B screenshot-only browser agent with 262K context and an MIT license. Community Q4_K_M GGUFs and multimodal projectors fit comfortably in 128GB, but the local screenshot perception, coordinate/tool-call format, speed, and critical-action pause behavior are not yet qualified here. |
+| Qwen3.8-2.4T-A95B | **Official release; not a one-box target.** Qwen documents 2.4T total / 95B active parameters and 262K native context. The official repository is about 4.89 TB decimal and FP8 is about 2.50 TB, so track partitioned low-bit and multi-node runtime work rather than downloading to a 128GB system. Community pages labelled `Qwen3.8-27B` were placeholders or inaccessible in the 2026-08-14 scan and are not evidence of a released local route. |
 | Kimi-K3 | **Released 2026-07-27; high-interest but not a one-box target.** Moonshot documents 2.8T total / 104B active parameters, native text/image support, a 1M-token context, and MXFP4 weights with MXFP8 activations. The official 96-shard artifact is about 1,453.74 GiB, and the first complete Q2 GGUF visible in this scan is about 938.59 GiB. Official deployment points to vLLM, SGLang, and TokenSpeed; no direct `llama.cpp`/single-Strix route is proven. Treat it as multi-node/runtime research, not a 128GB download recommendation. |
 | Kimi-K2.7-Code | Very high viral value and active GGUF ecosystem. Smallest scanned routes remain huge: AesSedai `IQ2_XXS` about 262.8 GiB, Unsloth `UD-IQ1_M` about 283.0 GiB, and a pruned `deep55` route about 188.7 GiB. Treat as external-storage/watchlist, not a quick local default. |
 | GLM-5.2 | Very high viral value. Unsloth GGUF exists with smallest scanned `UD-IQ1_S` about 201.8 GiB; REAP50 Q2 route scanned at 129.4 GiB; MXFP4/NVFP4 routes are about 400GB+. External-storage/watchlist unless a smaller compatible route appears. |
@@ -355,6 +360,9 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 - Laguna upstream `llama.cpp` support: <https://github.com/ggml-org/llama.cpp/pull/25165>
 - Microsoft Fara 1.5 27B official model: <https://huggingface.co/microsoft/Fara1.5-27B>
 - Fara 1.5 27B community GGUF: <https://huggingface.co/bartowski/Fara1.5-27B-GGUF>
+- Qwen3.8-2.4T-A95B official model: <https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B>
+- Qwen3.8-2.4T-A95B official FP8 model: <https://huggingface.co/Qwen/Qwen3.8-2.4T-A95B-FP8>
+- Qwen3.8 community placeholder checked in the artifact scout: <https://huggingface.co/Pluto-AI-Labs/Qwen3.8-27B-MLX>
 - Kimi-K2.7-Code GGUF: <https://huggingface.co/unsloth/Kimi-K2.7-Code-GGUF>
 - Kimi-K3 official model: <https://huggingface.co/moonshotai/Kimi-K3>
 - Kimi-K3 first scanned Q2 GGUF: <https://huggingface.co/GrEarl/Kimi-K3-GGUF>
