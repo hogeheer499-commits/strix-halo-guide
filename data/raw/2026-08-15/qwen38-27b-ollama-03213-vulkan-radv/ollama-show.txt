@@ -1,0 +1,34 @@
+  Model
+    architecture        qwen35     
+    parameters          27.3B      
+    context length      262144     
+    embedding length    5120       
+    quantization        Q4_K_M     
+    requires            0.32.12    
+
+  Capabilities
+    completion    
+    vision        
+    tools         
+    thinking      
+
+  Projector
+    architecture        clip       
+    parameters          460.73M    
+    embedding length    1152       
+    dimensions          5120       
+
+  Parameters
+    draft_num_predict    4       
+    min_p                0       
+    presence_penalty     0       
+    repeat_penalty       1       
+    temperature          1       
+    top_k                20      
+    top_p                0.95    
+
+  License
+    Apache License               
+    Version 2.0, January 2004    
+    ...                          
+

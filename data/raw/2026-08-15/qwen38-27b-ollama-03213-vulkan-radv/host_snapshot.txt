@@ -1,0 +1,20 @@
+captured_at: 2026-08-15 Europe/Amsterdam
+system: Beelink GTR9 Pro
+processor: AMD Ryzen AI MAX+ 395
+gpu: Radeon 8060S / gfx1151
+memory: 128GB unified LPDDR5X-8000
+kernel: 7.0.0-28-generic
+mesa: 26.1.6 kisak-mesa PPA
+graphics_backend: Vulkan/RADV
+ollama_version: 0.32.13
+ollama_service_environment: OLLAMA_IGPU_ENABLE=1; OLLAMA_VULKAN=1
+model: qwen3.8:27b
+model_digest: 22130167c4c20e20c7b71454612966ca8e8171e9b3cc8ab6ce8aa6cbfec79643
+model_architecture: qwen35
+model_parameters: 27.3B dense
+model_quantization: Q4_K_M
+model_size_bytes: 17741872154
+reported_context_limit: 262144
+tested_context: 4096
+loaded_placement: 100% GPU reported by ollama ps
+background_condition: normal host services retained; no strict-clean or power claim

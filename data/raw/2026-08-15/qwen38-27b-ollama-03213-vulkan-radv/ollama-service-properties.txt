@@ -1,0 +1,5 @@
+MainPID=869934
+ExecStart={ path=/usr/local/bin/ollama ; argv[]=/usr/local/bin/ollama serve ; ignore_errors=no ; start_time=[Sat 2026-08-15 13:15:58 CEST] ; stop_time=[n/a] ; pid=869934 ; code=(null) ; status=0/0 }
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin OLLAMA_IGPU_ENABLE=1 OLLAMA_HOST=0.0.0.0:11434 OLLAMA_VULKAN=1 HIP_VISIBLE_DEVICES=-1 OLLAMA_FLASH_ATTENTION=1 OLLAMA_CONTEXT_LENGTH=65536 AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json OLLAMA_NUM_BATCH=512 OLLAMA_NUM_PARALLEL=2 OLLAMA_MAX_LOADED_MODELS=1
+ActiveState=active
+SubState=running

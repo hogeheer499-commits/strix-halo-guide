@@ -1,0 +1,32 @@
+# /etc/systemd/system/ollama.service
+[Unit]
+Description=Ollama Service
+After=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/ollama serve
+User=ollama
+Group=ollama
+Restart=always
+RestartSec=3
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+
+[Install]
+WantedBy=default.target
+
+# /etc/systemd/system/ollama.service.d/igpu.conf
+[Service]
+Environment="OLLAMA_IGPU_ENABLE=1"
+
+# /etc/systemd/system/ollama.service.d/override.conf
+[Service]
+Environment="OLLAMA_HOST=0.0.0.0:11434"
+Environment="OLLAMA_VULKAN=1"
+Environment="HIP_VISIBLE_DEVICES=-1"
+Environment="OLLAMA_FLASH_ATTENTION=1"
+Environment="OLLAMA_CONTEXT_LENGTH=65536"
+Environment="AMD_VULKAN_ICD=RADV"
+Environment="VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json"
+Environment="OLLAMA_NUM_BATCH=512"
+Environment="OLLAMA_NUM_PARALLEL=2"
+Environment="OLLAMA_MAX_LOADED_MODELS=1"
