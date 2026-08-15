@@ -1,0 +1,17 @@
+{
+  "model": "qwen3.8:27b",
+  "stream": false,
+  "think": true,
+  "messages": [
+    {
+      "role": "user",
+      "content": "A box contains 3 red balls and 2 blue balls. Two balls are drawn without replacement. What is the probability both are red? Give the final answer as a simplified fraction."
+    }
+  ],
+  "options": {
+    "temperature": 0,
+    "seed": 42,
+    "num_ctx": 4096,
+    "num_predict": 512
+  }
+}

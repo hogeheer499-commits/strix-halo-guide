@@ -1,0 +1,10 @@
+{
+  "tool_call_pass": true,
+  "followup_pass": true,
+  "called_function": "multiply",
+  "arguments": {
+    "a": 37,
+    "b": 19
+  },
+  "final_content": "37 × 19 = **703**"
+}

@@ -1,0 +1,17 @@
+{
+  "label": "16k",
+  "configured_context": 16384,
+  "generated_filler_tokens": 14000,
+  "run_complete": true,
+  "prompt_eval_count": 14055,
+  "eval_count": 12,
+  "retrieval_pass": true,
+  "expected_code": "QWEN38-16k-PASS",
+  "response": "QWEN38-16k-PASS",
+  "load_seconds": 4.6461602,
+  "prompt_seconds": 54.064121,
+  "prompt_tps": 259.96908374779645,
+  "generation_seconds": 0.392884,
+  "generation_tps": 30.54336648985451,
+  "total_seconds": 59.141738296
+}

@@ -1,0 +1,16 @@
+{
+  "model": "qwen3.8:27b",
+  "created_at": "2026-08-15T12:34:23.508725166Z",
+  "message": {
+    "role": "assistant",
+    "content": "QWEN38-64k-50k-PASS"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 446844176367,
+  "load_duration": 5404502371,
+  "prompt_eval_count": 50059,
+  "prompt_eval_duration": 440818738000,
+  "eval_count": 16,
+  "eval_duration": 486639000
+}

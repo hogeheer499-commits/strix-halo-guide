@@ -1,0 +1,18 @@
+{
+  "label": "32k-chat",
+  "configured_context": 32768,
+  "generated_filler_tokens": 28000,
+  "run_complete": true,
+  "prompt_eval_count": 28056,
+  "eval_count": 13,
+  "retrieval_pass": true,
+  "expected_code": "QWEN38-32k-chat-PASS",
+  "response": "QWEN38-32k-chat-PASS",
+  "api_error": null,
+  "load_seconds": 5.133275363,
+  "prompt_seconds": 147.256033,
+  "prompt_tps": 190.52530092264539,
+  "generation_seconds": 0.42852,
+  "generation_tps": 30.336973770185754,
+  "total_seconds": 152.90593554
+}

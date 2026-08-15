@@ -1,0 +1,13 @@
+{
+  "model": "qwen3.8:27b",
+  "created_at": "2026-08-15T12:12:52.259238628Z",
+  "response": "QWEN38-32k-PASS",
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 139609558878,
+  "load_duration": 208050221,
+  "prompt_eval_count": 28055,
+  "prompt_eval_duration": 161452000,
+  "eval_count": 12,
+  "eval_duration": 425678000
+}

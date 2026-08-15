@@ -1,0 +1,20 @@
+{
+  "label": "64k",
+  "configured_context": 65536,
+  "generated_filler_tokens": 56000,
+  "run_complete": false,
+  "prompt_eval_count": null,
+  "last_logged_prompt_tokens": 56051,
+  "eval_count": null,
+  "retrieval_pass": false,
+  "expected_code": "QWEN38-64k-PASS",
+  "response": "",
+  "api_error": "Vulkan device lost during prompt processing; API returned done=false",
+  "load_seconds": null,
+  "prompt_seconds": null,
+  "prompt_tps": null,
+  "generation_seconds": null,
+  "generation_tps": null,
+  "total_seconds": null,
+  "client_elapsed_seconds": 538.12
+}
