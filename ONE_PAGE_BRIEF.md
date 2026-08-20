@@ -88,6 +88,9 @@ Useful collaboration can include technical contacts, review or loaner systems, e
 - Disclosure-compliant public writeup.
 - Timed retail-box-to-working-local-AI report with intervention and failure counts.
 
+Current setup-support, reproduction, and OEM pilot scopes are listed in
+[`SERVICES.md`](SERVICES.md).
+
 ## Disclosure And Independence
 
 No paid-positive reviews. No hidden influence. No unsupported marketing claims. Sponsored, loaned, gifted, affiliate, or early-access work must be disclosed clearly. Vendors may correct factual errors, but benchmark conclusions remain independent.

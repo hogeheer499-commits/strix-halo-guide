@@ -32,3 +32,7 @@ Useful sponsorship helps answer real buyer and developer questions:
 - Which results reproduce across hardware, firmware, drivers, and operating systems?
 
 The project can produce independent, reproducible, public technical evidence that reduces adoption friction and helps buyers understand the value and limits of AMD local-AI hardware.
+
+Concrete paid scopes and current starting prices are listed in
+[`SERVICES.md`](SERVICES.md). Those scopes use the same disclosure,
+reproducibility, and editorial-independence rules described here.

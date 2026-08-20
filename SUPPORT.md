@@ -9,6 +9,15 @@ If it saved you setup time, helped you choose hardware, or helped you avoid a ba
 3. Open issues or pull requests when setup steps become stale.
 4. Support continued testing through GitHub Sponsors once sponsorship is enabled for this account.
 
+## Need Hands-On Help?
+
+The free guide and community support remain available. People and teams that
+want a private setup session, an independent reproduction, or a scoped
+system/vendor campaign can review [`SERVICES.md`](SERVICES.md).
+
+Paid work funds focused time and deliverables. It does not buy positive
+benchmark conclusions or priority changes to public claims.
+
 ## Funding Policy
 
 Funding does not influence benchmark conclusions.

@@ -84,6 +84,10 @@ These are options, not demands. The useful collaboration is access to hardware, 
 - Disclosure-compliant public writeup for sponsored, loaned, gifted, or early-access work.
 - Vendor-neutral technical findings, including negative results when they are accurate.
 
+Current fixed and scoped professional-service options are listed in
+[`SERVICES.md`](SERVICES.md). A paid scope does not weaken the disclosure or
+independence rules below.
+
 ## Independence
 
 This guide does not sell paid-positive reviews. Sponsorship, loaned hardware, gifted hardware, affiliate links, or early-access software must be disclosed clearly. Vendors may correct factual errors, but they do not receive editorial control over benchmark conclusions.
