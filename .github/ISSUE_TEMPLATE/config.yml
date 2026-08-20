@@ -6,3 +6,6 @@ contact_links:
   - name: Share pack
     url: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SHARE.md
     about: Copyable Reddit, Hacker News, forum, Discord, and Slack text for sharing the guide.
+  - name: Support the project / paid help
+    url: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SUPPORT.md
+    about: Ways to support continued testing, plus paid setup help and benchmark scopes.

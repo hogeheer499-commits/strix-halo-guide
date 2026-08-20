@@ -99,7 +99,7 @@ For those who want to get running as fast as possible:
 2. **Install Ubuntu 24.04 LTS**, switch to X11.
 3. **Kernel params:** Add `amdgpu.gttsize=131072 ttm.pages_limit=31457280` to GRUB. Add `amd_iommu=off` only for the optional desktop benchmark profile after reading [Choose the IOMMU policy](#step-12-choose-the-iommu-policy).
 4. **Performance:** Install tuned, set `accelerator-performance` profile, upgrade Mesa via kisak PPA.
-5. **Ollama:** Install, configure Vulkan backend with `OLLAMA_VULKAN=1` and `HIP_VISIBLE_DEVICES=-1`.
+5. **Ollama:** Install, configure Vulkan backend with `OLLAMA_VULKAN=1`, `OLLAMA_IGPU_ENABLE=1`, and `HIP_VISIBLE_DEVICES=-1`. Without `OLLAMA_IGPU_ENABLE=1`, measured builds can detect the Radeon 8060S and still fall back to CPU-only inference.
 6. **Test:** `ollama run qwen3.6:35b-a3b` -- the measured Ollama 0.31.2 system-service path reached about 60 t/s generation. Exact speed depends on runtime, model, power state, and background load.
 
 Use the setup script below for the automated path. The phases later in this README are the manual reference and fallback path if you want to inspect or reproduce each change yourself.
@@ -114,7 +114,7 @@ cd strix-halo-guide
 bash setup.sh
 ```
 
-Optional: inspect the script first with `less setup.sh` before running it on a production system.
+Inspect the script first with `less setup.sh` before running it: it edits GRUB boot parameters, adds the kisak Mesa PPA, and runs a full `apt upgrade`.
 
 For unattended copy/paste installs, the same script can also be run as:
 
@@ -356,7 +356,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`charts/README.md`](charts/README.md) | Generated chart inventory and regeneration command. |
 | [`SHARE.md`](SHARE.md) | Copyable Reddit/HN/forum/Discord text and share links. |
 | [`SECURITY.md`](SECURITY.md) | Official-source and impersonation reporting policy. |
-| [`SUPPORT.md`](SUPPORT.md) | How to support ongoing testing without changing the evidence-first benchmark policy. |
+| [`SUPPORT.md`](SUPPORT.md), [`SERVICES.md`](SERVICES.md) | How to support ongoing testing, or request scoped professional help, without changing the evidence-first benchmark policy. |
 | [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md), [`PARTNERSHIP.md`](PARTNERSHIP.md), [`SPONSORSHIP.md`](SPONSORSHIP.md), [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md) | Vendor/partner-facing explanation of how the technical proof layer reduces buyer adoption friction while preserving independence. |
 | [`BUYER_USE_CASES.md`](BUYER_USE_CASES.md), [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md), [`TRACTION.md`](TRACTION.md), [`BEELINK_OUTREACH.md`](BEELINK_OUTREACH.md), [`VENDOR_OUTREACH_PLAN.md`](VENDOR_OUTREACH_PLAN.md), [`OUTREACH_TEMPLATES.md`](OUTREACH_TEMPLATES.md) | Buyer-use-case, roadmap, public-evidence, and outreach support docs. |
 
@@ -1628,6 +1628,25 @@ sudo dkms remove mt76-mt7925/1.5.0 --all
 </details>
 
 <details>
+<summary><strong>Ollama Runs But Is Very Slow (Silent CPU-Only Fallback)</strong></summary>
+
+If generation works but speed is far below the numbers in this guide (for example single-digit t/s on a 30B MoE model), Ollama has likely dropped the integrated GPU and is running CPU-only. Measured 0.31.x builds can detect the Radeon 8060S and still drop the iGPU path when `OLLAMA_IGPU_ENABLE=1` is missing.
+
+```bash
+# Check whether the model is actually on GPU
+ollama ps
+journalctl -u ollama --no-pager | grep -iE "vulkan|igpu|gpu" | tail -20
+
+# Fix: ensure all three are set for the service
+sudo systemctl edit ollama
+# Add: OLLAMA_VULKAN=1, OLLAMA_IGPU_ENABLE=1, HIP_VISIBLE_DEVICES=-1
+sudo systemctl daemon-reload
+sudo systemctl restart ollama
+```
+
+</details>
+
+<details>
 <summary><strong>Ollama "Out of Memory" Even with Small Models</strong></summary>
 
 This happens when Ollama tries to use HIP/ROCm instead of Vulkan:
@@ -1638,7 +1657,7 @@ systemctl show ollama | grep Environment
 
 # Fix: ensure these are set
 sudo systemctl edit ollama
-# Add: OLLAMA_VULKAN=1, HIP_VISIBLE_DEVICES=-1
+# Add: OLLAMA_VULKAN=1, OLLAMA_IGPU_ENABLE=1, HIP_VISIBLE_DEVICES=-1
 sudo systemctl daemon-reload
 sudo systemctl restart ollama
 ```
@@ -2214,6 +2233,10 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the full contribution path and the 
 This guide stays free and evidence-first. If it saved you setup time or helped you choose hardware/software, the most useful support is a GitHub star, a benchmark report, a correction, or a pull request.
 
 Financial support may fund hardware, storage, model downloads, testing time, and ongoing maintenance, but it does not influence benchmark conclusions. See [`SUPPORT.md`](SUPPORT.md) for the funding policy.
+
+For private setup help, an independent reproduction, or a scoped OEM
+buyer-path pilot, see [`SERVICES.md`](SERVICES.md). The public guide remains
+free, and paid work does not buy positive conclusions.
 
 ---
 
