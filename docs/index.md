@@ -25,7 +25,7 @@ It focuses on Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems, practical lo
 
 Start with the [full AMD Strix Halo setup and benchmark repository](https://github.com/hogeheer499-commits/strix-halo-guide), which is the canonical evidence location.
 
-For the shortest current answer to the BIOS, UMA, IOMMU, Ubuntu and runtime questions, use the [focused AMD Strix Halo setup page](https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/). For the deeper copyable path and caveats, use the [concise Strix Halo local LLM setup](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md).
+Deciding which system to buy? Use the [Strix Halo mini PC comparison](https://hogeheer499-commits.github.io/strix-halo-guide/best-strix-halo-mini-pc/): measured cross-OEM evidence, 64GB versus 128GB fit guidance, and a documented price history. For the shortest current answer to the BIOS, UMA, IOMMU, Ubuntu and runtime questions, use the [focused AMD Strix Halo setup page](https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/). For the deeper copyable path and caveats, use the [concise Strix Halo local LLM setup](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md).
 
 For platform terminology and scope, read [AMD Ryzen AI Halo versus retail Strix Halo systems](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/RYZEN_AI_HALO_CONTEXT.md).
 

@@ -6,6 +6,7 @@ Canonical repository: https://github.com/hogeheer499-commits/strix-halo-guide
 Project website: https://strixhaloguide.com/
 Technical web summary: https://hogeheer499-commits.github.io/strix-halo-guide/
 Focused BIOS, UMA, IOMMU and local-LLM setup: https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/
+Mini PC buying comparison (measured cross-OEM evidence, 64GB vs 128GB, price history): https://hogeheer499-commits.github.io/strix-halo-guide/best-strix-halo-mini-pc/
 
 ## Start here
 
