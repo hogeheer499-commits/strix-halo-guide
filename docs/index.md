@@ -4,7 +4,7 @@ title: "Strix Halo Local LLM Setup for AMD Ryzen AI MAX+ 395"
 description: "Independent Strix Halo guide to local LLM setup and measured AMD Ryzen AI MAX+ 395 benchmarks for Radeon 8060S, Ollama, llama.cpp, Vulkan/RADV, ROCm, and selected GGUF routes up to 284B."
 permalink: /
 date: "2026-06-13T22:57:42+02:00"
-last_modified_at: "2026-08-14T00:00:00+02:00"
+last_modified_at: "2026-08-21T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -12,7 +12,7 @@ image:
   alt: "AMD Strix Halo Local LLM Guide with direct, server, and unified-memory evidence highlights"
 seo:
   type: "TechArticle"
-  date_modified: "2026-08-14T00:00:00+02:00"
+  date_modified: "2026-08-21T00:00:00+02:00"
 ---
 
 # Strix Halo Local LLM Setup for AMD Ryzen AI MAX+ 395

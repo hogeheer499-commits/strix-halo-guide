@@ -894,24 +894,16 @@ At extreme context (130K tokens, from [strixhalo.wiki](https://strixhalo.wiki/AI
 
 ## Backend Decision Guide
 
-```
-                        Which backend should I use?
-                                  |
-                    Do you need long context (>32K)?
-                         /                \
-                       NO                  YES
-                       |                    |
-              Just want it easy?      ROCm + rocWMMA-tuned
-                /          \            (lhl's branch)
-              YES           NO          Best for 32K+ context
-               |             |
-          Ollama +      Build latest
-          Vulkan RADV   llama.cpp yourself
-               |             |
-          "It just      llama-server +
-           works"       Vulkan RADV
-           50 t/s        63 t/s
-```
+**Which backend should I use?**
+
+| You want | Use | Why |
+|---|---|---|
+| Easiest working chat/API path | Ollama + Vulkan/RADV (system service) | Measured 60-73 t/s class on Qwen3.6, survives restarts, vision works. |
+| Fastest short-context generation | Direct llama.cpp / llama-server + Vulkan/RADV | ~100 t/s class on Qwen3-Coder 30B on official release binaries. |
+| More than 8 concurrent users on MoE | Compare stock Vulkan, opt-in density Vulkan, and Lemonade ROCm on your exact model | The Vulkan 8-to-9 concurrency cliff is reproduced in [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md). |
+| Long context or a specific workload | The matching measured route in [`BEST_KNOWN_PROFILES.md`](BEST_KNOWN_PROFILES.md) | Per-workload routes with caveats instead of stale one-line advice. |
+
+Note: an earlier version of this diagram recommended the rocWMMA-tuned ROCm branch for long context. That route measured a 73% regression on ROCm 7.2 and failed to load current Qwen3.6 GGUFs here — see [Things That DON'T Work](#things-that-dont-work-dont-waste-your-time) before copying it.
 
 ## Phase 1: BIOS Configuration
 
@@ -2001,7 +1993,7 @@ Prices, coupons, and availability change quickly. Treat this as a dated **US-sto
 > [Framework mainboard](https://frame.work/products/framework-desktop-mainboard-amd-ryzen-ai-max-300-series),
 > [Beelink](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395),
 > [Corsair](https://www.corsair.com/us/en/p/gaming-computers/cs-9080003-na/corsair-ai-workstation-300-amd-ryzen-ai-max-395-processor-amd-radeon-8060s-igpu-up-to-96gb-vram-128gb-lpddr5x-memory-4tb-2tb-2tb-m2-ssd-win11-home-cs-9080003-na),
-> [Minisforum 128GB listing](https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc?rdt_cid=4946120491028296516),
+> [Minisforum 128GB listing](https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc),
 > [Nimo](https://www.nimopc.com/products/nimos-smallest-office-gaming-ai-pc-amd-ryzen-ai-max-395-up-to-5-1-ghz-128gb-lpddr5-8000mhz-16gb-8-2tb-4tb-ssd-with-3-performance-modes-up-to-120w),
 > [HP US 128GB configuration](https://www.hp.com/us-en/shop/custom/hp-zbook-ultra-g1a-mobile-workstation-pc-customizable-14-inch-amd-ryzen-ai-128gb-ram-1tb-ssd-eclipse-gray-AY8K7AV_156618?catEntryId=3074457345621963823).
 > Dynamic vendor pages can show different currency, stock, and coupon state by region.

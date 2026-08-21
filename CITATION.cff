@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use the setup guidance, benchmark data, or raw evidence from this repository, please cite it as below."
+title: "Strix Halo Guide: AMD Ryzen AI MAX+ 395 Local LLM Setup & Benchmarks"
+type: dataset
+authors:
+  - name: "hogeheer499-commits (Strix Halo Guide maintainer)"
+repository-code: "https://github.com/hogeheer499-commits/strix-halo-guide"
+url: "https://strixhaloguide.com/"
+license: MIT
+keywords:
+  - AMD Strix Halo
+  - Ryzen AI MAX 395
+  - local LLM
+  - llama.cpp
+  - Ollama
+  - Vulkan
+  - ROCm
+  - benchmarks
+  - reproducibility
+abstract: >-
+  Independent, evidence-backed setup guidance and reproducible benchmarks for
+  AMD Strix Halo / Ryzen AI MAX+ 395 systems running local large language
+  models. Includes raw logs, structured CSV claim indexes, community
+  reproductions, negative results, and per-claim evidence links.
