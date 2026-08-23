@@ -4,9 +4,10 @@ Current, reproducible local-AI setup and benchmark evidence for AMD Strix Halo /
 
 Trust model: setup and benchmark claims link to commands, structured data, raw
 logs, caveats, and corrections. The maintainer also has
-[accepted upstream contributions](UPSTREAM_CONTRIBUTIONS.md) in `llama.cpp`
-and other AI infrastructure, but those merges do not replace per-run evidence
-or imply AMD/OEM endorsement.
+[15+ merged upstream contributions](UPSTREAM_CONTRIBUTIONS.md), including
+`llama.cpp`, AMD's Lemonade local-AI server, and OpenAI's official .NET SDK,
+but those merges do not replace per-run evidence or imply AMD/OEM
+endorsement.
 
 **Evidence reviewed:** August 9, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
 

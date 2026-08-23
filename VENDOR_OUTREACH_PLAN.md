@@ -112,7 +112,7 @@ specific follow-ups in [`OUTREACH_TEMPLATES.md`](OUTREACH_TEMPLATES.md).
 
 For a new OEM or reviewer:
 
-- use `llama.cpp contributor` in the subject when it is paired immediately
+- use `llama.cpp & AMD Lemonade contributor` in the subject when it is paired immediately
   with the vendor outcome, such as reducing local-AI buyer friction;
 - lead the body with buyer/setup friction, not personal status;
 - link [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md);
@@ -128,7 +128,7 @@ reviewed upstream work."
 Recommended subject pattern:
 
 ```text
-llama.cpp contributor: reduce local-AI buyer friction for [system]
+llama.cpp & AMD Lemonade contributor: reduce local-AI buyer friction for [system]
 ```
 
 This is accurate because the maintainer has a merged upstream contribution. It

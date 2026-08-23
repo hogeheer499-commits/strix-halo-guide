@@ -19,7 +19,7 @@ AMD's public Ryzen AI Halo / Ryzen AI Developer Platform direction makes this ca
 The repo already includes a technical proof layer:
 
 - Public GitHub demand signal: 239 stars, 14 forks, and 5 watchers in a small hardware/software niche as of the 2026-07-25 GitHub API snapshot; use this as supporting context, not the main claim.
-- Upstream-reviewed engineering: the maintainer has accepted contributions in `llama.cpp`, LocalAI, Qwen Code, OpenTelemetry GenAI, NVIDIA AICR, and vLLM GGUF tooling. The exact PRs, validation scope, and boundaries are listed in [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md). The `llama.cpp` merge is preset/router maintenance, not a Strix Halo performance claim.
+- Upstream-reviewed engineering: 15+ merged upstream contributions, including `llama.cpp`, AMD's Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf. The exact PRs, validation scope, and boundaries are listed in [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md). The `llama.cpp` merge is preset/router maintenance, not a Strix Halo performance claim.
 - Recent reach: 835 unique repository visitors and 180 unique cloners in GitHub's available traffic window captured 2026-07-25. Google was the largest recorded referrer with 324 unique visitors. Treat these as dated reach signals, not permanent traffic claims. The API responses are preserved in [`data/raw/2026-07-25/github-traction-snapshot/`](data/raw/2026-07-25/github-traction-snapshot/).
 - Setup and workflow guide: [`README.md`](README.md).
 - Current benchmark snapshot: [`BENCHMARKS.md`](BENCHMARKS.md).

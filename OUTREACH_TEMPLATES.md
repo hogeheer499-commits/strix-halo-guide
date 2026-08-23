@@ -51,7 +51,7 @@ Use this as a reply to the original email so the earlier context stays in the
 same thread. If a new subject is required, use:
 
 ```text
-llama.cpp contributor: reproducible Ryzen AI Halo field evidence
+llama.cpp & AMD Lemonade contributor: reproducible Ryzen AI Halo field evidence
 ```
 
 ```text
@@ -122,7 +122,7 @@ Send this as a reply to the first Beelink message. If it cannot remain in the
 same thread, use:
 
 ```text
-llama.cpp contributor: reducing GTR9 Pro local-AI buyer friction
+llama.cpp & AMD Lemonade contributor: reducing GTR9 Pro local-AI buyer friction
 ```
 
 ```text
@@ -156,7 +156,7 @@ Strix Halo guide maintainer
 Preferred subject:
 
 ```text
-llama.cpp contributor: reduce local-AI buyer friction for [system]
+llama.cpp & AMD Lemonade contributor: reduce local-AI buyer friction for [system]
 ```
 
 System-specific alternative:
@@ -200,7 +200,7 @@ Email: hogeheer499@gmail.com
 
 ## Reviewer / Newsletter / YouTube Creator Message
 
-Subject: Strix Halo buyer guide by a llama.cpp contributor
+Subject: Strix Halo buyer guide by a llama.cpp & AMD Lemonade contributor
 
 ```text
 Hello [name],

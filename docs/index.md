@@ -39,9 +39,10 @@ Claims are linked to public commands, CSVs, raw logs, charts, corrections, and
 failed routes instead of relying on screenshots or vendor marketing. Community
 results remain separate from the primary Beelink measurements.
 
-The maintainer also has accepted upstream contributions in
-[`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), LocalAI, Qwen
-Code, OpenTelemetry GenAI, NVIDIA AICR, and vLLM GGUF tooling. The
+The maintainer also has 15+ merged upstream contributions, including
+[`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), AMD's Lemonade
+local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET
+SDK, and Kubernetes SIG inference-perf. The
 [upstream contribution record](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md)
 links every relevant PR and explains what each merge does and does not prove.
 The `llama.cpp` change is preset/router maintenance, not a Strix Halo
