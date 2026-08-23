@@ -61,8 +61,8 @@ The current commercial thesis is not "vendor endorsement." It is: independent pu
 
 The public evidence map currently covers:
 
-- **11 Strix Halo-class systems or independent sources**, counted explicitly in the README's [`Evidence Coverage`](README.md#evidence-coverage-11-systems-or-independent-sources) table.
-- **8 credited community benchmark contributors**, listed in [`CONTRIBUTORS.md`](CONTRIBUTORS.md), in addition to the primary first-party Beelink measurements.
+- **12 Strix Halo-class systems or independent sources**, counted explicitly in the README's [`Evidence Coverage`](README.md#evidence-coverage-12-systems-or-independent-sources) table.
+- **9 credited community benchmark contributors**, listed in [`CONTRIBUTORS.md`](CONTRIBUTORS.md), in addition to the primary first-party Beelink measurements.
 - Beelink owner stacks, a three-system Corsair fleet, several independent GMKtec sources, MS-S1-Max, Nimo, and Minix evidence across Linux, Windows, Vulkan/RADV, ROCm, NPU, MTP, power, thermal, RPC, and large-model capacity routes.
 
 The normal first-party buyer path includes an Ollama 0.31.2 system-service check at 60.57 t/s with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. A controlled same-port/same-cache follow-up put isolated 0.31.1, 0.31.2, and 0.32.0 local binaries in the same 72.55-73.20 t/s generation class. A later isolated Ollama 0.32.3 qualification preserved exact Qwen3.6 output at 73.13 t/s versus 73.20 t/s on the controlled 0.31.2 binary and passed iGPU vision plus process restart. The installed 0.31.2 service remains the beginner default until current Ollama 0.32.5 completes a normal package upgrade and full-host reboot. Community rows remain separated from first-party headline claims.

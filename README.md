@@ -3,7 +3,7 @@
 ![Small MoE](https://img.shields.io/badge/small_MoE-170.0_t/s-brightgreen?style=for-the-badge)
 ![284B](https://img.shields.io/badge/direct_284B_GGUF-13.3_t/s-0ea5e9?style=for-the-badge)
 ![MTP](https://img.shields.io/badge/MTP_server-101--140_t/s_experimental-7c3aed?style=for-the-badge)
-[![Community](https://img.shields.io/badge/community-8_benchmark_contributors_11_systems%2Fsources-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
+[![Community](https://img.shields.io/badge/community-9_benchmark_contributors_12_systems%2Fsources-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
 ![RAM](https://img.shields.io/badge/128GB_unified-blue?style=for-the-badge)
 ![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
@@ -87,7 +87,7 @@ What you get:
 | Latest multi-user MoE finding | Official b10034 confirms that the concurrency-8-to-9 cliff persists: -37.34% aggregate decode on Qwen3-Coder 30B-A3B and -31.69% on Qwen3-Next 80B-A3B. The separate b9979 campaign shows an opt-in AMD/RADV density gate recovering 42.7% at 30B np9 and 25.3% at 80B np9; dense16 is not a universal default. See [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md). |
 | Current community thermal/stability finding | On Fail-Safe's three matched Corsair systems, 2400 MHz was the best measured conservative SCLK tradeoff: generation stayed within about 1% of higher caps and retained runs stayed at or below 75 C. This is fleet-specific, not a universal cap. Bounded stock controls saw 0/3 locks, while historical logs exposed a missing custom EC/fan module after kernel updates as a plausible major confounder. See [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md). |
 | Backend split | Vulkan/RADV wins measured generation on the current single-box Qwen rows; ROCm/HIP can win prompt-processing-heavy work, and ROCm RPC is required for the tested MiniMax capacity case. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) and [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md). |
-| Community validation | The evidence map covers 11 systems or independent sources from 8 credited community benchmark contributors, with first-party and community claims kept separate. It includes same-SKU variance, cross-OEM Linux and Windows routes, wall power, USB4 RPC, NPU sidecars, ROCmFP4, large-model capacity, thermals, and failed paths. See the counted [`Evidence Coverage`](#evidence-coverage-11-systems-or-independent-sources) table and [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md). |
+| Community validation | The evidence map covers 12 systems or independent sources from 9 credited community benchmark contributors, with first-party and community claims kept separate. It includes same-SKU variance, cross-OEM Linux and Windows routes, wall power, USB4 RPC, NPU sidecars, ROCmFP4, large-model capacity, thermals, and failed paths. See the counted [`Evidence Coverage`](#evidence-coverage-12-systems-or-independent-sources) table and [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md). |
 | Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
 | Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
 
@@ -180,6 +180,7 @@ These are the practical decisions extracted from the primary Beelink runs plus c
 | Native Linux on another Strix Halo vendor | Expect the same performance class if backend, model, quant, and command match. | GMKtec EVO-X2 96GB on Ubuntu 26.04, Mesa RADV 26.0.3, and llama.cpp b9156 reproduced the guide's Qwen3.6 UD-Q4_K_M row within -0.8% pp512 and -1.7% tg128. | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [#16](https://github.com/hogeheer499-commits/strix-halo-guide/issues/16) |
 | Comparing Qwen3-Coder rows | Preserve the exact command flags before calling one system faster. | The GMKtec Qwen3-Coder b9235 follow-up measured 91.40-92.11 tg128, but the full row used smaller batch settings, `flash_attn=0`, and `use_mmap=1`, so it is portability evidence rather than a Beelink headline replacement. | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [#17](https://github.com/hogeheer499-commits/strix-halo-guide/issues/17) |
 | Handling "older model" criticism | Add current-model rows, but keep speed and capability separate. | Qwen3-Coder-Next IQ4_XS runs locally at 61.91 t/s on the Beelink with b9467. That is a useful modern coding-model result, but it does not replace the older Qwen3-Coder 30B Q4_K_S speed-first headline. | [`raw Qwen3-Coder-Next run`](data/raw/2026-06-02/modern-model-clean-followup/), [`data/benchmarks.csv`](data/benchmarks.csv) |
+| Tuning `llama.cpp` batch flags | Check that `-ub` is not larger than `-b` before any other tuning. | `-ub` above `-b` is silently clamped to `min(n_batch, n_ubatch)` with no warning. A community GTR9 Pro report measured +28.9% pp512 from correcting `-b 256 -ub 1024` to `-b 2048 -ub 512`, and a further +16.9% pp512 / +3.1% tg128 from upgrading stock Mesa 25.2.8 to kisak 26.1.7 (no reboot needed; RADV is userspace). | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`raw note`](data/raw/2026-08-21/community-reddit-ornery-ub-clamp/) |
 | Seeing a direct 100 t/s 30B-class Qwen result | Check the exact model, quant, build, and claim category before comparing. | There are now two separate first-party direct 100-class Qwen rows: Qwen3-Coder 30B-A3B `Q4_K_S` at 100.99 t/s on official b9851, and Qwen3-30B-A3B-Instruct-2507 `IQ4_XS` at 100.04 t/s on b9467 with a b9544 control at 103.18 t/s. The Qwen3-Coder row is speed-first, not the balanced default; the 2507 row is a separate general-instruct model. | [`b9851 Qwen3-Coder raw`](data/raw/2026-06-30/latest-llamacpp-b9851-vulkan-sentinel/), [`2507 raw scout`](data/raw/2026-06-02/qwen3-30b-a3b-2507-direct-scout/), [`headline claims`](data/headline_claims.csv) |
 | Seeing Qwen3-Coder around 100 t/s on another Strix Halo box | Treat it as a tuned-system clue, not a default claim. Capture thermals, power policy, Vulkan device line, `glslc --version`, driver/toolchain details, and exact command. | A Reddit GMKtec EVO-X2 report saw most `Q4_K_S -p 0 -n 128` runs around 99.90 t/s and a best 100.0 t/s after repasting, reseating memory pads, and using GPU `high` plus CPU EPP `performance`. Local Beelink b9467 follow-ups stayed around 95.27-96.72 t/s, so thermals/power/toolchain still need to be separated before calling this generally reproducible. | [`COMMUNITY_RESULTS.md#reddit-gmktec-evo-x2-tuned-100-ts-report`](COMMUNITY_RESULTS.md#reddit-gmktec-evo-x2-tuned-100-ts-report), [`PERFORMANCE_NOTES.md#vulkan-integer-dot-and-100-ts-reproduction-status`](PERFORMANCE_NOTES.md#vulkan-integer-dot-and-100-ts-reproduction-status), [`raw reproduction`](data/raw/2026-06-02/reddit-look-int-dot-reproduction/) |
 | Starting on Windows | LM Studio Vulkan is now a documented Windows path, but keep it separate from Linux `llama-bench`. | The first Windows MS-S1-Max report measured a 89.49 tok/s script average through LM Studio with `n_parallel=4` and 262K context; the long 512-token prompt rows were around 69-70 tok/s. This is useful Windows buyer evidence, not a same-machine Windows-vs-Linux comparison. | [`COMMUNITY_RESULTS.md#windows-lm-studio-ms-s1-max-report`](COMMUNITY_RESULTS.md#windows-lm-studio-ms-s1-max-report), [`raw Windows report`](data/raw/2026-06-02/community-windows-lmstudio-issue3/) |
@@ -421,9 +422,9 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 
 ## Hardware
 
-### Evidence Coverage: 11 Systems Or Independent Sources
+### Evidence Coverage: 12 Systems Or Independent Sources
 
-The count includes separately measured owner systems or independently sourced reports, not eleven unique product models. This makes the public `11 systems/sources` claim auditable without treating every row as an equal-quality benchmark.
+The count includes separately measured owner systems or independently sourced reports, not twelve unique product models. This makes the public `12 systems/sources` claim auditable without treating every row as an equal-quality benchmark.
 
 For a reviewer-friendly cross-OEM view of what each source proves, how the evidence classes differ, and which validation is still missing, see the [`AMD Strix Halo System Evidence Matrix`](SYSTEM_EVIDENCE_MATRIX.md). A machine-readable version is available at [`data/system_evidence_matrix.csv`](data/system_evidence_matrix.csv).
 
@@ -1620,6 +1621,13 @@ sudo dkms remove mt76-mt7925/1.5.0 --all
 </details>
 
 <details>
+<summary><strong>Prompt Processing Slower Than Expected (llama.cpp -ub Silently Clamped)</strong></summary>
+
+If prompt processing (pp512) is well below the guide's figures while generation looks normal, check your batch flags: `-ub` larger than `-b` is silently clamped to `min(n_batch, n_ubatch)` with no warning or error. A community GTR9 Pro report measured pp512 733.90 with `-b 256 -ub 1024` versus 945.83 with `-b 2048 -ub 512` (+28.9%), generation unchanged. Also check Mesa: stock Ubuntu 24.04 Mesa 25.2.8 versus kisak 26.1.7 measured a further +16.9% pp512 on the same benchmark, and no reboot is needed -- restarting `llama-server` picks up the new userspace RADV driver. See [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md).
+
+</details>
+
+<details>
 <summary><strong>Ollama Runs But Is Very Slow (Silent CPU-Only Fallback)</strong></summary>
 
 If generation works but speed is far below the numbers in this guide (for example single-digit t/s on a 30B MoE model), Ollama has likely dropped the integrated GPU and is running CPU-only. Measured 0.31.x builds can detect the Radeon 8060S and still drop the iGPU path when `OLLAMA_IGPU_ENABLE=1` is missing.
@@ -2233,6 +2241,10 @@ free, and paid work does not buy positive conclusions.
 ---
 
 ## Changelog
+
+### 2026-08-21 -- Second GTR9 Pro Reproduction And -ub Clamp Finding
+
+- **Community map expanded to 12 systems/sources and 9 contributors:** Ornery_Specialist_83 independently reproduced the first-party Beelink Qwen3.6 ~62-63 t/s figure on a second GTR9 Pro unit and documented the silent `llama.cpp` `-ub > -b` clamp (+28.9% pp512 after correction) plus a measured stock-Mesa-to-kisak uplift (+16.9% pp512). Added to the rules of thumb, troubleshooting, community results, and the evidence matrix.
 
 ### 2026-07-27 -- Buyer Price Snapshot Refresh
 

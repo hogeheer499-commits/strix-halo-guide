@@ -179,6 +179,15 @@ Relevant docs:
 - [`data/community_results.csv`](data/community_results.csv)
 - [`data/raw/2026-06-24/community-minix-er939-ollama-issue27/`](data/raw/2026-06-24/community-minix-er939-ollama-issue27/)
 
+### Ornery_Specialist_83
+
+Ornery_Specialist_83 contributed the first independent reproduction of the
+guide's first-party Beelink GTR9 Pro Qwen3.6 generation figure on a separate
+GTR9 Pro unit (62.65 t/s tg128, Vulkan/RADV), plus two transferable measured
+findings: the silent `-ub > -b` clamp in `llama.cpp` (+28.9% pp512 after
+correction) and the stock-Mesa-to-kisak 26.1.7 uplift (+16.9% pp512, +3.1%
+tg128). See [`data/raw/2026-08-21/community-reddit-ornery-ub-clamp/`](data/raw/2026-08-21/community-reddit-ornery-ub-clamp/).
+
 ## How To Get Contributor Credit
 
 Benchmark reports in issues are welcome and will be credited when incorporated. Pull requests are even better for future datasets because GitHub will automatically attach commit-level contributor credit after merge.

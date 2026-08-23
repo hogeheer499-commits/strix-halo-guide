@@ -32,6 +32,7 @@ Raw community follow-up artifacts:
 - GMKtec EVO-X2 Qwen3.6 MTP follow-up: [`data/raw/2026-05-19/community-gmktec-mtp-issue18/`](data/raw/2026-05-19/community-gmktec-mtp-issue18/)
 - Windows LM Studio MS-S1-Max report: [`data/raw/2026-06-02/community-windows-lmstudio-issue3/`](data/raw/2026-06-02/community-windows-lmstudio-issue3/)
 - Reddit GMKtec EVO-X2 tuned Qwen3-Coder report: [`data/raw/2026-06-02/community-reddit-look-qwen-coder/`](data/raw/2026-06-02/community-reddit-look-qwen-coder/)
+- Reddit GTR9 Pro independent reproduction and `-ub` clamp report: [`data/raw/2026-08-21/community-reddit-ornery-ub-clamp/`](data/raw/2026-08-21/community-reddit-ornery-ub-clamp/)
 - Nimo AI Mini PC issue #4 bundle: [`data/raw/2026-06-03/community-nimo-issue4/`](data/raw/2026-06-03/community-nimo-issue4/), summarized in [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md)
 - Nimo Gemma 4 QAT follow-up: [`data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/)
 - Beelink GTR9 Pro CachyOS ROCm/ZenDNN crossover: [`data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/`](data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/)
@@ -80,6 +81,7 @@ For the shortest practical decision layer, see the README section [Community-Tes
 | 2026-05-19 | mottledMantis | GMKtec EVO-X2, Ryzen AI MAX+ 395, 96GB | Ubuntu 26.04, kernel 7.0.0-15, Mesa RADV 26.0.3, llama.cpp b9235 | Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn | no MTP: 74.72 t/s; MTP `draft-n=2`: 93.29 t/s; MTP `draft-n=3`: 93.01 t/s. | First independent reproduction of the guide's exact MTP GGUF route. It slightly exceeds the local Beelink b9235 broad MTP average, while still keeping the "not a broad 100 t/s claim" boundary intact. | [#18](https://github.com/hogeheer499-commits/strix-halo-guide/issues/18), [`mtp_speculative.csv`](data/mtp_speculative.csv) |
 | 2026-06-02 | bennos1911 | Minisforum MS-S1-Max, Ryzen AI MAX+ 395, 128GB | Windows 11 Pro 25H2, AMD Adrenalin 26.5.2, LM Studio 0.4.15 build 2, Vulkan llama.cpp v2.18.0 | Qwen3.6 35B-A3B Q4_K_M | LM Studio API script summary: 45 runs, 89.49 tok/s average, 78.53 tok/s median; long 512-token prompt rows around 69-70 tok/s. | First Windows / LM Studio / Ryzen AI MAX+ 395 community serving report. It helps Windows-first buyers, but it is a different benchmark shape from native Linux `llama-bench` and does not prove Windows-vs-Linux parity. | [#3](https://github.com/hogeheer499-commits/strix-halo-guide/issues/3#issuecomment-4602020775), [`raw`](data/raw/2026-06-02/community-windows-lmstudio-issue3/) |
 | 2026-06-02 | Look_Over_There | GMKtec EVO-X2, Ryzen AI MAX+ 395 | Vulkan/RADV device line `RADV_STRIX_HALO`, llama.cpp b9467 `1fd5f4803`; OS/kernel/Mesa not reported | Qwen3-Coder 30B-A3B Q4_K_S | Short-context `-p 0 -n 128`: most runs around 99.90 t/s; best observed 100.0 t/s after about 10 runs. | Independent Reddit result showing that a tuned GMKtec can touch 100 t/s on this speed-first Qwen3-Coder shape. The contributor disclosed repaste, reseated memory pads, 15-20C lower CPU/GPU temps, and high-power policy, so treat it as tuned thermal/power-policy evidence rather than a default headline. | [Reddit thread](https://www.reddit.com/r/StrixHalo/comments/1tu78x5/qwen3coder_30b_at_985_ts_on_strix_halo_has_anyone/), [`raw note`](data/raw/2026-06-02/community-reddit-look-qwen-coder/) |
+| 2026-08-21 | Ornery_Specialist_83 | Beelink GTR9 Pro (second independent unit), Ryzen AI MAX+ 395, 128GB | Ubuntu 24.04, Vulkan/RADV, Mesa 25.2.8 stock then 26.1.7 kisak; build/kernel/UMA not reported | Qwen3.6 35B-A3B UD-Q4_K_M | `llama-bench -fa 1 -ngl 999 -r 3`, `-b 2048 -ub 512`: pp512 1105.75, tg128 62.65 | First independent reproduction of the guide's ~62-63 t/s first-party Beelink Qwen3.6 figure on a separate GTR9 Pro unit. Also documents that `-ub` larger than `-b` is silently clamped (fixing it gave +28.9% pp512) and that Mesa 25.2.8 to 26.1.7 added +16.9% pp512 / +3.1% tg128; +50.7% pp512 combined. | [Reddit comment](https://www.reddit.com/r/StrixHalo/comments/1v6i88l/comment/p5ffxhi/), [`raw note`](data/raw/2026-08-21/community-reddit-ornery-ub-clamp/) |
 | 2026-06-03 | boxwrench | Nimo AI Mini PC, Ryzen AI MAX+ 395, 128GB | Ubuntu 25.04, kernel 6.18.1, Mesa RADV 25.2.8, ROCm 7.1.1 baseline, UMA 4GB, IOMMU on | Qwen 3.6 35B, Qwen3-Coder-Next, Qwen 122B, StepFun Step-3.7-Flash, DFlash rows | Key rows include Qwen3-Coder-Next Vulkan server at 723.2 pp / 44.4 decode, Qwen 122B MTP tuned decode at 28.3 t/s, StepFun MTP at 211.2 pp / 26.0 decode, and Qwen3.6 MTP Q4_K_M at 81.2 t/s. | Adds another compact 128GB Strix Halo chassis and broad large-model/server evidence. This is valuable buyer/OEM portability evidence, but the rows are server/eval/community rows, not first-party direct `llama-bench` headlines. | [#4](https://github.com/hogeheer499-commits/strix-halo-guide/issues/4#issuecomment-4608440144), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`structured`](data/community_nimo_issue4.csv) |
 | 2026-06-06 | boxwrench | Nimo AI Mini PC follow-up, Ryzen AI MAX+ 395, 128GB | llama.cpp b9360 Vulkan/RADV; Atomic llama.cpp TurboQuant fork for Gemma 4 MTP assistant-head rows | Gemma 4 12B / 26B-A4B / 31B QAT Q4_0 plus matched MTP heads | Best rows: 12B QAT MTP 45.6 decode, 26B-A4B QAT MTP 71.4 decode, 31B QAT MTP 19.1 decode. Plain 26B-A4B QAT submitted 2-slot aggregate at 90.9 tok/s. | Adds a strong Gemma 4 QAT/MTP lesson: matched QAT assistant heads can materially improve single-stream decode and acceptance. The submitted rows predate Atomic PR #26's `PARALLEL=2` fix, so fresh post-merge aggregate numbers are the useful next evidence. | [#4](https://github.com/hogeheer499-commits/strix-halo-guide/issues/4#issuecomment-4639263658), [`raw`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/GEMMA4-QAT-NUMBERS.md), [`structured`](data/community_nimo_issue4.csv) |
 | 2026-06-12 | devoidfury | Beelink GTR9 Pro community owner stack, Ryzen AI MAX+ 395, 128GB-class unified memory | CachyOS, `linux-cachyos-server` 7.0.11-1, ROCm 7.2.4-1, local ZenDNN, `amd_iommu=on`, llama.cpp `1593d5684d077c07fc788e9527ec1bd52287de7f` with local build tweaks | Qwen3.6 27B MTP `UD-Q6_K_XL` | Vulkan: 155.89 pp5000 / 8.09 tg512. ROCm: 303.20 pp5000 / 8.38 tg512. ROCm long prompt: 227.44 pp40000 / 8.39 tg1024. | Adds a second Beelink owner stack and strong backend-crossover evidence: ROCm + ZenDNN greatly improved prompt processing on this workload, while decode stayed about 8 t/s. Also preserves VMM crash and `GGML_HIP_ROCWMMA_FATTN` regression notes. | [discussion](https://github.com/hogeheer499-commits/strix-halo-guide/discussions/2#discussioncomment-17276639), [`raw`](data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/), [`structured`](data/community_results.csv) |
@@ -352,3 +354,29 @@ Open a [benchmark report](https://github.com/hogeheer499-commits/strix-halo-guid
 If you have a wall meter, smart plug, UPS export, or validated board-power tool, open a [power / efficiency report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=power-report.md) with idle, sustained load, sample interval, raw readings, command, and tokens/J or J/token if calculated.
 
 Slower, failed, and surprising results are useful too.
+
+## Reddit GTR9 Pro Independent Reproduction And The -ub Clamp
+
+Ornery_Specialist_83 ran the guide's stack on a second Beelink GTR9 Pro
+(Ryzen AI MAX+ 395, 128GB, Ubuntu 24.04) and independently reproduced the
+guide's first-party ~62-63 t/s Qwen3.6 35B-A3B `UD-Q4_K_M` generation figure
+at 62.65 t/s tg128 on Vulkan/RADV.
+
+The report also documents two transferable findings:
+
+- **`-ub` larger than `-b` is silently discarded.** The effective ubatch is
+  `std::min(n_batch, n_ubatch)` in `llama-context.cpp`, with no warning. The
+  contributor's long-standing `-b 256 -ub 1024` services were effectively
+  running ubatch 256; correcting to `-b 2048 -ub 512` measured pp512
+  733.90 -> 945.83 (+28.9%) with generation unchanged, consistent with decode
+  being memory-bandwidth bound while prefill is not.
+- **Stock Ubuntu Mesa leaves prefill on the table.** Upgrading Mesa 25.2.8
+  (Ubuntu 24.04 stock) to 26.1.7 via the kisak PPA measured pp512
+  945.83 -> 1105.75 (+16.9%) and tg128 60.79 -> 62.65 (+3.1%) on the same
+  benchmark. No reboot is required for inference: RADV is userspace, so
+  restarting `llama-server` picks up the new driver.
+
+Combined, the two fixes measured +50.7% pp512 without touching hardware or
+quantization. Build number, kernel, BIOS UMA, and raw `llama-bench` output
+were not yet reported; the raw note is
+[`data/raw/2026-08-21/community-reddit-ornery-ub-clamp/`](data/raw/2026-08-21/community-reddit-ornery-ub-clamp/).

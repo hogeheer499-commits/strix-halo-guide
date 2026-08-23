@@ -5,8 +5,8 @@ Strix Halo Guide. It is designed for buyers, reviewers, contributors, and OEM
 engineering teams that need to see what has actually been measured, what kind
 of evidence exists, and what still needs independent validation.
 
-The count is **11 owner systems or independent sources**, not 11 unique product
-models and not 11 directly comparable benchmark systems. First-party Beelink
+The count is **12 owner systems or independent sources**, not 12 unique product
+models and not 12 directly comparable benchmark systems. First-party Beelink
 measurements remain separate from community reports. Direct `llama-bench`,
 server/API, MTP/speculative, capacity, power, thermal, RPC, NPU, and failure
 evidence are not blended into one score.
@@ -24,6 +24,7 @@ Machine-readable summary: [`data/system_evidence_matrix.csv`](data/system_eviden
 | Minisforum MS-S1-Max | 1 | Community-reported owner system | Windows 11; LM Studio | Windows serving path, long-context configuration, hardware telemetry | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`raw report`](data/raw/2026-06-02/community-windows-lmstudio-issue3/) | Current driver/firmware repeat plus a matched short-context and sustained-load buyer-path run |
 | Nimo AI Mini PC | 1 | Community-reported owner system | Ubuntu; Vulkan/RADV and ROCm/Lemonade | Large-model serving, MTP, StepFun/Qwen routes, Gemma QAT, thermal context | [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`structured rows`](data/community_nimo_issue4.csv) | Current software-stack repeat with exact model hashes and a normalized buyer workload |
 | Beelink GTR9 Pro, second owner stack | 1 | Community-reported owner system | CachyOS; ROCm/ZenDNN and Vulkan controls | Cross-backend prompt/decode evidence, long-prompt result, NPU/IOMMU context, negative VMM/rocWMMA routes | [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md), [`raw report`](data/raw/2026-06-12/community-devoidfury-cachyos-rocm-zendnn/) | Same-model current-build A/B with normalized commands and full correctness metadata |
+| Beelink GTR9 Pro, third independent unit (Reddit) | 1 | Community-reported owner system | Ubuntu 24.04; Vulkan/RADV | First independent reproduction of the first-party Qwen3.6 ~62-63 t/s figure (62.65 tg128); `-ub > -b` silent-clamp finding (+28.9% pp512 corrected); measured stock-Mesa-to-kisak 26.1.7 uplift (+16.9% pp512) | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`raw note`](data/raw/2026-08-21/community-reddit-ornery-ub-clamp/) | Build number, kernel, BIOS UMA, and raw llama-bench output via a benchmark-report issue |
 | GMKtec EVO-X2, ciru-ai artifact | 1 | External public evidence package | NixOS; IOMMU on; NPU sidecar; ROCmFP4 | Sanitized benchmark exports, tuned low-bit routes, quality rows, NPU contention evidence | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`compact metrics`](data/community_ciru_evox2_metrics.csv), [source artifact](https://github.com/ciru-ai/strix-halo-evo-x2-evidence) | Reproduction of selected profiles on a second OEM plus stable packaged runner/model manifests |
 | Minix Elite ER939 Ai | 1 | Community-reported owner system | Ubuntu; Ollama | Beginner-path Ollama report on another retail chassis | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`raw report`](data/raw/2026-06-24/community-minix-er939-ollama-issue27/) | Exact Vulkan ICD, model digest, command/script, warm/cold repeats, and current firmware metadata |
 
