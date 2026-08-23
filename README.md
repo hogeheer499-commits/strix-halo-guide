@@ -19,7 +19,7 @@ AMD now publicly frames Ryzen AI Halo-class systems as a local-AI and developer-
 
 Project website: <https://strixhaloguide.com/>. This GitHub repository remains the source of truth for setup commands, benchmark claims, and raw evidence.
 
-Maintainer credibility is public and reviewable: more than 15 merged upstream contributions, including [`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), AMD's Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf. See [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md) for every PR link, its scope, and honest boundaries. Upstream acceptance strengthens confidence in the engineering process; it does not replace the raw evidence required for each benchmark claim.
+Maintainer credibility is public and reviewable: 15+ merged upstream contributions, including [`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), AMD's Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf. See [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md) for every PR link, its scope, and honest boundaries. Upstream acceptance strengthens confidence in the engineering process; it does not replace the raw evidence required for each benchmark claim.
 
 What you get:
 
