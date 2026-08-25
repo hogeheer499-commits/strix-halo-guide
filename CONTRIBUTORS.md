@@ -55,6 +55,7 @@ mottledMantis added the second major independent community validation path, this
 - contributed the first GMKtec EVO-X2 Qwen3-Coder UD-Q4_K_XL rows on llama.cpp b9235, including both generation-only and full `pp512/tg128` follow-up data
 - helped document Qwen3-Coder command-shape sensitivity by providing a full run with different batch, flash-attention, and mmap settings from the Beelink headline row
 - independently reproduced the guide's exact Qwen3.6 MTP IQ4_XS-Q8nextn route on GMKtec, reaching 93.29 t/s average with `draft-n=2`
+- contributed a stock direct Gemma 4 26B-A4B `UD-Q4_K_M` row at 1209.08 pp512 / 53.02 tg128, adding second-OEM portability evidence while preserving the unmatched-build/model caveats
 - contributed a WSL2/HIP ROCm 7.2 baseline for the same GMKtec EVO-X2, useful for Windows/WSL2 users even though it is not an apples-to-apples native Vulkan comparison
 - provided raw CSV attachments for the native Vulkan/RADV run and detailed setup metadata for BIOS UMA, IOMMU mode, kernel, Mesa, model SHA, build, command, and limitations
 
@@ -66,6 +67,7 @@ Relevant docs:
 - [`data/raw/2026-05-14/community-gmktec-native-issue16/`](data/raw/2026-05-14/community-gmktec-native-issue16/)
 - [`data/raw/2026-05-19/community-gmktec-qwen-coder-issue17/`](data/raw/2026-05-19/community-gmktec-qwen-coder-issue17/)
 - [`data/raw/2026-05-19/community-gmktec-mtp-issue18/`](data/raw/2026-05-19/community-gmktec-mtp-issue18/)
+- [`data/raw/2026-08-18/community-gmktec-gemma4-issue4/`](data/raw/2026-08-18/community-gmktec-gemma4-issue4/)
 
 ### [bennos1911](https://github.com/bennos1911)
 
@@ -187,6 +189,23 @@ GTR9 Pro unit (62.65 t/s tg128, Vulkan/RADV), plus two transferable measured
 findings: the silent `-ub > -b` clamp in `llama.cpp` (+28.9% pp512 after
 correction) and the stock-Mesa-to-kisak 26.1.7 uplift (+16.9% pp512, +3.1%
 tg128). See [`data/raw/2026-08-21/community-reddit-ornery-ub-clamp/`](data/raw/2026-08-21/community-reddit-ornery-ub-clamp/).
+
+### [Kyanite Labs / simongonzalezdc](https://github.com/simongonzalezdc)
+
+Kyanite Labs published an MIT-licensed Qwen3.8 27B evidence package on a
+GMKtec EVO-X2, with the system description corrected to 96GB physical memory
+and a 64GB GTT carve. It adds 13/13 exact-retrieval cases up to a 261,130-token
+needle position, a 6/6 real-image pilot, matched speculative-decoding controls,
+commands, harnesses, and negative/corrected results. The route uses a
+patched/reverted HIP build and remains advanced community evidence rather than
+the guide's default.
+
+Relevant docs:
+
+- [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md)
+- [`data/raw/2026-08-25/qwen38-community-runtime-update/`](data/raw/2026-08-25/qwen38-community-runtime-update/)
+- [`KyaniteLabs/qwen38-27b-strix-halo`](https://github.com/KyaniteLabs/qwen38-27b-strix-halo)
+- [`llama.cpp` discussion #27154](https://github.com/ggml-org/llama.cpp/discussions/27154)
 
 ## How To Get Contributor Credit
 

@@ -31,7 +31,7 @@ For platform terminology and scope, read [AMD Ryzen AI Halo versus retail Strix 
 
 **Jump to:** [focused setup answer](https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/) | [why trust this guide](#why-trust-this-guide) | [quick setup](#quick-setup-summary) | [best current setup](#best-current-setup) | [measured evidence](#evidence-highlights) | [FAQ](#faq) | [source files](#source-of-truth)
 
-The evidence map currently covers 12 Strix Halo-class systems or independent sources from 9 credited community benchmark contributors. First-party Beelink measurements, community results, direct `llama-bench`, Ollama API, server/MTP, capacity, power, NPU, RPC, and failed routes remain separate claim categories. Use the [cross-OEM system evidence matrix](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SYSTEM_EVIDENCE_MATRIX.md) to see what each source proves and which validation is still missing.
+The evidence map currently covers 13 Strix Halo-class systems or independent sources from 10 credited community benchmark contributors. First-party Beelink measurements, community results, direct `llama-bench`, Ollama API, server/MTP, capacity, power, NPU, RPC, and failed routes remain separate claim categories. Use the [cross-OEM system evidence matrix](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SYSTEM_EVIDENCE_MATRIX.md) to see what each source proves and which validation is still missing.
 
 ## Why Trust This Guide?
 

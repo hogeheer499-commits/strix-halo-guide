@@ -2,7 +2,7 @@
 
 This is an experimental `llama-server` route for practical local API speed. It is not the same benchmark as the direct non-speculative `llama-bench` headline.
 
-Short version: speculative decoding works on Strix Halo with Vulkan/RADV, ROCm/HIP, and current `llama.cpp`/ROCmFPX routes, but it is not automatically faster. It improves server generation on the tested Qwen3.6 35B MTP GGUFs, a matched Gemma 4 26B-A4B QAT assistant-head route, the tuned CHADROCK ACE/SABER ROCmFP4 route, and the new Qwen3-Next 80B MTP route on HIP. The same Qwen3-Next target and sidecar became much slower on Vulkan despite high acceptance, while Gemma 4 31B DFlash was also slower on two synthetic long-prompt shapes. Keep every server/speculative result separate from direct `llama-bench`.
+Short version: speculative decoding works on Strix Halo with Vulkan/RADV, ROCm/HIP, and current `llama.cpp`/ROCmFPX routes, but it is not automatically faster. It improves server generation on the tested Qwen3.6 35B MTP GGUFs, a matched Gemma 4 26B-A4B QAT assistant-head route, the tuned CHADROCK ACE/SABER ROCmFP4 route, and the Qwen3-Next 80B MTP route on HIP. New external Qwen3.8 paired A/Bs add useful workload evidence, but remain community/patched-runtime rows. The same Qwen3-Next target and sidecar became much slower on Vulkan despite high acceptance, while Gemma 4 31B DFlash was also slower on two synthetic long-prompt shapes. Keep every server/speculative result separate from direct `llama-bench`.
 
 ## Current Result
 
@@ -20,6 +20,28 @@ This matched A/B is intentionally shown separately from the historical six-promp
 | ROCm/HIP MTP `n=4`, `p=0` | **83.52 t/s** | **83.60 t/s** | 97.4-99.0% | 62.7-66.5% over matched HIP direct. |
 
 All repeats produced the same observed output hash for a given deterministic prompt. The useful result is therefore a backend crossover, not a universal claim that HIP or MTP is faster. Raw commands, responses, logs, and hashes are in [`data/raw/2026-08-09/qwen3-next-80b-mtp-b10330/`](data/raw/2026-08-09/qwen3-next-80b-mtp-b10330/).
+
+### Qwen3.8 External Paired Controls
+
+Two external packages sharpen the next Qwen3.8 test without changing the
+first-party default:
+
+- Kyanite Labs' corrected 96GB GMKtec EVO-X2 package used a patched/reverted
+  HIP route and measured 15.1 seconds with MTP versus 17.8 seconds without
+  speculation for 200 tokens across the same three prose prompts. N-gram-only
+  was 17.7 seconds, so MTP supplied the useful gain on that exact workload.
+  Repetition-heavy count prompts produced much higher speeds and are not
+  general generation claims.
+- A separate `qwen38-mtp` Windows/Vulkan b10437 submission reports 11.5 t/s
+  median without speculation versus 23.7 t/s at MTP `n=2` (+106%) across three
+  runs of three prompts, with 78.2% draft acceptance. The pull request has no
+  attached raw logs, so this remains a community-reported lead.
+
+The transferable lesson is to publish a paired no-spec control, acceptance,
+prompt class, elapsed time or throughput, and raw outputs. Neither row replaces
+the measured Ollama 0.32.13 buyer path or proves that MTP accelerates every
+Qwen3.8 workload. Sources and system corrections are in the
+[`2026-08-25 scope note`](data/raw/2026-08-25/qwen38-community-runtime-update/).
 
 | Model file | Mode | Mean over 6 prompts | Range | Takeaway |
 |------------|------|--------------------:|------:|----------|
@@ -236,6 +258,7 @@ VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
   - [`data/raw/2026-06-12/gemma4-26b-qat-mtp-t3-only-repeat-ac4cddeb/`](data/raw/2026-06-12/gemma4-26b-qat-mtp-t3-only-repeat-ac4cddeb/)
   - [`data/raw/2026-06-21/rocmfpx-chadrock-ace-saber-helper-repro/`](data/raw/2026-06-21/rocmfpx-chadrock-ace-saber-helper-repro/)
   - [`data/raw/2026-07-16/step37-rocmfpx-q3-qualityplus/`](data/raw/2026-07-16/step37-rocmfpx-q3-qualityplus/)
+  - [`data/raw/2026-08-25/qwen38-community-runtime-update/`](data/raw/2026-08-25/qwen38-community-runtime-update/)
 - Upstream MTP support: <https://github.com/ggml-org/llama.cpp/pull/22673>
 
 ## Interpretation
