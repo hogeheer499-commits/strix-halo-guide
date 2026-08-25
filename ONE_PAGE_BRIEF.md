@@ -18,9 +18,9 @@ AMD's public Ryzen AI Halo / Ryzen AI Developer Platform direction makes this ca
 
 The repo already includes a technical proof layer:
 
-- Public GitHub demand signal: 239 stars, 14 forks, and 5 watchers in a small hardware/software niche as of the 2026-07-25 GitHub API snapshot; use this as supporting context, not the main claim.
+- Public GitHub demand signal: 295 stars, 20 forks, and 5 subscribers/watchers in a small hardware/software niche as of the 2026-08-25 GitHub API snapshot; use this as supporting context, not the main claim.
 - Upstream-reviewed engineering: 15+ merged upstream contributions, including `llama.cpp`, AMD's Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf. The exact PRs, validation scope, and boundaries are listed in [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md). The `llama.cpp` merge is preset/router maintenance, not a Strix Halo performance claim.
-- Recent reach: 835 unique repository visitors and 180 unique cloners in GitHub's available traffic window captured 2026-07-25. Google was the largest recorded referrer with 324 unique visitors. Treat these as dated reach signals, not permanent traffic claims. The API responses are preserved in [`data/raw/2026-07-25/github-traction-snapshot/`](data/raw/2026-07-25/github-traction-snapshot/).
+- Public project signal: 295 stars and 20 forks on the public repository as of 2026-08-25, alongside 10 credited community benchmark contributors and 13 represented systems or independent sources. These are visible project and evidence-coverage signals, not attributable-sales claims.
 - Setup and workflow guide: [`README.md`](README.md).
 - Current benchmark snapshot: [`BENCHMARKS.md`](BENCHMARKS.md).
 - Reproducibility notes: [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
@@ -38,6 +38,7 @@ The repo already includes a technical proof layer:
 - Local model-development evidence: a digest-pinned ROCm 7.2 Unsloth workflow on the retail Beelink passed Radeon GPU detection, one-step SFT, checkpoint inference, `Q4_K_M` GGUF export, ROCm `llama.cpp` inference, artifact persistence, and a post-restart reload. The public guide preserves the exact commands and two real path/export failures without presenting the tiny smoke as useful model quality or training speed. See [`UNSLOTH_STRIX_HALO.md`](UNSLOTH_STRIX_HALO.md).
 - Buyer-friction measurement protocol: [`BUYER_PATH_VALIDATION.md`](BUYER_PATH_VALIDATION.md) defines a repeatable retail-box-to-working-local-AI campaign with timed checkpoints, intervention counts, restart persistence, failure classification, and evidence links. It is a protocol for future system campaigns, not an invented time-to-first-result claim.
 - Platform context: [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).
+- Current Qwen3.8 decision layer: [`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md) separates the measured official Ollama route, corrected 262K-class external evidence, stock/MTP controls, and current tuned-fork leads.
 
 ## Maintainer Capability
 
@@ -93,7 +94,7 @@ Current setup-support, reproduction, and OEM pilot scopes are listed in
 
 ## Disclosure And Independence
 
-No paid-positive reviews. No hidden influence. No unsupported marketing claims. Sponsored, loaned, gifted, affiliate, or early-access work must be disclosed clearly. Vendors may correct factual errors, but benchmark conclusions remain independent.
+No paid-positive reviews. No hidden influence. No unsupported marketing claims. Sponsored, loaned, gifted, affiliate, or early-access work must be disclosed clearly. Vendors may correct factual errors, but benchmark conclusions remain independent. Affiliate commission is not a product-ranking input; attributable clicks or conversions, if measured later, remain separate from benchmark evidence and GitHub traffic.
 
 ## Contact
 

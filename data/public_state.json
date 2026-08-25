@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "evidence_reviewed": "2026-08-25",
+  "evidence_reviewed_human": "August 25, 2026",
+  "freshness_max_age_days": 21,
+  "release": {
+    "current": "v3.0.0",
+    "date": "2026-08-25"
+  },
+  "runtime": {
+    "ollama_current_checked": "0.32.15",
+    "ollama_qwen38_measured": "0.32.13",
+    "ollama_reboot_qualified_default": "0.31.2",
+    "llama_cpp_current_release": "v0.3.0",
+    "llama_cpp_current_build_checked": "b10622"
+  },
+  "qwen38": {
+    "official_model": "Qwen3.8 27B",
+    "first_party_generation_tps": 20.42,
+    "first_party_prompt_tps": 292.49,
+    "first_party_warm_repeats": 9,
+    "first_party_exact_retrieval_tokens": 50059,
+    "external_exact_retrieval_tokens": 261130,
+    "external_retrieval_passes": "13/13",
+    "external_image_pilot_passes": "6/6"
+  },
+  "coverage": {
+    "systems_or_sources": 13,
+    "community_benchmark_contributors": 10
+  },
+  "public_project_snapshot": {
+    "date": "2026-08-25",
+    "stars": 295,
+    "forks": 20
+  },
+  "affiliate_status": {
+    "links_present": false,
+    "checked": "2026-08-25",
+    "policy": "VENDOR_DISCLOSURE.md"
+  }
+}

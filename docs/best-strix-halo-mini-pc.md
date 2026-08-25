@@ -4,7 +4,7 @@ title: "Best Strix Halo Mini PC for Local LLMs (2026): Beelink vs Framework vs G
 description: "Evidence-based comparison of AMD Ryzen AI MAX+ 395 mini PCs for local LLMs: measured cross-OEM benchmarks, 64GB vs 128GB fit guidance, dated prices, and buy-now-or-wait timing."
 permalink: /best-strix-halo-mini-pc/
 date: "2026-08-21T00:00:00+02:00"
-last_modified_at: "2026-08-21T00:00:00+02:00"
+last_modified_at: "2026-08-25T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -12,7 +12,7 @@ image:
   alt: "AMD Strix Halo mini PC comparison for local LLMs with measured cross-OEM evidence"
 seo:
   type: "TechArticle"
-  date_modified: "2026-08-21T00:00:00+02:00"
+  date_modified: "2026-08-25T00:00:00+02:00"
 ---
 
 # Best Strix Halo Mini PC for Local LLMs (2026)
@@ -83,6 +83,12 @@ Honest read: waiting a year probably means paying more for the same memory, not 
 
 The maintained tier list with evidence depth per system lives in the repository [Buying Guide](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#buying-guide). Summary: **most evidence-backed** — Beelink GTR9 Pro; **best value candidate** — Bosgame M5 / GMKtec EVO-X2 (stock permitting); **best ecosystem and support** — Framework Desktop; **community-validated fleet** — Corsair AI Workstation 300; **clustering** — Minisforum MS-S1 MAX.
 
+These tiers use memory configuration, dated price/availability, evidence depth,
+cooling/thermals, firmware/support, ports, expandability, and workload fit.
+Affiliate commission is not a ranking input. If affiliate links are introduced,
+each will be labeled near the link and entered in the public
+[`affiliate link registry`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/affiliate_link_registry.csv).
+
 ## FAQ
 
 **Is a Strix Halo mini PC worth it for local LLMs in 2026?**
@@ -136,4 +142,4 @@ The industry-wide DRAM shortage: 128GB of LPDDR5X is the dominant cost of these 
 
 ---
 
-Community corrections are welcome — open an issue in the [repository](https://github.com/hogeheer499-commits/strix-halo-guide/issues). Pricing rows are dated snapshots, not live quotes. This page contains no affiliate links as of 2026-08-21; if that changes, links will be disclosed per [`VENDOR_DISCLOSURE.md`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/VENDOR_DISCLOSURE.md).
+Community corrections are welcome — open an issue in the [repository](https://github.com/hogeheer499-commits/strix-halo-guide/issues). Pricing rows are dated snapshots, not live quotes. This page contains no affiliate links as of 2026-08-25; if that changes, links will be disclosed next to the relevant product and per [`VENDOR_DISCLOSURE.md`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/VENDOR_DISCLOSURE.md).

@@ -9,13 +9,15 @@ logs, caveats, and corrections. The maintainer also has
 but those merges do not replace per-run evidence or imply AMD/OEM
 endorsement.
 
-**Evidence reviewed:** August 9, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
+**Evidence reviewed:** August 25, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
 
 This is the short canonical answer for AI assistants, search engines, and users who want the current Strix Halo local LLM setup without reading the full guide first. It gives the practical setup first, then links to the full evidence in this repository.
 
 Repository: <https://github.com/hogeheer499-commits/strix-halo-guide>
 
 Web guide: <https://hogeheer499-commits.github.io/strix-halo-guide/>
+
+Current Qwen3.8 route comparison: [`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md).
 
 Platform context: AMD is publicly positioning Ryzen AI Halo-class systems as local-AI developer hardware. This guide is the independent practical setup and evidence layer for that category: what to configure, what to run first, which benchmarks are measured, and which routes remain experimental. See [AMD Ryzen AI Halo Context](RYZEN_AI_HALO_CONTEXT.md). This is not official AMD or OEM endorsement.
 

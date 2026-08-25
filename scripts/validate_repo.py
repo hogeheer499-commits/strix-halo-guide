@@ -8,11 +8,13 @@ structure without running benchmarks or requiring local models.
 from __future__ import annotations
 
 import csv
+import json
 import re
 import struct
 import subprocess
 import sys
 import urllib.parse
+from datetime import date
 from pathlib import Path
 
 
@@ -35,6 +37,15 @@ SENSITIVE_PATTERNS = {
     "raw websocket remote address": re.compile(r"remoteAddress"),
     "local Zoom profile path": re.compile(r"/home/hoge-heer/\.zoom"),
     "local DocFlock process path": re.compile(r"docflock-sharer"),
+    "private GitHub analytics path": re.compile(r"github-traction-snapshot"),
+    "private GitHub unique-traffic metric": re.compile(
+        r"unique repository visitors|unique cloners|unique_views_14d|unique_cloners_14d",
+        re.IGNORECASE,
+    ),
+    "private GitHub referrer/path artifact": re.compile(
+        r"(?:referrers|popular_paths)\.json",
+        re.IGNORECASE,
+    ),
 }
 
 SENSITIVE_SCAN_ALLOWLIST = {
@@ -272,6 +283,137 @@ def check_system_evidence_matrix(errors: list[str]) -> None:
                 errors.append(f"{rel_name} missing system matrix reference: {fragment}")
 
 
+def check_public_state(errors: list[str]) -> None:
+    """Keep current public entry surfaces synchronized to one dated state file."""
+    state_path = ROOT / "data" / "public_state.json"
+    if not state_path.exists():
+        errors.append("missing public freshness state: data/public_state.json")
+        return
+
+    try:
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"data/public_state.json is invalid: {exc}")
+        return
+
+    required_top_level = (
+        "schema_version",
+        "evidence_reviewed",
+        "evidence_reviewed_human",
+        "freshness_max_age_days",
+        "release",
+        "runtime",
+        "qwen38",
+        "coverage",
+        "public_project_snapshot",
+        "affiliate_status",
+    )
+    for key in required_top_level:
+        if key not in state:
+            errors.append(f"data/public_state.json missing key: {key}")
+    if any(key not in state for key in required_top_level):
+        return
+
+    try:
+        reviewed = date.fromisoformat(state["evidence_reviewed"])
+        max_age = int(state["freshness_max_age_days"])
+    except (TypeError, ValueError) as exc:
+        errors.append(f"data/public_state.json has invalid freshness values: {exc}")
+        return
+    age = (date.today() - reviewed).days
+    if age < 0:
+        errors.append("data/public_state.json evidence_reviewed is in the future")
+    elif age > max_age:
+        errors.append(
+            "public evidence state is stale: "
+            f"{age} days old, maximum is {max_age} days"
+        )
+
+    runtime = state["runtime"]
+    coverage = state["coverage"]
+    public_project = state["public_project_snapshot"]
+    reviewed_human = state["evidence_reviewed_human"]
+    required_fragments = {
+        "README.md": (
+            "QWEN38_STRIX_HALO.md",
+            f"{coverage['systems_or_sources']} systems or independent sources",
+            "data/public_state.json",
+        ),
+        "QWEN38_STRIX_HALO.md": (
+            f"**Evidence reviewed:** {reviewed_human}",
+            f"Ollama {runtime['ollama_current_checked']}",
+            "data/qwen38_route_matrix.csv",
+            "data/affiliate_link_registry.csv",
+        ),
+        "STRIX_HALO_LOCAL_LLM_SETUP.md": (
+            f"**Evidence reviewed:** {reviewed_human}",
+            "QWEN38_STRIX_HALO.md",
+            f"Ollama {runtime['ollama_current_checked']}",
+        ),
+        "SHARE.md": (
+            "Qwen3.8",
+            f"Ollama {runtime['ollama_current_checked']}",
+            "no affiliate links as of August 25, 2026",
+        ),
+        "TRACTION.md": (
+            f"Repository-stat snapshot date: {public_project['date']}",
+            f"| Stars | {public_project['stars']} |",
+            f"| Forks | {public_project['forks']} |",
+        ),
+        "docs/index.md": (
+            f"**Evidence reviewed:** {reviewed_human}",
+            f"Ollama {runtime['ollama_current_checked']}",
+            "qwen38-strix-halo/",
+        ),
+        "docs/amd-strix-halo-setup.md": (
+            f"**Setup reviewed:** {reviewed_human}",
+            "qwen38-strix-halo/",
+        ),
+        "docs/llms.txt": (
+            "qwen38-strix-halo/",
+            "QWEN38_STRIX_HALO.md",
+            "data/qwen38_route_matrix.csv",
+        ),
+        "VENDOR_DISCLOSURE.md": (
+            "data/affiliate_link_registry.csv",
+            "Affiliate commission does not determine",
+        ),
+    }
+    for rel_name, fragments in required_fragments.items():
+        path = ROOT / rel_name
+        if not path.exists():
+            errors.append(f"missing synchronized public surface: {rel_name}")
+            continue
+        text = path.read_text(encoding="utf-8")
+        for fragment in fragments:
+            if fragment not in text:
+                errors.append(f"{rel_name} missing public-state fragment: {fragment}")
+
+    registry_path = ROOT / "data" / "affiliate_link_registry.csv"
+    if not registry_path.exists():
+        errors.append("missing affiliate registry: data/affiliate_link_registry.csv")
+    else:
+        with registry_path.open(newline="", encoding="utf-8") as handle:
+            header = next(csv.reader(handle), [])
+        expected = [
+            "link_id",
+            "status",
+            "vendor",
+            "product",
+            "region",
+            "relationship",
+            "public_destination",
+            "last_checked",
+            "disclosure_location",
+            "notes",
+        ]
+        if header != expected:
+            errors.append(
+                "data/affiliate_link_registry.csv has unexpected columns: "
+                f"{header}"
+            )
+
+
 def check_forbidden_text(files: list[Path], errors: list[str]) -> None:
     for rel_name, phrases in FORBIDDEN_TEXT.items():
         path = ROOT / rel_name
@@ -316,6 +458,8 @@ def check_pages_seo(errors: list[str]) -> None:
     preview_path = ROOT / "social-preview.png"
     pages_preview_path = ROOT / "docs" / "assets" / "social-preview.png"
     favicon_path = ROOT / "docs" / "assets" / "favicon.png"
+    root_qwen_preview_path = ROOT / "qwen38-route-preview.png"
+    qwen_preview_path = ROOT / "docs" / "assets" / "qwen38-route-preview.png"
 
     required_files = (
         config_path,
@@ -324,6 +468,8 @@ def check_pages_seo(errors: list[str]) -> None:
         preview_path,
         pages_preview_path,
         favicon_path,
+        root_qwen_preview_path,
+        qwen_preview_path,
     )
     for path in required_files:
         if not path.exists():
@@ -383,10 +529,27 @@ def check_pages_seo(errors: list[str]) -> None:
         )
     if favicon_size != (512, 512):
         errors.append(f"docs/assets/favicon.png must be 512x512, found {favicon_size}")
+    qwen_preview_size = png_dimensions(qwen_preview_path)
+    root_qwen_preview_size = png_dimensions(root_qwen_preview_path)
+    if root_qwen_preview_size != (1280, 640):
+        errors.append(
+            "qwen38-route-preview.png must be 1280x640, "
+            f"found {root_qwen_preview_size}"
+        )
+    if qwen_preview_size != (1280, 640):
+        errors.append(
+            "docs/assets/qwen38-route-preview.png must be 1280x640, "
+            f"found {qwen_preview_size}"
+        )
     if preview_path.read_bytes() != pages_preview_path.read_bytes():
         errors.append(
             "social-preview.png and docs/assets/social-preview.png differ; "
             "rerun python3 generate_preview.py"
+        )
+    if root_qwen_preview_path.read_bytes() != qwen_preview_path.read_bytes():
+        errors.append(
+            "qwen38-route-preview.png and docs/assets/qwen38-route-preview.png "
+            "differ; rerun python3 generate_preview.py"
         )
 
 
@@ -399,6 +562,7 @@ def main() -> int:
     check_csv_widths(files, errors)
     check_headline_claim_paths(errors)
     check_system_evidence_matrix(errors)
+    check_public_state(errors)
     check_forbidden_text(files, errors)
     check_pages_seo(errors)
 

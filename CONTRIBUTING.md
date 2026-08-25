@@ -46,6 +46,7 @@ Do not frame sharing as marketing. The useful contribution is the measurement, n
 
 These are currently the most valuable community contributions:
 
+- A matched Qwen3.8 27B route comparison: exact main/draft/sidecar hashes, pinned runtime, the same prompt/context/batch/sampling, repeat distribution, acceptance, and output-validity checks across stock Vulkan and any tuned ROCmFP4/DFlash path.
 - Native Linux Vulkan/RADV results from Framework Desktop, GMKtec EVO-X2, HP ZBook, Beelink, and other Ryzen AI MAX systems.
 - Same-model reproduction of the guide's Qwen3-Coder and Qwen3.6 rows.
 - Windows native, WSL2/HIP, and Windows-vs-Linux comparisons on the same machine.
@@ -59,6 +60,7 @@ These are currently the most valuable community contributions:
 Use the template that best matches your contribution:
 
 - [Benchmark report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md): measured tokens/sec results.
+- [Qwen3.8 route report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=qwen38-route-report.md): matched speed, context, image, tools, thinking, MTP, or stability reproductions for the current model.
 - [Power / efficiency report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=power-report.md): wall power, board power, UPS, smart-plug, or validated telemetry.
 - [Model or backend request](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=model-request.md): a model, quant, backend, or serving route worth testing.
 - [Bug report](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=bug-report.md): wrong commands, broken links, stale claims, or setup failures.
@@ -153,4 +155,4 @@ For repo safety, direct write access is not needed for benchmark contributions. 
 
 ## Code of Conduct
 
-Be respectful and evidence-focused. The goal is to make local AI on Strix Halo easier to reproduce for everyone.
+Be respectful and evidence-focused. The goal is to make local AI on Strix Halo easier to reproduce for everyone. See [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) for the full participation and enforcement policy.

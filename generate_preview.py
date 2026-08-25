@@ -88,6 +88,85 @@ preview_outputs = [ROOT / "social-preview.png", DOCS_ASSETS / "social-preview.pn
 for output in preview_outputs:
     img.save(output, "PNG", optimize=True)
 
+# A current-model share card for the Qwen3.8 route comparison. The large
+# numbers deliberately keep measured-local and external-corrected evidence
+# separate instead of presenting community fork peaks as guide-owned results.
+qwen = Image.new("RGB", (W, H), BG)
+qwen_draw = ImageDraw.Draw(qwen)
+qwen_draw.rectangle([0, 0, W, 4], fill=ACCENT)
+
+eyebrow = "CURRENT MODEL DECISION GUIDE"
+eyebrow_font = font_bold(20)
+qwen_draw.text((70, 54), eyebrow, fill=ACCENT, font=eyebrow_font)
+
+qwen_title = "Qwen3.8 27B on AMD Strix Halo"
+qwen_title_font = font_black(48)
+qwen_draw.text((70, 92), qwen_title, fill=WHITE, font=qwen_title_font)
+
+qwen_subtitle = "Official easy path · direct/MTP controls · context-correctness evidence"
+qwen_subtitle_font = font_bold(23)
+qwen_draw.text((72, 162), qwen_subtitle, fill=DIM, font=qwen_subtitle_font)
+
+qwen_stats = [
+    ("20.4", "t/s", "measured official Ollama"),
+    ("50K", "", "exact local retrieval"),
+    ("262K", "class", "external corrected route"),
+]
+qwen_section_w = (W - 140) // 3
+qwen_num_font = font_black(67)
+qwen_unit_font = font_bold(28)
+qwen_label_font = font_bold(19)
+for i, (num, unit, label) in enumerate(qwen_stats):
+    cx = 70 + qwen_section_w * i + qwen_section_w // 2
+    num_bbox = qwen_draw.textbbox((0, 0), num, font=qwen_num_font)
+    num_w = num_bbox[2] - num_bbox[0]
+    unit_w = 0
+    if unit:
+        unit_bbox = qwen_draw.textbbox((0, 0), unit, font=qwen_unit_font)
+        unit_w = unit_bbox[2] - unit_bbox[0] + 12
+    start_x = cx - (num_w + unit_w) // 2
+    qwen_draw.text((start_x, 235), num, fill=WHITE, font=qwen_num_font)
+    if unit:
+        qwen_draw.text((start_x + num_w + 12, 276), unit, fill=ACCENT, font=qwen_unit_font)
+    label_bbox = qwen_draw.textbbox((0, 0), label, font=qwen_label_font)
+    label_w = label_bbox[2] - label_bbox[0]
+    qwen_draw.text((cx - label_w // 2, 327), label, fill=DIM, font=qwen_label_font)
+
+qwen_draw.rectangle([70, 390, W - 70, 391], fill="#21262d")
+comparison = "Why 20, 31, 52 and 65 t/s are not the same claim"
+comparison_font = font_bold(28)
+comparison_bbox = qwen_draw.textbbox((0, 0), comparison, font=comparison_font)
+qwen_draw.text(
+    ((W - (comparison_bbox[2] - comparison_bbox[0])) // 2, 430),
+    comparison,
+    fill=WHITE,
+    font=comparison_font,
+)
+qwen_footer = "Model · quant · backend · fork · speculation · prompt · context · evidence"
+qwen_footer_font = font_bold(19)
+qwen_footer_bbox = qwen_draw.textbbox((0, 0), qwen_footer, font=qwen_footer_font)
+qwen_draw.text(
+    ((W - (qwen_footer_bbox[2] - qwen_footer_bbox[0])) // 2, 486),
+    qwen_footer,
+    fill=ACCENT,
+    font=qwen_footer_font,
+)
+qwen_handle = "github.com/hogeheer499-commits/strix-halo-guide"
+qwen_handle_bbox = qwen_draw.textbbox((0, 0), qwen_handle, font=handle_font)
+qwen_draw.text(
+    ((W - (qwen_handle_bbox[2] - qwen_handle_bbox[0])) // 2, H - 50),
+    qwen_handle,
+    fill=DIM,
+    font=handle_font,
+)
+
+qwen_preview_outputs = [
+    ROOT / "qwen38-route-preview.png",
+    DOCS_ASSETS / "qwen38-route-preview.png",
+]
+for output in qwen_preview_outputs:
+    qwen.save(output, "PNG", optimize=True)
+
 # A stable, square icon for browser tabs and eligible search-result favicons.
 icon_size = 512
 icon = Image.new("RGB", (icon_size, icon_size), BG)
@@ -108,4 +187,4 @@ llm_x = (icon_size - (llm_bbox[2] - llm_bbox[0])) // 2
 icon_draw.text((llm_x, 355), llm_text, fill=ACCENT, font=llm_font)
 icon.save(DOCS_ASSETS / "favicon.png", "PNG", optimize=True)
 
-print("Done: social-preview.png and docs/assets SEO images")
+print("Done: social-preview.png, qwen38-route-preview.png, and docs/assets SEO images")

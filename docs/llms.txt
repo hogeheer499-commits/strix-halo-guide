@@ -6,6 +6,7 @@ Canonical repository: https://github.com/hogeheer499-commits/strix-halo-guide
 Project website: https://strixhaloguide.com/
 Technical web summary: https://hogeheer499-commits.github.io/strix-halo-guide/
 Focused BIOS, UMA, IOMMU and local-LLM setup: https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/
+Qwen3.8 27B route comparison: https://hogeheer499-commits.github.io/strix-halo-guide/qwen38-strix-halo/
 Mini PC buying comparison (measured cross-OEM evidence, 64GB vs 128GB, price history): https://hogeheer499-commits.github.io/strix-halo-guide/best-strix-halo-mini-pc/
 
 ## Start here
@@ -14,6 +15,7 @@ Full guide: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/RE
 Focused web setup answer: https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/
 Concise setup: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md
 Current models and runtimes: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md
+Qwen3.8 decision page: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/QWEN38_STRIX_HALO.md
 Best-known profiles: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BEST_KNOWN_PROFILES.md
 Buyer-path validation: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_PATH_VALIDATION.md
 Cross-OEM system evidence matrix: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SYSTEM_EVIDENCE_MATRIX.md
@@ -26,6 +28,7 @@ Headline claims CSV: https://raw.githubusercontent.com/hogeheer499-commits/strix
 MTP and speculative CSV: https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/data/mtp_speculative.csv
 Buyer-path capture template: https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/data/buyer_path_validation_template.csv
 System evidence matrix CSV: https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/data/system_evidence_matrix.csv
+Qwen3.8 route matrix CSV: https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/data/qwen38_route_matrix.csv
 Raw evidence index: https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw
 
 ## Trust and scope

@@ -252,6 +252,13 @@ Qwen3.5 9B is useful only as a community-discussion comparator. For current Qwen
 
 Qwen3.8 now has two very different official size classes that must not be conflated. The official dense `Qwen3.8-27B` route is practical on one 128GB Strix Halo system: the Ollama `Q4_K_M` artifact is 17.7 GB decimal, reports 27.3B parameters and a 262K advertised context window, and measured 292.49 prompt t/s plus 20.42 generation t/s across nine warm 4096-context API repeats on Ollama 0.32.13. Ollama reported 100% GPU use. Separate deterministic smokes passed image reading, function calling with a follow-up result, exposed thinking with an exact answer, and long-context retrieval through 50,059 evaluated prompt tokens. See the [first-party evidence](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/).
 
+For the buyer-facing answer and the current claim-by-claim comparison, use
+[`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md) and the machine-readable
+[`data/qwen38_route_matrix.csv`](data/qwen38_route_matrix.csv). They keep the
+measured official route separate from stock community MTP, tuned ROCm/DFlash,
+and unpublished-sidecar reports instead of presenting 20, 31, 52, and 65 t/s
+as one leaderboard.
+
 That pass qualifies a current dense buyer route across chat, image input, tool protocol, thinking protocol, and medium context, not every advertised capability. Exact retrieval passed at 50,059 prompt tokens, while a 56,051-token attempt caused a recoverable Vulkan device-loss on this exact Ollama 0.32.13 / Mesa 26.1.6 / RADV stack. Therefore the advertised 262K remains unqualified, and the result must not be generalized into a universal 56K model or hardware limit. The vision, tool, and thinking checks are functional smokes rather than broad quality benchmarks. The earlier community pages checked on 2026-08-14 remain historical artifact-scout context; the recommendation now uses the official Qwen/Ollama release instead.
 
 External GMKtec evidence now narrows that caveat. Kyanite Labs reports 13/13
@@ -308,16 +315,16 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 
 | Priority | Test | Why it adds guide value |
 | ---: | --- | --- |
-| 1 | DeepSeek V4 Flash 0731 official GGUF on b10330 Vulkan/RADV | The official Q2_K_S route is a current 284B-class one-box candidate, but its 91.9GiB artifact is blocked by current local free space. Start only after creating download, KV-cache, evidence, and rollback headroom. |
-| 2 | AMD SMI 26.5 memory carveout/GTT versus the measured legacy boot configuration | AMD's supported control surface now differs from the measured host. Validate support, memory visibility, model loading, service restart, full reboot, performance, and rollback before changing `setup.sh` or beginner guidance. |
-| 3 | Ollama 0.32.15 normal-service qualification | Re-run the same-cache text, vision, tools, Qwen3.8 native and Anthropic-compatible thinking levels, service-restart, and full-host-reboot harness. Do not transfer release claims or the reported `xhigh` compatibility failure without local measurement. |
-| 4 | b10330 Vulkan submission-batching/DeviceLost smoke | Run repeated practical-model and concurrency loops and preserve the new diagnostics. A clean smoke is useful stability evidence but not proof that every driver-level DeviceLost case is fixed. |
-| 5 | Qwen3-ASR plus Qwen3-TTS Dutch voice loop | The English TTS repeat and ASR back-check now pass. Dutch/multilingual quality, long audio, streaming, and a complete listen-answer-speak workflow remain the buyer questions. |
-| 6 | AMD `rocm-cli` buyer-UX follow-up | The PR #177 fresh-install route serves correctly. Re-test missing `XDG_RUNTIME_DIR`, absolute local GGUFs, and upgraded-state labels after upstream fixes before presenting it as a beginner alternative to `setup.sh`. |
-| 7 | Laguna S 2.1 official Q4_K_M on b10330 Vulkan/RADV | The 118B-total / ~8B-active coding MoE has a 96.03GB official GGUF and merged base-architecture support. Direct, server, tool-call, and 4K/16K checks would show whether it is genuinely practical on one box. |
-| 8 | Microsoft Fara 1.5 27B screenshot-agent smoke | The MIT-licensed screenshot-only browser agent and a fitting community GGUF can add a controlled perception/tool-call/safety route rather than another chat benchmark. |
-| 9 | Practical 27B/35B ROCm 7.14 vLLM follow-up | The small FP16 A/B reproduced AMD's hipBLASLt batch-8+ workaround. A larger supported model is needed before this becomes normal buyer/server guidance. |
-| 10 | Useful dataset plus held-out quality campaign through the measured Unsloth route | The plumbing works end to end. The next valuable training result needs a real task, baseline, held-out checks, and memory/thermal telemetry. |
+| 1 | `llama.cpp` b10622 versus PR #25863 HIP host-buffer correctness A/B | Open issue #26209 affects the trust boundary for long-context, image, and multi-slot HIP claims. Preserve the measured Ollama route, pin both builds, and require exact-output comparisons before promoting the faster path. |
+| 2 | Qwen3.8 matched route ladder | Re-run stock Vulkan no-spec/MTP and the published ROCmFP4/DFlash routes with pinned artifacts, prompts, context, output checks, and host state. This is the test that can turn the current 22-65 t/s spread from social claims into a buyer-grade decision. |
+| 3 | AMD SMI 26.5 memory carveout/GTT versus the measured legacy boot configuration | AMD's supported control surface now differs from the measured host. Validate support, memory visibility, model loading, service restart, full reboot, performance, and rollback before changing `setup.sh` or beginner guidance. |
+| 4 | Ollama 0.32.15 normal-service qualification | Re-run the same-cache text, vision, tools, Qwen3.8 native and Anthropic-compatible thinking levels, service-restart, and full-host-reboot harness. Do not transfer release claims or the reported `xhigh` compatibility failure without local measurement. |
+| 5 | b10330 Vulkan submission-batching/DeviceLost smoke | Run repeated practical-model and concurrency loops and preserve the new diagnostics. A clean smoke is useful stability evidence but not proof that every driver-level DeviceLost case is fixed. |
+| 6 | Qwen3-ASR plus Qwen3-TTS Dutch voice loop | The English TTS repeat and ASR back-check now pass. Dutch/multilingual quality, long audio, streaming, and a complete listen-answer-speak workflow remain the buyer questions. |
+| 7 | AMD `rocm-cli` buyer-UX follow-up | The PR #177 fresh-install route serves correctly. Re-test missing `XDG_RUNTIME_DIR`, absolute local GGUFs, and upgraded-state labels after upstream fixes before presenting it as a beginner alternative to `setup.sh`. |
+| 8 | Laguna S 2.1 official Q4_K_M on b10330 Vulkan/RADV | The 118B-total / ~8B-active coding MoE has a 96.03GB official GGUF and merged base-architecture support. Direct, server, tool-call, and 4K/16K checks would show whether it is genuinely practical on one box. |
+| 9 | Microsoft Fara 1.5 27B screenshot-agent smoke | The MIT-licensed screenshot-only browser agent and a fitting community GGUF can add a controlled perception/tool-call/safety route rather than another chat benchmark. |
+| 10 | Practical 27B/35B ROCm 7.14 vLLM follow-up | The small FP16 A/B reproduced AMD's hipBLASLt batch-8+ workaround. A larger supported model is needed before this becomes normal buyer/server guidance. |
 | 11 | Second-system reproduction of the b10034 MoE np8-to-np9 cliff | Independent Beelink/GMKtec/Corsair reproduction would turn the two-shape first-party result into stronger vendor and upstream engineering evidence. |
 
 ## Watch List

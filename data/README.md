@@ -14,8 +14,11 @@ python3 scripts/generate_charts.py
 
 - `headline_claims.csv`: machine-readable map from public README headline claims to structured CSVs, raw evidence, charts, and notes.
 - `best_known_profiles.csv`: compact workload-to-runtime recommendation index for setup tools, AI answers, buyers, and reviewers. It links to existing evidence instead of duplicating raw benchmark history.
-- `system_evidence_matrix.csv`: compact cross-OEM index of the 11 counted systems or independent sources, their evidence class, represented routes, primary evidence, and the most useful missing validation. It is a coverage map, not a benchmark ranking.
+- `system_evidence_matrix.csv`: compact cross-OEM index of the 13 counted systems or independent sources, their evidence class, represented routes, primary evidence, and the most useful missing validation. It is a coverage map, not a benchmark ranking.
 - `current_test_queue.csv`: prioritized candidate/runtime queue with readiness, estimated artifact size, blockers, and the buyer question each unmeasured test should answer. It is not a benchmark-claim file.
+- `public_state.json`: one dated source for the release, runtime, Qwen3.8, community-coverage, public project, and affiliate-disclosure facts repeated across public entry pages. The repository validator fails when this state becomes stale or those pages diverge.
+- `qwen38_route_matrix.csv`: claim-separated index of the measured official route, external/community performance routes, current caveats, and the matched comparison still required. Community values are leads, not guide-owned headline results.
+- `affiliate_link_registry.csv`: public registry for any future monetized product links. It is intentionally header-only while the guide has no affiliate links.
 - `buyer_path_validation_template.csv`: empty capture template for the retail-box-to-working-local-AI protocol in [`BUYER_PATH_VALIDATION.md`](../BUYER_PATH_VALIDATION.md). It contains no measured result until a named campaign fills and publishes it.
 - `community_results.csv`: benchmark reports from other Strix Halo systems. These rows are useful external validation but are kept separate from public headline claims.
 - `community_nimo_issue4.csv`: selected structured rows from boxwrench's Nimo AI Mini PC issue #4 bundle, including Qwen 3.6, Qwen3-Coder-Next, Qwen 122B, StepFun, Gemma 4 QAT/MTP assistant-head rows, DFlash, and thermal-context references. These are community serving/eval rows, not first-party direct `llama-bench` headlines.
@@ -59,7 +62,7 @@ python3 scripts/generate_charts.py
 - `raw/2026-07-16/audex-text-mxfp4/`: Audex portable text-only GGUF speed and correctness smoke, with full-audio runtime and noncommercial-license caveats.
 - `raw/2026-07-16/current-model-runtime-triage/`: dated runtime/model scan recording measured, blocked-before-download, specialized-runtime, and external-storage targets.
 - `raw/2026-07-18/community-failsafe-corsair-thermal-sclk-issue24/`: complete imported Fail-Safe campaign with raw telemetry, commands, analyzers, harness files, bounded stock controls, historical service/module evidence, provenance, and contributor graph. Summarized in [`../THERMAL_STABILITY.md`](../THERMAL_STABILITY.md) and `community_thermal_sclk.csv`.
-- `raw/2026-07-16/github-traction-snapshot/`: dated GitHub repository, traffic, clone, and referrer API responses behind the current partnership reach figures. Aggregate demand context only, not benchmark or sales-impact evidence.
+- `raw/2026-08-25/qwen38-community-runtime-update/`: dated scope and provenance note separating the local Ollama result, Kyanite's corrected 262K-class route, stock/MTP community rows, tuned performance reports, and the still-unpublished 65 t/s sidecar lead.
 - `raw/2026-07-16/deepseek-v4-flash-ud-iq2-xxs/`: pinned three-shard DeepSeek V4 Flash `UD-IQ2_XXS` direct pass on official b10034. The 284.33B-parameter, 90.86GB artifact measured 155.64 pp512 / 13.27 tg128 over three repeats and answered the deterministic correctness smoke; capacity/current-model evidence, not a speed or broad quality claim.
 - `../SMOKE_TESTS.md`: human-readable smoke-test notes and verdicts.
 - `../charts/`: generated SVG charts derived from the CSV files.
@@ -132,7 +135,6 @@ python3 scripts/generate_charts.py
 - `raw/2026-06-02/modern-model-clean-followup/`: modern-model follow-up after Reddit feedback. Qwen3-Coder-Next 80B-A3B IQ4_XS measured 61.91 t/s tg128 and 738.98 t/s pp512 on b9467. A Qwen3.6 MTP b9360 repeat averaged 97.08 t/s across six prompts, with code prompts above 105 t/s; useful nuance for the experimental server/speculative route, not a new direct headline.
 - `raw/2026-06-02/qwen3-coder-next-iq4xs/`: earlier modern Qwen3-Coder-Next 80B-A3B IQ4_XS Vulkan/RADV row. It measured 61.68 t/s tg128 and 735.72 t/s pp512, useful for current-model context but superseded by the b9467 repeat in `raw/2026-06-02/modern-model-clean-followup/`.
 - `raw/2026-07-21/unsloth-rocm72-train-export-smoke/`: pinned first-party Unsloth/ROCm workflow qualification. Radeon GPU detection, one-step SFT, checkpoint inference, `Q4_K_M` export, ROCm `llama.cpp` inference, and post-restart loading from the host-persisted artifact passed. This is workflow compatibility evidence, not useful fine-tuning quality or a speed headline.
-- `raw/2026-07-21/github-traction-snapshot/`: dated GitHub API demand/reach snapshot used by the partner brief. These figures are supporting context, not benchmark evidence or a permanent traffic claim.
 
 ## Status Values
 

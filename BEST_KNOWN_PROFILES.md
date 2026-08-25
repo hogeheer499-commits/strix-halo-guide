@@ -27,6 +27,13 @@ This is a compact recommendation index, not another benchmark leaderboard. It tu
 | Short offline speech synthesis | Official Qwen3-TTS 1.7B Q4_K_M plus Q8_0 projector on b10330 Vulkan/RADV | 4.16 seconds of audio in 1.27 seconds reported model processing (`3.27x` real time); ASR preserved the intended sentence | Experimental audio route with unsupported-operation and possible reduced-quality warnings. No voice-quality, multilingual, deterministic-audio, or production claim. Follow the [`raw route`](data/raw/2026-08-09/qwen3-tts-17b-b10330-vulkan/). |
 | Local document embeddings | NVIDIA Llama Nemotron Embed 1B v2 through Sentence Transformers on CPU | Relevant cosine 0.41061 versus unrelated 0.03095; 2048 dimensions and exact offline repeat | Tiny retrieval sanity check, not a corpus, multilingual, long-document, ROCm, or quality benchmark. Follow the exact [`raw route`](data/raw/2026-07-25/nemotron-embed-1b-v2-official/). |
 
+Qwen3.8 needs an extra route decision because current public values are not
+measured under one protocol. The guide's official Ollama result, the external
+262K-class GMKtec validation, stock community MTP, tuned ROCm/DFlash reports,
+and the unpublished-sidecar lead are separated in
+[`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md) and
+[`data/qwen38_route_matrix.csv`](data/qwen38_route_matrix.csv).
+
 ## Rules
 
 - A profile is included only when it points to measured local or clearly labeled community evidence.

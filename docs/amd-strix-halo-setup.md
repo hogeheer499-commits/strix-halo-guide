@@ -4,7 +4,7 @@ title: "AMD Strix Halo Setup: BIOS, UMA, IOMMU, Ubuntu and Local LLMs"
 description: "Measured AMD Strix Halo and Ryzen AI MAX+ 395 setup guidance for BIOS UMA, IOMMU, Ubuntu 24.04, Vulkan/RADV, Ollama and llama.cpp."
 permalink: /amd-strix-halo-setup/
 date: "2026-08-14T00:00:00+02:00"
-last_modified_at: "2026-08-14T00:00:00+02:00"
+last_modified_at: "2026-08-25T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -12,7 +12,7 @@ image:
   alt: "AMD Strix Halo Local LLM Guide with direct, server, and unified-memory evidence highlights"
 seo:
   type: "TechArticle"
-  date_modified: "2026-08-14T00:00:00+02:00"
+  date_modified: "2026-08-25T00:00:00+02:00"
 ---
 
 # AMD Strix Halo Setup: BIOS, UMA, IOMMU, Ubuntu and Local LLMs
@@ -24,8 +24,13 @@ It targets Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems with 96GB or
 Pro; BIOS labels, firmware, cooling and power modes can differ on other OEM
 systems.
 
-**Setup reviewed:** August 14, 2026. Exact benchmark claims remain canonical in
+**Setup reviewed:** August 25, 2026. Exact benchmark claims remain canonical in
 the repository's structured data and raw evidence.
+
+Running the current official dense Qwen model? Use the dedicated
+[Qwen3.8 27B on Strix Halo route comparison](https://hogeheer499-commits.github.io/strix-halo-guide/qwen38-strix-halo/)
+for the measured Ollama path, context boundary, MTP/DFlash distinctions, and
+current community performance leads.
 
 ## What Is AMD Strix Halo?
 

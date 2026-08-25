@@ -16,13 +16,13 @@ That uncertainty creates adoption friction. A technically strong AI PC can still
 
 This guide reduces setup friction, provides reproducible benchmark evidence, and helps buyers evaluate AMD local-AI hardware with clearer expectations. It gives developers and buyers a practical path from "what should I install?" to "which backend, model, and settings should I try first?"
 
-The repo also has a visible demand signal: 239 GitHub stars, 14 forks, 5 watchers, 9 credited community benchmark contributors, and 11 Strix Halo-class systems/sources represented as of the 2026-07-25 GitHub/project snapshot. GitHub's available traffic window captured 835 unique repository visitors and 180 unique cloners; Google was the largest recorded referrer with 324 unique visitors. These dated figures are preserved in [`data/raw/2026-07-25/github-traction-snapshot/`](data/raw/2026-07-25/github-traction-snapshot/) and should not be treated as the main value proposition. The main value is the proof layer below: reproducible public evidence that makes the hardware easier to evaluate, trust, support, review, and buy.
+The repo also has a visible public project signal: 295 GitHub stars, 20 forks, 10 credited community benchmark contributors, and 13 Strix Halo-class systems or independent sources represented as of 2026-08-25. These public counts should not be treated as attributable buyer conversion or the main value proposition. The main value is the proof layer below: reproducible public evidence that makes the hardware easier to evaluate, trust, support, review, and buy.
 
 The technical proof layer already includes:
 
 - Setup and workflow guidance in [`README.md`](README.md).
 - Accepted upstream engineering in [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md): 15+ merged contributions with direct merge and review links, including `llama.cpp`, AMD's Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf. This demonstrates the ability to move from reproduction through validation and upstream review without misrepresenting those merges as vendor endorsement or Strix Halo performance fixes.
-- Current buyer-path setup checks, including the normal Ollama 0.31.2 system-service route with `OLLAMA_IGPU_ENABLE=1`, 60.57 t/s Qwen3.6 generation, working vision, and restart/reboot persistence. A controlled same-port/same-cache comparison puts isolated 0.31.1, 0.31.2, and 0.32.0 local binaries in the same 72.55-73.20 t/s class. A later isolated 0.32.3 qualification preserved exact output at 73.13 t/s versus 73.20 t/s on the controlled 0.31.2 binary and passed iGPU vision plus process restart. The installed 0.31.2 service remains the buyer default until current 0.32.5 completes the normal package-upgrade/full-reboot path.
+- Current buyer-path setup checks, including the normal Ollama 0.31.2 system-service route with `OLLAMA_IGPU_ENABLE=1`, 60.57 t/s Qwen3.6 generation, working vision, and restart/reboot persistence. A controlled same-port/same-cache comparison puts isolated 0.31.1, 0.31.2, and 0.32.0 local binaries in the same 72.55-73.20 t/s class. A later isolated 0.32.3 qualification preserved exact output at 73.13 t/s versus 73.20 t/s on the controlled 0.31.2 binary and passed iGPU vision plus process restart. Qwen3.8 27B is separately measured on Ollama 0.32.13 with multimodal/tool/thinking and 50K-context evidence. The installed 0.31.2 service remains the full-reboot-qualified general buyer default until current 0.32.15 completes the normal package-upgrade/Qwen3.8/full-reboot matrix. See [`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md).
 - A repeatable [`BUYER_PATH_VALIDATION.md`](BUYER_PATH_VALIDATION.md) protocol for measuring retail-box-to-working-local-AI friction through timed checkpoints, intervention counts, restart persistence, and public evidence links without inventing a current time-to-result claim.
 - Reproducibility notes in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
 - Current benchmark snapshot in [`BENCHMARKS.md`](BENCHMARKS.md).
@@ -90,7 +90,7 @@ independence rules below.
 
 ## Independence
 
-This guide does not sell paid-positive reviews. Sponsorship, loaned hardware, gifted hardware, affiliate links, or early-access software must be disclosed clearly. Vendors may correct factual errors, but they do not receive editorial control over benchmark conclusions.
+This guide does not sell paid-positive reviews. Sponsorship, loaned hardware, gifted hardware, affiliate links, or early-access software must be disclosed clearly. Vendors may correct factual errors, but they do not receive editorial control over benchmark conclusions. Affiliate commission does not determine product ranking, test inclusion, or whether accurate negative findings remain public; see [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md).
 
 No fake claims, hidden influence, unsupported marketing language, or undisclosed vendor involvement.
 

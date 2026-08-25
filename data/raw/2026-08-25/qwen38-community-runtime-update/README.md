@@ -10,7 +10,7 @@ Beelink GTR9 Pro: 292.49 prompt t/s and 20.42 generation t/s over nine warm
 API repeats, with image, tool-call, thinking, and exact-retrieval smokes passing
 through 50,059 prompt tokens. A 56,051-token attempt caused a recoverable
 Vulkan DeviceLost. See the
-[`2026-08-15 raw evidence`](../qwen38-27b-ollama-03213-vulkan-radv/).
+[`2026-08-15 raw evidence`](../../2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/).
 
 ## External GMKtec Long-Context Evidence
 
@@ -56,6 +56,37 @@ Sources:
 
 - <https://github.com/sudoingX/qwen38-mtp>
 - <https://github.com/sudoingX/qwen38-mtp/pull/9>
+
+## Same-Day Performance Frontier: Leads, Not Headlines
+
+Several public Qwen3.8 routes moved quickly after the official release. They
+answer different questions and should not be collapsed into one leaderboard:
+
+- a stock `llama.cpp` b10503 community A/B reports Q8_0 MTP moving from 7.3
+  to 22.4 t/s on a 128GB Strix Halo laptop;
+- a separately tuned Vulkan/ROCmFP4/DFlash2 route reports about 52 t/s on a
+  coding prompt, about 31 t/s on prose, and a context-dependent crossover to
+  ROCm for deep or cold prompt ingestion;
+- a follow-up adaptive-speculation fork reports 65 t/s decode, but the author
+  stated that the matching Qwen3.8 FP4 DFlash sidecar was not yet published at
+  the time checked and explicitly requested independent confirmation;
+- the PieBru evidence repository publishes a lower Q6 route with committed
+  logs and a quality-first framing. It is useful precisely because its model,
+  quant, prompt, power, and evidence policy differ from the speed-first rows.
+
+These are valuable reproduction targets, not guide-owned performance claims.
+The comparison must preserve model/quant, backend, runtime fork, speculation,
+prompt type, context depth, cache behavior, generated-token count, and raw
+artifacts. See the structured
+[`Qwen3.8 route matrix`](../../../qwen38_route_matrix.csv) and the public
+[`Qwen3.8 decision page`](../../../../QWEN38_STRIX_HALO.md).
+
+Sources checked 2026-08-25:
+
+- <https://www.reddit.com/r/StrixHalo/comments/1vsstxm/qwen3827b_benchmarks_on_strix_halo_q8_0_mtp_21_ts/>
+- <https://www.reddit.com/r/StrixHalo/comments/1vwm4p3/qwen38_27b_new_record_on_strix_halo_52_tokens_per/>
+- <https://www.reddit.com/r/StrixHalo/comments/1vxx51g/qwen38_27b_65_ts_decode_try_it_out/>
+- <https://github.com/PieBru/Qwen-3.8-27B_Strix-Halo_gfx1151>
 
 ## Runtime Alerts
 

@@ -1,97 +1,71 @@
-# Traction And Public Evidence
+# Public Project Signals And Evidence
 
-This file collects social proof, reach, and evidence that the guide helps real buyers and developers evaluate AMD Strix Halo / Ryzen AI MAX+ local-AI hardware.
+This page records public, independently checkable project signals. It supports
+vendor and reviewer conversations, but it does not claim attributable hardware
+sales, buyer conversion, endorsement, or private audience behavior.
 
-Do not invent traction numbers. Fill the TODOs only from current public GitHub data, screenshots, issues, discussions, or documented external mentions.
+Repository-stat snapshot date: 2026-08-25.
 
-## Current Public GitHub Stats
+## Current Public Snapshot
 
-Repository-stat snapshot date: 2026-07-25. Traffic uses GitHub's available window at capture time. The aggregate API responses are preserved in [`data/raw/2026-07-25/github-traction-snapshot/`](data/raw/2026-07-25/github-traction-snapshot/).
+| Metric | Current value | Public source |
+| --- | ---: | --- |
+| Stars | 295 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| Forks | 20 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| GitHub contributors | 4 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
+| Credited community benchmark contributors | 10 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
+| Strix Halo-class systems or independent sources represented | 13 | [`SYSTEM_EVIDENCE_MATRIX.md`](SYSTEM_EVIDENCE_MATRIX.md) |
 
-| Metric | Current value | Source |
-|--------|---------------|--------|
-| Stars | 239 | [GitHub API snapshot](data/raw/2026-07-25/github-traction-snapshot/repository.json) |
-| Forks | 14 | [GitHub API snapshot](data/raw/2026-07-25/github-traction-snapshot/repository.json) |
-| Watchers | 5 | [GitHub API snapshot](data/raw/2026-07-25/github-traction-snapshot/repository.json) |
-| Open issues | 7 | [GitHub Issues](https://github.com/hogeheer499-commits/strix-halo-guide/issues) |
-| Open pull requests | 0 | [GitHub Pull Requests](https://github.com/hogeheer499-commits/strix-halo-guide/pulls) |
-| Releases | 5 | [GitHub Releases](https://github.com/hogeheer499-commits/strix-halo-guide/releases) |
-| GitHub contributors | 3 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
-| Community benchmark contributors credited | 8 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
-| Strix Halo-class systems/sources represented | 11 | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md) |
-| Repository views | 2,112 total / 835 unique | [GitHub Traffic API snapshot](data/raw/2026-07-25/github-traction-snapshot/views.json) |
-| Repository clones | 388 total / 180 unique | [GitHub Traffic API snapshot](data/raw/2026-07-25/github-traction-snapshot/clones.json) |
-| Largest recorded referrer | Google: 542 views / 324 unique visitors | [GitHub referrer snapshot](data/raw/2026-07-25/github-traction-snapshot/referrers.json) |
+These counts are public project and evidence-coverage signals. They do not show
+who bought hardware, whether the guide caused a sale, or how readers moved
+through the repository.
 
-Read the star count as a small-niche demand signal, not the main argument. The stronger vendor evidence is the technical proof layer: reproducible commands, raw logs, CSVs, claim indexes, community rows, and documented failures.
+## What The Public Evidence Supports
 
-## Evidence Already In The Repo
+- **Independent interest exists:** stars and forks are visible on the public
+  repository and can be checked without private analytics access.
+- **Cross-system evidence exists:** the public evidence map covers 13 systems
+  or independent sources and 10 credited community benchmark contributors.
+- **Readers can inspect the proof layer:** headline claims link to raw logs,
+  CSVs, caveats, corrections, and failed routes.
+- **Contributions are attributable:** community evidence remains linked to its
+  original report and separated from first-party measurements.
 
-| Evidence type | Where to read it | Why it matters |
-|---------------|------------------|----------------|
-| Community validation | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_NIMO.md`](COMMUNITY_NIMO.md), [`data/community_results.csv`](data/community_results.csv), [`data/community_nimo_issue4.csv`](data/community_nimo_issue4.csv) | Shows independent reproduction and portability evidence across Beelink owner stacks, Corsair, GMKtec, MS-S1-Max, and Nimo without treating community data as vendor endorsement. |
-| Community power context | [`COMMUNITY_RESULTS.md#whole-system-power`](COMMUNITY_RESULTS.md#whole-system-power), [`data/community_power.csv`](data/community_power.csv) | Helps buyers think about efficiency, heat, and always-on operation. |
-| Community RPC and USB4 data | [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md), [`data/community_rpc.csv`](data/community_rpc.csv) | Shows advanced capacity/scaling experiments while keeping them separate from default single-machine guidance. |
-| Raw benchmark data | [`data/raw/`](data/raw/) | Lets readers inspect command output and provenance instead of relying on summary claims. |
-| Structured CSV data | [`data/README.md`](data/README.md) | Makes benchmark rows reusable and auditable. |
-| Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) | Maps public headline claims to evidence files and notes. |
-| Charts | [`charts/`](charts/README.md) | Turns CSV data into reviewable visual summaries. |
-| Reproducibility notes | [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) | Documents machine state, setup details, and benchmark caveats. |
-| Accepted upstream engineering | [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md) | Shows that the maintainer can move a software issue through reproduction, scoped implementation, validation, review, and merge while preserving honest limits on what the merge proves. |
-| Issue-based reports | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md) links to public GitHub issues | Shows how community results are sourced and credited. |
+These signals support the commercial thesis that independent technical evidence
+can reduce adoption friction. They do not establish revenue, unit sales,
+conversion, affiliate performance, or vendor endorsement.
 
-## Traffic Screenshots
+## Current External Evidence And Mentions
 
-Store GitHub traffic screenshots here:
+| Source | Date checked | What it contributes |
+| --- | --- | --- |
+| [Qwen3.8 52 t/s/context discussion](https://www.reddit.com/r/StrixHalo/comments/1vwm4p3/qwen38_27b_new_record_on_strix_halo_52_tokens_per/) | 2026-08-25 | A current tuned route plus detailed context/prefill tradeoffs and an independent reproduction target |
+| [Qwen3.8 adaptive 65 t/s validation request](https://www.reddit.com/r/StrixHalo/comments/1vxx51g/qwen38_27b_65_ts_decode_try_it_out/) | 2026-08-25 | A high-interest performance lead whose matching sidecar was not public when checked |
+| [PieBru Qwen3.8 evidence repository](https://github.com/PieBru/Qwen-3.8-27B_Strix-Halo_gfx1151) | 2026-08-25 | A quality-first external setup with committed evidence and explicit claim labels |
+| [Kyanite Labs Qwen3.8 package](https://github.com/KyaniteLabs/qwen38-27b-strix-halo) | 2026-08-25 | Corrected GMKtec long-context, image, and MTP/no-spec evidence |
+| [pablo-ross GMKtec EVO-X2 guide](https://github.com/pablo-ross/strix-halo-gmktec-evo-x2) | 2026-08-25 | A substantial adjacent community setup and reproduction surface |
 
-```text
-docs/assets/traffic/
-```
+External numbers remain external. They become guide headlines only after the
+required artifacts, commands, versions, and evidence class are known.
 
-Suggested files:
+## Vendor, Reviewer, And Affiliate Value
 
-- `docs/assets/traffic/github-traffic-YYYY-MM-DD.png`
-- `docs/assets/traffic/github-referrers-YYYY-MM-DD.png`
-- `docs/assets/traffic/github-clones-YYYY-MM-DD.png`
+The strongest vendor-facing proof is the combination of reproducible setup,
+cross-OEM evidence, public failure modes, buyer-path validation, and a test
+queue tied to real purchase and support questions.
 
-Rules:
+Any future vendor or affiliate reporting must keep observed clicks or
+conversions separate from benchmark evidence and public repository statistics.
+Do not estimate commission, sales, conversion, or support savings without an
+actual attributable source. Affiliate commission does not determine benchmark
+inclusion, buyer ranking, evidence retention, or conclusions. See
+[`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md).
 
-- Do not invent visitor, clone, referrer, or search numbers.
-- Include the screenshot date.
-- If summarizing a screenshot in text, link to the screenshot and state the date range shown by GitHub.
+## Measurement Boundaries
 
-## Testimonials And Quotes
-
-Use this format only when the quote is real and permission is clear:
-
-```text
-Quote: "TODO: exact approved quote."
-Name/handle: TODO
-Source/link: TODO
-Date: TODO
-Permission: TODO: public quote / explicit permission / other documented basis
-Related evidence: TODO
-```
-
-Do not invent testimonials, buyer quotes, vendor quotes, sponsor quotes, or endorsement language.
-
-## External Mentions
-
-Track external mentions only when there is a real source link.
-
-| Source type | Link | Date | What it shows |
-|-------------|------|------|---------------|
-| Reddit | TODO | TODO | TODO |
-| GitHub Discussions | TODO | TODO | TODO |
-| Forums | TODO | TODO | TODO |
-| Newsletters | TODO | TODO | TODO |
-| Blogs | TODO | TODO | TODO |
-| YouTube | TODO | TODO | TODO |
-| Discord | TODO | TODO | TODO: include permission or public-link basis |
-| Search / AI-search mentions | TODO | TODO | TODO |
-
-## Why This Matters To Vendors
-
-Traction is not just a vanity metric. For this project, traction is evidence that the guide removes uncertainty and increases buyer/developer confidence.
-
-When buyers, developers, reviewers, and system owners use the guide to reproduce a setup, compare hardware, submit a benchmark, or avoid a broken path, that is adoption-friction evidence. It helps AMD, OEMs, reviewers, and developer-relations teams understand which hardware and software questions are blocking real local-AI adoption.
+- Public stars, forks, contributor counts, and evidence coverage can change
+  after the dated snapshot.
+- Public repository counts do not prove buyer intent or sales.
+- Community discussion activity is not vendor endorsement.
+- Private repository traffic, clone, referrer, popular-path, and conversion
+  analytics are not published as project evidence.

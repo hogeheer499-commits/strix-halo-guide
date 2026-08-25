@@ -21,76 +21,68 @@ Project website: <https://strixhaloguide.com/>. This GitHub repository remains t
 
 Maintainer credibility is public and reviewable: 15+ merged upstream contributions, including [`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), AMD's Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf. See [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md) for every PR link, its scope, and honest boundaries. Upstream acceptance strengthens confidence in the engineering process; it does not replace the raw evidence required for each benchmark claim.
 
+## Start Here
+
+| You are... | Best first page | What it answers |
+| --- | --- | --- |
+| Setting up a machine you already own | [Quick Start](#quick-start-6-steps) or the [short setup answer](STRIX_HALO_LOCAL_LLM_SETUP.md) | BIOS, Ubuntu, memory, Vulkan/RADV, Ollama, and the first working model |
+| Deciding what model or backend to run | [Best Known Profiles](BEST_KNOWN_PROFILES.md) and [Current Models](CURRENT_MODELS.md) | Easy chat, direct speed, long context, serving, multimodal, capacity, and experimental routes |
+| Evaluating Qwen3.8 claims | [Qwen3.8 on Strix Halo](QWEN38_STRIX_HALO.md) | Why measured 20.42 t/s and community 22-65 t/s routes are different claims; what is verified locally and what still needs reproduction |
+| Comparing or buying Strix Halo hardware | [Buyer Use Cases](BUYER_USE_CASES.md), [Buying Guide](#buying-guide), and [cross-OEM evidence](SYSTEM_EVIDENCE_MATRIX.md) | Memory fit, OS/backend tradeoffs, OEM portability, power, thermals, and missing proof |
+| Reproducing or contributing benchmarks | [Reproducibility](REPRODUCIBILITY.md), [headline claim index](data/headline_claims.csv), and [benchmark issue](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md) | Exact commands, metadata, raw evidence, caveats, and community credit |
+| Reviewing the project for a vendor or publication | [One-page brief](ONE_PAGE_BRIEF.md), [partnership scope](PARTNERSHIP.md), and [disclosure policy](VENDOR_DISCLOSURE.md) | Which buyer uncertainty the evidence removes and how independence is protected |
+
+**Current evidence state — August 25, 2026:** Qwen3.8 27B is measured through
+the official Ollama route; Ollama 0.32.15 and `llama.cpp` v0.3.0 / b10622 are
+current checked targets rather than inherited benchmark replacements. The
+machine-readable freshness record is [`data/public_state.json`](data/public_state.json).
+
 What you get:
 
-- Copyable Ubuntu + Vulkan/RADV setup for Ollama and `llama.cpp`.
-- Practical model/backend choices for a local AI PC.
-- Direct local results: Qwen3-Coder 30B at 101.0 t/s on the official `llama.cpp` b9851 Vulkan release binary, Qwen3-30B-A3B-Instruct-2507 IQ4_XS at 100.0 t/s with a b9544 control at 103.2 t/s, LFM2.5 8B-A1B at 170.0 t/s with a b9544 control at 176.5 t/s, Nemotron 3 Super 120B-A12B at 18.4-18.9 t/s, and a 90.86GB DeepSeek V4 Flash 284B `UD-IQ2_XXS` capacity scout at 13.27 t/s direct on Vulkan/RADV.
-- Experimental server routes: Qwen3.6 MTP at 101.1 t/s, Gemma 4 26B-A4B QAT MTP up to 110.0 t/s best-repeat, and CHADROCK ACE/SABER 35B ROCmFP4 at 141.37 t/s across three repeats on one exact high-acceptance reference profile with `llama-server` speculative decoding. The CHADROCK number is prompt-shape-specific, not a universal server speed.
-- Multi-user evidence: b9979 stock, opt-in AMD/RADV density, dense16, and Lemonade ROCm concurrency matrices for 30B 128-expert/top-8 and 80B 512-expert/top-10 MoE models.
-- Raw CSVs, logs, charts, and reproducibility notes for headline claims.
-- Community validation from Beelink, Corsair, GMKtec, MS-S1-Max, Nimo, NixOS, NPU, ROCmFP4, and other Strix Halo owner stacks.
+- A copyable Ubuntu + Vulkan/RADV setup for Ollama and `llama.cpp`.
+- Workload-to-model/backend recommendations instead of one undifferentiated leaderboard.
+- Direct, API/server, MTP/speculative, concurrency, capacity, power, NPU, RPC, first-party, and community claims kept separate.
+- Headline rows linked to CSVs, raw logs, charts or explicit `n/a`, plus preserved failures and corrections.
+- Cross-OEM evidence covering 13 systems or independent sources from 10 credited community benchmark contributors.
 
 > Measured primarily on one Beelink GTR9 Pro. Community results are kept separate from local headline claims. This repository ships docs, scripts, data, and charts only; no `.exe`, binary `.zip`, browser extensions, or model weights. Raw evidence, commands, caveats, and corrections are linked so results can be checked instead of taken on trust.
 
-[Quick Start](#quick-start-6-steps) | [Setup Script](#setup-script) | [Short Setup Answer](STRIX_HALO_LOCAL_LLM_SETUP.md) | [AI Halo Context](RYZEN_AI_HALO_CONTEXT.md) | [What Runs](#what-you-can-run-quick-snapshot) | [Profiles](BEST_KNOWN_PROFILES.md) | [Current Models](CURRENT_MODELS.md) | [Buyer Path](BUYER_PATH_VALIDATION.md) | [Fine-Tune](UNSLOTH_STRIX_HALO.md) | [Use Cases](#use-this-if-you-want) | [Rules](#community-tested-rules-of-thumb) | [Best Setup](#best-current-setup-tested-here) | [Evidence](#headline-evidence) | [Upstream Work](UPSTREAM_CONTRIBUTIONS.md) | [Concurrency](MOE_CONCURRENCY.md) | [MTP](MTP_SPECULATIVE_DECODING.md) | [Community](COMMUNITY_RESULTS.md) | [Feedback](COMMUNITY_FEEDBACK.md) | [RPC](COMMUNITY_RPC.md) | [USB4](USB4_CLUSTER_TUNING.md) | [Reproduce](#reproduce-one-headline-result) | [Security](SECURITY.md)
+[Quick Start](#quick-start-6-steps) | [Qwen3.8](QWEN38_STRIX_HALO.md) | [Profiles](BEST_KNOWN_PROFILES.md) | [Current Models](CURRENT_MODELS.md) | [Evidence](#headline-evidence) | [Community](COMMUNITY_RESULTS.md) | [Reproduce](#reproduce-one-headline-result) | [Contribute](CONTRIBUTING.md)
+
+If this guide saves you setup or research time, a GitHub star helps other Strix
+Halo owners find it; a reproducible result or correction helps even more.
 
 ---
 
 ## Use This Guide If
 
-- You have, ordered, or are evaluating a Strix Halo / Ryzen AI MAX+ 395 system for local AI.
-- You want a copyable Ubuntu local-LLM setup instead of piecing together scattered posts.
-- You need practical model/backend choices for Ollama, llama.cpp Vulkan/RADV, ROCm, server use, and long context.
-- You want benchmark claims that point to CSVs, raw logs, charts, and reproducibility notes.
+- You own, ordered, review, sell, or are evaluating a Strix Halo / Ryzen AI MAX system for local AI.
+- You want a working route and the evidence needed to understand where it transfers—or fails to transfer—to another system.
+- You need independent buyer guidance that can coexist with future disclosed vendor or affiliate relationships.
 
 ## What This Gives You
 
-| If you want to... | Start here |
-|-------------------|------------|
-| Apply the setup without reading everything | [Quick Start](#quick-start-6-steps), then [Setup Script](#setup-script). |
-| Need the short current setup answer | [`STRIX_HALO_LOCAL_LLM_SETUP.md`](STRIX_HALO_LOCAL_LLM_SETUP.md): concise Strix Halo / Ryzen AI MAX+ 395 local LLM setup, benchmark highlights, and source-of-truth links. |
-| Understand why this guide matters now | [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md): how AMD's public Ryzen AI Halo / Developer Platform direction maps to this guide's independent setup and benchmark evidence. |
-| Decide what to run on your Strix Halo machine | [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot), then [Use This If You Want](#use-this-if-you-want): practical model and backend choices for a local AI PC. |
-| Need a machine-readable known-good route | [`BEST_KNOWN_PROFILES.md`](BEST_KNOWN_PROFILES.md) and [`data/best_known_profiles.csv`](data/best_known_profiles.csv): compact workload-to-runtime recommendations that link back to the full evidence. |
-| Need a compact source map for an AI assistant or search index | [`docs/llms.txt`](docs/llms.txt): plain-text routes to the current setup, profiles, claims, test queue, buyer protocol, and raw evidence. |
-| See what should be tested next | [`CURRENT_MODELS.md`](CURRENT_MODELS.md) and [`data/current_test_queue.csv`](data/current_test_queue.csv): current candidates, practical artifact sizes, blockers, and the buyer question each test should answer. |
-| Measure setup friction on a review or loaner system | [`BUYER_PATH_VALIDATION.md`](BUYER_PATH_VALIDATION.md): timed retail-box-to-working-local-AI checkpoints, intervention counts, restart persistence, and evidence requirements. |
-| Fine-tune and export a model locally | [`UNSLOTH_STRIX_HALO.md`](UNSLOTH_STRIX_HALO.md): measured ROCm GPU gate, one-step Unsloth training smoke, GGUF export, local ROCm inference, persistence, and the two setup failures found along the way. |
-| Skip the community-data deep dive | [Community-Tested Rules Of Thumb](#community-tested-rules-of-thumb): practical decisions extracted from the Beelink data plus Corsair, GMKtec, MS-S1-Max, Nimo, NixOS/NPU, and ROCmFP4 community reports. |
-| See what work was actually done | [Headline Evidence](#headline-evidence): dated claims with backend, model, result, CSV, raw logs, charts, and notes. |
-| Check whether the numbers are real | [Reproduce One Headline Result](#reproduce-one-headline-result), [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md), and [`data/headline_claims.csv`](data/headline_claims.csv). |
-| Verify the maintainer's upstream engineering work | [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md): accepted changes in `llama.cpp` and other AI infrastructure, with direct PR links, validation scope, and explicit limits on what those merges prove. |
-| Compare against other Strix Halo systems | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md): independent benchmark reports kept separate from headline claims, including native Linux, WSL2/HIP, Windows LM Studio, power, tuned thermal/power-policy rows, and Nimo large-model serving evidence. [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md): multi-node USB4 RPC results. [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md): cluster latency tuning. |
-| Diagnose sustained thermal or custom fan-control trouble | [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md): scoped Corsair/Sixunited three-system evidence, post-kernel-update checks, cap tradeoffs, stock controls, and the upstream fan-reset patch. |
-| Check current ROCm, kernel, container, or runtime compatibility alerts | [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md#current-strix-halo-compatibility-alerts): narrowly scoped upstream reports with safe troubleshooting boundaries. |
-| See how public corrections change the guide | [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md): trust/framing lessons, corrected routes, and examples of community pushback turning into better evidence. |
+| Need | Source of truth |
+| --- | --- |
+| Working beginner setup | [Quick Start](#quick-start-6-steps), [`setup.sh`](setup.sh), and [`STRIX_HALO_LOCAL_LLM_SETUP.md`](STRIX_HALO_LOCAL_LLM_SETUP.md) |
+| Current Qwen3.8 decision | [`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md) and [`data/qwen38_route_matrix.csv`](data/qwen38_route_matrix.csv) |
+| Known-good workload profiles | [`BEST_KNOWN_PROFILES.md`](BEST_KNOWN_PROFILES.md) and [`data/best_known_profiles.csv`](data/best_known_profiles.csv) |
+| Auditable benchmark claims | [Headline Evidence](#headline-evidence), [`data/headline_claims.csv`](data/headline_claims.csv), and [`data/raw/`](data/raw/) |
+| Cross-OEM buyer evidence | [`SYSTEM_EVIDENCE_MATRIX.md`](SYSTEM_EVIDENCE_MATRIX.md), [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), and [`BUYER_PATH_VALIDATION.md`](BUYER_PATH_VALIDATION.md) |
+| Current blockers and test priorities | [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md), and [`data/current_test_queue.csv`](data/current_test_queue.csv) |
 
 ## 20-Second Summary
 
 | Question | Current answer |
-|----------|----------------|
-| What was tested? | Local LLM inference and local API serving on Strix Halo, mainly Vulkan/RADV llama.cpp, Ollama, ROCm/HIP, Lemonade `llamacpp-rocm`, and early vLLM smoke tests. |
-| Primary hardware | Beelink GTR9 Pro, Ryzen AI MAX+ 395, Radeon 8060S `gfx1151`, 128GB LPDDR5X-8000 unified memory. |
-| Best easy path | The normal Ollama 0.31.2 system service with Vulkan/RADV for chat, model pulling, vision, and Open WebUI remains the fully reboot-qualified default. Qwen3.8 27B is separately measured on Ollama 0.32.13. Keep 0.31.2 as the default until current Ollama 0.32.15 passes text, vision, tools, Qwen3.8 thinking compatibility, package upgrade, and full reboot. |
-| Local training/export path | A pinned ROCm 7.2 Unsloth container detected the Radeon 8060S, completed a one-step Qwen3 0.6B SFT smoke, loaded the checkpoint, exported `Q4_K_M` GGUF, loaded it through ROCm `llama.cpp`, and loaded the host-persisted artifact again after restart. This proves the workflow, not useful fine-tuning quality or large-model training speed. |
-| Fastest measured short-context path | Direct llama.cpp / `llama-server` with Vulkan/RADV. Current Qwen3-Coder Q4_K_S speed-first row reached 100.99 t/s r50 on the official b9851 Vulkan release binary. The older strict-clean b9179 Qwen3-Coder row remains in the evidence at 98.51 t/s r50, and a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS row reached 100.04 t/s r50 on b9467 with a b9544 control at 103.18 tg128 r10. |
-| Fastest current small-MoE scout | LFM2.5 8B-A1B Q4_K_M reached 168.96 tg128 in a pp512/tg128 run and 170.02 t/s generation-only on the 2026-06-05 latest/int-dot check; the 2026-06-07 b9544 control measured 176.48 tg128 r10. This is a small active-parameter MoE speed result, not a 30B-class capability replacement. |
-| Largest current direct GGUF capacity route | DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded as a pinned 90.86GB ordinary GGUF and measured 155.64 pp512 / 13.27 tg128 on official b10034. It answered a deterministic smoke correctly, but the low-bit quant and visible thinking block make this capacity/current-model evidence rather than a speed or broad quality recommendation. |
-| Current 120B-class direct GGUF route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly at 18.43 tg128, with a b9544 control at 18.93 tg128. It remains a useful more-balanced 120B-class capacity route. |
-| Experimental speculative server path | MTP works on current `llama.cpp`/ROCmFPX routes. The best local Qwen3.6 MTP server route uses IQ4_XS-Q8nextn and reached about 101.1 t/s across six prompts on b9360; Gemma 4 26B-A4B QAT reached up to 110.0 t/s best-repeat; the exact CHADROCK ACE/SABER reference profile averaged 141.37 t/s over three repeats at 100% draft acceptance. These are server/speculative results, not direct `llama-bench` headlines. CHADROCK's separate 1K and 8K profiles were much slower, so operators must profile real prompts. |
-| Frontier-size local agent path | Step 3.7 Flash ROCmFPX Q3 QualityPlus runs as a 198B-total / about 11B-active target plus separate Q8 MTP draft: 34.50 t/s at 4K, 33.83 t/s at 16K, native tool-call pass, and full 256K allocation. This is advanced server/capacity evidence, not direct `llama-bench`; the 256K result is allocation, not a filled-context quality test. |
-| Current runtime status | The normal Ollama 0.31.2 service path remains the fully reboot-qualified default. Qwen3.8 27B is measured on Ollama 0.32.13; Ollama 0.32.15 and `llama.cpp` v0.3.0 / b10622 are the latest package/release targets checked, not measured replacements. Qualify Qwen3.8 text, vision, tools, both API thinking shapes, restart, and reboot before changing the beginner path. See [`CURRENT_MODELS.md`](CURRENT_MODELS.md) and the current [`compatibility alerts`](ROCM_VLLM_BUGWATCH.md#current-strix-halo-compatibility-alerts). |
-| Current official dense multimodal Qwen route | Qwen3.8 27B `Q4_K_M` on Ollama 0.32.13 measured 292.49 prompt t/s and 20.42 generation t/s over nine warm API repeats; image, tool-call, thinking, and exact retrieval passed through 50,059 prompt tokens. A local 56,051-token Vulkan DeviceLost is stack-specific: an external corrected 96GB GMKtec package reports 13/13 retrieval cases up to 261,130 tokens, but uses a patched/reverted HIP build and does not replace the default. See the [`first-party raw evidence`](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/) and [`community/runtime scope`](data/raw/2026-08-25/qwen38-community-runtime-update/). |
-| Current HIP/UMA compatibility status | Official b10046 detected 120,124 MiB free UMA and allocated `ROCm_Host` buffers on a small-model smoke. Open upstream issue #26209 and fix candidate PR #25863 now scope this to historical allocation/setup evidence: long-context, multimodal, and multi-slot correctness were not qualified. Do not promote stock current HIP integrated-host compute as broadly correct until a matched b10622-versus-PR A/B passes exact-output checks. Vulkan/RADV remains the beginner path; see the [`ROCm/HIP notes`](ROCM_VLLM_BUGWATCH.md). |
-| Large local model checks | gpt-oss-120b MXFP4 loaded at 55.57 tg128; Nemotron 3 Super 120B-A12B at 18.43 tg128; MiniMax M2.7 230B-class MoE loaded and generated; and DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded directly at 13.27 tg128. These are different capacity/quality tradeoffs, not interchangeable speed claims. |
-| Best measured Qwen3.6 server path | Vulkan/RADV wins at 1-4 parallel requests; Lemonade `llamacpp-rocm` b1259 wins aggregate throughput at 8-16. |
-| Latest multi-user MoE finding | Official b10034 confirms that the concurrency-8-to-9 cliff persists: -37.34% aggregate decode on Qwen3-Coder 30B-A3B and -31.69% on Qwen3-Next 80B-A3B. The separate b9979 campaign shows an opt-in AMD/RADV density gate recovering 42.7% at 30B np9 and 25.3% at 80B np9; dense16 is not a universal default. See [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md). |
-| Current community thermal/stability finding | On Fail-Safe's three matched Corsair systems, 2400 MHz was the best measured conservative SCLK tradeoff: generation stayed within about 1% of higher caps and retained runs stayed at or below 75 C. This is fleet-specific, not a universal cap. Bounded stock controls saw 0/3 locks, while historical logs exposed a missing custom EC/fan module after kernel updates as a plausible major confounder. See [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md). |
-| Backend split | Vulkan/RADV wins measured generation on the current single-box Qwen rows; ROCm/HIP can win prompt-processing-heavy work, and ROCm RPC is required for the tested MiniMax capacity case. See [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) and [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md). |
-| Community validation | The evidence map covers 13 systems or independent sources from 10 credited community benchmark contributors, with first-party and community claims kept separate. It includes same-SKU variance, cross-OEM Linux and Windows routes, wall power, USB4 RPC, NPU sidecars, ROCmFP4, large-model capacity, Qwen3.8 262K-class retrieval, thermals, and failed paths. See the counted [`Evidence Coverage`](#evidence-coverage-13-systems-or-independent-sources) table and [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md). |
-| Claim index | [`data/headline_claims.csv`](data/headline_claims.csv) maps each public headline to CSV, raw evidence, chart, and notes. |
-| Raw evidence | Structured CSVs in [`data/`](data/README.md), raw logs in [`data/raw/`](data/raw/), generated charts in [`charts/`](charts/README.md). |
+| --- | --- |
+| Best beginner route | Ollama with Vulkan/RADV. The fully reboot-qualified general baseline remains 0.31.2; Qwen3.8 is separately measured on 0.32.13 and current 0.32.15 still needs the controlled upgrade/reboot matrix. |
+| Current Qwen3.8 route | Official Qwen3.8 27B `Q4_K_M` measured 292.49 prompt t/s and 20.42 generation t/s; image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed. [Read the route comparison.](QWEN38_STRIX_HALO.md) |
+| Fast direct 30B-class route | Qwen3-Coder 30B-A3B `Q4_K_S` reached 100.99 tg128 on official b9851; it is a speed-first quant, not the balanced default. |
+| Largest direct GGUF tested | DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded as a 90.86GB low-bit artifact and measured 13.27 tg128; capacity proof, not broad quality. |
+| Experimental server frontier | Repeat-confirmed local MTP/server profiles reach 101-141 t/s, but prompt shape, draft acceptance, runtime, and quant are part of each claim. |
+| Cross-system confidence | 13 systems or independent sources and 10 credited community benchmark contributors, with community data separated from first-party Beelink rows. |
+| Trust model | Every headline maps to structured/raw evidence or an explicit caveat; failed paths and negative results remain public. |
+| Commercial independence | No affiliate links are present as of August 25, 2026. Future affiliate/vendor support must be disclosed and cannot buy ranking, positive conclusions, or removal of accurate negative findings. |
 
 ## Quick Start (6 Steps)
 
@@ -104,6 +96,11 @@ For those who want to get running as fast as possible:
 6. **Test:** `ollama run qwen3.6:35b-a3b` -- the measured Ollama 0.31.2 system-service path reached about 60 t/s generation. Exact speed depends on runtime, model, power state, and background load.
 
 Use the setup script below for the automated path. The phases later in this README are the manual reference and fallback path if you want to inspect or reproduce each change yourself.
+
+Want the current dense multimodal model instead? Read the
+[`Qwen3.8 27B route decision`](QWEN38_STRIX_HALO.md) before changing the
+reboot-qualified default: the official model is measured here, but its runtime,
+context boundary, and community performance routes need different caveats.
 
 ## Setup Script
 
@@ -217,6 +214,12 @@ This guide is primarily a technical resource for AMD Strix Halo local-AI users. 
 Start with the public [vendor and reviewer overview](https://strixhaloguide.com/partners/), then inspect the linked GitHub evidence, raw artifacts, negative results, disclosure policy, and upstream contribution record here.
 
 Start with [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md) and [`PARTNERSHIP.md`](PARTNERSHIP.md). Supporting docs cover [`BEELINK_OUTREACH.md`](BEELINK_OUTREACH.md), [`VENDOR_OUTREACH_PLAN.md`](VENDOR_OUTREACH_PLAN.md), [`SPONSORSHIP.md`](SPONSORSHIP.md), [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md), [`BUYER_USE_CASES.md`](BUYER_USE_CASES.md), [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md), [`TRACTION.md`](TRACTION.md), and [`OUTREACH_TEMPLATES.md`](OUTREACH_TEMPLATES.md).
+
+No affiliate links are present as of August 25, 2026. If monetized product
+links are added later, each relevant link will be labeled and recorded in the
+public [`affiliate link registry`](data/affiliate_link_registry.csv). Affiliate
+commission does not determine benchmark conclusions, product inclusion, or
+ranking.
 
 ## Best Current Setup Tested Here
 
@@ -367,6 +370,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 - [20-Second Summary](#20-second-summary)
 - [Use This Guide If](#use-this-guide-if)
 - [Quick Start (6 Steps)](#quick-start-6-steps)
+- [Qwen3.8 On Strix Halo](QWEN38_STRIX_HALO.md)
 - [Setup Script](#setup-script)
 - [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot)
 - [Use This If You Want](#use-this-if-you-want)
@@ -2245,8 +2249,11 @@ free, and paid work does not buy positive conclusions.
 
 ## Changelog
 
-### 2026-08-25 -- GMKtec Gemma Portability And Qwen3.8 Runtime Recheck
+### 2026-08-25 -- Qwen3.8 Decision Layer, GMKtec Portability, And Public Freshness
 
+- **Current Qwen3.8 decision layer published:** the guide now separates its measured official Ollama route from external 262K-class validation, stock community MTP, tuned ROCm/DFlash reports, and an unpublished-sidecar performance lead. A matched route ladder is the next performance test; community values are not promoted into guide-owned headlines.
+- **Public freshness is now validated:** one dated machine-readable state feeds the current release, runtime, evidence-coverage, traction, and affiliate status shown across the main entry pages. Scheduled validation will fail when that state becomes stale or the public pages diverge.
+- **Buyer, contributor, and vendor routes tightened:** the protected SEO/hook introduction now leads directly into audience-specific decisions; a dedicated Qwen web page and share card, current responsible-share copy, current traction evidence, contribution guardrails, and explicit affiliate-ranking firewall remove ambiguity without turning the README into an advertisement.
 - **mottledMantis' Gemma row fully imported:** preserved the issue CSV and provenance, added the stock b9235 GMKtec result (1209.08 pp512 / 53.02 tg128) to community data, benchmarks, current-model guidance, contributor credit, and the system matrix. Decode is in the same practical band as the newer 54.18-55.45 t/s Beelink controls; unmatched model bytes/hash, build, Mesa, mmap, repeats, and host state prevent an OEM ranking.
 - **Qwen3.8 evidence split sharpened:** the measured Ollama 0.32.13 Beelink route remains the buyer baseline through 50,059 prompt tokens. A corrected 96GB GMKtec public package adds 13/13 exact retrieval up to a 261,130-token needle and a 6/6 image pilot, proving 262K-class operation can work while remaining an advanced patched-HIP route.
 - **HIP correctness warning corrected:** the earlier b10046 result is now scoped to small-model full-UMA allocation evidence. Open `llama.cpp` issue #26209 and PR #25863 make a stock b10622-versus-fix exact-output A/B the highest-priority runtime test before long-context, vision, or multi-slot HIP guidance is promoted.
@@ -2499,7 +2506,7 @@ free, and paid work does not buy positive conclusions.
 - One-command setup script (`setup.sh`)
 - Auto-update script for llama.cpp (`update-and-build.sh`)
 - CONTRIBUTING.md and initial GitHub issue templates; expanded in later May updates for benchmarks, power reports, model requests, bugs, suggestions, and impersonation/security reports
-- Historical launch release v1.0.0; latest release is v2.2.0 from 2026-05-17
+- Historical launch release v1.0.0; current release history is preserved on the [GitHub Releases page](https://github.com/hogeheer499-commits/strix-halo-guide/releases).
 - 19 topics for discoverability
 - GitHub stars + last-commit badges
 
