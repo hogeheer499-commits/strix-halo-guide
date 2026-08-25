@@ -3,6 +3,8 @@ layout: default
 title: "AMD Strix Halo Setup: BIOS, UMA, IOMMU, Ubuntu and Local LLMs"
 description: "Measured AMD Strix Halo and Ryzen AI MAX+ 395 setup guidance for BIOS UMA, IOMMU, Ubuntu 24.04, Vulkan/RADV, Ollama and llama.cpp."
 permalink: /amd-strix-halo-setup/
+canonical_url: "https://strixhaloguide.com/amd-strix-halo-setup/"
+sitemap: false
 date: "2026-08-14T00:00:00+02:00"
 last_modified_at: "2026-08-25T00:00:00+02:00"
 image:
@@ -16,6 +18,11 @@ seo:
 ---
 
 # AMD Strix Halo Setup: BIOS, UMA, IOMMU, Ubuntu and Local LLMs
+
+**Canonical readable setup:**
+[strixhaloguide.com/amd-strix-halo-setup/](https://strixhaloguide.com/amd-strix-halo-setup/).
+This GitHub Pages page is the technical mirror; exact evidence remains in the
+repository.
 
 This is the practical starting configuration measured by the independent
 [AMD Strix Halo Local LLM Guide](https://github.com/hogeheer499-commits/strix-halo-guide).

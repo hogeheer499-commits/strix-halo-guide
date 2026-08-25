@@ -24,6 +24,10 @@ workload—and which published numbers are actually comparable.
 
 **Evidence reviewed:** August 25, 2026.
 
+Project home: [Strix Halo Guide](https://strixhaloguide.com/). The complete
+Qwen3.8 evidence page below remains on GitHub Pages until the matching
+`strixhaloguide.com` route is published and indexed.
+
 ## Fast Answer
 
 | Question | Current answer |

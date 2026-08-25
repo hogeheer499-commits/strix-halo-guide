@@ -17,6 +17,9 @@ seo:
 
 # Best Strix Halo Mini PC for Local LLMs (2026)
 
+Start with the independent [Strix Halo Guide](https://strixhaloguide.com/) for
+the current setup and evidence model; use this page for the buyer comparison.
+
 **Short answer:** for local LLM work on a Strix Halo / Ryzen AI MAX+ 395 box, the measured speed differences between OEMs are small (about 5% on the same model and settings). Buy on **price per 128GB config, availability, cooling, and support** rather than on benchmark deltas — and buy **128GB** unless your budget hard-caps you, because the useful large-model routes need it.
 
 This page interprets the evidence in the [canonical Strix Halo guide repository](https://github.com/hogeheer499-commits/strix-halo-guide). Every number links to a dated source; first-party and community measurements stay labeled.

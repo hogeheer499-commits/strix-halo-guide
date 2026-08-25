@@ -23,6 +23,11 @@ ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY_URL = "https://github.com/hogeheer499-commits/strix-halo-guide"
 PAGES_URL = "https://hogeheer499-commits.github.io/strix-halo-guide/"
 PROJECT_URL = "https://strixhaloguide.com/"
+PROJECT_SETUP_URL = "https://strixhaloguide.com/amd-strix-halo-setup/"
+PROJECT_PARTNERS_URL = "https://strixhaloguide.com/partners/"
+PROJECT_QWEN_URL = "https://strixhaloguide.com/qwen38-strix-halo/"
+PAGES_SETUP_URL = f"{PAGES_URL}amd-strix-halo-setup/"
+PAGES_QWEN_URL = f"{PAGES_URL}qwen38-strix-halo/"
 
 
 @dataclass
@@ -40,6 +45,7 @@ def local_checks() -> list[Check]:
             "Strix Halo Guide: AMD Ryzen AI MAX+ 395 Local LLM Setup & Benchmarks",
             "SYSTEM_EVIDENCE_MATRIX.md",
             REPOSITORY_URL,
+            PROJECT_URL,
         ),
         "docs/_config.yml": (
             'title: "Strix Halo Guide"',
@@ -50,6 +56,20 @@ def local_checks() -> list[Check]:
             "Strix Halo",
             "cross-OEM system evidence matrix",
             REPOSITORY_URL,
+            f'canonical_url: "{PROJECT_URL}"',
+            "sitemap: false",
+        ),
+        "docs/amd-strix-halo-setup.md": (
+            f'canonical_url: "{PROJECT_SETUP_URL}"',
+            "sitemap: false",
+        ),
+        "docs/_layouts/default.html": (
+            PROJECT_URL,
+            "AMD Strix Halo Guide",
+        ),
+        "SHARE.md": (
+            "Canonical web guide:",
+            PROJECT_URL,
         ),
         "docs/llms.txt": (
             REPOSITORY_URL,
@@ -83,6 +103,26 @@ def fetch(url: str) -> tuple[int, str, str]:
         return response.status, response.geturl(), body
 
 
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):  # type: ignore[no-untyped-def]
+        return None
+
+
+def fetch_no_redirect(url: str) -> tuple[int, str, str | None, str]:
+    request = urllib.request.Request(
+        url,
+        headers={"User-Agent": "strix-halo-guide-authority-audit/1.0"},
+    )
+    opener = urllib.request.build_opener(NoRedirect)
+    try:
+        with opener.open(request, timeout=25) as response:
+            body = response.read(4_000_000).decode("utf-8", errors="replace")
+            return response.status, response.geturl(), response.headers.get("Location"), body
+    except urllib.error.HTTPError as exc:
+        body = exc.read(4_000_000).decode("utf-8", errors="replace")
+        return exc.code, exc.geturl(), exc.headers.get("Location"), body
+
+
 def canonical_from_html(body: str) -> str | None:
     match = re.search(
         r'<link[^>]+rel=["\']canonical["\'][^>]+href=["\']([^"\']+)',
@@ -101,12 +141,52 @@ def canonical_from_html(body: str) -> str | None:
 def network_checks() -> tuple[list[Check], dict[str, int]]:
     checks: list[Check] = []
     metrics: dict[str, int] = {}
+    state = json.loads((ROOT / "data" / "public_state.json").read_text(encoding="utf-8"))
+    reviewed = state["evidence_reviewed_human"]
+    reviewed_iso = state["evidence_reviewed"]
+    systems = state["coverage"]["systems_or_sources"]
+    contributors = state["coverage"]["community_benchmark_contributors"]
     surfaces = (
-        ("repository", REPOSITORY_URL, "AMD Strix Halo", None),
-        ("github-pages", PAGES_URL, "Strix Halo", PAGES_URL),
-        ("project-home", PROJECT_URL, "working local AI", PROJECT_URL),
+        ("repository", REPOSITORY_URL, ("AMD Strix Halo",), None),
+        ("github-pages-home", PAGES_URL, ("Strix Halo",), PROJECT_URL),
+        ("github-pages-setup", PAGES_SETUP_URL, ("AMD Strix Halo Setup",), PROJECT_SETUP_URL),
+        ("github-pages-qwen", PAGES_QWEN_URL, ("Qwen3.8",), PAGES_QWEN_URL),
+        (
+            "project-home",
+            PROJECT_URL,
+            (
+                "AMD Strix Halo Guide: From AI PC to working local AI.",
+                "Qwen3.8",
+                f"{systems} systems or independent sources",
+                f"{contributors} credited community benchmark contributors",
+                reviewed,
+            ),
+            PROJECT_URL,
+        ),
+        (
+            "project-setup",
+            PROJECT_SETUP_URL,
+            ("AMD Strix Halo", "Qwen3.8", reviewed),
+            PROJECT_SETUP_URL,
+        ),
+        (
+            "project-partners",
+            PROJECT_PARTNERS_URL,
+            (
+                "Make the buyer path easier to trust",
+                f"{systems} systems or independent sources",
+                "Affiliate commission does not determine",
+            ),
+            PROJECT_PARTNERS_URL,
+        ),
+        (
+            "project-qwen",
+            PROJECT_QWEN_URL,
+            ("Qwen3.8", "20.42", "50,059", "261,130", reviewed),
+            PROJECT_QWEN_URL,
+        ),
     )
-    for name, url, marker, expected_canonical in surfaces:
+    for name, url, markers, expected_canonical in surfaces:
         try:
             status, final_url, body = fetch(url)
         except (urllib.error.URLError, TimeoutError, OSError) as exc:
@@ -115,8 +195,16 @@ def network_checks() -> tuple[list[Check], dict[str, int]]:
         if status != 200:
             checks.append(Check(name, url, "WARN", f"HTTP {status}; final URL {final_url}"))
             continue
-        if marker.lower() not in body.lower():
-            checks.append(Check(name, url, "WARN", f"HTTP 200 but marker is missing: {marker}"))
+        missing_markers = [marker for marker in markers if marker.lower() not in body.lower()]
+        if missing_markers:
+            checks.append(
+                Check(
+                    name,
+                    url,
+                    "WARN",
+                    "HTTP 200 but markers are missing: " + ", ".join(missing_markers),
+                )
+            )
             continue
         canonical = canonical_from_html(body) if expected_canonical else None
         if expected_canonical and canonical != expected_canonical:
@@ -125,6 +213,64 @@ def network_checks() -> tuple[list[Check], dict[str, int]]:
             )
             continue
         checks.append(Check(name, url, "PASS", f"HTTP 200; final URL {final_url}"))
+
+    redirect_checks = (
+        ("http-to-https-apex", "http://strixhaloguide.com/", PROJECT_URL),
+        ("www-to-apex", "https://www.strixhaloguide.com/", PROJECT_URL),
+    )
+    for name, url, expected_location in redirect_checks:
+        try:
+            status, _, location, _ = fetch_no_redirect(url)
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+            checks.append(Check(name, url, "WARN", f"fetch failed: {exc}"))
+            continue
+        if status == 301 and location == expected_location:
+            checks.append(Check(name, url, "PASS", f"HTTP 301 to {location}"))
+        else:
+            checks.append(
+                Check(
+                    name,
+                    url,
+                    "WARN",
+                    f"HTTP {status}, location {location!r}; expected HTTP 301 to {expected_location}",
+                )
+            )
+
+    support_files = (
+        (
+            "project-robots",
+            f"{PROJECT_URL}robots.txt",
+            ("User-agent: *", "Allow: /", f"Sitemap: {PROJECT_URL}sitemap.xml"),
+        ),
+        (
+            "project-sitemap",
+            f"{PROJECT_URL}sitemap.xml",
+            (PROJECT_URL, PROJECT_SETUP_URL, PROJECT_PARTNERS_URL, PROJECT_QWEN_URL, reviewed_iso),
+        ),
+        (
+            "project-llms",
+            f"{PROJECT_URL}llms.txt",
+            (PROJECT_URL, PROJECT_SETUP_URL, PROJECT_QWEN_URL, REPOSITORY_URL),
+        ),
+    )
+    for name, url, markers in support_files:
+        try:
+            status, final_url, body = fetch(url)
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+            checks.append(Check(name, url, "WARN", f"fetch failed: {exc}"))
+            continue
+        missing_markers = [marker for marker in markers if marker not in body]
+        if status == 200 and not missing_markers:
+            checks.append(Check(name, url, "PASS", f"HTTP 200; final URL {final_url}"))
+        else:
+            checks.append(
+                Check(
+                    name,
+                    url,
+                    "WARN",
+                    f"HTTP {status}; missing: {', '.join(missing_markers)}",
+                )
+            )
 
     backlinks = (
         (
@@ -162,6 +308,18 @@ def network_checks() -> tuple[list[Check], dict[str, int]]:
                 "github_open_issues": int(data.get("open_issues_count", 0)),
             }
             checks.append(Check("github-public-metrics", api_url, "PASS", json.dumps(metrics, sort_keys=True)))
+            homepage = data.get("homepage")
+            if homepage == PROJECT_URL:
+                checks.append(Check("github-project-homepage", api_url, "PASS", homepage))
+            else:
+                checks.append(
+                    Check(
+                        "github-project-homepage",
+                        api_url,
+                        "WARN",
+                        f"homepage {homepage!r}; expected {PROJECT_URL}",
+                    )
+                )
     except (urllib.error.URLError, TimeoutError, OSError, ValueError) as exc:
         checks.append(Check("github-public-metrics", api_url, "WARN", f"fetch failed: {exc}"))
     return checks, metrics

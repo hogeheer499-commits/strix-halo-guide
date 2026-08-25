@@ -3,6 +3,8 @@ layout: default
 title: "Strix Halo Local LLM Setup for AMD Ryzen AI MAX+ 395"
 description: "Independent Strix Halo guide to local LLM setup and measured AMD Ryzen AI MAX+ 395 benchmarks for Radeon 8060S, Ollama, llama.cpp, Vulkan/RADV, ROCm, and selected GGUF routes up to 284B."
 permalink: /
+canonical_url: "https://strixhaloguide.com/"
+sitemap: false
 date: "2026-06-13T22:57:42+02:00"
 last_modified_at: "2026-08-25T00:00:00+02:00"
 image:
@@ -19,11 +21,18 @@ seo:
 
 This is the short web version of the independent AMD Strix Halo local LLM guide.
 
+**Canonical web home:** [Strix Halo Guide](https://strixhaloguide.com/). This
+GitHub Pages copy remains a technical mirror; the GitHub repository remains the
+canonical source for commands, benchmark claims, and raw evidence.
+
 It focuses on Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems, practical local setup, and evidence links for benchmark claims. AMD now uses Ryzen AI Halo for its official developer platform; this guide remains an independent setup and evidence source for the wider Strix Halo hardware category.
 
 **Web guide published:** June 13, 2026. **Evidence reviewed:** August 25, 2026. The raw directories and structured claim indexes remain the source of truth for each individual run.
 
-Start with the [full AMD Strix Halo setup and benchmark repository](https://github.com/hogeheer499-commits/strix-halo-guide), which is the canonical evidence location.
+Start with the [Strix Halo Guide website](https://strixhaloguide.com/) for the
+readable buyer/setup route, then use the
+[full AMD Strix Halo setup and benchmark repository](https://github.com/hogeheer499-commits/strix-halo-guide)
+for canonical evidence.
 
 Deciding which system to buy? Use the [Strix Halo mini PC comparison](https://hogeheer499-commits.github.io/strix-halo-guide/best-strix-halo-mini-pc/): measured cross-OEM evidence, 64GB versus 128GB fit guidance, and a documented price history. For the shortest current answer to the BIOS, UMA, IOMMU, Ubuntu and runtime questions, use the [focused AMD Strix Halo setup page](https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/). For the deeper copyable path and caveats, use the [concise Strix Halo local LLM setup](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md).
 

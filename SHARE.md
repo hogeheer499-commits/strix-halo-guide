@@ -4,7 +4,13 @@ Use these copy-ready angles when the guide directly answers the discussion.
 Lead with useful evidence, follow each community's rules, and adapt the text to
 the audience instead of posting the same message everywhere.
 
-Canonical repository:
+Canonical web guide:
+
+```text
+https://strixhaloguide.com/
+```
+
+Canonical evidence repository:
 
 ```text
 https://github.com/hogeheer499-commits/strix-halo-guide
@@ -107,7 +113,10 @@ evidence, failed routes, and structured raw evidence. The current map covers 13
 systems or independent sources from 10 credited community benchmark
 contributors; community rows remain separate from first-party measurements.
 
-Repo:
+Readable guide:
+https://strixhaloguide.com/
+
+Evidence and source repository:
 https://github.com/hogeheer499-commits/strix-halo-guide
 
 I am especially interested in corrections and matched reproductions from other
@@ -129,6 +138,9 @@ This guide separates three questions that product pages often mix together:
 It covers the easiest Ollama route, direct llama.cpp performance, current
 Qwen3.8 guidance, larger 120B/284B capacity evidence, cross-OEM community rows,
 power/thermal caveats, and raw logs:
+https://strixhaloguide.com/
+
+Evidence and exact commands:
 https://github.com/hogeheer499-commits/strix-halo-guide
 ```
 

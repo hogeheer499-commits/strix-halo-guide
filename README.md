@@ -25,6 +25,7 @@ Maintainer credibility is public and reviewable: 15+ merged upstream contributio
 
 | You are... | Best first page | What it answers |
 | --- | --- | --- |
+| Looking for the readable project overview | [Strix Halo Guide website](https://strixhaloguide.com/) | The buyer/setup path, evidence model, and routes into the canonical technical source |
 | Setting up a machine you already own | [Quick Start](#quick-start-6-steps) or the [short setup answer](STRIX_HALO_LOCAL_LLM_SETUP.md) | BIOS, Ubuntu, memory, Vulkan/RADV, Ollama, and the first working model |
 | Deciding what model or backend to run | [Best Known Profiles](BEST_KNOWN_PROFILES.md) and [Current Models](CURRENT_MODELS.md) | Easy chat, direct speed, long context, serving, multimodal, capacity, and experimental routes |
 | Evaluating Qwen3.8 claims | [Qwen3.8 on Strix Halo](QWEN38_STRIX_HALO.md) | Why measured 20.42 t/s and community 22-65 t/s routes are different claims; what is verified locally and what still needs reproduction |

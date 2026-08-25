@@ -368,6 +368,7 @@ def check_public_state(errors: list[str]) -> None:
         "docs/amd-strix-halo-setup.md": (
             f"**Setup reviewed:** {reviewed_human}",
             "qwen38-strix-halo/",
+            "https://strixhaloguide.com/amd-strix-halo-setup/",
         ),
         "docs/llms.txt": (
             "qwen38-strix-halo/",
@@ -495,6 +496,8 @@ def check_pages_seo(errors: list[str]) -> None:
 
     required_index = (
         'permalink: /',
+        'canonical_url: "https://strixhaloguide.com/"',
+        'sitemap: false',
         'date: "',
         'type: "TechArticle"',
         'date_modified: "',
@@ -507,6 +510,8 @@ def check_pages_seo(errors: list[str]) -> None:
 
     required_layout = (
         "{% seo %}",
+        "https://strixhaloguide.com/",
+        "AMD Strix Halo Guide",
         "google-site-verification",
         "rel=\"icon\"",
         "rel=\"apple-touch-icon\"",
