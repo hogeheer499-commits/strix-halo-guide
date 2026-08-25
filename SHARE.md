@@ -1,8 +1,9 @@
-# Share Pack
+# Community Sharing Guide
 
-Use these copy-ready angles when the guide directly answers the discussion.
-Lead with useful evidence, follow each community's rules, and adapt the text to
-the audience instead of posting the same message everywhere.
+This page is for readers and contributors who want to share the Strix Halo
+Guide because it answers a real question, documents their contribution, or
+helps someone reproduce a result. It is not a posting campaign, outreach plan,
+or request for coordinated promotion.
 
 Canonical web guide:
 
@@ -10,13 +11,13 @@ Canonical web guide:
 https://strixhaloguide.com/
 ```
 
-Canonical evidence repository:
+Technical evidence repository:
 
 ```text
 https://github.com/hogeheer499-commits/strix-halo-guide
 ```
 
-Current Qwen3.8 decision page:
+Current Qwen3.8 evidence and route comparison:
 
 ```text
 https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/QWEN38_STRIX_HALO.md
@@ -24,174 +25,144 @@ https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/QWEN38_STRIX_H
 
 Share images:
 
-- [`qwen38-route-preview.png`](qwen38-route-preview.png): current Qwen3.8 comparison hook.
 - [`social-preview.png`](social-preview.png): general project preview.
+- [`qwen38-route-preview.png`](qwen38-route-preview.png): Qwen3.8 route comparison.
 
-Regenerate them reproducibly with `python3 generate_preview.py`.
+The images can be regenerated with `python3 generate_preview.py`.
 
 ## Share Responsibly
 
-- Do not ask for coordinated upvotes or stars, brigade a thread, or require
-  sharing as a condition of contributing.
-- Disclose your connection to this project and any vendor, sponsor, affiliate,
-  loaner, gifted-hardware, or early-access relationship relevant to the post.
-- Keep first-party, community, direct, API/server, MTP/speculative, and custom
-  fork/quant claims separate.
-- Invite corrections, slower results, failed paths, and independent
+- Share the guide only where it directly helps answer the conversation.
+- Follow the rules and self-promotion policy of the destination community.
+- Do not coordinate votes, request stars or upvotes, brigade discussions, or
+  require sharing as a condition of contributing.
+- State your relationship to the project. Contributors should say which result
+  or document they contributed.
+- Disclose any relevant vendor, sponsor, affiliate, loaner, gifted-hardware, or
+  early-access relationship.
+- Keep first-party, community, direct `llama-bench`, server/API,
+  MTP/speculative, and custom runtime or quantization claims separate.
+- Invite corrections, slower results, failed routes, and independent
   reproductions.
-- Link only when the page or evidence materially answers the conversation.
+- Link benchmark claims to the most specific evidence page available.
 
-The repository contains no affiliate links as of August 25, 2026. Future
-affiliate links must be labeled near the link and recorded under the public
-[`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md) policy.
+The repository contains no affiliate links as of August 25, 2026. If that
+changes, the relevant links and relationships must be disclosed under
+[`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md).
 
-## Best Current Story: Qwen3.8 Route Reality Check
+## Neutral Project Summary
 
-### Title Options
-
-- Qwen3.8 on Strix Halo: why 20, 31, 52 and 65 t/s are not the same claim
-- Qwen3.8 27B on Ryzen AI MAX+ 395: official easy path vs MTP/DFlash speed routes
-- Qwen3.8 Strix Halo guide: 50K local retrieval, external 262K evidence, and the current speed frontier
-
-### Reddit / Forum Copy
+Use or adapt this when someone asks what the project is:
 
 ```text
-Qwen3.8 27B now has several Strix Halo results ranging from roughly 20 to 65
-tokens/sec, but they are not interchangeable.
-
-I mapped the current routes by model/quant, backend, runtime fork, speculation,
-prompt type, context behavior, and evidence status:
-
-- measured official Ollama route: 292.49 prompt t/s and 20.42 generation t/s
-  over nine warm repeats; image, tools, thinking, and exact retrieval through
-  50,059 prompt tokens passed
-- separate corrected GMKtec package: 13/13 retrieval through a 261,130-token
-  case, but on an advanced patched-HIP route
-- stock Q8 MTP, ROCmFP4/DFlash, and adaptive-speculation routes: promising
-  community results that need their exact artifacts and matched controls
-
-The point is not to dismiss the fast numbers. It is to show what each result
-actually proves and make the next independent reproduction useful.
-
-Guide and route matrix:
-https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/QWEN38_STRIX_HALO.md
-
-Corrections, exact commands, raw logs, and slower/failed reproductions are very
-welcome.
-```
-
-## Short Social Copy
-
-```text
-Qwen3.8 27B on AMD Strix Halo: measured official Ollama path, 50K exact local
-retrieval, separate external 262K-class evidence, and a route-by-route check of
-current 22-65 t/s MTP/DFlash/fork claims.
-
-The model, quant, backend, fork, speculation, prompt and context are part of the
-number:
-https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/QWEN38_STRIX_HALO.md
-```
-
-## General Project Story
-
-### Title Options
-
-- Show HN: Evidence-backed AMD Strix Halo local-AI setup and benchmark guide
-- What actually runs on a 128GB Ryzen AI MAX+ 395—from easy chat to a 284B GGUF
-- AMD Strix Halo local LLM guide with raw CSVs, logs, failures, and cross-OEM reproductions
-
-### Hacker News / Technical Forum Copy
-
-```text
-I built an independent AMD Strix Halo / Ryzen AI MAX+ 395 local-AI guide because
-the useful setup information and benchmark caveats were spread across releases,
-issues, model cards, and forum posts.
-
-It includes a copyable Ubuntu/Vulkan-RADV/Ollama path, direct llama.cpp and
-server benchmarks, model/backend recommendations, long-context and concurrency
-evidence, failed routes, and structured raw evidence. The current map covers 13
-systems or independent sources from 10 credited community benchmark
-contributors; community rows remain separate from first-party measurements.
+Strix Halo Guide is an independent, evidence-backed resource for running local
+AI on AMD Ryzen AI MAX / Strix Halo systems. It covers BIOS and Linux setup,
+Ollama, llama.cpp, Vulkan/RADV, ROCm, model and quantization choices, measured
+benchmarks, failed routes, and community reproductions across multiple systems.
 
 Readable guide:
 https://strixhaloguide.com/
 
-Evidence and source repository:
+Commands, raw data, caveats, and contribution paths:
 https://github.com/hogeheer499-commits/strix-halo-guide
-
-I am especially interested in corrections and matched reproductions from other
-OEM systems.
 ```
 
-## Buyer-Oriented Copy
+This wording is intentionally neutral. Do not change it to `I built` unless you
+are the maintainer, and do not imply that you measured a result unless you did.
+
+## Short Share Text
 
 ```text
-Considering a 96GB or 128GB AMD Strix Halo machine for local AI?
+Independent AMD Strix Halo local-AI setup and benchmark guide: BIOS, Linux,
+Ollama, llama.cpp, Vulkan/ROCm, model choices, raw evidence, failed paths, and
+cross-system community reproductions.
 
-This guide separates three questions that product pages often mix together:
-
-1. what fits in memory;
-2. what is fast for your workload;
-3. what setup has actually survived restart, context, vision, tools, and
-   reproducibility checks.
-
-It covers the easiest Ollama route, direct llama.cpp performance, current
-Qwen3.8 guidance, larger 120B/284B capacity evidence, cross-OEM community rows,
-power/thermal caveats, and raw logs:
 https://strixhaloguide.com/
-
-Evidence and exact commands:
-https://github.com/hogeheer499-commits/strix-halo-guide
 ```
 
-If a future version includes affiliate links, add this sentence next to the
-relevant buyer links—not only at the bottom of the post:
+## Qwen3.8 Share Text
 
 ```text
-Disclosure: marked hardware links are affiliate links. They do not determine
-benchmark inclusion, ranking, conclusions, or whether negative results remain
-published.
+Qwen3.8 27B results on Strix Halo currently combine different quants, runtimes,
+backends, prompts, context states, and speculative-decoding routes. This guide
+separates the measured official Ollama route from community MTP, ROCmFP4,
+DFlash, and other advanced reports, with links to the underlying evidence:
+
+https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/QWEN38_STRIX_HALO.md
+
+Corrections and matched reproductions—including slower and failed runs—are
+welcome.
 ```
 
-## Vendor / Reviewer Copy
+For a post that quotes a performance number, copy the exact scope and caveat
+from [`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md) instead of turning the
+largest number into a general recommendation.
+
+## Contributor Share Text
+
+Contributors can adapt this to describe their own work:
 
 ```text
-Independent AMD Strix Halo / Ryzen AI MAX local-AI evidence project:
-https://strixhaloguide.com/
+I contributed a community reproduction to the Strix Halo Guide using [system],
+[backend/runtime], [model and quant], and [test conditions]. The report includes
+the exact command, raw output, and where the result matched or differed from
+other evidence in the guide:
 
-The project turns buyer uncertainty—BIOS memory settings, OS/backend choice,
-runtime compatibility, model/quant fit, context, serving, power and
-reproducibility—into public setup guidance and linked raw evidence.
+[direct contribution or evidence link]
 
-Vendor/reviewer overview:
-https://strixhaloguide.com/partners/
-
-GitHub evidence:
-https://github.com/hogeheer499-commits/strix-halo-guide
-
-Loaned, gifted, sponsored, affiliate, vendor-feedback, and early-access work is
-disclosed. Vendors may correct factual errors but do not receive editorial
-control or guaranteed positive conclusions.
+Slower, failed, and contradictory reproductions are useful too.
 ```
 
-## Contributor Copy
+Only claim the parts you personally measured or reviewed. Link to the original
+issue, raw bundle, or contributor credit so readers can inspect the provenance.
+
+## Correction Or Failure Share Text
 
 ```text
-I reproduced one AMD Strix Halo local-AI route on my own system. Here are the
-hardware, model, quant, backend, exact command, raw output, and where it matched
-or differed from the guide.
+I found a correction, regression, or failed route while following the Strix
+Halo Guide. The exact hardware, software versions, command, output, and current
+assessment are documented here:
 
-[result/evidence link]
+[direct issue or evidence link]
 
-Slower and failed reproductions are useful too.
+The result is being shared to improve the public setup guidance, not as a
+general claim about every Strix Halo system.
 ```
 
-Use the [benchmark issue template](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md)
-for results that should enter the structured evidence map.
+## Where To Link
 
-## Current Version Note
+- General setup or project question: <https://strixhaloguide.com/>
+- Exact command, benchmark, or caveat: link the relevant GitHub evidence page.
+- Qwen3.8 route question: [`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md).
+- Community benchmark contribution: use the
+  [benchmark issue template](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md).
+- Early result or setup discussion: use
+  [GitHub Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discussions).
+
+Prefer the page that directly answers the question. A specific evidence link is
+more useful than sending every technical discussion to the homepage.
+
+## Attribution And Evidence Boundaries
+
+When sharing a community contribution:
+
+- name the contributor or project when that attribution is already public;
+- identify the exact system, backend, runtime, model, quantization, and test;
+- distinguish reproduced measurements from external leads or unverified claims;
+- preserve important caveats and negative findings;
+- avoid language that implies AMD, OEM, vendor, or contributor endorsement.
+
+The contributor index is [`CONTRIBUTORS.md`](CONTRIBUTORS.md). Structured
+community results are in [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), and
+public headline claims map to their sources in
+[`data/headline_claims.csv`](data/headline_claims.csv).
+
+## Check Freshness Before Sharing Numbers
 
 Evidence was reviewed on August 25, 2026. Ollama 0.32.15 and `llama.cpp`
-v0.3.0 / b10622 are current checked targets, not automatic replacements for
-the guide's measured runtime rows. Use [`data/public_state.json`](data/public_state.json)
-before copying a version claim into a new post.
+v0.3.0 / b10622 were current checked targets on that date; they are not
+automatic replacements for the runtime versions attached to older measured
+rows.
+
+Before copying a version or benchmark claim, check
+[`data/public_state.json`](data/public_state.json) and the linked evidence page.
