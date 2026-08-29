@@ -17,7 +17,7 @@ Current measured recommendation:
 - Lemonade ROCm is still relevant for aggregate server throughput at higher Qwen3.6 concurrency.
 - MTP speculative decoding is now measured as a separate `llama-server` route. It can improve practical server generation and reached a repeat-confirmed 101.1 t/s six-prompt average on Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn with b9360. A newer Gemma 4 26B-A4B QAT matched-head route reached 102.7 t/s cold / 107.4 t/s T3-only / 110.0 t/s best-repeat on ac4cddeb0. These do not replace direct `llama-bench` headlines.
 - Plain vLLM/AWQ serves locally but is not competitive for single-user generation without DFlash or another serving-specific win.
-- Lucebox DFlash/PFlash is now the highest-upside experimental decode/prefill route, but local reproduction is blocked until an isolated ROCm/HIP dev toolchain with `hipcc` and rocWMMA is available.
+- Lucebox DFlash/PFlash is now the highest-upside experimental decode/prefill route, but local reproduction is blocked until an isolated ROCm/HIP developer toolchain with `hipcc` is available. Its older rocWMMA design notes are historical and do not override the 2026-07-24 upstream `llama.cpp` removal.
 - FastFlowLM/NPU is visible at the kernel level on this Beelink (`amdxdna` + `/dev/accel/accel0`), but XRT/FastFlowLM user-space is not installed yet.
 
 Current fastest local headline:
@@ -42,7 +42,7 @@ Detailed results: [`MAX_PERFORMANCE_RESULTS_2026-05-07.md`](MAX_PERFORMANCE_RESU
 | Qwen3-Coder max-speed sweep | done | No stable Qwen3-Coder 100 t/s result; strict-clean speed-first ceiling is now 98.51 t/s; balanced UD remains 96-97 t/s. |
 | Qwen3-30B-A3B-Instruct-2507 scout | done | IQ4_XS reached 100.04 t/s r50 direct `llama-bench` on b9467; separate general-instruct Qwen route, not a Qwen3-Coder replacement. |
 | gpt-oss-120b long-context sweep | done | 55.57 t/s tg128 and prompt processing through 65K tokens. |
-| Tuned rocWMMA path | attempted | lhl branch built, but failed to load current Qwen3.6 GGUFs. |
+| Historical tuned rocWMMA path | attempted | lhl branch built, but failed to load current Qwen3.6 GGUFs; upstream later removed this path. |
 | vLLM AWQ/DFlash | partially blocked | Plain AWQ smoke works at about 25 t/s; exact DFlash route blocked by gated drafter access. |
 | MTP speculative decoding | done | `llama-server` MTP works. The b9360 rerun reached a repeat-confirmed 101.1 t/s local six-prompt average with Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn; Gemma 4 26B-A4B QAT reached 102.7 t/s cold / 107.4 t/s T3-only / 110.0 t/s best-repeat with a matched MTP head; GMKtec community reproduction reached 93.29 t/s on b9235 for the Qwen3.6 route. |
 
@@ -151,20 +151,20 @@ Pass condition:
 
 - Label this as performance/loadability evidence, not model-quality evidence.
 
-### P1: Tuned ROCm / rocWMMA Path
+### P1: Current ROCm / HIP MMA Path
 
-Why: this is the most credible route for HIP to become materially better on long-context or prefill-heavy rows. Current local HIP evidence is not tuned rocWMMA evidence.
+Why: current HIP remains a credible route for long-context or prefill-heavy rows, but it must be tested on the post-rocWMMA upstream kernel path. [`llama.cpp` PR #26046](https://github.com/ggml-org/llama.cpp/pull/26046), merged 2026-07-24, removed rocWMMA FlashAttention and made `GGML_HIP_ROCWMMA_FATTN` obsolete.
 
 Candidate route:
 
 - Dedicated container/toolbox only.
-- lhl `rocm-wmma-tune` branch or documented fix scripts.
-- Build with `GGML_HIP=ON`, `AMDGPU_TARGETS=gfx1151`, `GGML_HIP_ROCWMMA_FATTN=ON`, and `GGML_HIP_MMQ_MFMA=ON`.
+- Current upstream `llama.cpp` HIP source, pinned to an exact commit.
+- Build with `GGML_HIP=ON`, `AMDGPU_TARGETS=gfx1151`, and `GGML_HIP_MMQ_MFMA=ON`; do not pass the removed `GGML_HIP_ROCWMMA_FATTN` option.
 
 Pass condition:
 
 - Build log, ROCm version, llama.cpp commit, flags, env vars, and raw output must be stored before publishing any result.
-- If upstream rocWMMA regresses, publish it as a negative result.
+- Preserve older rocWMMA regressions as historical negative evidence rather than current build guidance.
 
 ### P2: vLLM AWQ/DFlash Reproduction
 
@@ -198,7 +198,7 @@ Current local state:
 
 Pass condition:
 
-- Build with `DFLASH27B_GPU_BACKEND=hip`, `DFLASH27B_HIP_ARCHITECTURES=gfx1151`, and documented rocWMMA settings.
+- Build with `DFLASH27B_GPU_BACKEND=hip` and `DFLASH27B_HIP_ARCHITECTURES=gfx1151`; treat any older rocWMMA settings in that project as historical until its current HIP path is documented and qualified.
 - Compare Lucebox against llama.cpp HIP and Vulkan on the same target model and prompt shape.
 - Publish as experimental until it has reproducible raw logs and an explanation for which workload it improves.
 
@@ -277,7 +277,7 @@ This order prioritizes likely useful wins first, then deeper experimental work.
 ## External Leads To Watch
 
 - [`nabe2030/hip-vs-vulkan-evo-x2`](https://github.com/nabe2030/hip-vs-vulkan-evo-x2): independent HIP vs Vulkan Strix Halo comparison.
-- [`lhl/strix-halo-testing`](https://github.com/lhl/strix-halo-testing): tuned ROCm/rocWMMA and long-context Strix Halo evidence.
+- [`lhl/strix-halo-testing`](https://github.com/lhl/strix-halo-testing): historical tuned ROCm/rocWMMA and long-context Strix Halo evidence.
 - [`hec-ovi/vllm-awq4-qwen`](https://github.com/hec-ovi/vllm-awq4-qwen): Qwen 3.6 AWQ/DFlash vLLM path on Strix Halo.
 - [`0xSero/Qwen3.6-35B-A3B-GGUF-Strix`](https://huggingface.co/0xSero/Qwen3.6-35B-A3B-GGUF-Strix): Strix-optimized Qwen3.6 GGUF quant variants.
 - [`ggml-org/llama.cpp` speculative decoding docs](https://github.com/ggml-org/llama.cpp/blob/master/docs/speculative.md) and recent Vulkan/HIP changes.

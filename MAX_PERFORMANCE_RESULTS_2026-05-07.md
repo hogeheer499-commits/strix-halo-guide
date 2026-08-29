@@ -33,7 +33,7 @@ Current practical read:
 |-------|--------|----------------|
 | vLLM AWQ without DFlash | About 25 t/s at `np=1` | Works as an API smoke test, but not a speed route yet. |
 | hec DFlash exact route | Blocked by gated `z-lab/Qwen3.6-27B-DFlash` access | Do not imply the guide reproduced DFlash until access and local results exist. |
-| lhl rocWMMA tuned branch | Built, but failed to load current Qwen3.6 GGUFs | Useful lead, not publishable local speed evidence yet. |
+| lhl rocWMMA tuned branch | Built, but failed to load current Qwen3.6 GGUFs | Historical failed lead, not publishable local speed evidence or current build guidance. |
 | llama.cpp speculative sanity | Terminated after runaway CLI output | Keep out of headline claims until a controlled harness is added. |
 | AMDVLK retest | Not run; no AMDVLK ICD is installed | Current clean system only exposes RADV for AMD Vulkan. |
 | Thermals/power | Not run; no validated local sensor output | Do not publish tokens-per-watt or sustained-clock claims yet. |

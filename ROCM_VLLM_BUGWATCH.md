@@ -1,6 +1,6 @@
 # ROCm and vLLM Bugwatch
 
-Status: current as of 2026-08-25 for locally measured runtime paths and upstream release triage. External release rows retain their own checked dates.
+Status: current as of 2026-08-30 for locally measured runtime paths and upstream release triage. External release rows retain their own checked dates.
 
 This file tracks fast-moving upstream items that affect Strix Halo local AI work. It is intentionally separate from the README so the public guide stays stable even when upstream ROCm/vLLM issues move.
 
@@ -10,10 +10,11 @@ This file tracks fast-moving upstream items that affect Strix Halo local AI work
 |------|----------------|----------------|
 | `llama.cpp` release | [`llama.cpp` v0.3.0](https://github.com/ggml-org/llama.cpp/releases/tag/v0.3.0) is the latest semantic release and [b10687](https://github.com/ggml-org/llama.cpp/releases/tag/b10687) the latest numbered build checked; b10330 remains the latest narrowly qualified local build. | v0.3.0 adds GLM-4.5-Air MTP, DeepSeek 4 tensor-split/multi-sequence fixes, multimodal changes, and slot-fit diagnostics, but none is a transferred `gfx1151` performance/correctness claim. Current HIP integrated-host-buffer correctness remains under an open regression/fix A/B. |
 | Ollama release | [`Ollama 0.33.2`](https://github.com/ollama/ollama/releases/tag/v0.33.2) is the latest stable release checked. | The measured Qwen3.8 route remains 0.32.13 and the installed, fully reboot-qualified beginner service remains 0.31.2. Qualify 0.33.2 before upgrading guidance; include native and Anthropic-compatible Qwen3.8 thinking levels because issue #17906 reports an `xhigh` mapping failure. |
-| ROCm production release | [`ROCm 7.14.0`](https://github.com/ROCm/ROCm/releases/tag/rocm-7.14.0) is the latest production ROCm release checked here, published 2026-07-16. | It focuses on AI inference across Instinct, Radeon, and Ryzen AI and moves the earlier 7.13 preview lane into a production release. This guide has not installed it host-wide. |
+| ROCm production release | [`ROCm Core SDK 10.0.0`](https://rocm.docs.amd.com/en/latest/about/release-notes.html) is the latest release checked here on 2026-08-30; its release notes are dated 2026-08-26. [`ROCm 7.14.0`](https://github.com/ROCm/ROCm/releases/tag/rocm-7.14.0), published 2026-07-16, remains the version used by the guide's measured 7.14 rows. | The 10.0 supported-hardware table now includes `gfx1151` under RDNA 3.5 and calls out improved roofline support for `gfx1150`/`gfx1151`/`gfx1152`, but nothing in this guide has installed or qualified ROCm 10.0 locally. |
 | ROCm Ryzen AI inference note | ROCm 7.14.0 documents lower-than-expected LLM inference on Ryzen AI MAX / MAX+ with PyTorch earlier than 2.14 in some FP16 vLLM workloads at batch 8+, with `TORCH_BLAS_PREFER_HIPBLASLT=1` as the workaround. | The isolated local A/B reproduced the expected threshold: +40.50%, +38.96%, and +41.54% aggregate throughput at concurrency 8, 9, and 16, with no material gain at 1 and a -0.77% result at 4. This remains an FP16 vLLM rule, not universal llama.cpp or Vulkan tuning. |
 | vLLM release | [`vLLM 0.26.0`](https://github.com/vllm-project/vllm/releases/tag/v0.26.0) is the latest normal upstream release checked here. ROCm 7.14.0 validates an older vLLM lane, which is not the same as claiming that upstream 0.26.0 is validated on this machine. | It adds AMD-relevant DeepSeek V4, sparse/prefill, MiniMax-M3, and Qwen MoE work. Use a pinned isolated environment and treat those as test targets, not transferred `gfx1151` gains. |
 | SGLang release | [`SGLang 0.5.17`](https://github.com/sgl-project/sglang/releases/tag/v0.5.17) is the latest upstream release checked here. ROCm 7.14.0 validates an older SGLang lane. | Use a pinned isolated smoke before treating the release as a `gfx1151` route. MI350/`gfx950` release evidence does not transfer automatically to Strix Halo. |
+| AMD Lemonade release | [`Lemonade v11.8.0`](https://github.com/lemonade-sdk/lemonade/releases/tag/v11.8.0), released 2026-08-27, is the latest release checked here on 2026-08-30. | It adds the experimental `ds4`/DwarfStar backend for DeepSeek V4 Flash on Strix Halo GPUs plus RPG-HaloTales-V2 and Flux-2-Klein catalog entries. The guide has not qualified v11.8.0; its measured Lemonade concurrency profile remains `llamacpp-rocm` b1259 from 2026-05-05. |
 | AMD memory controls | [AMD SMI 26.5](https://rocm.docs.amd.com/projects/amdsmi/en/latest/how-to/amdsmi-cli-tool.html) exposes `set --mem-carveout` and `set --gtt` controls. | This is the current supported control surface, but it is reboot- and root-sensitive. Keep the guide's measured legacy boot parameters until a reversible local A/B proves support, usable memory, model loading, restart behavior, performance, and rollback. |
 | Strix Halo unified memory reporting | [`ROCm/hip#3892`](https://github.com/ROCm/hip/issues/3892) is now closed as of 2026-05-29. | Still verify inside any ROCm/vLLM container before making a capacity/autoscheduling claim; closed upstream does not prove every local bundle has the fix. |
 | Older 15.5GB VRAM aperture issue | [`ROCm/ROCm#5444`](https://github.com/ROCm/ROCm/issues/5444) is closed. | Keep as troubleshooting context; not a current headline blocker. |
@@ -37,7 +38,41 @@ These are narrowly scoped upstream reports, not blanket claims about Strix Halo,
 | ComfyUI/LTX-2.3 nondeterministic ROCm hangs | [`ROCm/ROCm#6530`](https://github.com/ROCm/ROCm/issues/6530) remains open. The reporter corrected the initial environment: on supported Ubuntu 24.04/HWE 6.17 with matching PyTorch, the earlier `mmap` regression disappeared, while nondeterministic GPU hangs in the larger ComfyUI/LTX-2.3 workflow still reproduced. | Keep the corrected supported-kernel result separate from unsupported kernel-7.0 observations. Do not convert this into a blanket ROCm or `mmap` warning; preserve full workflow, kernel, PyTorch/ROCm, and hang diagnostics when reproducing. |
 | `llama.cpp` HIP direct `ROCm_Host` compute buffers on integrated GPUs | [`ggml-org/llama.cpp#26209`](https://github.com/ggml-org/llama.cpp/issues/26209) and fix candidate [PR #25863](https://github.com/ggml-org/llama.cpp/pull/25863) remain open. Community A/Bs report repeated/garbled output on long-context, vision, or multi-slot workloads after the direct host-compute path was enabled, while avoiding it restores correctness. Current b10687 source still marks the APU integrated and permits that buffer path. | Treat the local b10046 result as allocation/setup evidence only: its tiny model did not qualify long-context, multimodal, or multi-slot correctness. For HIP, pin a known-good/patched build or run stock-versus-PR controls with exact outputs before publishing a practical-model recommendation. Vulkan evidence is a comparator, not proof that every HIP path fails. |
 | Ollama Qwen3.8 Anthropic-compatible `xhigh` thinking | [`ollama/ollama#17906`](https://github.com/ollama/ollama/issues/17906) reports that 0.32.13 and 0.32.15 map `xhigh` to `high`, which Qwen3.8 rejects; native `/api/chat` works in the report. | This is an upstream compatibility report, not a local reproduction or a model-wide failure. Use the native API or a supported thinking level as a scoped workaround and include both API shapes in the 0.32.15 qualification. |
+| Ollama vendored `llama.cpp` performance gap on `gfx1151` | [`ollama/ollama#15601`](https://github.com/ollama/ollama/issues/15601) remained open when rechecked 2026-08-30. The upstream report compares about 34 t/s through Ollama's b7437-era vendored `llama.cpp` with 52-56 t/s through standalone `llama.cpp`, attributing the roughly 56% gap to missing Vulkan Wave32 FlashAttention and graphics-queue changes. | This is an upstream report, not a guide measurement. `OLLAMA_IGPU_ENABLE=1` is still required for the current AMD iGPU Vulkan route. [`Ollama 0.33.2`](https://github.com/ollama/ollama/releases/tag/v0.33.2), released 2026-08-27, mentions dependency updates without identifying the vendored commit, so whether that gap closed is unknown. |
 | Qwen3.8 with very large tool schemas | [`ggml-org/llama.cpp#27615`](https://github.com/ggml-org/llama.cpp/issues/27615) reports a substantial long-response slowdown with 139 tool definitions on b10488. | Not Strix-Halo-specific and not yet confirmed. Preserve it as an agent-workload test lead: compare no tools, a small schema, and the large schema with identical prompts and generated-token targets before adding guidance. |
+
+## 2026-08-30 Upstream Recheck
+
+- AMD [released ROCm 10.0 on 2026-08-26/27](https://www.phoronix.com/news/AMD-ROCm-10.0),
+  moving directly from the 7.x line to 10.0 to simplify versioning. The official
+  [ROCm Core SDK 10.0.0 release notes](https://rocm.docs.amd.com/en/latest/about/release-notes.html)
+  list `gfx1151` in the supported-hardware table for the first time, mention
+  improved roofline support for Strix Halo/Gorgon Halo-class targets, local LLM
+  fine-tuning for Ryzen AI Max, a six-week release cadence, and replacement of
+  the Windows HIP SDK by the ROCm Core SDK. [AMD's reported 3.3x average](https://www.phoronix.com/news/AMD-ROCm-10.0)
+  inference uplift versus ROCm 7 is a ROCm.AI/Hyperloom vendor claim, not guide
+  evidence. No public Strix Halo `llama.cpp` benchmark on ROCm 10.0 was verified
+  in this 2026-08-30 review, and the guide has neither installed nor qualified
+  ROCm 10.0 locally. The measured ROCm 7.14 rows and its documented
+  [`libhipblas.so.3` packaging issue](https://github.com/ggml-org/llama.cpp/issues/25807)
+  remain unchanged.
+- [`llama.cpp` PR #26046](https://github.com/ggml-org/llama.cpp/pull/26046),
+  merged 2026-07-24, removed the HIP rocWMMA FlashAttention implementation;
+  current HIP builds use the newer MMA kernel and
+  `GGML_HIP_ROCWMMA_FATTN` is obsolete. Older rocWMMA rows remain historical
+  external or negative evidence, not build guidance.
+- [`Lemonade v11.8.0`](https://github.com/lemonade-sdk/lemonade/releases/tag/v11.8.0),
+  released 2026-08-27, adds the experimental `ds4`/DwarfStar DeepSeek V4 Flash
+  backend for Strix Halo GPUs and the RPG-HaloTales-V2 and Flux-2-Klein catalog
+  entries. It is current but unqualified here; the guide's measured Lemonade
+  recommendation is still the b1259 concurrency run from
+  [2026-05-05](SERVER_SHOOTOUT.md#qwen36-full-sweep).
+- [`ollama/ollama#15601`](https://github.com/ollama/ollama/issues/15601) remained
+  open on 2026-08-30 and attributes an externally reported roughly 56% `gfx1151`
+  performance gap to Ollama's older vendored `llama.cpp`. The 2026-08-27
+  [Ollama 0.33.2 release](https://github.com/ollama/ollama/releases/tag/v0.33.2)
+  does not identify the vendored commit, so closure of that gap is unknown and
+  has not been measured by this guide.
 
 ## 2026-08-25 Qwen3.8 And HIP Correctness Recheck
 
@@ -173,7 +208,7 @@ Lucebox DFlash/PFlash status:
 
 - Lucebox is a high-upside experimental lead for Qwen3.5/Qwen3.6 27B DFlash/PFlash on Strix Halo.
 - Local clone succeeded, but HIP CMake preflight failed because this host has no ROCm root / `hipcc`.
-- Next safe path is an isolated ROCm/HIP developer container or toolbox with hipcc and rocWMMA, not a host-wide ROCm dev install.
+- The next safe path is an isolated ROCm/HIP developer container or toolbox with `hipcc`, not a host-wide ROCm developer install. The older Lucebox rocWMMA design notes are historical and do not make the removed `llama.cpp` option current guidance.
 
 ## 2026-05-23 Upstream Watch Refresh
 
@@ -238,7 +273,7 @@ Local status in this guide: not reproduced yet. The repo requires a heavier Dock
 The README recommendation should stay conservative:
 
 - Vulkan/RADV remains the default for easiest chat and fastest measured generation.
-- ROCm/HIP is relevant for prompt-heavy workloads, high-concurrency server paths, vLLM, AWQ/DFlash, and future tuned rocWMMA work, but current `llama.cpp` integrated-host compute must pass exact-output controls because open issue #26209 reports silent corruption on important workload shapes.
+- ROCm/HIP is relevant for prompt-heavy workloads, high-concurrency server paths, vLLM, AWQ/DFlash, and current-HIP long-context work, but current `llama.cpp` integrated-host compute must pass exact-output controls because open issue #26209 reports silent corruption on important workload shapes. Historical rocWMMA rows are not a future build target.
 - vLLM is now locally reproduced for an isolated Qwen3-0.6B FP16 hipBLASLt A/B, but it remains experimental for the guide's practical 27B/35B model class until a comparable larger-model serving run is measured.
 - Host-wide ROCm upgrades should be avoided during benchmark campaigns unless the whole run is dedicated to testing that stack.
 

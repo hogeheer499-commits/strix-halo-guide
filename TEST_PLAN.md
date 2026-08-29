@@ -135,15 +135,15 @@ This is likely the highest-value missing benchmark category because most public 
 
 Purpose: show where backend choice changes at 32K, 64K, and 128K context.
 
-Status: initial local RADV prompt-processing baseline completed on 2026-05-03 for Qwen3.6 35B and Qwen3-Next 80B through 64K. Filled-KV decode at 32K/64K/128K is also complete for f16, with Qwen3.6 q8_0/q4_0 KV-cache comparisons at 32K/64K. A 64K real-corpus prompt using the guide documentation is complete. ROCm HIP spot-checking exists, but no tuned local rocWMMA build is available yet. Broader real-corpus prompts remain open.
+Status: initial local RADV prompt-processing baseline completed on 2026-05-03 for Qwen3.6 35B and Qwen3-Next 80B through 64K. Filled-KV decode at 32K/64K/128K is also complete for f16, with Qwen3.6 q8_0/q4_0 KV-cache comparisons at 32K/64K. A 64K real-corpus prompt using the guide documentation is complete. ROCm HIP spot-checking exists. Broader real-corpus prompts remain open.
 
-ROCm/rocWMMA gate: do not publish upstream rocWMMA numbers unless the build is explicitly the tuned branch or container being tested. Upstream `GGML_HIP_ROCWMMA_FATTN=ON` has known regression risk, and the current local HIP build caches all have `GGML_HIP_ROCWMMA_FATTN=OFF`. The next ROCm long-context campaign needs its own build log, ROCm version, llama.cpp commit/branch, compiler flags, `rocblaslt` warning state, and raw output directory.
+Historical rocWMMA gate: [`llama.cpp` PR #26046](https://github.com/ggml-org/llama.cpp/pull/26046), merged 2026-07-24, removed rocWMMA FlashAttention and made `GGML_HIP_ROCWMMA_FATTN` obsolete. Preserve old results as historical external/negative evidence; do not plan a current build around that option. The next ROCm long-context campaign needs its own build log, ROCm version, llama.cpp commit/branch, compiler flags, `rocblaslt` warning state, and raw output directory.
 
 Targets:
 
 - RADV Vulkan direct.
 - ROCm HIP.
-- rocWMMA/tuned paths where practical.
+- Current upstream HIP MMA kernels, with historical rocWMMA rows used only as dated comparators.
 - KV cache settings, including TurboQuant if stable.
 - Models: Qwen3.6 35B, Qwen3-Next 80B, gpt-oss-120b if available.
 

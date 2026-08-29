@@ -24,6 +24,11 @@ As of the May 2026 baseline:
 
 The practical split is now clear for Qwen3.6 35B-A3B UD-Q4_K_M: use Vulkan/RADV `llama-server` for single-user and small parallel workloads, and use Lemonade `llamacpp-rocm` b1259 when the box is serving many simultaneous local requests. The open question is whether current vLLM/ROCm builds are better for agent-serving, batching, tool APIs, or long-running server workloads.
 
+**Runtime caveat (2026-08-30 review):** b1259 remains the build measured in the
+[2026-05-05 concurrency sweep](#qwen36-full-sweep). [Lemonade v11.8.0](https://github.com/lemonade-sdk/lemonade/releases/tag/v11.8.0),
+released 2026-08-27, is current but unqualified here; the 8-16 parallel advice
+has not been re-benchmarked on that release.
+
 ## What Counts As A Server
 
 A server is anything that exposes a model to other tools through an HTTP API.

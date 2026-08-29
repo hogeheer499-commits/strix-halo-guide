@@ -2,9 +2,16 @@
 
 This file records the current ROCm/rocWMMA readiness state. It is not a benchmark result.
 
+> **Historical status (2026-08-30 review):** this page preserves the old probe
+> and community evidence below. [`llama.cpp` PR #26046](https://github.com/ggml-org/llama.cpp/pull/26046),
+> merged 2026-07-24, removed rocWMMA FlashAttention and made
+> `GGML_HIP_ROCWMMA_FATTN` obsolete. Do not use the old build recipe as current
+> guidance; current HIP builds use the newer MMA kernel.
+
 ## 2026-05-03 Probe
 
-Status: no publishable local rocWMMA benchmark path yet.
+Historical result: no publishable local rocWMMA benchmark path was produced
+before upstream removed the path in 2026.
 
 Local host state:
 
@@ -24,17 +31,17 @@ Existing local llama.cpp HIP builds:
 
 Conclusion:
 
-- The local machine has ROCm HIP evidence, but not tuned rocWMMA evidence.
-- Do not add local rocWMMA benchmark claims until a tuned branch/container is built and logged.
-- Any upstream `GGML_HIP_ROCWMMA_FATTN=ON` run without lhl's tuning should be treated as an experiment/failure-mode check, not as a recommendation.
+- The local machine has ROCm HIP evidence but did not produce a publishable tuned rocWMMA result before upstream removed that path.
+- Do not turn the historical rocWMMA material into a current benchmark or build recommendation.
+- Current upstream builds must omit the removed `GGML_HIP_ROCWMMA_FATTN` option.
 
-External tuned source:
+Historical external tuned source:
 
 - lhl's tuned source branch exists at `https://github.com/lhl/llama.cpp/tree/rocm-wmma-tune`.
 - Latest observed branch head: `a45e1cd6e9f306a4708cb98912b2bd37e8b70fff`.
 - lhl's `strix-halo-testing` repository includes `llama-cpp-fix-wmma/` and `llm-bench/` scripts for rocWMMA compatibility and analysis.
 
-Required next build path:
+Historical build recipe (do not use with current upstream):
 
 1. Create a separate container/toolbox for llama.cpp ROCm work. Do not build in the host Python/vLLM environment.
 2. Clone `lhl/llama.cpp` at `rocm-wmma-tune` or apply the documented lhl fix scripts to a known llama.cpp commit.
@@ -73,4 +80,4 @@ The useful negative signal for this file:
 - VMM: built, but crashed when loading any model.
 - `GGML_HIP_ROCWMMA_FATTN`: still reported as a performance hit, with prompt-processing degrading faster than without it.
 
-So this does not change the local rocWMMA recommendation. Upstream ROCm/HIP remains useful to test for prompt-heavy rows, but upstream `GGML_HIP_ROCWMMA_FATTN=ON` should still be treated as an experiment/failure-mode check until a tuned, reproducible Strix Halo path is built and logged.
+This remains historical negative evidence. Current ROCm/HIP is still useful to test for prompt-heavy rows, but the removed `GGML_HIP_ROCWMMA_FATTN` option is no longer an experiment or recommendation for current upstream builds.

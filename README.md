@@ -250,7 +250,7 @@ Choose the backend by what you are trying to do:
 | You want private chat working today | Use the [setup script](#setup-script), then run `ollama run qwen3.6:35b-a3b`. | Easiest path to model pulling, local chat, and Open WebUI. |
 | You want to reproduce the headline speed rows | Use [Reproduce One Headline Result](#reproduce-one-headline-result). | Exact model, quant, build, and command matter for benchmark comparisons. |
 | You want a local API server or MTP tests | Read [MTP/speculative decoding](MTP_SPECULATIVE_DECODING.md) and use `llama-server`. | Supports serving, batching, long-context tests, and speculative decoding. |
-| You have many parallel local requests | Read [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md) and test Lemonade `llamacpp-rocm`. | Best measured Qwen3.6 aggregate throughput at 8-16 parallel requests. |
+| You have many parallel local requests | Read [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md) and test the measured Lemonade `llamacpp-rocm` b1259 route. | The 8-16 parallel advice was measured on 2026-05-05. [Lemonade v11.8.0](https://github.com/lemonade-sdk/lemonade/releases/tag/v11.8.0), released 2026-08-27, is current but unqualified here and has not inherited that result. |
 | You are testing prompt-heavy, vLLM, or future server paths | Read [BACKEND_CROSSOVER.md](BACKEND_CROSSOVER.md) and [VLLM_BASELINE.md](VLLM_BASELINE.md). | Useful for prompt processing, batching, vLLM, and long-context experiments. |
 
 If you only want a working local AI PC, stop after Ollama works. If you want to compare numbers, use the exact commands and evidence links in [Reproduce One Headline Result](#reproduce-one-headline-result), the [AI/search setup summary](STRIX_HALO_LOCAL_LLM_SETUP.md), [headline claim index](data/headline_claims.csv), and raw evidence under [`data/raw/`](data/raw/).
@@ -322,7 +322,7 @@ Measured local result: 100.04 tg128 and 1416.03 pp512 on the r50 confirmation: [
 - Production-ready NPU/FastFlowLM inference. The kernel sees `amdxdna` and `/dev/accel/accel0`, but XRT/FastFlowLM user-space is not installed and no local NPU LLM row is published yet.
 - A broadly useful DFlash/PFlash speedup on Strix Halo. The official Gemma 4 31B QAT target and matched DFlash sidecar now load and serve on b10066, but DFlash `n_max=8` was 5.54% slower at 5,471 prompt tokens and 20.42% slower at 21,855 on the measured synthetic shapes because acceptance stayed low. Representative chat, coding, and reasoning prompts still need separate profiling.
 - A vLLM/DFlash server path that competes with `llama-server` or Ollama for a real 35B Strix Halo use case. Plain AWQ without the gated DFlash drafter was only a smoke test here at about 25 t/s.
-- A local tuned rocWMMA long-context comparison against the current Vulkan/RADV path. External rocWMMA evidence exists, but the local lhl branch built here failed to load the current Qwen3.6 GGUFs.
+- A pinned current-HIP long-context comparison against the current Vulkan/RADV path. Historical external rocWMMA evidence exists, but upstream removed that kernel in 2026 and the older local lhl branch failed to load the current Qwen3.6 GGUFs.
 - Multi-machine clustering numbers from this guide's own hardware. Community RPC and USB4 tuning data exists in [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md) and [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md), but it is not a local Beelink headline claim.
 
 ## Do Not Copy These Claims Without Matching Setup
@@ -714,7 +714,7 @@ a global HSA architecture override.
 | b8301 (self-compiled, kernel 6.19.4) | 542 | 1059 | 47.87 | old build |
 | b8301 (self-compiled, kernel 6.18.14) | 488 | 996 | 48.80 | previous best |
 
-> ROCm also improved in the b8460 comparison: tg went from 47.87 to **54.67** (+14%) thanks to generic llama.cpp optimizations. But **Vulkan RADV was still faster on both pp and tg in this short-context pair**: RADV 1080 vs ROCm 1047 pp512 (+3%), RADV 64.85 vs ROCm 54.67 tg128 (+19%). The +25% Vulkan improvement was ~14% generic (ROCm got this too) plus ~11% Vulkan-specific (FA refactor, graphics queue). ROCm's remaining advantage is hipBLASLt and rocWMMA at very long context (32K+).
+> ROCm also improved in the historical b8460 comparison: tg went from 47.87 to **54.67** (+14%) thanks to generic llama.cpp optimizations. But **Vulkan RADV was still faster on both pp and tg in this short-context pair**: RADV 1080 vs ROCm 1047 pp512 (+3%), RADV 64.85 vs ROCm 54.67 tg128 (+19%). The +25% Vulkan improvement was ~14% generic (ROCm got this too) plus ~11% Vulkan-specific (FA refactor, graphics queue). Current ROCm advantages to test are hipBLASLt, batching, and prompt-heavy work; the older rocWMMA long-context evidence is historical because upstream removed that kernel in 2026.
 
 **ROCm HIP spot check (2026-05-03, b8460 HIP build):**
 
@@ -821,7 +821,7 @@ leave `HSA_OVERRIDE_GFX_VERSION` unset.
 | pp512 | ~457 | **1080** | 1047 | **Vulkan RADV** |
 | tg128 | 47.4 | **64.85** | 54.67 | **Vulkan RADV** |
 
-> **Vulkan RADV wins on both pp512 and tg128 for this Qwen3.5 b8460 short-context pair.** ROCm works on kernel 6.19.x with the HSA override fix, and newer spot checks show HIP can win longer prompt-processing rows. Use `llama-bench` or `llama-server` directly instead of Ollama to avoid the current ~20-25% short-context overhead on Qwen3.6.
+> **Vulkan RADV wins on both pp512 and tg128 for this Qwen3.5 b8460 short-context pair.** ROCm works on kernel 6.19.x with the HSA override fix, and newer spot checks show HIP can win longer prompt-processing rows. Use `llama-bench` or `llama-server` directly instead of Ollama to avoid the measured short-context overhead on Qwen3.6. As upstream context rather than a local measurement, open [`ollama/ollama#15601`](https://github.com/ollama/ollama/issues/15601), rechecked 2026-08-30, reports about 34 t/s through Ollama's b7437-era vendored `llama.cpp` versus 52-56 t/s standalone (roughly a 56% gap) because the vendored tree lacks newer Vulkan Wave32 FlashAttention and graphics-queue changes; whether Ollama 0.33.2 closed that gap is unknown.
 
 ### Backend Comparison Table
 
@@ -896,9 +896,13 @@ Based on [lhl's measurements](https://github.com/lhl/strix-halo-testing) with gp
 | 16K | 38.46 t/s | 25.50 t/s | 40.91 t/s |
 | 32K | 31.54 t/s | 17.82 t/s | **36.43 t/s** |
 
-> At 32K context, standard ROCm drops to 17.82 t/s. Vulkan holds at 31.54 t/s (1.8X faster). But lhl's tuned rocWMMA branch is the **overall winner at 36.43 t/s** -- 2X faster than standard ROCm and 15% faster than Vulkan at 32K.
+> **Historical external result:** at 32K context, standard ROCm dropped to 17.82 t/s and Vulkan held 31.54 t/s (1.8X faster), while lhl's tuned rocWMMA branch was the **overall winner on that dated stack at 36.43 t/s**—2X faster than standard ROCm and 15% faster than Vulkan. Upstream removal means this is not current build guidance.
 
-At extreme context (130K tokens, from [strixhalo.wiki](https://strixhalo.wiki/AI/llamacpp-performance)):
+Historical external evidence at 130K tokens from
+[strixhalo.wiki](https://strixhalo.wiki/AI/llamacpp-performance) is preserved
+below. The linked tracker was last updated 2025-08-08 and therefore predates
+the 2026-07-24 rocWMMA removal and ROCm 7.x/10.0; do not use it as current build
+guidance.
 
 | Backend | pp512 (t/s) | tg128 (t/s) |
 |---------|-------------|-------------|
@@ -1339,34 +1343,29 @@ llama-bench -m ~/models/your-model.gguf -fa 1 -ngl 999 -mmp 0 -p 128,512 -n 128
 
 ### Step 7.5: Self-Compiling llama.cpp for ROCm
 
-If you need the latest llama.cpp features or want to use lhl's rocWMMA patches:
+If you need a current ROCm/HIP source build:
 
 ```bash
 # Inside a ROCm container
 git clone https://github.com/ggml-org/llama.cpp
 cd llama.cpp
 
-# Standard build (without rocWMMA)
+# Current HIP build
 cmake -B build -S . \
   -DGGML_HIP=ON \
   -DAMDGPU_TARGETS="gfx1151" \
-  -DCMAKE_HIP_FLAGS="-mllvm --amdgpu-unroll-threshold-local=600" \
-  -DCMAKE_BUILD_TYPE=Release
-
-# With rocWMMA (for long context, use lhl's tuned branch)
-cmake -B build -S . \
-  -DGGML_HIP=ON \
-  -DAMDGPU_TARGETS="gfx1151" \
-  -DGGML_HIP_ROCWMMA_FATTN=ON \
   -DCMAKE_HIP_FLAGS="-mllvm --amdgpu-unroll-threshold-local=600" \
   -DCMAKE_BUILD_TYPE=Release
 
 cmake --build build -j$(nproc)
 ```
 
-> **WARNING:** Do NOT enable `GGML_HIP_ROCWMMA_FATTN=ON` on upstream llama.cpp without lhl's patches. ROCm 7.2 has a [73% performance regression](https://github.com/ggml-org/llama.cpp/issues/19984) with rocWMMA FA enabled. lhl's custom [rocm-wmma-tune branch](https://github.com/lhl/strix-halo-testing) fixes this and delivers 2X better performance at 32K context.
->
-> **Local status (2026-05-03):** the current machine has ROCm HIP evidence but no tuned local rocWMMA build yet. All local HIP build caches checked so far have `GGML_HIP_ROCWMMA_FATTN=OFF`. See [`ROCM_ROCWMMA_BASELINE.md`](ROCM_ROCWMMA_BASELINE.md) before adding any rocWMMA benchmark claims.
+> **Upstream change (2026-08-30 review):** do not pass
+> `GGML_HIP_ROCWMMA_FATTN`. [`llama.cpp` PR #26046](https://github.com/ggml-org/llama.cpp/pull/26046),
+> merged 2026-07-24, removed the rocWMMA FlashAttention implementation; HIP
+> builds now use the newer MMA kernel. The older local and external rocWMMA
+> material in [`ROCM_ROCWMMA_BASELINE.md`](ROCM_ROCWMMA_BASELINE.md) is
+> historical evidence only.
 
 ---
 
@@ -1521,7 +1520,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | BIOS UMA/VRAM reserve low enough | OS sees ~124-126GiB instead of ~31GiB on 128GB systems; GTT gets the large shared pool | No speed change from 512MB vs sane low reserves, but required to avoid losing most system RAM. Use 512MB if available; 2GB is fine when that is the vendor minimum |
 | `HIP_VISIBLE_DEVICES=-1` | Fixes Ollama crash | Required for Vulkan-only mode |
 | LLVM unroll workaround | Restores ROCm 7+ perf | `-mllvm --amdgpu-unroll-threshold-local=600` |
-| lhl's rocWMMA-tuned | **2X tg at 32K context** | Custom branch, requires manual build |
+| lhl's rocWMMA-tuned | **Historical external 2X tg at 32K context** | Removed upstream path; preserve as dated evidence, not current build guidance |
 | **Updating llama.cpp** | **+25% pp and tg (MoE)** | `git pull && cmake --build` -- biggest single optimization |
 | No global HSA architecture override on current native-`gfx1151` builds | Avoids silently forcing the wrong target | Verify `gfx1151`; use `11.5.1` only to reproduce the dated b8460/kernel 6.19.4 route |
 
@@ -1777,6 +1776,11 @@ Historical compatibility snapshot from the March/May test campaign:
 | 6.18.4-6.18.14 | Works (patched) | Works | Works | Works |
 | **6.19.4** | **Works (HSA fix)** | **Works (HSA fix)** | **Unknown** | **Works** |
 
+As of 2026-08-30, [ROCm Core SDK 10.0.0](https://rocm.docs.amd.com/en/latest/about/release-notes.html)
+is released and lists `gfx1151` in its official supported-hardware table.
+Nothing in this guide has installed or qualified ROCm 10.0; this historical
+matrix and the measured ROCm 7.2/7.14 evidence remain unchanged.
+
 **Rules for interpreting this dated matrix:**
 - Kernel 6.18.4+ changed gfx1151 handling; use current ROCm builds/containers instead of old ROCm RC builds
 - The measured b8460/kernel 6.19.4 route used `HSA_OVERRIDE_GFX_VERSION=11.5.1`
@@ -1831,8 +1835,7 @@ After completing setup, verify each item:
 - [lhl/strix-halo-testing](https://github.com/lhl/strix-halo-testing) -- Deep performance research and rocWMMA patches
 - [nabe2030/hip-vs-vulkan-evo-x2](https://github.com/nabe2030/hip-vs-vulkan-evo-x2) -- Independent HIP versus Vulkan workload-crossover benchmark on Strix Halo
 - [hec-ovi/vllm-awq4-qwen](https://github.com/hec-ovi/vllm-awq4-qwen) -- Experimental Qwen3.6 AWQ/DFlash vLLM path for Strix Halo
-- [strixhalo.wiki](https://strixhalo.wiki/AI/llamacpp-with-ROCm) -- Community wiki
-- [llm-tracker.info](https://llm-tracker.info/AMD-Strix-Halo-(Ryzen-AI-Max+-395)-GPU-Performance) -- GPU performance comparison
+- [strixhalo.wiki](https://strixhalo.wiki/AI/llamacpp-with-ROCm) and [llm-tracker.info](https://llm-tracker.info/AMD-Strix-Halo-(Ryzen-AI-Max+-395)-GPU-Performance) -- historical community references last updated 2025-08-08; they predate the 2026-07-24 rocWMMA removal and ROCm 7.x/10.0, so do not follow their ROCm 6.5-nightly or rocWMMA advice as current guidance
 - [Level1Techs Forum](https://forum.level1techs.com/t/strix-halo-ryzen-ai-max-395-llm-benchmark-results/233796) -- Community benchmark results
 - [Framework Community](https://community.frame.work/t/pytorch-w-flash-attention-vllm-for-strix-halo/74736) -- Framework Desktop discussions
 - [ROCm Strix Halo Optimization Guide](https://rocm.docs.amd.com/en/latest/how-to/system-optimization/strixhalo.html) -- Official AMD guide
@@ -1840,6 +1843,11 @@ After completing setup, verify each item:
 ---
 
 ## Model Recommendation Guide
+
+Use the [Strix Halo model hub](https://hogeheer499-commits.github.io/strix-halo-guide/strix-halo-models/)
+for a web view that separates models measured by this guide from artifacts
+verified to exist but not measured here, plus dated 128GB published-size fit
+tiers. The tables below remain the canonical in-repository setup guidance.
 
 Not sure which model to run? Here's what we recommend based on use case. Recommendations reviewed 2026-08-30; speeds are measured guide rows.
 
@@ -2573,7 +2581,7 @@ These are the highest-value tests to add next, because they answer practical buy
 - **DeepSeek V4 Flash current route:** the pinned 90.86GB ordinary `UD-IQ2_XXS` GGUF now loads and generates directly on official b10034 at 13.27 tg128 and passes a basic deterministic check. The smaller 46.98GiB REAP route still needs its separate ds4 runtime; future work should compare quality/runtime tradeoffs rather than repeat the resolved ordinary-GGUF load test.
 - **Tokens per watt with wall-power data:** Fail-Safe supplied valuable Corsair wall-power telemetry, and this guide now has Beelink amdgpu PPT telemetry. A Beelink wall-meter run would make the efficiency story publishable.
 - **NPU/iGPU telemetry tooling:** `xdna-top` and similar tools could make NPU-sidecar and iGPU contention claims easier to verify, but should be documented as instrumentation until they produce measured model rows.
-- **Lucebox / DFlash / PFlash:** highest-upside experimental route for 27B long-prompt + generation workloads, but local preflight currently needs an isolated ROCm/HIP dev toolchain with `hipcc` and rocWMMA.
+- **Lucebox / DFlash / PFlash:** highest-upside experimental route for 27B long-prompt + generation workloads, but local preflight currently needs an isolated ROCm/HIP developer toolchain with `hipcc`; older rocWMMA design notes are historical after the 2026 upstream removal.
 - **vLLM/AWQ/DFlash throughput:** keep this experimental until it has a reproducible OpenAI-compatible server row that competes with `llama-server`/Ollama for a real use case. Plain AWQ smoke works, but it is not the fastest default.
 - **Future Strix Halo successors:** Gorgon Halo / Ryzen AI Max 400 and later Medusa Halo / Ryzen AI Max 500 should be treated as future comparison targets, not current setup advice.
 

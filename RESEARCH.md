@@ -17,13 +17,13 @@ This file tracks external Strix Halo research and how it relates to this guide. 
 
 ## Source 2: lhl/strix-halo-testing
 
-**What it does best:** deep backend testing, long-context behavior, and rocWMMA experiments.
+**What it did best in this historical evidence set:** deep backend testing, long-context behavior, and rocWMMA experiments.
 
 **Key findings used here:**
 - `amd_iommu=off` measured faster than default/`iommu=pt` for memory reads in lhl testing
 - Backend choice changes with context length
 - Standard ROCm can degrade badly at long context
-- lhl's tuned rocWMMA branch can beat standard ROCm and Vulkan at 32K context
+- lhl's historical tuned rocWMMA branch beat standard ROCm and Vulkan at 32K context in the external rows below; upstream removed that kernel in 2026
 
 **Long-context reference data from lhl, gpt-oss-120b tg32:**
 
@@ -35,6 +35,8 @@ This file tracks external Strix Halo research and how it relates to this guide. 
 | 32K | 31.54 | 17.82 | 36.43 |
 
 **Open follow-up for this guide:** reproduce long-context results locally on current RADV/ROCm builds and add TTFT/ITL.
+
+The rocWMMA table is historical external evidence. [`llama.cpp` PR #26046](https://github.com/ggml-org/llama.cpp/pull/26046), merged 2026-07-24, removed rocWMMA FlashAttention and made `GGML_HIP_ROCWMMA_FATTN` obsolete for current builds.
 
 ## Source 3: kyuz0/amd-strix-halo-vllm-toolboxes
 
@@ -76,6 +78,11 @@ override restored native detection and inference.
 
 **What they do best:** index community resources, cross-link hardware notes, and collect independent benchmark pointers.
 
+**Freshness caveat (2026-08-30 review):** the linked tracker was last updated
+2025-08-08. It predates ROCm 7.x/10.0 and the 2026-07-24 rocWMMA removal, so its
+ROCm 6.5-nightly and rocWMMA recommendations are historical rather than current
+setup guidance.
+
 **Key imported context:**
 - Extreme-context behavior can look very different from short-context tg128
 - Backend choice should be documented per workload, not as a single global winner
@@ -86,7 +93,7 @@ override restored native detection and inference.
 1. **AMDVLK ICD hijacking:** AMDVLK's ICD file could silently override RADV for direct llama.cpp commands, creating false regression reports. Current recommendation: uninstall AMDVLK and verify RADV in benchmark output.
 2. **llama.cpp build age matters:** b8298 to b8460 gave +24% pp and +25% tg on Qwen3.5-35B-A3B MoE via Vulkan RADV.
 3. **Vulkan RADV is current short-context winner:** On the measured Qwen MoE workloads, RADV beats ROCm HIP on both pp and tg with the same b8460 source.
-4. **ROCm still matters:** Use ROCm for hipBLASLt, vLLM, batch/concurrency testing, and long-context/rocWMMA experiments.
+4. **ROCm still matters:** Use ROCm for hipBLASLt, vLLM, batch/concurrency testing, and current-HIP long-context experiments; rocWMMA rows are historical only.
 5. **Ollama remains the easy path:** the controlled 2026-05-03 API run measured Ollama 0.21.2 on Qwen3.6-35B-A3B at 50.5 t/s warm average, about 20-21% below direct llama-bench on current short-context data.
 6. **Continuous batching changes the serving story:** the 2026-05-03 `llama-server` Qwen3.6 test reached 162 t/s aggregate at `-np 8` with ~0.31 s TTFT. `-np 16` plateaued at 166 t/s while per-request speed fell to 10.4 t/s.
 7. **Qwen3-Coder serving has a hard sweet spot:** the 2026-05-03 `llama-server` Qwen3-Coder test reached 173 t/s aggregate at `-np 8`, then regressed to 130 t/s at `-np 16`.
@@ -99,12 +106,12 @@ override restored native detection and inference.
 14. **Host-state readiness matters:** The 2026-05-01 audit confirmed Mesa 26.0.6, Ollama 0.21.2, AMDVLK removed, GPU clock correct, linux-firmware safe, and `tuned accelerator-performance` active for that snapshot. Keep those checks in every benchmark preflight and use the relevant raw directory/CSV row as the source of truth for newer runs.
 15. **The chart layer is now reproducible:** current CSV data generates SVG summaries for multi-user serving, long-context prompt scaling, filled-KV decode, KV-cache tradeoffs, real-vs-synthetic prompt behavior, and Vulkan-vs-ROCm spot checks.
 16. **vLLM is now isolated cleanly:** the `vllm-gfx1151` Distrobox was created from kyuz0's `:stable` image and passed a small OpenAI-compatible smoke test. Treat this as setup evidence only; throughput still needs a controlled model/quant/concurrency campaign.
-17. **rocWMMA remains gated:** local HIP builds currently have `GGML_HIP_ROCWMMA_FATTN=OFF`, and the host lacks a full ROCm SDK. The tuned source to use next is lhl's `rocm-wmma-tune` branch, not upstream rocWMMA enabled blindly.
+17. **rocWMMA is historical:** upstream removed rocWMMA FlashAttention in [`llama.cpp` PR #26046](https://github.com/ggml-org/llama.cpp/pull/26046), merged 2026-07-24. Current HIP testing must use the newer MMA kernel; the old external and local-negative rows remain evidence, not build guidance.
 
 ## Next Research Tasks
 
 1. Establish a clean vLLM `:stable` container baseline and compare it with the existing `llama-server` concurrency data.
-2. Build or obtain a known-good tuned ROCm/rocWMMA path before running long-context ROCm claims.
+2. Build a pinned current-upstream ROCm/HIP path and run exact-output controls before making long-context claims.
 3. Add reliable power measurement only after a validated wall-meter or telemetry source is available.
 4. Expand real-corpus long-context prompts beyond guide documentation.
 5. Run same-model comparisons against Mac Studio, DGX Spark, and RTX cards only when exact model/quant/backend details are available.

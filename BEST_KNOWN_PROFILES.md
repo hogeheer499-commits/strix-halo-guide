@@ -1,5 +1,7 @@
 # Best Known Strix Halo Local-AI Profiles
 
+**Profiles reviewed:** August 30, 2026.
+
 This is a compact recommendation index, not another benchmark leaderboard. It turns existing evidence into a practical first choice for common workloads. The machine-readable source is [`data/best_known_profiles.csv`](data/best_known_profiles.csv); detailed caveats remain in the linked evidence pages.
 
 ## Start Here
@@ -11,7 +13,7 @@ This is a compact recommendation index, not another benchmark leaderboard. It tu
 | Fastest measured direct coding route | llama.cpp Vulkan/RADV, Qwen3-Coder 30B-A3B Q4_K_S | 100.99 tg128 r50 | Speed-first quant, not the balanced quality default. |
 | Balanced direct coding | llama.cpp Vulkan/RADV, Qwen3-Coder 30B-A3B UD-Q4_K_XL | 96.76 tg128 r20 | Use this when the quant tradeoff matters more than the last few t/s. |
 | Current Google-model MTP server | Gemma 4 26B-A4B QAT plus matched MTP head | 102.69 cold / 107.42 T3-only / 110.00 best repeat t/s | Advanced server/speculative route, not direct `llama-bench`. |
-| 30B service around 16 parallel sequences | Lemonade ROCm b1259 | 287.64 aggregate decode t/s mean | At np9-12, experimental density+dense16 Vulkan was stronger; benchmark the actual concurrency. |
+| 30B service around 16 parallel sequences | Lemonade ROCm b1259 | 287.64 aggregate decode t/s mean | [Measured 2026-05-05](SERVER_SHOOTOUT.md#qwen36-full-sweep); at np9-12, experimental density+dense16 Vulkan was stronger. [Lemonade v11.8.0](https://github.com/lemonade-sdk/lemonade/releases/tag/v11.8.0), released 2026-08-27, is current but unqualified here; the 8-16 parallel advice has not been re-benchmarked on it. |
 | 80B service around 16 parallel sequences | b9979 Vulkan with opt-in AMD/RADV density gate | 150.82 aggregate decode t/s mean | Experimental patch while upstream issue #25356 remains open. |
 | A direct 120B-class GGUF on one box | Nemotron 3 Super 120B-A12B UD-IQ4_XS | 18.43 tg128 | Capacity proof, not a speed result. |
 | Maximum measured direct ordinary-GGUF capacity | DeepSeek V4 Flash 284B UD-IQ2_XXS | 155.64 pp512 / 13.27 tg128; deterministic smoke answered `9` | 90.86GB low-bit artifact. Use as a capacity/current-model scout, not as a speed or broad quality recommendation. |

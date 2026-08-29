@@ -1,5 +1,7 @@
 # Benchmark Results - Current Snapshot
 
+**Benchmarks reviewed:** August 30, 2026.
+
 This file is the compact benchmark source-of-truth for numbers already published in the README. It reconciles historical and current measurements so old ROCm, driver, serving, and long-context notes do not contradict the current guide.
 
 ## Current System Snapshot
@@ -434,7 +436,13 @@ export HSA_ENABLE_SDMA=0
 | b8301 | 6.19.4 | 542 | 1059 | 47.87 | Old build, HSA fix |
 | b8301 | 6.18.14 | 488 | 996 | 48.80 | Previous reference |
 
-ROCm remains relevant for batch processing, hipBLASLt, vLLM experiments, and long-context/rocWMMA work. For current generation-heavy MoE chat/coding rows, Vulkan RADV is faster on the measured data; for prompt-processing-heavy work, HIP can win and should be tested separately.
+ROCm remains relevant for batch processing, hipBLASLt, vLLM experiments, and
+long-context work. The rocWMMA references in the historical rows below are no
+longer build guidance: [`llama.cpp` PR #26046](https://github.com/ggml-org/llama.cpp/pull/26046),
+merged 2026-07-24, removed rocWMMA FlashAttention and made
+`GGML_HIP_ROCWMMA_FATTN` obsolete. For current generation-heavy MoE chat/coding
+rows, Vulkan RADV is faster on the measured data; for prompt-processing-heavy
+work, HIP can win and should be tested separately.
 
 Current ROCm builds that detect `gfx1151` natively should run without a
 global HSA architecture override. A stale host
@@ -450,7 +458,7 @@ for the historical rows above.
 | Qwen3.6 35B-A3B | UD-Q4_K_M | 1186.19 | 52.69 | Vulkan b9010: 1108.93 pp, 63.06 tg |
 | Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1285.32 | 73.69 | Vulkan b9010: 1346.27 pp, 97.24 tg |
 
-The local HIP build is b8460 and requires `LD_LIBRARY_PATH=/usr/local/lib/ollama/rocm` plus the HSA override. It emitted a missing `TensileLibrary_lazy_gfx1151.dat` warning, so treat this as a ROCm HIP baseline, not a tuned rocBLASLt/rocWMMA result.
+The local HIP build is b8460 and requires `LD_LIBRARY_PATH=/usr/local/lib/ollama/rocm` plus the HSA override. It emitted a missing `TensileLibrary_lazy_gfx1151.dat` warning, so treat this as a historical ROCm HIP baseline, not a tuned rocBLASLt/rocWMMA result. As of the 2026-08-30 review, upstream had already removed the rocWMMA FlashAttention path in [`llama.cpp` PR #26046](https://github.com/ggml-org/llama.cpp/pull/26046).
 
 ### 2026-05-07 HIP vs Vulkan Crossover Spot Check
 
@@ -464,6 +472,25 @@ Structured data: [`data/backend_crossover.csv`](data/backend_crossover.csv). Ful
 | Qwen3-Coder 30B-A3B UD-Q4_K_XL | 564.68 | **756.16** | HIP +33.9% | **93.67** | 72.19 | Vulkan +29.8% |
 
 Takeaway: keep Vulkan/RADV as the default for generation-heavy chat/coding and low-concurrency API use, but keep ROCm/HIP available for prompt-heavy experiments such as RAG ingestion, long prompts, summarization, and future vLLM/AWQ/DFlash work.
+
+### 2026-08 External Backend Comparators
+
+These are third-party Strix Halo results, not measurements from this guide.
+They reinforce that backend choice is model- and phase-specific:
+
+- Soothill's [2026-08-03 Vulkan-versus-ROCm comparison](https://www.soothill.io/blog/2026/08/03/llamacpp-vulkan-vs-rocm-strix-halo/)
+  used Vulkan b10216, ROCm b10085, and ROCm 7.14.60850. For
+  Qwen3-Coder-30B-A3B Q4_K_S, ROCm led pp512 1344.65 to 1115.30 while Vulkan
+  led tg128 97.73 to 73.65. For Qwen3.5-122B-A10B Q4_K_XL, ROCm led pp512
+  339.9 to 285.0 while Vulkan led tg128 22.9 to 21.3.
+- Soothill's [2026-08-09 DeepSeek V4 Flash comparison](https://www.soothill.io/blog/2026/08/09/deepseek-v4-flash-vulkan-rocm-strix-halo/)
+  used Ubuntu 24.04.4, kernel 6.17.0-40, Mesa 25.2.8, ROCm 7.14.60850,
+  patched Vulkan b10329, and ROCm b10333 with the 97.05 GiB UD-IQ3_XXS
+  artifact. With `-ub 2048 -mmp 0 -fa on`, Vulkan led shallow pp2048 231.84
+  to 207.87 (+11.5%), shallow tg64 18.90 to 14.79 (+27.8%), deep pp2048
+  131.47 to 112.01 (+17.4%), and deep tg64 16.30 to 11.02 (+47.9%). ROCm's
+  shallow prefill improved 44.3% with micro-batch tuning but remained behind
+  Vulkan in that comparison.
 
 ### 2026-05-16 Qwen3-Next 80B HIP vs Vulkan Spot Check
 
