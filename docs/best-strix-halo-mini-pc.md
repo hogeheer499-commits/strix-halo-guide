@@ -4,7 +4,7 @@ title: "Best Strix Halo Mini PC for Local LLMs (2026): Beelink vs Framework vs G
 description: "Evidence-based comparison of AMD Ryzen AI MAX+ 395 mini PCs for local LLMs: measured cross-OEM benchmarks, 64GB vs 128GB fit guidance, dated prices, and buy-now-or-wait timing."
 permalink: /best-strix-halo-mini-pc/
 date: "2026-08-21T00:00:00+02:00"
-last_modified_at: "2026-08-25T00:00:00+02:00"
+last_modified_at: "2026-08-30T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -12,7 +12,7 @@ image:
   alt: "AMD Strix Halo mini PC comparison for local LLMs with measured cross-OEM evidence"
 seo:
   type: "TechArticle"
-  date_modified: "2026-08-25T00:00:00+02:00"
+  date_modified: "2026-08-30T00:00:00+02:00"
 ---
 
 # Best Strix Halo Mini PC for Local LLMs (2026)
@@ -57,30 +57,33 @@ These systems are getting more expensive fast, and that is a documented fact rat
 | Aug 2025 (launch preorder) | $1,985 | [TechRadar launch coverage](https://www.techradar.com/pro/a-mac-studio-windows-workstation-clone-just-went-on-preorder-with-amds-ai-395-beelink-gtr9-pro-costs-usd1985-has-two-10-gbe-ports-and-128gb-ram) |
 | 2026-02-20 | $2,494 | maintainer's own purchase invoice for the benchmark unit used throughout this guide |
 | Mar 2026 | $2,999 (preorder) | [Liliputing](https://liliputing.com/more-ryzen-ai-max-395-mini-pcs-with-128gb-are-now-available-if-you-can-afford-one/) |
-| 2026-08-21 | $4,349 (list $4,699), pre-sale | [vendor page](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395), checked today |
+| 2026-08-21 | $4,349 (list $4,699), pre-sale | [vendor page](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395) |
+| 2026-08-29 | $4,349 (list $4,699), pre-sale, ships within 35 days — unchanged | [vendor page](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395), re-verified |
 
 That is more than a doubling in about a year, and each documented step has been upward. The driver is the industry-wide DRAM shortage, not one vendor's margin — the same force raised DGX Spark to $4,699 and removed Apple's 512GB Mac Studio option. There is no evidence of a reversal on the horizon; memory pricing is projected to keep climbing into 2027 ([Tom's Hardware](https://www.tomshardware.com/pc-components/ram/memory-price-surge-begins-to-cool-as-consumers-hit-affordability-limit-ai-demand-still-keeps-dram-and-nand-prices-climbing-through-q3-2026)).
 
-The guide's dated canonical snapshot (2026-07-27) is in [`data/buyer_price_snapshot_2026-07-27.csv`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/buyer_price_snapshot_2026-07-27.csv). Current spot-check on 2026-08-21 (vendor pages / press):
+The guide's dated canonical snapshot (2026-07-27) is in [`data/buyer_price_snapshot_2026-07-27.csv`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/buyer_price_snapshot_2026-07-27.csv). Each spot-check cell below carries its own check date (latest vendor-page checks: 2026-08-29):
 
-| System (128GB) | 2026-07-27 snapshot | 2026-08-21 spot-check | Note |
+| System (128GB) | 2026-07-27 snapshot | Latest spot-check | Note |
 |---|---|---|---|
-| Bosgame M5 | $2,899 | ~$2,399–2,499 ([vendor](https://www.bosgamepc.com/products/bosgame-m5-ai-mini-desktop-ryzen-ai-max-395)) | currently the cheapest 128GB route |
-| Framework Desktop | $3,149 (mainboard) | ~$3,449, batches repeatedly sold out ([TechRadar](https://www.techradar.com/pro/frameworks-desktop-is-selling-like-hot-cakes-ryzen-max-395-max-383-batches-are-sold-out-with-next-shipment-in-q3)) | best ecosystem/support |
-| GMKtec EVO-X2 | €3,229–3,359 (EU) | $3,649, 128GB variants sold out on official store ([vendor](https://www.gmktec.com/products/amd-ryzen%e2%84%a2-ai-max-395-evo-x2-ai-mini-pc)) | best value when in stock |
-| Corsair AI Workstation 300 | $3,399 (out of stock) | $2,699–3,399 ([Tom's Hardware](https://www.tomshardware.com/desktops/mini-pcs/corsairs-strix-halo-ai-workstation-300-gets-even-more-expensive-amid-the-rampocalypse-ryzen-ai-max-395-flagship-now-sits-at-usd3-399)) | community-validated 3-unit fleet in this guide |
-| Minisforum MS-S1 MAX | $3,639 | ~$3,199; 64GB variant $2,639 ([Notebookcheck](https://www.notebookcheck.net/Powerful-Minisforum-MS-S1-Max-mini-PC-gets-a-lower-priced-64GB-RAM-config.1303111.0.html)) | 10GbE, clustering-friendly |
-| Beelink GTR9 Pro | $4,349 (pre-sale) | $4,349, list $4,699 ([vendor](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395), verified 2026-08-21) | deepest first-party evidence in this guide; see price history above |
+| Bosgame M5 | $2,899 | ~$2,399–2,499 (2026-08-21, [vendor](https://www.bosgamepc.com/products/bosgame-m5-ai-mini-desktop-ryzen-ai-max-395)) | cheapest 128GB route at last check |
+| GMKtec EVO-X2 | €3,229–3,359 (EU) | US $2,199.99 (list $2,599.99) but all variants sold out with a "price increase coming soon" banner; EU store from €1,959.99 in stock, verify the 128GB config price (2026-08-29, [US vendor](https://www.gmktec.com/products/amd-ryzen%e2%84%a2-ai-max-395-evo-x2-ai-mini-pc), [EU vendor](https://de.gmktec.com/en/products/gmktec-evo-x2-amd-ryzen%E2%84%A2-ai-max-395-mini-pc-1)) | best value if you catch stock |
+| Corsair AI Workstation 300 | $3,399 (out of stock) | $2,699–3,399 (2026-08-21, [Tom's Hardware](https://www.tomshardware.com/desktops/mini-pcs/corsairs-strix-halo-ai-workstation-300-gets-even-more-expensive-amid-the-rampocalypse-ryzen-ai-max-395-flagship-now-sits-at-usd3-399)) | community-validated 3-unit fleet in this guide |
+| Framework Desktop | $3,149 (mainboard) | ~$3,449 (2026-07-22, [Notebookcheck](https://www.notebookcheck.net/Framework-launches-world-s-first-mini-ITX-desktop-PC-with-Ryzen-AI-Max-Pro-495-and-192-GB-RAM.1349336.0.html)); a 192GB PRO 495 tab is live as "coming soon" (2026-08-29, [vendor](https://frame.work/desktop)) | best ecosystem/support |
+| Minisforum MS-S1 MAX | $3,639 | $3,799 (list $4,749) 128GB/2TB preorder, estimated mid-September shipping; EU €3,999 (2026-08-29, [US vendor](https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc), [EU vendor](https://minisforumpc.eu/products/minisforum-ms-s1-max-mini-pc)) | 10GbE, clustering-friendly |
+| AMD Ryzen AI Halo (Micro Center exclusive) | not yet listed | $3,999.99, Windows 11 or Linux, in-store pickup only, in US stores since 2026-07-10 (checked 2026-08-29, [AMD](https://www.amd.com/en/blogs/2026/amd-ryzen-ai-halo-now-available-at-micro-center.html), [Micro Center](https://www.microcenter.com/site/content/amd-ryzen-ai-halo.aspx)) | AMD's own 128GB reference box with 10GbE |
+| Beelink GTR9 Pro | $4,349 (pre-sale) | $4,349, list $4,699 (re-verified 2026-08-29, [vendor](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395)) | deepest first-party evidence in this guide; see price history above |
 
 Context: 128GB Strix Halo boxes launched around $1,800–2,000 in 2025 and have roughly doubled, driven primarily by DRAM contract prices (the industry-wide memory shortage), not vendor margin. The same force raised DGX Spark to $4,699 and removed Apple's 512GB Mac Studio option.
 
 ## Buy now or wait?
 
-- **AMD's Strix Halo refresh (Ryzen AI Max 392/388 SKUs and a previewed 192GB Ryzen AI MAX+ PRO 495 Framework desktop)** extends this platform through 2026 ([VideoCardz](https://videocardz.com/newz/framework-previews-desktop-with-ryzen-ai-max-pro-495-and-192gb-memory)).
-- **The true successor (Medusa Halo, Zen 6 + RDNA 5) is not expected before H2 2027** ([PC Gamer](https://www.pcgamer.com/hardware/processors/amd-confirms-next-gen-zen-6-cpus-to-launch-in-2026-and-medusa-apus-to-launch-in-2027/), [TweakTown](https://www.tweaktown.com/news/107301/amd-cpu-roadmap-leaks-tease-gator-range-and-medusa-point-plus-halo-zen-6-cpus-for-2027/index.html)).
+- **The 192GB refresh is official, not a rumor.** AMD announced the Ryzen AI Max PRO 400 series ("Gorgon Halo") on 2026-05-20: the Max+ PRO 495 supports up to **192GB LPDDR5X-8533** but keeps the same Zen 5 + RDNA 3.5 architecture and the same ~273GB/s bandwidth class ([ServeTheHome](https://www.servethehome.com/amd-reveals-ryzen-ai-max-pro-400-series-192gb-ram-for-ai-systems/), [Tom's Hardware](https://www.tomshardware.com/pc-components/cpus/amd-ryzen-ai-max-400-gorgon-halo-packs-up-to-192gb-of-unified-memory-refreshed-apu-uses-zen-5-and-rdna-3-5-and-can-clock-up-to-5-2-ghz)). OEM systems (ASUS, HP, Lenovo, a Framework Desktop with a live "192GB coming soon" tab, and a confirmed GMKtec EVO-X3) are reported from Q3 2026.
+- **What 192GB changes and does not change:** more memory means larger models and more context fit, but bandwidth — the main LLM decode limiter on this platform — stays in the same class. Expect capacity gains, not speed gains, and expect the 192GB tier to be priced well above current 128GB boxes at today's DRAM prices.
+- **The true successor (Medusa Halo, Zen 6 + RDNA 5) is not expected before H2 2027** ([PC Gamer](https://www.pcgamer.com/hardware/processors/amd-confirms-next-gen-zen-6-cpus-to-launch-in-2026-and-medusa-apus-to-launch-in-2027/), [TweakTown](https://www.tweaktown.com/news/107301/amd-cpu-roadmap-leaks-tease-gator-range-and-medusa-point-plus-halo-zen-6-cpus-for-2027/index.html)); rumored LPDDR6 bandwidth gains remain unconfirmed leaks.
 - Memory prices are projected to keep rising into 2027 ([Tom's Hardware](https://www.tomshardware.com/pc-components/ram/memory-price-surge-begins-to-cool-as-consumers-hit-affordability-limit-ai-demand-still-keeps-dram-and-nand-prices-climbing-through-q3-2026)).
 
-Honest read: waiting a year probably means paying more for the same memory, not less, and the successor is 12+ months out. If the workload exists today, buy the cheapest well-cooled 128GB config you can actually get; if you cannot justify current prices, a used RTX 3090 (~$1,100, 24GB) is the better buy for models that fit in 24GB.
+Honest read: waiting a year probably means paying more for the same memory, not less, and the real generational jump is 12+ months out. Wait for a Gorgon Halo 192GB system only if your target models genuinely need more than ~112GB of usable GPU memory — it will fit more, not run faster. If the workload exists today, buy the cheapest well-cooled 128GB config you can actually get; if you cannot justify current prices, a used RTX 3090 (~$1,100, 24GB) is the better buy for models that fit in 24GB.
 
 ## Recommendation tiers
 
@@ -95,7 +98,7 @@ each will be labeled near the link and entered in the public
 ## FAQ
 
 **Is a Strix Halo mini PC worth it for local LLMs in 2026?**
-If you want 100B+ MoE models running locally under ~$3,500, it is currently the only x86 option with 96–112GB usable GPU memory. If your models fit in 24GB, a used RTX 3090 is faster and cheaper.
+If you want 100B+ MoE models running locally in the $2,000–4,500 mini-PC class, it is currently the only x86 option with 96–112GB usable GPU memory. If your models fit in 24GB, a used RTX 3090 is faster and cheaper.
 
 **Which Strix Halo mini PC is fastest for LLMs?**
 Measured spread across Beelink, Corsair, and GMKtec on the same model is about 5%. Buy on price, cooling, and support, not OEM benchmark deltas.
@@ -104,7 +107,7 @@ Measured spread across Beelink, Corsair, and GMKtec on the same model is about 5
 For 30B-class MoE models, 64GB is enough. For the 120B-class and larger capacity routes that justify this platform, you need 128GB.
 
 **Should I wait for the next generation?**
-Medusa Halo is not expected before late 2027, and memory prices are still rising. Waiting likely costs more than it saves.
+The officially announced Gorgon Halo refresh (Q3 2026) adds a 192GB tier but keeps the same bandwidth class, so it fits more without running faster. The real successor, Medusa Halo, is not expected before late 2027, and memory prices are still rising. Waiting likely costs more than it saves unless you specifically need more than 128GB.
 
 **Why are Strix Halo mini PC prices rising so fast?**
 The industry-wide DRAM shortage: 128GB of LPDDR5X is the dominant cost of these systems, and memory contract prices are projected to keep climbing into 2027. The documented Beelink GTR9 Pro history above went from $1,985 to $4,349 in about a year.
@@ -117,7 +120,7 @@ The industry-wide DRAM shortage: 128GB of LPDDR5X is the dominant cost of these 
     {
       "@type": "Question",
       "name": "Is a Strix Halo mini PC worth it for local LLMs in 2026?",
-      "acceptedAnswer": {"@type": "Answer", "text": "If you want 100B+ MoE models running locally under about $3,500, Strix Halo is currently the only x86 option with 96-112GB usable GPU memory. If your models fit in 24GB, a used RTX 3090 is faster and cheaper."}
+      "acceptedAnswer": {"@type": "Answer", "text": "If you want 100B+ MoE models running locally in the $2,000-4,500 mini-PC class, Strix Halo is currently the only x86 option with 96-112GB usable GPU memory. If your models fit in 24GB, a used RTX 3090 is faster and cheaper."}
     },
     {
       "@type": "Question",
@@ -132,7 +135,7 @@ The industry-wide DRAM shortage: 128GB of LPDDR5X is the dominant cost of these 
     {
       "@type": "Question",
       "name": "Should I wait for the Strix Halo successor?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Medusa Halo is not expected before late 2027 and memory prices are still rising, so waiting likely costs more than it saves."}
+      "acceptedAnswer": {"@type": "Answer", "text": "The announced Gorgon Halo refresh (Q3 2026) adds a 192GB tier at the same bandwidth class; the real successor, Medusa Halo, is not expected before late 2027 and memory prices are still rising, so waiting likely costs more than it saves unless you need more than 128GB."}
     },
     {
       "@type": "Question",
@@ -145,4 +148,4 @@ The industry-wide DRAM shortage: 128GB of LPDDR5X is the dominant cost of these 
 
 ---
 
-Community corrections are welcome — open an issue in the [repository](https://github.com/hogeheer499-commits/strix-halo-guide/issues). Pricing rows are dated snapshots, not live quotes. This page contains no affiliate links as of 2026-08-25; if that changes, links will be disclosed next to the relevant product and per [`VENDOR_DISCLOSURE.md`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/VENDOR_DISCLOSURE.md).
+Community corrections are welcome — open an issue in the [repository](https://github.com/hogeheer499-commits/strix-halo-guide/issues). Pricing rows are dated snapshots, not live quotes. This page contains no affiliate links as of 2026-08-30; if that changes, links will be disclosed next to the relevant product and per [`VENDOR_DISCLOSURE.md`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/VENDOR_DISCLOSURE.md).
