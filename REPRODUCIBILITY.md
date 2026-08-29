@@ -2,6 +2,8 @@
 
 This file is the checklist for copying, rerunning, or challenging benchmark claims from the guide. The README is the human-facing entry point; structured CSVs and raw logs are the source of truth.
 
+**Checklist reviewed:** August 30, 2026. Per-run raw directories always override this summary.
+
 ## Scope
 
 Current headline numbers were measured on one primary Strix Halo machine unless a row says otherwise. Treat them as local measurements, not universal hardware guarantees.
@@ -19,8 +21,8 @@ The public claim index is [`data/headline_claims.csv`](data/headline_claims.csv)
 | OS | Ubuntu 24.04 |
 | Kernel | `6.19.4-061904-generic` |
 | Mesa/RADV | Mesa 26.0.6 for the main May 7 headline rows; Mesa 26.1.1 for the May 26/27 MTP spot checks; Mesa 26.1.2 for the June 7 b9544 controls; Mesa 26.1.4 for the July 16 b10034 and current-model runs; kisak-mesa PPA where recorded |
-| llama.cpp | b9179 `b81c2cdd7` for the Qwen3-Coder speed-first peak; b9049 `2496f9c14` for the balanced UD headline rerun; b9360 `6b4e4bd58` for the Qwen3.6 MTP 100+ server route; b9467 `1fd5f4803` for the first direct Qwen3-30B-A3B-Instruct-2507 100+ row; b9979 for the AMD/RADV density-gate campaign; official b10034 `505b1ed15` for the July 16 Vulkan sentinel and current-model checks |
-| Ollama | 0.31.2 for the fully qualified installed-service buyer path; isolated 0.31.1/0.31.2/0.32.0 binaries for the controlled July 16 comparison; isolated 0.32.3 for the exact-output, iGPU-vision, and process-restart qualification; 0.32.5 remains unmeasured |
+| llama.cpp | b9179 `b81c2cdd7` for the Qwen3-Coder speed-first peak; b9049 `2496f9c14` for the balanced UD headline rerun; b9360 `6b4e4bd58` for the Qwen3.6 MTP 100+ server route; b9467 `1fd5f4803` for the first direct Qwen3-30B-A3B-Instruct-2507 100+ row; b9979 for the AMD/RADV density-gate campaign; official b10034 `505b1ed15` for the July 16 Vulkan sentinel and current-model checks; b10107 for the July 25 vision/ASR/embedding smokes; b10330 for the August 9 Qwen3-Next MTP backend A/B and TTS smoke. Current numbered build b10687 (checked 2026-08-30) is not yet locally qualified |
+| Ollama | 0.31.2 for the fully qualified installed-service buyer path; isolated 0.31.1/0.31.2/0.32.0 binaries for the controlled July 16 comparison; isolated 0.32.3 for the exact-output, iGPU-vision, and process-restart qualification; 0.32.13 for the August 15 Qwen3.8 27B route. Current 0.33.2 (checked 2026-08-30) remains unmeasured |
 | BIOS UMA | 512MB for the measured local setup |
 | IOMMU | Disabled for the primary measured desktop benchmark profile; enabled/default remains the normal buyer recommendation for NPU, mobile suspend, RDMA, VFIO, passthrough, and clustering |
 | AMDVLK | Removed; RADV should be the selected Vulkan ICD |

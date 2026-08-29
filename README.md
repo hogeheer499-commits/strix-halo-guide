@@ -833,20 +833,21 @@ Based on our measurements and [lhl's detailed testing](https://github.com/lhl/st
 | llama.cpp + Vulkan RADV (container) | Best-tested generation-heavy GGUF path | Best-tested in measured short-context rows | **Best-tested short-context generation** | Degrades at 8K+ | Easy |
 | llama.cpp + Vulkan AMDVLK | Not recommended | Slower than RADV on b8460 | Slower on dense (2 GiB limit) | Degrades at 8K+ | Easy |
 | ROCm HIP | Batch processing | Excellent | Good | Poor at 32K+ | Medium (needs HSA fix on 6.19.x) |
-| ROCm + rocWMMA (tuned) | Long context | Excellent | Best at 32K | **Best scaling** | Very hard |
 | vLLM (TheRock) | API serving | Good | Good | Good | Hard |
+
+> **rocWMMA route removed (2026-08-30 note):** the earlier "ROCm + rocWMMA (tuned) for long context" row is retracted. This guide measured a 73% regression on the ROCm 7.2 rocWMMA container (see Known Issues), and upstream `llama.cpp` removed the rocWMMA FlashAttention kernel entirely in [PR #26046](https://github.com/ggml-org/llama.cpp/pull/26046) (merged 2026-07-24); HIP builds now always use the newer MMA kernel. External rocWMMA columns in older tables below are historical evidence only.
 
 ### Hardware Comparison
 
 | Hardware | Bandwidth | tg (MoE ~30B) | Max Model Size | Price |
 |----------|-----------|---------------|----------------|-------|
 | RTX 4090 | ~1008 GB/s | 100-122 t/s | 24 GB | ~$1600 GPU only |
-| RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$800 used |
-| Apple Mac Studio M4 Max high-memory | ~546 GB/s | ~100 t/s (MLX) | 96-128 GB depending on availability | verify current Apple config |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **63-101.0 t/s current direct Qwen MoE rows; 81 t/s speed-first Qwen3.6** | **120+ GB** | **$4,349 official (July 27, 2026 US snapshot)** |
+| RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$1,100 used (2026-08 spot check; verify current listings) |
+| Apple Mac Studio M5 Max 128GB | not yet verified here | not yet verified here | 128 GB (M5 Ultra up to 512 GB) | ~$4,499 reported at the 2026-08-25 M5 launch; verify current Apple config |
+| **Beelink GTR9 Pro** | **~215 GB/s** | **63-101.0 t/s current direct Qwen MoE rows; 81 t/s speed-first Qwen3.6** | **120+ GB** | **$4,349 official (re-verified 2026-08-29 US store)** |
 | NVIDIA DGX Spark | ~273 GB/s | 52-56 t/s (120B) | 128 GB | $4,699 |
 
-> **Apples-to-apples (gpt-oss-120b, same model family):** this guide now measures Strix Halo at 55.57 t/s tg128 locally via llama.cpp Vulkan/RADV b9049. External DGX Spark reports are around 52-56 t/s on comparable generation rows. At Beelink's July 27, 2026 official US price snapshot, the price gap to DGX Spark is about $350 ($4,349 vs $4,699), although other Strix Halo systems remain cheaper. On smaller MoE models (Qwen3-30B), Strix Halo measures 96.76 t/s on the balanced Qwen3-Coder b9049 campaign, 100.99 t/s with Qwen3-Coder b9851 Q4_K_S, and 100.04 t/s with a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS b9467 row. The DGX Spark wins on prompt processing and long-context rows in external reports. High-memory Mac Studio pricing/availability changed quickly in May 2026, so verify current Apple configs before using it as a purchase comparison. Source: [local raw data](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/), [NVIDIA DGX Spark](https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/), [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
+> **Apples-to-apples (gpt-oss-120b, same model family):** this guide now measures Strix Halo at 55.57 t/s tg128 locally via llama.cpp Vulkan/RADV b9049. External DGX Spark reports are around 52-56 t/s on comparable generation rows. At Beelink's official US price, re-verified on 2026-08-29, the price gap to DGX Spark is about $350 ($4,349 vs $4,699), although other Strix Halo systems remain cheaper. On smaller MoE models (Qwen3-30B), Strix Halo measures 96.76 t/s on the balanced Qwen3-Coder b9049 campaign, 100.99 t/s with Qwen3-Coder b9851 Q4_K_S, and 100.04 t/s with a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS b9467 row. The DGX Spark wins on prompt processing and long-context rows in external reports. Apple replaced the Mac Studio lineup with M5 Max / M5 Ultra on 2026-08-25 (M4 Max models discontinued; the 128GB M5 Max tier was reported around $4,499 at launch), so verify current Apple configs before using it as a purchase comparison. Source: [local raw data](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/), [NVIDIA DGX Spark](https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/), [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
 
 ### Long Context Performance
 
@@ -1190,13 +1191,16 @@ sudo systemctl restart ollama
 # Fast MoE model, great for general use and coding (~20GB)
 ollama pull qwen3.6:35b-a3b
 
+# Current official dense multimodal model, measured route in this guide (~18GB)
+ollama pull qwen3.8:27b
+
 # Higher quality MoE, Q8_0 quantization (~32GB)
 ollama pull qwen3-coder:30b-a3b-q8_0
 
 # Google's MoE model, strong reasoning (~16GB)
 ollama pull gemma4:26b-a4b
 
-# Large dense model for complex tasks (~51GB)
+# Large coding MoE (80B total, 3B active) for complex tasks (~51GB)
 ollama pull qwen3-coder-next
 ```
 
@@ -1837,7 +1841,7 @@ After completing setup, verify each item:
 
 ## Model Recommendation Guide
 
-Not sure which model to run? Here's what we recommend based on use case:
+Not sure which model to run? Here's what we recommend based on use case. Recommendations reviewed 2026-08-30; speeds are measured guide rows.
 
 | I want to... | Model | Size | Speed | Why |
 |--------------|-------|------|-------|-----|
@@ -1848,13 +1852,13 @@ Not sure which model to run? Here's what we recommend based on use case:
 | **Chat** (general) | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | **63 t/s** | Best all-rounder, successor to 3.5 |
 | **Chat** (no thinking) | Qwen3.6 35B-A3B (no-think) | 20 GB | 63 t/s | Same speed, direct answers |
 | **Code** (best quality, 256K ctx) | Qwen3-Next 80B-A3B | 42.9 GB | **59 t/s** | 80B MoE, only 3B active, 256K context |
-| **Chat** (smartest possible) | Qwen3-Coder-Next | 51 GB | 38 t/s | Dense 51B model, slower but smarter |
+| **Chat** (smartest possible) | Qwen3-Coder-Next | 51 GB | 38 t/s | 80B-A3B coding MoE, slower but smarter |
 | **Reasoning / current Google route** | Gemma 4 26B-A4B IT QAT | 14.2 GB | 74.8 t/s direct; 102.7-110.0 t/s MTP server | Strong current Google-model route. Use the direct row for benchmark comparisons; use MTP only for server/speculative experiments |
-| **Analyze images** | Qwen2.5-VL 7B | 6 GB | 21 t/s | Vision-language model |
-| **Maximum intelligence** | Llama 3.3 70B (Q4) | ~40 GB | ~5 t/s | Slow but very capable |
+| **Analyze images** | Qwen3.8 27B (`qwen3.8:27b`) | ~18 GB | 20.4 t/s | Current official dense multimodal route, measured here with image, tools, and thinking |
+| **Maximum intelligence (measured)** | DeepSeek V4 Flash 284B-A13B (UD-IQ2_XXS) | 90.9 GB | 13.3 t/s | Largest model measured in this guide; MoE keeps it usable. Dense 70B models stay ~5 t/s |
 | **"Can it run?"** | Llama 4 Scout 109B | 61 GB | 18 t/s | 109B model on a mini PC. RTX 4090 can't |
 | **Process documents** | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | 63 t/s | Fast enough for RAG pipelines |
-| **Learn / experiment** | Llama 2 7B | 3.8 GB | 52 t/s | Small, fast, well-documented |
+| **Learn / experiment** | LFM2.5 8B-A1B (Q4_K_M) | ~5 GB | 169-176 t/s | Small current MoE, fastest practical-model rows measured here |
 | **Throughput testing** | Qwen3-0.6B (Q8_0) | 0.8 GB | 266 t/s | Speed ceiling benchmark |
 
 **How to install any model:**
@@ -1893,8 +1897,8 @@ ollama pull qwen3.6:35b-a3b
 |--------|-------------|-------|---------|---------|
 | **ChatGPT Plus** | $20/mo | Fast | No | No |
 | **Claude Pro** | $20/mo | Fast | No | No |
-| **OpenAI API** (gpt-4o, 50 queries/day) | ~$15/mo | Fast | No | No |
-| **Anthropic API** (Claude Sonnet, 50 queries/day) | ~$12/mo | Fast | No | No |
+| **OpenAI API** (mid-tier model, 50 queries/day, 2026-08 estimate) | ~$15/mo | Fast | No | No |
+| **Anthropic API** (mid-tier Claude model, 50 queries/day, 2026-08 estimate) | ~$12/mo | Fast | No | No |
 | **Strix Halo** (after purchase) | **~$8/mo electricity** | ~50-100.0 t/s on larger local assistant paths; small-MoE scouts can be higher | **Yes** | **Yes** |
 
 **Break-even calculation:**
