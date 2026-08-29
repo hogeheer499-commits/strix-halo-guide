@@ -22,7 +22,7 @@ systems. The useful question is no longer only “does it run?” It is which
 official, stock, MTP, DFlash, ROCmFP4, or performance-fork route fits the
 workload—and which published numbers are actually comparable.
 
-**Evidence reviewed:** August 25, 2026.
+**Evidence reviewed:** August 30, 2026.
 
 Project home: [Strix Halo Guide](https://strixhaloguide.com/). The complete
 Qwen3.8 evidence page below remains on GitHub Pages until the matching
@@ -51,7 +51,7 @@ ollama run qwen3.8:27b
 ```
 
 The Strix Halo service still needs the guide's Vulkan/iGPU environment,
-including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Ollama 0.32.15 is the
+including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Ollama 0.33.2 is the
 current checked package, but it has not inherited the measured 0.32.13 result
 or the full normal-service/reboot qualification.
 
@@ -73,7 +73,7 @@ separate so readers can decide which result applies to them.
 
 ## What Should Be Tested Next?
 
-The missing proof is a matched same-host ladder: stock b10622 Vulkan without
+The missing proof is a matched same-host ladder: stock b10687 Vulkan without
 speculation, native MTP, corrected HIP correctness, a published ROCmFP4 route,
 and a fully published DFlash/adaptive route. It must cover code and prose,
 4K/16K/50K context, exact outputs, vision/tools, acceptance, memory, hashes,
@@ -84,7 +84,7 @@ or submit a [benchmark report](https://github.com/hogeheer499-commits/strix-halo
 
 ## Independence And Affiliate Disclosure
 
-This guide contains no affiliate links as of August 25, 2026. Future affiliate,
+This guide contains no affiliate links as of August 30, 2026. Future affiliate,
 loaned, gifted, sponsored, or early-access relationships must be disclosed near
 the relevant links/results and do not buy positive conclusions. Community
 results remain separate from first-party measurements.

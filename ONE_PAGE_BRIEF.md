@@ -69,7 +69,7 @@ The public evidence map currently covers:
 - **10 credited community benchmark contributors**, listed in [`CONTRIBUTORS.md`](CONTRIBUTORS.md), in addition to the primary first-party Beelink measurements.
 - Beelink owner stacks, a three-system Corsair fleet, several independent GMKtec sources, MS-S1-Max, Nimo, and Minix evidence across Linux, Windows, Vulkan/RADV, ROCm, NPU, MTP, power, thermal, RPC, and large-model capacity routes.
 
-The normal first-party buyer path includes an Ollama 0.31.2 system-service check at 60.57 t/s with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. Qwen3.8 27B is separately measured on Ollama 0.32.13 at 20.42 generation t/s with image, tools, thinking, and exact retrieval through 50,059 prompt tokens. Ollama 0.32.15 is the current unmeasured package target; community rows remain separated from first-party headline claims.
+The normal first-party buyer path includes an Ollama 0.31.2 system-service check at 60.57 t/s with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. Qwen3.8 27B is separately measured on Ollama 0.32.13 at 20.42 generation t/s with image, tools, thinking, and exact retrieval through 50,059 prompt tokens. Ollama 0.33.2 is the current unmeasured package target; community rows remain separated from first-party headline claims.
 
 Community corrections and negative results improve the proof layer rather than being hidden: exact artifacts and commands, raw logs, separated claim types, explicit caveats, and corrected routes remain public. See [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md).
 

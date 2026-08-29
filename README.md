@@ -33,8 +33,8 @@ Maintainer credibility is public and reviewable: 15+ merged upstream contributio
 | Reproducing or contributing benchmarks | [Reproducibility](REPRODUCIBILITY.md), [headline claim index](data/headline_claims.csv), and [benchmark issue](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md) | Exact commands, metadata, raw evidence, caveats, and community credit |
 | Reviewing the project for a vendor or publication | [One-page brief](ONE_PAGE_BRIEF.md), [partnership scope](PARTNERSHIP.md), and [disclosure policy](VENDOR_DISCLOSURE.md) | Which buyer uncertainty the evidence removes and how independence is protected |
 
-**Current evidence state — August 25, 2026:** Qwen3.8 27B is measured through
-the official Ollama route; Ollama 0.32.15 and `llama.cpp` v0.3.0 / b10622 are
+**Current evidence state — August 30, 2026:** Qwen3.8 27B is measured through
+the official Ollama route; Ollama 0.33.2 and `llama.cpp` v0.3.0 / b10687 are
 current checked targets rather than inherited benchmark replacements. The
 machine-readable freshness record is [`data/public_state.json`](data/public_state.json).
 
@@ -76,14 +76,14 @@ Halo owners find it; a reproducible result or correction helps even more.
 
 | Question | Current answer |
 | --- | --- |
-| Best beginner route | Ollama with Vulkan/RADV. The fully reboot-qualified general baseline remains 0.31.2; Qwen3.8 is separately measured on 0.32.13 and current 0.32.15 still needs the controlled upgrade/reboot matrix. |
+| Best beginner route | Ollama with Vulkan/RADV. The fully reboot-qualified general baseline remains 0.31.2; Qwen3.8 is separately measured on 0.32.13 and current 0.33.2 still needs the controlled upgrade/reboot matrix. |
 | Current Qwen3.8 route | Official Qwen3.8 27B `Q4_K_M` measured 292.49 prompt t/s and 20.42 generation t/s; image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed. [Read the route comparison.](QWEN38_STRIX_HALO.md) |
 | Fast direct 30B-class route | Qwen3-Coder 30B-A3B `Q4_K_S` reached 100.99 tg128 on official b9851; it is a speed-first quant, not the balanced default. |
 | Largest direct GGUF tested | DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded as a 90.86GB low-bit artifact and measured 13.27 tg128; capacity proof, not broad quality. |
 | Experimental server frontier | Repeat-confirmed local MTP/server profiles reach 101-141 t/s, but prompt shape, draft acceptance, runtime, and quant are part of each claim. |
 | Cross-system confidence | 13 systems or independent sources and 10 credited community benchmark contributors, with community data separated from first-party Beelink rows. |
 | Trust model | Every headline maps to structured/raw evidence or an explicit caveat; failed paths and negative results remain public. |
-| Commercial independence | No affiliate links are present as of August 25, 2026. Future affiliate/vendor support must be disclosed and cannot buy ranking, positive conclusions, or removal of accurate negative findings. |
+| Commercial independence | No affiliate links are present as of August 30, 2026. Future affiliate/vendor support must be disclosed and cannot buy ranking, positive conclusions, or removal of accurate negative findings. |
 
 ## Quick Start (6 Steps)
 
@@ -216,7 +216,7 @@ Start with the public [vendor and reviewer overview](https://strixhaloguide.com/
 
 Start with [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md) and [`PARTNERSHIP.md`](PARTNERSHIP.md). Supporting docs cover [`BEELINK_OUTREACH.md`](BEELINK_OUTREACH.md), [`VENDOR_OUTREACH_PLAN.md`](VENDOR_OUTREACH_PLAN.md), [`SPONSORSHIP.md`](SPONSORSHIP.md), [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md), [`BUYER_USE_CASES.md`](BUYER_USE_CASES.md), [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md), [`TRACTION.md`](TRACTION.md), and [`OUTREACH_TEMPLATES.md`](OUTREACH_TEMPLATES.md).
 
-No affiliate links are present as of August 25, 2026. If monetized product
+No affiliate links are present as of August 30, 2026. If monetized product
 links are added later, each relevant link will be labeled and recorded in the
 public [`affiliate link registry`](data/affiliate_link_registry.csv). Affiliate
 commission does not determine benchmark conclusions, product inclusion, or

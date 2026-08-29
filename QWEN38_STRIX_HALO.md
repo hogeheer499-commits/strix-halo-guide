@@ -1,6 +1,6 @@
 # Qwen3.8 27B on AMD Strix Halo: What Works, What Is Fast, and What Is Actually Verified
 
-**Evidence reviewed:** August 25, 2026.
+**Evidence reviewed:** August 30, 2026.
 
 Qwen3.8 27B is a practical dense multimodal model on AMD Strix Halo / Ryzen AI
 MAX+ 395 with Radeon 8060S and 96GB/128GB unified memory. The difficult part is
@@ -56,7 +56,7 @@ ollama run qwen3.8:27b
 ```
 
 Keep the Strix Halo service environment documented in the main guide,
-including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. The current Ollama 0.32.15
+including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. The current Ollama 0.33.2
 package is a test target, not an automatic inheritance of the 0.32.13
 results. The normal 0.31.2 service remains the guide's full-reboot-qualified
 general beginner baseline until the controlled upgrade matrix passes.
@@ -83,9 +83,9 @@ does not establish a portable buyer recommendation.
 The highest-value next local campaign is not another isolated peak. It is a
 matched ladder on the same host and pinned model artifact:
 
-1. stock b10622 Vulkan, no speculation;
-2. stock b10622 Vulkan, native MTP;
-3. stock b10622 versus PR #25863 on HIP for exact-output correctness;
+1. stock b10687 Vulkan, no speculation;
+2. stock b10687 Vulkan, native MTP;
+3. stock b10687 versus PR #25863 on HIP for exact-output correctness;
 4. a published ROCmFP4 route with no-spec and MTP controls;
 5. a fully published DFlash/adaptive route only after target and sidecar hashes
    are available.
@@ -101,7 +101,7 @@ The live queue is [`data/current_test_queue.csv`](data/current_test_queue.csv).
 
 | If you want | Start here |
 | --- | --- |
-| The simplest current official multimodal route | Ollama 0.32.13 evidence plus `qwen3.8:27b`; wait for the 0.32.15 qualification before transferring the measurements |
+| The simplest current official multimodal route | Ollama 0.32.13 evidence plus `qwen3.8:27b`; wait for the 0.33.2 qualification before transferring the measurements |
 | Auditable direct performance | Stock `llama.cpp` control with a pinned GGUF and exact command |
 | Maximum short-context experimental speed | Reproduce the published fork, quant, and drafter as one inseparable profile |
 | Deep or cold context | Prefer the route with demonstrated prompt-ingestion behavior and exact retrieval, not the highest short decode number |
@@ -138,7 +138,7 @@ endorsement of this guide.
 
 ## Commercial And Affiliate Disclosure
 
-This guide contains no affiliate links as of August 25, 2026. If affiliate
+This guide contains no affiliate links as of August 30, 2026. If affiliate
 links are added later, each will be labeled near the link and recorded in
 [`data/affiliate_link_registry.csv`](data/affiliate_link_registry.csv).
 Affiliate availability or commission will not determine benchmark inclusion,

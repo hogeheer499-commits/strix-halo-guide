@@ -31,7 +31,7 @@ Use the most specific category near the relevant result:
 
 ## Affiliate Link Rules
 
-This repository contains no affiliate links as of August 25, 2026. The public
+This repository contains no affiliate links as of August 30, 2026. The public
 registry is [`data/affiliate_link_registry.csv`](data/affiliate_link_registry.csv).
 
 If affiliate links are added later:

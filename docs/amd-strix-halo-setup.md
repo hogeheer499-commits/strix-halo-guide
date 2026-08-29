@@ -31,7 +31,7 @@ It targets Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems with 96GB or
 Pro; BIOS labels, firmware, cooling and power modes can differ on other OEM
 systems.
 
-**Setup reviewed:** August 25, 2026. Exact benchmark claims remain canonical in
+**Setup reviewed:** August 30, 2026. Exact benchmark claims remain canonical in
 the repository's structured data and raw evidence.
 
 Running the current official dense Qwen model? Use the dedicated

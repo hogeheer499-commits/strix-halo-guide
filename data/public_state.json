@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
-  "evidence_reviewed": "2026-08-25",
-  "evidence_reviewed_human": "August 25, 2026",
+  "evidence_reviewed": "2026-08-30",
+  "evidence_reviewed_human": "August 30, 2026",
   "freshness_max_age_days": 21,
   "release": {
     "current": "v3.0.0",
     "date": "2026-08-25"
   },
   "runtime": {
-    "ollama_current_checked": "0.32.15",
+    "ollama_current_checked": "0.33.2",
     "ollama_qwen38_measured": "0.32.13",
     "ollama_reboot_qualified_default": "0.31.2",
     "llama_cpp_current_release": "v0.3.0",
-    "llama_cpp_current_build_checked": "b10622"
+    "llama_cpp_current_build_checked": "b10687"
   },
   "qwen38": {
     "official_model": "Qwen3.8 27B",
@@ -37,7 +37,7 @@
   },
   "affiliate_status": {
     "links_present": false,
-    "checked": "2026-08-25",
+    "checked": "2026-08-30",
     "policy": "VENDOR_DISCLOSURE.md"
   }
 }

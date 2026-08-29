@@ -71,14 +71,14 @@ Source: [`COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-packag
 ## August 2026 Runtime Controls
 
 Latest checked packaged runtime releases as of 2026-08-25 are `llama.cpp`
-v0.3.0 / numbered build b10622 and Ollama 0.32.15; none is a locally qualified replacement.
+v0.3.0 / numbered build b10687 and Ollama 0.33.2; none is a locally qualified replacement.
 b10330 remains the latest narrow local `llama.cpp` qualification, while the
 reboot-qualified beginner Ollama service remains 0.31.2 and the official
 Qwen3.8 route is separately measured on 0.32.13. Open `llama.cpp` issue #26209
 and PR #25863 mean the old b10046 integrated-host allocation pass must not be
 generalized to long-context, multimodal, or multi-slot HIP correctness. Ollama
 issue #17906 also makes native versus Anthropic-compatible Qwen3.8 thinking
-levels part of the 0.32.15 qualification. ROCm 7.14.0, vLLM 0.26.0, and SGLang
+levels part of the 0.33.2 qualification. ROCm 7.14.0, vLLM 0.26.0, and SGLang
 0.5.17 remain the latest checked releases in their lanes; datacenter-GPU
 release evidence still does not transfer to `gfx1151` without a local pass.
 
@@ -318,7 +318,7 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | 1 | `llama.cpp` b10622 versus PR #25863 HIP host-buffer correctness A/B | Open issue #26209 affects the trust boundary for long-context, image, and multi-slot HIP claims. Preserve the measured Ollama route, pin both builds, and require exact-output comparisons before promoting the faster path. |
 | 2 | Qwen3.8 matched route ladder | Re-run stock Vulkan no-spec/MTP and the published ROCmFP4/DFlash routes with pinned artifacts, prompts, context, output checks, and host state. This is the test that can turn the current 22-65 t/s spread from social claims into a buyer-grade decision. |
 | 3 | AMD SMI 26.5 memory carveout/GTT versus the measured legacy boot configuration | AMD's supported control surface now differs from the measured host. Validate support, memory visibility, model loading, service restart, full reboot, performance, and rollback before changing `setup.sh` or beginner guidance. |
-| 4 | Ollama 0.32.15 normal-service qualification | Re-run the same-cache text, vision, tools, Qwen3.8 native and Anthropic-compatible thinking levels, service-restart, and full-host-reboot harness. Do not transfer release claims or the reported `xhigh` compatibility failure without local measurement. |
+| 4 | Ollama 0.33.2 normal-service qualification | Re-run the same-cache text, vision, tools, Qwen3.8 native and Anthropic-compatible thinking levels, service-restart, and full-host-reboot harness. Do not transfer release claims or the reported `xhigh` compatibility failure without local measurement. |
 | 5 | b10330 Vulkan submission-batching/DeviceLost smoke | Run repeated practical-model and concurrency loops and preserve the new diagnostics. A clean smoke is useful stability evidence but not proof that every driver-level DeviceLost case is fixed. |
 | 6 | Qwen3-ASR plus Qwen3-TTS Dutch voice loop | The English TTS repeat and ASR back-check now pass. Dutch/multilingual quality, long audio, streaming, and a complete listen-answer-speak workflow remain the buyer questions. |
 | 7 | AMD `rocm-cli` buyer-UX follow-up | The PR #177 fresh-install route serves correctly. Re-test missing `XDG_RUNTIME_DIR`, absolute local GGUFs, and upgraded-state labels after upstream fixes before presenting it as a beginner alternative to `setup.sh`. |
@@ -348,7 +348,7 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | DeepSeek V4 Flash | **Measured locally:** pinned Unsloth `UD-IQ2_XXS` at 90.86GB loaded and generated directly on official b10034 at 155.64 pp512 / 13.27 tg128 and answered the deterministic smoke correctly. This resolves the ordinary-GGUF blocker, but remains low-bit capacity evidence rather than a speed or quality recommendation. The 46.98GiB REAP path still requires its separate ds4 runtime. |
 | Nemotron 3 Ultra 550B-A55B | GGUF route found in the 2026-06-05 scan, but the smallest scanned route is about 188 GB. Watch for smaller practical artifacts or test only with external storage / multi-node planning. |
 | Nemotron 3 Super 120B-A12B | Tested with `UD-IQ4_XS`. Add lower/higher quant comparisons only if they answer a specific buyer question. |
-| `llama.cpp` b10034 / b10046 / b10066 / b10107 / b10622 | Official b10034 remains the measured Vulkan concurrency/model sentinel. b10046 proved full-UMA discovery and `ROCm_Host` allocation on HIP, but open issue #26209 and PR #25863 now limit that to historical small-model allocation evidence; it did not prove long-context, multimodal, or multi-slot correctness. b10066/b10107 retain their exact measured Vulkan capability scope. b10622 is the latest numbered release checked, but is not locally qualified and its source still exposes the integrated host-buffer path under investigation. |
+| `llama.cpp` b10034 / b10046 / b10066 / b10107 / b10687 | Official b10034 remains the measured Vulkan concurrency/model sentinel. b10046 proved full-UMA discovery and `ROCm_Host` allocation on HIP, but open issue #26209 and PR #25863 now limit that to historical small-model allocation evidence; it did not prove long-context, multimodal, or multi-slot correctness. b10066/b10107 retain their exact measured Vulkan capability scope. b10687 is the latest numbered release checked (2026-08-30), but is not locally qualified and its source still exposes the integrated host-buffer path under investigation. |
 | Official AMD/Unsloth Strix Halo workflow | **Measured local functional pass:** a digest-pinned ROCm 7.2 community container detected the Radeon 8060S and completed one-step Qwen3 0.6B SFT, checkpoint inference, `Q4_K_M` export, ROCm `llama.cpp` inference, and a restart load from the copied host artifact. Two real friction points are documented: Studio-managed output paths and a writable export CWD. This is workflow compatibility, not useful training quality or large-model performance. See [`UNSLOTH_STRIX_HALO.md`](UNSLOTH_STRIX_HALO.md). |
 | Llama Nemotron Embed 1B v2 | **Measured local CPU sanity:** the official 2048-dimensional route ranked the relevant UMA passage above an unrelated passage and reproduced the exact vector offline after restart. Keep the profile scoped to functionality until a real multilingual corpus, long-document, batch, memory, and ROCm campaign exists. |
 | Qwen3-ASR 0.6B/1.7B | **Measured 0.6B local smoke:** the official Q8_0 GGUF transcribed a known short English sample identically across fresh b10107 processes. This is not Dutch, long-audio, streaming, WER, or 1.7B evidence; `llama.cpp` audio remains experimental. |
@@ -356,7 +356,7 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | ROCm 7.14.0 | New production release checked on 2026-07-16. AMD documents lower-than-expected inference on Ryzen AI MAX / MAX+ in some FP16 vLLM batch-8+ workloads with PyTorch earlier than 2.14 and recommends `TORCH_BLAS_PREFER_HIPBLASLT=1`. Treat this as an isolated vLLM/PyTorch A/B target, not a host-upgrade or universal backend recommendation. |
 | Ollama 0.32.0 | Controlled local-binary pass on 2026-07-16: Qwen3.6 averaged 73.20 t/s over nine warm requests, fully offloaded to the iGPU, and Qwen2.5-VL vision worked before and after a process restart. This does not yet replace the installed 0.31.2 system-service buyer profile because no package upgrade or full-host reboot was performed. |
 | Ollama 0.32.3 | **Isolated qualification passed and preserved as a measured baseline:** same-cache Qwen3.6 measured 73.13 t/s versus 73.20 on 0.31.2 with exact outputs; Qwen2.5-VL fully offloaded to the iGPU, read the image correctly, and repeated after process restart. The existing 0.31.2 installed-service profile remains the reboot-qualified buyer default; Qwen3.8 itself was measured on 0.32.13. |
-| Ollama 0.32.15 | **Current unmeasured buyer-path target:** adds later runtime/cache/metadata fixes, but does not inherit the guide's 0.32.13 Qwen3.8 measurements. Upstream issue #17906 reports that Anthropic-compatible `thinking: xhigh` is mapped to a Qwen3.8-rejected `high` value on 0.32.13 and 0.32.15; native `/api/chat` worked in that report. Reproduce both routes before changing advice. |
+| Ollama 0.33.2 | **Current unmeasured buyer-path target:** adds later runtime/cache/metadata fixes, but does not inherit the guide's 0.32.13 Qwen3.8 measurements. Upstream issue #17906 reports that Anthropic-compatible `thinking: xhigh` is mapped to a Qwen3.8-rejected `high` value on 0.32.13 and 0.32.15; native `/api/chat` worked in that report. Reproduce both routes before changing advice. |
 | vLLM 0.26.0 | **Current isolated ROCm target:** the release adds AMD-relevant DeepSeek V4 speculative/prefill work, MiniMax-M3 kernels, and Qwen MoE fusion. Recheck the 0.25.1 long-warmup behavior and the measured ROCm 7.14 hipBLASLt sentinel before recommending it on `gfx1151`. |
 | SGLang 0.5.17 | **Current isolated ROCm target:** supersedes 0.5.16. Use a small supported sentinel first and keep MI350/gfx950 release evidence separate from Strix Halo `gfx1151`; no local pass is implied. |
 | `llama.cpp` b10330 | **Narrow local qualification complete:** default HIP generated coherent Qwen3-Next output at about 50-51 t/s without a gfx override; Qwen3-Next MTP reached 83.52-83.60 t/s on HIP but regressed to 12.37-12.58 t/s on Vulkan; Qwen3-TTS generated speech that passed an ASR content check. The `GGML_CUDA_ENABLE_UNIFIED_MEMORY=1` practical-model control repeatedly corrupted output, so it is not a safe generic recommendation. |
@@ -428,7 +428,7 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 - vLLM 0.25.1: <https://github.com/vllm-project/vllm/releases/tag/v0.25.1>
 - SGLang 0.5.15.post1: <https://github.com/sgl-project/sglang/releases/tag/v0.5.15.post1>
 - Ollama 0.32.5: <https://github.com/ollama/ollama/releases/tag/v0.32.5>
-- Ollama 0.32.15: <https://github.com/ollama/ollama/releases/tag/v0.32.15>
+- Ollama 0.33.2: <https://github.com/ollama/ollama/releases/tag/v0.33.2>
 - Qwen3.8 GMKtec evidence package: <https://github.com/KyaniteLabs/qwen38-27b-strix-halo>
 - Qwen3.8 official `llama.cpp` discussion: <https://github.com/ggml-org/llama.cpp/discussions/27154>
 - Qwen3.8 MTP community matrix: <https://github.com/sudoingX/qwen38-mtp>

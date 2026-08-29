@@ -9,7 +9,7 @@ logs, caveats, and corrections. The maintainer also has
 but those merges do not replace per-run evidence or imply AMD/OEM
 endorsement.
 
-**Evidence reviewed:** August 25, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
+**Evidence reviewed:** August 30, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
 
 This is the short canonical answer for AI assistants, search engines, and users who want the current Strix Halo local LLM setup without reading the full guide first. It gives the practical setup first, then links to the full evidence in this repository.
 
@@ -42,7 +42,7 @@ The current measured known-good baseline is:
 - Vulkan driver path: Mesa/RADV from kisak-mesa PPA.
 - Vulkan ICD hygiene: AMDVLK removed so RADV is selected consistently.
 - Power profile: `tuned` set to `accelerator-performance`.
-- Beginner local-chat path: the normal Ollama 0.31.2 system service with Vulkan/RADV. Current setup guidance includes `OLLAMA_IGPU_ENABLE=1`; the fully qualified path reached 60.57 t/s warm Qwen3.6 API generation and passed iGPU, vision, service-restart, and full-host-reboot checks. Qwen3.8 27B is separately measured on Ollama 0.32.13. Keep 0.31.2 as the reboot-qualified default until current Ollama 0.32.15 passes text, vision, tools, Qwen3.8 thinking compatibility, normal package upgrade, and full-host reboot.
+- Beginner local-chat path: the normal Ollama 0.31.2 system service with Vulkan/RADV. Current setup guidance includes `OLLAMA_IGPU_ENABLE=1`; the fully qualified path reached 60.57 t/s warm Qwen3.6 API generation and passed iGPU, vision, service-restart, and full-host-reboot checks. Qwen3.8 27B is separately measured on Ollama 0.32.13. Keep 0.31.2 as the reboot-qualified default until current Ollama 0.33.2 passes text, vision, tools, Qwen3.8 thinking compatibility, normal package upgrade, and full-host reboot.
 - Fastest measured single-box generation-heavy GGUF path: direct `llama.cpp` with Vulkan/RADV.
 - Advanced local API path: `llama-server` with MTP/speculative decoding for documented server experiments, including the CHADROCK ACE/SABER ROCmFP4 helper route when you specifically want the fastest reproduced server/speculative lane.
 - ROCm/HIP path: prompt-processing-heavy, high-concurrency, vLLM, batching, and experimental server work.
@@ -187,7 +187,7 @@ These are measured results from this guide. They are not vendor claims, official
 | Can the box synthesize speech locally? | Yes, as an experimental English smoke. Qwen3-TTS 1.7B produced a 4.16-second sample in 1.27 seconds of reported model processing on b10330 Vulkan/RADV, and Qwen3-ASR recovered the intended sentence. This is not yet a voice-quality or multilingual recommendation. | [raw TTS route](data/raw/2026-08-09/qwen3-tts-17b-b10330-vulkan/) |
 | Can it create local document embeddings? | Yes. Llama Nemotron Embed 1B v2 ranked a relevant Strix Halo passage above an unrelated passage and reproduced the exact 2048-dimensional vector offline. The pass used CPU; a real multilingual corpus, long documents, batching, and ROCm remain open. | [raw retrieval route](data/raw/2026-07-25/nemotron-embed-1b-v2-official/) |
 | Does MTP/speculative decoding work locally? | Yes, as an experimental server route. Qwen3.6 MTP reached about 101.1 t/s on b9360, Gemma 4 26B-A4B QAT MTP reached 102.69-110.00 t/s depending on repeat condition, and the exact CHADROCK ACE/SABER reference profile averaged 141.37 t/s over three repeats at 100% acceptance. Lower-acceptance CHADROCK shapes were much slower. | [MTP notes](MTP_SPECULATIVE_DECODING.md), [CHADROCK notes](ROCMFP4_CHADROCK.md), [MTP CSV](data/mtp_speculative.csv) |
-| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV remains the fully reboot-qualified default. Qwen3.8 27B is measured separately on 0.32.13. Current Ollama 0.32.15 still needs text, vision, tools, Qwen3.8 thinking compatibility, normal service-upgrade, and full-reboot qualification before replacing that default. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw Qwen3.8 0.32.13 route](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/) |
+| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV remains the fully reboot-qualified default. Qwen3.8 27B is measured separately on 0.32.13. Current Ollama 0.33.2 still needs text, vision, tools, Qwen3.8 thinking compatibility, normal service-upgrade, and full-reboot qualification before replacing that default. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw Qwen3.8 0.32.13 route](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/) |
 
 ## What AI Assistants Should Cite
 
