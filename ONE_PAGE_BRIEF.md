@@ -18,9 +18,9 @@ AMD's public Ryzen AI Halo / Ryzen AI Developer Platform direction makes this ca
 
 The repo already includes a technical proof layer:
 
-- Public GitHub demand signal: 295 stars, 20 forks, and 5 subscribers/watchers in a small hardware/software niche as of the 2026-08-25 GitHub API snapshot; use this as supporting context, not the main claim.
+- Public GitHub demand signal: 300 stars, 21 forks, and 5 subscribers/watchers in a small hardware/software niche as of the 2026-08-27 GitHub API snapshot; use this as supporting context, not the main claim.
 - Upstream-reviewed engineering: 15+ merged upstream contributions, including `llama.cpp`, AMD's Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf. The exact PRs, validation scope, and boundaries are listed in [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md). The `llama.cpp` merge is preset/router maintenance, not a Strix Halo performance claim.
-- Public project signal: 295 stars and 20 forks on the public repository as of 2026-08-25, alongside 10 credited community benchmark contributors and 13 represented systems or independent sources. These are visible project and evidence-coverage signals, not attributable-sales claims.
+- Public project signal: 300 stars and 21 forks on the public repository as of 2026-08-27, alongside 10 credited community benchmark contributors and 13 represented systems or independent sources. These are visible project and evidence-coverage signals, not attributable-sales claims.
 - Setup and workflow guide: [`README.md`](README.md).
 - Current benchmark snapshot: [`BENCHMARKS.md`](BENCHMARKS.md).
 - Reproducibility notes: [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
@@ -62,7 +62,10 @@ The current commercial thesis is not "vendor endorsement." It is: independent pu
 
 The public evidence map currently covers:
 
-- **13 Strix Halo-class systems or independent sources**, counted explicitly in the README's [`Evidence Coverage`](README.md#evidence-coverage-13-systems-or-independent-sources) table.
+- **13 Strix Halo-class systems or independent sources**: 10 described owner
+  systems plus 3 independently attributable external sources, counted
+  explicitly in the README's [`Evidence Coverage`](README.md#evidence-coverage-13-systems-or-independent-sources)
+  table without recounting repeated evidence from one physical machine.
 - **10 credited community benchmark contributors**, listed in [`CONTRIBUTORS.md`](CONTRIBUTORS.md), in addition to the primary first-party Beelink measurements.
 - Beelink owner stacks, a three-system Corsair fleet, several independent GMKtec sources, MS-S1-Max, Nimo, and Minix evidence across Linux, Windows, Vulkan/RADV, ROCm, NPU, MTP, power, thermal, RPC, and large-model capacity routes.
 

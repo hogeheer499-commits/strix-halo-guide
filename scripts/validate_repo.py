@@ -174,6 +174,7 @@ def check_system_evidence_matrix(errors: list[str]) -> None:
         "count",
         "evidence_class",
         "system",
+        "identity_basis",
         "os_or_route",
         "coverage",
         "main_evidence",
@@ -207,6 +208,8 @@ def check_system_evidence_matrix(errors: list[str]) -> None:
         return
 
     total = 0
+    owner_systems = 0
+    independent_sources = 0
     seen_sources: set[str] = set()
     for line_number, row in enumerate(rows, start=2):
         source = row["evidence_source"].strip()
@@ -237,6 +240,17 @@ def check_system_evidence_matrix(errors: list[str]) -> None:
                 "data/system_evidence_matrix.csv line "
                 f"{line_number}: unsupported evidence_class {evidence_class}"
             )
+        elif evidence_class in {"first-party-retail", "community-reported-owner"}:
+            owner_systems += count
+        else:
+            independent_sources += count
+
+        identity_basis = row["identity_basis"].strip()
+        if not identity_basis:
+            errors.append(
+                "data/system_evidence_matrix.csv line "
+                f"{line_number}: empty identity_basis"
+            )
 
         evidence_path = row["main_evidence"].strip()
         if not evidence_path:
@@ -255,17 +269,25 @@ def check_system_evidence_matrix(errors: list[str]) -> None:
         "README.md": (
             f"Evidence Coverage: {total} Systems Or Independent Sources",
             f"{total}_systems%2Fsources",
+            f"{owner_systems} described owner systems plus {independent_sources} independently attributable",
             "SYSTEM_EVIDENCE_MATRIX.md",
             "data/system_evidence_matrix.csv",
         ),
         "SYSTEM_EVIDENCE_MATRIX.md": (
             f"**{total} owner systems or independent sources**",
+            f"**{owner_systems} described owner",
+            f"plus {independent_sources} independently attributable",
             "data/system_evidence_matrix.csv",
         ),
-        "data/README.md": ("system_evidence_matrix.csv",),
+        "data/README.md": (
+            "system_evidence_matrix.csv",
+            f"{owner_systems} described owner systems and {independent_sources} independently attributable",
+        ),
         "docs/index.md": (f"covers {total} Strix Halo-class systems",),
         "ONE_PAGE_BRIEF.md": (
             f"**{total} Strix Halo-class systems or independent sources**",
+            f"{owner_systems} described owner",
+            f"plus {independent_sources} independently attributable",
         ),
         "docs/llms.txt": (
             "SYSTEM_EVIDENCE_MATRIX.md",
@@ -333,6 +355,16 @@ def check_public_state(errors: list[str]) -> None:
     coverage = state["coverage"]
     public_project = state["public_project_snapshot"]
     reviewed_human = state["evidence_reviewed_human"]
+    affiliate_checked = date.fromisoformat(state["affiliate_status"]["checked"])
+    affiliate_checked_human = (
+        f"{affiliate_checked.strftime('%B')} {affiliate_checked.day}, {affiliate_checked.year}"
+    )
+    if coverage.get("owner_systems", 0) + coverage.get("independent_sources", 0) != coverage.get(
+        "systems_or_sources"
+    ):
+        errors.append(
+            "data/public_state.json coverage split does not add up to systems_or_sources"
+        )
     required_fragments = {
         "README.md": (
             "QWEN38_STRIX_HALO.md",
@@ -350,15 +382,32 @@ def check_public_state(errors: list[str]) -> None:
             "QWEN38_STRIX_HALO.md",
             f"Ollama {runtime['ollama_current_checked']}",
         ),
-        "SHARE.md": (
-            "Qwen3.8",
-            f"Ollama {runtime['ollama_current_checked']}",
-            "no affiliate links as of August 25, 2026",
-        ),
         "TRACTION.md": (
             f"Repository-stat snapshot date: {public_project['date']}",
             f"| Stars | {public_project['stars']} |",
             f"| Forks | {public_project['forks']} |",
+        ),
+        "ONE_PAGE_BRIEF.md": (
+            f"{public_project['stars']} stars",
+            f"{public_project['forks']} forks",
+            public_project["date"],
+        ),
+        "PARTNERSHIP.md": (
+            f"{public_project['stars']} GitHub stars",
+            f"{public_project['forks']} forks",
+            public_project["date"],
+        ),
+        "SHARE.md": (
+            "Qwen3.8",
+            f"Ollama {runtime['ollama_current_checked']}",
+            f"no affiliate links as of {affiliate_checked_human}",
+            f"Public benchmark evidence covers {coverage['systems_or_sources']} owner systems or independent sources",
+            f"{coverage['owner_systems']} described owner systems plus {coverage['independent_sources']} independently attributable external sources",
+            f"{coverage['community_benchmark_contributors']} credited community benchmark contributors",
+        ),
+        "CONTRIBUTORS.md": (
+            f"credits **{coverage['community_benchmark_contributors']}** community benchmark contributors",
+            f"**{coverage['systems_or_sources']} owner systems or independent sources**",
         ),
         "docs/index.md": (
             f"**Evidence reviewed:** {reviewed_human}",

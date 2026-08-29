@@ -26,12 +26,14 @@
   },
   "coverage": {
     "systems_or_sources": 13,
+    "owner_systems": 10,
+    "independent_sources": 3,
     "community_benchmark_contributors": 10
   },
   "public_project_snapshot": {
-    "date": "2026-08-25",
-    "stars": 295,
-    "forks": 20
+    "date": "2026-08-27",
+    "stars": 300,
+    "forks": 21
   },
   "affiliate_status": {
     "links_present": false,

@@ -430,7 +430,13 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 
 ### Evidence Coverage: 13 Systems Or Independent Sources
 
-The count includes separately measured owner systems or independently sourced reports, not thirteen unique product models. This makes the public `13 systems/sources` claim auditable without treating every row as an equal-quality benchmark.
+The count is **10 described owner systems plus 3 independently attributable
+external evidence sources**. One physical owner system counts once regardless
+of how many results it contributes; separate physical machines count
+separately even when they are the same product or belong to the same
+contributor. External packages whose unique hardware identity cannot be safely
+proved remain labelled as sources. This makes the public `13 systems/sources`
+claim auditable without treating every row as an equal-quality benchmark.
 
 For a reviewer-friendly cross-OEM view of what each source proves, how the evidence classes differ, and which validation is still missing, see the [`AMD Strix Halo System Evidence Matrix`](SYSTEM_EVIDENCE_MATRIX.md). A machine-readable version is available at [`data/system_evidence_matrix.csv`](data/system_evidence_matrix.csv).
 

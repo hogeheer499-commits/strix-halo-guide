@@ -70,6 +70,23 @@ https://github.com/hogeheer499-commits/strix-halo-guide
 This wording is intentionally neutral. Do not change it to `I built` unless you
 are the maintainer, and do not imply that you measured a result unless you did.
 
+## Current Coverage Wording
+
+Use this exact distinction in profiles, CVs, project descriptions, and short
+public summaries:
+
+```text
+Public benchmark evidence covers 13 owner systems or independent sources.
+The auditable split is 10 described owner systems plus 3 independently attributable external sources, with 10 credited community benchmark contributors.
+Repeated evidence from one physical machine counts once.
+```
+
+Independent community reproductions exist on multiple Strix Halo systems, but
+do not shorten that to `benchmarks reproduced on 13 systems`. The 13-entry map
+also includes the first-party system, external evidence packages, capacity and
+failure evidence, and unlike benchmark routes. It is an evidence-coverage
+count, not a claim that one matched benchmark ran on all 13 entries.
+
 ## Short Share Text
 
 ```text

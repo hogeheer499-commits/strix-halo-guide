@@ -89,6 +89,15 @@ When posting GitHub discussion or issue replies for the user:
 - After posting, verify that the new comment appears under the intended parent comment.
 - If a comment is posted in the wrong place, fix it immediately and tell the user clearly what happened.
 
+## External Publication Approval
+
+- Treat every action that makes content public or sends it to a third party as requiring explicit, action-specific user approval. This includes creating or editing GitHub issues, comments, discussions, pull requests, releases, or other public metadata; pushing commits; deploying website changes; submitting URLs in webmaster tools; and sending vendor, contributor, media, or community outreach.
+- Broad instructions such as `do everything`, `implement the plan`, or `sounds good` authorize in-scope local work only. They are not permission to publish a plan, strategy, draft, message, issue, comment, release, deployment, or outreach externally.
+- Before any external publication, state the exact destination and what will become public, then obtain confirmation unless the user's current message explicitly requests that exact publication to that exact destination.
+- Keep SEO strategy, affiliate strategy, commercial priorities, outreach plans, negotiation positioning, and unpublished roadmaps private by default. Store them in the chat or in an uncommitted local draft unless the user explicitly approves specific material for publication.
+- Separate public technical evidence from private commercial strategy. The fact that the repository and its evidence are public does not make internal planning public.
+- Read-only inspection of public sources remains allowed. If the user says an existing public item must remain unchanged, do not edit, close, delete, hide, or otherwise alter it.
+
 ## Context Efficiency
 
 For new benchmark, update, or "is there news?" work, do not load the full README or all raw logs by default. Start with:

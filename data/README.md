@@ -14,7 +14,12 @@ python3 scripts/generate_charts.py
 
 - `headline_claims.csv`: machine-readable map from public README headline claims to structured CSVs, raw evidence, charts, and notes.
 - `best_known_profiles.csv`: compact workload-to-runtime recommendation index for setup tools, AI answers, buyers, and reviewers. It links to existing evidence instead of duplicating raw benchmark history.
-- `system_evidence_matrix.csv`: compact cross-OEM index of the 13 counted systems or independent sources, their evidence class, represented routes, primary evidence, and the most useful missing validation. It is a coverage map, not a benchmark ranking.
+- `system_evidence_matrix.csv`: compact cross-OEM index of the 13 counted
+  entries: 10 described owner systems and 3 independently attributable
+  external sources. Its identity field records why each entry is separate.
+  Repeated evidence from one physical machine does not increase the count;
+  separate machines may count separately even when they share a product model
+  or owner. It is a coverage map, not a benchmark ranking.
 - `current_test_queue.csv`: prioritized candidate/runtime queue with readiness, estimated artifact size, blockers, and the buyer question each unmeasured test should answer. It is not a benchmark-claim file.
 - `public_state.json`: one dated source for the release, runtime, Qwen3.8, community-coverage, public project, and affiliate-disclosure facts repeated across public entry pages. The repository validator fails when this state becomes stale or those pages diverge.
 - `qwen38_route_matrix.csv`: claim-separated index of the measured official route, external/community performance routes, current caveats, and the matched comparison still required. Community values are leads, not guide-owned headline results.

@@ -4,14 +4,14 @@ This page records public, independently checkable project signals. It supports
 vendor and reviewer conversations, but it does not claim attributable hardware
 sales, buyer conversion, endorsement, or private audience behavior.
 
-Repository-stat snapshot date: 2026-08-25.
+Repository-stat snapshot date: 2026-08-27.
 
 ## Current Public Snapshot
 
 | Metric | Current value | Public source |
 | --- | ---: | --- |
-| Stars | 295 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) |
-| Forks | 20 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| Stars | 300 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) |
+| Forks | 21 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) |
 | GitHub contributors | 4 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
 | Credited community benchmark contributors | 10 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
 | Strix Halo-class systems or independent sources represented | 13 | [`SYSTEM_EVIDENCE_MATRIX.md`](SYSTEM_EVIDENCE_MATRIX.md) |
@@ -19,6 +19,11 @@ Repository-stat snapshot date: 2026-08-25.
 These counts are public project and evidence-coverage signals. They do not show
 who bought hardware, whether the guide caused a sale, or how readers moved
 through the repository.
+
+The coverage total is `10 described owner systems + 3 independently
+attributable external sources`. Repeated reports from one physical machine do
+not increase the count; separate physical machines can count separately even
+when they are the same model or belong to one contributor.
 
 ## What The Public Evidence Supports
 

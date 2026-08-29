@@ -4,7 +4,13 @@ This guide is maintained as an evidence-first Strix Halo local AI reference. Com
 
 ## Community Benchmark Contributors
 
-As of 2026-07-14, this section credits eight community benchmark contributors. This count is separate from GitHub's commit-contributor count and from the eleven systems or independent sources represented in the evidence map.
+As of 2026-08-25, this section credits **10** community benchmark contributors.
+This count is separate from GitHub's commit-contributor count and from the
+**13 owner systems or independent sources** represented in the evidence map.
+Repeated reports from one physical machine do not increase the system count;
+separate machines may count separately even when they are the same product or
+belong to the same contributor. See [`SYSTEM_EVIDENCE_MATRIX.md`](SYSTEM_EVIDENCE_MATRIX.md)
+for the identity and evidence boundary of every counted entry.
 
 ### [Fail-Safe](https://github.com/Fail-Safe)
 

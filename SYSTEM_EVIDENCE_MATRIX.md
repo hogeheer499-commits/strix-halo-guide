@@ -5,13 +5,35 @@ Strix Halo Guide. It is designed for buyers, reviewers, contributors, and OEM
 engineering teams that need to see what has actually been measured, what kind
 of evidence exists, and what still needs independent validation.
 
-The count is **13 owner systems or independent sources**, not 13 unique product
-models and not 13 directly comparable benchmark systems. First-party Beelink
-measurements remain separate from community reports. Direct `llama-bench`,
-server/API, MTP/speculative, capacity, power, thermal, RPC, NPU, and failure
-evidence are not blended into one score.
+The count is **13 owner systems or independent sources**: **10 described owner
+systems plus 3 independently attributable external evidence sources**. It is
+not a claim of 13 unique product models or 13 directly comparable benchmark
+systems. First-party Beelink measurements remain separate from community
+reports. Direct `llama-bench`, server/API, MTP/speculative, capacity, power,
+thermal, RPC, NPU, and failure evidence are not blended into one score.
 
 Machine-readable summary: [`data/system_evidence_matrix.csv`](data/system_evidence_matrix.csv)
+
+## Counting Method And Duplicate Guard
+
+- One physical owner system counts once, regardless of how many models,
+  backends, operating systems, follow-ups, or failed routes are reported from
+  that machine.
+- Separate physical machines count separately even when they are the same
+  product model or belong to the same contributor. The three named Corsair
+  fleet nodes therefore count as three systems.
+- An external report or public evidence package counts as one independent
+  source when it has its own attributable public evidence but the guide cannot
+  safely prove a unique physical-machine identity. It remains labelled a
+  source, not silently upgraded to a verified unique owner system.
+- No known physical machine is counted twice. The four GMKtec entries come
+  from four separately attributed contributors or organizations and are kept
+  in their exact owner/source evidence classes; the guide does not infer
+  uniqueness from the shared product name alone.
+
+This produces the auditable split `10 owner systems + 3 independent sources =
+13 systems/sources`. Evidence quality still varies by row, so the total is a
+coverage claim rather than a normalized validation score.
 
 ## Coverage Matrix
 
