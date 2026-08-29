@@ -6,7 +6,7 @@ permalink: /
 canonical_url: "https://strixhaloguide.com/"
 sitemap: false
 date: "2026-06-13T22:57:42+02:00"
-last_modified_at: "2026-08-25T00:00:00+02:00"
+last_modified_at: "2026-08-30T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo Local LLM Guide with direct, server, and unified-memory evidence highlights"
 seo:
   type: "TechArticle"
-  date_modified: "2026-08-25T00:00:00+02:00"
+  date_modified: "2026-08-30T00:00:00+02:00"
 ---
 
 # Strix Halo Local LLM Setup for AMD Ryzen AI MAX+ 395
@@ -38,7 +38,12 @@ Deciding which system to buy? Use the [Strix Halo mini PC comparison](https://ho
 
 For the current official dense Qwen route, use [Qwen3.8 27B on Strix Halo](https://hogeheer499-commits.github.io/strix-halo-guide/qwen38-strix-halo/): the measured official Ollama path, context boundary, external 262K-class evidence, and why current 52-65 t/s community routes are not directly comparable. For platform terminology and scope, read [AMD Ryzen AI Halo versus retail Strix Halo systems](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/RYZEN_AI_HALO_CONTEXT.md).
 
-**Jump to:** [focused setup answer](https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/) | [Qwen3.8](https://hogeheer499-commits.github.io/strix-halo-guide/qwen38-strix-halo/) | [why trust this guide](#why-trust-this-guide) | [quick setup](#quick-setup-summary) | [best current setup](#best-current-setup) | [measured evidence](#evidence-highlights) | [FAQ](#faq) | [source files](#source-of-truth)
+For symptom-first fixes, use the [Strix Halo troubleshooting page](https://hogeheer499-commits.github.io/strix-halo-guide/troubleshooting/).
+For model selection, use the [Strix Halo model hub](https://hogeheer499-commits.github.io/strix-halo-guide/strix-halo-models/),
+which separates guide-measured routes from models verified to exist but not
+measured here.
+
+**Jump to:** [focused setup answer](https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/) | [troubleshooting](https://hogeheer499-commits.github.io/strix-halo-guide/troubleshooting/) | [models](https://hogeheer499-commits.github.io/strix-halo-guide/strix-halo-models/) | [Qwen3.8](https://hogeheer499-commits.github.io/strix-halo-guide/qwen38-strix-halo/) | [why trust this guide](#why-trust-this-guide) | [quick setup](#quick-setup-summary) | [best current setup](#best-current-setup) | [measured evidence](#evidence-highlights) | [FAQ](#faq) | [source files](#source-of-truth)
 
 The evidence map currently covers 13 Strix Halo-class systems or independent
 sources from 10 credited community benchmark contributors: 10 described owner

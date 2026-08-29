@@ -6,7 +6,7 @@ permalink: /amd-strix-halo-setup/
 canonical_url: "https://strixhaloguide.com/amd-strix-halo-setup/"
 sitemap: false
 date: "2026-08-14T00:00:00+02:00"
-last_modified_at: "2026-08-25T00:00:00+02:00"
+last_modified_at: "2026-08-30T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo Local LLM Guide with direct, server, and unified-memory evidence highlights"
 seo:
   type: "TechArticle"
-  date_modified: "2026-08-25T00:00:00+02:00"
+  date_modified: "2026-08-30T00:00:00+02:00"
 ---
 
 # AMD Strix Halo Setup: BIOS, UMA, IOMMU, Ubuntu and Local LLMs
@@ -38,6 +38,11 @@ Running the current official dense Qwen model? Use the dedicated
 [Qwen3.8 27B on Strix Halo route comparison](https://hogeheer499-commits.github.io/strix-halo-guide/qwen38-strix-halo/)
 for the measured Ollama path, context boundary, MTP/DFlash distinctions, and
 current community performance leads.
+
+If setup is already failing, use the symptom-first
+[Strix Halo troubleshooting page](https://hogeheer499-commits.github.io/strix-halo-guide/troubleshooting/).
+To choose between measured routes and newer unmeasured artifacts, use the
+[Strix Halo model hub](https://hogeheer499-commits.github.io/strix-halo-guide/strix-halo-models/).
 
 ## What Is AMD Strix Halo?
 

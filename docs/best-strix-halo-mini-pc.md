@@ -17,6 +17,8 @@ seo:
 
 # Best Strix Halo Mini PC for Local LLMs (2026)
 
+**Evidence reviewed:** August 30, 2026.
+
 Start with the independent [Strix Halo Guide](https://strixhaloguide.com/) for
 the current setup and evidence model; use this page for the buyer comparison.
 
@@ -148,4 +150,4 @@ The industry-wide DRAM shortage: 128GB of LPDDR5X is the dominant cost of these 
 
 ---
 
-Community corrections are welcome — open an issue in the [repository](https://github.com/hogeheer499-commits/strix-halo-guide/issues). Pricing rows are dated snapshots, not live quotes. This page contains no affiliate links as of 2026-08-30; if that changes, links will be disclosed next to the relevant product and per [`VENDOR_DISCLOSURE.md`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/VENDOR_DISCLOSURE.md).
+Community corrections are welcome — open an issue in the [repository](https://github.com/hogeheer499-commits/strix-halo-guide/issues). Pricing rows are dated snapshots, not live quotes. This page contains no affiliate links as of August 30, 2026; if that changes, links will be disclosed next to the relevant product and per [`VENDOR_DISCLOSURE.md`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/VENDOR_DISCLOSURE.md).

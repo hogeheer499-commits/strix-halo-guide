@@ -4,7 +4,7 @@ title: "Qwen3.8 27B on AMD Strix Halo: Setup, Speed Routes, and Context Evidence
 description: "Run Qwen3.8 27B on Ryzen AI MAX+ 395 / Radeon 8060S: official Ollama setup, measured 20.42 t/s route, 50K local retrieval, external 262K evidence, MTP, DFlash, and current 52-65 t/s claims explained."
 permalink: /qwen38-strix-halo/
 date: "2026-08-25T00:00:00+02:00"
-last_modified_at: "2026-08-25T00:00:00+02:00"
+last_modified_at: "2026-08-30T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/qwen38-route-preview.png"
   height: 640
@@ -12,7 +12,7 @@ image:
   alt: "Qwen3.8 27B routes on AMD Strix Halo with measured official and external context evidence"
 seo:
   type: "TechArticle"
-  date_modified: "2026-08-25T00:00:00+02:00"
+  date_modified: "2026-08-30T00:00:00+02:00"
 ---
 
 # Qwen3.8 27B on AMD Strix Halo
@@ -87,4 +87,6 @@ or submit a [benchmark report](https://github.com/hogeheer499-commits/strix-halo
 This guide contains no affiliate links as of August 30, 2026. Future affiliate,
 loaned, gifted, sponsored, or early-access relationships must be disclosed near
 the relevant links/results and do not buy positive conclusions. Community
-results remain separate from first-party measurements.
+results remain separate from first-party measurements. The public
+[affiliate link registry](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/affiliate_link_registry.csv)
+remains the audit source if that status changes.

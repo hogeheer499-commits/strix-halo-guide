@@ -7,6 +7,7 @@ structure without running benchmarks or requiring local models.
 
 from __future__ import annotations
 
+import ast
 import csv
 import json
 import re
@@ -370,6 +371,7 @@ def check_public_state(errors: list[str]) -> None:
             "QWEN38_STRIX_HALO.md",
             f"{coverage['systems_or_sources']} systems or independent sources",
             "data/public_state.json",
+            "strix-halo-models/",
         ),
         "QWEN38_STRIX_HALO.md": (
             f"**Evidence reviewed:** {reviewed_human}",
@@ -409,18 +411,62 @@ def check_public_state(errors: list[str]) -> None:
             f"credits **{coverage['community_benchmark_contributors']}** community benchmark contributors",
             f"**{coverage['systems_or_sources']} owner systems or independent sources**",
         ),
+        "BEST_KNOWN_PROFILES.md": (
+            f"**Profiles reviewed:** {reviewed_human}",
+            "data/best_known_profiles.csv",
+        ),
+        "BENCHMARKS.md": (
+            f"**Benchmarks reviewed:** {reviewed_human}",
+            "data/benchmarks.csv",
+        ),
+        "REPRODUCIBILITY.md": (
+            f"**Checklist reviewed:** {reviewed_human}",
+            "data/headline_claims.csv",
+        ),
         "docs/index.md": (
             f"**Evidence reviewed:** {reviewed_human}",
             f"Ollama {runtime['ollama_current_checked']}",
             "qwen38-strix-halo/",
+            "troubleshooting/",
+            "strix-halo-models/",
         ),
         "docs/amd-strix-halo-setup.md": (
             f"**Setup reviewed:** {reviewed_human}",
             "qwen38-strix-halo/",
+            "troubleshooting/",
+            "strix-halo-models/",
             "https://strixhaloguide.com/amd-strix-halo-setup/",
+        ),
+        "docs/best-strix-halo-mini-pc.md": (
+            f"**Evidence reviewed:** {reviewed_human}",
+            f"no affiliate links as of {affiliate_checked_human}",
+            "data/affiliate_link_registry.csv",
+        ),
+        "docs/qwen38-strix-halo.md": (
+            f"**Evidence reviewed:** {reviewed_human}",
+            f"no affiliate links as of {affiliate_checked_human}",
+            f"Ollama {runtime['ollama_current_checked']}",
+            "data/qwen38_route_matrix.csv",
+        ),
+        "docs/troubleshooting.md": (
+            f"**Evidence reviewed:** {reviewed_human}",
+            f"no affiliate links as of {affiliate_checked_human}",
+            "OLLAMA_IGPU_ENABLE=1",
+            "linux-firmware-20251125",
+            "llama.cpp/issues/26209",
+            "llama.cpp/pull/25863",
+        ),
+        "docs/models.md": (
+            f"**Evidence reviewed:** {reviewed_human}",
+            f"no affiliate links as of {affiliate_checked_human}",
+            "Measured On This Machine",
+            "Verified To Exist, Not Measured Here (2026-08-29 Check)",
+            "data/current_test_queue.csv",
         ),
         "docs/llms.txt": (
             "qwen38-strix-halo/",
+            "troubleshooting/",
+            "strix-halo-models/",
             "QWEN38_STRIX_HALO.md",
             "data/qwen38_route_matrix.csv",
         ),
@@ -462,6 +508,36 @@ def check_public_state(errors: list[str]) -> None:
                 "data/affiliate_link_registry.csv has unexpected columns: "
                 f"{header}"
             )
+
+
+def check_duplicate_dict_literal_keys(errors: list[str]) -> None:
+    """Fail when a literal key would silently replace an earlier dict entry."""
+    path = Path(__file__)
+    try:
+        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+    except (OSError, SyntaxError) as exc:
+        errors.append(f"cannot inspect scripts/validate_repo.py dict literals: {exc}")
+        return
+
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Dict):
+            continue
+        seen: dict[object, int] = {}
+        for key_node in node.keys:
+            if key_node is None:
+                continue
+            try:
+                key = ast.literal_eval(key_node)
+                hash(key)
+            except (ValueError, TypeError, SyntaxError):
+                continue
+            if key in seen:
+                errors.append(
+                    "scripts/validate_repo.py has duplicate dict literal key "
+                    f"{key!r} on lines {seen[key]} and {key_node.lineno}"
+                )
+            else:
+                seen[key] = key_node.lineno
 
 
 def check_forbidden_text(files: list[Path], errors: list[str]) -> None:
@@ -617,6 +693,7 @@ def main() -> int:
     check_headline_claim_paths(errors)
     check_system_evidence_matrix(errors)
     check_public_state(errors)
+    check_duplicate_dict_literal_keys(errors)
     check_forbidden_text(files, errors)
     check_pages_seo(errors)
 

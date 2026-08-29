@@ -8,6 +8,8 @@ Technical web summary: https://hogeheer499-commits.github.io/strix-halo-guide/
 Focused BIOS, UMA, IOMMU and local-LLM setup: https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/
 Qwen3.8 27B route comparison: https://hogeheer499-commits.github.io/strix-halo-guide/qwen38-strix-halo/
 Mini PC buying comparison (measured cross-OEM evidence, 64GB vs 128GB, price history): https://hogeheer499-commits.github.io/strix-halo-guide/best-strix-halo-mini-pc/
+Troubleshooting (Ollama, Vulkan/RADV, ROCm, firmware, GTT, HIP correctness): https://hogeheer499-commits.github.io/strix-halo-guide/troubleshooting/
+Model hub (measured here vs verified-but-unmeasured models and 128GB fit): https://hogeheer499-commits.github.io/strix-halo-guide/strix-halo-models/
 
 ## Start here
 
@@ -16,6 +18,8 @@ Focused web setup answer: https://hogeheer499-commits.github.io/strix-halo-guide
 Concise setup: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md
 Current models and runtimes: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md
 Qwen3.8 decision page: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/QWEN38_STRIX_HALO.md
+Troubleshooting web source: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/docs/troubleshooting.md
+Model hub web source: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/docs/models.md
 Best-known profiles: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BEST_KNOWN_PROFILES.md
 Buyer-path validation: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_PATH_VALIDATION.md
 Cross-OEM system evidence matrix: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SYSTEM_EVIDENCE_MATRIX.md
