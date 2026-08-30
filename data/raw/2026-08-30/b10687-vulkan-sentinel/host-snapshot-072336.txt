@@ -1,0 +1,18 @@
+2026-08-30T07:23:36+02:00
+Linux hoge-heer-GTR-Pro 7.0.0-30-generic #30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+performance
+               total        used        free      shared  buff/cache   available
+Mem:           124Gi       8.9Gi        19Gi        66Mi        98Gi       116Gi
+GPU0:
+	apiVersion         = 1.4.354
+	driverVersion      = 26.1.7
+%CPU %MEM COMMAND
+24.1  0.0 python3
+ 5.0  0.2 gnome-shell
+ 2.7  0.0 python3
+ 2.5  0.3 rustdesk
+ 1.5  0.3 claude
+ 1.4  0.0 gjs
+ 1.3  0.0 napi/phy0-0
+linux-firmware 20240318.git3b128b60-0ubuntu2.27
+mesa-vulkan-drivers:amd64 26.1.7~kisak1~n

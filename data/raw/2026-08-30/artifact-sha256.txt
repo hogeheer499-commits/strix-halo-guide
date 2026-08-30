@@ -1,0 +1,5 @@
+2841aa314d916434860cfb8990347528dcdfe5c350dbcb9d1461dbee88ff2533  Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
+49e554f954afbfc9f627b8be236adf16c1e51d8e5ecaa0e65ac8ede4e2c41a56  Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf
+5ce89370720f8bf90890f439361282104c1aa1482d4013bb9a50923e758e71a4  qwen38-flash-next-ud-iq4xs/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf
+577a38a2392b40ca2193cea502e1d92f60b8cd370675d308e0ec21885d9daaa7  qwen38-flash-next-ud-iq4xs/Qwen3.8-Flash-Next-UD-IQ4_XS-00002-of-00003.gguf
+d4634e6d84f0ebb0940be15c90d3790bf6464e3dea3a1cddc567dc0e83ad8833  qwen38-flash-next-ud-iq4xs/Qwen3.8-Flash-Next-UD-IQ4_XS-00003-of-00003.gguf

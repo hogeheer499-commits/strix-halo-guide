@@ -1,0 +1,4 @@
+-rw-rw-r-- 1 hoge-heer hoge-heer    10946624 Aug 30 05:07 qwen38-flash-next-ud-iq4xs/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf
+-rw-rw-r-- 1 hoge-heer hoge-heer 49835229856 Aug 30 06:09 qwen38-flash-next-ud-iq4xs/Qwen3.8-Flash-Next-UD-IQ4_XS-00002-of-00003.gguf
+-rw-rw-r-- 1 hoge-heer hoge-heer 43836407744 Aug 30 07:01 qwen38-flash-next-ud-iq4xs/Qwen3.8-Flash-Next-UD-IQ4_XS-00003-of-00003.gguf
+-rw-rw-r-- 1 hoge-heer hoge-heer 17665334432 Aug 30 07:22 Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
