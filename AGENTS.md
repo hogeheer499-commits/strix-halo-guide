@@ -72,6 +72,14 @@ Higher t/s is useful, but it is not the only priority. Treat benchmarks as the p
 - Community results remain separated from first-party results unless clearly validated and labeled.
 - Sponsored work funds friction-removal and better public evidence; it does not buy positive coverage.
 
+## Maintainer Identity Rules
+
+- The maintainer's professional title is **software engineer**. If a role or title is ever recorded in public content, metadata, or structured data, use "software engineer" and nothing else.
+- Never describe the maintainer as an "AI engineer", "AI developer", "AI specialist", "AI consultant", "AI expert", or any equivalent AI-branded personal title. The work is software engineering; local AI is the subject matter, not the job title.
+- Preferred project-role wording stays "Strix Halo guide maintainer". Contribution-based framing ("upstream `llama.cpp` contributor") is allowed because it is verifiable, but it never replaces the professional title.
+- This applies to page titles, headings, bios, author fields, `CITATION.cff`, `docs/_config.yml`, schema.org `Person`/`jobTitle` markup, social previews, outreach templates, newsletters, and any partner-facing material.
+- AMD product and program names such as "Ryzen AI Developer Platform" or "AMD AI Developer Program" are unrelated to this rule; do not rewrite them.
+
 ## Link And Update Expectations
 
 - Link buyer-facing claims to evidence where possible: raw logs, CSVs, charts, `data/headline_claims.csv`, or topic docs.
