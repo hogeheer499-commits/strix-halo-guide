@@ -3,6 +3,8 @@ layout: default
 title: "Qwen3.8 27B on AMD Strix Halo: Setup, Speed Routes, and Context Evidence"
 description: "Run Qwen3.8 27B on Ryzen AI MAX+ 395 / Radeon 8060S: official Ollama setup, measured 20.42 t/s route, 50K local retrieval, external 262K evidence, MTP, DFlash, and current 52-65 t/s claims explained."
 permalink: /qwen38-strix-halo/
+canonical_url: "https://strixhaloguide.com/qwen38-strix-halo/"
+sitemap: false
 date: "2026-08-25T00:00:00+02:00"
 last_modified_at: "2026-08-30T00:00:00+02:00"
 image:
@@ -24,9 +26,7 @@ workload—and which published numbers are actually comparable.
 
 **Evidence reviewed:** August 30, 2026.
 
-Project home: [Strix Halo Guide](https://strixhaloguide.com/). The complete
-Qwen3.8 evidence page below remains on GitHub Pages until the matching
-`strixhaloguide.com` route is published and indexed.
+Project home: [Strix Halo Guide](https://strixhaloguide.com/). The [canonical Qwen3.8 evidence page](https://strixhaloguide.com/qwen38-strix-halo/) is on the project domain; this page remains a technical mirror.
 
 ## Fast Answer
 

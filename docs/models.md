@@ -3,6 +3,8 @@ layout: default
 title: "AMD Strix Halo Models: Measured Results, New GGUFs, and 128GB Fit"
 description: "Evidence-backed AMD Strix Halo model hub separating guide-measured local LLM routes from published 2026 model artifacts and published 128GB GGUF fit tiers."
 permalink: /strix-halo-models/
+canonical_url: "https://strixhaloguide.com/strix-halo-models/"
+sitemap: false
 date: "2026-08-30T00:00:00+02:00"
 last_modified_at: "2026-09-05T00:00:00+02:00"
 image:

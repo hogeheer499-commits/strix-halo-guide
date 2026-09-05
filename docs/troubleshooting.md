@@ -3,6 +3,8 @@ layout: default
 title: "AMD Strix Halo Troubleshooting: Ollama, Vulkan, ROCm, and Unified Memory"
 description: "Symptom-first troubleshooting for AMD Strix Halo local LLM setup: Ollama CPU fallback, llama.cpp batch clamps, RADV selection, firmware, GTT, ROCm overrides, and HIP correctness."
 permalink: /troubleshooting/
+canonical_url: "https://strixhaloguide.com/troubleshooting/"
+sitemap: false
 date: "2026-08-30T00:00:00+02:00"
 last_modified_at: "2026-09-05T00:00:00+02:00"
 image:

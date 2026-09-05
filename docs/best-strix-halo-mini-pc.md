@@ -3,6 +3,8 @@ layout: default
 title: "Best Strix Halo Mini PC for Local LLMs (2026): Beelink vs Framework vs GMKtec vs Corsair"
 description: "Evidence-based comparison of AMD Ryzen AI MAX+ 395 mini PCs for local LLMs: measured cross-OEM benchmarks, 64GB vs 128GB fit guidance, dated prices, and buy-now-or-wait timing."
 permalink: /best-strix-halo-mini-pc/
+canonical_url: "https://strixhaloguide.com/best-strix-halo-mini-pc/"
+sitemap: false
 date: "2026-08-21T00:00:00+02:00"
 last_modified_at: "2026-09-05T00:00:00+02:00"
 image:
