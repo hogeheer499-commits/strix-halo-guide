@@ -34,8 +34,10 @@ Maintainer credibility is public and reviewable: 15+ merged upstream contributio
 | Reviewing the project for a vendor or publication | [One-page brief](ONE_PAGE_BRIEF.md), [partnership scope](PARTNERSHIP.md), and [disclosure policy](VENDOR_DISCLOSURE.md) | Which buyer uncertainty the evidence removes and how independence is protected |
 
 **Current evidence state — August 30, 2026:** Qwen3.8 27B is measured through
-the official Ollama route; Ollama 0.33.2 and `llama.cpp` v0.3.0 / b10687 are
-current checked targets rather than inherited benchmark replacements. The
+the official Ollama route. The August 30 b10687 Vulkan sentinel and Flash-Next
+scout are now indexed with their own stack and caveats; see
+[the measured update](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout).
+Ollama 0.33.2 remains the unmeasured target from the August 30 upstream review. The
 machine-readable freshness record is [`data/public_state.json`](data/public_state.json).
 
 What you get:
@@ -104,6 +106,14 @@ reboot-qualified default: the official model is measured here, but its runtime,
 context boundary, and community performance routes need different caveats.
 
 ## Setup Script
+
+Fresh installations request **Ollama 0.31.2**, the reboot-qualified runtime.
+An existing installation is retained, with its version reported; it is not
+automatically downgraded. Set `OLLAMA_VERSION` explicitly to test another
+release. This pins only the requested runtime: model tags, Mesa and other
+packages can change, so record the actual stack and complete the reboot/GPU
+checks before comparing with a measured profile. See
+[Ollama version selection](https://docs.ollama.com/linux#installing-specific-versions).
 
 If you've already set your BIOS (UMA = 512MB if available, or 2GB if that is your vendor minimum; leave IOMMU enabled/default unless you deliberately choose the desktop benchmark profile) and installed Ubuntu 24.04:
 
@@ -498,17 +508,17 @@ Real-world generation speeds measured on the Beelink GTR9 Pro, primarily with Vu
 | Qwen3-Coder 30B-A3B (Q4_K_S) | 17.5 GB | MoE | **101.0 t/s** * | Fastest measured coding speed; speed-first quant, not the balanced default |
 | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | MoE | **97 t/s** * | Best coding-model speed/quality ratio; current b9049 measured 96.76 t/s and previous b9010 peak was 97.24 t/s |
 | Qwen3.6 35B-A3B (Q4_0) | 19.7 GB | MoE | **81 t/s** * | Fastest measured Qwen3.6 speed-first quant; use a balanced quant if quality matters more than raw speed |
-| Qwen3.6 35B-A3B (Q4_K_M / UD-Q4_K_M) | 20-22 GB | MoE | **63 t/s** * | Best all-rounder balanced direct path; separate speed-first/alternate quants reach higher but need quality sanity |
+| Qwen3.6 35B-A3B (Q4_K_M / UD-Q4_K_M) | 20-22 GB | MoE | **63 t/s** * | Balanced direct path; separate speed-first/alternate quants reach higher but need quality sanity |
 | Qwen3.5 35B-A3B | 23 GB | MoE | 48-**65 t/s** | General purpose, coding (65 with measured direct llama.cpp builds) |
-| Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | 51 t/s | Coding (highest quality MoE) |
-| Qwen3-Coder-Next | 51 GB | Dense | 38-39 t/s | Large dense model |
-| Llama 3.1 70B (Q4_K_M) | 42 GB | Dense | **4.7-4.9 t/s** | 70B intelligence, doesn't fit on RTX 4090 |
-| Llama 4 Scout 109B (Q4_K_M) | 61 GB | MoE | **18.3 t/s** * | 109B params on a mini PC -- RTX 4090 can't even load this |
+| Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | MoE | 51 t/s | Coding (higher-bit quant; no matched quality evaluation) |
+| Qwen3-Coder-Next | 51 GB | MoE (80B total / 3B active) | 38-39 t/s | Coding MoE; size is the measured artifact, not parameter count |
+| Llama 3.1 70B (Q4_K_M) | 42 GB | Dense | **4.7-4.9 t/s** | Dense 70B capacity; artifact exceeds 24GB VRAM without offload |
+| Llama 4 Scout 109B (Q4_K_M) | 61 GB | MoE | **18.3 t/s** * | 109B artifact on a mini PC; exceeds 24GB VRAM without offload |
 | Nemotron 3 Nano 30B-A3B (IQ4_XS) | 18.2 GB | MoE | **76.0 t/s** * | Practical NVIDIA Nemotron 30B-class route |
 | DeepSeek V4 Flash 284B (UD-IQ2_XXS) | 90.9 GB | MoE | **13.3 t/s** * | Largest current direct ordinary-GGUF capacity proof; low-bit quant, not a quality recommendation |
 | Nemotron 3 Super 120B-A12B (UD-IQ4_XS) | 64.5 GB | MoE | **18.4 t/s** * | Current 120B-class GGUF route on one 128GB Strix Halo |
 | gpt-oss-120b MXFP4 | 63.4 GB | MoE | **55.6 t/s** * | 117B-parameter open-weight model; local load and long-context speed check |
-| Qwen3-Next 80B-A3B (UD-Q4_K_XL) | 42.9 GB | MoE | **59 t/s** * | 80B model, 256K context -- faster than dense 51B |
+| Qwen3-Next 80B-A3B (UD-Q4_K_XL) | 42.9 GB | MoE | **59 t/s** * | 80B model, 256K context -- a separate 80B MoE route |
 | Kimi K2.5 1T (4-node cluster) | ~500 GB | MoE | distributed | [AMD technical article](https://www.amd.com/en/developer/resources/technical-articles/2026/how-to-run-a-one-trillion-parameter-llm-locally-an-amd.html) |
 
 ---
@@ -559,9 +569,9 @@ These generated SVGs summarize the current structured benchmark data. The CSV fi
 | Prompt Tokens | Prompt Eval | Generation | Notes |
 |---------------|-------------|------------|-------|
 | 12 | 118.3 t/s | **51.4 t/s** | Fastest via Ollama |
-| 21 | 205.2 t/s | **51.3 t/s** | Higher quality than Q4_K_M |
+| 21 | 205.2 t/s | **51.3 t/s** | Higher-bit quant than Q4_K_M; quality not evaluated here |
 
-**Qwen3-Coder-Next** (~51GB, dense):
+**Qwen3-Coder-Next** (~51GB artifact, 80B total / 3B active MoE):
 
 | Prompt Tokens | Prompt Eval | Generation | vs Previous |
 |---------------|-------------|------------|-------------|
@@ -585,7 +595,7 @@ These generated SVGs summarize the current structured benchmark data. The CSV fi
 | 23 | 36.8 t/s | 4.8 t/s | Realistic chat |
 | 122 | 79.6 t/s | 4.7 t/s | Long prompt |
 
-> **Why so slow?** This is a 42GB dense model -- every token reads all 42GB of weights. At ~215 GB/s bandwidth, the theoretical maximum is 215/42 = 5.1 t/s. We hit 4.8 t/s = **94% of the theoretical ceiling**. The model is slow not because of poor optimization, but because it's massive. An RTX 4090 (24GB VRAM) cannot run this model at all. This is the Strix Halo advantage: running models that don't fit on consumer GPUs.
+> **Why so slow?** This is a 42GB dense model -- every token reads all 42GB of weights. At ~215 GB/s bandwidth, the theoretical maximum is 215/42 = 5.1 t/s. We hit 4.8 t/s = **94% of the theoretical ceiling**. The model is slow not because of poor optimization, but because it's massive. This artifact cannot fit entirely in an RTX 4090's 24GB VRAM; partial CPU offload is a different route with its own memory and latency tradeoffs. This is the Strix Halo advantage: running models that don't fit on consumer GPUs.
 
 > **What improved?** Mesa 26.0.1 to 26.0.2 plus enabling the `tuned accelerator-performance` profile gave a consistent **+4-5% generation speed improvement** across all models.
 
@@ -687,7 +697,7 @@ Extended context scaling (b8460 RADV):
 | **b9172** | **RADV** | **752** | **59.06** | Latest-stack r20 confirmation; best current 80B Qwen-family path |
 | **b8933** | **RADV** | **657** | **54.92** | 80B model at 55 t/s |
 
-> 80 billion parameters running at 59 t/s on a mini PC. This is the largest Qwen3-family MoE model -- 80B total with only 3B active parameters and a 256K context window. Despite being 42.9 GB on disk, the MoE routing keeps only 3B params active per token, making it faster than the 51B dense Qwen3-Coder-Next (38 t/s). The 2026-05-16 b9172 check improved this row, while Qwen3-Coder, Qwen3.6, and gpt-oss did not improve on the same latest-stack rerun.
+> 80 billion parameters running at 59 t/s on a mini PC. This measured Qwen3-family MoE has 80B total with only 3B active parameters and a 256K context window. Despite being 42.9 GB on disk, the MoE routing keeps only 3B params active per token. The measured route reached 59 t/s versus 38 t/s for the separate Qwen3-Coder-Next 80B-A3B artifact/runtime row. This is not a matched architecture or quality comparison. The 2026-05-16 b9172 check improved this row, while Qwen3-Coder, Qwen3.6, and gpt-oss did not improve on the same latest-stack rerun.
 
 **Qwen3.6-35B-A3B** (Q4_K_M, 19.9GB, MoE -- drop-in upgrade from Qwen3.5, released April 2026):
 
@@ -1121,14 +1131,13 @@ cat /sys/class/drm/card*/device/pp_dpm_sclk
 dpkg -l | grep linux-firmware | head -5
 ```
 
-> **CRITICAL:** Do NOT install `linux-firmware-20251125`. It breaks ROCm support on Strix Halo (confirmed by [kyuz0 toolboxes](https://github.com/kyuz0/amd-strix-halo-toolboxes)). Symptoms: instability, crashes, ROCm containers failing to start. The safe versions are `20240318` or `20260110+`. If you're on 20251125, downgrade immediately:
+> **Firmware compatibility:** `linux-firmware-20251125` has a documented Strix Halo ROCm failure history ([toolbox source](https://github.com/kyuz0/amd-strix-halo-toolboxes)). If symptoms began after installing it, inspect the exact package version and your distribution's available versions. The guide's historical working Ubuntu package is recorded in [Reproducibility](REPRODUCIBILITY.md); it is not a universal firmware guarantee.
 >
 > ```bash
-> # Check your version
-> dpkg -l | grep linux-firmware
-> # If 20251125, hold the package to prevent auto-updates pulling it back
-> sudo apt-mark hold linux-firmware
+> dpkg-query -W linux-firmware
+> apt-cache policy linux-firmware
 > ```
+> Select an unaffected package available for your distribution, install that exact version using its package manager, then reboot and repeat the GPU/model checks. A version from another distribution is not a safe substitute. `apt-mark hold` only prevents package changes: it does **not** downgrade firmware. If you temporarily hold a restored working package, record the reason and revisit the hold when a suitable update is verified.
 
 ---
 
@@ -1849,22 +1858,22 @@ for a web view that separates models measured by this guide from artifacts
 verified to exist but not measured here, plus dated 128GB published-size fit
 tiers. The tables below remain the canonical in-repository setup guidance.
 
-Not sure which model to run? Here's what we recommend based on use case. Recommendations reviewed 2026-08-30; speeds are measured guide rows.
+Not sure which model to run? Here's what we recommend based on use case. Recommendations reviewed 2026-08-30; wording corrected September 5. Speeds belong to different measured guide rows, not a matched quality evaluation. Advertised context is not a locally qualified context limit.
 
 | I want to... | Model | Size | Speed | Why |
 |--------------|-------|------|-------|-----|
 | **Fastest 30B-class Qwen direct row** | Qwen3-30B-A3B-Instruct-2507 (IQ4_XS) | 13.9 GB | 100.0 t/s | First direct `llama-bench` row above 100 t/s; general-instruct, not coding-specific |
 | **Code** (best speed) | Qwen3-Coder 30B-A3B (Q4_K_S) | 17.5 GB | 101.0 t/s | Fastest measured coding speed on official b9851 Vulkan; speed-first quant |
-| **Code** (balanced speed/quality) | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | 96-97 t/s | Strong coding default, MoE architecture |
-| **Code** (best quality) | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | 51 t/s | Same model, higher fidelity quantization |
-| **Chat** (general) | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | **63 t/s** | Best all-rounder, successor to 3.5 |
+| **Code** (balanced quant) | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | 96-97 t/s | Strong coding default, MoE architecture |
+| **Code** (higher-bit quant) | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | 51 t/s | Same model, higher fidelity quantization |
+| **Chat** (general) | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | **63 t/s** | Measured general-chat starting point; task quality depends on the workload |
 | **Chat** (no thinking) | Qwen3.6 35B-A3B (no-think) | 20 GB | 63 t/s | Same speed, direct answers |
-| **Code** (best quality, 256K ctx) | Qwen3-Next 80B-A3B | 42.9 GB | **59 t/s** | 80B MoE, only 3B active, 256K context |
-| **Chat** (smartest possible) | Qwen3-Coder-Next | 51 GB | 38 t/s | 80B-A3B coding MoE, slower but smarter |
+| **Code** (80B MoE; advertised 256K ctx) | Qwen3-Next 80B-A3B | 42.9 GB | **59 t/s** | 80B MoE, only 3B active, 256K context |
+| **Coding-model experiment** | Qwen3-Coder-Next | 51 GB | 38 t/s | 80B-A3B coding MoE; no local quality ranking established |
 | **Reasoning / current Google route** | Gemma 4 26B-A4B IT QAT | 14.2 GB | 74.8 t/s direct; 102.7-110.0 t/s MTP server | Strong current Google-model route. Use the direct row for benchmark comparisons; use MTP only for server/speculative experiments |
 | **Analyze images** | Qwen3.8 27B (`qwen3.8:27b`) | ~18 GB | 20.4 t/s | Current official dense multimodal route, measured here with image, tools, and thinking |
-| **Maximum intelligence (measured)** | DeepSeek V4 Flash 284B-A13B (UD-IQ2_XXS) | 90.9 GB | 13.3 t/s | Largest model measured in this guide; MoE keeps it usable. Dense 70B models stay ~5 t/s |
-| **"Can it run?"** | Llama 4 Scout 109B | 61 GB | 18 t/s | 109B model on a mini PC. RTX 4090 can't |
+| **Largest direct GGUF capacity tested** | DeepSeek V4 Flash 284B-A13B (UD-IQ2_XXS) | 90.9 GB | 13.3 t/s | Load and basic arithmetic passed; low-bit quality and real-task usefulness remain unqualified |
+| **"Can it run?"** | Llama 4 Scout 109B | 61 GB | 18 t/s | 109B artifact on one 128GB machine; exceeds 24GB VRAM without offload |
 | **Process documents** | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | 63 t/s | Fast enough for RAG pipelines |
 | **Learn / experiment** | LFM2.5 8B-A1B (Q4_K_M) | ~5 GB | 169-176 t/s | Small current MoE, fastest practical-model rows measured here |
 | **Throughput testing** | Qwen3-0.6B (Q8_0) | 0.8 GB | 266 t/s | Speed ceiling benchmark |
@@ -2483,9 +2492,9 @@ free, and paid work does not buy positive conclusions.
 
 - **AMDVLK ICD hijacking discovered:** All "pp regression" findings (b8460 vs b8933, Mesa 26.0.2 vs 26.0.5) were caused by AMDVLK's `/etc/vulkan/icd.d/amd_icd64.json` silently overriding RADV. No actual regression exists. [Corrected on #22375](https://github.com/ggml-org/llama.cpp/issues/22375). All benchmarks re-verified on actual RADV
 - **Qwen3.6-35B-A3B benchmark:** **64 t/s** tg, 1064 pp512 via Vulkan RADV. Drop-in replacement for Qwen3.5 with better coding/reasoning quality, identical speed. The old UD-Q4_K_M penalty note is superseded by the May 2026 controlled rerun.
-- **Qwen3-Next 80B-A3B benchmark:** **55 t/s** tg, 657 pp512 via Vulkan RADV (b8933). 80B MoE (3B active) with 256K context window. Faster than the 51B dense Qwen3-Coder-Next (38 t/s)
+- **Qwen3-Next 80B-A3B benchmark:** **55 t/s** tg, 657 pp512 via Vulkan RADV (b8933). 80B MoE (3B active) with 256K context window. The separate Qwen3-Coder-Next 80B-A3B MoE row measured 38 t/s (architecture label corrected September 5)
 - **Gemma 4 26B-A4B benchmark:** 48.5 t/s tg, 1142 pp512 via Vulkan RADV (b8933). First Strix Halo benchmark for this model. Includes KV cache quantization warning (3.5x worse quality degradation vs Qwen at q8_0)
-- **Llama 4 Scout 109B benchmark:** 18.3 t/s tg, 331 pp512 via Vulkan RADV (b8933). 109B parameter model running on a mini PC -- RTX 4090 can't load this
+- **Llama 4 Scout 109B benchmark:** 18.3 t/s tg, 331 pp512 via Vulkan RADV (b8933). 109B parameter model running on a mini PC; this artifact exceeds 24GB VRAM without offload
 - Merged PR #1: vulkan-tools install check in setup.sh (thanks @ignasivt)
 - Updated April price snapshot for Beelink, Corsair, and GMKtec; superseded by the May 1 price audit above
 - Added linux-firmware-20251125 source attribution and downgrade instructions

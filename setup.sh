@@ -23,6 +23,14 @@
 
 set -euo pipefail
 
+# Pin a fresh installation to the reboot-qualified runtime. An explicit
+# OLLAMA_VERSION selects another runtime; existing installations are retained.
+OLLAMA_VERSION="${OLLAMA_VERSION:-0.31.2}"
+if [[ ! "$OLLAMA_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][A-Za-z0-9.-]+)?$ ]]; then
+    echo "Invalid OLLAMA_VERSION: use an explicit release such as 0.31.2." >&2
+    exit 1
+fi
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -189,12 +197,14 @@ info "Phase 5: Ollama Setup"
 echo "---------------------------------------------"
 
 if ! command -v ollama &>/dev/null; then
-    info "Installing Ollama..."
-    curl -fsSL https://ollama.com/install.sh | sh
-    log "Ollama installed."
+    info "Installing Ollama ${OLLAMA_VERSION}..."
+    curl -fsSL https://ollama.com/install.sh | OLLAMA_VERSION="$OLLAMA_VERSION" sh
+    log "Ollama installer completed for ${OLLAMA_VERSION}. Verify the running version after restart."
 else
     log "Ollama already installed: $(ollama --version 2>/dev/null)"
+    warn "Keeping the existing runtime; no automatic upgrade or downgrade to ${OLLAMA_VERSION}."
 fi
+warn "Only the runtime installation is pinned. Match the model, driver, kernel and reboot checks before comparing with a measured profile."
 
 # Configure Ollama for Vulkan
 OLLAMA_OVERRIDE="/etc/systemd/system/ollama.service.d/override.conf"

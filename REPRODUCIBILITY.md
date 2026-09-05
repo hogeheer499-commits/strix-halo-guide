@@ -10,6 +10,8 @@ Current headline numbers were measured on one primary Strix Halo machine unless 
 
 The public claim index is [`data/headline_claims.csv`](data/headline_claims.csv). Each row maps a README headline claim to structured data, raw evidence, chart path, and notes.
 
+For the August 30 integration, see the [sentinel/scout scope and raw evidence](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout). These rows do not replace historical strict-clean claims.
+
 ## Primary Machine
 
 | Component | Selected measured states; use the linked raw directory for an exact run |
@@ -19,14 +21,14 @@ The public claim index is [`data/headline_claims.csv`](data/headline_claims.csv)
 | GPU | Radeon 8060S, `gfx1151`, RADV STRIX_HALO |
 | Memory | 128GB LPDDR5X-8000 unified memory; about 124GiB OS-visible |
 | OS | Ubuntu 24.04 |
-| Kernel | `6.19.4-061904-generic` |
-| Mesa/RADV | Mesa 26.0.6 for the main May 7 headline rows; Mesa 26.1.1 for the May 26/27 MTP spot checks; Mesa 26.1.2 for the June 7 b9544 controls; Mesa 26.1.4 for the July 16 b10034 and current-model runs; kisak-mesa PPA where recorded |
-| llama.cpp | b9179 `b81c2cdd7` for the Qwen3-Coder speed-first peak; b9049 `2496f9c14` for the balanced UD headline rerun; b9360 `6b4e4bd58` for the Qwen3.6 MTP 100+ server route; b9467 `1fd5f4803` for the first direct Qwen3-30B-A3B-Instruct-2507 100+ row; b9979 for the AMD/RADV density-gate campaign; official b10034 `505b1ed15` for the July 16 Vulkan sentinel and current-model checks; b10107 for the July 25 vision/ASR/embedding smokes; b10330 for the August 9 Qwen3-Next MTP backend A/B and TTS smoke. Current numbered build b10687 (checked 2026-08-30) is not yet locally qualified |
+| Kernel | `6.19.4-061904-generic` for historical headlines; `7.0.0-28-generic` for the August 15 Qwen3.8 API route; `7.0.0-30-generic` for the August 30 direct sentinel/scout |
+| Mesa/RADV | Mesa 26.0.6 for the main May 7 headline rows; Mesa 26.1.1 for the May 26/27 MTP spot checks; Mesa 26.1.2 for the June 7 b9544 controls; Mesa 26.1.4 for the July 16 b10034 and current-model runs; Mesa 26.1.7 for the August 30 b10687 sentinel/scout; kisak-mesa PPA where recorded |
+| llama.cpp | b9179 `b81c2cdd7` for the Qwen3-Coder speed-first peak; b9049 `2496f9c14` for the balanced UD headline rerun; b9360 `6b4e4bd58` for the Qwen3.6 MTP 100+ server route; b9467 `1fd5f4803` for the first direct Qwen3-30B-A3B-Instruct-2507 100+ row; b9979 for the AMD/RADV density-gate campaign; official b10034 `505b1ed15` for the July 16 Vulkan sentinel and current-model checks; b10107 for the July 25 vision/ASR/embedding smokes; b10330 for the August 9 Qwen3-Next MTP backend A/B and TTS smoke. b10687 `c841aee` has a short Vulkan/RADV sentinel and Flash-Next scout on August 30; this does not qualify HIP, server behavior or long context |
 | Ollama | 0.31.2 for the fully qualified installed-service buyer path; isolated 0.31.1/0.31.2/0.32.0 binaries for the controlled July 16 comparison; isolated 0.32.3 for the exact-output, iGPU-vision, and process-restart qualification; 0.32.13 for the August 15 Qwen3.8 27B route. Current 0.33.2 (checked 2026-08-30) remains unmeasured |
 | BIOS UMA | 512MB for the measured local setup |
 | IOMMU | Disabled for the primary measured desktop benchmark profile; enabled/default remains the normal buyer recommendation for NPU, mobile suspend, RDMA, VFIO, passthrough, and clustering |
 | AMDVLK | Removed; RADV should be the selected Vulkan ICD |
-| Power profile | Main historical headline runs used `tuned accelerator-performance`; the July 16 b10034 sentinel recorded the desktop power profile as `performance`, `tuned` inactive, and amdgpu DPM forced to `high`. Never infer one policy from another run. |
+| Power profile | Main historical headline runs used `tuned accelerator-performance`; the July 16 b10034 sentinel recorded the desktop power profile as `performance`, `tuned` inactive, and amdgpu DPM forced to `high`. The August 30 direct rows use desktop `performance` with DPM `auto` and recorded CPU-only background load. Never infer one policy from another run. |
 | GPU clock | 2900 MHz was selected during earlier readiness checks; use each raw host snapshot and telemetry file for current clock behavior |
 | Firmware | `linux-firmware` 20240318.git3b128b60-0ubuntu2.27 was recorded for the earlier baseline; later runs must use their own package or host snapshot |
 

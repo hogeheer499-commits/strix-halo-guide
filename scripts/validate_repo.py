@@ -166,6 +166,50 @@ def check_headline_claim_paths(errors: list[str]) -> None:
                     )
 
 
+def check_current_stack_import(errors: list[str]) -> None:
+    """Check the new direct campaign against raw averages, not copied prose."""
+    prefix = "data/raw/2026-08-30/"
+    with (ROOT / "data/benchmarks.csv").open(newline="") as handle:
+        rows = [row for row in csv.DictReader(handle) if row["source"].startswith(prefix)]
+    with (ROOT / "data/headline_claims.csv").open(newline="") as handle:
+        claims = {row["raw_evidence"]: row for row in csv.DictReader(handle)
+                  if row["raw_evidence"].startswith(prefix)}
+    if len(rows) != 3 or len(claims) != 3:
+        errors.append("August 30 campaign must retain three separately scoped direct rows")
+    for row in rows:
+        source = row["source"]
+        try:
+            with (ROOT / source).open(newline="") as handle:
+                raw = list(csv.DictReader(handle))
+            pp = next(item for item in raw if item["n_prompt"] == "512" and item["n_gen"] == "0")
+            tg = next(item for item in raw if item["n_prompt"] == "0" and item["n_gen"] == "128")
+            expected_pp = f"{float(pp['avg_ts']):.2f}"
+            expected_tg = f"{float(tg['avg_ts']):.2f}"
+            if (row["pp_tps"], row["tg_tps"]) != (expected_pp, expected_tg):
+                errors.append(f"{source}: structured averages differ from raw evidence")
+            claim = claims.get(source, {})
+            if claim.get("result") != f"{expected_pp} pp512; {expected_tg} tg128":
+                errors.append(f"{source}: public claim differs from raw averages")
+            if pp["build_commit"] not in row["build_or_version"]:
+                errors.append(f"{source}: runtime commit differs from raw evidence")
+            for text in (row["notes"], claim.get("notes", "")):
+                if not all(word in text for word in ("DPM auto", "background", "strict-clean")):
+                    errors.append(f"{source}: current-stack conditions/caveat missing")
+        except (OSError, KeyError, StopIteration, ValueError) as exc:
+            errors.append(f"{source}: cannot verify direct import ({exc})")
+
+    state = json.loads((ROOT / "data/public_state.json").read_text())
+    setup = (ROOT / "setup.sh").read_text()
+    pinned = re.search(r'OLLAMA_VERSION="\$\{OLLAMA_VERSION:-([^}]+)\}"', setup)
+    if not pinned or pinned[1] != state["runtime"]["ollama_reboot_qualified_default"]:
+        errors.append("setup.sh fresh-install version differs from the reboot-qualified runtime")
+    with (ROOT / "data/current_test_queue.csv").open(newline="") as handle:
+        targets = [row for row in csv.reader(handle) if any("normal service qualification" in cell for cell in row)]
+    version = state["runtime"]["ollama_current_checked"]
+    if not targets or any(version not in " ".join(row) for row in targets):
+        errors.append("Ollama service qualification queue differs from the current checked target")
+
+
 def check_system_evidence_matrix(errors: list[str]) -> None:
     """Keep the public cross-OEM count and its source paths auditable."""
     csv_path = ROOT / "data" / "system_evidence_matrix.csv"
@@ -460,7 +504,7 @@ def check_public_state(errors: list[str]) -> None:
             f"**Evidence reviewed:** {reviewed_human}",
             f"no affiliate links as of {affiliate_checked_human}",
             "Measured On This Machine",
-            "Verified To Exist, Not Measured Here (2026-08-29 Check)",
+            "Published Artifacts And Remaining Qualification (2026-08-29 Check)",
             "data/current_test_queue.csv",
         ),
         "docs/llms.txt": (
@@ -693,6 +737,7 @@ def main() -> int:
     check_headline_claim_paths(errors)
     check_system_evidence_matrix(errors)
     check_public_state(errors)
+    check_current_stack_import(errors)
     check_duplicate_dict_literal_keys(errors)
     check_forbidden_text(files, errors)
     check_pages_seo(errors)

@@ -4,9 +4,38 @@
 
 This file is the compact benchmark source-of-truth for numbers already published in the README. It reconciles historical and current measurements so old ROCm, driver, serving, and long-context notes do not contradict the current guide.
 
+## 2026-08-30 Vulkan Sentinel And Flash-Next Scout
+
+These first-party direct `llama-bench` rows use locally built b10687 (`c841aee`),
+kernel 7.0.0-30, Mesa/RADV 26.1.7 and the desktop performance profile. AMDGPU
+DPM stayed on `auto`; the recorded CPU-only background workload remained active.
+They are current-stack compatibility/speed observations, not replacements for
+strict-clean headline runs or controlled comparisons against earlier kernels.
+
+| Model | Quant | pp512 t/s | tg128 t/s | Repeats | Class |
+| --- | --- | ---: | ---: | ---: | --- |
+| Qwen3-Coder 30B-A3B | UD-Q4_K_XL | 1264.16 | 94.64 | 20 | Sentinel |
+| Qwen3-Next 80B-A3B | UD-Q4_K_XL | 675.76 | 62.09 | 20 | Sentinel |
+| Qwen3.8-Flash-Next | UD-IQ4_XS | 394.73 | 27.16 | 10 | Single-artifact scout |
+
+The Flash-Next GGUF is approximately 93.7GB. Its separate arithmetic smoke
+returned `56` for 7×8 after the power profile was restored. Cite the repeated
+benchmark for speed, not that smoke. Long context, vision, tools, server behavior
+and broad task quality are not qualified. The
+[official model card](https://huggingface.co/Qwen/Qwen3.8-Flash-Next) counts
+125B/6B active plus 51B n-gram embeddings and 4B MTP separately; the tested GGUF
+reports about 177B parameters. It uses **qwen-community-1.0**, not Apache 2.0;
+check the model terms before commercial deployment.
+
+Evidence: [structured rows](data/benchmarks.csv),
+[claim registry](data/headline_claims.csv),
+[sentinel notes and raw CSVs](data/raw/2026-08-30/b10687-vulkan-sentinel/),
+[Flash-Next notes and raw CSV](data/raw/2026-08-30/qwen38-flash-next-scout/),
+[artifact hashes](data/raw/2026-08-30/artifact-sha256.txt).
+
 ## Current System Snapshot
 
-Latest measured host audit on 2026-07-16:
+Selected historical host audit on 2026-07-16; the August 30 stack is documented above:
 
 | Component | Current State |
 |-----------|---------------|

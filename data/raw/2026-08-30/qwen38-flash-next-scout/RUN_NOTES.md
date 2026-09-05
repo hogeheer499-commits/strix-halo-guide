@@ -1,7 +1,8 @@
 # Qwen3.8-Flash-Next UD-IQ4_XS scout — 2026-08-30 (COMPLETE)
 
 First first-party measurement of Qwen/Qwen3.8-Flash-Next (released
-~2026-08-26; 125B total / 6B active MoE; license **qwen-community-1.0, not
+~2026-08-26; 125B / 6B active MoE plus publisher-listed 51B n-gram embeddings
+and 4B MTP; the tested GGUF reports about 177B parameters; license **qwen-community-1.0, not
 Apache 2.0**) on this Beelink GTR9 Pro. Artifact:
 unsloth/Qwen3.8-Flash-Next-GGUF UD-IQ4_XS, 3 shards, ~93.7GB total
 (hashes in ../artifact-sha256.txt). Downloaded 2026-08-30.

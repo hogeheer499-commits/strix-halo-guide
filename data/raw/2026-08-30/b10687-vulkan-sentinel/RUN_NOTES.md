@@ -2,7 +2,7 @@
 
 Purpose: first llama.cpp numbered-build sentinel on the CURRENT host stack.
 NOT comparable as a control against the kernel-6.19.4 headline rows: the host
-kernel is now 7.0.0-30-generic, so this run starts a new current-stack lane.
+kernel is now 7.0.0-30-generic, so this run starts a separately recorded current-stack lane.
 
 ## Stack
 
@@ -10,8 +10,8 @@ kernel is now 7.0.0-30-generic, so this run starts a new current-stack lane.
   Release, on 2026-08-30. Device line: `Radeon 8060S Graphics (RADV
   STRIX_HALO) (radv) | uma: 1 | fp16: dot2 | warp size: 64 | shared memory:
   65536 | int dot: 0 | matrix cores: KHR_coopmat`.
-- Kernel 7.0.0-30-generic (NEW vs the pinned 6.19.4 of all earlier first-party
-  rows). Mesa/firmware per host snapshots in this directory.
+- Kernel 7.0.0-30-generic (different from historical 6.19.4 headline
+  rows; the August 15 API campaign already used 7.0.0-28). Mesa/firmware per host snapshots in this directory.
 - Power: `adaptive-power-guard` user service stopped for the runs;
   `powerprofilesctl set performance`. DEVIATION from the 2026-07-16 sentinel
   protocol: amdgpu DPM could NOT be forced to `high` (no sudo in this

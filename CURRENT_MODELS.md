@@ -70,9 +70,12 @@ Source: [`COMMUNITY_RESULTS.md#gmktec-evo-x2-nixos--npu--rocmfp4-evidence-packag
 
 ## August 2026 Runtime Controls
 
-Latest checked packaged runtime releases as of 2026-08-25 are `llama.cpp`
-v0.3.0 / numbered build b10687 and Ollama 0.33.2; none is a locally qualified replacement.
-b10330 remains the latest narrow local `llama.cpp` qualification, while the
+Latest checked packaged runtime releases in the 2026-08-30 review are `llama.cpp`
+v0.3.0 / numbered build b10687 and Ollama 0.33.2. The August 30 b10687
+Vulkan sentinel measured two MoE controls plus a Flash-Next scout; see
+[BENCHMARKS.md](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout).
+That short direct test does not replace the broader b10330 feature qualification,
+and it does not qualify HIP or a normal server. The
 reboot-qualified beginner Ollama service remains 0.31.2 and the official
 Qwen3.8 route is separately measured on 0.32.13. Open `llama.cpp` issue #26209
 and PR #25863 mean the old b10046 integrated-host allocation pass must not be
@@ -348,7 +351,7 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 | DeepSeek V4 Flash | **Measured locally:** pinned Unsloth `UD-IQ2_XXS` at 90.86GB loaded and generated directly on official b10034 at 155.64 pp512 / 13.27 tg128 and answered the deterministic smoke correctly. This resolves the ordinary-GGUF blocker, but remains low-bit capacity evidence rather than a speed or quality recommendation. The 46.98GiB REAP path still requires its separate ds4 runtime. |
 | Nemotron 3 Ultra 550B-A55B | GGUF route found in the 2026-06-05 scan, but the smallest scanned route is about 188 GB. Watch for smaller practical artifacts or test only with external storage / multi-node planning. |
 | Nemotron 3 Super 120B-A12B | Tested with `UD-IQ4_XS`. Add lower/higher quant comparisons only if they answer a specific buyer question. |
-| `llama.cpp` b10034 / b10046 / b10066 / b10107 / b10687 | Official b10034 remains the measured Vulkan concurrency/model sentinel. b10046 proved full-UMA discovery and `ROCm_Host` allocation on HIP, but open issue #26209 and PR #25863 now limit that to historical small-model allocation evidence; it did not prove long-context, multimodal, or multi-slot correctness. b10066/b10107 retain their exact measured Vulkan capability scope. b10687 is the latest numbered release checked (2026-08-30), but is not locally qualified and its source still exposes the integrated host-buffer path under investigation. |
+| `llama.cpp` b10034 / b10046 / b10066 / b10107 / b10687 | Official b10034 remains the measured Vulkan concurrency/model sentinel. b10046 proved full-UMA discovery and `ROCm_Host` allocation on HIP, but open issue #26209 and PR #25863 now limit that to historical small-model allocation evidence; it did not prove long-context, multimodal, or multi-slot correctness. b10066/b10107 retain their exact measured Vulkan capability scope. b10687 is the latest numbered release in the August 30 review and has a scoped direct Vulkan sentinel/scout in [BENCHMARKS.md](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout). That does not qualify its HIP path, broader feature set or normal server; its HIP source still exposes the integrated host-buffer path under investigation. |
 | Official AMD/Unsloth Strix Halo workflow | **Measured local functional pass:** a digest-pinned ROCm 7.2 community container detected the Radeon 8060S and completed one-step Qwen3 0.6B SFT, checkpoint inference, `Q4_K_M` export, ROCm `llama.cpp` inference, and a restart load from the copied host artifact. Two real friction points are documented: Studio-managed output paths and a writable export CWD. This is workflow compatibility, not useful training quality or large-model performance. See [`UNSLOTH_STRIX_HALO.md`](UNSLOTH_STRIX_HALO.md). |
 | Llama Nemotron Embed 1B v2 | **Measured local CPU sanity:** the official 2048-dimensional route ranked the relevant UMA passage above an unrelated passage and reproduced the exact vector offline after restart. Keep the profile scoped to functionality until a real multilingual corpus, long-document, batch, memory, and ROCm campaign exists. |
 | Qwen3-ASR 0.6B/1.7B | **Measured 0.6B local smoke:** the official Q8_0 GGUF transcribed a known short English sample identically across fresh b10107 processes. This is not Dutch, long-audio, streaming, WER, or 1.7B evidence; `llama.cpp` audio remains experimental. |

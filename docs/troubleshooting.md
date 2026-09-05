@@ -4,7 +4,7 @@ title: "AMD Strix Halo Troubleshooting: Ollama, Vulkan, ROCm, and Unified Memory
 description: "Symptom-first troubleshooting for AMD Strix Halo local LLM setup: Ollama CPU fallback, llama.cpp batch clamps, RADV selection, firmware, GTT, ROCm overrides, and HIP correctness."
 permalink: /troubleshooting/
 date: "2026-08-30T00:00:00+02:00"
-last_modified_at: "2026-08-30T00:00:00+02:00"
+last_modified_at: "2026-09-05T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -12,7 +12,7 @@ image:
   alt: "AMD Strix Halo local LLM troubleshooting for Ollama, Vulkan, ROCm, and unified memory"
 seo:
   type: "TechArticle"
-  date_modified: "2026-08-30T00:00:00+02:00"
+  date_modified: "2026-09-05T00:00:00+02:00"
 ---
 
 # AMD Strix Halo Local LLM Troubleshooting
@@ -73,7 +73,8 @@ firmware-package change.
 **Check:** inspect the installed `linux-firmware` package version.
 
 **Fix:** do not use `linux-firmware-20251125` on the documented Strix Halo ROCm
-path; follow the pinned downgrade/upgrade commands and safe-version guidance in
+path; inspect available distro packages, restore an unaffected version, reboot and
+repeat the GPU/model checks. Holding a package does not downgrade it. See
 [Step 4.4 of the README](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#step-44-linux-firmware).
 
 ## Large Models Cannot See The Expected GTT Pool

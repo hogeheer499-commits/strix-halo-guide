@@ -4,7 +4,7 @@ This file keeps narrow performance conclusions that are useful for repeat testin
 
 ## Qwen3-Coder Direct 98.51 t/s Reproduction Status
 
-The current Qwen3-Coder direct `llama-bench` speed-first headline remains Qwen3-Coder 30B-A3B `Q4_K_S` at **98.51 t/s** on llama.cpp b9179, Vulkan/RADV, measured on 2026-05-16.
+The historical strict-clean Qwen3-Coder direct `llama-bench` speed-first reference is Qwen3-Coder 30B-A3B `Q4_K_S` at **98.51 t/s** on llama.cpp b9179, Vulkan/RADV, measured on 2026-05-16.
 
 That result came from a strict host state:
 
@@ -21,6 +21,11 @@ Raw evidence:
 
 - [`data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv`](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv)
 - [`data/raw/2026-05-16/break-97-24-strict-noise-settings/host-state-r50.txt`](data/raw/2026-05-16/break-97-24-strict-noise-settings/host-state-r50.txt)
+
+The later official b9851 `Q4_K_S` row measured 100.99 tg128; see the
+[current claim index](data/headline_claims.csv). The August 30 balanced-quant
+sentinel is a different artifact and host state; see
+[BENCHMARKS.md](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout).
 
 ## 2026-06-01 Reproduction Attempts
 

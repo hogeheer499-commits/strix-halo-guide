@@ -1,10 +1,10 @@
 ---
 layout: default
 title: "AMD Strix Halo Models: Measured Results, New GGUFs, and 128GB Fit"
-description: "Evidence-backed AMD Strix Halo model hub separating guide-measured local LLM routes from verified-but-unmeasured 2026 model releases and published 128GB GGUF fit tiers."
+description: "Evidence-backed AMD Strix Halo model hub separating guide-measured local LLM routes from published 2026 model artifacts and published 128GB GGUF fit tiers."
 permalink: /strix-halo-models/
 date: "2026-08-30T00:00:00+02:00"
-last_modified_at: "2026-08-30T00:00:00+02:00"
+last_modified_at: "2026-09-05T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -12,7 +12,7 @@ image:
   alt: "AMD Strix Halo model hub with measured evidence and published GGUF fit tiers"
 seo:
   type: "TechArticle"
-  date_modified: "2026-08-30T00:00:00+02:00"
+  date_modified: "2026-09-05T00:00:00+02:00"
 ---
 
 # AMD Strix Halo Model Hub
@@ -20,8 +20,8 @@ seo:
 **Evidence reviewed:** August 30, 2026.
 
 This page keeps two claim classes separate: models measured by this guide on its
-primary Strix Halo machine, and model artifacts verified to exist but not
-measured here. The canonical sources for the first section are the
+primary Strix Halo machine, and publisher-listed artifacts whose remaining
+quants, features or context limits still need qualification. The canonical sources for the first section are the
 [headline claim index](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv)
 and [best-known profiles](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BEST_KNOWN_PROFILES.md).
 
@@ -47,16 +47,34 @@ dash in the artifact-size column means neither `data/headline_claims.csv` nor
 | Gemma 4 26B-A4B IT QAT, Vulkan server/MTP | `UD-Q4_K_XL` plus `Q4_0` MTP head | 102.69 t/s cold; 107.42 t/s T3-only; 110.00 t/s best repeat; 73.96 t/s no-spec baseline | — | [2026-06-12 raw repeat](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-06-12/gemma4-26b-qat-mtp-cold-repeat-ac4cddeb) |
 | Step 3.7 Flash 198B-A11B, ROCmFPX server/MTP | ROCmFPX `Q3 QualityPlus` plus `Q8_0` MTP draft | 34.50 t/s at 4K; 33.83 t/s at 16K; native tool call and 256K allocation passed | — | [2026-07-16 raw route](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-07-16/step37-rocmfpx-q3-qualityplus) |
 
-## Verified To Exist, Not Measured Here (2026-08-29 Check)
+## August 30 Direct Sentinel And Flash-Next Scout
 
-The guide has **not benchmarked any model in this section**. Dates,
-architectures, contexts, licenses, and sizes below are from the linked primary
-model/GGUF repositories checked on 2026-08-29. GGUF sizes are published
-artifact sizes, not measurements on the guide's machine.
+These additional first-party rows used b10687 (`c841aee`), kernel 7.0.0-30,
+Mesa/RADV 26.1.7, desktop performance, DPM auto and recorded CPU-only background
+load. They do not replace strict-clean headlines or establish an A/B improvement.
+
+| Model / quant | pp512 t/s | tg128 t/s | Repeats and scope |
+| --- | ---: | ---: | --- |
+| Qwen3-Coder 30B-A3B UD-Q4_K_XL | 1264.16 | 94.64 | 20; direct sentinel |
+| Qwen3-Next 80B-A3B UD-Q4_K_XL | 675.76 | 62.09 | 20; direct sentinel |
+| Qwen3.8-Flash-Next UD-IQ4_XS (~93.7GB) | 394.73 | 27.16 | 10; single-artifact scout |
+
+[Read the methods and raw evidence](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout).
+Flash-Next passed only a separate arithmetic smoke; vision, tools, long context,
+server behavior and broad quality remain unqualified. Its **qwen-community-1.0**
+license differs from Apache 2.0; inspect the terms for commercial use.
+
+## Published Artifacts And Remaining Qualification (2026-08-29 Check)
+
+These publisher listings include model families with measured routes above.
+A measured artifact does not qualify every quant, revision, context length or
+feature in its family. Dates, architectures, contexts, licenses and sizes below
+are from the linked primary repositories checked on 2026-08-29; they are not
+new measurements on this machine.
 
 | Model | Primary model repository | Released | Architecture | Published GGUF repository and size | License |
 | --- | --- | --- | --- | --- | --- |
-| Qwen3.8-Flash-Next | [Qwen/Qwen3.8-Flash-Next](https://huggingface.co/Qwen/Qwen3.8-Flash-Next) | ~2026-08-26 | 125B total / 6B active MoE, 262K context (1M via YaRN), multimodal | [unsloth/Qwen3.8-Flash-Next-GGUF](https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF): UD-Q2_K_XL 78.9GB, UD-Q3_K_XL 90GB, UD-IQ4_XS 93.7GB, UD-Q4_K_XL 111GB | qwen-community-1.0; **not Apache 2.0**—check terms for commercial use |
+| Qwen3.8-Flash-Next | [Qwen/Qwen3.8-Flash-Next](https://huggingface.co/Qwen/Qwen3.8-Flash-Next) | ~2026-08-26 | 125B / 6B active MoE plus 51B n-gram embeddings and 4B MTP; advertised 262K context (1M via YaRN), multimodal | [unsloth/Qwen3.8-Flash-Next-GGUF](https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF): UD-Q2_K_XL 78.9GB, UD-Q3_K_XL 90GB, UD-IQ4_XS 93.7GB, UD-Q4_K_XL 111GB | qwen-community-1.0; **not Apache 2.0**—check terms for commercial use |
 | Nemotron 3.5 Lightning 30B-A3B | [nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-BF16) | 2026-08-11 | 30B total / 3B active, Mamba-2 + MoE hybrid, up to 1M context | [ggml-org/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF](https://huggingface.co/ggml-org/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF); size not verified here | OpenMDW-1.1 |
 | Mistral Medium 3.5 | [mistralai/Mistral-Medium-3.5-128B](https://huggingface.co/mistralai/Mistral-Medium-3.5-128B) | announced 2026-05-22 | dense 128B, 256K context, multimodal | [unsloth/Mistral-Medium-3.5-128B-GGUF](https://huggingface.co/unsloth/Mistral-Medium-3.5-128B-GGUF): Q4_K_M 74.9GB, UD-Q4_K_XL 75.7GB, Q5_K_M 88.3GB, Q6_K 103GB | “Modified MIT” with a large-revenue carve-out |
 | Qwen3-Coder-Next | [Qwen/Qwen3-Coder-Next](https://huggingface.co/Qwen/Qwen3-Coder-Next) | 2026-02-03 | 80B total / 3B active MoE, 256K context | [unsloth/Qwen3-Coder-Next-GGUF](https://huggingface.co/unsloth/Qwen3-Coder-Next-GGUF): Q4_K_M 48.5GB, Q6_K 65.6GB, Q8_0 84.8GB | Apache 2.0 |
@@ -103,7 +121,7 @@ correctness result.
 
 The live [current test queue](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/current_test_queue.csv)
 records model, backend, artifact, status, workload, and the buyer question each
-test should answer. A model in that queue or in the unmeasured table above does
+test should answer. A model in that queue or in the publisher table above does
 not become a recommendation until a dated row links to raw evidence and keeps
 direct, API/server, speculative, capacity, and community results separate.
 
