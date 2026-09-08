@@ -62,6 +62,7 @@ mottledMantis added the second major independent community validation path, this
 - helped document Qwen3-Coder command-shape sensitivity by providing a full run with different batch, flash-attention, and mmap settings from the Beelink headline row
 - independently reproduced the guide's exact Qwen3.6 MTP IQ4_XS-Q8nextn route on GMKtec, reaching 93.29 t/s average with `draft-n=2`
 - contributed a stock direct Gemma 4 26B-A4B `UD-Q4_K_M` row at 1209.08 pp512 / 53.02 tg128, adding second-OEM portability evidence while preserving the unmatched-build/model caveats
+- followed up on August 26 with four model hashes and eight direct CSV rows covering Gemma 4, two Qwen3-Coder quants and Qwen3.6 IQ4_XS; also reported a quant/build-specific MTP loading failure, documented in the [source bundle](data/raw/2026-08-26/community-gmktec-issue4/README.md)
 - contributed a WSL2/HIP ROCm 7.2 baseline for the same GMKtec EVO-X2, useful for Windows/WSL2 users even though it is not an apples-to-apples native Vulkan comparison
 - provided raw CSV attachments for the native Vulkan/RADV run and detailed setup metadata for BIOS UMA, IOMMU mode, kernel, Mesa, model SHA, build, command, and limitations
 

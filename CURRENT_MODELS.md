@@ -1,5 +1,12 @@
 # Current Model Triage
 
+Community follow-up integrated 2026-09-08: @mottledMantis' August 26 GMKtec
+report adds four hashed direct benchmark artifacts, including Qwen3-Coder
+`Q4_K_S` at 99.08 tg128 and Gemma 4 `UD-Q4_K_M` at 54.15 tg128.
+The Qwen3.6 IQ4_XS 76.20 tg128 row is non-speculative; the separate Q6/draft
+loading failure remains a dated community compatibility report.
+See [scope, raw data and follow-up needs](data/raw/2026-08-26/community-gmktec-issue4/README.md).
+
 This page tracks fast-moving local-model targets that are useful for Strix Halo / Ryzen AI MAX+ 395 buyers, reviewers, and benchmark contributors.
 
 For tools and contributors, the prioritized queue below is also available as [`data/current_test_queue.csv`](data/current_test_queue.csv). That file tracks candidates and blockers; it is deliberately separate from the measured-only [`data/best_known_profiles.csv`](data/best_known_profiles.csv).

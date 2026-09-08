@@ -8,6 +8,23 @@ Short version: speculative decoding works on Strix Halo with Vulkan/RADV, ROCm/H
 
 Local rows were measured on the Beelink GTR9 Pro. Historical Qwen3.6 and Gemma rows use Mesa/RADV; CHADROCK rows use the pinned `ciru-ai/ROCmFPX` helper runner at `deaa996`. The 2026-08-09 Qwen3-Next qualification uses the same b10330 main model, MTP sidecar, prompts, and deterministic output checks on both Mesa/RADV and ROCm 7.14. Community rows are kept separate and marked as GMKtec or Nimo reports.
 
+### GMKtec Qwen3.6 Compatibility Report — August 26
+
+@mottledMantis reports a quant-specific loading problem on the 96GB GMKtec
+EVO-X2 with Vulkan/RADV and contributor-labelled `v0.3.0` / `c1d0e7a`:
+Qwen3.6 `Q6_K_XL` plus `Q4_K_XL` draft fails at draft loading with
+`ErrorDeviceLost` / command submission memory error, while b9235 reportedly
+loads that combination and `IQ4_XS-Q8nextn` reportedly serves on the newer build.
+Full runtime provenance, server commands and complete logs are still needed
+before establishing root cause, a general regression or an upgrade recommendation.
+
+The accompanying **76.20 t/s IQ4_XS result is direct non-speculative
+`llama-bench`**, despite the model file containing an MTP head. The separate
+approximately 76 t/s server observation has no matched no-spec control,
+acceptance data or full logs here and is not a new leaderboard entry.
+See [community results](COMMUNITY_RESULTS.md#gmktec-evo-x2-four-model-follow-up--august-26)
+and [preserved evidence](data/raw/2026-08-26/community-gmktec-issue4/README.md).
+
 ### Qwen3-Next 80B Backend Crossover On b10330
 
 This matched A/B is intentionally shown separately from the historical six-prompt leaderboard. It used two prompt shapes, three repeats each, 128 generated tokens, and normal low-load workstation conditions.

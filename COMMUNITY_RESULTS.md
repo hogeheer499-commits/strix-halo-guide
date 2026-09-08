@@ -256,6 +256,48 @@ The highest-value next step is a matched current-build A/B with identical model
 SHA256, flags, repeats, and host snapshots. Preserved CSV and provenance:
 [`data/raw/2026-08-18/community-gmktec-gemma4-issue4/`](data/raw/2026-08-18/community-gmktec-gemma4-issue4/).
 
+## GMKtec EVO-X2 Four-Model Follow-Up — August 26
+
+@mottledMantis supplied the requested newer-build follow-up in
+[issue #4](https://github.com/hogeheer499-commits/strix-halo-guide/issues/4#issuecomment-5427451071),
+including four model SHA256 values and a separate CSV comment. This is the same
+96GB owner system already counted above. The reported stack is Ubuntu 26.04,
+kernel 7.0.0-30-generic, Vulkan/RADV, UMA 1GB and IOMMU off. Mesa version is
+not specified for this run. Runtime identity is contributor-reported `v0.3.0`
+at `c1d0e7a`, with CSV build number `1`; official release provenance is unverified.
+
+Reported command: `llama-bench -m <model> -ngl 999 -fa on -mmp 0 -b 512 -ub 512 -t 16 -p 512 -n 128 -r 20 -o csv`.
+The contributor reports an idle host and 20 repeats; CSV records f16 KV and
+`load_mode=none`. These are direct non-speculative measurements.
+
+| Model / quant | pp512 t/s | tg128 t/s | tg standard deviation |
+|---|---:|---:|---:|
+| Gemma 4 26B-A4B `UD-Q4_K_M` | 1181.98 | 54.15 | 0.10 |
+| Qwen3-Coder 30B-A3B `Q4_K_S` | 1257.19 | 99.08 | 0.19 |
+| Qwen3-Coder 30B-A3B `UD-Q4_K_XL` | 1290.47 | 96.75 | 0.26 |
+| Qwen3.6 35B-A3B `IQ4_XS-Q8nextn` | 1146.41 | 76.20 | 0.09 |
+
+This strengthens portability evidence and provides model hashes for a future
+matched Beelink control. Gemma decode is about 2.34% below Beelink b9851 and
+0.05% below b9859. It does not establish an OEM ranking: the Beelink controls
+use batch 2048, five repeats and a smaller Gemma artifact; the runtime and
+driver/host conditions are not matched. The older August 18 row remains a
+separate control because build, batch and mmap policy changed together.
+
+**Compatibility finding:** the contributor reports Qwen3.6 `Q6_K_XL` plus a
+`Q4_K_XL` MTP draft failing at draft load with `ErrorDeviceLost` and a command
+submission memory error on this build, while b9235 loaded that combination.
+The `IQ4_XS-Q8nextn` route reportedly served successfully. Preserve this as a
+dated, quant/stack-specific warning: complete server/failure logs and matched
+controls are still needed. The approximate server speed is not added to the
+MTP leaderboard, and the direct **76.20 t/s is not an MTP speedup**.
+
+Full hashes, eight extracted CSV rows, original comments, comparison caveats
+and follow-up requirements are in the
+[preserved source bundle](data/raw/2026-08-26/community-gmktec-issue4/README.md).
+Selected results are in [community_results.csv](data/community_results.csv).
+No additional system/contributor count or first-party headline is created.
+
 ## Reddit GMKtec EVO-X2 Tuned 100 t/s Report
 
 Look_Over_There contributed a Reddit-reported GMKtec EVO-X2 Qwen3-Coder `Q4_K_S` result on llama.cpp b9467 `1fd5f4803`. The reported command shape was:
