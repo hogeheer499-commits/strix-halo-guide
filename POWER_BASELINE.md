@@ -89,7 +89,7 @@ Interpretation:
 
 - These rows are useful local Beelink telemetry, not public wall-power efficiency claims.
 - The Qwen3-Coder speed in this power run is lower than the 96-97 t/s headline because it used the b9172 power-sampling run, not the b9049 headline campaign.
-- The rough J/token values divide token-generation speed by run-window PPT mean; they should be treated as same-machine context only.
+- The rough J/token values divide run-window PPT mean in watts by generation rate in tokens/s. They combine a mixed pp/tg-window power average with decode throughput, not integrated generation-phase energy or wall power; treat them as same-machine context only.
 - The next publishable efficiency step is a wall-meter run on the Beelink, ideally matching the same Qwen3-Coder and Qwen3.6 commands.
 
 ## 2026-05-10 Community Wall-Power Rows
@@ -108,7 +108,7 @@ Summary:
 
 | Model | Sustained tg wall W | tg throughput | Wall J/token | Source |
 |-------|--------------------:|--------------:|-------------:|--------|
-| Qwen3-Coder 30B-A3B UD-Q4_K_XL | 150 W | 95.31 t/s | 1.59 | [issue #10](https://github.com/hogeheer499-commits/strix-halo-guide/issues/10#issuecomment-4401438242) |
+| Qwen3-Coder 30B-A3B UD-Q4_K_XL | 150 W | Not paired here | 1.59 (contributor-reported) | [issue #10](https://github.com/hogeheer499-commits/strix-halo-guide/issues/10#issuecomment-4401438242) |
 | Qwen3.6 35B-A3B Q4_0 | 148 W | 75.41 t/s | 1.96 | [issue #6](https://github.com/hogeheer499-commits/strix-halo-guide/issues/6#issuecomment-4414228987) |
 | gpt-oss-120b MXFP4 | 173.6 W | 55.90 t/s | 3.10 | [issue #6](https://github.com/hogeheer499-commits/strix-halo-guide/issues/6#issuecomment-4414323665) |
 | Qwen3-Coder-Next 80B-A3B Q8_0 | 137.4 W | 39.98 t/s | 3.44 | [issue #6](https://github.com/hogeheer499-commits/strix-halo-guide/issues/6#issuecomment-4414411995) |

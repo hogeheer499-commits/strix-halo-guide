@@ -56,14 +56,14 @@ A smoke test is a short sanity check that proves the current stack is still heal
 
 Minimum checks:
 
-- `tuned-adm active` shows `accelerator-performance`.
+- Record and verify the selected power policy; require tuned only for a tuned-profile reproduction.
 - `vulkaninfo --summary` shows `RADV STRIX_HALO` and Mesa RADV.
 - AMDVLK is absent.
-- GPU clock has the asterisk on 2900 MHz.
+- GPU clocks/utilization under load match the selected campaign policy; idle or OEM-dependent clocks are not a universal failure.
 - One direct Vulkan `llama-bench` result is within expected range.
 - One Ollama result is within expected range.
 
-Why this matters: if `tuned` is inactive, AMDVLK hijacks Vulkan, a model file changes, or a nightly build regresses, a full benchmark campaign can produce polluted data. Smoke tests catch that cheaply.
+Why this matters: an unexpected power-policy change, wrong Vulkan ICD, changed model artifact or runtime regression can invalidate a comparison. Smoke tests identify candidates for investigation, while matching commands/output and conditions establishes the comparison.
 
 The 2026-05-02 smoke test confirmed the stack is functional, but also found heavy background load. Those numbers are recorded in `SMOKE_TESTS.md` and `data/smoke_tests.csv` as non-publishable smoke-test data.
 
@@ -240,6 +240,10 @@ Before any publishable benchmark run, run the read-only cleanliness check:
 scripts/check_benchmark_cleanliness.sh
 ```
 
-The goal is "clean enough", not "everything disabled forever." Daily-use services can run outside benchmark windows, but publishable numbers should not be collected while remote desktop sessions, video conferencing, VMs, unrelated containers, or inactive `tuned` profiles are adding measurement noise.
+Select conditions by claim class. Strict headline, small A/B, power, thermal and
+storage tests need controlled background conditions. Routine compatibility/scout
+runs may retain a measured low-load CPU-only workload that does not open the GPU
+render device. Record actual CPU/GPU/memory/I/O behavior; process names or inactive
+tuned alone do not establish interference. See [Reproducibility](REPRODUCIBILITY.md).
 
 Local maintainer guardrails for this workstation live in [`MAINTAINER_NOTES.md`](MAINTAINER_NOTES.md). They are intentionally separate from the public benchmark plan.

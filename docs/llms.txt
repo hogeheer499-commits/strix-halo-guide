@@ -5,16 +5,16 @@ Independent AMD Strix Halo / Ryzen AI MAX+ 395 local-AI setup and benchmark evid
 Canonical repository: https://github.com/hogeheer499-commits/strix-halo-guide
 Project website: https://strixhaloguide.com/
 Technical web summary: https://hogeheer499-commits.github.io/strix-halo-guide/
-Focused BIOS, UMA, IOMMU and local-LLM setup: https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/
-Qwen3.8 27B route comparison: https://hogeheer499-commits.github.io/strix-halo-guide/qwen38-strix-halo/
-Mini PC buying comparison (measured cross-OEM evidence, 64GB vs 128GB, price history): https://hogeheer499-commits.github.io/strix-halo-guide/best-strix-halo-mini-pc/
-Troubleshooting (Ollama, Vulkan/RADV, ROCm, firmware, GTT, HIP correctness): https://hogeheer499-commits.github.io/strix-halo-guide/troubleshooting/
-Model hub (measured here vs verified-but-unmeasured models and 128GB fit): https://hogeheer499-commits.github.io/strix-halo-guide/strix-halo-models/
+Focused BIOS, UMA, IOMMU and local-LLM setup: https://strixhaloguide.com/amd-strix-halo-setup/
+Qwen3.8 27B route comparison: https://strixhaloguide.com/qwen38-strix-halo/
+Mini PC buying comparison (measured cross-OEM evidence, 64GB vs 128GB, price history): https://strixhaloguide.com/best-strix-halo-mini-pc/
+Troubleshooting (Ollama, Vulkan/RADV, ROCm, firmware, GTT, HIP correctness): https://strixhaloguide.com/troubleshooting/
+Model hub (measured here vs verified-but-unmeasured models and 128GB fit): https://strixhaloguide.com/strix-halo-models/
 
 ## Start here
 
 Full guide: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md
-Focused web setup answer: https://hogeheer499-commits.github.io/strix-halo-guide/amd-strix-halo-setup/
+Focused web setup answer: https://strixhaloguide.com/amd-strix-halo-setup/
 Concise setup: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md
 Current models and runtimes: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md
 Qwen3.8 decision page: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/QWEN38_STRIX_HALO.md

@@ -26,3 +26,6 @@ jobs:
 
       - name: Validate repository evidence and docs
         run: python3 scripts/validate_repo.py
+
+      - name: Run offline regression fixtures
+        run: python3 -m unittest discover -s tests

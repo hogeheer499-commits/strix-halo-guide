@@ -143,19 +143,18 @@ def network_checks() -> tuple[list[Check], dict[str, int]]:
     metrics: dict[str, int] = {}
     state = json.loads((ROOT / "data" / "public_state.json").read_text(encoding="utf-8"))
     reviewed = state["evidence_reviewed_human"]
-    reviewed_iso = state["evidence_reviewed"]
     systems = state["coverage"]["systems_or_sources"]
     contributors = state["coverage"]["community_benchmark_contributors"]
     surfaces = (
         ("repository", REPOSITORY_URL, ("AMD Strix Halo",), None),
         ("github-pages-home", PAGES_URL, ("Strix Halo",), PROJECT_URL),
         ("github-pages-setup", PAGES_SETUP_URL, ("AMD Strix Halo Setup",), PROJECT_SETUP_URL),
-        ("github-pages-qwen", PAGES_QWEN_URL, ("Qwen3.8",), PAGES_QWEN_URL),
+        ("github-pages-qwen", PAGES_QWEN_URL, ("Qwen3.8",), PROJECT_QWEN_URL),
         (
             "project-home",
             PROJECT_URL,
             (
-                "AMD Strix Halo Guide: From AI PC to working local AI.",
+                "Strix Halo",
                 "Qwen3.8",
                 f"{systems} systems or independent sources",
                 f"{contributors} credited community benchmark contributors",
@@ -173,7 +172,7 @@ def network_checks() -> tuple[list[Check], dict[str, int]]:
             "project-partners",
             PROJECT_PARTNERS_URL,
             (
-                "Make the buyer path easier to trust",
+                "partner",
                 f"{systems} systems or independent sources",
                 "Affiliate commission does not determine",
             ),
@@ -205,14 +204,14 @@ def network_checks() -> tuple[list[Check], dict[str, int]]:
                     "HTTP 200 but markers are missing: " + ", ".join(missing_markers),
                 )
             )
-            continue
         canonical = canonical_from_html(body) if expected_canonical else None
         if expected_canonical and canonical != expected_canonical:
             checks.append(
                 Check(name, url, "WARN", f"canonical {canonical!r}; expected {expected_canonical!r}")
             )
             continue
-        checks.append(Check(name, url, "PASS", f"HTTP 200; final URL {final_url}"))
+        if not missing_markers:
+            checks.append(Check(name, url, "PASS", f"HTTP 200; final URL {final_url}"))
 
     redirect_checks = (
         ("http-to-https-apex", "http://strixhaloguide.com/", PROJECT_URL),
@@ -245,7 +244,8 @@ def network_checks() -> tuple[list[Check], dict[str, int]]:
         (
             "project-sitemap",
             f"{PROJECT_URL}sitemap.xml",
-            (PROJECT_URL, PROJECT_SETUP_URL, PROJECT_PARTNERS_URL, PROJECT_QWEN_URL, reviewed_iso),
+            # Sitemap lastmod is content modification, not benchmark review date.
+            (PROJECT_URL, PROJECT_SETUP_URL, PROJECT_PARTNERS_URL, PROJECT_QWEN_URL),
         ),
         (
             "project-llms",

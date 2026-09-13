@@ -73,15 +73,29 @@ Upstream watchlist: [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md).
 
 Measured 2026-05-05 on the Beelink GTR9 Pro with the normal workstation baseline recorded. Each row is a 5-rep streaming `/v1/completions` run, 128 generated tokens per request, 4096 context tokens per slot, and 0 throughput errors.
 
-| Parallel requests | Vulkan/RADV aggregate t/s | Vulkan p95 ITL | Lemonade ROCm aggregate t/s | Lemonade p95 ITL | Read |
+| Parallel requests | Vulkan/RADV aggregate t/s | Vulkan request-mean interval p95 | Lemonade ROCm aggregate t/s | Lemonade request-mean interval p95 | Read |
 |------------------:|--------------------------:|---------------:|----------------------------:|-----------------:|------|
 | 1 | 58.80 | 16.2 ms | 48.62 | 20.0 ms | Vulkan wins for single-user chat/scripts |
 | 2 | 96.08 | 19.8 ms | 82.19 | 23.6 ms | Vulkan still wins |
 | 4 | 138.83 | 27.4 ms | 127.03 | 30.4 ms | Vulkan still wins |
-| 8 | 170.87 | 45.2 ms | 177.17 | 43.5 ms | Lemonade starts winning aggregate and ITL |
+| 8 | 170.87 | 45.2 ms | 177.17 | 43.5 ms | Lemonade wins aggregate and request-mean decode-interval summary |
 | 16 | 189.72 | 81.9 ms | 207.81 | 74.3 ms | Lemonade is the high-concurrency winner |
 
 Raw data: `data/raw/2026-05-05/server-shootout/full-sweep-qwen36-workstation-baseline/`.
+
+The interval columns are the mean across repeats of each batch's p95 of
+per-request mean decode intervals: `(stream end − first visible content) /
+(reported tokens − 1)`. They include the protocol tail and are **not** the p95
+of individual token gaps. Original raw `itl` field names are retained as
+historical evidence; authored CSV headers name the actual metric. No individual
+token-arrival series exists here to reconstruct a token-gap percentile.
+
+Historical May campaigns retain their reported counts and throughput; their
+saved detail/summary files do not preserve the original SSE events or an explicit
+count-source field. The reusable harness's former chunk fallback does not prove
+those counts wrong, but the saved aggregate alone cannot independently establish
+usage provenance. The corrected harness requires valid server usage and a complete
+stream, and reports unavailable throughput for any invalid batch.
 
 Repeat validation after workstation connection work:
 
@@ -174,12 +188,24 @@ Minimum publishable row:
 - tokens per request
 - aggregate tokens/sec
 - mean and p95 TTFT
-- p95 inter-token latency
+- p95 of per-request mean decode intervals (or actual token-gap percentiles only with retained token-arrival evidence)
 - error count
 - setup friction
 - limitations
 
 Do not compare two rows as "faster" unless model, quant, prompt, endpoint, token count, context, and concurrency are close enough to be meaningful.
+
+The harness defaults to a fixed token-budget benchmark. `--completion-mode natural`
+permits a valid shorter natural completion and records a different workload contract.
+Both require visible output, integer server token usage, a valid finish reason and
+the stream terminator. New `request_wall_tps` includes the entire request; historical
+May 5 `request_tps` used a post-first-content interval and must not be pooled with
+it. May 3 native `/completion` results used full request wall time and explicitly
+disabled prompt caching; those are a separate harness/campaign contract.
+Record prompt/cache policy and warmup conditions separately; a cache being enabled
+does not prove a historical cache hit. Feature probes distinguish HTTP acceptance
+from validated content or tool emission. Forced and automatic tool selection are
+separate checks; neither executes the tool or qualifies an end-to-end client task.
 
 ## Feature Probes
 

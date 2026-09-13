@@ -24,7 +24,7 @@ For the August 30 integration, see the [sentinel/scout scope and raw evidence](B
 | Kernel | `6.19.4-061904-generic` for historical headlines; `7.0.0-28-generic` for the August 15 Qwen3.8 API route; `7.0.0-30-generic` for the August 30 direct sentinel/scout |
 | Mesa/RADV | Mesa 26.0.6 for the main May 7 headline rows; Mesa 26.1.1 for the May 26/27 MTP spot checks; Mesa 26.1.2 for the June 7 b9544 controls; Mesa 26.1.4 for the July 16 b10034 and current-model runs; Mesa 26.1.7 for the August 30 b10687 sentinel/scout; kisak-mesa PPA where recorded |
 | llama.cpp | b9179 `b81c2cdd7` for the Qwen3-Coder speed-first peak; b9049 `2496f9c14` for the balanced UD headline rerun; b9360 `6b4e4bd58` for the Qwen3.6 MTP 100+ server route; b9467 `1fd5f4803` for the first direct Qwen3-30B-A3B-Instruct-2507 100+ row; b9979 for the AMD/RADV density-gate campaign; official b10034 `505b1ed15` for the July 16 Vulkan sentinel and current-model checks; b10107 for the July 25 vision/ASR/embedding smokes; b10330 for the August 9 Qwen3-Next MTP backend A/B and TTS smoke. b10687 `c841aee` has a short Vulkan/RADV sentinel and Flash-Next scout on August 30; this does not qualify HIP, server behavior or long context |
-| Ollama | 0.31.2 for the fully qualified installed-service buyer path; isolated 0.31.1/0.31.2/0.32.0 binaries for the controlled July 16 comparison; isolated 0.32.3 for the exact-output, iGPU-vision, and process-restart qualification; 0.32.13 for the August 15 Qwen3.8 27B route. Current 0.33.2 (checked 2026-08-30) remains unmeasured |
+| Ollama | 0.31.2 for the fully qualified installed-service buyer path; isolated 0.31.1/0.31.2/0.32.0 binaries for the controlled July 16 comparison; isolated 0.32.3 for the exact-output, iGPU-vision, and process-restart qualification; 0.32.13 for the August 15 Qwen3.8 27B route. 0.34.0 (checked 2026-09-13) remains unmeasured |
 | BIOS UMA | 512MB for the measured local setup |
 | IOMMU | Disabled for the primary measured desktop benchmark profile; enabled/default remains the normal buyer recommendation for NPU, mobile suspend, RDMA, VFIO, passthrough, and clustering |
 | AMDVLK | Removed; RADV should be the selected Vulkan ICD |
@@ -55,6 +55,15 @@ Then run the local hygiene check:
 ```bash
 scripts/check_benchmark_cleanliness.sh
 ```
+
+The checker inventories the current host; it does not certify GPU inactivity or
+strict-clean conditions from process names. Set `BENCHMARK_POWER_POLICY=tuned`
+only for a tuned reproduction. Optional `BENCHMARK_HEALTH_URLS` must return JSON
+`{"ok":true}`; no private service is required by default. The historical
+`scripts/run_with_t3_guard.py` filename is retained, but its URLs are now opt-in
+and its swap threshold defaults to zero for systems without swap. Cleanup targets
+only the command's new process group plus explicitly supplied cleanup commands;
+review those commands before invoking the wrapper.
 
 The hygiene script is read-only. On the maintainer workstation it also checks local workflow dependencies. If you are reproducing on another machine, record equivalent background load, remote desktop state, VMs, local AI servers, power profile, GPU clock, and selected Vulkan ICD.
 
@@ -95,6 +104,19 @@ python3 scripts/benchmark_openai_server.py \
 ```
 
 Generate charts from structured CSVs:
+
+The streaming harness requires server-reported integer usage and a complete
+response. Fixed-length mode is the default; `--completion-mode natural` is a
+different workload. Request-mean decode intervals are not token-gap percentiles;
+see [the metric definitions and historical limitations](SERVER_SHOOTOUT.md#required-metrics).
+Feature success validates bounded response content/tool emission, not a completed
+client workflow. Record cache policy, warmup and output checks with every campaign.
+
+Density regeneration must use an explicit scratch directory:
+`python3 scripts/parse_density_gate_campaign.py --output-dir /tmp/density-review`.
+It regenerates July 13 and preserves independent curated campaign rows from the
+shared summary, including July 16. Compare complete row identities and values
+before replacing any canonical CSV.
 
 ```bash
 python3 scripts/generate_charts.py

@@ -66,19 +66,11 @@ Prices below are dated observations, not current offers or a forecast. The first
 
 The recorded Beelink prices increased over this period. That history does not establish every vendor's cost structure or predict the next price. Compare the exact RAM/SSD variant, region, tax, delivery date and warranty before purchasing; a storefront's lowest advertised price can belong to a smaller configuration.
 
-The guide's dated canonical snapshot (2026-07-27) is in [`data/buyer_price_snapshot_2026-07-27.csv`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/buyer_price_snapshot_2026-07-27.csv). Each spot-check cell below carries its own check date (latest vendor-page checks: 2026-08-29):
+The [September 13 configuration-specific snapshot](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_SNAPSHOT_2026-09-13.md) records exact RAM/SSD selections, complete-system versus mainboard scope, currency, fulfillment and seller-advertised warranty/return terms. Delivered tax/shipping/import totals remain unknown. The [July CSV](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/buyer_price_snapshot_2026-07-27.csv) is retained as historical evidence.
 
-| System (128GB) | 2026-07-27 snapshot | Latest spot-check | Note |
-|---|---|---|---|
-| Bosgame M5 | $2,899 | ~$2,399–2,499 (2026-08-21, [vendor](https://www.bosgamepc.com/products/bosgame-m5-ai-mini-desktop-ryzen-ai-max-395)) | cheapest 128GB route at last check |
-| GMKtec EVO-X2 | €3,229–3,359 (EU) | US $2,199.99 (list $2,599.99) but all variants sold out with a "price increase coming soon" banner; EU store from €1,959.99 in stock, verify the 128GB config price (2026-08-29, [US vendor](https://www.gmktec.com/products/amd-ryzen%e2%84%a2-ai-max-395-evo-x2-ai-mini-pc), [EU vendor](https://de.gmktec.com/en/products/gmktec-evo-x2-amd-ryzen%E2%84%A2-ai-max-395-mini-pc-1)) | best value if you catch stock |
-| Corsair AI Workstation 300 | $3,399 (out of stock) | $2,699–3,399 (2026-08-21, [Tom's Hardware](https://www.tomshardware.com/desktops/mini-pcs/corsairs-strix-halo-ai-workstation-300-gets-even-more-expensive-amid-the-rampocalypse-ryzen-ai-max-395-flagship-now-sits-at-usd3-399)) | community-validated 3-unit fleet in this guide |
-| Framework Desktop | $3,149 (mainboard) | ~$3,449 (2026-07-22, [Notebookcheck](https://www.notebookcheck.net/Framework-launches-world-s-first-mini-ITX-desktop-PC-with-Ryzen-AI-Max-Pro-495-and-192-GB-RAM.1349336.0.html)); a 192GB PRO 495 tab is live as "coming soon" (2026-08-29, [vendor](https://frame.work/desktop)) | best ecosystem/support |
-| Minisforum MS-S1 MAX | $3,639 | $3,799 (list $4,749) 128GB/2TB preorder, estimated mid-September shipping; EU €3,999 (2026-08-29, [US vendor](https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc), [EU vendor](https://minisforumpc.eu/products/minisforum-ms-s1-max-mini-pc)) | 10GbE, clustering-friendly |
-| AMD Ryzen AI Halo (Micro Center exclusive) | not yet listed | $3,999.99, Windows 11 or Linux, in-store pickup only, in US stores since 2026-07-10 (checked 2026-08-29, [AMD](https://www.amd.com/en/blogs/2026/amd-ryzen-ai-halo-now-available-at-micro-center.html), [Micro Center](https://www.microcenter.com/site/content/amd-ryzen-ai-halo.aspx)) | AMD's own 128GB reference box with 10GbE |
-| Beelink GTR9 Pro | $4,349 (pre-sale) | $4,349, list $4,699 (re-verified 2026-08-29, [vendor](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395)) | deepest first-party evidence in this guide; see price history above |
+Current observed offers include Beelink 128GB/2TB $4,349, Bosgame M5 128GB/2TB US-plug $2,999, Framework 128GB **mainboard** $3,149, and Minisforum 128GB/2TB $3,799. GMKtec US $2,199.99 is a **64GB/1TB** selection, not a 128GB price. See the linked snapshot for source URLs and fulfillment conflicts; these are not checkout quotes. Corsair's exact 128GB/4TB SKU is out of stock with current extracted price unknown; Nimo and HP current selected quotes remain unresolved.
 
-**Before buying:** open the current vendor listing and select the exact configuration. These August snapshots can be stale. Stock labels and a seller's price-increase banner are not independent evidence that waiting will cost more.
+Earlier August claims of an exact AMD Micro Center price/exclusivity/start date and a Framework 192GB PRO 495 successor lacked sufficient linked primary substantiation and are withdrawn from current buying guidance. Stock banners do not predict future prices.
 
 ## Buy now or wait?
 
@@ -90,7 +82,7 @@ If your chosen artifact fits in a discrete GPU's VRAM, also compare an existing 
 
 ## Recommendation tiers
 
-The maintained tier list with evidence depth per system lives in the repository [Buying Guide](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#buying-guide). Summary: **most evidence-backed** — Beelink GTR9 Pro; **best value candidate** — Bosgame M5 / GMKtec EVO-X2 (stock permitting); **best ecosystem and support** — Framework Desktop; **community-validated fleet** — Corsair AI Workstation 300; **clustering** — Minisforum MS-S1 MAX.
+The maintained tier list with evidence depth per system lives in the repository [Buying Guide](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#buying-guide). Summary: **most evidence-backed** — Beelink GTR9 Pro; **best value candidate** — Bosgame M5 / GMKtec EVO-X2 (stock permitting); **repairability/modularity-oriented** — Framework Desktop; **community-validated fleet** — Corsair AI Workstation 300; **clustering** — Minisforum MS-S1 MAX.
 
 These tiers use memory configuration, dated price/availability, evidence depth,
 cooling/thermals, firmware/support, ports, expandability, and workload fit.

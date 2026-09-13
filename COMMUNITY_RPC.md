@@ -109,7 +109,7 @@ Model: MiniMax-M2.7 UD-Q4_K_XL, 140.8 GB.
 
 Interpretation: when sharding is required, use the smallest node count that fits. The third node reduced tg128 by 7.80% compared with 2-node ROCm.
 
-The Vulkan/RADV failure is also useful. The report hit a single allocation failure around 792 MiB even in the 2-node RPC case. That suggests layer sharding does not rescue a tensor-level Vulkan allocation limit. ROCm handled the same MiniMax path.
+The report hit a Vulkan/RADV allocation failure around 792 MiB even with two-node RPC. This does not by itself distinguish per-buffer limits, fragmentation or memory pressure. ROCm's successful multi-node result is a separate observation, not proof of that failure's mechanism.
 
 ## Failure Provenance
 
@@ -117,8 +117,8 @@ Fail-Safe followed up with the stderr details for the failed MiniMax cells.
 
 | Backend | Nodes | Failure | Why it matters |
 |---------|-------|---------|----------------|
-| Vulkan/RADV | 1 | `radv/amdgpu` failed to allocate `830472192` bytes, about 792 MiB, in GTT (`domains: 4`). | This is not simple total-GTT exhaustion; it points to a per-buffer allocation ceiling or contiguous-allocation issue. |
-| Vulkan/RADV RPC | 2 | RPC follower hit the same 830472192-byte allocation failure, then the leader saw the remote server crash/disconnect. | Layer sharding does not split individual tensor allocations, so RPC cannot rescue this RADV failure mode. |
+| Vulkan/RADV | 1 | `radv/amdgpu` failed to allocate `830472192` bytes, about 792 MiB, in GTT (`domains: 4`). | Per-buffer/contiguous-allocation limits are hypotheses; exhaustion/fragmentation are not ruled out. |
+| Vulkan/RADV RPC | 2 | RPC follower hit the same 830472192-byte allocation failure, then the leader saw the remote server crash/disconnect. | This specific RPC attempt also failed; its mechanism was not isolated. |
 | ROCm 7.2 | 1 | Generic model-load failure. | Distinct from Vulkan: ROCm 2-node and 3-node worked, so ROCm 1-node appears to be a true capacity failure for the 140.8 GB model. |
 
 Structured rows: [`data/community_rpc_failures.csv`](data/community_rpc_failures.csv). Raw stderr snippets: [`data/raw/2026-05-10/community-rpc-followup-issue12/`](data/raw/2026-05-10/community-rpc-followup-issue12/).

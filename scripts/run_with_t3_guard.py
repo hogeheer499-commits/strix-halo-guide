@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-"""Run a command while keeping the T3 workstation path alive.
+"""Run a benchmark with explicit optional health and memory guards.
 
-Strix Halo work on this machine is operated from T3. This wrapper starts a
-benchmark command only after T3 is reachable, then monitors T3, memory, and swap
-while the command runs. If T3 becomes unhealthy or memory headroom gets too low,
-the benchmark command is terminated and optional cleanup commands are run.
+The historical filename is retained for compatibility. No private workstation
+service is required by default. Health URLs must return a JSON object with ok=true.
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import signal
@@ -20,13 +19,7 @@ import urllib.error
 import urllib.request
 
 
-DEFAULT_URLS = [
-    "http://127.0.0.1:3773/",
-    "http://192.168.2.13:3773/",
-    "http://127.0.0.1:3773/__t3react185/health",
-    "http://192.168.2.13:3773/__t3react185/health",
-    "http://127.0.0.1:3774/",
-]
+DEFAULT_URLS: list[str] = []
 
 PROTECTED_CLEANUP_PATTERN = re.compile(
     r"("
@@ -55,8 +48,11 @@ def gib(value: int) -> float:
 def url_ok(url: str, timeout: float) -> bool:
     try:
         with urllib.request.urlopen(url, timeout=timeout) as response:
-            return 200 <= response.status < 400
-    except (urllib.error.URLError, TimeoutError, OSError):
+            if response.status != 200:
+                return False
+            payload = json.loads(response.read(65537))
+            return isinstance(payload, dict) and payload.get("ok") is True
+    except (urllib.error.URLError, TimeoutError, OSError, ValueError):
         return False
 
 
@@ -72,20 +68,25 @@ def run_cleanup(commands: list[str]) -> None:
 
 
 def terminate_process(process: subprocess.Popen[object], grace_seconds: float) -> None:
-    if process.poll() is not None:
-        return
     try:
         os.killpg(process.pid, signal.SIGTERM)
-        process.wait(timeout=grace_seconds)
-        return
-    except subprocess.TimeoutExpired:
-        pass
     except ProcessLookupError:
         return
+    # The leader may exit while descendants remain. Check the owned process
+    # group rather than treating leader exit as proof of complete cleanup.
+    deadline = time.monotonic() + grace_seconds
+    while time.monotonic() < deadline:
+        process.poll()  # reap the leader when possible
+        try:
+            os.killpg(process.pid, 0)
+        except ProcessLookupError:
+            return
+        time.sleep(min(0.05, max(0, deadline - time.monotonic())))
     try:
         os.killpg(process.pid, signal.SIGKILL)
     except ProcessLookupError:
         pass
+    process.wait()
 
 
 def guard_reason(
@@ -111,23 +112,25 @@ def guard_reason(
             continue
         failures[url] += 1
         if failures[url] >= max_failures:
-            return f"T3 health check failed {failures[url]} times: {url}"
+            return f"configured health check failed {failures[url]} times: {url}"
     return None
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--url", action="append", default=[], help="T3 URL to guard; defaults cover the current 3773 proxy and 3774 upstream")
+    parser.add_argument("--url", action="append", default=[], help="Optional health URL returning JSON {ok:true}; no URL defaults")
     parser.add_argument("--interval", type=float, default=5.0)
     parser.add_argument("--timeout", type=float, default=3.0)
     parser.add_argument("--max-failures", type=int, default=2)
     parser.add_argument("--min-mem-available-gib", type=float, default=16.0)
-    parser.add_argument("--min-swap-free-gib", type=float, default=2.0)
+    parser.add_argument("--min-swap-free-gib", type=float, default=0.0)
     parser.add_argument("--cleanup-cmd", action="append", default=[], help="Cleanup command for the benchmark only")
     parser.add_argument("--grace-seconds", type=float, default=15.0)
     parser.add_argument("--preflight-only", action="store_true")
     parser.add_argument("command", nargs=argparse.REMAINDER)
     args = parser.parse_args()
+    if args.interval <= 0 or args.timeout <= 0 or args.max_failures < 1 or min(args.grace_seconds, args.min_mem_available_gib, args.min_swap_free_gib) < 0:
+        parser.error("interval/timeout/failure count must be positive; thresholds/grace must be nonnegative")
 
     urls = args.url or DEFAULT_URLS
     failures = {url: 0 for url in urls}
@@ -152,8 +155,9 @@ def main() -> int:
     if not command:
         parser.error("missing command after --")
 
-    process = subprocess.Popen(command, preexec_fn=os.setsid)
+    process = None
     try:
+        process = subprocess.Popen(command, start_new_session=True)
         while process.poll() is None:
             reason = guard_reason(
                 urls,
@@ -165,16 +169,15 @@ def main() -> int:
             )
             if reason:
                 print(f"[t3-guard] aborting benchmark: {reason}", file=sys.stderr)
-                terminate_process(process, args.grace_seconds)
-                run_cleanup(args.cleanup_cmd)
                 return 99
             time.sleep(args.interval)
-    except KeyboardInterrupt:
-        terminate_process(process, args.grace_seconds)
-        run_cleanup(args.cleanup_cmd)
-        raise
-
-    return process.returncode or 0
+        return process.returncode or 0
+    finally:
+        try:
+            if process is not None:
+                terminate_process(process, args.grace_seconds)
+        finally:
+            run_cleanup(args.cleanup_cmd)
 
 
 if __name__ == "__main__":

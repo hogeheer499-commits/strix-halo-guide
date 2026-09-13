@@ -56,7 +56,7 @@ ollama run qwen3.8:27b
 ```
 
 Keep the Strix Halo service environment documented in the main guide,
-including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. The current Ollama 0.33.2
+including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. The Ollama 0.34.0 (available September 13)
 package is a test target, not an automatic inheritance of the 0.32.13
 results. The normal 0.31.2 service remains the guide's full-reboot-qualified
 general beginner baseline until the controlled upgrade matrix passes.

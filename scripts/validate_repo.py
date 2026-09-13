@@ -534,7 +534,9 @@ def check_public_state(errors: list[str]) -> None:
         errors.append("missing affiliate registry: data/affiliate_link_registry.csv")
     else:
         with registry_path.open(newline="", encoding="utf-8") as handle:
-            header = next(csv.reader(handle), [])
+            reader = csv.DictReader(handle)
+            header = reader.fieldnames or []
+            registry_rows = list(reader)
         expected = [
             "link_id",
             "status",
@@ -552,6 +554,35 @@ def check_public_state(errors: list[str]) -> None:
                 "data/affiliate_link_registry.csv has unexpected columns: "
                 f"{header}"
             )
+        else:
+            check_affiliate_rows(registry_rows, state["affiliate_status"]["links_present"], errors)
+
+
+def check_affiliate_rows(rows: list[dict], links_present: bool, errors: list[str]) -> None:
+    """Check declared registry state, not the absence of all monetized links on the web."""
+    active = []
+    seen = set()
+    for row in rows:
+        link_id = row.get("link_id", "")
+        if not link_id or link_id in seen or None in row:
+            errors.append("affiliate registry requires unique nonempty IDs and valid row width")
+        seen.add(link_id)
+        if row.get("status") not in {"active", "inactive", "planned"}:
+            errors.append(f"affiliate registry {link_id}: status must be active, inactive or planned")
+        if row.get("status") == "active":
+            active.append(row)
+            for field in ("vendor", "product", "region", "relationship", "public_destination",
+                          "last_checked", "disclosure_location"):
+                if not row.get(field):
+                    errors.append(f"affiliate registry {link_id}: active row missing {field}")
+            if not str(row.get("public_destination", "")).startswith("https://"):
+                errors.append(f"affiliate registry {link_id}: active destination must be HTTPS")
+            try:
+                date.fromisoformat(row.get("last_checked", ""))
+            except (TypeError, ValueError):
+                errors.append(f"affiliate registry {link_id}: invalid check date")
+    if not isinstance(links_present, bool) or bool(active) != links_present:
+        errors.append("affiliate registry active rows disagree with public-state links_present")
 
 
 def check_duplicate_dict_literal_keys(errors: list[str]) -> None:

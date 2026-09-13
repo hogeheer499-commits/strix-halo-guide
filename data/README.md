@@ -1,6 +1,23 @@
 # Benchmark Data
 
+Server latency schema note (September 2026): authored `multi_user.csv` and
+`server_shootout.csv` headers now name the retained request-mean decode interval
+and repeat aggregation explicitly. Values and raw historical `itl` fields are
+unchanged. They do not represent individual token-gap percentiles. See
+[the server metric definitions](../SERVER_SHOOTOUT.md#qwen36-full-sweep).
+
 This directory contains structured benchmark data used by the guide.
+
+`benchmarks.csv` now stores `model_size_bytes` with `model_size_source` where an
+exact retained llama-bench row was identified. `model_size_gb` is decimal GB and
+`model_size_gib` binary GiB, both derived only from those bytes. These are
+llama-bench `llama_model_size()` values, not filesystem sizes, KV allocation or
+total runtime RAM. Legacy values remain in `model_size_reported` with unknown
+unit; unresolved rows have blank derived sizes rather than guessed conversions.
+`community_rpc.csv` names `baseline_nodes` for each defined throughput delta;
+MiniMax's successful baseline is two nodes because its one-node run failed.
+See [curator notes](../EVIDENCE_CORRECTIONS.md) for preserved imported-source
+corrections and unresolved provenance.
 
 The README remains the human-facing guide. These files are the machine-readable source for future charts, dashboards, comparisons, and social images.
 
@@ -43,7 +60,7 @@ python3 scripts/generate_charts.py
 - `benchmarks.csv`: existing short-context and backend benchmark rows already published in the guide.
 - `mtp_speculative.csv`: local and community `llama-server` MTP speculative-decoding rows for Qwen3.6 MTP GGUFs and Gemma 4 QAT matched-head routes, including official 35B Q8_0, local 35B Q4_K_M requant, 35B IQ4_XS-Q8nextn, the GMKtec exact-model reproduction, the b9360 100+ t/s MTP rerun, Gemma 4 26B-A4B QAT 102.7 cold / 107.4 T3-only / 110.0 best-repeat t/s server evidence, and official 27B Q8_0/NVFP4 negative-speed tests.
 - `max_performance_campaign.csv`: 2026-05-07 "push the Beelink further" campaign summary, including quant sweeps, same-source HIP/Vulkan, gpt-oss long-context, vLLM AWQ smoke, and negative results.
-- `multi_user.csv`: controlled `llama-server` concurrency results with aggregate throughput, per-request throughput, TTFT, and ITL.
+- `multi_user.csv`: controlled `llama-server` concurrency results with aggregate throughput, per-request throughput, TTFT, and request-mean decode-interval summaries (not token-gap p95).
 - `server_shootout.csv`: practical local-AI-server comparison rows across Ollama, `llama-server`, ROCm builds, and vLLM candidates.
 - `rocm_714_hipblaslt_ab.csv`: processed first-party FP16 vLLM A/B for ROCm 7.14's Ryzen AI batch-8+ hipBLASLt workaround at concurrency 1/4/8/9/16. Keep separate from direct GGUF and Vulkan claims.
 - `backend_crossover.csv`: local HIP versus Vulkan spot-check rows for prompt-processing and token-generation workload split.

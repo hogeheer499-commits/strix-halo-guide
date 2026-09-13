@@ -4,7 +4,7 @@ This page records accepted upstream work by the maintainer of `strix-halo-guide`
 It is a verification page, not an endorsement claim: each entry links to the
 upstream pull request, review history, tests, and merge record.
 
-Snapshot: 2026-08-21. Merged pull requests listed: 17 across 12 external
+Entry-count reconciliation: 2026-09-13. Merged pull requests listed: 18 across 13 external
 projects, plus one contribution under active upstream review.
 
 ## Why This Matters
@@ -49,7 +49,7 @@ OpenAI employee or a contributor to ChatGPT itself.
 
 ## AI Agent And Local Endpoint Work
 
-Four accepted Qwen Code changes cover local/single-slot agent scheduling,
+Five accepted Qwen Code changes cover local/single-slot agent scheduling,
 provider behavior, model selection, and messaging integration:
 
 | Contribution | Scope |

@@ -154,11 +154,11 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 | Official Gemma 4 31B QAT multimodal route | Official Q4_0 GGUF: 308.28 pp512 / 11.38 tg128 direct on b10066; narrow text, `STRIX 395` vision, and native calculator tool-call smokes passed | Current dense Google-model compatibility route for buyers who value text, vision, and tools over maximum decode speed. The matched Q8_0 DFlash sidecar loaded but was slower on the measured 5.5K/21.9K synthetic prompt shapes because acceptance stayed low. | [`benchmarks CSV`](data/benchmarks.csv), [`MTP CSV`](data/mtp_speculative.csv), [`raw evidence`](data/raw/2026-07-18/gemma4-31b-qat-dflash-b10066/) |
 | Experimental CHADROCK ROCmFP4 MTP server path | CHADROCK ACE/SABER 35B ROCmFP4 through `ciru-ai/ROCmFPX`: 141.37 t/s mean across three repeats on the exact 3946-token reference profile, with 100% mean draft acceptance | Fastest repeat-confirmed server/speculative reference profile in the guide, but not a universal speed. Separate 1K/8K/16K profiles measured 78.00/83.85/107.23 t/s as acceptance changed. Treat as advanced ROCmFPX/CHADROCK evidence, not a direct `llama-bench` replacement. | [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md), [`raw stability profile`](data/raw/2026-07-16/rocmfpx-chadrock-stability-profile/), [`MTP CSV`](data/mtp_speculative.csv) |
 | Frontier-size agent server | Step 3.7 Flash 198B-A11B ROCmFPX Q3 plus Q8 MTP draft: 23.84 t/s matched 4K no-spec baseline, 34.50 t/s 4K MTP, 33.83 t/s 16K MTP, native tool-call pass, and 256K allocation | Shows the capacity and agent value of 128GB unified memory rather than chasing the fastest small-model row. Advanced pinned runtime; server/MTP result, and the 48K row has one repeat. | [`ROCmFPX guide`](ROCMFP4_CHADROCK.md#step-37-q3-qualityplus-first-party-reproduction), [`raw evidence`](data/raw/2026-07-16/step37-rocmfpx-q3-qualityplus/), [`MTP CSV`](data/mtp_speculative.csv) |
-| 80B MoE coding/reasoning experiments | Qwen3-Next 80B-A3B UD-Q4_K_XL: 59.06 t/s direct llama.cpp Vulkan/RADV on b9172 | Best current 80B Qwen-family path measured here; use when model size and 256K context matter more than smallest footprint. | [`headline claims`](data/headline_claims.csv), [`raw r20`](data/raw/2026-05-16/latest-stack-b9172/qwen3-next-confirm-r20/qwen3-next-80b-b9172-ub1024-r20.csv) |
+| 80B MoE coding/reasoning experiments | Qwen3-Next 80B-A3B UD-Q4_K_XL: 59.06 t/s direct llama.cpp Vulkan/RADV on b9172 | Historical May 80B Qwen-family path measured here; use when model size and 256K context matter more than smallest footprint. | [`headline claims`](data/headline_claims.csv), [`raw r20`](data/raw/2026-05-16/latest-stack-b9172/qwen3-next-confirm-r20/qwen3-next-80b-b9172-ub1024-r20.csv) |
 | Open-weight 120B reasoning model | gpt-oss-120b MXFP4: 55.57 t/s direct llama.cpp Vulkan/RADV on current b9049 | 128GB unified memory can run a 117B-parameter MoE locally; this is speed evidence, not a model-quality eval. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/) |
 | Current 120B-class GGUF capacity route | Nemotron 3 Super 120B-A12B UD-IQ4_XS: 18.43 t/s direct llama.cpp Vulkan/RADV, b9544 control at 18.93 tg128 r3 | Answers a different buyer question: yes, a current 120B-class MoE GGUF route can run directly on one 128GB Strix Halo box. | [`headline claims`](data/headline_claims.csv), [`raw latest/int-dot`](data/raw/2026-06-05/latest-llamacpp-intdot-regression/), [`b9544 control`](data/raw/2026-06-07/latest-llamacpp-b9544-regression/) |
 | Current NVIDIA Omni/FP4 route | The same Nemotron 3 Nano Omni MXFP4 artifact improved from 56.56 tg128 on b9747 to 64.26 on b10034; a separate NVFP4 + F16 projector route measured 53.21 tg128 and correctly read `STRIX 395` from an image | Shows both current runtime maintenance and a first-party image-capable Nemotron route. The OCR check is not broad vision/audio/video validation and neither row replaces the Qwen speed headlines. | [`benchmarks CSV`](data/benchmarks.csv), [`raw MXFP4 sentinel`](data/raw/2026-07-16/nemotron-omni-mxfp4-b10034-sentinel/), [`raw multimodal scout`](data/raw/2026-07-16/nemotron-omni-nvfp4-multimodal/) |
-| Current agent/reasoning scouts | Nemotron Cascade 2 30B-A3B `IQ4_XS`: 78.95 tg128; Qwen AgentWorld 35B-A3B `UD-IQ4_XS`: 65.65 tg128 with a correct terminal-world smoke and 128K allocation pass | These answer current-model and agent-use-case questions without pretending every new model is a speed headline. Cascade's forced no-think prefix did not hide reasoning; AgentWorld's 128K result is an allocation smoke, not a filled-context quality claim. | [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`Cascade evidence`](data/raw/2026-07-16/nemotron-cascade2-iq4xs/), [`AgentWorld evidence`](data/raw/2026-07-16/agentworld-iq4xs/) |
+| Current agent/reasoning scouts | Nemotron Cascade 2 30B-A3B `IQ4_XS`: 78.95 tg128; Qwen AgentWorld 35B-A3B `UD-IQ4_XS`: 65.65 tg128 with a correct terminal-world smoke and 128K allocation pass | These answer current-model and agent-use-case questions without pretending every new model is a speed headline. Cascade's forced no-think prefix did not hide reasoning; AgentWorld's 128K result is an allocation smoke, not a filled-context quality claim. | [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`Cascade evidence`](data/raw/2026-07-16/nemotron-cascade2-iq4xs/), [`AgentWorld evidence`](data/raw/2026-07-16/agentworld-iq4xs/) [Curator: exact retained-run disagreement](EVIDENCE_CORRECTIONS.md#agentworld-retained-run-disagreement); rate provenance pending. |
 | Local API for tools or several clients | Qwen3-Coder 30B-A3B b9979: 228.18 aggregate t/s stock at np8; opt-in density+dense16 reached 234.12 at np9, while density alone reached 266.07 at np16 | A software dispatch cliff, not memory capacity, can limit multi-user value. Keep stock for low concurrency; advanced users should compare density Vulkan and ROCm at their exact target. | [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md), [`summary CSV`](data/moe_density_gate_summary.csv), [`30B chart`](charts/moe_density_gate_30b.svg) |
 | FP16 vLLM at 8-16 concurrent requests | Official ROCm 7.14 image, PyTorch 2.11, Qwen3-0.6B: `TORCH_BLAS_PREFER_HIPBLASLT=1` improved aggregate throughput by 40.50% / 38.96% / 41.54% at concurrency 8/9/16 | This reproduces AMD's Ryzen AI batch-8+ workaround without changing the host. It is a small-model FP16 server A/B, not a direct GGUF or 27B/35B claim; concurrency 4 was slightly slower. | [`ROCm/vLLM notes`](ROCM_VLLM_BUGWATCH.md), [`processed A/B`](data/rocm_714_hipblaslt_ab.csv), [`raw evidence`](data/raw/2026-07-16/rocm-714-vllm-hipblaslt-ab/) |
 | Historical ROCm/HIP `llama.cpp` allocation smoke | Official b10046, Qwen3-0.6B Q8_0: 4666.05 pp512 / 208.73 tg128; full 120,124 MiB free UMA detected and `ROCm_Host` buffers allocated | Reproduced full-UMA discovery without `HSA_OVERRIDE_GFX_VERSION`, but open issue #26209/PR #25863 means the tiny smoke does not qualify long-context, multimodal, multi-slot, or practical-model correctness. | [`ROCm/HIP notes`](ROCM_VLLM_BUGWATCH.md), [`raw evidence`](data/raw/2026-07-16/llamacpp-b10046-rocm-integrated-host-buffer/) |
@@ -285,7 +285,7 @@ Dates below are measurement dates. A row being from May does not mean it is stal
 | Experimental Qwen3.6 MTP server path | 2026-05-27 | `llama-server` Vulkan/RADV b9360 | Qwen3.6 35B-A3B MTP IQ4_XS-Q8nextn | 101.16 t/s best local average over six prompts; t16 repeats at 101.15 / 101.10 / 101.06 t/s; 93.29 t/s GMKtec community average on b9235 | [`MTP CSV`](data/mtp_speculative.csv) | [`local raw`](data/raw/2026-05-27/latest-llamacpp-b9360/), [`GMKtec raw`](data/raw/2026-05-19/community-gmktec-mtp-issue18/) | n/a | server/speculative result; localweights Q8-next-token-head quant; not the direct `llama-bench` headline |
 | Experimental Gemma 4 QAT MTP server path | 2026-06-12 | `llama-server` Vulkan/RADV ac4cddeb0 | Gemma 4 26B-A4B IT QAT UD-Q4_K_XL + Q4_0 MTP head | 102.69 t/s cold repeat; 107.42 t/s T3-only repeat; 110.00 t/s best repeat; 73.96 t/s no-spec baseline | [`MTP CSV`](data/mtp_speculative.csv) | [`cold raw`](data/raw/2026-06-12/gemma4-26b-qat-mtp-cold-repeat-ac4cddeb/), [`T3-only raw`](data/raw/2026-06-12/gemma4-26b-qat-mtp-t3-only-repeat-ac4cddeb/), [`warm raw`](data/raw/2026-06-11/gemma4-26b-qat-mtp-sixprompt-ac4cddeb/) | n/a | server/speculative result with matched QAT MTP head; current Google model route; host-workload sensitive; not direct `llama-bench` |
 | Experimental CHADROCK ROCmFP4 MTP server path | 2026-06-21 | `llama-server` ROCmFPX/RADV helper route | CHADROCK ACE/SABER 35B ROCmFP4 | 140.40 and 139.93 t/s gen512 high-acceptance repeats; 127.77 t/s gen2048 check | [`MTP CSV`](data/mtp_speculative.csv) | [`raw helper repro`](data/raw/2026-06-21/rocmfpx-chadrock-ace-saber-helper-repro/) | n/a | server/speculative result with `ciru-ai/ROCmFPX`; prompt/acceptance-sensitive; not direct `llama-bench` |
-| Best current 80B Qwen-family path | 2026-05-16 | llama.cpp Vulkan/RADV b9172 | Qwen3-Next 80B-A3B UD-Q4_K_XL | 59.06 tg128, 751.70 pp512 | [`benchmarks`](data/benchmarks.csv) | [`raw r20`](data/raw/2026-05-16/latest-stack-b9172/qwen3-next-confirm-r20/qwen3-next-80b-b9172-ub1024-r20.csv) | n/a | b9172 improved this 80B MoE path versus the older 54.92 t/s b8933 row |
+| Historical May 80B Qwen-family path | 2026-05-16 | llama.cpp Vulkan/RADV b9172 | Qwen3-Next 80B-A3B UD-Q4_K_XL | 59.06 tg128, 751.70 pp512 | [`benchmarks`](data/benchmarks.csv) | [`raw r20`](data/raw/2026-05-16/latest-stack-b9172/qwen3-next-confirm-r20/qwen3-next-80b-b9172-ub1024-r20.csv) | n/a | b9172 improved this 80B MoE path versus the older 54.92 t/s b8933 row |
 | gpt-oss-120b loaded locally | 2026-05-07 | llama.cpp Vulkan/RADV b9049 | gpt-oss-120b MXFP4 split GGUF | 55.57 tg128, 726.99 pp512, 293.73 pp65536 r1 | [`max campaign`](data/max_performance_campaign.csv) | [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/) | n/a | performance evidence only; no model-quality eval; pp65536 is one repeat |
 | User-local Ollama comparator | 2026-07-02 | Ollama 0.31.1 local binary Vulkan/RADV | Qwen3.6 35B-A3B Q4_K_M | 71.82 t/s warm API generation average | [`benchmarks`](data/benchmarks.csv) | [`raw API run`](data/raw/2026-07-02/ollama-0311-qwen36-buyer-path/) | n/a | 9 warm API runs after one cold run; required `OLLAMA_IGPU_ENABLE=1`; faster than the earlier normal-service check, but a later controlled comparison found no version-wide 0.31.2 regression |
 | Best measured Qwen3.6 server split | 2026-05-05 | Vulkan/RADV and Lemonade ROCm | Qwen3.6 35B-A3B UD-Q4_K_M | Vulkan wins 1-4 parallel; Lemonade ROCm wins 8-16 | [`server data`](data/server_shootout.csv) | [`raw sweep`](data/raw/2026-05-05/server-shootout/full-sweep-qwen36-workstation-baseline/summary.csv) | n/a | 5 reps per concurrency, 0 errors |
@@ -487,7 +487,7 @@ This table is a product/context map, not an endorsement list or the source of th
 | RAM | 96GB or 128GB unified LPDDR5X-8000 depending on vendor; primary measured system is 128GB (~215 GB/s measured, 256 GB/s theoretical) |
 | NPU | RyzenAI-npu5 (XDNA 2) |
 
-> **Why this hardware?** 96GB/128GB unified memory shared between CPU and GPU means you can run **70B+ models entirely on the GPU** -- something an RTX 4090 (24GB VRAM) cannot do. You trade raw bandwidth (~215 GB/s vs ~1 TB/s on this Beelink) for the ability to run much larger, smarter models on one compact machine. Price changes quickly by vendor; check the [Buying Guide](#buying-guide) before making a purchase decision.
+> **Why this hardware?** 96GB/128GB unified memory shared between CPU and GPU means you can run **70B+ models entirely on the GPU** -- something an RTX 4090 (24GB VRAM) cannot do. You trade raw bandwidth (~215 GB/s vs ~1 TB/s on this Beelink) for the ability to run larger model artifacts (not automatically higher task quality) on one compact machine. Price changes quickly by vendor; check the [Buying Guide](#buying-guide) before making a purchase decision.
 
 ---
 
@@ -506,7 +506,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro, primarily with Vu
 | Gemma 4 26B-A4B IT QAT (UD-Q4_K_XL) | 14.2 GB | MoE | **74.8 t/s** direct; **102.7-110.0 t/s** MTP server | Current practical Google-model route; direct row is `llama-bench`, MTP row is server/speculative |
 | Qwen3-30B-A3B-Instruct-2507 (IQ4_XS) | 13.9 GB | MoE | **100.0 t/s** * | Fastest direct 30B-class Qwen row; general-instruct route, not Qwen3-Coder |
 | Qwen3-Coder 30B-A3B (Q4_K_S) | 17.5 GB | MoE | **101.0 t/s** * | Fastest measured coding speed; speed-first quant, not the balanced default |
-| Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | MoE | **97 t/s** * | Best coding-model speed/quality ratio; current b9049 measured 96.76 t/s and previous b9010 peak was 97.24 t/s |
+| Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | MoE | **97 t/s** * | Measured balanced-quant candidate; no matched quality score; current b9049 measured 96.76 t/s and previous b9010 peak was 97.24 t/s |
 | Qwen3.6 35B-A3B (Q4_0) | 19.7 GB | MoE | **81 t/s** * | Fastest measured Qwen3.6 speed-first quant; use a balanced quant if quality matters more than raw speed |
 | Qwen3.6 35B-A3B (Q4_K_M / UD-Q4_K_M) | 20-22 GB | MoE | **63 t/s** * | Balanced direct path; separate speed-first/alternate quants reach higher but need quality sanity |
 | Qwen3.5 35B-A3B | 23 GB | MoE | 48-**65 t/s** | General purpose, coding (65 with measured direct llama.cpp builds) |
@@ -518,14 +518,14 @@ Real-world generation speeds measured on the Beelink GTR9 Pro, primarily with Vu
 | DeepSeek V4 Flash 284B (UD-IQ2_XXS) | 90.9 GB | MoE | **13.3 t/s** * | Largest current direct ordinary-GGUF capacity proof; low-bit quant, not a quality recommendation |
 | Nemotron 3 Super 120B-A12B (UD-IQ4_XS) | 64.5 GB | MoE | **18.4 t/s** * | Current 120B-class GGUF route on one 128GB Strix Halo |
 | gpt-oss-120b MXFP4 | 63.4 GB | MoE | **55.6 t/s** * | 117B-parameter open-weight model; local load and long-context speed check |
-| Qwen3-Next 80B-A3B (UD-Q4_K_XL) | 42.9 GB | MoE | **59 t/s** * | 80B model, 256K context -- a separate 80B MoE route |
-| Kimi K2.5 1T (4-node cluster) | ~500 GB | MoE | distributed | [AMD technical article](https://www.amd.com/en/developer/resources/technical-articles/2026/how-to-run-a-one-trillion-parameter-llm-locally-an-amd.html) |
+| Qwen3-Next 80B-A3B (UD-Q4_K_XL) | 42.90 GiB | MoE | **59 t/s** * | 80B model, 256K context -- a separate 80B MoE route |
+| Kimi K2.5 1T (4-node cluster) | 375 GB artifact; 512GB aggregate RAM | MoE | distributed | [AMD technical article](https://www.amd.com/en/developer/resources/technical-articles/2026/how-to-run-a-one-trillion-parameter-llm-locally-an-amd.html) |
 
 ---
 
 ## Benchmark Results
 
-Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, 2026-05-07, 2026-05-16, 2026-05-26, 2026-05-27, 2026-05-31, 2026-06-01, 2026-06-02, 2026-06-05, 2026-06-07, 2026-06-11, 2026-06-12, 2026-06-21, 2026-06-30, and 2026-07-02. Primary benchmark system: Beelink GTR9 Pro. Recorded local runs used kernel 6.19.4, Mesa RADV 26.0.2-26.1.3 where captured, AMDVLK removed, and `tuned` `accelerator-performance` where captured; individual raw directories and CSV rows are the source of truth for exact run metadata, and some older or scout rows intentionally record missing metadata as `not recorded`. Before running new benchmarks, verify `tuned-adm active` and keep `power-profiles-daemon` inactive; it can conflict with `tuned`.
+Benchmarks below were run on 2026-03-20, 2026-03-21, 2026-04-26, 2026-05-03, 2026-05-07, 2026-05-16, 2026-05-26, 2026-05-27, 2026-05-31, 2026-06-01, 2026-06-02, 2026-06-05, 2026-06-07, 2026-06-11, 2026-06-12, 2026-06-21, 2026-06-30, and 2026-07-02. Primary benchmark system: Beelink GTR9 Pro. Recorded local runs used kernel 6.19.4, Mesa RADV 26.0.2-26.1.3 where captured, AMDVLK removed, and `tuned` `accelerator-performance` where captured; individual raw directories and CSV rows are the source of truth for exact run metadata, and some older or scout rows intentionally record missing metadata as `not recorded`. Before new benchmarks, record and verify the selected power/background policy; require tuned only for a tuned-profile reproduction.
 
 These rows are included because they answer practical setup questions: which model to try first, which backend removes the most friction, which paths are only experimental, and which results are strong enough to cite.
 
@@ -595,9 +595,9 @@ These generated SVGs summarize the current structured benchmark data. The CSV fi
 | 23 | 36.8 t/s | 4.8 t/s | Realistic chat |
 | 122 | 79.6 t/s | 4.7 t/s | Long prompt |
 
-> **Why so slow?** This is a 42GB dense model -- every token reads all 42GB of weights. At ~215 GB/s bandwidth, the theoretical maximum is 215/42 = 5.1 t/s. We hit 4.8 t/s = **94% of the theoretical ceiling**. The model is slow not because of poor optimization, but because it's massive. This artifact cannot fit entirely in an RTX 4090's 24GB VRAM; partial CPU offload is a different route with its own memory and latency tradeoffs. This is the Strix Halo advantage: running models that don't fit on consumer GPUs.
+> A rough weight-streaming estimate is 215 GB/s divided by 42 GB, or about 5.1 t/s, compared with the observed 4.8 t/s. This simplified model omits compute, KV/cache traffic and implementation effects; it is not a proven ceiling or evidence that optimization cannot help. The artifact cannot fit wholly in an RTX 4090's 24GB VRAM; partial CPU offload is a separate memory/latency tradeoff.
 
-> **What improved?** Mesa 26.0.1 to 26.0.2 plus enabling the `tuned accelerator-performance` profile gave a consistent **+4-5% generation speed improvement** across all models.
+> The historical combined Mesa/power-profile change was reported alongside higher generation rates. It does not isolate a tuned-only effect or establish a universal percentage across models.
 
 ### llama-server Multi-User Serving (b9010)
 
@@ -605,7 +605,7 @@ Single-user `llama-bench` tells you the ceiling for one stream. For a real local
 
 **Qwen3.6-35B-A3B** (UD-Q4_K_M, Vulkan RADV, llama.cpp b9010, continuous batching, 4096 context tokens per slot):
 
-| `-np` | Concurrent Requests | Aggregate Generation | Avg per Request | Mean TTFT | Mean ITL | Notes |
+| `-np` | Concurrent Requests | Aggregate Generation | Avg per Request | Mean TTFT | Mean request decode interval | Notes |
 |-------|---------------------|----------------------|-----------------|-----------|----------|-------|
 | 1 | 1 | 59.21 t/s | 59.21 t/s | 0.117 s | 16.1 ms | Server/API baseline |
 | 2 | 2 | 92.21 t/s | 46.11 t/s | 0.198 s | 20.3 ms | Good scaling |
@@ -617,7 +617,7 @@ Single-user `llama-bench` tells you the ceiling for one stream. For a real local
 
 **Qwen3-Coder 30B-A3B** (UD-Q4_K_XL, Vulkan RADV, llama.cpp b9010, continuous batching, 4096 context tokens per slot):
 
-| `-np` | Concurrent Requests | Aggregate Generation | Avg per Request | Mean TTFT | Mean ITL | Notes |
+| `-np` | Concurrent Requests | Aggregate Generation | Avg per Request | Mean TTFT | Mean request decode interval | Notes |
 |-------|---------------------|----------------------|-----------------|-----------|----------|-------|
 | 1 | 1 | 90.20 t/s | 90.20 t/s | 0.079 s | 10.6 ms | Server/API baseline |
 | 2 | 2 | 121.65 t/s | 60.83 t/s | 0.133 s | 15.5 ms | Good scaling |
@@ -629,14 +629,16 @@ Single-user `llama-bench` tells you the ceiling for one stream. For a real local
 
 Raw data: `data/multi_user.csv`, `data/raw/2026-05-03/multi-user/`, and `data/raw/2026-05-03/multi-user-coder/`.
 
+<a id="llama-bench-direct-key-llamacpp-builds-b9049-b9010-and-b8460-vs-kyuz0-containers-b8298"></a>
+
 ### llama-bench Direct -- Key llama.cpp Builds (b9049, b9010, and b8460) vs kyuz0 Containers (b8298)
 
-> **UPDATE (2026-03-21): Updating llama.cpp from b8298 to b8460 gave +25% on both pp and tg for MoE models.** The new build includes a Vulkan Flash Attention refactor ([PR #19625](https://github.com/ggml-org/llama.cpp/pull/19625)), graphics queue optimization for AMD ([PR #20551](https://github.com/ggml-org/llama.cpp/pull/20551)), and GDN shader support for Qwen3.5 ([PR #20334](https://github.com/ggml-org/llama.cpp/pull/20334)).
+> **Historical Qwen3.5-35B-A3B comparison (2026-03-21):** b8298 to b8460 improved pp512 by about 24% and tg128 by about 25% on the recorded Vulkan pair. The build includes changes such as [PR #19625](https://github.com/ggml-org/llama.cpp/pull/19625), [PR #20551](https://github.com/ggml-org/llama.cpp/pull/20551) and [PR #20334](https://github.com/ggml-org/llama.cpp/pull/20334), but this endpoint comparison does not isolate their individual contributions.
 >
 > **Important caveats:**
-> - The +25% improvement is specific to **MoE models on Vulkan** due to the Wave32 FA refactor and graphics queue change. Dense models (Llama 2 7B, Llama 3.1 70B) showed minimal change (<2%) because they were already at the memory bandwidth ceiling.
-> - If you use [kyuz0's containers](https://github.com/kyuz0/amd-strix-halo-toolboxes), you get these updates automatically -- the containers rebuild on every llama.cpp master update. kyuz0's toolboxes remain the easiest way to stay current. Our finding here validates the importance of their approach.
-> - **WARNING: AMDVLK silently overrides RADV.** If AMDVLK is installed, its `/etc/vulkan/icd.d/amd_icd64.json` takes priority over RADV. This halves your pp speed (1080 -> 660 pp512) without any visible error. Always set `AMD_VULKAN_ICD=RADV` or uninstall AMDVLK entirely: `sudo dpkg -r amdvlk && sudo rm -f /etc/vulkan/icd.d/amd_icd64.json`. Check your driver: RADV shows `(RADV STRIX_HALO) (radv)` with `shared memory: 65536` in llama-bench output. AMDVLK shows `(AMD open-source driver)` with `shared memory: 32768`. We [originally reported this as a llama.cpp regression](https://github.com/ggml-org/llama.cpp/issues/22375) -- it wasn't.
+> - The 25% observation is scoped to that Qwen3.5 pair. Qwen3-Coder's recorded 86.81→87.11 t/s pair did not show that gain. Small changes on dense models do not prove a bandwidth ceiling.
+> - For [kyuz0's containers](https://github.com/kyuz0/amd-strix-halo-toolboxes), inspect the actual binary revision and image digest. A tag or rebuild policy does not prove an already-installed container contains a particular update.
+> - **WARNING: AMDVLK silently overrides RADV.** If AMDVLK is installed, its `/etc/vulkan/icd.d/amd_icd64.json` takes priority over RADV. This reduced pp speed by about 39% in the recorded pair (1080 -> 660 pp512) without any visible error. Always set `AMD_VULKAN_ICD=RADV` or uninstall AMDVLK entirely: `sudo dpkg -r amdvlk && sudo rm -f /etc/vulkan/icd.d/amd_icd64.json`. Check your driver: RADV shows `(RADV STRIX_HALO) (radv)` with `shared memory: 65536` in llama-bench output. AMDVLK shows `(AMD open-source driver)` with `shared memory: 32768`. We [originally reported this as a llama.cpp regression](https://github.com/ggml-org/llama.cpp/issues/22375) -- it wasn't.
 
 **Qwen3.5-35B-A3B** (Q4_K_M, 19.9GB, MoE) -- the biggest improvement:
 
@@ -678,9 +680,9 @@ Extended context scaling (b8460 RADV):
 
 > This row is historical and non-QAT. The current practical Gemma 4 route in this guide is **Gemma 4 26B-A4B IT QAT UD-Q4_K_XL**, which measured **74.80 t/s direct** and **102.69 cold / 107.42 T3-only / 110.00 best-repeat t/s** through a matched MTP `llama-server` route. Keep the direct row and server/speculative row separate.
 >
-> The older non-QAT Gemma 4 row is architecturally slower on tg than Qwen MoE models despite similar size. The reason: head_dim 256/512 (vs Qwen's 128) makes flash attention less efficient, mixed sliding-window/full attention adds overhead, and 3.8B active params vs Qwen's 3.3B. This is not a llama.cpp issue -- it's inherent to the model design. 48.5 t/s is still 3x human reading speed and very usable for interactive chat.
+> The older non-QAT Gemma row was slower than the recorded Qwen MoE routes. Attention dimensions, mixed attention and active-parameter traffic are possible contributors, alongside runtime implementation. These unmatched rows do not isolate a cause or rule out llama.cpp improvements; the later non-QAT b9851 result reached 55.45 t/s.
 >
-> **WARNING:** Gemma 4 is extremely sensitive to KV cache quantization. Using q8_0 KV cache causes 3.5x worse quality degradation compared to Qwen models. Stick with f16 KV cache for Gemma 4. Do NOT use `--cache-type-k q4_0`.
+> **KV precision caveat:** an [external KL experiment](https://localbench.substack.com/p/kv-cache-quantization-benchmark) reported q8_0 KV KL 0.377 for Gemma 26B-A4B versus 0.108 for **Gemma 31B**, about 3.49×. It compared output distributions against an f16-KV reference; this is not a factor of downstream task-quality loss and not a comparison with Qwen. Keep f16 KV as this guide's conservative tested profile; lower-precision KV needs artifact/workload-specific qualification.
 
 **Llama 4 Scout 109B** (Q4_K_M, 60.9GB, MoE -- 109B total params, 17B active):
 
@@ -688,16 +690,16 @@ Extended context scaling (b8460 RADV):
 |-------|--------|-------|-------|-------|
 | **b8933** | **RADV** | **331** | **18.32** | 109B model running on a mini PC |
 
-> A 109 billion parameter model running at 18.3 t/s on a 128GB Strix Halo mini PC. An RTX 4090 (24GB VRAM) cannot even load this model. The speed is bandwidth-limited at 17B active parameters -- theoretical max is ~25 t/s at 215 GB/s, we hit 73% of that ceiling.
+> The recorded 109B artifact ran at 18.3 t/s on the 128GB system and cannot fit wholly in 24GB VRAM. A nominal 17B-active-at-4-bit bandwidth estimate gives roughly 25 t/s at 215 GB/s, but omits mixed-quant bytes, KV/cache traffic and compute; it is a rough model, not an established performance ceiling.
 
-**Qwen3-Next 80B-A3B** (UD-Q4_K_XL, 42.9GB, MoE -- 80B total params, 3B active, 256K context):
+**Qwen3-Next 80B-A3B** (UD-Q4_K_XL, 42.90 GiB, MoE -- 80B total params, 3B active, 256K context):
 
 | Build | Driver | pp512 | tg128 | Notes |
 |-------|--------|-------|-------|-------|
-| **b9172** | **RADV** | **752** | **59.06** | Latest-stack r20 confirmation; best current 80B Qwen-family path |
+| **b9172** | **RADV** | **752** | **59.06** | Latest-stack r20 confirmation; historical May 80B Qwen-family path |
 | **b8933** | **RADV** | **657** | **54.92** | 80B model at 55 t/s |
 
-> 80 billion parameters running at 59 t/s on a mini PC. This measured Qwen3-family MoE has 80B total with only 3B active parameters and a 256K context window. Despite being 42.9 GB on disk, the MoE routing keeps only 3B params active per token. The measured route reached 59 t/s versus 38 t/s for the separate Qwen3-Coder-Next 80B-A3B artifact/runtime row. This is not a matched architecture or quality comparison. The 2026-05-16 b9172 check improved this row, while Qwen3-Coder, Qwen3.6, and gpt-oss did not improve on the same latest-stack rerun.
+> 80 billion parameters running at 59 t/s on a mini PC. This measured Qwen3-family MoE has 80B total with only 3B active parameters and a 256K context window. Despite being 42.90 GiB of reported llama-bench model bytes (46.06 decimal GB), the MoE routing keeps only 3B params active per token. The measured route reached 59 t/s versus 38 t/s for the separate Qwen3-Coder-Next 80B-A3B artifact/runtime row. This is not a matched architecture or quality comparison. The 2026-05-16 b9172 check improved this row, while Qwen3-Coder, Qwen3.6, and gpt-oss did not improve on the same latest-stack rerun.
 
 **Qwen3.6-35B-A3B** (Q4_K_M, 19.9GB, MoE -- drop-in upgrade from Qwen3.5, released April 2026):
 
@@ -724,7 +726,7 @@ a global HSA architecture override.
 | b8301 (self-compiled, kernel 6.19.4) | 542 | 1059 | 47.87 | old build |
 | b8301 (self-compiled, kernel 6.18.14) | 488 | 996 | 48.80 | previous best |
 
-> ROCm also improved in the historical b8460 comparison: tg went from 47.87 to **54.67** (+14%) thanks to generic llama.cpp optimizations. But **Vulkan RADV was still faster on both pp and tg in this short-context pair**: RADV 1080 vs ROCm 1047 pp512 (+3%), RADV 64.85 vs ROCm 54.67 tg128 (+19%). The +25% Vulkan improvement was ~14% generic (ROCm got this too) plus ~11% Vulkan-specific (FA refactor, graphics queue). Current ROCm advantages to test are hipBLASLt, batching, and prompt-heavy work; the older rocWMMA long-context evidence is historical because upstream removed that kernel in 2026.
+> ROCm's historical pair improved from 47.87 to **54.67** tg128 (+14%). Vulkan RADV remained faster in the recorded short-context pair: 1080 versus 1047 pp512 (+3%) and 64.85 versus 54.67 tg128 (+19%). These endpoint deltas cannot be decomposed into generic and Vulkan-specific optimization percentages without isolated A/B evidence. HIP batching and prompt-heavy workloads remain separate tests; the removed rocWMMA kernel is historical evidence.
 
 **ROCm HIP spot check (2026-05-03, b8460 HIP build):**
 
@@ -745,7 +747,7 @@ a global HSA architecture override.
 | ROCm HIP (b8301, HSA fix) | 1059 | 47.87 | Old build, unfair comparison |
 | ROCm HIP **(b8460, HSA fix)** | **1047** | **54.67** | **ROCm got +14% tg from same update** |
 
-> The single biggest optimization in this early campaign was **updating llama.cpp**. It gave more improvement (+25% on MoE models) than all kernel tuning, batch size sweeps, and driver comparisons combined. This is counter-intuitive -- people spend hours on kernel parameters, GRUB flags, and Mesa versions, while a current source build can deliver more than everything else put together. Note: this applies to MoE models specifically. Dense models were already at the bandwidth ceiling and show <2% change.
+> The early Qwen3.5 pair showed a substantial build-to-build gain. That observation supports checking the exact runtime before tuning, but does not promise that newer builds improve every MoE or that dense models cannot improve.
 
 **Batch size and ubatch tuning results (b8298, for reference):**
 
@@ -788,7 +790,7 @@ leave `HSA_OVERRIDE_GFX_VERSION` unset.
 | **RADV** | **1154** | **1377** | **1356** | 48.12 |
 | AMDVLK | 335 | 327 | 325 | 48.02 |
 
-> AMDVLK is 3-4X slower on pp for dense models (2 GiB buffer limit). Use RADV.
+> AMDVLK was 3-4X slower on pp for the recorded Llama 2 7B pair. A 2 GiB allocation limit is a possible contributor, not an isolated causal measurement; the measured beginner route uses RADV.
 
 **Qwen3-0.6B** (Q8_0, 762MB, Dense) -- maximum throughput:
 
@@ -822,7 +824,7 @@ leave `HSA_OVERRIDE_GFX_VERSION` unset.
 | **RADV** | Llama 2 7B Q4_K_M | **1153.53** | **1364.45** | **1377.18** | **1355.88** | 48.12 |
 | **AMDVLK** | Llama 2 7B Q4_K_M | 334.50 | 337.96 | 327.35 | 325.33 | 48.02 |
 
-> **Critical finding (b8298):** AMDVLK has a 2 GiB single buffer allocation limit that cripples pp on dense models (3-4X slower on Llama 2 7B). On MoE models, AMDVLK was slightly faster on tg (+6.5%) with b8298, but **this advantage disappeared with b8460** -- see the [key build comparison](#llama-bench-direct-key-llamacpp-builds-b9049-b9010-and-b8460-vs-kyuz0-containers-b8298). For beginners: keep AMDVLK removed and use RADV for Vulkan.
+> **Critical finding (b8298):** The recorded AMDVLK Llama 2 7B pp result was 3-4X slower. Its reported 2 GiB single-buffer limit is a hypothesis for investigation, not a proven sole cause. On MoE models, AMDVLK was slightly faster on tg (+6.5%) with b8298, but **this advantage disappeared with b8460** -- see the [key build comparison](#llama-bench-direct-key-llamacpp-builds-b9049-b9010-and-b8460-vs-kyuz0-containers-b8298). For beginners: keep AMDVLK removed and use RADV for Vulkan.
 
 **Vulkan RADV vs ROCm HIP (same build b8460, Qwen3.5-35B-A3B):**
 
@@ -841,7 +843,7 @@ Based on our measurements and [lhl's detailed testing](https://github.com/lhl/st
 |---------|----------|---------------|---------------|-----------------|------------------|
 | Ollama + Vulkan RADV | General use, chat | Good | Good | Degrades at 8K+ | Easiest |
 | llama.cpp + Vulkan RADV (container) | Best-tested generation-heavy GGUF path | Best-tested in measured short-context rows | **Best-tested short-context generation** | Degrades at 8K+ | Easy |
-| llama.cpp + Vulkan AMDVLK | Not recommended | Slower than RADV on b8460 | Slower on dense (2 GiB limit) | Degrades at 8K+ | Easy |
+| llama.cpp + Vulkan AMDVLK | Not recommended | Slower than RADV on b8460 | Slower on the recorded dense pair; cause not isolated | Degrades at 8K+ | Easy |
 | ROCm HIP | Batch processing | Excellent | Good | Poor at 32K+ | Medium (needs HSA fix on 6.19.x) |
 | vLLM (TheRock) | API serving | Good | Good | Good | Hard |
 
@@ -849,15 +851,22 @@ Based on our measurements and [lhl's detailed testing](https://github.com/lhl/st
 
 ### Hardware Comparison
 
-| Hardware | Bandwidth | tg (MoE ~30B) | Max Model Size | Price |
-|----------|-----------|---------------|----------------|-------|
-| RTX 4090 | ~1008 GB/s | 100-122 t/s | 24 GB | ~$1600 GPU only |
-| RTX 3090 | ~936 GB/s | 100-112 t/s | 24 GB | ~$1,100 used (2026-08 spot check; verify current listings) |
-| Apple Mac Studio M5 Max 128GB | not yet verified here | not yet verified here | 128 GB (M5 Ultra up to 512 GB) | ~$4,499 reported at the 2026-08-25 M5 launch; verify current Apple config |
-| **Beelink GTR9 Pro** | **~215 GB/s** | **63-101.0 t/s current direct Qwen MoE rows; 81 t/s speed-first Qwen3.6** | **120+ GB** | **$4,349 official (re-verified 2026-08-29 US store)** |
-| NVIDIA DGX Spark | ~273 GB/s | 52-56 t/s (120B) | 128 GB | $4,699 |
+Capacity and bandwidth are hardware context, not matched inference benchmarks.
 
-> **Apples-to-apples (gpt-oss-120b, same model family):** this guide now measures Strix Halo at 55.57 t/s tg128 locally via llama.cpp Vulkan/RADV b9049. External DGX Spark reports are around 52-56 t/s on comparable generation rows. At Beelink's official US price, re-verified on 2026-08-29, the price gap to DGX Spark is about $350 ($4,349 vs $4,699), although other Strix Halo systems remain cheaper. On smaller MoE models (Qwen3-30B), Strix Halo measures 96.76 t/s on the balanced Qwen3-Coder b9049 campaign, 100.99 t/s with Qwen3-Coder b9851 Q4_K_S, and 100.04 t/s with a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS b9467 row. The DGX Spark wins on prompt processing and long-context rows in external reports. Apple replaced the Mac Studio lineup with M5 Max / M5 Ultra on 2026-08-25 (M4 Max models discontinued; the 128GB M5 Max tier was reported around $4,499 at launch), so verify current Apple configs before using it as a purchase comparison. Source: [local raw data](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/), [NVIDIA DGX Spark](https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/dgx-spark/), [Framework Community](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055), [lhl](https://github.com/lhl/strix-halo-testing).
+| Hardware | Memory capacity context | Workload evidence in this guide |
+|----------|-------------------------|---------------------------------|
+| RTX 4090 / RTX 3090 | 24GB dedicated VRAM; host offload is a separate route | Older 100-122 / 100-112 t/s ranges lacked exact matched artifact/build/workload provenance and are not a buying-performance comparison |
+| Apple Mac Studio | Configuration-dependent unified memory; verify exact SKU | No matched first-party comparison here |
+| Beelink GTR9 Pro tested system | 128GB physical unified RAM; OS/KV/runtime need headroom | Direct Qwen3-Coder Q4_K_S 100.99 tg128 and gpt-oss-120b 55.57 tg128 are separate model/quant/build rows |
+| NVIDIA DGX Spark | 128GB unified memory | External 52-56 t/s gpt-oss-120b reports are contextual; matching a model family does not establish identical artifact/backend/prompt/cache conditions |
+
+Do not rank these systems from unmatched ranges or capacity alone. The earlier
+Beelink $4,349 US snapshot was checked August 29, 2026; other older price mentions
+are not a current exact-SKU comparison. Use the dated buyer snapshots and verify
+complete-system configuration, region and availability before a purchase decision.
+External context: [NVIDIA](https://www.nvidia.com/en-us/products/workstations/dgx-spark/),
+[Framework discussion](https://community.frame.work/t/dgx-spark-vs-strix-halo-initial-impressions/77055),
+[lhl's tests](https://github.com/lhl/strix-halo-testing).
 
 ### Long Context Performance
 
@@ -965,17 +974,18 @@ Install Ubuntu 24.04 LTS Desktop with default settings. After installation:
 sudo apt update && sudo apt upgrade -y
 ```
 
-### Step 2.2: Switch to X11
+### Step 2.2: Use X11 Only If Needed
 
-Wayland can cause issues with remote desktop, screen sharing, and some GPU monitoring tools.
+If a specific Ubuntu 24.04 remote-desktop, screen-sharing or monitoring tool needs X11, edit GDM's daemon section. Headless inference does not require this desktop change.
 
 ```bash
-sudo tee -a /etc/gdm3/custom.conf > /dev/null << 'EOF'
-WaylandEnable=false
-EOF
+sudoedit /etc/gdm3/custom.conf
 ```
 
-> If the line already exists (commented out), uncomment it instead. Reboot to apply.
+Under `[daemon]`, uncomment or set `WaylandEnable=false`. If `[daemon]` is missing,
+create that section and place the key immediately beneath it. Keep other sections
+and settings intact; do not append the key under `[debug]`. Repeated edits should
+leave one active key in `[daemon]`. Reboot deliberately after saving your work.
 
 > **Ubuntu 26.04 LTS** (released April 2026) ships with Linux 7.0, Mesa 26.0, and native `apt install rocm`. However, 26.04 is **Wayland-only** (X11 switch above does not work) and the performance-relevant components (kernel, Mesa RADV) are already available on 24.04 via the [kisak PPA](https://launchpad.net/~kisak/+archive/ubuntu/kisak-mesa) and [mainline kernel PPA](https://kernel.ubuntu.com/mainline/). **Upgrading is not needed for LLM performance.** This guide stays on 24.04 LTS.
 
@@ -1001,71 +1011,68 @@ uname -r
 
 ### Step 3.2: Configure GRUB Boot Parameters
 
-```bash
-sudo tee /tmp/grub_update.txt << 'EOF'
-GRUB_CMDLINE_LINUX_DEFAULT="quiet splash amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0"
-EOF
+The following is the recorded **128GB Beelink memory profile**, with a small UMA
+reserve. It is not a preset for 96GB systems. No automatic smaller-RAM profile is
+qualified here; retain distribution defaults and investigate actual runtime
+allocation failures before choosing host-specific limits.
+
+Use `sudoedit /etc/default/grub` and preserve unrelated parameters in
+`GRUB_CMDLINE_LINUX_DEFAULT`. For the selected 128GB profile, its relevant
+parameters are:
+
+```text
+amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0
 ```
 
-Then edit `/etc/default/grub` and replace the `GRUB_CMDLINE_LINUX_DEFAULT` line with the content above.
+| Parameter | Recorded scope |
+|-----------|----------------|
+| `amdgpu.gttsize=131072` | 128 GiB GTT limit; not preallocated VRAM or proof that a 128 GiB model fits |
+| `ttm.pages_limit=31457280` | 120 GiB limit with 4 KiB pages; OS, context and runtime still need headroom |
+| `amdgpu.cwsr_enable=0` | Recorded compute wave save/restore setting; qualify against the selected kernel/workload |
+| `amd_iommu=off` | Optional historical desktop profile; disables NPU access and can break deep suspend |
 
-| Parameter | Purpose | Impact |
-|-----------|---------|--------|
-| `amd_iommu=off` | Optional always-on desktop benchmark profile | About +6% memory reads in lhl's test; disables NPU access and can break deep suspend on mobile systems |
-| `amdgpu.gttsize=131072` | Set GTT (GPU-accessible system memory) to 128GB | Required for large models |
-| `ttm.pages_limit=31457280` | Set TTM page limit to ~120GB | Required for large models |
-| `amdgpu.cwsr_enable=0` | Disable compute wave save/restore | Not needed for LLM inference |
-
-> **Optional desktop benchmark profile:** to match the primary Beelink headline environment, add `amd_iommu=off` to the line above. Do not use that profile when you need the NPU, RDMA/VFIO/passthrough, or reliable laptop/tablet suspend. kyuz0's toolboxes use `iommu=pt`; the performance difference is documented in [issue #66](https://github.com/kyuz0/amd-strix-halo-toolboxes/issues/66), while the mobile suspend failure is documented in [issue #104](https://github.com/kyuz0/amd-strix-halo-toolboxes/issues/104).
-
-Apply:
+Leave IOMMU at its normal default for the buyer route. Preserve existing
+configuration and resolve conflicting parameter values before running:
 
 ```bash
 sudo update-grub
 ```
 
-### Step 3.3: Create AMD GPU Modprobe Configuration
+Reboot deliberately, then compare `/proc/cmdline` and the live module parameters
+with the chosen profile. A second setup run before reboot still has pending
+boot changes. Kernel versions can change parameter support and effective limits.
+
+### Step 3.3: Review Existing AMD GPU Modprobe Configuration
+
+Use one reviewed source for each module option. Earlier guide revisions wrote
+`/etc/modprobe.d/amdgpu_llm_optimized.conf` with `gttsize=122800`, conflicting
+with the GRUB value above. The script now stops for manual migration if that
+legacy file exists and does not create a competing modprobe profile.
+
+Inspect all relevant `modprobe.d` files, preserve administrator options, and
+resolve duplicate/conflicting values deliberately. If you change module options
+embedded in initramfs, run `sudo update-initramfs -u -k all` and require success
+before rebooting. Do not infer live state from the presence of a file.
+
+### Step 3.4: Verify GPU Access
+
+Use the distribution's device rules. Do not create world-writable (`0666`) KFD or DRM rules. Older revisions of this guide created `/etc/udev/rules.d/99-amd-kfd.rules`; review and back up that file, remove only the obsolete guide rules, and reload rules/reboot before checking permissions. Preserve any unrelated administrator rules. The script stops for manual review when that legacy file exists.
+
+On the Ubuntu route, add your interactive user to both GPU groups, then log out and back in:
 
 ```bash
-sudo tee /etc/modprobe.d/amdgpu_llm_optimized.conf > /dev/null << 'EOF'
-options amdgpu gttsize=122800
-options ttm pages_limit=31457280
-options ttm page_pool_size=31457280
-EOF
+sudo usermod -aG render,video "$USER"
 ```
 
-Update initramfs:
+Inspect the actual device owners, modes and service identity:
 
 ```bash
-sudo update-initramfs -u -k all
+id
+ls -l /dev/dri/renderD* /dev/kfd
+systemctl show ollama -p User -p Group -p SupplementaryGroups
 ```
 
-### Step 3.4: Create udev Rules for GPU Access
-
-```bash
-sudo tee /etc/udev/rules.d/99-amd-kfd.rules > /dev/null << 'EOF'
-SUBSYSTEM=="kfd", GROUP="render", MODE="0666"
-SUBSYSTEM=="drm", KERNEL=="card[0-9]*", GROUP="render", MODE="0666"
-SUBSYSTEM=="drm", KERNEL=="renderD[0-9]*", GROUP="render", MODE="0666"
-EOF
-```
-
-> **IMPORTANT:** The `renderD[0-9]*` rule is critical. Without it, you get `HSA_STATUS_ERROR_OUT_OF_RESOURCES` errors with ROCm.
-
-Add your user to GPU groups:
-
-```bash
-sudo usermod -aG render $USER
-sudo usermod -aG video $USER
-```
-
-Reload and reboot:
-
-```bash
-sudo udevadm control --reload-rules
-sudo udevadm trigger
-sudo reboot
-```
+Vulkan needs access to its render node; ROCm also needs KFD access. A missing KFD node does not by itself disqualify Vulkan. If Ollama runs as the `ollama` user, check `id ollama` separately: your login's groups do not grant the service access. Add only the group that owns the required device to the actual service account, then restart the service and verify GPU offload. Distribution rules and service restrictions vary; these checks are not a hardware qualification.
 
 ---
 
@@ -1073,9 +1080,16 @@ sudo reboot
 
 ### Step 4.1: Install and Configure tuned
 
+Choose and record one power policy per route/campaign. The script preserves the
+existing policy by default; `POWER_POLICY=tuned bash setup.sh` selects the older
+`accelerator-performance` reproduction profile and stops if a conflicting daemon
+is active. The commands below are for deliberately selecting that profile, not a
+universal benchmark prerequisite. Controlled desktop-performance/DPM-auto runs
+are also retained in [Reproducibility](REPRODUCIBILITY.md).
+
 ```bash
 sudo apt install tuned -y
-sudo systemctl disable --now power-profiles-daemon || true
+sudo systemctl disable --now power-profiles-daemon
 sudo systemctl enable --now tuned
 sudo tuned-adm profile accelerator-performance
 ```
@@ -1089,9 +1103,9 @@ systemctl is-active power-profiles-daemon
 # Expected: inactive
 ```
 
-> **Impact:** +5-8% overall performance improvement. Memory bandwidth improves from ~221 GB/s to ~234 GB/s write. We measured +4-5% token generation improvement when tuned was running vs not running.
+> Power-policy effects depend on the workload and stack. The historical combined driver/policy observations do not isolate a universal tuned percentage. The 221/234 GB/s external comparison concerns the IOMMU experiment, not a matched tuned-only test.
 
-> **WARNING:** tuned conflicts with Ubuntu's `power-profiles-daemon`. If `power-profiles-daemon` starts, it can stop `tuned` and cost several percent on benchmark rows. For publishable runs, keep `tuned` active and `power-profiles-daemon` inactive.
+> Avoid competing power-policy managers. For a tuned reproduction, verify tuned is active and power-profiles-daemon inactive. For a different recorded policy, verify that policy instead; do not alter it merely to pass an older checklist.
 
 ### Step 4.2: Upgrade Mesa Vulkan Drivers
 
@@ -1112,18 +1126,18 @@ vulkaninfo --summary 2>&1 | grep driverInfo
 
 > **Impact:** Mesa 25.2.8 to 26.0.1 gave **+9% prompt eval** (87 to 96 t/s). Mesa 26.0.1 to 26.0.2 gave an additional small improvement.
 
-> **Note:** You may see DKMS errors about `mt76-mt7925` during the upgrade. These are harmless -- see [Troubleshooting](#troubleshooting).
+> **Note:** Investigate DKMS failures before treating an upgrade as complete; see [Troubleshooting](#troubleshooting).
 
 ### Step 4.3: Verify GPU Clock
 
-The GPU should run at its maximum clock speed (2900 MHz) during inference:
+Record clocks under the actual workload. A 2900 MHz target belongs to the older high-DPM desktop profile, not every model, OEM or idle state:
 
 ```bash
 cat /sys/class/drm/card*/device/pp_dpm_sclk
-# Expected: 2: 2900Mhz *  (asterisk on highest clock)
+# Asterisk identifies the currently selected state; compare with the recorded profile.
 ```
 
-> **GPU Clock Bug:** On some kernel/firmware combinations, the GPU gets stuck at 900 MHz, causing ~8% performance loss. If your GPU is not at 2900 MHz during load, see [Troubleshooting](#troubleshooting).
+> A historical stack was observed stuck at 900 MHz. Low clocks can also reflect idle/light load, thermal or power policy; inspect utilization and the selected profile before diagnosing a fault.
 
 ### Step 4.4: Linux Firmware
 
@@ -1148,10 +1162,15 @@ Ollama is the easiest way to run LLMs on Strix Halo. With the right configuratio
 ### Step 5.1: Install Ollama
 
 ```bash
-curl -fsSL https://ollama.com/install.sh | sh
+curl -fsSL https://ollama.com/install.sh | OLLAMA_VERSION=0.31.2 sh
 ```
 
 ### Step 5.2: Configure Ollama for Vulkan
+
+Version 0.31.2 is the reboot-qualified fresh-install baseline. The script retains
+existing runtimes; verify their actual running version separately. Newer-model
+routes, including Qwen3.8, have their own measured runtime requirements and are
+explicit opt-ins rather than an automatic baseline upgrade.
 
 > **Historical update (April 2026):** The measured Ollama 0.20.4/kernel
 > 6.19.x ROCm route used `HSA_OVERRIDE_GFX_VERSION=11.5.1`
@@ -1164,7 +1183,7 @@ curl -fsSL https://ollama.com/install.sh | sh
 sudo systemctl edit ollama
 ```
 
-Add between the comment lines:
+Preserve existing settings and add the following between the comment lines. Check for existing assignments first; resolve conflicting values deliberately. The automated script uses a separate `60-strix-halo-guide.conf` and refuses conflicts instead of replacing your `override.conf`.
 
 ```ini
 [Service]
@@ -1175,27 +1194,26 @@ Environment="OLLAMA_FLASH_ATTENTION=1"
 Environment="OLLAMA_CONTEXT_LENGTH=8192"
 Environment="AMD_VULKAN_ICD=RADV"
 Environment="VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json"
-Environment="OLLAMA_NUM_BATCH=512"
 Environment="OLLAMA_NUM_PARALLEL=1"
 ```
 
-Restart:
+Reload and inspect the effective environment before restarting. Later drop-ins can override values; `EnvironmentFile` and `UnsetEnvironment` can change the final environment too. Review those manually if present. Do not paste service environment output publicly: it can contain credentials.
 
 ```bash
 sudo systemctl daemon-reload
+systemctl show ollama -p Environment -p EnvironmentFiles -p UnsetEnvironment
 sudo systemctl restart ollama
 ```
 
 | Variable | Purpose |
 |----------|---------|
-| `OLLAMA_VULKAN=1` | Force Vulkan backend (9% faster than ROCm on Strix Halo) |
+| `OLLAMA_VULKAN=1` | Select the measured Vulkan route; backend performance depends on workload |
 | `OLLAMA_IGPU_ENABLE=1` | Let current Ollama builds use the Strix Halo integrated GPU instead of dropping it during GPU discovery |
 | `HIP_VISIBLE_DEVICES=-1` | Disable HIP device enumeration (avoids ROCm fallback) |
-| `OLLAMA_FLASH_ATTENTION=1` | Enable flash attention (+13% prompt processing) |
+| `OLLAMA_FLASH_ATTENTION=1` | Enable flash attention on the selected runtime; verify workload behavior |
 | `OLLAMA_CONTEXT_LENGTH=8192` | Limit context to prevent OOM (increase if needed) |
 | `AMD_VULKAN_ICD=RADV` | Force RADV driver (faster than AMDVLK for general use) |
 | `VK_ICD_FILENAMES=...` | Explicitly point to RADV ICD file |
-| `OLLAMA_NUM_BATCH=512` | Larger batch size for better throughput |
 | `OLLAMA_NUM_PARALLEL=1` | Single request at a time (maximizes single-request speed) |
 
 ### Step 5.3: Pull Models
@@ -1223,64 +1241,37 @@ ollama pull qwen3-coder-next
 ollama run qwen3.6:35b-a3b
 ```
 
-You should see responses generating at ~50 t/s.
+Verify a useful text response and inspect `ollama ps` plus runtime logs for GPU offload. Speed alone does not establish correct setup; match the exact model/runtime/profile before comparing rates.
 
 ---
 
 ## Phase 6: Benchmarking
 
-### Step 6.1: Quick Benchmark Script
+### Step 6.1: Text API Smoke Check
+
+From a local checkout of this guide:
 
 ```bash
-tee ~/bench-ollama.sh > /dev/null << 'SCRIPT'
-#!/bin/bash
-MODEL="${1:-qwen3.6:35b-a3b}"
-PROMPT="${2:-hello how are you}"
-echo "Model: $MODEL"
-echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-curl -s http://localhost:11434/api/generate -d "{\"model\":\"$MODEL\",\"prompt\":\"$PROMPT\",\"stream\":false}" | python3 -c "
-import sys,json
-d=json.load(sys.stdin)
-pp=d['prompt_eval_count']/d['prompt_eval_duration']*1e9
-tg=d['eval_count']/d['eval_duration']*1e9
-print(f'Prompt eval: {pp:.1f} t/s ({d[\"prompt_eval_count\"]} tokens)')
-print(f'Generation:  {tg:.1f} t/s ({d[\"eval_count\"]} tokens)')
-print(f'Total time:  {d[\"total_duration\"]/1e9:.2f}s')
-"
-SCRIPT
-chmod +x ~/bench-ollama.sh
+bash scripts/ollama_smoke.sh
+bash scripts/ollama_smoke.sh qwen3-coder-next 'Explain backpropagation in simple terms.'
 ```
 
-Usage:
+The setup script also installs the same helper as `~/bench-ollama.sh`. It serializes
+quoted/multiline prompts, bounds HTTP duration, requests up to 128 output tokens,
+and rejects HTTP errors, empty/incomplete responses and invalid timing counters.
+Natural completion can be shorter. This is a smoke check, not a controlled
+throughput comparison: inspect `ollama ps` and runtime logs to verify actual GPU
+offload, then use the [reproducibility protocol](REPRODUCIBILITY.md).
+
+### Step 6.2: Longer Prompt Smoke Check
 
 ```bash
-# Default (qwen3.6:35b-a3b, short prompt)
-bash ~/bench-ollama.sh
-
-# Specific model with custom prompt
-bash ~/bench-ollama.sh qwen3-coder-next "explain backpropagation in simple terms"
+bash scripts/ollama_smoke.sh qwen3.6:35b-a3b \
+  'Review a Python web application architecture covering sessions, database access, caching, background jobs and error handling. Explain the tradeoffs with concrete examples.'
 ```
 
-### Step 6.2: Long Prompt Benchmark
-
-```bash
-tee ~/bench-ollama-long.sh > /dev/null << 'SCRIPT'
-#!/bin/bash
-MODEL="${1:-qwen3.6:35b-a3b}"
-echo "Model: $MODEL (long prompt)"
-echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-curl -s http://localhost:11434/api/generate -d "{\"model\":\"$MODEL\",\"prompt\":\"You are an expert software architect. I need you to review and refactor the following Python code for a web application that handles user authentication, session management, database connections, API rate limiting, error handling, logging, caching with Redis, background job processing with Celery, WebSocket connections for real-time updates, file upload handling with S3 integration, email notification service, payment processing with Stripe, and search functionality with Elasticsearch. Please provide a comprehensive architecture review covering separation of concerns, SOLID principles, design patterns, security best practices, performance optimization, and scalability considerations.\",\"stream\":false}" | python3 -c "
-import sys,json
-d=json.load(sys.stdin)
-pp=d['prompt_eval_count']/d['prompt_eval_duration']*1e9
-tg=d['eval_count']/d['eval_duration']*1e9
-print(f'Prompt eval: {pp:.1f} t/s ({d[\"prompt_eval_count\"]} tokens)')
-print(f'Generation:  {tg:.1f} t/s ({d[\"eval_count\"]} tokens)')
-print(f'Total time:  {d[\"total_duration\"]/1e9:.2f}s')
-"
-SCRIPT
-chmod +x ~/bench-ollama-long.sh
-```
+Record the actual input/output token counts, cache policy, warmup and repetitions
+before comparing rates. A longer instruction is not by itself a long-context test.
 
 ### Prompt Length Impact on Speed
 
@@ -1317,6 +1308,11 @@ curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sudo
 
 ### Step 7.2: Create the ROCm Container
 
+The `rocm-7.2` command below is a dated reproduction route, not a floating latest
+recommendation. The upstream toolbox now documents a `rocm-10.0` stable route;
+use its current instructions and pin an image digest for a new qualification
+campaign. This guide has not promoted that available image to its measured default.
+
 ```bash
 distrobox create llama-rocm-72 \
   --image docker.io/kyuz0/amd-strix-halo-toolboxes:rocm-7.2 \
@@ -1343,9 +1339,9 @@ llama-bench -m ~/models/your-model.gguf -fa 1 -ngl 999 -mmp 0 -p 128,512 -n 128
 
 | Flag | Impact | Notes |
 |------|--------|-------|
-| `-fa 1` | +13% prompt processing | Always use on Strix Halo |
-| `-mmp 0` (--no-mmap) | +22% pp128, more stable | **Always** use on Strix Halo |
-| `ROCBLAS_USE_HIPBLASLT=1` | +8% token generation | Set in environment |
+| `-fa 1` | Flash attention | Recorded profile; validate model/build support |
+| `-mmp 0` (--no-mmap) | Disable mmap | Recorded route; compare load/memory behavior for the selected stack |
+| `ROCBLAS_USE_HIPBLASLT=1` | Historical environment setting | Effect depends on the runtime path; no universal improvement established |
 | `-ngl 999` | Full GPU offload | Use all available VRAM |
 
 > The kyuz0 pre-built binary includes the critical compiler flag `--amdgpu-unroll-threshold-local=600` which works around the [LLVM compiler regression](https://github.com/llvm/llvm-project/issues/147700) in ROCm 7+. Self-compiled binaries without this flag may be significantly slower.
@@ -1382,7 +1378,10 @@ cmake --build build -j$(nproc)
 
 [kyuz0's vLLM toolboxes](https://github.com/kyuz0/amd-strix-halo-vllm-toolboxes) enable API serving on gfx1151. Treat vLLM as a separate serving benchmark path, not as something to install into the host Python environment.
 
-On Ubuntu, use Distrobox. Prefer `:stable` for measured runs; use `:latest` only for an explicit update/regression test.
+The command below preserves the May `:stable` reproduction route. Upstream now
+uses `:latest` for its verified vLLM route and `:dev` for development. Those moving
+tags are not immutable benchmark identities: select and record a digest, then
+qualify the exact image before treating it as a new recommendation.
 
 Local preflight status: `vllm-gfx1151` was created and smoke-tested on 2026-05-03 with the `:stable` image. See [`VLLM_BASELINE.md`](VLLM_BASELINE.md). This is setup evidence, not a throughput benchmark.
 
@@ -1428,8 +1427,8 @@ From [kyuz0's vLLM clustering guide](https://github.com/kyuz0/amd-strix-halo-vll
 
 **Performance:**
 - ~50 Gbps bandwidth, ~5 us latency (vs ~70-100 us TCP/IP)
-- TP=2 across machines = 256GB unified memory
-- Enables trillion-parameter model inference ([AMD article](https://www.amd.com/en/developer/resources/technical-articles/2026/how-to-run-a-one-trillion-parameter-llm-locally-an-amd.html))
+- TP=2 across two 128GB machines provides 256GB aggregate physical RAM, with per-node runtime/headroom constraints; it is not one universally shared allocation pool.
+- This two-node RDMA/vLLM route is separate from [AMD's February 25 demonstration](https://www.amd.com/en/developer/resources/technical-articles/2026/how-to-run-a-one-trillion-parameter-llm-locally-an-amd.html): four Framework 128GB nodes, llama.cpp RPC, a 375GB Kimi K2.5 UD-Q2_K_XL artifact and 5Gbps Ethernet. That external capacity demonstration does not qualify trillion-parameter inference on the two-node recipe.
 
 **Additional kernel parameter for clustering:**
 
@@ -1487,7 +1486,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 
 > AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416). **Uninstall it** -- even inactive, its ICD file silently hijacks Vulkan and halves your pp speed. See [AMDVLK warning above](#things-that-dont-work-dont-waste-your-time).
 
-> **Our recommendation:** Use **RADV**. AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025) -- RADV is now AMD's only supported open-source Vulkan driver. In this newer Vulkan driver comparison, RADV won both pp and tg, and AMDVLK also had a 2 GiB buffer limit that caused 3-4X slower pp on dense models. Don't install AMDVLK.
+> **Our recommendation:** Use **RADV**. AMDVLK is [discontinued](https://github.com/GPUOpen-Drivers/AMDVLK/discussions/416) (last release April 2025). In the recorded newer Vulkan driver comparison, RADV won both pp and tg. AMDVLK's reported 2 GiB buffer limit is a possible contributor to the 3-4X slower pp on the dense-model pair, not an isolated causal result. The measured beginner route uses RADV.
 
 **Optimal ubatch sizes per driver** (from lhl's testing):
 - AMDVLK: `-ub 512`
@@ -1554,7 +1553,7 @@ These are troubleshooting signals, not proof that every Strix Halo system or eve
 
 Fail-Safe's three-system Corsair AI Workstation 300 campaign found that two systems had previously booted without the out-of-tree `ec_su_axb35` module after a kernel update, causing dependent custom fan/power services to fail. That is a plausible major contributor to the earlier sustained-load event, not a proven sole root cause and not evidence that every Corsair or Strix Halo system needs a clock cap.
 
-If you use this custom fan path, verify the module and services after kernel updates before sustained inference. The contributor's measured 2400 MHz tradeoff is scoped to the tested fleet. See [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md) for commands, charts, raw evidence, limitations, and the open upstream fan-reset candidate.
+If you use this custom fan path, verify the module and services after kernel updates before sustained inference. The contributor's measured 2400 MHz tradeoff is scoped to the tested fleet. See [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md) for commands, charts, raw evidence, limitations, and the merged upstream fan-reset source change and installed-version qualification gap.
 
 ### Historical kernel 6.19.x ROCm GPU misidentification (March 2026)
 
@@ -1599,9 +1598,9 @@ image digests, and minimal rootless Podman commands.
 
 **Symptoms:** Qwen3.5 models (35B-A3B and 27B) hang during `load_tensors` on ROCm. CPU pegs at 99.9%.
 
-**Status:** Open. AMD confirmed working with TheRock 7.13.0a20260316+ nightlies.
+**Historical status:** the cited report is closed. The submitted conservative one-layer attempt also hung; closure does not establish that this guide's exact model/build is now qualified.
 
-**Workaround:** Use very conservative flags: `--batch-size 128 --ubatch-size 32 --flash-attn off --n-gpu-layers 1`
+The reported `--n-gpu-layers 1` attempt is a preserved failure, not a workaround. Match the model, artifact, runtime and logs against a known working route before retrying; do not infer success from newer availability alone.
 
 ### GPU Clock Bug
 
@@ -1614,10 +1613,14 @@ cat /sys/class/drm/card*/device/pp_dpm_sclk
 # Should show: 2: 2900Mhz *
 ```
 
-**Fix:** Force highest performance level:
+For a deliberate reproduction of the older high-DPM desktop profile only, record
+the existing state before a temporary change, then restore that exact state after
+the test. First identify the intended GPU device; do not write through a wildcard
+on a multi-GPU system.
 
 ```bash
-echo high | sudo tee /sys/class/drm/card*/device/power_dpm_force_performance_level
+# Read current state for the GPU you identified; change only as part of a selected profile.
+cat /sys/class/drm/card*/device/power_dpm_force_performance_level
 ```
 
 ### GFX1151 1.5X VGPR Capacity
@@ -1638,10 +1641,13 @@ Error! Bad return status for module build on kernel: 6.18.14-061814-generic
 dkms autoinstall failed for mt76-mt7925(10)
 ```
 
-**This is harmless.** WiFi works fine via the kernel driver. To permanently silence:
+The original system could use its in-kernel WiFi driver despite this DKMS failure.
+Do not assume that applies to your adapter/kernel, or that the displayed module
+version matches the installed package. Inspect the actual state first:
 
 ```bash
-sudo dkms remove mt76-mt7925/1.5.0 --all
+dkms status
+lspci -k
 ```
 
 </details>
@@ -1663,11 +1669,7 @@ If generation works but speed is far below the numbers in this guide (for exampl
 ollama ps
 journalctl -u ollama --no-pager | grep -iE "vulkan|igpu|gpu" | tail -20
 
-# Fix: ensure all three are set for the service
-sudo systemctl edit ollama
-# Add: OLLAMA_VULKAN=1, OLLAMA_IGPU_ENABLE=1, HIP_VISIBLE_DEVICES=-1
-sudo systemctl daemon-reload
-sudo systemctl restart ollama
+# Use the complete service block in Step 5.2 if this matches the selected route.
 ```
 
 </details>
@@ -1675,18 +1677,23 @@ sudo systemctl restart ollama
 <details>
 <summary><strong>Ollama "Out of Memory" Even with Small Models</strong></summary>
 
-This happens when Ollama tries to use HIP/ROCm instead of Vulkan:
+Unexpected backend selection was one historical cause on the measured Ollama
+stack. OOM can also reflect model size, context/KV allocation, concurrency,
+available memory or a runtime defect. Inspect the exact version, selected backend
+and logs before changing configuration:
 
 ```bash
 # Check current Ollama environment
 systemctl show ollama | grep Environment
 
-# Fix: ensure these are set
-sudo systemctl edit ollama
-# Add: OLLAMA_VULKAN=1, OLLAMA_IGPU_ENABLE=1, HIP_VISIBLE_DEVICES=-1
-sudo systemctl daemon-reload
-sudo systemctl restart ollama
+ollama ps
+free -h
+journalctl -u ollama -n 50 --no-pager
 ```
+
+If the logs establish that the intended Vulkan profile is missing, use the
+complete `[Service]` / `Environment=` block in [Step 5.2](#step-52-configure-ollama-for-vulkan),
+preserving unrelated settings and checking effective conflicts before restart.
 
 </details>
 
@@ -1735,19 +1742,24 @@ done
 <details>
 <summary><strong>rocm-smi Shows Wrong VRAM</strong></summary>
 
-For APUs with unified memory, `mem_info_vram_total` showing ~1GB is **normal**. The actual compute memory is in GTT, which should show ~128GB.
+For APUs with unified memory, a small `mem_info_vram_total` can reflect the fixed
+UMA reserve. GTT limits depend on RAM, kernel and the selected profile; ~128 GiB
+is not a universal expectation or a promise that a model of that size fits.
 
 </details>
 
 <details>
 <summary><strong>tuned Not Running After Reboot</strong></summary>
 
+Apply this only if you selected the tuned reproduction profile. A different
+recorded desktop-performance policy can deliberately leave tuned inactive.
+
 ```bash
 # Check status
 tuned-adm active
 
 # If not running:
-sudo systemctl disable --now power-profiles-daemon || true
+sudo systemctl disable --now power-profiles-daemon
 sudo systemctl enable --now tuned
 sudo tuned-adm profile accelerator-performance
 
@@ -1765,10 +1777,8 @@ systemctl is-active power-profiles-daemon
 # Check current clock
 cat /sys/class/drm/card*/device/pp_dpm_sclk
 
-# If not on highest (2900Mhz):
-echo high | sudo tee /sys/class/drm/card*/device/power_dpm_force_performance_level
-
-# To make persistent, add to /etc/rc.local or a udev rule
+# Compare under load with the selected campaign's power policy.
+# Do not make a temporary high-DPM diagnostic persistent by default.
 ```
 
 </details>
@@ -1793,8 +1803,8 @@ matrix and the measured ROCm 7.2/7.14 evidence remain unchanged.
 **Rules for interpreting this dated matrix:**
 - Kernel 6.18.4+ changed gfx1151 handling; use current ROCm builds/containers instead of old ROCm RC builds
 - The measured b8460/kernel 6.19.4 route used `HSA_OVERRIDE_GFX_VERSION=11.5.1`
-- linux-firmware-20251125 breaks ROCm regardless of kernel
-- linux-firmware-20260110+ is safe
+- The documented linux-firmware-20251125 failure applies to the recorded stack; investigate exact package/runtime combinations
+- A later date alone does not qualify firmware; preserve known-working package metadata and retest after changes
 
 > **Current measured recommendation:** use a current ROCm build with native
 > `gfx1151` support and no global HSA architecture override. Keep the older
@@ -1822,16 +1832,15 @@ After completing setup, verify each item:
 
 - [ ] `free -h` shows most of your installed memory, not ~31GB (~124GiB on 128GB systems; lower on 96GB systems)
 - [ ] `vulkaninfo --summary` shows RADV Mesa 26.0.2+ (latest full host-state audit here: 26.1.2 on 2026-06-07; per-run raw metadata is the source of truth)
-- [ ] `tuned-adm active` shows `accelerator-performance`
-- [ ] `systemctl is-active power-profiles-daemon` shows `inactive`
-- [ ] `cat /sys/class/drm/card*/device/pp_dpm_sclk` shows 2900Mhz with asterisk
-- [ ] `cat /sys/module/ttm/parameters/pages_limit` shows 31457280
+- [ ] Record the selected power policy and verify its active manager; tuned is required only for a tuned reproduction
+- [ ] Check GPU clocks/utilization under the actual workload against that profile, not an idle universal 2900 MHz threshold
+- [ ] Compare live GTT/TTM values with the selected RAM/kernel profile; 31457280 pages is the recorded 128GB-system limit, not a 96GB preset
 - [ ] `ollama --version` returns without error
-- [ ] `ollama run qwen3.6:35b-a3b "hello"` generates at 50+ t/s
+- [ ] A useful text task succeeds; `ollama ps` and runtime logs establish actual GPU offload independently of speed
 - [ ] `systemctl show ollama | grep Environment` includes `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`
 - [ ] `cat /etc/default/grub | grep CMDLINE` includes the GTT/TTM parameters; `amd_iommu=off` appears only if you deliberately selected the optional desktop benchmark profile
-- [ ] `uname -r` shows 6.18.x+ (ROCm on 6.19.x requires HSA override -- see Known Issues)
-- [ ] `dpkg -l | grep linux-firmware` does NOT show 20251125
+- [ ] Record the exact kernel/runtime pair; current native gfx1151 ROCm starts without a global HSA override, while dated reproduction commands retain theirs
+- [ ] Record the exact firmware package and verify the selected runtime after any change; version dates alone do not prove compatibility
 
 ---
 
@@ -1868,7 +1877,7 @@ Not sure which model to run? Here's what we recommend based on use case. Recomme
 | **Code** (higher-bit quant) | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | 51 t/s | Same model, higher fidelity quantization |
 | **Chat** (general) | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | **63 t/s** | Measured general-chat starting point; task quality depends on the workload |
 | **Chat** (no thinking) | Qwen3.6 35B-A3B (no-think) | 20 GB | 63 t/s | Same speed, direct answers |
-| **Code** (80B MoE; advertised 256K ctx) | Qwen3-Next 80B-A3B | 42.9 GB | **59 t/s** | 80B MoE, only 3B active, 256K context |
+| **Code** (80B MoE; advertised 256K ctx) | Qwen3-Next 80B-A3B | 42.90 GiB | **59 t/s** | 80B MoE, only 3B active, 256K context |
 | **Coding-model experiment** | Qwen3-Coder-Next | 51 GB | 38 t/s | 80B-A3B coding MoE; no local quality ranking established |
 | **Reasoning / current Google route** | Gemma 4 26B-A4B IT QAT | 14.2 GB | 74.8 t/s direct; 102.7-110.0 t/s MTP server | Strong current Google-model route. Use the direct row for benchmark comparisons; use MTP only for server/speculative experiments |
 | **Analyze images** | Qwen3.8 27B (`qwen3.8:27b`) | ~18 GB | 20.4 t/s | Current official dense multimodal route, measured here with image, tools, and thinking |
@@ -1908,30 +1917,43 @@ ollama pull qwen3.6:35b-a3b
 
 ### Is a Strix Halo system worth it vs paying for cloud AI?
 
-**Assumptions:** Qwen3.6-35B-A3B level intelligence, 1000 tokens per query, 50 queries per day.
+Compare the exact task, quality requirement and actual bill. Local throughput does
+not establish equivalence with a hosted model, and buying hardware does not remove
+all software, power, maintenance or time costs.
 
-| Option | Monthly Cost | Speed | Privacy | Offline |
-|--------|-------------|-------|---------|---------|
-| **ChatGPT Plus** | $20/mo | Fast | No | No |
-| **Claude Pro** | $20/mo | Fast | No | No |
-| **OpenAI API** (mid-tier model, 50 queries/day, 2026-08 estimate) | ~$15/mo | Fast | No | No |
-| **Anthropic API** (mid-tier Claude model, 50 queries/day, 2026-08 estimate) | ~$12/mo | Fast | No | No |
-| **Strix Halo** (after purchase) | **~$8/mo electricity** | ~50-100.0 t/s on larger local assistant paths; small-MoE scouts can be higher | **Yes** | **Yes** |
+**Illustrative token-fee scenario, checked September 13, 2026:** Claude Sonnet 5
+standard pricing is $2 per million input tokens and $10 per million output tokens.
+Ten million uncached input tokens plus one million output tokens therefore costs
+$30 in base token fees. This excludes tools, cache writes/reads, batch discounts,
+regional premiums and tax. It is not a claim that a local Qwen model performs the
+same work at the same quality. [Anthropic pricing](https://platform.claude.com/docs/en/about-claude/pricing).
 
-**Break-even calculation:**
+For your own scenario:
 
-| Scenario | System Cost | Monthly Savings | Break-even |
-|----------|------------|-----------------|------------|
-| vs ChatGPT Plus | ~$4,349 high-end Beelink example | $12/mo | ~30 years |
-| vs API heavy use (200 queries/day) | ~$4,349 high-end Beelink example | ~$50/mo | ~7.2 years |
-| vs API power use (1000+ queries/day) | ~$4,349 high-end Beelink example | ~$200/mo | **~22 months** |
+```text
+API cost = input_tokens / 1e6 × input_tariff
+         + output_tokens / 1e6 × output_tariff + cache/tools/other fees
+Electricity = days × (active_W × active_hours + idle_W × idle_hours) / 1000 × price_per_kWh
+Monthly ownership = purchase_cost / assumed_lifetime_months + electricity + maintenance
+```
 
-> **The real value is not subscription arbitrage.** It's running AI with **no rate limits, no content filters, no data leaving your machine, and no internet required**. Casual chat users should keep paying for hosted subscriptions; local hardware makes sense when privacy, offline use, heavy API usage, or large local models matter.
+For example, **assumed**, unmeasured 120 W active for one hour/day plus 30 W idle
+for 23 hours/day costs $3.65 over 30 days at $0.15/kWh. At 140 W active it is $3.74.
+These duty cycles are explicit assumptions, not inferred from token counts.
+The dated $4,349 Beelink example amortized over an assumed 60 months adds $72.48
+per month before maintenance/resale. Beelink wall power remains
+[unmeasured here](POWER_BASELINE.md); amdgpu PPT is not a wall-meter substitute.
 
-**Power consumption:**
-- Idle: ~30W
-- Under inference load: 120-140W
-- Monthly electricity (8 hours/day inference): ~$8 at $0.15/kWh
+Break-even exists only when verified avoided spending exceeds incremental local
+costs, and hardware remains useful long enough. No payback period or subscription
+replacement is established by this guide.
+
+Local inference **can** keep prompts on the machine after artifacts are provisioned,
+provided models, embeddings, tools and integrations also run locally. Optional cloud,
+web-search and remote-tool features change that boundary. Capacity and latency still
+limit requests, and refusal/filter behavior depends on the selected weights and
+application. Review [Ollama's cloud/offline controls](https://docs.ollama.com/faq)
+for the exact deployed version.
 
 ---
 
@@ -1939,34 +1961,29 @@ ollama pull qwen3.6:35b-a3b
 
 ### AI Coding Assistant (Claude Code, Cursor, Continue.dev)
 
-Ollama provides an OpenAI-compatible API. Point any coding tool at it:
+Ollama exposes API routes that some coding clients can use, but endpoint/schema
+compatibility does not establish a working client workflow. Choose the exact client
+version and follow its provider configuration, authentication and context guidance.
+For Claude Code, use the [official Ollama integration recipe](https://docs.ollama.com/integrations/claude-code),
+including its documented native/compatible protocol requirements.
 
-```bash
-# For Cursor, Continue.dev, or any OpenAI-compatible client:
-# Base URL: http://localhost:11434/v1
-# Model: qwen3.6:35b-a3b (or qwen3-coder-next for max quality)
-# API Key: ollama (or leave empty)
-```
-
-For Claude Code specifically:
-
-```bash
-ANTHROPIC_BASE_URL=http://localhost:11434 claude --model qwen3.6:35b-a3b
-```
-
-At roughly 50-100.0 t/s on the larger local assistant paths measured here, local inference feels fast enough for code completion and review workflows. Smaller active-parameter MoE scouts can be much faster, but they answer a different model-capability question.
+The local endpoint is `http://127.0.0.1:11434`; an OpenAI-compatible client normally
+uses its `/v1` route. Confirm the model ID with the running server. Then verify one
+useful coding task, any required tool execution, error handling and restart behavior.
+This guide's direct `llama-bench` and API smokes do not qualify every Cursor,
+Continue or Claude Code version, nor measure coding-quality parity with hosted models.
 
 ### ChatGPT-like Web Interface (Open WebUI)
 
 ```bash
-docker run -d -p 3000:8080 \
+docker run -d -p 127.0.0.1:3000:8080 \
   --add-host=host.docker.internal:host-gateway \
   -v open-webui:/app/backend/data \
   --name open-webui \
   ghcr.io/open-webui/open-webui:main
 ```
 
-Open `http://localhost:3000`. You get conversation history, document upload, multi-model support, and built-in RAG -- all local, no cloud.
+Open `http://localhost:3000`. Privacy depends on the selected models, embeddings, tools and integrations. Provision artifacts first and verify that every enabled component stays local before claiming offline operation. This recipe is not a versioned end-to-end client acceptance test.
 
 ### RAG (Document Q&A)
 
@@ -2008,7 +2025,7 @@ AMD also publishes an [official native-Windows ComfyUI route](https://rocm.blogs
 
 ### Voice / TTS
 
-Qwen3-TTS and Chatterbox TTS both run on Strix Halo with GPU acceleration. lhl's [voicechat2](https://github.com/lhl) provides a complete local AI voice chat system.
+The [current model evidence](CURRENT_MODELS.md) records a narrow Qwen3-TTS English speech generation and ASR back-check. A complete listen-answer-speak workflow, Dutch quality and streaming remain unqualified. Chatterbox and third-party voice applications are not established by that test.
 
 ---
 
@@ -2016,15 +2033,15 @@ Qwen3-TTS and Chatterbox TTS both run on Strix Halo with GPU acceleration. lhl's
 
 Current Strix Halo systems use the same AMD Ryzen AI MAX+ 395 APU with 64GB, 96GB, or 128GB LPDDR5X-8000 depending on vendor and variant. The differentiators are memory size, form factor, cooling, ports, support, stock status, price, and how much public evidence exists for the exact chassis.
 
-Prices, coupons, and availability change quickly. Treat this as a dated **US-storefront** buyer snapshot checked on **2026-07-27**, not a permanent ranking or a checkout quote. The GMKtec row also records the separate official EU listing because its price and configuration availability differ materially from the US store. The strongest recommendation in this guide is not only price: it is how much reproducible evidence exists for that chassis and workflow. Listed prices exclude tax and may change with region, shipping, coupons, or cart configuration; verify final cart totals before buying. The configuration-level source, price, and fulfillment states captured in this pass are in [`data/buyer_price_snapshot_2026-07-27.csv`](data/buyer_price_snapshot_2026-07-27.csv).
+Prices, coupons, and availability change quickly. Treat this as a dated **US-storefront** buyer snapshot checked on **2026-07-27**, not a permanent ranking or a checkout quote. The GMKtec row also records the separate official EU listing because its price and configuration availability differ materially from the US store. The strongest recommendation in this guide is not only price: it is how much reproducible evidence exists for that chassis and workflow. Tax/VAT treatment was not established uniformly; prices and may change with region, shipping, coupons, or cart configuration; verify final cart totals before buying. The configuration-level source, price, and fulfillment states captured in this pass are in [`data/buyer_price_snapshot_2026-07-27.csv`](data/buyer_price_snapshot_2026-07-27.csv).
 
-> **Spot-check update, 2026-08-29 (vendor pages):** Beelink GTR9 Pro unchanged at $4,349 (list $4,699, pre-sale). GMKtec EVO-X2 US shows $2,199.99 (list $2,599.99) but every variant is sold out behind a "price increase coming soon" banner; the EU store lists from €1,959.99 in stock (verify the 128GB cart total). Minisforum MS-S1 MAX 128GB+2TB is now $3,799 (list $4,749), preorder with estimated mid-September shipping, €3,999 in the EU. New since the snapshot: [AMD's own Ryzen AI Halo mini PC](https://www.amd.com/en/blogs/2026/amd-ryzen-ai-halo-now-available-at-micro-center.html) — 128GB, 10GbE, Windows 11 or Linux — sells for $3,999.99 as a Micro Center in-store exclusive since 2026-07-10, and Framework's site shows a 192GB Ryzen AI Max+ PRO 495 tab as "coming soon". The maintained dated spot-check table lives on the [buying comparison page](https://hogeheer499-commits.github.io/strix-halo-guide/best-strix-halo-mini-pc/).
+> **Current storefront review, 2026-09-13:** see the [configuration-specific buyer snapshot](BUYER_SNAPSHOT_2026-09-13.md) for prices, unknown checkout fields, delivery and seller-advertised terms. July observations below remain historical. Earlier August prose about an exact AMD Micro Center price/exclusivity/start date and a Framework 192GB PRO 495 successor was not substantiated by its linked primary pages and is withdrawn from current buying guidance.
 
 | System | Price/config snapshot checked 2026-07-27 | Evidence depth in this guide | Buyer read |
 |--------|-------------------------------------------|------------------------------|------------|
 | **GMKtec EVO-X2** | **US:** official listing starts at $1,999.99 for 64GB+1TB; the checked 128GB+2TB selection was unavailable, so the base price is not a 128GB quote. **EU:** €3,359.99 for 128GB+2TB, €3,229.99 for 128GB+1TB, and €1,959.99 for 64GB+1TB; all three were marked available. The EU page advertises `GMKEVO50OFF` for €50 off, but no final cart total was recorded. | Strong community evidence: native Ubuntu Vulkan/RADV within about 2% of the Beelink Qwen3.6 row, WSL2/HIP baseline, Qwen3-Coder follow-ups, MTP reproduction, and tuned thermal/power-policy Reddit report. | High-value candidate when the selected 128GB configuration is available and its cart total is favorable. Do not compare the US 64GB base price or an advertised coupon against an EU 128GB price. |
 | **Bosgame M5** | $2,899 for the listed 128GB+2TB configuration ($3,299 compare-at). | No dedicated same-shape guide benchmark row yet; likely relevant as a closely related platform, but not validated here like Beelink/Corsair/GMKtec/Nimo. | Interesting price comparator, but evidence depth is thinner. Buy on ports/support/return terms, not benchmark proof from this repo. |
-| **Framework Desktop** | $3,149 for the 128GB Ryzen AI Max+ 395 mainboard. Full Desktop/cart pricing is regional and configuration-dependent. | External/community interest and Framework ecosystem are strong, but this guide has less same-shape imported evidence than Beelink/Corsair/GMKtec/Nimo. | Best repairability/modularity ecosystem. Needs more direct guide rows before treating it as a benchmark-proven chassis here. |
+| **Framework Desktop** | $3,149 for the 128GB Ryzen AI Max+ 395 mainboard. Full Desktop/cart pricing is regional and configuration-dependent. | External/community interest and Framework ecosystem are strong, but this guide has less same-shape imported evidence than Beelink/Corsair/GMKtec/Nimo. | Repairability/modularity-oriented option; no comparative support-outcome test. Needs more direct guide rows before treating it as a benchmark-proven chassis here. |
 | **Beelink GTR9 Pro** | $4,349 for the listed 128GB+2TB configuration ($4,699 compare-at). The official page describes it as pre-sale and says orders ship within 35 days. | Deepest first-party evidence: this guide's primary Beelink system produced the local headline, regression-control, power-telemetry, backend, server, and current-model rows. | Most evidence-backed choice in this repo, with premium positioning in this dated comparison. Confirm the exact board/NIC revision with the seller. |
 | **Corsair AI Workstation 300** | $3,399.99 for the listed 128GB/4TB configuration; the official product page marked it out of stock. | Strongest community-validated fleet: three systems reproduced the Qwen3-Coder Vulkan/RADV path, plus wall-power rows, USB4/RPC cluster evidence, and a MiMo-V2.5 310B-class prompt-processing capacity row. | Best community validation if you value repeatability across multiple same-vendor systems. Stock status matters. |
 | **Minisforum MS-S1 MAX** | $3,639 for the 128GB+2TB Max AI Compute Edition, with estimated shipping in mid-August. | Windows LM Studio serving/API community evidence is imported for MS-S1-Max; not a same-shape native Linux comparison. | Interesting for dual 10GbE, USB4 v2, PCIe expansion, and rack/cluster experiments. Verify exact regional SKU and shipping date. |
@@ -2048,7 +2065,7 @@ Prices, coupons, and availability change quickly. Treat this as a dated **US-sto
 **Recommendation tiers:**
 - **Most evidence-backed in this repo:** Beelink GTR9 Pro, because it is the first-party benchmark system.
 - **Best value candidate:** GMKtec EVO-X2, if the selected cart price and memory config are favorable.
-- **Best ecosystem/support:** Framework Desktop -- strongest repairability/modularity story, but thinner same-shape guide evidence so far.
+- **Repairability/modularity-oriented:** Framework Desktop -- modular design, but thinner same-shape guide evidence so far.
 - **Best already community-validated vendor fleet:** Corsair AI Workstation 300 -- three systems reproduced the Qwen3-Coder Vulkan/RADV path.
 - **Best for clustering/expansion experiments:** Minisforum MS-S1 MAX or Beelink GTR9 Pro v2.2 -- dual 10GbE for RDMA/cluster experiments, but verify stock, regional SKU, and board revision.
 - **Compact large-model community evidence:** Nimo AI Mini PC -- useful for large-model serving/MTP/thermal context.
@@ -2058,14 +2075,13 @@ Prices, coupons, and availability change quickly. Treat this as a dated **US-sto
 
 ### Windows vs Linux
 
-| Feature | Linux (recommended) | Windows |
-|---------|-------------------|---------|
-| LLM performance | Best-tested path; native GMKtec Vulkan/RADV reproduced the Beelink row within about 2% | LM Studio Vulkan works as a Windows serving/API path; WSL2/HIP baseline works but measured lower and with high prompt variance |
-| Max model size | ~120 GB usable GPU memory via GTT | Up to 96GB VGM on 128GB systems; 109B/128B demos exist, not yet tested here |
-| ROCm/HIP | Supported (6.19.x requires HSA override) | WSL2 HIP can see the GPU with DXG detection, but current community data is a baseline, not a recommended fast path |
-| vLLM serving | Works | Not supported |
-| Image generation | Works (ComfyUI) | Limited |
-| Setup effort | Higher (this guide helps) | Lower (but slower) |
+| Route | Evidence here | Decision limit |
+|---|---|---|
+| Native Linux | Strongest first-party Vulkan/RADV evidence; scoped HIP and experimental vLLM routes | Follow the exact measured build/driver recipe; no universal kernel/HSA requirement |
+| Native Windows | Community LM Studio serving/API report; AMD's external Windows 11 24H2 / ROCm 7.2.1 ComfyUI recipe | Not a local reproduction of image generation or matched Linux throughput test |
+| WSL2 | Community GMKtec HIP baseline with a different TG512 workload | Separate from native Windows; not a general OS speed ranking or qualified vLLM path |
+
+Model fit and setup effort depend on configuration and workload on all three routes; neither a fixed usable-memory allowance nor lower setup effort is established here.
 
 > Linux is strongly recommended for Strix Halo LLM work because it is the path with the strongest native Vulkan/RADV evidence. Windows is now represented by a community MS-S1-Max LM Studio report: Qwen3.6 Q4_K_M through LM Studio measured a 89.49 tok/s script average across mixed prompts, with long 512-token prompt rows around 69-70 tok/s. That is useful Windows serving/API evidence, not a same-shape comparison against native Linux `llama-bench`. One GMKtec EVO-X2 community report also measured WSL2/HIP at 44.05 t/s on a TG512 Qwen3.6 generation-only run, while the same contributor's native Ubuntu Vulkan/RADV run measured 61.52 t/s on the guide's TG128 shape. Treat both as useful Windows-path baselines, not a clean same-machine Windows-vs-Linux conclusion.
 
@@ -2078,15 +2094,15 @@ New to local LLMs? Here's what the technical terms mean.
 <details>
 <summary><strong>Click to expand glossary</strong></summary>
 
-**APU** -- Accelerated Processing Unit. AMD's term for a chip that combines CPU and GPU on one die. Strix Halo's APU shares 128GB of memory between CPU and GPU, which is why it can run large models.
+**APU** -- Accelerated Processing Unit: a processor combining CPU and GPU capabilities. Strix Halo shares system memory between them; capacity depends on the selected 64GB, 96GB or 128GB configuration.
 
-**GGUF** -- GPT-Generated Unified Format. The file format used by llama.cpp to store AI models. A .gguf file contains the model weights and metadata needed to run inference.
+**GGUF** -- The GGML model-file format used by llama.cpp to store model weights and metadata needed to run inference.
 
 **Quantization** -- Reducing the precision of model weights to use less memory and run faster. Common types:
 - **Q4_K_M** -- 4-bit quantization, medium quality. Good balance of size and quality.
 - **Q8_0** -- 8-bit quantization. Better quality, ~2x the size of Q4.
 - **UD-Q4_K_XL** -- Unsloth Dynamic 4-bit. Uses higher precision for important layers.
-- **BF16** -- Full precision (16-bit). Best quality, largest size.
+- **BF16** -- A 16-bit floating-point format, reduced precision relative to FP32. Larger than the listed low-bit weight formats; task quality still requires evaluation.
 
 **MoE (Mixture of Experts)** -- A model architecture where only a subset of parameters are active for each token. A "30B-A3B" model has 30 billion total parameters but only activates 3 billion per token, making it much faster than a dense 30B model while retaining most of the intelligence.
 
@@ -2098,7 +2114,7 @@ New to local LLMs? Here's what the technical terms mean.
 
 **Token Generation (tg)** -- How fast the model writes its response. Measured in tokens/second. This is the speed you "feel" when chatting. 50 t/s feels instant. 5 t/s feels slow.
 
-**Unified Memory** -- Memory shared between CPU and GPU. Unlike discrete GPUs (RTX 4090 has separate 24GB VRAM), Strix Halo's GPU uses the same 128GB as the CPU. This means you can load models up to ~120GB.
+**Unified Memory** -- System memory shared between CPU and GPU rather than separate discrete-GPU VRAM. Available model capacity depends on installed RAM, firmware and driver limits, weights, KV cache, runtime buffers and OS headroom; it is not a guaranteed 120GB model budget.
 
 **GTT (Graphics Translation Table)** -- The portion of system memory that the GPU can access via Vulkan. On Strix Halo, you configure this to ~128GB so the GPU can use all available memory.
 
@@ -2148,7 +2164,7 @@ So why can llama.cpp direct be faster on Qwen3.6 and Qwen3-Coder? Two reasons:
 | Just want it to work | **Ollama 0.31.2 system service** -- install and go; the fully qualified path reached 60.57 t/s on Qwen3.6 with `OLLAMA_IGPU_ENABLE=1` and survived restart/reboot. Controlled isolated 0.31.1/0.31.2/0.32.0 binaries later measured in the same 72.55-73.20 t/s class. |
 | Want maximum speed | **llama-server** direct Vulkan/RADV -- 101.0 t/s on speed-first Qwen3-Coder, 100.0 t/s on Qwen3-30B-A3B-Instruct-2507 IQ4_XS, 96-99.6 t/s on balanced Qwen3-Coder depending on build/repeat length, 63-81 t/s on Qwen3.6 depending on quant, and 59 t/s on Qwen3-Next 80B, with the same API style as Ollama |
 | Using kyuz0 containers | **kyuz0** -- they auto-rebuild on llama.cpp updates, best of both worlds |
-| Benchmarking | **llama-bench** -- eliminates all overhead, pure GPU measurement |
+| Benchmarking | **llama-bench** -- direct runtime benchmark without HTTP/client serving; not an overhead-free or pure-GPU measurement |
 
 **How to run llama-server (Ollama replacement with full speed):**
 
@@ -2158,10 +2174,12 @@ cd ~/llama-cpp-latest
 AMD_VULKAN_ICD=RADV ./build-vulkan/bin/llama-server \
   -m ~/models/Qwen3.6-35B-A3B-Q4_K_M.gguf \
   -ngl 999 -fa --no-mmap -c 8192 \
-  --host 0.0.0.0 --port 8080
+  --host 127.0.0.1 --port 8080
 ```
 
 Then point your tools at `http://localhost:8080/v1` instead of `http://localhost:11434/v1`. Same API style, with less wrapper overhead and more control over the exact `llama.cpp` build and flags.
+
+This example is local-only. Remote serving needs a separately reviewed bind address, authentication, TLS and network access policy; consult the [llama-server documentation](https://github.com/ggml-org/llama.cpp/tree/master/tools/server) before exposing it.
 
 </details>
 
@@ -2182,7 +2200,7 @@ Linux gives the best-tested performance and the strongest native Vulkan/RADV evi
 <details>
 <summary><strong>Is 128GB enough for the biggest models?</strong></summary>
 
-128GB unified memory lets you run models up to ~120GB (some memory reserved for OS and GPU overhead). This covers all 70B Q4 models and most 120B MoE models. For larger models, you can cluster two Strix Halo systems via RDMA for 256GB unified memory. AMD demonstrated a 4-node cluster running a 1 trillion parameter model.
+A 128GB configuration supports the specific large artifacts documented here, not every 70B Q4 or 120B model. Fit depends on exact weights, context/KV cache, runtime buffers, concurrent sequences, firmware and OS headroom. For larger models, two 128GB systems can provide 256GB aggregate physical RAM through a separately configured distributed runtime, subject to per-node limits and overhead. AMD demonstrated a 4-node cluster running a 1 trillion parameter model.
 
 </details>
 
@@ -2282,7 +2300,7 @@ free, and paid work does not buy positive conclusions.
 ### 2026-08-25 -- Qwen3.8 Decision Layer, GMKtec Portability, And Public Freshness
 
 - **Current Qwen3.8 decision layer published:** the guide now separates its measured official Ollama route from external 262K-class validation, stock community MTP, tuned ROCm/DFlash reports, and an unpublished-sidecar performance lead. A matched route ladder is the next performance test; community values are not promoted into guide-owned headlines.
-- **Public freshness is now validated:** one dated machine-readable state feeds the current release, runtime, evidence-coverage, traction, and affiliate status shown across the main entry pages. Scheduled validation will fail when that state becomes stale or the public pages diverge.
+- **Selected public-state checks:** the validator checks evidence-review age, required text fragments on named local pages, coverage arithmetic and declared affiliate-registry state. It does not prove all numbers or prose are synchronized, absence of undisclosed links, rendered website correctness or deployed-site freshness. Scheduled validation is not a substitute for claim/source review.
 - **Buyer, contributor, and vendor routes tightened:** the protected SEO/hook introduction now leads directly into audience-specific decisions; a dedicated Qwen web page and share card, current responsible-share copy, current traction evidence, contribution guardrails, and explicit affiliate-ranking firewall remove ambiguity without turning the README into an advertisement.
 - **mottledMantis' Gemma row fully imported:** preserved the issue CSV and provenance, added the stock b9235 GMKtec result (1209.08 pp512 / 53.02 tg128) to community data, benchmarks, current-model guidance, contributor credit, and the system matrix. Decode is in the same practical band as the newer 54.18-55.45 t/s Beelink controls; unmatched model bytes/hash, build, Mesa, mmap, repeats, and host state prevent an OEM ranking.
 - **Qwen3.8 evidence split sharpened:** the measured Ollama 0.32.13 Beelink route remains the buyer baseline through 50,059 prompt tokens. A corrected 96GB GMKtec public package adds 13/13 exact retrieval up to a 261,130-token needle and a 6/6 image pilot, proving 262K-class operation can work while remaining an advanced patched-HIP route.
@@ -2310,7 +2328,7 @@ free, and paid work does not buy positive conclusions.
 
 - **Strict three-system campaign imported:** Fail-Safe's matched Corsair AI Workstation 300 sweep now has normalized CSV rows, two generated charts, a complete raw bundle, analyzer, contamination checks, cap/reset harness, and bounded stock controls.
 - **Scoped buyer guidance:** 2400 MHz was the best measured conservative tradeoff on this fleet; moving to 2600 MHz added 6.39% prompt throughput and 0.87% generation while mean AMDGPU socket power increased 21.70%. This is not a universal cap recommendation.
-- **Root-cause framing corrected:** historical logs showed missing `ec_su_axb35` modules and failed dependent services after kernel updates on two systems. The guide records this as a plausible major confounder, keeps the root cause unresolved, and tracks the open upstream fan-reset patch.
+- **Root-cause framing corrected:** historical logs showed missing `ec_su_axb35` modules and failed dependent services after kernel updates on two systems. The guide records this as a plausible major confounder, keeps the root cause unresolved, and tracks the then-open fan-reset patch (merged August 20; installed-version qualification remains separate).
 
 ### 2026-07-16 -- Current Runtime, Frontier Capacity, And ROCm 7.14
 
@@ -2450,7 +2468,7 @@ free, and paid work does not buy positive conclusions.
 
 ### 2026-05-16 -- Latest-Stack b9172 Spot Check
 
-- **Qwen3-Next 80B improved:** llama.cpp b9172 with Vulkan/RADV confirmed **59.06 t/s** tg128 and **751.70 pp512**, replacing the old 54.92 t/s b8933 row as the best current 80B Qwen-family result.
+- **Qwen3-Next 80B improved:** llama.cpp b9172 with Vulkan/RADV confirmed **59.06 t/s** tg128 and **751.70 pp512**, replacing the old 54.92 t/s b8933 row as the historical May 80B Qwen-family result.
 - **Qwen3-Coder speed-first peak:** b9179 plus Q4_K_S confirmed **98.51 t/s** r50 after fixing the `tuned`/`power-profiles-daemon` conflict and pausing benchmark noise. This is a speed-first quant row, not the balanced UD default.
 - **No main headline speedup from b9172:** Qwen3-Coder UD, Qwen3.6, and gpt-oss-120b did not beat the current b9049/b9010 balanced headline rows.
 - **Ollama 0.24.0 isolated check:** Qwen3.6 measured **49.05 t/s** warm generation, effectively identical to the same-prompt Ollama 0.23.1 control at **49.09 t/s**.
@@ -2493,7 +2511,7 @@ free, and paid work does not buy positive conclusions.
 - **AMDVLK ICD hijacking discovered:** All "pp regression" findings (b8460 vs b8933, Mesa 26.0.2 vs 26.0.5) were caused by AMDVLK's `/etc/vulkan/icd.d/amd_icd64.json` silently overriding RADV. No actual regression exists. [Corrected on #22375](https://github.com/ggml-org/llama.cpp/issues/22375). All benchmarks re-verified on actual RADV
 - **Qwen3.6-35B-A3B benchmark:** **64 t/s** tg, 1064 pp512 via Vulkan RADV. Drop-in replacement for Qwen3.5 with better coding/reasoning quality, identical speed. The old UD-Q4_K_M penalty note is superseded by the May 2026 controlled rerun.
 - **Qwen3-Next 80B-A3B benchmark:** **55 t/s** tg, 657 pp512 via Vulkan RADV (b8933). 80B MoE (3B active) with 256K context window. The separate Qwen3-Coder-Next 80B-A3B MoE row measured 38 t/s (architecture label corrected September 5)
-- **Gemma 4 26B-A4B benchmark:** 48.5 t/s tg, 1142 pp512 via Vulkan RADV (b8933). First Strix Halo benchmark for this model. Includes KV cache quantization warning (3.5x worse quality degradation vs Qwen at q8_0)
+- **Gemma 4 26B-A4B benchmark:** 48.5 t/s tg, 1142 pp512 via Vulkan RADV (b8933). Included a KV-cache warning; September 2026 correction: the external ~3.5× KL ratio compares Gemma 26B with Gemma 31B, not Qwen or downstream task-quality loss.
 - **Llama 4 Scout 109B benchmark:** 18.3 t/s tg, 331 pp512 via Vulkan RADV (b8933). 109B parameter model running on a mini PC; this artifact exceeds 24GB VRAM without offload
 - Merged PR #1: vulkan-tools install check in setup.sh (thanks @ignasivt)
 - Updated April price snapshot for Beelink, Corsair, and GMKtec; superseded by the May 1 price audit above
@@ -2542,7 +2560,7 @@ free, and paid work does not buy positive conclusions.
 
 **Fixes:**
 - At that time, prices were verified against current retail (March 2026 snapshot)
-- DGX Spark comparison is now apples-to-apples (same model, same context)
+- Historical DGX Spark wording called the comparison apples-to-apples; September correction: exact artifact/backend/cache/workload matching was not established (see Hardware Comparison)
 - Fixed 12 outdated "ROCm broken on 6.19.x" references
 - A low BIOS UMA reserve is mandatory, not just speed-neutral: use 512MB if available, but 2GB is fine when that is the vendor minimum
 - Vulkan Driver Comparison updated with b8460 data

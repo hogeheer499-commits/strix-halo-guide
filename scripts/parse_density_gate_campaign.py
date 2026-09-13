@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import csv
+import argparse
 import glob
 import json
 import re
@@ -144,14 +145,14 @@ def collect() -> list[dict[str, str]]:
     return result
 
 
-def write_detail(rows: list[dict[str, str]]) -> None:
-    with DETAIL.open("w", newline="") as handle:
+def write_detail(rows: list[dict[str, str]], destination: Path = DETAIL) -> None:
+    with destination.open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
 
-def write_summary(rows: list[dict[str, str]]) -> None:
+def write_summary(rows: list[dict[str, str]], destination: Path = SUMMARY, retained_source: Path = SUMMARY) -> None:
     grouped: dict[tuple[str, str, str], list[dict[str, str]]] = defaultdict(list)
     for row in rows:
         grouped[(row["model"], row["tool_route"], row["concurrency"])].append(row)
@@ -181,19 +182,37 @@ def write_summary(rows: list[dict[str, str]]) -> None:
             }
         )
 
-    with SUMMARY.open("w", newline="") as handle:
+    # This parser owns only the July 13 campaign. Later curated campaign rows
+    # are independent inputs, not disposable output of this parser. Preserve
+    # every field and reject collisions using the complete campaign identity.
+    with retained_source.open(newline="") as handle:
+        retained = list(csv.DictReader(handle))
+    owned_source = str(RAW.relative_to(ROOT))
+    output.extend(row for row in retained if not (row["date"] == "2026-07-13" and row["source"] == owned_source))
+    identity_fields = ("date", "system", "model", "tool_route", "concurrency", "source")
+    identities = [tuple(row[key] for key in identity_fields) for row in output]
+    if len(identities) != len(set(identities)):
+        raise ValueError("duplicate full campaign identity; refusing summary rewrite")
+    with destination.open("w", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(output[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(output)
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output-dir", required=True, type=Path,
+                        help="Explicit scratch destination; compare before replacing canonical data")
+    args = parser.parse_args()
+    if args.output_dir.resolve() == DETAIL.parent.resolve():
+        parser.error("use a scratch output directory and review the diff before replacing canonical data")
+    args.output_dir.mkdir(parents=True, exist_ok=True)
     rows = collect()
     if not rows:
         raise SystemExit("no valid benchmark rows found")
-    write_detail(rows)
-    write_summary(rows)
-    print(f"wrote {len(rows)} detail rows and {sum(1 for _ in SUMMARY.open()) - 1} summary rows")
+    write_detail(rows, args.output_dir / DETAIL.name)
+    write_summary(rows, args.output_dir / SUMMARY.name)
+    print(f"wrote {len(rows)} July 13 detail rows; shared summary retains independent campaign rows from {SUMMARY.name}")
 
 
 if __name__ == "__main__":

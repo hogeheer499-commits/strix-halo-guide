@@ -2,6 +2,12 @@
 
 Status: active planning track, started 2026-05-07.
 
+**September 13 reconciliation:** Qwen3-Coder Q4_K_S later reached 100.99 tg128
+r50 on official b9851 ([raw](data/raw/2026-06-30/latest-llamacpp-b9851-vulkan-sentinel/)).
+The 98.51 b9179 strict-clean and 96.76 b9049 balanced rows remain separate
+historical profiles. Older campaign outcomes below use “current/ceiling” as of
+their own campaign date; they are not a current universal maximum.
+
 Goal: test the Beelink GTR9 Pro / Ryzen AI MAX+ 395 as far as is practical for local LLM inference, without turning the guide into unbounded hype. The public claim should be: we tested the important software, driver, quant, model, context, and serving routes, and here is the best setup by workload.
 
 ## Current Truth
@@ -20,14 +26,14 @@ Current measured recommendation:
 - Lucebox DFlash/PFlash is now the highest-upside experimental decode/prefill route, but local reproduction is blocked until an isolated ROCm/HIP developer toolchain with `hipcc` is available. Its older rocWMMA design notes are historical and do not override the 2026-07-24 upstream `llama.cpp` removal.
 - FastFlowLM/NPU is visible at the kernel level on this Beelink (`amdxdna` + `/dev/accel/accel0`), but XRT/FastFlowLM user-space is not installed yet.
 
-Current fastest local headline:
+Retained historical profile summary (see the later result above):
 
 - Current balanced direct path: Qwen3-Coder 30B-A3B UD-Q4_K_XL at 96.76 t/s on llama.cpp b9049, Vulkan/RADV.
 - Historical balanced peak: Qwen3-Coder 30B-A3B UD-Q4_K_XL at 97.24 t/s on b9010.
 - New speed-first peak: Qwen3-Coder 30B-A3B Q4_K_S at 98.51 t/s r50 on llama.cpp b9179, Vulkan/RADV, after fixing the `tuned` versus `power-profiles-daemon` conflict and pausing benchmark noise.
-- Treat 98.51 t/s as the current measured speed-first Qwen3-Coder peak, not a 100 t/s result and not the default balanced-quality recommendation.
+- Preserve 98.51 t/s as the historical b9179 strict-clean peak; the later b9851 speed-first row reached 100.99 t/s. Neither is the balanced-quality default.
 - Separate direct 100 t/s row: Qwen3-30B-A3B-Instruct-2507 IQ4_XS reached 100.04 t/s r50 on llama.cpp b9467, Vulkan/RADV. Treat it as a separate general-instruct Qwen route, not as a Qwen3-Coder replacement.
-- Additional Qwen3-Coder break-100 route testing reached 99.11 t/s in an r5 scout and 98.96 t/s in an r20 confirmation, but still did not produce a stable Qwen3-Coder 100 t/s result.
+- The older break-100 campaign reached 99.11 t/s r5 and 98.96 t/s r20 without a stable 100 t/s result in that campaign; the later official b9851 result is separate.
 - Current fastest measured Qwen3.6 path: Q4_0 at 81.30 t/s on llama.cpp b9049, Vulkan/RADV. Label this as speed-first, not the default all-round quality recommendation.
 - Current measured MTP server routes: Qwen3.6 IQ4_XS-Q8nextn reached 101.16 t/s best local Beelink six-prompt average on b9360 with `draft-n=2`, `--poll 100`, and `-ub 1024`; Gemma 4 26B-A4B QAT with a matched MTP head reached 102.69 t/s cold repeat, 107.42 t/s T3-only repeat, and 110.00 t/s best repeat on ac4cddeb0. The best community broad Qwen3.6 MTP average is 93.29 t/s on GMKtec EVO-X2 with b9235.
 
@@ -39,7 +45,7 @@ Detailed results: [`MAX_PERFORMANCE_RESULTS_2026-05-07.md`](MAX_PERFORMANCE_RESU
 |-------|--------|--------|
 | Qwen3.6 quant sweep | done | Q4_0 reached 81.30 t/s; Q4_K_M reached 76.94 t/s; old UD row remains 62.56 t/s. |
 | Same-source HIP vs Vulkan | done | HIP wins prompt processing at pp16384; Vulkan wins tg128. |
-| Qwen3-Coder max-speed sweep | done | No stable Qwen3-Coder 100 t/s result; strict-clean speed-first ceiling is now 98.51 t/s; balanced UD remains 96-97 t/s. |
+| Qwen3-Coder max-speed sweep | done | Historical campaign stayed below 100 t/s; later official b9851 Q4_K_S reached 100.99 tg128 r50. Preserve balanced UD and strict-clean historical profiles separately. |
 | Qwen3-30B-A3B-Instruct-2507 scout | done | IQ4_XS reached 100.04 t/s r50 direct `llama-bench` on b9467; separate general-instruct Qwen route, not a Qwen3-Coder replacement. |
 | gpt-oss-120b long-context sweep | done | 55.57 t/s tg128 and prompt processing through 65K tokens. |
 | Historical tuned rocWMMA path | attempted | lhl branch built, but failed to load current Qwen3.6 GGUFs; upstream later removed this path. |

@@ -26,6 +26,8 @@ class Probe:
     status: int
     elapsed_s: float
     detail: str
+    transport_accepted: bool = False
+    client_verified: bool = False
 
 
 def parse_sse_line(line: bytes) -> dict[str, Any] | None:
@@ -36,7 +38,8 @@ def parse_sse_line(line: bytes) -> dict[str, Any] | None:
     if data == "[DONE]":
         return {"done": True}
     try:
-        return json.loads(data)
+        value = json.loads(data)
+        return value if isinstance(value, dict) else {"error": "SSE payload is not an object"}
     except json.JSONDecodeError:
         return {"error": f"bad json: {data[:160]}"}
 
@@ -96,6 +99,8 @@ def request_streaming_chat(
     )
     start = time.perf_counter()
     chunks = 0
+    done = False
+    finish = False
     first_chunk_s: float | None = None
     try:
         with urllib.request.urlopen(req, timeout=timeout) as response:
@@ -104,18 +109,23 @@ def request_streaming_chat(
                 if not parsed:
                     continue
                 if parsed.get("done"):
+                    done = True
                     break
                 if parsed.get("error"):
                     return False, response.status, time.perf_counter() - start, str(parsed["error"])
                 choices = parsed.get("choices") or []
-                if choices:
-                    chunks += 1
-                    if first_chunk_s is None:
-                        first_chunk_s = time.perf_counter() - start
+                for choice in choices:
+                    content = (choice.get("delta") or {}).get("content")
+                    if isinstance(content, str) and content.strip():
+                        chunks += 1
+                        if first_chunk_s is None:
+                            first_chunk_s = time.perf_counter() - start
+                    if choice.get("finish_reason") in ("stop", "length"):
+                        finish = True
         elapsed = time.perf_counter() - start
-        if chunks:
+        if chunks and done and finish:
             return True, response.status, elapsed, f"{chunks} SSE chunks; first chunk {first_chunk_s:.3f}s"
-        return False, response.status, elapsed, "no SSE content chunks"
+        return False, response.status, elapsed, "missing visible SSE content or terminal completion"
     except urllib.error.HTTPError as exc:
         detail = exc.read().decode("utf-8", errors="replace")
         return False, exc.code, time.perf_counter() - start, detail[:400]
@@ -174,6 +184,49 @@ def tool_probe(payload: Any) -> str:
     return f"no tool_calls; content chars={len(content or '')}; reasoning chars={len(reasoning or '')}"
 
 
+def semantic_success(kind: str, payload: Any, model: str) -> bool:
+    """Validate bounded response shape/content; never claim a client task ran."""
+    if not isinstance(payload, dict) or payload.get("error"):
+        return False
+    if kind == "models":
+        data = payload.get("data")
+        return isinstance(data, list) and any(isinstance(item, dict) and item.get("id") == model for item in data)
+    choices = payload.get("choices")
+    if not isinstance(choices, list) or not choices or not isinstance(choices[0], dict):
+        return False
+    choice = choices[0]
+    if kind == "completion":
+        return isinstance(choice.get("text"), str) and bool(choice["text"].strip()) and choice.get("finish_reason") in ("stop", "length")
+    message = choice.get("message")
+    if not isinstance(message, dict):
+        return False
+    if kind == "chat":
+        return isinstance(message.get("content"), str) and bool(message["content"].strip()) and choice.get("finish_reason") in ("stop", "length")
+    calls = message.get("tool_calls")
+    if not isinstance(calls, list) or not calls or choice.get("finish_reason") != "tool_calls":
+        return False
+    for call in calls:
+        if not isinstance(call, dict) or call.get("type") != "function" or not isinstance(call.get("id"), str) or not call["id"]:
+            return False
+        function = call.get("function")
+        if not isinstance(function, dict) or function.get("name") != "get_weather":
+            return False
+        try:
+            arguments = json.loads(function.get("arguments", ""))
+        except (ValueError, TypeError):
+            return False
+        if not isinstance(arguments, dict) or not isinstance(arguments.get("city"), str) or arguments["city"].strip().casefold() != "paris":
+            return False
+    return True
+
+
+def response_probe(name: str, kind: str, accepted: bool, status: int, elapsed: float, payload: Any, model: str) -> Probe:
+    success = accepted and semantic_success(kind, payload, model)
+    return Probe(name, success, status, elapsed,
+                 "validated response content/shape" if success else "response did not satisfy content/shape contract",
+                 transport_accepted=accepted)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--url", required=True, help="Base URL, for example http://127.0.0.1:8080")
@@ -186,7 +239,7 @@ def main() -> None:
     probes: list[Probe] = []
 
     ok, status, elapsed, payload = request_json(args.url, "/v1/models", "GET", None, args.timeout, args.api_key)
-    probes.append(Probe("/v1/models", ok, status, elapsed, summarize_models(payload) if ok else str(payload)))
+    probes.append(response_probe("/v1/models", "models", ok, status, elapsed, payload, args.model))
 
     completion_payload = {
         "model": args.model,
@@ -198,7 +251,7 @@ def main() -> None:
     ok, status, elapsed, payload = request_json(
         args.url, "/v1/completions", "POST", completion_payload, args.timeout, args.api_key
     )
-    probes.append(Probe("/v1/completions", ok, status, elapsed, completion_probe(payload) if ok else str(payload)))
+    probes.append(response_probe("/v1/completions", "completion", ok, status, elapsed, payload, args.model))
 
     chat_payload = {
         "model": args.model,
@@ -210,10 +263,10 @@ def main() -> None:
     ok, status, elapsed, payload = request_json(
         args.url, "/v1/chat/completions", "POST", chat_payload, args.timeout, args.api_key
     )
-    probes.append(Probe("/v1/chat/completions", ok, status, elapsed, chat_probe(payload) if ok else str(payload)))
+    probes.append(response_probe("/v1/chat/completions", "chat", ok, status, elapsed, payload, args.model))
 
     ok, status, elapsed, detail = request_streaming_chat(args.url, args.model, args.timeout, args.api_key)
-    probes.append(Probe("/v1/chat/completions stream", ok, status, elapsed, detail))
+    probes.append(Probe("/v1/chat/completions stream", ok, status, elapsed, detail, 200 <= status < 300))
 
     tool_payload = {
         "model": args.model,
@@ -245,7 +298,12 @@ def main() -> None:
     ok, status, elapsed, payload = request_json(
         args.url, "/v1/chat/completions", "POST", tool_payload, args.timeout, args.api_key
     )
-    probes.append(Probe("/v1/chat/completions tools", ok, status, elapsed, tool_probe(payload) if ok else str(payload)))
+    probes.append(response_probe("/v1/chat/completions tools auto", "tools", ok, status, elapsed, payload, args.model))
+    tool_payload["tool_choice"] = {"type": "function", "function": {"name": "get_weather"}}
+    ok, status, elapsed, payload = request_json(
+        args.url, "/v1/chat/completions", "POST", tool_payload, args.timeout, args.api_key
+    )
+    probes.append(response_probe("/v1/chat/completions tools forced", "tools", ok, status, elapsed, payload, args.model))
 
     result = {
         "url": args.url,
@@ -261,7 +319,7 @@ def main() -> None:
         marker = "ok" if probe.ok else "FAIL"
         print(f"{marker:4} {probe.name:32} status={probe.status} elapsed={probe.elapsed_s:.3f}s {probe.detail}")
 
-    core_ok = any(probe.ok and probe.name in {"/v1/completions", "/v1/chat/completions"} for probe in probes)
+    core_ok = all(probe.ok for probe in probes if probe.name in {"/v1/models", "/v1/chat/completions", "/v1/chat/completions stream"})
     sys.exit(0 if core_ok else 2)
 
 

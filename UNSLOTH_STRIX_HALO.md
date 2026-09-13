@@ -91,6 +91,12 @@ curl -s http://127.0.0.1:8888/api/health
 
 This deliberately performs only one SFT step. It verifies the path without pretending to produce a useful trained model.
 
+Reproducibility limit: the retained recipe names model/dataset repositories but
+does not pin their revisions here. Container/export hashes do not make future
+retraining deterministic. TODO: record exact model/dataset revisions and seed
+for a new authorized run using the installed CLI's supported options; do not
+infer historical revisions from today's repository heads.
+
 ```bash
 /opt/unsloth/studio/unsloth_studio/bin/unsloth train \
   --model unsloth/Qwen3-0.6B-unsloth-bnb-4bit \

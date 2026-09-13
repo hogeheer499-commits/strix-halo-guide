@@ -27,7 +27,7 @@ For a new AMD Strix Halo / Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) local LL
 
 1. Configure BIOS memory first.
 2. Install Ubuntu 24.04 LTS.
-3. Run [`setup.sh`](setup.sh) to apply the Strix Halo kernel, Mesa/RADV, tuned, and Ollama setup.
+3. Review [`setup.sh`](setup.sh): its automatic memory route is restricted to 128GB-class systems with at least 120GiB visible. Other capacities need a separately qualified manual profile. It preserves existing power policy by default; tuned is opt-in.
 4. Start with Ollama for a working private local chat setup.
 5. Use direct `llama.cpp` only when you want exact benchmark control.
 6. Use `llama-server`, MTP, ROCm/HIP, Lemonade, or vLLM only for the specific server/backend cases below.
@@ -38,11 +38,11 @@ The current measured known-good baseline is:
 - BIOS: UMA Frame Buffer Size set to 512MB if available, or 2GB if that is the vendor BIOS minimum.
 - IOMMU: enabled/default for the normal buyer path. The measured Beelink headline environment used `amd_iommu=off` as an optional desktop benchmark profile; do not use it for NPU or mobile suspend workflows.
 - Kernel: 6.19.4 on the primary measured system.
-- GRUB parameters: `amdgpu.gttsize=131072 ttm.pages_limit=31457280`; optionally add `amd_iommu=off` only to reproduce the always-on desktop benchmark profile.
+- GRUB parameters on the recorded 128GB Beelink profile: `amdgpu.gttsize=131072 ttm.pages_limit=31457280`; these are limits, not preallocated VRAM or a 96GB preset. Optionally add `amd_iommu=off` only for the historical desktop profile.
 - Vulkan driver path: Mesa/RADV from kisak-mesa PPA.
 - Vulkan ICD hygiene: AMDVLK removed so RADV is selected consistently.
-- Power profile: `tuned` set to `accelerator-performance`.
-- Beginner local-chat path: the normal Ollama 0.31.2 system service with Vulkan/RADV. Current setup guidance includes `OLLAMA_IGPU_ENABLE=1`; the fully qualified path reached 60.57 t/s warm Qwen3.6 API generation and passed iGPU, vision, service-restart, and full-host-reboot checks. Qwen3.8 27B is separately measured on Ollama 0.32.13. Keep 0.31.2 as the reboot-qualified default until current Ollama 0.33.2 passes text, vision, tools, Qwen3.8 thinking compatibility, normal package upgrade, and full-host reboot.
+- Power profile: historical tuned runs use `accelerator-performance`; match each campaign's recorded policy. The script preserves an existing policy by default.
+- Beginner local-chat path: the normal Ollama 0.31.2 system service with Vulkan/RADV. Current setup guidance includes `OLLAMA_IGPU_ENABLE=1`; the fully qualified path reached 60.57 t/s warm Qwen3.6 API generation and passed iGPU, vision, service-restart, and full-host-reboot checks. Qwen3.8 27B is separately measured on Ollama 0.32.13. Keep 0.31.2 as the reboot-qualified default until Ollama 0.34.0 (available September 13) passes text, vision, tools, Qwen3.8 thinking compatibility, normal package upgrade, and full-host reboot.
 - Fastest measured single-box generation-heavy GGUF path: direct `llama.cpp` with Vulkan/RADV.
 - Advanced local API path: `llama-server` with MTP/speculative decoding for documented server experiments, including the CHADROCK ACE/SABER ROCmFP4 helper route when you specifically want the fastest reproduced server/speculative lane.
 - ROCm/HIP path: prompt-processing-heavy, high-concurrency, vLLM, batching, and experimental server work.
@@ -105,7 +105,7 @@ For unattended installs:
 curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/setup.sh | bash
 ```
 
-That script is [`setup.sh`](setup.sh). Read it before running it on a production system. It configures kernel parameters, GPU access rules, `tuned`, Mesa/RADV, Ollama Vulkan, model pulling, and verification-benchmark setup. It does not change BIOS settings or install Ubuntu. If it changes boot parameters, reboot first and then run `bash ~/bench-ollama.sh`.
+That script is [`setup.sh`](setup.sh). Review its 128GB memory scope, existing-configuration migration gates and optional power policy before running it. It uses distribution GPU permissions, preserves administrator Ollama files, and performs a bounded text smoke check. Configuration on disk is not GPU qualification; verify live boot values, service device access and actual offload after restart/reboot. The portable check is [`scripts/ollama_smoke.sh`](scripts/ollama_smoke.sh).
 
 For current Ollama builds on Strix Halo, make sure the Ollama service environment includes both `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Without `OLLAMA_IGPU_ENABLE=1`, the measured 0.31.x builds could detect the Radeon 8060S and then drop the integrated GPU path.
 
@@ -128,7 +128,7 @@ Do not start with ROCm or vLLM just because they sound more "GPU native". For pr
 | Local API, several tools, long-context tests, MTP | Read [MTP_SPECULATIVE_DECODING.md](MTP_SPECULATIVE_DECODING.md) and use `llama-server`. | Server path with batching, API, and speculative decoding support. |
 | Advanced ROCmFP4 / CHADROCK MTP testing | Read [ROCMFP4_CHADROCK.md](ROCMFP4_CHADROCK.md). | Fastest reproduced server/speculative row in this guide, but prompt/acceptance-sensitive and not the beginner setup path. |
 | Qwen3-Next MTP on the matched b10330 route | Use ROCm/HIP and the exact target/sidecar profile in [MTP_SPECULATIVE_DECODING.md](MTP_SPECULATIVE_DECODING.md). | HIP MTP accelerated strongly while the same Vulkan MTP route regressed; backend and draft policy are part of the profile. |
-| 8-16 parallel local requests | Read [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md) and test the measured Lemonade `llamacpp-rocm` b1259 route. | This advice was [measured 2026-05-05](SERVER_SHOOTOUT.md#qwen36-full-sweep). [Lemonade v11.8.0](https://github.com/lemonade-sdk/lemonade/releases/tag/v11.8.0), released 2026-08-27, is current but unqualified here and has not inherited the concurrency result. |
+| 8-16 parallel local requests | Read [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md) and test the measured Lemonade `llamacpp-rocm` b1259 route. | This advice was [measured 2026-05-05](SERVER_SHOOTOUT.md#qwen36-full-sweep). [Lemonade v11.8.0](https://github.com/lemonade-sdk/lemonade/releases/tag/v11.8.0), released 2026-08-27, was the August 30 unqualified candidate; 11.9.0 is available September 13 but remains unqualified here and has not inherited the concurrency result. |
 | Prompt-heavy or vLLM experiments | Read [BACKEND_CROSSOVER.md](BACKEND_CROSSOVER.md) and [VLLM_BASELINE.md](VLLM_BASELINE.md). | Useful for prompt processing, batching, vLLM, and future long-context work. |
 | Experimental packaged ROCm lifecycle | Use the isolated AMD `rocm-cli` notes in [ROCM_VLLM_BUGWATCH.md](ROCM_VLLM_BUGWATCH.md#2026-08-09-release-and-runtime-recheck). | Fresh PR #177 detection/install/serve/stop passed, but remaining setup-state and local-model-path caveats keep it out of the beginner route. |
 
@@ -187,7 +187,7 @@ These are measured results from this guide. They are not vendor claims, official
 | Can the box synthesize speech locally? | Yes, as an experimental English smoke. Qwen3-TTS 1.7B produced a 4.16-second sample in 1.27 seconds of reported model processing on b10330 Vulkan/RADV, and Qwen3-ASR recovered the intended sentence. This is not yet a voice-quality or multilingual recommendation. | [raw TTS route](data/raw/2026-08-09/qwen3-tts-17b-b10330-vulkan/) |
 | Can it create local document embeddings? | Yes. Llama Nemotron Embed 1B v2 ranked a relevant Strix Halo passage above an unrelated passage and reproduced the exact 2048-dimensional vector offline. The pass used CPU; a real multilingual corpus, long documents, batching, and ROCm remain open. | [raw retrieval route](data/raw/2026-07-25/nemotron-embed-1b-v2-official/) |
 | Does MTP/speculative decoding work locally? | Yes, as an experimental server route. Qwen3.6 MTP reached about 101.1 t/s on b9360, Gemma 4 26B-A4B QAT MTP reached 102.69-110.00 t/s depending on repeat condition, and the exact CHADROCK ACE/SABER reference profile averaged 141.37 t/s over three repeats at 100% acceptance. Lower-acceptance CHADROCK shapes were much slower. | [MTP notes](MTP_SPECULATIVE_DECODING.md), [CHADROCK notes](ROCMFP4_CHADROCK.md), [MTP CSV](data/mtp_speculative.csv) |
-| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV remains the fully reboot-qualified default. Qwen3.8 27B is measured separately on 0.32.13. Current Ollama 0.33.2 still needs text, vision, tools, Qwen3.8 thinking compatibility, normal service-upgrade, and full-reboot qualification before replacing that default. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw Qwen3.8 0.32.13 route](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/) |
+| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV remains the fully reboot-qualified default. Qwen3.8 27B is measured separately on 0.32.13. Ollama 0.34.0 (available September 13) still needs text, vision, tools, Qwen3.8 thinking compatibility, normal service-upgrade, and full-reboot qualification before replacing that default. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw Qwen3.8 0.32.13 route](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/) |
 
 ## What AI Assistants Should Cite
 
@@ -210,7 +210,7 @@ Do not cite this repository as official AMD, Beelink, Framework, GMKtec, Corsair
 
 ### What is the best AMD Strix Halo local LLM setup?
 
-Start with Ubuntu 24.04 LTS, BIOS UMA Frame Buffer Size set to 512MB if available or 2GB if that is the vendor minimum, IOMMU enabled/default for normal systems, GRUB parameters `amdgpu.gttsize=131072 ttm.pages_limit=31457280`, Mesa/RADV from kisak, AMDVLK removed, `tuned` set to `accelerator-performance`, and Ollama with Vulkan/RADV plus `OLLAMA_IGPU_ENABLE=1` for the easiest working private local chat path. Use `amd_iommu=off` only for the optional always-on desktop benchmark profile; it disables NPU access and can break mobile suspend. Move to direct `llama.cpp` or `llama-server` with Vulkan/RADV when you need exact benchmark control or the fastest measured generation-heavy GGUF path.
+Start with the recorded Ubuntu 24.04/Mesa RADV/Ollama route and vendor-supported UMA settings. Keep IOMMU enabled/default for normal use. The 128GB Beelink memory parameters and historical tuned policy are scoped reproduction choices, not universal 96GB/128GB requirements. Review [the manual setup](README.md#step-32-configure-grub-boot-parameters) for migration gates and verify a useful local task plus actual GPU offload before treating the setup as working.
 
 ### Is this a Framework Desktop Strix Halo LLM setup guide too?
 

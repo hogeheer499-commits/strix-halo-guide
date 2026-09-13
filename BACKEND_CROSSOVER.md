@@ -58,6 +58,11 @@ Takeaway: Qwen3-Next strengthens the same rule rather than replacing it. Vulkan/
 
 Canonical first-party evidence: [`data/raw/2026-08-09/qwen3-next-80b-mtp-b10330/`](data/raw/2026-08-09/qwen3-next-80b-mtp-b10330/) and [`data/mtp_speculative.csv`](data/mtp_speculative.csv).
 
+This was a non-strict-clean workstation scout with recorded VM, video and
+remote-desktop activity. Output checks and rates remain useful; those process
+names do not establish causality. Controlled-background repeats remain needed
+before promoting a broader backend default.
+
 This is the first matched Qwen3-Next speculative-decoding crossover in the guide. The same 43 GiB target, 1.40 GiB MTP-only sidecar, b10330 source, deterministic prompts, and output length were used for Vulkan/RADV and ROCm 7.14 HIP. Each result below combines three short-prompt and three 3K-prompt repeats.
 
 | Backend / mode | Combined decode mean | Per-shape result | Practical reading |

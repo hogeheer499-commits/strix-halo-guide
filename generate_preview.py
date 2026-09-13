@@ -24,14 +24,14 @@ draw.rectangle([0, 0, W, 4], fill=ACCENT)
 
 # Three big numbers side by side
 stats = [
-    ("101.0", "t/s", "Direct Qwen3-Coder"),
+    ("101.0", "t/s", "Qwen3-Coder Q4_K_S direct"),
     ("140.4", "t/s", "CHADROCK MTP server"),
     ("128", "GB", "unified memory"),
 ]
 
 num_font = font_black(82)
 unit_font = font_bold(40)
-label_font = font_reg(22)
+label_font = font_reg(20)
 
 section_w = W // 3
 y_numbers = 160
@@ -61,6 +61,13 @@ for i, (num, unit, label) in enumerate(stats):
     label_w = label_bbox[2] - label_bbox[0]
     draw.text((cx - label_w // 2, y_numbers + 95), label, fill=DIM, font=label_font)
 
+# Material profile qualification belongs on the card, not only behind a link.
+qualifier = "experimental · high acceptance"
+qualifier_font = font_reg(18)
+qualifier_box = draw.textbbox((0, 0), qualifier, font=qualifier_font)
+draw.text(((W - qualifier_box[2] + qualifier_box[0]) // 2, 292), qualifier,
+          fill=DIM, font=qualifier_font)
+
 # Divider line
 y_div = 340
 draw.rectangle([140, y_div, W - 140, y_div + 1], fill="#21262d")
@@ -72,7 +79,7 @@ bbox = draw.textbbox((0, 0), title, font=title_font)
 draw.text(((W - bbox[2] + bbox[0]) // 2, 380), title, fill=WHITE, font=title_font)
 
 # Punchline
-punch = "Copyable setup · cross-OEM validation · raw CSV/log evidence"
+punch = "Copyable setup · first-party + community evidence"
 punch_font = font_reg(26)
 bbox = draw.textbbox((0, 0), punch, font=punch_font)
 draw.text(((W - bbox[2] + bbox[0]) // 2, 435), punch, fill=ACCENT, font=punch_font)

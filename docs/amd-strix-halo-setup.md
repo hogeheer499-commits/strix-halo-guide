@@ -34,15 +34,20 @@ systems.
 **Setup reviewed:** August 30, 2026. Exact benchmark claims remain canonical in
 the repository's structured data and raw evidence.
 
+The setup script preserves administrator Ollama drop-ins and stops on unresolved
+environment conflicts or legacy custom GPU rules. Existing installations may
+therefore need manual review; writing configuration does not qualify an upgrade
+or prove GPU offload. See [the manual configuration and access checks](../README.md#step-34-verify-gpu-access).
+
 Running the current official dense Qwen model? Use the dedicated
-[Qwen3.8 27B on Strix Halo route comparison](https://hogeheer499-commits.github.io/strix-halo-guide/qwen38-strix-halo/)
+[Qwen3.8 27B on Strix Halo route comparison](https://strixhaloguide.com/qwen38-strix-halo/)
 for the measured Ollama path, context boundary, MTP/DFlash distinctions, and
 current community performance leads.
 
 If setup is already failing, use the symptom-first
-[Strix Halo troubleshooting page](https://hogeheer499-commits.github.io/strix-halo-guide/troubleshooting/).
+[Strix Halo troubleshooting page](https://strixhaloguide.com/troubleshooting/).
 To choose between measured routes and newer unmeasured artifacts, use the
-[Strix Halo model hub](https://hogeheer499-commits.github.io/strix-halo-guide/strix-halo-models/).
+[Strix Halo model hub](https://strixhaloguide.com/strix-halo-models/).
 
 ## What Is AMD Strix Halo?
 
@@ -63,15 +68,17 @@ to Linux while the integrated GPU accesses a much larger GTT-backed shared pool.
 
 For a normal retail AMD Strix Halo local-AI setup:
 
-1. Use Ubuntu 24.04 LTS and X11.
+1. Use the measured Ubuntu 24.04 LTS route; select X11 only if a desktop tool needs it.
 2. Set BIOS **UMA Frame Buffer Size** to **512MB** if available, or **2GB** if
    that is the vendor BIOS minimum.
 3. Leave **IOMMU enabled/default** for the normal buyer path, NPU use, suspend,
    RDMA, VFIO, passthrough and clustering.
-4. Add `amdgpu.gttsize=131072 ttm.pages_limit=31457280` to the Linux kernel
-   command line.
-5. Use Mesa/RADV, remove AMDVLK so it cannot override RADV, and set `tuned` to
-   `accelerator-performance`.
+4. The recorded 128GB Beelink profile uses `amdgpu.gttsize=131072 ttm.pages_limit=31457280`.
+   These are limits, not allocated VRAM; do not apply them as a 96GB preset.
+   Preserve unrelated boot parameters and verify live values after reboot.
+5. Use Mesa/RADV and verify the selected ICD. Record a power policy per campaign;
+   `tuned accelerator-performance` is one historical reproduction profile,
+   not a requirement for every routine check.
 6. Start with Ollama on Vulkan/RADV. Move to direct `llama.cpp` for controlled
    benchmarks and to the documented ROCm or server routes only when the
    workload requires them.
@@ -154,8 +161,9 @@ only an optional reproduction profile for an always-on desktop benchmark box.
 
 ### Which Linux distribution should I use for a Strix Halo local LLM?
 
-This guide's tested beginner baseline is Ubuntu 24.04 LTS with X11, current
-Mesa/RADV and the included setup script. Other distributions can work, but they
+This guide's measured beginner runtime uses Ubuntu 24.04 LTS and Mesa/RADV;
+X11 is conditional on desktop-tool needs. The revised script's configuration
+checks do not replace fresh-install/upgrade hardware qualification. Other distributions can work, but they
 are not automatic substitutes for this exact measured path; compare their
 kernel, Mesa, Vulkan ICD and runtime versions against the evidence.
 

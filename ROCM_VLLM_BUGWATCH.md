@@ -6,6 +6,20 @@ This file tracks fast-moving upstream items that affect Strix Halo local AI work
 
 ## Current Upstream Snapshot
 
+Checked September 13, 2026: [llama.cpp semantic v0.4.0](https://github.com/ggml-org/llama.cpp/releases/tag/v0.4.0),
+[Ollama 0.34.0](https://github.com/ollama/ollama/releases/tag/v0.34.0),
+[Lemonade 11.9.0](https://github.com/lemonade-sdk/lemonade/releases/tag/v11.9.0),
+[vLLM 0.29.0](https://github.com/vllm-project/vllm/releases/tag/v0.29.0), and
+[SGLang 0.5.19](https://github.com/sgl-project/sglang/releases/tag/v0.5.19) are
+available. Semantic releases and numbered llama.cpp builds are separate labels.
+Availability does not replace the Ollama 0.31.2 reboot-qualified default,
+0.32.13 Qwen3.8 measurements or exact older concurrency profiles.
+
+### Historical August 30 Release Triage
+
+The following release descriptions retain what was checked on August 30;
+“latest” in this table means that date, not the September snapshot.
+
 | Area | Current status | Why it matters |
 |------|----------------|----------------|
 | `llama.cpp` release | [`llama.cpp` v0.3.0](https://github.com/ggml-org/llama.cpp/releases/tag/v0.3.0) is the latest semantic release and [b10687](https://github.com/ggml-org/llama.cpp/releases/tag/b10687) the latest numbered build checked; b10330 retains the broader local feature qualification; b10687 has a separate August 30 short Vulkan sentinel/scout in [BENCHMARKS.md](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout). | v0.3.0 adds GLM-4.5-Air MTP, DeepSeek 4 tensor-split/multi-sequence fixes, multimodal changes, and slot-fit diagnostics, but none is a transferred `gfx1151` performance/correctness claim. Current HIP integrated-host-buffer correctness remains under an open regression/fix A/B. |
@@ -21,7 +35,7 @@ This file tracks fast-moving upstream items that affect Strix Halo local AI work
 | MES memory-access fault report | [`ROCm/ROCm#5724`](https://github.com/ROCm/ROCm/issues/5724) is closed. | Still relevant when diagnosing firmware/kernel regressions. |
 | Qwen ROCm load/hang report | [`ROCm/ROCm#6027`](https://github.com/ROCm/ROCm/issues/6027) is closed. | Historical context for why the guide keeps ROCm notes conservative. |
 | vLLM ROCm non-causal attention | [`vllm-project/vllm#40176`](https://github.com/vllm-project/vllm/pull/40176) is merged. | Relevant to ROCm attention support and newer vLLM container paths. |
-| vLLM DFlash SWA support | [`vllm-project/vllm#40898`](https://github.com/vllm-project/vllm/pull/40898) remains open. | Relevant to Qwen3.6 DFlash speculative decoding repos; not a local guide claim yet. |
+| vLLM DFlash SWA proposal | [`vllm-project/vllm#40898`](https://github.com/vllm-project/vllm/pull/40898) was closed without merging; rechecked September 13. | A successor or equivalent support is not established here. Closure is not local qualification; do not keep waiting for this PR to merge. |
 
 ## Current Strix Halo Compatibility Alerts
 
@@ -93,7 +107,7 @@ These are narrowly scoped upstream reports, not blanket claims about Strix Halo,
   important correctness question: the b10046 small-model `ROCm_Host` allocation
   smoke was too narrow to validate direct integrated-host compute for long,
   multimodal, or multi-slot workloads.
-- Ollama 0.33.2 is the current unmeasured buyer-path target. Keep the measured
+- Ollama 0.34.0 is the current unmeasured buyer-path target. Keep the measured
   0.32.13 Qwen3.8 route and reboot-qualified 0.31.2 service visible until text,
   vision, tools, thinking levels, restart, and reboot all pass locally.
 - Full source and scope notes are preserved in
@@ -279,12 +293,12 @@ The README recommendation should stay conservative:
 
 ## Next Watch Items
 
-1. Qualify Ollama 0.33.2 through the normal system-service path, including Qwen3.8 text, vision, tools, native and Anthropic-compatible thinking levels, service restart, and a full host reboot.
+1. Qualify Ollama 0.34.0 through the normal system-service path, including Qwen3.8 text, vision, tools, native and Anthropic-compatible thinking levels, service restart, and a full host reboot.
 2. Run a stock b10687 versus PR #25863 HIP correctness A/B with exact short, 4K/16K nonce, vision, multi-slot, and long-retrieval outputs before promoting current integrated-host buffers.
 3. Repeat the measured ROCm 7.14 hipBLASLt A/B on a practical 27B/35B FP16 or supported low-precision model before promoting it from a small-model server proof to a normal operator profile.
 4. If the PR #25863 A/B passes, repeat it on a practical 27B/35B GGUF and record performance, full-UMA visibility, and whether a self-contained package can avoid the manual Ollama library path.
 5. Recheck vLLM 0.26.0-or-later availability and warmup behavior before treating 0.25.x as the current Radeon default.
-6. Recheck `vllm-project/vllm#40898` before trying to reproduce DFlash/SWA behavior.
+6. Seek a supported successor implementation for DFlash/SWA; `vllm-project/vllm#40898` closed unmerged and is not a runnable support guarantee.
 7. Use the ROCm 7.14 Radeon SGLang environment overrides for the next isolated smoke and keep affected MoE/ASR routes labeled experimental.
 8. Verify local memory reporting inside the exact ROCm 7.14.0, TheRock, vLLM, or Ollama container before making a capacity or autoscheduling claim.
 9. Preserve a known-working kernel as a boot option during ComfyUI/FLUX kernel qualification, and compare there before rebuilding the whole stack.

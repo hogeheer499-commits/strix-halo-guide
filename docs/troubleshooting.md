@@ -88,9 +88,11 @@ or a model that should fit fails during allocation.
 `/sys/module/ttm/parameters/pages_limit`, the active kernel command line, and
 `free -h`.
 
-**Fix:** apply the guide's documented
-`amdgpu.gttsize=131072 ttm.pages_limit=31457280` boot parameters, update GRUB,
-reboot, and verify the active values before retrying. Use the complete
+**Fix:** compare the selected RAM/kernel profile with actual allocation needs.
+The guide's `amdgpu.gttsize=131072 ttm.pages_limit=31457280` values belong to
+the 128GB Beelink profile, not a 96GB preset or a universal OOM fix. Preserve
+unrelated settings, resolve conflicts, and verify live values after any reboot.
+Use the complete
 [kernel-parameter procedure](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#step-32-configure-grub-boot-parameters).
 
 ## A Stale ROCm Override Reports `gfx1100` Or Segfaults

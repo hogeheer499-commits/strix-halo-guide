@@ -220,7 +220,7 @@ Fail-Safe later supplied a much stronger three-system campaign for the Corsair A
 
 The scoped conclusion is that 2400 MHz was the best conservative tradeoff on this specific fleet: generation remained within about 1% of the higher caps while worst retained edge temperature stayed at or below 75 C. It is not a default cap for Beelink, GMKtec, Framework, every Corsair revision, or Strix Halo generally.
 
-The campaign also corrected the initial root-cause story. Historical logs showed the out-of-tree `ec_su_axb35` fan-control module missing after a kernel update on two systems, leaving dependent services failed. That is a plausible major confounder rather than proof of a sole cause. See [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md) for buyer checks, charts, raw evidence, and the open upstream fan-reset patch.
+The campaign also corrected the initial root-cause story. Historical logs showed the out-of-tree `ec_su_axb35` fan-control module missing after a kernel update on two systems, leaving dependent services failed. That is a plausible major confounder rather than proof of a sole cause. See [`THERMAL_STABILITY.md`](THERMAL_STABILITY.md) for buyer checks, charts, raw evidence, and the merged upstream fan-reset source change and installed-module qualification gap.
 
 ## Modern-Model Anti-Cherry-Pick Follow-Up
 

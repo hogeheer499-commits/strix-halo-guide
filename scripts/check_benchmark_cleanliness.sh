@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # Read-only benchmark hygiene check. This script does not stop services.
 #
-# T3 Code is a hard workflow dependency for this workstation. Strix Halo work is
-# operated from T3, so T3 must remain running and reachable during all routine
-# benchmark work. This script never stops services; it only reports readiness.
+# Set BENCHMARK_POWER_POLICY=tuned only for a tuned reproduction. Optional
+# BENCHMARK_HEALTH_URLS lists JSON health endpoints. This inventory cannot prove
+# GPU inactivity or strict-clean conditions from process names alone.
 
 set -u
 
@@ -41,8 +41,11 @@ check_http() {
 check_json_ok() {
   label="$1"
   url="$2"
-  body="$(curl -fsS --max-time 5 "$url" 2>/dev/null || true)"
-  if printf '%s\n' "$body" | grep -q '"ok"[[:space:]]*:[[:space:]]*true'; then
+  if ! body="$(curl -fsS --max-time 5 "$url" 2>/dev/null)"; then
+    blocker "$label HTTP request failed: $url"
+    return
+  fi
+  if printf '%s\n' "$body" | python3 -c 'import json,sys; d=json.load(sys.stdin); sys.exit(0 if isinstance(d,dict) and d.get("ok") is True else 1)' 2>/dev/null; then
     info "$label is healthy: $url"
   else
     blocker "$label is not healthy: $url"
@@ -55,17 +58,21 @@ uptime
 free -h
 
 section "tuned"
+BENCHMARK_POWER_POLICY="${BENCHMARK_POWER_POLICY:-recorded}"
+if [ "$BENCHMARK_POWER_POLICY" != recorded ] && [ "$BENCHMARK_POWER_POLICY" != tuned ]; then
+  blocker "BENCHMARK_POWER_POLICY must be recorded or tuned"
+fi
 if command -v tuned-adm >/dev/null 2>&1; then
   tuned_output="$(tuned-adm active 2>&1 || true)"
   printf '%s\n' "$tuned_output"
-  if ! printf '%s\n' "$tuned_output" | grep -qi '^Current active profile: accelerator-performance$'; then
+  if [ "$BENCHMARK_POWER_POLICY" = tuned ] && ! printf '%s\n' "$tuned_output" | grep -qi '^Current active profile: accelerator-performance$'; then
     blocker "tuned accelerator-performance is not active"
   fi
 else
-  blocker "tuned-adm is not installed"
+  if [ "$BENCHMARK_POWER_POLICY" = tuned ]; then blocker "selected tuned policy is not installed"; else info "tuned not installed; match recorded alternate policy"; fi
 fi
 if systemctl is-active --quiet power-profiles-daemon 2>/dev/null; then
-  blocker "power-profiles-daemon is active; it conflicts with tuned and can reduce benchmark performance"
+  if [ "$BENCHMARK_POWER_POLICY" = tuned ]; then blocker "active power-profiles-daemon conflicts with selected tuned policy"; else info "power-profiles-daemon active; record its profile"; fi
 else
   info "power-profiles-daemon is inactive"
 fi
@@ -80,9 +87,7 @@ for file in /sys/class/drm/card*/device/pp_dpm_sclk; do
   [ -e "$file" ] || continue
   printf '%s\n' "$file"
   cat "$file"
-  if ! grep -q '2900Mhz \*' "$file"; then
-    warn "GPU clock does not show 2900Mhz as the active state"
-  fi
+  info "Compare clocks under workload with the selected profile; idle clocks are not a readiness verdict"
 done
 
 section "Vulkan Device"
@@ -98,37 +103,22 @@ fi
 section "Known Benchmark Noise"
 if pgrep -i rustdesk >/dev/null; then
   pgrep -i rustdesk | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
-  blocker "RustDesk is running"
+  warn "RustDesk process present; measure actual CPU/GPU/I/O activity before classifying conditions"
 fi
 if pgrep -i 'zoom|ZoomClips' >/dev/null; then
   pgrep -i 'zoom|ZoomClips' | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
-  blocker "Zoom is running"
+  warn "Zoom process present; measure actual CPU/GPU/I/O activity before classifying conditions"
 fi
 if command -v virsh >/dev/null 2>&1 && virsh list --state-running --name 2>/dev/null | grep -q .; then
   virsh list --state-running
-  blocker "one or more libvirt VMs are running"
+  warn "VMs are present; record their actual load and control them for strict comparisons"
 fi
 
-section "T3 Workstation Dependency"
-T3_LOCAL_BASE="${T3_LOCAL_BASE:-http://127.0.0.1}"
-T3_LAN_BASE="${T3_LAN_BASE:-http://192.168.2.13}"
-if pgrep -f -i 't3code' >/dev/null; then
-  pgrep -f -i 't3code' | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
-  info "T3 Code process is running and protected"
-else
-  blocker "T3 Code process is not running"
-fi
-if pgrep -f -i 't3_react185_semantic_proxy|t3-react185-semantic-proxy' >/dev/null; then
-  pgrep -f -i 't3_react185_semantic_proxy|t3-react185-semantic-proxy' | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
-  info "T3 semantic proxy is running and protected"
-else
-  blocker "T3 semantic proxy is not running"
-fi
-check_http "T3 local semantic proxy" "${T3_LOCAL_BASE}:3773/"
-check_http "T3 LAN semantic proxy" "${T3_LAN_BASE}:3773/"
-check_json_ok "T3 local semantic proxy health" "${T3_LOCAL_BASE}:3773/__t3react185/health"
-check_json_ok "T3 LAN semantic proxy health" "${T3_LAN_BASE}:3773/__t3react185/health"
-check_http "T3 local upstream backend" "${T3_LOCAL_BASE}:3774/"
+section "Optional Health Dependencies"
+# Space-separated URLs must each return JSON {"ok": true}. No private defaults.
+for health_url in ${BENCHMARK_HEALTH_URLS:-}; do
+  check_json_ok "Configured dependency" "$health_url"
+done
 
 section "Local AI and Containers"
 ai_pids="$(
@@ -159,11 +149,11 @@ section "Verdict"
 printf 'Blockers: %s\n' "$blockers"
 printf 'Warnings: %s\n' "$warnings"
 if [ "$blockers" -gt 0 ]; then
-  printf 'NOT CLEAN ENOUGH for publishable benchmarks.\n'
+  printf 'Selected prerequisites failed; investigate before the run.\n'
   exit 2
 fi
 if [ "$warnings" -gt 0 ]; then
-  printf 'USABLE FOR SMOKE TESTS, but review warnings before publishing numbers.\n'
+  printf 'Review observations and workload activity against the selected claim class.\n'
   exit 1
 fi
-printf 'CLEAN ENOUGH for benchmark runs.\n'
+printf 'Inventory complete; this does not certify strict-clean conditions or GPU inactivity.\n'

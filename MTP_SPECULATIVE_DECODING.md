@@ -27,7 +27,7 @@ and [preserved evidence](data/raw/2026-08-26/community-gmktec-issue4/README.md).
 
 ### Qwen3-Next 80B Backend Crossover On b10330
 
-This matched A/B is intentionally shown separately from the historical six-prompt leaderboard. It used two prompt shapes, three repeats each, 128 generated tokens, and normal low-load workstation conditions.
+This A/B is separate from the historical six-prompt leaderboard. It used two prompt shapes, three repeats each and 128 generated tokens in a **non-strict-clean workstation scout**: the raw note records Zoom, a VM, video and remote-desktop activity remaining active. Process presence does not prove heavy load or explain the backend difference; controlled-background repeats are needed before stronger default claims.
 
 | Backend / policy | Short decode | 3K-prompt decode | Draft acceptance | Interpretation |
 | --- | ---: | ---: | ---: | --- |
@@ -105,7 +105,7 @@ Qwen3.8 workload. Sources and system corrections are in the
 
 The most honest public summary is:
 
-- **Direct Qwen3-Coder speed row:** Qwen3-Coder Q4_K_S remains 98.51 t/s r50.
+- **Direct Qwen3-Coder speed row:** Q4_K_S reached 100.99 t/s r50 on official b9851; the older strict-clean b9179 98.51 row remains historical evidence under different conditions.
 - **Separate direct 100 t/s row:** Qwen3-30B-A3B-Instruct-2507 IQ4_XS reached 100.04 t/s r50 direct `llama-bench`; this is a different general-instruct model and quant.
 - **Best local MTP server average measured here:** Qwen3.6 MTP IQ4_XS-Q8nextn at about 101.1 t/s across six practical prompts on b9360 with `draft-n=2`, `--poll 100`, and `-ub 1024`.
 - **Best current-model Gemma MTP route measured here:** Gemma 4 26B-A4B QAT with a matched MTP head at 102.69 t/s cold repeat, 107.42 t/s T3-only repeat, and 110.00 t/s best repeat across the same six-prompt harness on ac4cddeb0.
@@ -113,7 +113,7 @@ The most honest public summary is:
 - **Current Qwen3-Next 80B MTP profile:** b10330 ROCm/HIP reached 83.52-83.60 t/s and improved 62.7-66.5% over its matched HIP control. The same sidecar fell to 12.37-12.58 t/s on Vulkan, so this is backend-specific evidence rather than a generic MTP recommendation.
 - **Largest first-party MTP agent route:** Step 3.7 Flash ROCmFPX Q3 QualityPlus, a 198B-total / about 11B-active target plus separate Q8 draft, measured 34.50 t/s at 4K and 33.83 t/s at 16K. MTP improved the matched 4K server baseline by 44.68%; 256K allocation and native tool-call smokes passed.
 - **Best community MTP average reported so far:** the same exact route reached 93.29 t/s on mottledMantis' GMKtec EVO-X2.
-- **Fastest local MTP server prompt:** Qwen3.6 MTP IQ4_XS-Q8nextn with `draft-n=3`, `-t 16`, `--poll 100`, and `-ub 1024` reached 117.53 t/s on the best b9360 prompt.
+- **Historical Qwen3.6 b9360 prompt peak:** IQ4_XS-Q8nextn with `draft-n=3`, `-t 16`, `--poll 100`, and `-ub 1024` reached 117.53 t/s. This is not the maximum across later Gemma or CHADROCK campaigns.
 - **MTP is still not the direct headline category:** the 101.1 t/s MTP result is `llama-server` speculative decoding, not direct non-speculative `llama-bench`.
 - **Official 27B MTP Q8_0 is not a speed route here:** the latest rerun reached 14.69 t/s with MTP, so the useful practical path remains the 35B-A3B MoE MTP quant.
 

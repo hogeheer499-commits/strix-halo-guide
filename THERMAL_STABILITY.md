@@ -110,9 +110,10 @@ Based on this evidence, radupotop opened
 The patch resets all fans to `AUTO` before the kernel module unloads so an active
 software-controlled curve is not left behind without its control loop.
 
-The PR is open and has been tested by its author on a Corsair AI Workstation
-300. Treat it as an upstream candidate, not a released fix, until it is merged
-and included in the installed module version.
+The PR merged August 20, 2026 as `f62c2c228959a08683273a26ef3afd8991e69f6d`
+(state rechecked September 13). Verify that the installed module contains this
+commit and qualify its behavior on the actual system. Merge does not establish
+installation, resolve every lock cause or authorize replacing the host module.
 
 ## About The 2400 MHz Cap
 

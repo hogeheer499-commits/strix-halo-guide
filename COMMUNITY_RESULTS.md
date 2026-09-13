@@ -344,6 +344,10 @@ Fail-Safe then followed up with an apples-to-apples source/build check using 0xS
 
 This supports the guide's main Qwen3.6 framing: Q4_0 is a speed-first choice, while Q4_K_M/UD variants are more conservative all-rounder choices. It also warns against treating all Q4_0 files as identical. In this follow-up, GGUF source explained about +5.3% tg128 between bartowski and 0xSero Q4_0, b9049 to b9093 was a small bidirectional build effect (+3% pp512, -1.85% tg128), and guide flags versus kyuz0 defaults were effectively noise on b9093. Keep these as throughput evidence, not model-quality claims.
 
+“Conservative” here is a conventional quantization heuristic, not a measured
+quality ranking of these exact artifacts. Retaining that cautious candidate does
+not establish superiority on coding, retrieval or long-context tasks.
+
 ## GMKtec EVO-X2 WSL2/HIP Baseline
 
 mottledMantis also contributed a GMKtec EVO-X2 WSL2/HIP baseline in [#15](https://github.com/hogeheer499-commits/strix-halo-guide/issues/15):
@@ -393,7 +397,7 @@ Follow-up tuning from [#13](https://github.com/hogeheer499-commits/strix-halo-gu
 This is strong independent validation for the Vulkan/RADV Qwen3-Coder path. It does not replace the guide's Beelink headline claims, but it makes the practical recommendation stronger:
 
 - Strix Halo Vulkan/RADV performance appears portable across at least Beelink GTR9 Pro, Corsair AI Workstation 300, and GMKtec EVO-X2.
-- The Qwen3-Coder 30B-A3B direct `llama-bench` result stays around 95-97 t/s even with a different distro/kernel/Mesa/container stack.
+- The original comparison clustered around 95-97 t/s. Later rows include 91.40, 99.08 and 96.75 t/s on different stacks; this is portability evidence, not a universal range or a matched OEM ranking.
 - The Qwen3.6 35B-A3B UD-Q4_K_M native Vulkan/RADV row reproduced within about 2% on GMKtec EVO-X2 despite 96GB memory, Ubuntu 26.04, kernel 7.0.0-15, Mesa 26.0.3, llama.cpp b9156, and IOMMU translated mode.
 - The Qwen3.6 MTP IQ4_XS-Q8nextn route now has an independent GMKtec reproduction at 93.29 t/s average over six prompts, slightly above the local Beelink b9235 92.30 t/s row.
 - The GMKtec stock Gemma 4 26B-A4B row adds a second-OEM direct decode control at 53.02 tg128. It supports portability in the same practical band as the 54.18-55.45 t/s Beelink controls, but model bytes, build, mmap, Mesa, and host-state differences block a hardware ranking.

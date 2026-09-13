@@ -1,15 +1,17 @@
 #!/bin/bash
 # AMD Strix Halo LLM Setup Script
 # Automates the entire setup from Phase 3 onwards (after BIOS and OS install)
-# Tested on: Beelink GTR9 Pro, Ubuntu 24.04, Kernel 6.18.x/6.19.x
+# Profile evidence: Beelink GTR9 Pro, Ubuntu 24.04, Kernel 6.18.x/6.19.x.
+# Revised automation is offline-fixture-tested; fresh-install/upgrade hardware
+# qualification remains pending.
 #
 # Usage: curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/setup.sh | bash
 #    or: bash setup.sh
 #
 # What this script does:
 #   1. Configures kernel parameters (GRUB)
-#   2. Creates GPU access rules (udev)
-#   3. Installs and configures tuned (accelerator-performance)
+#   2. Uses distribution GPU permissions and checks account/session groups
+#   3. Preserves power policy by default (tuned is an explicit opt-in)
 #   4. Upgrades Mesa Vulkan drivers (kisak PPA)
 #   5. Installs Ollama with Vulkan backend
 #   6. Pulls the recommended first model
@@ -60,15 +62,19 @@ if ! grep -qi "amd" /proc/cpuinfo 2>/dev/null; then
 fi
 
 TOTAL_RAM_GB=$(free -g | awk '/^Mem:/{print $2}')
-if [ "$TOTAL_RAM_GB" -lt 60 ]; then
-    warn "Only ${TOTAL_RAM_GB}GB RAM visible. Did you set UMA Frame Buffer to 512MB in BIOS?"
-    warn "Without this, you cannot run large models. See README Phase 1."
-    read -p "Continue anyway? (y/N) " -n 1 -r
-    echo
-    [[ $REPLY =~ ^[Yy]$ ]] || exit 1
+if [ "$TOTAL_RAM_GB" -lt 120 ]; then
+    err "This automatic memory profile is limited to the measured 128GB-class route with at least 120GiB visible. For 96GB/smaller or larger UMA-reserved systems, use the manual guide; no alternate memory limits are qualified here."
+    exit 1
 fi
 
 # Phase 3: Kernel Configuration
+# Detect known migration holds before the first configuration mutation.
+for legacy_file in /etc/modprobe.d/amdgpu_llm_optimized.conf /etc/udev/rules.d/99-amd-kfd.rules; do
+    if [ -e "$legacy_file" ] || [ -L "$legacy_file" ]; then
+        err "Existing legacy profile needs manual review before changes: $legacy_file (README Steps 3.3/3.4)."
+        exit 1
+    fi
+done
 echo ""
 info "Phase 3: Kernel Configuration"
 echo "---------------------------------------------"
@@ -93,7 +99,12 @@ fi
 
 for param in $NEEDED_PARAMS; do
     key=$(echo "$param" | cut -d= -f1)
-    if ! echo "$CURRENT_CMDLINE" | grep -q "$key"; then
+    configured_value=$(printf '%s\n' "$CURRENT_CMDLINE" | tr '" ' '\n' | grep "^${key}=" || true)
+    if [ -n "$configured_value" ] && [ "$configured_value" != "$param" ]; then
+        err "Conflicting $key in GRUB; review the selected memory profile before continuing. Existing configuration preserved."
+        exit 1
+    fi
+    if [ -z "$configured_value" ]; then
         MISSING_PARAMS="$MISSING_PARAMS $param"
     fi
 done
@@ -101,9 +112,19 @@ done
 if [ -n "$MISSING_PARAMS" ]; then
     info "Adding kernel parameters:$MISSING_PARAMS"
     # Extract current value, add missing params
+    if [ -n "$CURRENT_CMDLINE" ] && [[ ! "$CURRENT_CMDLINE" =~ ^GRUB_CMDLINE_LINUX_DEFAULT=\"[^\"\$\`]*\"$ ]]; then
+        err "GRUB assignment needs manual review (multiple assignments, shell expansion or unsupported quoting)."
+        exit 1
+    fi
     CURRENT_VALUE=$(echo "$CURRENT_CMDLINE" | sed 's/GRUB_CMDLINE_LINUX_DEFAULT="//' | sed 's/"$//')
     NEW_VALUE="$CURRENT_VALUE$MISSING_PARAMS"
-    sudo sed -i "s|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT=\"$NEW_VALUE\"|" "$GRUB_FILE"
+    if [ -z "$CURRENT_CMDLINE" ]; then
+        printf '\nGRUB_CMDLINE_LINUX_DEFAULT="%s"\n' "$NEW_VALUE" | sudo tee -a "$GRUB_FILE" > /dev/null
+    else
+        # Escape sed replacement metacharacters in retained administrator text.
+        escaped_value=$(printf '%s' "$NEW_VALUE" | sed 's/[\\&|]/\\&/g')
+        sudo sed -i "s|^GRUB_CMDLINE_LINUX_DEFAULT=.*|GRUB_CMDLINE_LINUX_DEFAULT=\"$escaped_value\"|" "$GRUB_FILE"
+    fi
     sudo update-grub
     log "GRUB updated. Changes take effect after reboot."
     REBOOT_REQUIRED=1
@@ -111,64 +132,67 @@ else
     log "Kernel parameters already configured."
 fi
 
-# Modprobe configuration
-if [ ! -f /etc/modprobe.d/amdgpu_llm_optimized.conf ]; then
-    info "Creating modprobe configuration..."
-    sudo tee /etc/modprobe.d/amdgpu_llm_optimized.conf > /dev/null << 'MODPROBE'
-options amdgpu gttsize=122800
-options ttm pages_limit=31457280
-options ttm page_pool_size=31457280
-MODPROBE
-    sudo update-initramfs -u -k all 2>/dev/null || true
-    log "Modprobe configuration created."
-    REBOOT_REQUIRED=1
-else
-    log "Modprobe configuration already exists."
+# Files on disk do not establish the live boot state, including on a rerun.
+for param in $NEEDED_PARAMS; do
+    if ! tr ' ' '\n' < /proc/cmdline | grep -Fxq "$param"; then
+        REBOOT_REQUIRED=1
+    fi
+done
+
+# Modprobe configuration: avoid competing copies of the same module options.
+if [ -f /etc/modprobe.d/amdgpu_llm_optimized.conf ]; then
+    err "Legacy modprobe profile needs manual review against GRUB and live module values. Preserve custom options; see README Step 3.3."
+    exit 1
 fi
 
-# udev rules
-if [ ! -f /etc/udev/rules.d/99-amd-kfd.rules ]; then
-    info "Creating GPU udev rules..."
-    sudo tee /etc/udev/rules.d/99-amd-kfd.rules > /dev/null << 'UDEV'
-SUBSYSTEM=="kfd", GROUP="render", MODE="0666"
-SUBSYSTEM=="drm", KERNEL=="card[0-9]*", GROUP="render", MODE="0666"
-SUBSYSTEM=="drm", KERNEL=="renderD[0-9]*", GROUP="render", MODE="0666"
-UDEV
-    sudo udevadm control --reload-rules
-    sudo udevadm trigger
-    log "udev rules created."
-else
-    log "udev rules already exist."
+# Use the distribution's GPU device rules; do not grant all local users access.
+if [ -f /etc/udev/rules.d/99-amd-kfd.rules ]; then
+    err "Existing custom GPU rules need review: /etc/udev/rules.d/99-amd-kfd.rules. Preserve unrelated rules and replace any world-writable access deliberately; see README Step 3.4."
+    exit 1
 fi
 
-# Add user to GPU groups
-if ! groups | grep -q render; then
-    sudo usermod -aG render "$USER"
-    sudo usermod -aG video "$USER"
-    log "Added $USER to render and video groups."
-    SESSION_REFRESH_REQUIRED=1
-else
-    log "User already in GPU groups."
-fi
+# Check both memberships separately; a new login is needed for new groups.
+for gpu_group in render video; do
+    if ! id -nG "$USER" | tr ' ' '\n' | grep -Fxq "$gpu_group"; then
+        sudo usermod -aG "$gpu_group" "$USER"
+        SESSION_REFRESH_REQUIRED=1
+    fi
+    if ! id -nG | tr ' ' '\n' | grep -Fxq "$gpu_group"; then
+        SESSION_REFRESH_REQUIRED=1
+    fi
+done
 
 # Phase 4: Performance Tuning
 echo ""
 info "Phase 4: Performance Tuning"
 echo "---------------------------------------------"
 
+POWER_POLICY="${POWER_POLICY:-preserve}"
+if [ "$POWER_POLICY" = "tuned" ]; then
+    if systemctl is-active --quiet power-profiles-daemon; then
+        err "Selected tuned profile conflicts with active power-profiles-daemon. Resolve deliberately using README Step 4.1."
+        exit 1
+    fi
 if ! command -v tuned-adm &>/dev/null; then
     info "Installing tuned..."
     sudo apt install -y tuned
 fi
 
-sudo systemctl enable --now tuned 2>/dev/null || true
-sudo tuned-adm profile accelerator-performance 2>/dev/null || true
+sudo systemctl enable --now tuned
+sudo tuned-adm profile accelerator-performance
 
 ACTIVE_PROFILE=$(tuned-adm active 2>/dev/null | grep -o "accelerator-performance" || echo "")
 if [ "$ACTIVE_PROFILE" = "accelerator-performance" ]; then
     log "tuned: accelerator-performance active."
 else
-    warn "tuned profile may not be set correctly. Run: sudo tuned-adm profile accelerator-performance"
+    err "Selected tuned profile was not activated."
+    exit 1
+fi
+elif [ "$POWER_POLICY" = "preserve" ]; then
+    info "Preserving existing power policy. Record power-profiles-daemon/tuned and GPU DPM state for each run."
+else
+    err "POWER_POLICY must be preserve or tuned."
+    exit 1
 fi
 
 # Mesa upgrade
@@ -206,14 +230,46 @@ else
 fi
 warn "Only the runtime installation is pinned. Match the model, driver, kernel and reboot checks before comparing with a measured profile."
 
-# Configure Ollama for Vulkan
-OLLAMA_OVERRIDE="/etc/systemd/system/ollama.service.d/override.conf"
-if [ ! -f "$OLLAMA_OVERRIDE" ] || \
-   ! grep -q "OLLAMA_VULKAN" "$OLLAMA_OVERRIDE" 2>/dev/null || \
-   ! grep -q "OLLAMA_IGPU_ENABLE" "$OLLAMA_OVERRIDE" 2>/dev/null; then
-    info "Configuring Ollama for Vulkan..."
-    sudo mkdir -p /etc/systemd/system/ollama.service.d
-    sudo tee "$OLLAMA_OVERRIDE" > /dev/null << 'OLLAMA'
+# BEGIN OLLAMA CONFIGURATION FUNCTIONS (also exercised by offline fixtures)
+check_ollama_environment() {
+    local require_all="$1" environment files unsets
+    environment=$(systemctl show ollama -p Environment --value) || return 1
+    files=$(systemctl show ollama -p EnvironmentFiles --value) || return 1
+    unsets=$(systemctl show ollama -p UnsetEnvironment --value) || return 1
+    # EnvironmentFile and UnsetEnvironment apply after Environment. Do not
+    # pretend that checking a drop-in filename resolves those contracts.
+    if [ -n "$files" ] || [ -n "$unsets" ]; then
+        err "Ollama uses EnvironmentFile or UnsetEnvironment; review its effective environment manually before applying this profile."
+        return 1
+    fi
+    OLLAMA_CHECK_ENV="$environment" python3 - "$require_all" <<'PY'
+import os, shlex, sys
+expected = {
+    'OLLAMA_VULKAN': '1', 'OLLAMA_IGPU_ENABLE': '1',
+    'HIP_VISIBLE_DEVICES': '-1', 'OLLAMA_FLASH_ATTENTION': '1',
+    'OLLAMA_CONTEXT_LENGTH': '8192', 'AMD_VULKAN_ICD': 'RADV',
+    'VK_ICD_FILENAMES': '/usr/share/vulkan/icd.d/radeon_icd.json',
+    'OLLAMA_NUM_PARALLEL': '1',
+}
+try:
+    actual = dict(item.split('=', 1) for item in shlex.split(os.environ['OLLAMA_CHECK_ENV']))
+except ValueError:
+    sys.exit('Cannot parse the effective Ollama environment; manual review required.')
+bad = [key for key, value in expected.items()
+       if (key in actual and actual[key] != value)
+       or (sys.argv[1] == 'required' and key not in actual)]
+if bad:
+    sys.exit('Ollama profile conflicts or missing values: ' + ', '.join(bad)
+             + '. Review service/drop-in precedence; existing settings were preserved.')
+PY
+}
+
+configure_ollama() {
+    local directory="$1" target desired
+    target="$directory/60-strix-halo-guide.conf"
+    desired=$(mktemp) || return 1
+    cat > "$desired" << 'OLLAMA'
+# Owned by strix-halo-guide; existing administrator drop-ins are preserved.
 [Service]
 Environment="OLLAMA_VULKAN=1"
 Environment="OLLAMA_IGPU_ENABLE=1"
@@ -222,25 +278,49 @@ Environment="OLLAMA_FLASH_ATTENTION=1"
 Environment="OLLAMA_CONTEXT_LENGTH=8192"
 Environment="AMD_VULKAN_ICD=RADV"
 Environment="VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json"
-Environment="OLLAMA_NUM_BATCH=512"
 Environment="OLLAMA_NUM_PARALLEL=1"
 OLLAMA
-    sudo systemctl daemon-reload
-    sudo systemctl restart ollama
-    log "Ollama configured for Vulkan (RADV)."
-else
-    log "Ollama already configured for Vulkan."
-fi
+    # Reload existing files before inspecting their effective precedence.
+    if ! sudo systemctl daemon-reload || ! check_ollama_environment optional; then
+        rm -f "$desired"
+        return 1
+    fi
+    if [ -e "$target" ] || [ -L "$target" ]; then
+        if [ -L "$target" ] || ! cmp -s "$desired" "$target"; then
+            err "Guide drop-in already exists with different content: $target. Review it manually; it was not overwritten."
+            rm -f "$desired"
+            return 1
+        fi
+    else
+        sudo mkdir -p "$directory" || { rm -f "$desired"; return 1; }
+        sudo install -m 0644 "$desired" "$target" || { rm -f "$desired"; return 1; }
+    fi
+    rm -f "$desired"
+    sudo systemctl daemon-reload || return 1
+    check_ollama_environment required || return 1
+    sudo systemctl restart ollama || return 1
+    log "Ollama environment matches the Vulkan profile. Actual GPU offload still needs runtime verification."
+}
+# END OLLAMA CONFIGURATION FUNCTIONS
+
+configure_ollama /etc/systemd/system/ollama.service.d
+warn "Verify the Ollama service user has access to the distribution's render nodes (README Step 3.4)."
 
 # Wait for Ollama to be ready
 info "Waiting for Ollama to start..."
+OLLAMA_READY=0
 for i in $(seq 1 30); do
-    if curl -s http://localhost:11434/api/tags > /dev/null 2>&1; then
+    if curl --fail --silent --show-error --connect-timeout 2 --max-time 5 http://localhost:11434/api/tags | python3 -c 'import json,sys; d=json.load(sys.stdin); sys.exit(0 if isinstance(d,dict) and isinstance(d.get("models"),list) else 1)' 2>/dev/null; then
         log "Ollama is running."
+        OLLAMA_READY=1
         break
     fi
     sleep 1
 done
+if [ "$OLLAMA_READY" -ne 1 ]; then
+    err "Ollama did not become ready within 30 bounded attempts. Check its logs before continuing."
+    exit 1
+fi
 
 # Pull recommended model
 echo ""
@@ -266,29 +346,29 @@ if [ "$REBOOT_REQUIRED" -eq 1 ]; then
     BENCH_RESULT="STATUS:SKIPPED"
 else
     info "Benchmarking qwen3.6:35b-a3b..."
-    BENCH_RESULT=$(curl -s http://localhost:11434/api/generate -d '{"model":"qwen3.6:35b-a3b","prompt":"hello how are you","stream":false}' 2>/dev/null | python3 -c "
+    BENCH_RESULT=$(curl --fail --silent --show-error --connect-timeout 5 --max-time 600 http://localhost:11434/api/generate -d '{"model":"qwen3.6:35b-a3b","prompt":"hello how are you","stream":false,"options":{"num_predict":128}}' | python3 -c "
 import sys,json
 try:
     d=json.load(sys.stdin)
+    if d.get('done') is not True or not isinstance(d.get('response'), str) or not d['response'].strip() or d.get('error'):
+        raise ValueError('Missing completed visible response or server error')
+    for key in ('prompt_eval_count', 'prompt_eval_duration', 'eval_count', 'eval_duration'):
+        if type(d.get(key)) is not int or d[key] <= 0:
+            raise ValueError('Invalid counter: ' + key)
     pp=d['prompt_eval_count']/d['prompt_eval_duration']*1e9
     tg=d['eval_count']/d['eval_duration']*1e9
     print(f'Prompt eval: {pp:.1f} t/s | Generation: {tg:.1f} t/s')
-    if tg > 40:
-        print('STATUS:PASS')
-    else:
-        print('STATUS:SLOW')
+    print('STATUS:PASS')
 except:
     print('STATUS:FAIL')
-" 2>/dev/null)
+    sys.exit(1)
+" ) || BENCH_RESULT="STATUS:FAIL"
 
     echo "$BENCH_RESULT" | head -1
 fi
 
 if echo "$BENCH_RESULT" | grep -q "STATUS:PASS"; then
-    log "Benchmark PASSED. Your system is performing well."
-elif echo "$BENCH_RESULT" | grep -q "STATUS:SLOW"; then
-    warn "Benchmark completed but speed is lower than expected."
-    warn "Expected 45+ t/s. Check if tuned is running and Mesa is upgraded."
+    log "Text API smoke completed with valid response and counters. This does not establish GPU offload or benchmark qualification."
 elif echo "$BENCH_RESULT" | grep -q "STATUS:SKIPPED"; then
     warn "Benchmark skipped until reboot so the reported speed is not misleading."
 else
@@ -296,14 +376,22 @@ else
 fi
 
 # Create benchmark script
-tee ~/bench-ollama.sh > /dev/null << 'SCRIPT'
+SMOKE_HELPER=$(mktemp)
+tee "$SMOKE_HELPER" > /dev/null << 'SCRIPT'
 #!/bin/bash
+set -euo pipefail
 MODEL="${1:-qwen3.6:35b-a3b}"
 PROMPT="${2:-hello how are you}"
 echo "Model: $MODEL | $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-curl -s http://localhost:11434/api/generate -d "{\"model\":\"$MODEL\",\"prompt\":\"$PROMPT\",\"stream\":false}" | python3 -c "
+python3 -c 'import json,sys; print(json.dumps({"model":sys.argv[1],"prompt":sys.argv[2],"stream":False,"options":{"num_predict":128}}))' "$MODEL" "$PROMPT" |
+curl --fail --silent --show-error --connect-timeout 5 --max-time 600 http://localhost:11434/api/generate -H 'Content-Type: application/json' --data-binary @- | python3 -c "
 import sys,json
 d=json.load(sys.stdin)
+if d.get('done') is not True or not isinstance(d.get('response'),str) or not d['response'].strip() or d.get('error'):
+    raise ValueError('Missing completed visible response or server error')
+for key in ('prompt_eval_count','prompt_eval_duration','eval_count','eval_duration','total_duration'):
+    if type(d.get(key)) is not int or d[key] <= 0:
+        raise ValueError('Invalid counter: ' + key)
 pp=d['prompt_eval_count']/d['prompt_eval_duration']*1e9
 tg=d['eval_count']/d['eval_duration']*1e9
 print(f'Prompt eval: {pp:.1f} t/s ({d[\"prompt_eval_count\"]} tokens)')
@@ -311,12 +399,21 @@ print(f'Generation:  {tg:.1f} t/s ({d[\"eval_count\"]} tokens)')
 print(f'Total time:  {d[\"total_duration\"]/1e9:.2f}s')
 "
 SCRIPT
-chmod +x ~/bench-ollama.sh
+if [ -e "$HOME/bench-ollama.sh" ] || [ -L "$HOME/bench-ollama.sh" ]; then
+    if [ -L "$HOME/bench-ollama.sh" ] || ! cmp -s "$SMOKE_HELPER" "$HOME/bench-ollama.sh"; then
+        rm -f "$SMOKE_HELPER"
+        err "Existing ~/bench-ollama.sh differs; preserved. Review the current scripts/ollama_smoke.sh from the guide manually."
+        exit 1
+    fi
+else
+    install -m 0755 "$SMOKE_HELPER" "$HOME/bench-ollama.sh"
+fi
+rm -f "$SMOKE_HELPER"
 
 # Summary
 echo ""
 echo "============================================="
-echo "  Setup Complete!"
+echo "  Configuration run finished; qualification pending"
 echo "============================================="
 echo ""
 echo "  System: $(uname -r)"
@@ -341,5 +438,9 @@ if [ "$REBOOT_REQUIRED" -eq 1 ]; then
 elif [ "$SESSION_REFRESH_REQUIRED" -eq 1 ]; then
     warn "Log out and back in, or reboot, so GPU group membership applies to your shell."
 else
-    log "No reboot needed."
+    log "Requested command-line parameters are live. Verify service GPU access and actual offload separately."
+fi
+if echo "$BENCH_RESULT" | grep -q "STATUS:FAIL"; then
+    err "Setup verification failed; configuration may have been applied but the runtime is not ready."
+    exit 1
 fi

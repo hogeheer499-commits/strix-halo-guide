@@ -21,7 +21,7 @@ The value is not one single faster headline number. The value is that another co
 
 ## Why This Matters
 
-- Deepens the public eight-system evidence map with a Nimo follow-up, counted separately from the Beelink, three Corsair boxes, two GMKtec sources, and the MS-S1-Max report.
+- Adds a Nimo follow-up to the [system evidence matrix](SYSTEM_EVIDENCE_MATRIX.md), which separates ten owner systems from three external sources; those are not thirteen matched replications.
 - Adds a compact Nimo chassis, not just another Beelink or GMKtec variant.
 - Shows useful rows with IOMMU enabled and 4GB UMA, which differs from this guide's main Beelink setup.
 - Adds large-model serving evidence for 122B-class and StepFun-class routes that answer a different buyer question: "Can this compact unified-memory box run very large local models at all?"
@@ -33,6 +33,12 @@ The value is not one single faster headline number. The value is that another co
 
 These rows are not apples-to-apples `llama-bench` headline replacements. They are community serving/eval/large-model rows. Use the exact workload and backend before comparing them to the Beelink direct `llama-bench` rows.
 
+[Curator notes](EVIDENCE_CORRECTIONS.md#nimo-gemma-qat-profiles-and-topology)
+qualify KV/context changes, unresolved aggregate topology, architecture metadata,
+thermal provenance and arithmetic. For 12B/26B QAT, plain F16 KV is compared with
+MTP Q8 KV; 31B reverses those settings. Deltas compare complete profiles, not
+isolated MTP effects. The original submissions remain unchanged.
+
 | Route | Backend | Result | Practical read | Raw evidence |
 |---|---|---:|---|---|
 | Qwen 3.6 35B-A3B MXFP4 | Lemonade llama.cpp ROCm b9247 | 628.1 tok/s prefill, 44.2 tok/s decode | Practical 35B MoE serving row on Nimo; useful ROCm/Lemonade context. | [`RAW-BENCHMARK-ROWS.md`](data/raw/2026-06-03/community-nimo-issue4/RAW-BENCHMARK-ROWS.md) |
@@ -41,15 +47,15 @@ These rows are not apples-to-apples `llama-bench` headline replacements. They ar
 | Qwen 3.5 122B-A10B MXFP4 | Lemonade llama.cpp ROCm b9247 | 136.0 tok/s prefill, 19.5 tok/s decode | Important large-model feasibility row: 122B-class local serving works, but at a different speed class from 30B/35B MoE rows. | [`RAW-BENCHMARK-ROWS.md`](data/raw/2026-06-03/community-nimo-issue4/RAW-BENCHMARK-ROWS.md) |
 | Qwen 3.5 122B-A10B MTP | Vulkan/RADV b9360 server | 28.3 tok/s best tuned decode | MTP tuning improved the 122B lane over the non-speculative baseline; `PMIN` pruning reduced throughput despite higher validation efficiency. | [`QWEN122B-MTP-TUNING-NUMBERS.md`](data/raw/2026-06-03/community-nimo-issue4/QWEN122B-MTP-TUNING-NUMBERS.md) |
 | StepFun Step-3.7-Flash UD-IQ4_XS | Vulkan/RADV b9360 server | 43.13 tok/s prefill, 22.28 tok/s decode | 198B-class sparse MoE feasibility row; useful for "large model on 128GB unified memory" buyers. | [`STEPFUN-NUMBERS.md`](data/raw/2026-06-03/community-nimo-issue4/STEPFUN-NUMBERS.md) |
-| StepFun Step-3.7-Flash MTP | Vulkan/RADV b9360 patched server | 211.2 tok/s prefill, 26.0 tok/s decode | MTP improved decode by about 27.5% in the contributor's harness, with high draft acceptance from raw timing logs. | [`STEPFUN-MTP-NUMBERS.md`](data/raw/2026-06-03/community-nimo-issue4/STEPFUN-MTP-NUMBERS.md) |
-| Gemma 4 12B QAT Q4_0 + matched MTP head | Atomic TurboQuant fork, Vulkan/RADV b9360 | 539.9 tok/s prefill, 45.6 tok/s decode | Matched QAT MTP head raised acceptance to 78.4% and improved single-stream decode by 77.4% versus the plain QAT row. | [`GEMMA4-QAT-NUMBERS.md`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/GEMMA4-QAT-NUMBERS.md) |
+| StepFun Step-3.7-Flash MTP | Vulkan/RADV b9360 patched server | 211.2 tok/s prefill, 26.0 tok/s decode | 26.0 versus the contributor's 20.4 tok/s control is +27.45%; the adjacent 22.28 row is a separate baseline. See curator denominator notes. | [`STEPFUN-MTP-NUMBERS.md`](data/raw/2026-06-03/community-nimo-issue4/STEPFUN-MTP-NUMBERS.md) |
+| Gemma 4 12B QAT Q4_0 + matched MTP head | Atomic TurboQuant fork, Vulkan/RADV b9360 | 539.9 tok/s prefill, 45.6 tok/s decode | MTP profile reports 78.4% acceptance and +77.4% decode versus plain; plain F16 KV versus MTP Q8 KV prevents an isolated MTP attribution. | [`GEMMA4-QAT-NUMBERS.md`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/GEMMA4-QAT-NUMBERS.md) |
 | Gemma 4 26B-A4B QAT Q4_0 + matched MTP head | Atomic TurboQuant fork, Vulkan/RADV b9360 | 729.3 tok/s prefill, 71.4 tok/s decode | Best single-stream Gemma QAT row in the submitted bundle; matched QAT head closed the non-QAT-head acceptance gap, 56.9% to 91.8%. The original report had a `PARALLEL=2` crash caveat; Atomic PR #26 has since landed, so fresh post-merge 2-slot numbers are the useful next evidence. | [`GEMMA4-QAT-NUMBERS.md`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/GEMMA4-QAT-NUMBERS.md) |
-| Gemma 4 31B QAT Q4_0 + matched MTP head | Atomic TurboQuant fork, Vulkan/RADV b9360 | 203.6 tok/s prefill, 19.1 tok/s decode | Dense 31B route is bandwidth-limited plain at 11.0 tok/s; matched MTP recovered significant single-stream speed, +73.6% decode. | [`GEMMA4-QAT-NUMBERS.md`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/GEMMA4-QAT-NUMBERS.md) |
+| Gemma 4 31B QAT Q4_0 + matched MTP head | Atomic TurboQuant fork, Vulkan/RADV b9360 | 203.6 tok/s prefill, 19.1 tok/s decode | Plain Q8 KV reports 11.0 tok/s versus MTP F16 KV 19.1 tok/s (+73.6%); these are different profiles, not a bandwidth diagnosis or isolated MTP effect. | [`GEMMA4-QAT-NUMBERS.md`](data/raw/2026-06-06/community-nimo-gemma4-qat-issue4/GEMMA4-QAT-NUMBERS.md) |
 | Qwen 3.6 27B Dense DFlash | Lucebox HIP / DFlash | about 7 tok/s | Useful negative/control evidence: functional, but not a speed route in this bundle. | [`RAW-BENCHMARK-ROWS.md`](data/raw/2026-06-03/community-nimo-issue4/RAW-BENCHMARK-ROWS.md) |
 
 ## Thermal And Power Context
 
-The submitted StepFun and Qwen 122B notes both describe the system as power-limited rather than thermally throttled in those runs. Supplemental Nimo telemetry also reports:
+The contributor interprets StepFun and Qwen 122B as power-limited rather than thermally throttled. Sparse temperature/PPT observations do not isolate that mechanism. Supplemental Nimo telemetry also reports:
 
 - Mistral-Medium-128B-Q4_K_M sustained about 1.57 tok/s with about 79Gi unified-memory use.
 - Peak system power around 145-154W in the supplemental telemetry.
@@ -57,7 +63,7 @@ The submitted StepFun and Qwen 122B notes both describe the system as power-limi
 - GPU/CPU peak temperatures around 88C in the supplemental telemetry.
 - Full iGPU offload with substantial memory left for context in that Mistral run.
 
-Treat these as contributor telemetry rows, not Beelink wall-power claims. They are useful buyer context for compact-chassis heat/noise expectations.
+These reports have incomplete instrument, sampling and run-alignment metadata. The different OS-stack note does not establish another physical machine. They do not qualify wall-power/noise comparisons or chassis superiority; see [provenance limits](EVIDENCE_CORRECTIONS.md#nimo-metadata-and-thermal-limits).
 
 ## Interpretation
 
@@ -66,7 +72,7 @@ This Nimo bundle expands the guide from "fastest direct rows on one Beelink" tow
 - The direct Beelink headlines remain separate.
 - The Nimo data is strongest for large-model feasibility, server/MTP routes, and buyer-friction reduction.
 - The StepFun and Qwen 122B rows are especially useful because they answer "what can 128GB unified memory attempt?" rather than only "what is the fastest 30B decode number?"
-- The Gemma 4 QAT rows are useful because they separate three issues that are easy to mix up: QAT main-model speed, MTP assistant-head compatibility, and serving concurrency. Matched QAT heads improve single-stream decode; the submitted Atomic rows predate the merged `PARALLEL=2` fix, so post-fix aggregate throughput still needs fresh measurement.
+- Gemma QAT head compatibility is distinct from causal speed attribution: KV/context settings differ. Aggregate headings conflict with the PARALLEL=1 constraint; exact historical topology and post-fix aggregate throughput both need evidence.
 - The DFlash 27B row is useful precisely because it is not fast; it prevents the guide from over-promoting a complex route without evidence.
 - The Nimo metadata differs from the Beelink recommendation, so it should be read as portability evidence, not a universal setup recommendation.
 

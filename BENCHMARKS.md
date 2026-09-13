@@ -2,6 +2,13 @@
 
 **Benchmarks reviewed:** August 30, 2026.
 
+September 13 label reconciliation: dated campaign takeaways use “current”,
+“latest” and “headline” as of that campaign. The later Qwen3-Coder speed-first
+result is 100.99 tg128 on b9851; the August 30 Qwen3-Next scout is 62.09 tg128,
+separate from the older strict-profile 59.06 row. Historical Ollama 50.51 API
+results do not replace the later controlled 72.55–73.20 profile comparison or
+the separately reboot-qualified 60.57 system-service result.
+
 This file is the compact benchmark source-of-truth for numbers already published in the README. It reconciles historical and current measurements so old ROCm, driver, serving, and long-context notes do not contradict the current guide.
 
 ## 2026-08-30 Vulkan Sentinel And Flash-Next Scout
@@ -111,7 +118,7 @@ Raw evidence: [`data/raw/2026-07-16/`](data/raw/2026-07-16/). The structured con
 | Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1064 | **63.76** | Recommended all-rounder |
 | Qwen3.5 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1080 | **64.85** | Used for backend/build comparison |
 | gpt-oss-120b | Vulkan RADV, llama.cpp b9049 | MXFP4 MoE | 727 | **55.57** | 117B-parameter open-weight MoE loaded from split GGUF |
-| Qwen3-Next 80B-A3B | Vulkan RADV, llama.cpp b9172 | UD-Q4_K_XL | 752 | **59.06** | Latest-stack r20 confirmation; best current 80B Qwen-family path |
+| Qwen3-Next 80B-A3B | Vulkan RADV, llama.cpp b9172 | UD-Q4_K_XL | 752 | **59.06** | Latest-stack r20 confirmation; historical May 80B Qwen-family path |
 | Qwen3-Next 80B-A3B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_XL | 657 | **54.92** | 80B MoE, 256K context capable |
 | Gemma 4 26B-A4B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_M | 1142 | **48.46** | Slower than Qwen MoE at similar active params |
 | Llama 4 Scout 109B | Vulkan RADV, llama.cpp b8933 | Q4_K_M | 331 | **18.32** | 109B params on one mini PC |
@@ -208,7 +215,7 @@ Measured on the same Beelink GTR9 Pro after pausing benchmark noise while leavin
 |-------|--------|------|
 | llama.cpp b9334, Qwen3-Coder 30B Q4_K_S direct `llama-bench` | 96.27 tg128, 1401.20 pp512 | No new direct headline; slower than the b9179 98.51 t/s strict-clean row. |
 | llama.cpp b9334, Qwen3-Coder 30B UD-Q4_K_XL direct `llama-bench` | 94.15 tg128, 1402.17 pp512 | No new balanced headline; below the b9049/b9010 96-97 t/s rows. |
-| Same-state b9179 Qwen3-Coder Q4_K_S control | 97.61 tg128, 1409.36 pp512 | Confirms b9334 itself did not improve direct generation in this check. |
+| Same-state b9172 Qwen3-Coder Q4_K_S control | 97.61 tg128, 1409.36 pp512 | Raw build 9172 / 1348f67c5; preserved filename says b9179. See [curator note](EVIDENCE_CORRECTIONS.md#may-26-control-build). |
 | llama.cpp b9334, Qwen3.6 35B MTP IQ4_XS-Q8nextn, no MTP | 74.39 t/s average over six prompts | Current no-speculative server baseline. |
 | llama.cpp b9334, Qwen3.6 35B MTP IQ4_XS-Q8nextn, `draft-n=2` | 96.14 t/s average; best prompt 107.24 t/s | Strong improvement over b9235 draft-n=2. |
 | llama.cpp b9334, Qwen3.6 35B MTP IQ4_XS-Q8nextn, `draft-n=3` | **98.57 t/s** best six-prompt average; best prompt **116.75 t/s** | Former best local MTP route before the b9360 `-ub 1024` rerun. |
@@ -338,7 +345,7 @@ These remain useful as historical data, but they are not the current headline nu
 | Qwen3.5 35B-A3B, Ollama 0.20.4 | 23 | 182.3 | **47.5** | Mesa 26.0.2 era |
 | Qwen3.5 35B-A3B, Ollama 0.20.4 | 122 | 456.7 | **47.4** | Mesa 26.0.2 era |
 | Qwen3-Coder 30B-A3B Q8_0 | 12 | 118.3 | **51.4** | Ollama path |
-| Qwen3-Coder-Next | 120 | 301.2 | **37.9** | Dense 51GB model |
+| Qwen3-Coder-Next | 120 | 301.2 | **37.9** | 80B-total/3B-active MoE; historical artifact reported about 51GB, quant not recorded |
 | Qwen2.5-VL 7B | 23 | 81.7 | **21.4** | Vision-language model |
 
 ## 2026-07-13 b9979 AMD MoE Density-Gate Campaign
@@ -364,7 +371,7 @@ Source: [`data/moe_density_gate_summary.csv`](data/moe_density_gate_summary.csv)
 
 This is a serving benchmark, not a single-user `llama-bench` headline. Each row is the average of 3 measured repetitions with streaming `/completion`, 128 generated tokens per request, prompt cache disabled, continuous batching enabled, and about 4096 context tokens per slot.
 
-| `-np` | Concurrent Requests | Aggregate tg | Avg per Request | Mean TTFT | Mean ITL | Notes |
+| `-np` | Concurrent Requests | Aggregate tg | Avg per Request | Mean TTFT | Mean request decode interval | Notes |
 |-------|---------------------|--------------|-----------------|-----------|----------|-------|
 | 1 | 1 | 59.21 t/s | 59.21 t/s | 0.117 s | 16.1 ms | Server/API path baseline |
 | 2 | 2 | 92.21 t/s | 46.11 t/s | 0.198 s | 20.3 ms | Good scaling |
@@ -376,7 +383,7 @@ Takeaway: continuous batching makes Strix Halo much more useful as a local API b
 
 ### Qwen3-Coder 30B-A3B UD-Q4_K_XL, llama.cpp b9010, Vulkan RADV
 
-| `-np` | Concurrent Requests | Aggregate tg | Avg per Request | Mean TTFT | Mean ITL | Notes |
+| `-np` | Concurrent Requests | Aggregate tg | Avg per Request | Mean TTFT | Mean request decode interval | Notes |
 |-------|---------------------|--------------|-----------------|-----------|----------|-------|
 | 1 | 1 | 90.20 t/s | 90.20 t/s | 0.079 s | 10.6 ms | Server/API path baseline |
 | 2 | 2 | 121.65 t/s | 60.83 t/s | 0.133 s | 15.5 ms | Good scaling |
@@ -541,4 +548,4 @@ Gemma 4 26B-A4B is a negative result on the local HIP path: Vulkan loaded and ra
 2. Updating llama.cpp from b8298 to b8460 produced the largest improvement: +24% pp and +25% tg on Qwen3.5-35B-A3B.
 3. AMDVLK caused false regression reports through ICD hijacking; keep it removed.
 4. The dated b8460/kernel 6.19.4 ROCm rows used HSA overrides. Current native-`gfx1151` builds should be tested without a global override; HIP remains relevant for prompt processing.
-5. Before any new benchmark campaign, keep `tuned accelerator-performance` active and log raw commands/results into a single dataset.
+5. Before a new campaign, record and verify its selected power/background policy and retain raw commands/results. Tuned is required only when reproducing a tuned profile; see [Reproducibility](REPRODUCIBILITY.md).

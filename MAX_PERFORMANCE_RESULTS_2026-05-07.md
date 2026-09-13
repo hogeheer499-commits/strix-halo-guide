@@ -1,5 +1,10 @@
 # Max Performance Campaign - 2026-05-07
 
+Historical report: “current” and “ceiling” below refer to this May campaign.
+Qwen3-Coder Q4_K_S subsequently reached 100.99 tg128 r50 on official b9851;
+see [the later raw result](data/raw/2026-06-30/latest-llamacpp-b9851-vulkan-sentinel/).
+This does not rewrite the May balanced-quant measurement or its conditions.
+
 This page records the overnight Beelink GTR9 Pro max-performance campaign. It is the audit-friendly version of "did we leave obvious speed on the table?"
 
 Structured summary: [`data/max_performance_campaign.csv`](data/max_performance_campaign.csv). Raw logs: [`data/raw/2026-05-07/max-performance-campaign/`](data/raw/2026-05-07/max-performance-campaign/).

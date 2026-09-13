@@ -8,11 +8,13 @@
     "date": "2026-08-25"
   },
   "runtime": {
-    "ollama_current_checked": "0.33.2",
+    "ollama_current_checked": "0.34.0",
+    "availability_checked": "2026-09-13",
     "ollama_qwen38_measured": "0.32.13",
     "ollama_reboot_qualified_default": "0.31.2",
-    "llama_cpp_current_release": "v0.3.0",
-    "llama_cpp_current_build_checked": "b10687"
+    "llama_cpp_current_release": "v0.4.0",
+    "llama_cpp_current_build_checked": "b10687",
+    "llama_cpp_build_scope": "Latest locally measured numbered sentinel; checked August 30, not latest upstream availability"
   },
   "qwen38": {
     "official_model": "Qwen3.8 27B",
