@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import html
 import json
 import re
 import sys
@@ -28,6 +29,70 @@ PROJECT_PARTNERS_URL = "https://strixhaloguide.com/partners/"
 PROJECT_QWEN_URL = "https://strixhaloguide.com/qwen38-strix-halo/"
 PAGES_SETUP_URL = f"{PAGES_URL}amd-strix-halo-setup/"
 PAGES_QWEN_URL = f"{PAGES_URL}qwen38-strix-halo/"
+PROJECT_BUYER_URL = f"{PROJECT_URL}best-strix-halo-mini-pc/"
+PROJECT_MODELS_URL = f"{PROJECT_URL}strix-halo-models/"
+PROJECT_TROUBLESHOOTING_URL = f"{PROJECT_URL}troubleshooting/"
+# This is the actual disclosure destination linked by the partner page,
+# not a guessed /disclosure/ route on the canonical site.
+DISCLOSURE_URL = "https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/VENDOR_DISCLOSURE.md"
+
+
+def freshness_checks(as_of: dt.date | None = None) -> list[Check]:
+    """Report staleness without preventing network checks or report writing."""
+    target = "data/public_state.json"
+    try:
+        state = json.loads((ROOT / target).read_text(encoding="utf-8"))
+        reviewed = dt.date.fromisoformat(state["evidence_reviewed"])
+        maximum = int(state["freshness_max_age_days"])
+        if maximum < 0:
+            raise ValueError("freshness_max_age_days must be nonnegative")
+        today = as_of or dt.datetime.now(dt.timezone.utc).date()
+        age = (today - reviewed).days
+    except (OSError, ValueError, TypeError, KeyError) as exc:
+        return [Check("evidence-freshness", target, "ERROR", f"invalid state: {exc}")]
+    if age < 0:
+        status, detail = "ERROR", "evidence review is in the future"
+    elif age > maximum:
+        status, detail = "ERROR", f"evidence review is stale: {age} days old; maximum {maximum}"
+    else:
+        status, detail = "PASS", f"evidence review age {age} days; maximum {maximum}"
+    return [Check("evidence-freshness", target, status, f"as of {today}: {detail}")]
+
+
+def publication_checks(url: str, body: str, state: dict) -> list[Check]:
+    """Revision is a deployment signal, not proof of every prose claim."""
+    expected = state.get("publication", {}).get("expected_content_revision")
+    if not expected:
+        return [Check("publication-revision", url, "WARN", "no expected content revision configured")]
+    # Accept either attribute order and tolerate markup/spacing differences.
+    tags = re.findall(r"<meta\b[^>]*>", body, re.I)
+    revision = None
+    for tag in tags:
+        attrs = dict((k.lower(), html.unescape(v)) for k, _, v in
+                     re.findall(r'''([\w-]+)\s*=\s*(["'])(.*?)\2''', tag))
+        if attrs.get("name", "").lower() == "guide-content-revision":
+            revision = attrs.get("content")
+    status = "PASS" if revision == expected else "WARN"
+    checks = [Check("publication-revision", url, status,
+                    f"content revision {revision!r}; expected {expected!r}; not a hardware qualification date")]
+    text = html.unescape(re.sub(r"<[^>]+>", " ", body))
+    text = re.sub(r"\s+", " ", text).lower()
+    # Targeted regressions supplement the revision check; absence is NOT a
+    # general semantic pass. Do not use these patterns on historical archives.
+    stale = []
+    if url == PROJECT_BUYER_URL:
+        for phrase in ("cheapest 128gb", "best ecosystem/support", "192gb pro 495"):
+            # A transparent withdrawal is not an active buying recommendation.
+            paragraphs = [html.unescape(re.sub(r"<[^>]+>", " ", p)).lower()
+                          for p in re.split(r"</(?:p|tr|li|h[1-6])>", body, flags=re.I)]
+            if any(phrase in re.sub(r"\s+", " ", p) and "withdrawn" not in p for p in paragraphs):
+                stale.append(phrase)
+    if re.search(r"always (?:use|disable).{0,30}(?:mmap|tuned)", text):
+        stale.append("universal load/power advice")
+    if stale:
+        checks.append(Check("publication-guidance", url, "WARN",
+                            "review potentially stale active wording in context: " + ", ".join(stale)))
+    return checks
 
 
 @dataclass
@@ -157,7 +222,7 @@ def network_checks() -> tuple[list[Check], dict[str, int]]:
                 "Strix Halo",
                 "Qwen3.8",
                 f"{systems} systems or independent sources",
-                f"{contributors} credited community benchmark contributors",
+                f"{contributors} (?:credited community )?benchmark contributors",
                 reviewed,
             ),
             PROJECT_URL,
@@ -173,8 +238,8 @@ def network_checks() -> tuple[list[Check], dict[str, int]]:
             PROJECT_PARTNERS_URL,
             (
                 "partner",
-                f"{systems} systems or independent sources",
-                "Affiliate commission does not determine",
+                f"{systems} systems(?: or independent sources)?",
+                "Affiliate commission (?:does not determine|never determines)",
             ),
             PROJECT_PARTNERS_URL,
         ),
@@ -184,6 +249,12 @@ def network_checks() -> tuple[list[Check], dict[str, int]]:
             ("Qwen3.8", "20.42", "50,059", "261,130", reviewed),
             PROJECT_QWEN_URL,
         ),
+        ("project-buyer", PROJECT_BUYER_URL, ("Strix Halo", "128GB"), PROJECT_BUYER_URL),
+        ("project-models", PROJECT_MODELS_URL, ("Strix Halo", "model"), PROJECT_MODELS_URL),
+        ("project-troubleshooting", PROJECT_TROUBLESHOOTING_URL,
+         ("Strix Halo", "troubleshooting"), PROJECT_TROUBLESHOOTING_URL),
+        ("project-disclosure", DISCLOSURE_URL,
+         ("Vendor Disclosure Policy", "Affiliate links", "Negative results stay"), None),
     )
     for name, url, markers, expected_canonical in surfaces:
         try:
@@ -194,7 +265,9 @@ def network_checks() -> tuple[list[Check], dict[str, int]]:
         if status != 200:
             checks.append(Check(name, url, "WARN", f"HTTP {status}; final URL {final_url}"))
             continue
-        missing_markers = [marker for marker in markers if marker.lower() not in body.lower()]
+        visible = html.unescape(re.sub(r"<[^>]+>", " ", body))
+        visible = re.sub(r"\s+", " ", visible)
+        missing_markers = [marker for marker in markers if not re.search(marker, visible, re.I)]
         if missing_markers:
             checks.append(
                 Check(
@@ -204,6 +277,8 @@ def network_checks() -> tuple[list[Check], dict[str, int]]:
                     "HTTP 200 but markers are missing: " + ", ".join(missing_markers),
                 )
             )
+        if url.startswith(PROJECT_URL):
+            checks.extend(publication_checks(url, body, state))
         canonical = canonical_from_html(body) if expected_canonical else None
         if expected_canonical and canonical != expected_canonical:
             checks.append(
@@ -342,7 +417,7 @@ def write_markdown(path: Path, generated_at: str, checks: list[Check], metrics: 
         "",
         f"Generated: `{generated_at}`",
         "",
-        "Search-result positions are intentionally not scraped. Use Google Search Console weekly query data instead of personalized daily SERPs.",
+        "Search-result positions are intentionally not scraped. Automated markers/revisions do not certify all page claims. Review warnings in context.",
         "",
     ]
     if metrics:
@@ -373,7 +448,7 @@ def write_markdown(path: Path, generated_at: str, checks: list[Check], metrics: 
         )
     if not error_count and not warning_count:
         lines.append(
-            "- All automated surfaces are healthy. Keep titles and canonicals stable and review weekly Search Console trends before changing SEO copy."
+            "- Configured automated checks passed; untested claims and hardware/client qualification remain outside this report."
         )
     lines.extend(
         [
@@ -392,14 +467,19 @@ def main() -> int:
     parser.add_argument("--strict-network", action="store_true", help="treat network warnings as failures")
     parser.add_argument("--json-out", type=Path)
     parser.add_argument("--markdown-out", type=Path)
+    parser.add_argument("--as-of", type=dt.date.fromisoformat,
+                        help="simulate the freshness date only (YYYY-MM-DD); never changes review dates")
     args = parser.parse_args()
 
     generated_at = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
-    checks = local_checks()
+    checks = local_checks() + freshness_checks(args.as_of)
     metrics: dict[str, int] = {}
     if args.network:
-        remote_checks, metrics = network_checks()
-        checks.extend(remote_checks)
+        try:
+            remote_checks, metrics = network_checks()
+            checks.extend(remote_checks)
+        except (OSError, ValueError, TypeError, KeyError) as exc:
+            checks.append(Check("network-audit", PROJECT_URL, "ERROR", f"could not complete: {exc}"))
 
     for check in checks:
         print(f"[{check.status}] {check.name}: {check.target} - {check.detail}")

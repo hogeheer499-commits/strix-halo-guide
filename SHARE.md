@@ -176,8 +176,8 @@ public headline claims map to their sources in
 
 ## Check Freshness Before Sharing Numbers
 
-Evidence was reviewed on August 30, 2026. New availability checked September 13 includes Ollama 0.34.0; the historical August check covered Ollama 0.33.2 and `llama.cpp`
-v0.3.0 / b10687 were current checked targets on that date; they are not
+Evidence was reviewed on August 30, 2026. New availability checked September 19 includes Ollama 0.34.2; the historical August check covered Ollama 0.33.2 and `llama.cpp`
+v0.3.0 / b10687. Those were checked targets on that date; they are not
 automatic replacements for the runtime versions attached to older measured
 rows.
 

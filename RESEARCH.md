@@ -11,9 +11,9 @@ This file tracks external Strix Halo research and how it relates to this guide. 
 - Kernel baseline: 6.18.6+ commonly recommended
 - Firmware warning: `linux-firmware-20251125` breaks ROCm on Strix Halo
 - Container tags include Vulkan RADV, Vulkan AMDVLK, ROCm 6.4.4, ROCm 7.2, and ROCm nightlies
-- Common flags: `-fa 1`, `--no-mmap`, full GPU offload
+- Historical flags in the captured examples: `-fa 1`, `--no-mmap`, full GPU offload. These are not current universal instructions: v0.4.1 removed the old load switches. Follow the explicitly pinned README candidate or the exact older image/build for reproduction.
 
-**How this guide uses it:** kyuz0's containers are still the easiest way to stay current with llama.cpp rebuilds. Our b8298 to b8460 finding validates why auto-rebuilt containers matter.
+**How this guide uses it:** containers package useful backend candidates, but a rebuilt tag needs its own digest/version and qualification. The b8298-to-b8460 gain is historical evidence, not proof that every automatic rebuild improves performance.
 
 ## Source 2: lhl/strix-halo-testing
 

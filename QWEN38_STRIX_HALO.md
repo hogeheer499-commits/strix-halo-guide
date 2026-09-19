@@ -56,7 +56,7 @@ ollama run qwen3.8:27b
 ```
 
 Keep the Strix Halo service environment documented in the main guide,
-including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. The Ollama 0.34.0 (available September 13)
+including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. The Ollama 0.34.2 (available September 19)
 package is a test target, not an automatic inheritance of the 0.32.13
 results. The normal 0.31.2 service remains the guide's full-reboot-qualified
 general beginner baseline until the controlled upgrade matrix passes.
@@ -85,7 +85,7 @@ matched ladder on the same host and pinned model artifact:
 
 1. stock b10687 Vulkan, no speculation;
 2. stock b10687 Vulkan, native MTP;
-3. stock b10687 versus PR #25863 on HIP for exact-output correctness;
+3. historical stock b10687 versus released v0.4.1 (mitigation #28604) on HIP for exact-output correctness and usable-memory comparison;
 4. a published ROCmFP4 route with no-spec and MTP controls;
 5. a fully published DFlash/adaptive route only after target and sidecar hashes
    are available.
@@ -101,7 +101,7 @@ The live queue is [`data/current_test_queue.csv`](data/current_test_queue.csv).
 
 | If you want | Start here |
 | --- | --- |
-| The simplest current official multimodal route | Ollama 0.32.13 evidence plus `qwen3.8:27b`; wait for the 0.33.2 qualification before transferring the measurements |
+| The simplest current official multimodal route | Ollama 0.32.13 evidence plus `qwen3.8:27b`; newer available packages need their own qualification before transferring the measurements |
 | Auditable direct performance | Stock `llama.cpp` control with a pinned GGUF and exact command |
 | Maximum short-context experimental speed | Reproduce the published fork, quant, and drafter as one inseparable profile |
 | Deep or cold context | Prefer the route with demonstrated prompt-ingestion behavior and exact retrieval, not the highest short decode number |
@@ -111,9 +111,13 @@ The live queue is [`data/current_test_queue.csv`](data/current_test_queue.csv).
 
 - `llama.cpp` issue [#26209](https://github.com/ggml-org/llama.cpp/issues/26209)
   reports silent repeated/garbled output on Strix Halo HIP after integrated
-  `ROCm_Host` compute buffers were enabled. Candidate PR
-  [#25863](https://github.com/ggml-org/llama.cpp/pull/25863) needs a matched
-  local correctness A/B before stock HIP becomes general guidance.
+  `ROCm_Host` compute buffers were enabled. PR
+  [#25863](https://github.com/ggml-org/llama.cpp/pull/25863) closed unmerged;
+  [#28604](https://github.com/ggml-org/llama.cpp/pull/28604) shipped a revert
+  mitigation in v0.4.1. The issue and broader scheduler PR #27311 remain open
+  as checked September 19. Compare the historical control against v0.4.1;
+  neither broad HIP correctness nor full-UMA behavior is locally qualified by
+  the upstream merge.
 - Ollama issue [#17906](https://github.com/ollama/ollama/issues/17906) reports
   an Anthropic-compatible Qwen3.8 `xhigh` mapping failure on 0.32.13 and
   0.32.15; native `/api/chat` worked in that report. This guide has not yet

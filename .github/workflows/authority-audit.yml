@@ -27,6 +27,8 @@ jobs:
         run: python3 scripts/validate_repo.py
 
       - name: Audit public authority surfaces
+        # A validation/freshness failure must not suppress the diagnostic report.
+        if: ${{ !cancelled() }}
         run: |
           python3 scripts/audit_authority_surface.py \
             --network \

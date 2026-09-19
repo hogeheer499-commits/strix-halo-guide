@@ -6,7 +6,7 @@ permalink: /
 canonical_url: "https://strixhaloguide.com/"
 sitemap: false
 date: "2026-06-13T22:57:42+02:00"
-last_modified_at: "2026-08-30T00:00:00+02:00"
+last_modified_at: "2026-09-19T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo Local LLM Guide with direct, server, and unified-memory evidence highlights"
 seo:
   type: "TechArticle"
-  date_modified: "2026-08-30T00:00:00+02:00"
+  date_modified: "2026-09-19T00:00:00+02:00"
 ---
 
 # Strix Halo Local LLM Setup for AMD Ryzen AI MAX+ 395
@@ -72,9 +72,9 @@ performance patch.
 
 ## Quick Setup Summary
 
-For a retail AMD Strix Halo / Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) system, start with Ubuntu 24.04 LTS, BIOS UMA Frame Buffer Size set to 512MB if available or 2GB if that is the vendor minimum, IOMMU enabled/default, GRUB parameters `amdgpu.gttsize=131072 ttm.pages_limit=31457280`, Mesa/RADV from kisak, AMDVLK removed, `tuned` set to `accelerator-performance`, and Ollama with Vulkan/RADV as the easiest beginner path. Add `amd_iommu=off` only when deliberately reproducing the optional always-on desktop benchmark profile; it disables NPU access and can break mobile suspend.
+For the measured 128GB Beelink route, start with Ubuntu 24.04 LTS, a low BIOS UMA reserve (512MB where available, or the vendor's 2GB minimum), IOMMU enabled/default and Mesa/RADV. The recorded GRUB limits `amdgpu.gttsize=131072 ttm.pages_limit=31457280` are not universal 64GB/96GB settings. Preserve the existing power policy; tuned is an optional historical reproduction profile. X11 is conditional on desktop-tool needs. Ollama 0.31.2 remains the reboot-qualified general baseline; the revised installer itself still needs fresh-install/upgrade hardware qualification. Read the [scoped setup route](https://strixhaloguide.com/amd-strix-halo-setup/) before making changes. `amd_iommu=off` is only an optional desktop reproduction setting and is inappropriate for NPU or mobile suspend workflows.
 
-Use direct `llama.cpp` or `llama-server` with Vulkan/RADV for the fastest measured generation-heavy GGUF rows and local API/server experiments. Use ROCm/HIP, Lemonade, vLLM, MTP/speculative decoding, long-context, and multi-node/RDMA paths only for the specific documented cases in the repository.
+Use direct `llama-bench` with Vulkan/RADV for the measured generation benchmarks. `llama-server` API/server experiments are a separate evidence category; do not use direct rates as client throughput expectations. ROCm/HIP, Lemonade, vLLM, MTP/speculative decoding, long-context and multi-node/RDMA paths retain their documented workload-specific limits.
 
 ## Hardware Scope
 
@@ -91,9 +91,9 @@ Vendor BIOS labels, cooling, firmware, power modes, RAM configuration, and therm
 | OS | Ubuntu 24.04 LTS |
 | BIOS memory | UMA Frame Buffer Size set to 512MB if available, or 2GB if that is the vendor BIOS minimum; AMD's reference platform uses its own Variable Graphics Memory controls |
 | IOMMU | Enabled/default for normal buyers, NPU use, mobile suspend, RDMA, VFIO, passthrough, and clustering; `amd_iommu=off` is only an optional always-on desktop benchmark profile |
-| Kernel parameters | `amdgpu.gttsize=131072 ttm.pages_limit=31457280`; optionally add `amd_iommu=off` only after reading the documented IOMMU tradeoff |
+| Kernel parameters | The recorded 128GB Beelink profile uses `amdgpu.gttsize=131072 ttm.pages_limit=31457280`; other RAM sizes need a separately qualified profile |
 | Vulkan stack | Mesa/RADV from kisak, with AMDVLK removed for consistent RADV selection |
-| Power profile | `tuned` set to `accelerator-performance` |
+| Power profile | Preserve and record the existing policy; tuned is opt-in for a historical reproduction, not a universal requirement |
 | Easiest local chat path | Ollama with Vulkan/RADV |
 | Fastest measured generation-heavy GGUF path | Direct `llama.cpp` with Vulkan/RADV |
 | Local API/server experiments | `llama-server` with documented MTP/speculative decoding cases |
@@ -117,7 +117,7 @@ These are independent benchmark and setup claims from the repository. They are n
 | Fastest small-MoE speed scout | LFM2.5 8B-A1B `Q4_K_M` reached 170.02 t/s generation-only, with a b9544 control at 176.48 t/s | [headline claims](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv) |
 | Largest direct GGUF capacity route | DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded as a pinned 90.86GB ordinary GGUF and measured 155.64 pp512 / 13.27 tg128 on official b10034; this is low-bit capacity/basic-correctness evidence, not a speed or broad quality claim | [raw DeepSeek evidence](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-07-16/deepseek-v4-flash-ud-iq2-xxs) |
 | 120B-class GGUF capacity route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly at 18.43 t/s, with a b9544 control at 18.93 t/s | [headline claims](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv) |
-| Easiest normal local chat path | Qwen3.6 35B-A3B `Q4_K_M` through the fully reboot-qualified Ollama 0.31.2 system service measured 60.57 t/s warm API generation on Vulkan/RADV. Isolated Ollama 0.32.3 preserved exact text output at 73.13 t/s versus 73.20 t/s on the controlled 0.31.2 binary and passed iGPU vision plus process restart. Ollama 0.34.0 is the September 13 unmeasured normal-service/full-reboot target. | [current model status](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md) |
+| Easiest normal local chat path | Qwen3.6 35B-A3B `Q4_K_M` through the fully reboot-qualified Ollama 0.31.2 system service measured 60.57 t/s warm API generation on Vulkan/RADV. Isolated Ollama 0.32.3 preserved exact text output at 73.13 t/s versus 73.20 t/s on the controlled 0.31.2 binary and passed iGPU vision plus process restart. Ollama 0.34.2 is the September 19 unmeasured normal-service/full-reboot target. | [current model status](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md) |
 | Experimental MTP/speculative server route | Qwen3.6 MTP reached about 101.1 t/s on b9360; Gemma 4 26B-A4B QAT MTP reached 102.69 t/s cold, 107.42 t/s T3-only, and 110.00 t/s best repeat on ac4cddeb0 | [MTP notes](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MTP_SPECULATIVE_DECODING.md) |
 | Fastest measured advanced server profile | CHADROCK ACE/SABER 35B ROCmFP4 averaged 141.37 t/s over three exact reference-profile repeats at 100% draft acceptance; lower-acceptance prompt shapes were much slower, so this is not direct `llama-bench` or a beginner default | [ROCmFP4/CHADROCK notes](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ROCMFP4_CHADROCK.md) |
 | Frontier-size local agent route | Step 3.7 Flash 198B-total / about 11B-active plus its MTP draft measured 34.50 t/s at 4K and 33.83 t/s at 16K; native tool calling and 256K allocation passed on one 128GB system | [ROCmFP4/CHADROCK notes](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ROCMFP4_CHADROCK.md#step-37-q3-qualityplus-first-party-reproduction) |
@@ -127,7 +127,7 @@ These are independent benchmark and setup claims from the repository. They are n
 
 ### What is the best AMD Strix Halo local LLM setup?
 
-On a retail OEM system, start with Ubuntu 24.04 LTS, BIOS UMA Frame Buffer Size set to 512MB if available or 2GB if that is the vendor minimum, IOMMU enabled/default, GRUB parameters `amdgpu.gttsize=131072 ttm.pages_limit=31457280`, Mesa/RADV from kisak, AMDVLK removed, `tuned` set to `accelerator-performance`, and Ollama with Vulkan/RADV for the easiest working private local chat path. Use `amd_iommu=off` only for the optional always-on desktop benchmark profile, not for NPU or mobile suspend workflows.
+For the measured 128GB Beelink route, start with Ubuntu 24.04 LTS, a low BIOS UMA reserve (512MB where available, or the vendor's 2GB minimum), IOMMU enabled/default and Mesa/RADV. The recorded GRUB limits `amdgpu.gttsize=131072 ttm.pages_limit=31457280` are not universal 64GB/96GB settings. Preserve the existing power policy; tuned is an optional historical reproduction profile. X11 is conditional on desktop-tool needs. Ollama 0.31.2 remains the reboot-qualified general baseline; the revised installer itself still needs fresh-install/upgrade hardware qualification. Read the [scoped setup route](https://strixhaloguide.com/amd-strix-halo-setup/) before making changes. `amd_iommu=off` is only an optional desktop reproduction setting and is inappropriate for NPU or mobile suspend workflows.
 
 ### Is this a Framework Desktop Strix Halo LLM setup guide too?
 

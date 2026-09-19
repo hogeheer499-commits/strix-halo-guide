@@ -37,7 +37,8 @@ Maintainer credibility is public and reviewable: 15+ merged upstream contributio
 the official Ollama route. The August 30 b10687 Vulkan sentinel and Flash-Next
 scout are now indexed with their own stack and caveats; see
 [the measured update](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout).
-Ollama 0.33.2 remains the unmeasured target from the August 30 upstream review. The
+The [September 19 availability check](ROCM_VLLM_BUGWATCH.md#current-upstream-snapshot)
+lists newer candidates, including Ollama 0.34.2, without promoting them. The
 machine-readable freshness record is [`data/public_state.json`](data/public_state.json).
 
 What you get:
@@ -78,7 +79,7 @@ Halo owners find it; a reproducible result or correction helps even more.
 
 | Question | Current answer |
 | --- | --- |
-| Best beginner route | Ollama with Vulkan/RADV. The fully reboot-qualified general baseline remains 0.31.2; Qwen3.8 is separately measured on 0.32.13 and current 0.33.2 still needs the controlled upgrade/reboot matrix. |
+| Best beginner route | Ollama with Vulkan/RADV. The fully reboot-qualified general baseline remains 0.31.2; Qwen3.8 is separately measured on 0.32.13. Available Ollama 0.34.2 (September 19 check) still needs the controlled upgrade/reboot matrix; the revised installer itself is not yet fresh-install/upgrade qualified. |
 | Current Qwen3.8 route | Official Qwen3.8 27B `Q4_K_M` measured 292.49 prompt t/s and 20.42 generation t/s; image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed. [Read the route comparison.](QWEN38_STRIX_HALO.md) |
 | Fast direct 30B-class route | Qwen3-Coder 30B-A3B `Q4_K_S` reached 100.99 tg128 on official b9851; it is a speed-first quant, not the balanced default. |
 | Largest direct GGUF tested | DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded as a 90.86GB low-bit artifact and measured 13.27 tg128; capacity proof, not broad quality. |
@@ -92,9 +93,9 @@ Halo owners find it; a reproducible result or correction helps even more.
 For those who want to get running as fast as possible:
 
 1. **BIOS:** Set UMA Frame Buffer to 512MB if available; if your BIOS minimum is 2GB, leave it at 2GB. Keep IOMMU enabled/default for laptops, suspend, and NPU use. Disabling it is an optional desktop benchmark profile.
-2. **Install Ubuntu 24.04 LTS**, switch to X11.
-3. **Kernel params:** Add `amdgpu.gttsize=131072 ttm.pages_limit=31457280` to GRUB. Add `amd_iommu=off` only for the optional desktop benchmark profile after reading [Choose the IOMMU policy](#step-12-choose-the-iommu-policy).
-4. **Performance:** Install tuned, set `accelerator-performance` profile, upgrade Mesa via kisak PPA.
+2. **Install Ubuntu 24.04 LTS.** X11 is needed only for a desktop tool that requires it, not headless inference.
+3. **Memory profile:** The recorded 128GB Beelink profile uses `amdgpu.gttsize=131072 ttm.pages_limit=31457280`. Do not copy these limits to 64GB/96GB systems; follow the scoped manual memory section. Add `amd_iommu=off` only for the optional desktop benchmark profile after reading [Choose the IOMMU policy](#step-12-choose-the-iommu-policy).
+4. **Driver and power policy:** Follow the measured Mesa/RADV route and record the active power manager. Preserve an existing policy by default; `tuned accelerator-performance` is an opt-in reproduction profile, not a universal requirement or guaranteed speedup.
 5. **Ollama:** Install, configure Vulkan backend with `OLLAMA_VULKAN=1`, `OLLAMA_IGPU_ENABLE=1`, and `HIP_VISIBLE_DEVICES=-1`. Without `OLLAMA_IGPU_ENABLE=1`, measured builds can detect the Radeon 8060S and still fall back to CPU-only inference.
 6. **Test:** `ollama run qwen3.6:35b-a3b` -- the measured Ollama 0.31.2 system-service path reached about 60 t/s generation. Exact speed depends on runtime, model, power state, and background load.
 
@@ -106,6 +107,13 @@ reboot-qualified default: the official model is measured here, but its runtime,
 context boundary, and community performance routes need different caveats.
 
 ## Setup Script
+
+**Scope before running:** this automatic route is for 128GB-class systems with
+at least 120GiB visible RAM. It is not a general 64GB/96GB installer. Configuration
+handling has offline fixture coverage; the revised script's fresh-install and
+upgrade paths still need hardware qualification. Review the script and existing
+configuration first: a later conflict can stop a partially completed run; this
+is not a transactional installer with a complete automatic rollback.
 
 Fresh installations request **Ollama 0.31.2**, the reboot-qualified runtime.
 An existing installation is retained, with its version reported; it is not
@@ -161,7 +169,7 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 | Current agent/reasoning scouts | Nemotron Cascade 2 30B-A3B `IQ4_XS`: 78.95 tg128; Qwen AgentWorld 35B-A3B `UD-IQ4_XS`: 65.65 tg128 with a correct terminal-world smoke and 128K allocation pass | These answer current-model and agent-use-case questions without pretending every new model is a speed headline. Cascade's forced no-think prefix did not hide reasoning; AgentWorld's 128K result is an allocation smoke, not a filled-context quality claim. | [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`Cascade evidence`](data/raw/2026-07-16/nemotron-cascade2-iq4xs/), [`AgentWorld evidence`](data/raw/2026-07-16/agentworld-iq4xs/) [Curator: exact retained-run disagreement](EVIDENCE_CORRECTIONS.md#agentworld-retained-run-disagreement); rate provenance pending. |
 | Local API for tools or several clients | Qwen3-Coder 30B-A3B b9979: 228.18 aggregate t/s stock at np8; opt-in density+dense16 reached 234.12 at np9, while density alone reached 266.07 at np16 | A software dispatch cliff, not memory capacity, can limit multi-user value. Keep stock for low concurrency; advanced users should compare density Vulkan and ROCm at their exact target. | [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md), [`summary CSV`](data/moe_density_gate_summary.csv), [`30B chart`](charts/moe_density_gate_30b.svg) |
 | FP16 vLLM at 8-16 concurrent requests | Official ROCm 7.14 image, PyTorch 2.11, Qwen3-0.6B: `TORCH_BLAS_PREFER_HIPBLASLT=1` improved aggregate throughput by 40.50% / 38.96% / 41.54% at concurrency 8/9/16 | This reproduces AMD's Ryzen AI batch-8+ workaround without changing the host. It is a small-model FP16 server A/B, not a direct GGUF or 27B/35B claim; concurrency 4 was slightly slower. | [`ROCm/vLLM notes`](ROCM_VLLM_BUGWATCH.md), [`processed A/B`](data/rocm_714_hipblaslt_ab.csv), [`raw evidence`](data/raw/2026-07-16/rocm-714-vllm-hipblaslt-ab/) |
-| Historical ROCm/HIP `llama.cpp` allocation smoke | Official b10046, Qwen3-0.6B Q8_0: 4666.05 pp512 / 208.73 tg128; full 120,124 MiB free UMA detected and `ROCm_Host` buffers allocated | Reproduced full-UMA discovery without `HSA_OVERRIDE_GFX_VERSION`, but open issue #26209/PR #25863 means the tiny smoke does not qualify long-context, multimodal, multi-slot, or practical-model correctness. | [`ROCm/HIP notes`](ROCM_VLLM_BUGWATCH.md), [`raw evidence`](data/raw/2026-07-16/llamacpp-b10046-rocm-integrated-host-buffer/) |
+| Historical ROCm/HIP `llama.cpp` allocation smoke | Official b10046, Qwen3-0.6B Q8_0: 4666.05 pp512 / 208.73 tg128; full 120,124 MiB free UMA detected and `ROCm_Host` buffers allocated | Reproduced full-UMA discovery without `HSA_OVERRIDE_GFX_VERSION`, but open issue #26209 and the unqualified released mitigation #28604 mean the tiny smoke does not qualify long-context, multimodal, multi-slot, or practical-model correctness. | [`ROCm/HIP notes`](ROCM_VLLM_BUGWATCH.md), [`raw evidence`](data/raw/2026-07-16/llamacpp-b10046-rocm-integrated-host-buffer/) |
 | Long documents or codebase context | Qwen3.6 35B-A3B: 32.23 t/s decode after a filled 128K KV cache | Long-context use is possible, but prompt ingestion cost matters. | [`filled KV CSV`](data/filled_kv_decode.csv), [`chart`](charts/filled_kv_decode.svg) |
 | Large-model proof point | MiniMax M2.7 230B-class MoE loaded and generated locally; Llama 4 Scout 109B measured 18.32 t/s historically | 128GB unified memory makes very large local models practical on one compact PC, but capacity and speed are different wins. | [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`benchmarks CSV`](data/benchmarks.csv) |
 
@@ -260,7 +268,7 @@ Choose the backend by what you are trying to do:
 | You want private chat working today | Use the [setup script](#setup-script), then run `ollama run qwen3.6:35b-a3b`. | Easiest path to model pulling, local chat, and Open WebUI. |
 | You want to reproduce the headline speed rows | Use [Reproduce One Headline Result](#reproduce-one-headline-result). | Exact model, quant, build, and command matter for benchmark comparisons. |
 | You want a local API server or MTP tests | Read [MTP/speculative decoding](MTP_SPECULATIVE_DECODING.md) and use `llama-server`. | Supports serving, batching, long-context tests, and speculative decoding. |
-| You have many parallel local requests | Read [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md) and test the measured Lemonade `llamacpp-rocm` b1259 route. | The 8-16 parallel advice was measured on 2026-05-05. [Lemonade v11.8.0](https://github.com/lemonade-sdk/lemonade/releases/tag/v11.8.0), released 2026-08-27, is current but unqualified here and has not inherited that result. |
+| You have many parallel local requests | Read [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md) for the measured Lemonade `llamacpp-rocm` b1259 profile before planning a new comparison. | The 8-16 parallel advice was measured on 2026-05-05. [Lemonade v11.9.0](https://github.com/lemonade-sdk/lemonade/releases/tag/v11.9.0), checked September 19, is available but unqualified here and has not inherited that result. |
 | You are testing prompt-heavy, vLLM, or future server paths | Read [BACKEND_CROSSOVER.md](BACKEND_CROSSOVER.md) and [VLLM_BASELINE.md](VLLM_BASELINE.md). | Useful for prompt processing, batching, vLLM, and long-context experiments. |
 
 If you only want a working local AI PC, stop after Ollama works. If you want to compare numbers, use the exact commands and evidence links in [Reproduce One Headline Result](#reproduce-one-headline-result), the [AI/search setup summary](STRIX_HALO_LOCAL_LLM_SETUP.md), [headline claim index](data/headline_claims.csv), and raw evidence under [`data/raw/`](data/raw/).
@@ -753,21 +761,30 @@ a global HSA architecture override.
 
 We swept batch sizes 64-2048 and ubatch sizes 32-1024. Result: **default 512 is optimal.** No headroom via tuning -- the improvement came from updating the build.
 
-**How to build the latest llama.cpp with Vulkan:**
+**Pinned candidate build: llama.cpp v0.4.1 with Vulkan**
+
+This is a source/CLI-aligned candidate example, not a locally qualified replacement
+for the measured builds. Use a new directory; do not overwrite a working checkout.
+The v0.4.1 parsers use `--load-mode` instead of the removed load flags
+([upstream change](https://github.com/ggml-org/llama.cpp/pull/28334)). `auto` below
+is a starting policy, not a measured optimum. Historical commands retain their
+original flags and build IDs.
 
 ```bash
-git clone https://github.com/ggml-org/llama.cpp
-cd llama.cpp
+git clone --branch v0.4.1 --depth 1 https://github.com/ggml-org/llama.cpp llama.cpp-v0.4.1-vulkan
+cd llama.cpp-v0.4.1-vulkan
 CC=/usr/bin/gcc CXX=/usr/bin/g++ cmake -B build -S . \
   -DGGML_VULKAN=ON \
   -DCMAKE_BUILD_TYPE=Release \
   -G "Unix Makefiles"
 cmake --build build -j$(nproc)
 
-# Benchmark
+# Inspect this binary's CLI before the first candidate smoke
+./build/bin/llama-bench --help
+# Candidate benchmark (not a published performance result)
 AMD_VULKAN_ICD=RADV ./build/bin/llama-bench \
   -m ~/models/your-model.gguf \
-  -fa 1 -ngl 999 -mmp 0 -p 512 -n 128
+  -fa on -ngl 999 --load-mode auto -p 512 -n 128
 ```
 
 ### Historical ROCm workaround for the measured b8460 / kernel 6.19.x route
@@ -1328,7 +1345,10 @@ rocm-smi  # Should show your gfx1151 GPU
 
 ### Step 7.4: Run llama-bench
 
-The container comes with pre-built, optimized llama.cpp binaries:
+The following is a **historical reproduction command**, not a v0.4.1 example.
+The `rocm-7.2` tag alone does not pin a binary: match the archived build/digest
+and inspect `llama-bench --help` before using its old `-mmp` flag. For a new
+candidate, use the explicitly versioned build example instead.
 
 ```bash
 export ROCBLAS_USE_HIPBLASLT=1
@@ -1348,12 +1368,14 @@ llama-bench -m ~/models/your-model.gguf -fa 1 -ngl 999 -mmp 0 -p 128,512 -n 128
 
 ### Step 7.5: Self-Compiling llama.cpp for ROCm
 
-If you need a current ROCm/HIP source build:
+Pinned v0.4.1 ROCm/HIP candidate, **not locally correctness-qualified**. Use a
+separate checkout/build; retain the known control. See the
+[HIP correctness queue](ROCM_VLLM_BUGWATCH.md#next-watch-items) before promotion.
 
 ```bash
 # Inside a ROCm container
-git clone https://github.com/ggml-org/llama.cpp
-cd llama.cpp
+git clone --branch v0.4.1 --depth 1 https://github.com/ggml-org/llama.cpp llama.cpp-v0.4.1-hip
+cd llama.cpp-v0.4.1-hip
 
 # Current HIP build
 cmake -B build -S . \
@@ -1511,7 +1533,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | ROCm 7.0 RC | "Use ROCm 7 RC" | Segfaults on kernel 6.18.14+ | `HSA_STATUS_ERROR` crash |
 | Reusing old HSA overrides on a current ROCm image | "Keep the workaround forever" | A stale host `11.0.0` override was inherited by Distrobox and changed native `gfx1151` to `gfx1100` | Current ROCm 7.2.4 crashed in `libamdhip64`; unsetting the obsolete override restored inference |
 | linux-firmware-20251125 | Auto-update | Breaks ROCm on Strix Halo | Instability, crashes |
-| PyTorch / HuggingFace Transformers | "Just load the model" | [92-95% of decode time is hipMemcpy](https://github.com/pytorch/pytorch/issues/171687), not compute. ~1.5 t/s on 70B vs llama.cpp's 4.8 t/s | PyTorch doesn't handle UMA correctly -- use llama.cpp or Ollama |
+| PyTorch / HuggingFace Transformers | "Any model/runtime combination will be fast" | A [reported 70B decode workload](https://github.com/pytorch/pytorch/issues/171687) spent 92-95% of decode time in hipMemcpy and reported ~1.5 t/s versus 4.8 t/s for its llama.cpp comparison | Workload-specific transfer bottleneck, not a verdict on all PyTorch UMA support. The guide separately documents scoped Unsloth and vLLM successes; qualify the exact workload |
 
 ### Things That DO Work
 
@@ -1519,9 +1541,9 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 |-------------|--------|-----|
 | Mesa 25.2.8 to 26.0.2 | **+9-10% pp** | `sudo add-apt-repository ppa:kisak/kisak-mesa` |
 | Flash Attention | **+13% pp** | `-fa 1` or `OLLAMA_FLASH_ATTENTION=1` |
-| `--no-mmap` (disable mmap) | **+22% pp128** | `-mmp 0` in llama.cpp, always use on Strix Halo |
+| Load policy | Historical **+22% pp128** on the recorded stack | Not a universal optimum. Old builds used `-mmp 0`; v0.4.1 uses `--load-mode`. Compare load time, memory and correctness on the exact build |
 | hipBLASLt | **+8% tg** | `ROCBLAS_USE_HIPBLASLT=1` (ROCm only) |
-| tuned accelerator-performance | **+5-8% overall** | `sudo tuned-adm profile accelerator-performance` |
+| tuned accelerator-performance | Historical reproduction profile; no isolated universal gain established | Optional; preserve or record the selected power policy and avoid competing managers |
 | RADV over AMDVLK | **+63% pp, +1.2% tg** | Uninstall AMDVLK entirely (see above). `AMD_VULKAN_ICD=RADV` works too but is easy to forget |
 | `OLLAMA_IGPU_ENABLE=1` | Avoids CPU-only Ollama on current builds | Required for both the Ollama 0.31.1 local-binary comparator and the normal 0.31.2 service path on the measured Beelink system |
 | `amd_iommu=off` | **About +6% memory reads in one measured desktop test** | Optional benchmark profile; do not use for NPU or mobile suspend workflows |
@@ -1529,7 +1551,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | `HIP_VISIBLE_DEVICES=-1` | Fixes Ollama crash | Required for Vulkan-only mode |
 | LLVM unroll workaround | Restores ROCm 7+ perf | `-mllvm --amdgpu-unroll-threshold-local=600` |
 | lhl's rocWMMA-tuned | **Historical external 2X tg at 32K context** | Removed upstream path; preserve as dated evidence, not current build guidance |
-| **Updating llama.cpp** | **+25% pp and tg (MoE)** | `git pull && cmake --build` -- biggest single optimization |
+| **Runtime version** | The historical b8298-to-b8460 MoE comparison improved substantially | Preserve that dated result; test newer pinned builds separately rather than promising an upgrade gain |
 | No global HSA architecture override on current native-`gfx1151` builds | Avoids silently forcing the wrong target | Verify `gfx1151`; use `11.5.1` only to reproduce the dated b8460/kernel 6.19.4 route |
 
 ---
@@ -1973,7 +1995,21 @@ useful coding task, any required tool execution, error handling and restart beha
 This guide's direct `llama-bench` and API smokes do not qualify every Cursor,
 Continue or Claude Code version, nor measure coding-quality parity with hosted models.
 
+**Cursor is not an offline-local guarantee:** its [BYOK documentation](https://prod.cursor.com/help/models-and-usage/api-keys)
+(checked September 19, 2026) says requests pass through Cursor's servers for
+prompt building and Tab uses Cursor's own models. A localhost URL or your own
+API key does not establish that those features stay on-device. Verify the
+specific client/function/network path; do not expose an unauthenticated local
+model server to make a cloud-mediated client reach it.
+
 ### ChatGPT-like Web Interface (Open WebUI)
+
+**Unqualified integration example:** Docker must already be installed. On Linux,
+the bridge container's `host-gateway` alias does not by itself reach an Ollama
+service bound only to host loopback. This moving image tag and network recipe
+still need a pinned end-to-end client test. Do not expose Ollama publicly to
+work around connectivity. The measured Ollama service result is not an Open
+WebUI acceptance result.
 
 ```bash
 docker run -d -p 127.0.0.1:3000:8080 \
@@ -2112,11 +2148,11 @@ New to local LLMs? Here's what the technical terms mean.
 
 **Prompt Processing (pp)** -- How fast the model reads your input. Measured in tokens/second. Higher is better. A pp of 800 t/s means the model can read ~600 words per second.
 
-**Token Generation (tg)** -- How fast the model writes its response. Measured in tokens/second. This is the speed you "feel" when chatting. 50 t/s feels instant. 5 t/s feels slow.
+**Token Generation (tg)** -- Output tokens per second during generation. Responsiveness also depends on model loading, prompt processing, first-token latency and task length; a decode rate alone does not establish instant interaction.
 
 **Unified Memory** -- System memory shared between CPU and GPU rather than separate discrete-GPU VRAM. Available model capacity depends on installed RAM, firmware and driver limits, weights, KV cache, runtime buffers and OS headroom; it is not a guaranteed 120GB model budget.
 
-**GTT (Graphics Translation Table)** -- The portion of system memory that the GPU can access via Vulkan. On Strix Halo, you configure this to ~128GB so the GPU can use all available memory.
+**GTT (Graphics Translation Table)** -- GPU mappings into system memory. The guide's large GTT/TTM limits belong to its recorded 128GB Beelink profile, not a universal setting or guaranteed usable model budget; preserve OS headroom and qualify other RAM sizes separately.
 
 **Vulkan** -- A graphics/compute API. On Strix Halo, Vulkan is the most reliable backend for LLM inference via Ollama.
 
@@ -2136,7 +2172,7 @@ measured generation rows, while HIP can win prompt-processing-heavy rows.
 
 **Flash Attention** -- An optimized attention algorithm that reduces memory usage and improves speed. Always enable it on Strix Halo (`-fa 1` or `OLLAMA_FLASH_ATTENTION=1`).
 
-**tuned** -- A Linux daemon that applies system performance profiles. The `accelerator-performance` profile gives +5-8% LLM speed on Strix Halo.
+**tuned** -- A Linux daemon that applies system performance profiles. `accelerator-performance` is used in some historical runs; its effect is workload-specific and the guide does not establish a universal tuned-only percentage gain.
 
 </details>
 
@@ -2161,23 +2197,29 @@ So why can llama.cpp direct be faster on Qwen3.6 and Qwen3-Coder? Two reasons:
 
 | Use case | Recommendation |
 |----------|---------------|
-| Just want it to work | **Ollama 0.31.2 system service** -- install and go; the fully qualified path reached 60.57 t/s on Qwen3.6 with `OLLAMA_IGPU_ENABLE=1` and survived restart/reboot. Controlled isolated 0.31.1/0.31.2/0.32.0 binaries later measured in the same 72.55-73.20 t/s class. |
-| Want maximum speed | **llama-server** direct Vulkan/RADV -- 101.0 t/s on speed-first Qwen3-Coder, 100.0 t/s on Qwen3-30B-A3B-Instruct-2507 IQ4_XS, 96-99.6 t/s on balanced Qwen3-Coder depending on build/repeat length, 63-81 t/s on Qwen3.6 depending on quant, and 59 t/s on Qwen3-Next 80B, with the same API style as Ollama |
-| Using kyuz0 containers | **kyuz0** -- they auto-rebuild on llama.cpp updates, best of both worlds |
+| Start from the measured beginner baseline | **Ollama 0.31.2 system service** -- the recorded path reached 60.57 t/s on Qwen3.6 with `OLLAMA_IGPU_ENABLE=1` and survived restart/reboot. This does not qualify the revised install script or every client. Controlled isolated 0.31.1/0.31.2/0.32.0 binaries later measured in the same 72.55-73.20 t/s class. |
+| Want explicit local API/runtime control | **llama-server** with Vulkan/RADV -- use the [server measurements](SERVER_SHOOTOUT.md) for the exact model, cache, API and concurrency profile. Direct `llama-bench` results are not server/API throughput expectations |
+| Using kyuz0 containers | **kyuz0** -- record the image digest and bundled runtime. A rebuilt moving tag is a new candidate, not an inherited qualification |
 | Benchmarking | **llama-bench** -- direct runtime benchmark without HTTP/client serving; not an overhead-free or pure-GPU measurement |
 
-**How to run llama-server (Ollama replacement with full speed):**
+**Pinned llama-server candidate (not yet hardware-qualified):**
 
 ```bash
 # Start llama-server with your model (OpenAI-compatible API on port 8080)
-cd ~/llama-cpp-latest
-AMD_VULKAN_ICD=RADV ./build-vulkan/bin/llama-server \
+# From its parent directory, enter the v0.4.1 Vulkan checkout built above.
+# Candidate only, not an arbitrary latest binary.
+cd llama.cpp-v0.4.1-vulkan
+./build/bin/llama-server --help
+AMD_VULKAN_ICD=RADV ./build/bin/llama-server \
   -m ~/models/Qwen3.6-35B-A3B-Q4_K_M.gguf \
-  -ngl 999 -fa --no-mmap -c 8192 \
+  -ngl 999 -fa on --load-mode auto -c 8192 \
   --host 127.0.0.1 --port 8080
 ```
 
-Then point your tools at `http://localhost:8080/v1` instead of `http://localhost:11434/v1`. Same API style, with less wrapper overhead and more control over the exact `llama.cpp` build and flags.
+For a client that supports this endpoint, configure `http://localhost:8080/v1`
+and verify its model ID, protocol and tool behavior. This pinned candidate has
+not yet passed the guide's hardware/server acceptance tests; it is not a speed
+promise or a replacement for the reboot-qualified Ollama route.
 
 This example is local-only. Remote serving needs a separately reviewed bind address, authentication, TLS and network access policy; consult the [llama-server documentation](https://github.com/ggml-org/llama.cpp/tree/master/tools/server) before exposing it.
 
@@ -2215,10 +2257,10 @@ Prices, availability, and external benchmark numbers change quickly; treat this 
 <summary><strong>Why is my speed lower than the guide says?</strong></summary>
 
 Common causes:
-1. **tuned not running or power-profiles-daemon active** -- Run `tuned-adm active` and `systemctl is-active power-profiles-daemon`. `tuned` should show `accelerator-performance`; `power-profiles-daemon` should be inactive. This alone is worth several percent.
+1. **Different power policy** -- Record the active manager and compare it with the exact reference run. Only a tuned-profile reproduction requires `accelerator-performance` with power-profiles-daemon inactive. Another recorded policy is valid; no fixed percentage gain is promised.
 2. **Old Mesa drivers** -- Check `vulkaninfo --summary | grep driverInfo`. Should be Mesa 26.0.2+ from the kisak-mesa PPA; exact driver metadata is recorded per run when available.
 3. **Using Ollama instead of llama-bench** -- Ollama and direct `llama-bench` are different claim categories. The fully qualified 0.31.2 system service measured 60.57 t/s on Qwen3.6; controlled isolated 0.31.1/0.31.2/0.32.0 binaries later measured 72.55-73.20 t/s. All used `OLLAMA_IGPU_ENABLE=1`. The 96-101 t/s Qwen rows are direct `llama-bench`, not Ollama.
-4. **GPU clock stuck low** -- Check `cat /sys/class/drm/card*/device/pp_dpm_sclk`. Should show 2900Mhz with asterisk.
+4. **Unexpected GPU clock under load** -- Inspect the correct GPU's `pp_dpm_sclk` and compare with the reference workload, power limit and temperatures. The recorded Beelink 2900MHz state is not a universal idle or other-OEM requirement.
 5. **Wrong BIOS VRAM setting** -- Check `free -h`. On a 128GB system it should show roughly ~124-126GiB OS-visible memory; a 96GB system will be lower. If a 128GB box only shows ~31GiB, lower the UMA Frame Buffer reserve in BIOS. Use 512MB if available; if your vendor minimum is 2GB, leave it at 2GB.
 6. **Different model/quantization** -- The 100.99 t/s Qwen3-Coder result is specifically Qwen3-Coder-30B-A3B Q4_K_S via RADV on official b9851 Vulkan. The older strict-clean b9179 row for the same speed-first quant remains 98.51 t/s. The 100.04 t/s result is a separate Qwen3-30B-A3B-Instruct-2507 IQ4_XS route. The balanced Qwen3-Coder UD-Q4_K_XL row is 96-99.6 t/s depending on build/repeat length. Larger or denser models are slower.
 
@@ -2227,16 +2269,11 @@ Common causes:
 <details>
 <summary><strong>Can I use this for AI coding assistants like Cursor or Continue.dev?</strong></summary>
 
-Yes. Ollama provides an OpenAI-compatible API at `http://localhost:11434/v1`. You can point any tool that supports OpenAI API to your local Ollama:
-
-```bash
-# In Continue.dev, Cursor, or any OpenAI-compatible client:
-# Base URL: http://localhost:11434/v1
-# Model: qwen3.6:35b-a3b
-# API Key: (leave empty or use "ollama")
-```
-
-At 50 t/s, local inference feels instant for code completion and review tasks.
+Some client functions can use Ollama's compatible API, but this does not qualify
+every client, autocomplete feature or offline workflow. Start with the
+[client-specific caveats](#ai-coding-assistant-claude-code-cursor-continuedev),
+then test a named version, real task and tool round-trip. Cursor's documented
+server-mediated BYOK path must not be described as an all-local coding route.
 
 </details>
 

@@ -6,7 +6,7 @@ permalink: /troubleshooting/
 canonical_url: "https://strixhaloguide.com/troubleshooting/"
 sitemap: false
 date: "2026-08-30T00:00:00+02:00"
-last_modified_at: "2026-09-05T00:00:00+02:00"
+last_modified_at: "2026-09-19T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo local LLM troubleshooting for Ollama, Vulkan, ROCm, and unified memory"
 seo:
   type: "TechArticle"
-  date_modified: "2026-09-05T00:00:00+02:00"
+  date_modified: "2026-09-19T00:00:00+02:00"
 ---
 
 # AMD Strix Halo Local LLM Troubleshooting
@@ -113,11 +113,13 @@ that deliberately reproduce the dated b8460/kernel 6.19.4 evidence. See the
 **Symptom:** long-context, vision, or multi-slot HIP output repeats or becomes
 garbled on the integrated-host compute path described by upstream reports.
 
-**Check:** compare exact outputs on a stock build and the fix candidate, while
-recording the model, prompt, context, backend commit, and buffer path.
-[`llama.cpp` issue #26209](https://github.com/ggml-org/llama.cpp/issues/26209)
-and [PR #25863](https://github.com/ggml-org/llama.cpp/pull/25863) were both still
-open when rechecked 2026-08-30.
+**Check (September 19 status):** compare exact outputs on historical stock
+b10687 and released v0.4.1, recording the model, prompt, context, backend commit,
+usable memory and buffer path. [Issue #26209](https://github.com/ggml-org/llama.cpp/issues/26209)
+remains open. [PR #25863](https://github.com/ggml-org/llama.cpp/pull/25863) closed
+unmerged; [#28604](https://github.com/ggml-org/llama.cpp/pull/28604) shipped the
+revert mitigation. Broader scheduler PR #27311 remains open. Released mitigation
+does not mean the guide has qualified long-context, image or multi-slot HIP.
 
 **Fix:** pin a known-good or patched HIP build and run exact-output controls
 before making a practical-model recommendation; use the documented Vulkan route

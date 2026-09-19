@@ -6,7 +6,7 @@ permalink: /best-strix-halo-mini-pc/
 canonical_url: "https://strixhaloguide.com/best-strix-halo-mini-pc/"
 sitemap: false
 date: "2026-08-21T00:00:00+02:00"
-last_modified_at: "2026-09-05T00:00:00+02:00"
+last_modified_at: "2026-09-19T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo mini PC comparison for local LLMs with measured cross-OEM evidence"
 seo:
   type: "TechArticle"
-  date_modified: "2026-09-05T00:00:00+02:00"
+  date_modified: "2026-09-19T00:00:00+02:00"
 ---
 
 # Best Strix Halo Mini PC for Local LLMs (2026)
@@ -68,7 +68,7 @@ The recorded Beelink prices increased over this period. That history does not es
 
 The [September 13 configuration-specific snapshot](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_SNAPSHOT_2026-09-13.md) records exact RAM/SSD selections, complete-system versus mainboard scope, currency, fulfillment and seller-advertised warranty/return terms. Delivered tax/shipping/import totals remain unknown. The [July CSV](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/buyer_price_snapshot_2026-07-27.csv) is retained as historical evidence.
 
-Current observed offers include Beelink 128GB/2TB $4,349, Bosgame M5 128GB/2TB US-plug $2,999, Framework 128GB **mainboard** $3,149, and Minisforum 128GB/2TB $3,799. GMKtec US $2,199.99 is a **64GB/1TB** selection, not a 128GB price. See the linked snapshot for source URLs and fulfillment conflicts; these are not checkout quotes. Corsair's exact 128GB/4TB SKU is out of stock with current extracted price unknown; Nimo and HP current selected quotes remain unresolved.
+In the **September 13, 2026 US-facing/USD snapshot**, the observed offers were Beelink 128GB/2TB $4,349, Bosgame M5 128GB/2TB US-plug $2,999, Framework 128GB **mainboard** $3,149, and Minisforum 128GB/2TB $3,799. GMKtec US $2,199.99 was a **64GB/1TB** selection, not a 128GB price. These observations were not re-priced for this editorial update. See the linked snapshot for source URLs and fulfillment conflicts; these are not checkout quotes. At that check, Corsair's exact 128GB/4TB SKU was out of stock with extracted price unknown; Nimo and HP selected quotes remained unresolved. Confirm present stock before ordering.
 
 Earlier August claims of an exact AMD Micro Center price/exclusivity/start date and a Framework 192GB PRO 495 successor lacked sufficient linked primary substantiation and are withdrawn from current buying guidance. Stock banners do not predict future prices.
 
@@ -80,11 +80,11 @@ Published larger-memory options belong in a capacity comparison; they do not inh
 
 If your chosen artifact fits in a discrete GPU's VRAM, also compare an existing or used GPU system and Apple silicon against your actual workload. Include the complete host cost, software requirements, power and noise; this guide does not establish a universal price/performance winner across those platforms.
 
-## Recommendation tiers
+## How to compare the systems
 
-The maintained tier list with evidence depth per system lives in the repository [Buying Guide](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#buying-guide). Summary: **most evidence-backed** — Beelink GTR9 Pro; **best value candidate** — Bosgame M5 / GMKtec EVO-X2 (stock permitting); **repairability/modularity-oriented** — Framework Desktop; **community-validated fleet** — Corsair AI Workstation 300; **clustering** — Minisforum MS-S1 MAX.
+The repository [Buying Guide](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#buying-guide) describes evidence depth per system. Beelink has the deepest first-party evidence here, not proof of intrinsically superior hardware. GMKtec and Corsair have attributed community evidence; Bosgame needs same-configuration buyer-path reproduction before a comparative performance claim. Framework's modular design is a selection consideration, not measured support superiority. Minisforum's networking may matter to a cluster buyer, but the exact network/runtime combination still needs qualification. None is a universal value winner on these unmatched results and dated offers.
 
-These tiers use memory configuration, dated price/availability, evidence depth,
+The comparison considers memory configuration, dated price/availability, evidence depth,
 cooling/thermals, firmware/support, ports, expandability, and workload fit.
 Affiliate commission is not a ranking input. If affiliate links are introduced,
 each will be labeled near the link and entered in the public

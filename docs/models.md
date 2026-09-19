@@ -6,7 +6,7 @@ permalink: /strix-halo-models/
 canonical_url: "https://strixhaloguide.com/strix-halo-models/"
 sitemap: false
 date: "2026-08-30T00:00:00+02:00"
-last_modified_at: "2026-09-05T00:00:00+02:00"
+last_modified_at: "2026-09-19T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo model hub with measured evidence and published GGUF fit tiers"
 seo:
   type: "TechArticle"
-  date_modified: "2026-09-05T00:00:00+02:00"
+  date_modified: "2026-09-19T00:00:00+02:00"
 ---
 
 # AMD Strix Halo Model Hub

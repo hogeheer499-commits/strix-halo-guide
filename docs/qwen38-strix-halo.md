@@ -6,7 +6,7 @@ permalink: /qwen38-strix-halo/
 canonical_url: "https://strixhaloguide.com/qwen38-strix-halo/"
 sitemap: false
 date: "2026-08-25T00:00:00+02:00"
-last_modified_at: "2026-08-30T00:00:00+02:00"
+last_modified_at: "2026-09-19T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/qwen38-route-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "Qwen3.8 27B routes on AMD Strix Halo with measured official and external context evidence"
 seo:
   type: "TechArticle"
-  date_modified: "2026-08-30T00:00:00+02:00"
+  date_modified: "2026-09-19T00:00:00+02:00"
 ---
 
 # Qwen3.8 27B on AMD Strix Halo
@@ -51,7 +51,7 @@ ollama run qwen3.8:27b
 ```
 
 The Strix Halo service still needs the guide's Vulkan/iGPU environment,
-including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Ollama 0.34.0 is the
+including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Ollama 0.34.2 is the
 current checked package, but it has not inherited the measured 0.32.13 result
 or the full normal-service/reboot qualification.
 
