@@ -1,6 +1,12 @@
 # Qwen3.8 27B on AMD Strix Halo: What Works, What Is Fast, and What Is Actually Verified
 
-**Evidence reviewed:** August 30, 2026.
+**September 19 scoped qualification:** [the existing-user runtime result](RUNTIME_QUALIFICATION_2026-09-19.md)
+separates the 0.32.15 service/client pass, useful-but-not-default isolated 0.34.2,
+and v0.4.1 direct/server/HIP controls. Historical reboot default 0.31.2 and
+Qwen3.8-on-0.32.13 measurements remain separate; official Qwen3.8 on the candidate
+and a new full-host reboot are not qualified.
+
+**Evidence reviewed:** September 19, 2026.
 
 Qwen3.8 27B is a practical dense multimodal model on AMD Strix Halo / Ryzen AI
 MAX+ 395 with Radeon 8060S and 96GB/128GB unified memory. The difficult part is
@@ -142,7 +148,7 @@ endorsement of this guide.
 
 ## Commercial And Affiliate Disclosure
 
-This guide contains no affiliate links as of August 30, 2026. If affiliate
+This guide contains no affiliate links as of September 19, 2026. If affiliate
 links are added later, each will be labeled near the link and recorded in
 [`data/affiliate_link_registry.csv`](data/affiliate_link_registry.csv).
 Affiliate availability or commission will not determine benchmark inclusion,

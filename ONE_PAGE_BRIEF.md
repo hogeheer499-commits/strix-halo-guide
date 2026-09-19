@@ -16,6 +16,11 @@ AMD's public Ryzen AI Halo / Ryzen AI Developer Platform direction makes this ca
 
 ## Proof Already Available
 
+The [September 19 vendor proof summary](VENDOR_PROOF_SUMMARY.md) describes the
+new existing-user qualification, scoped HIP controls, exact-SKU storefront
+comparison and remaining GMKtec retail-evidence gap. These are technical
+outcomes, not measured conversion or support-cost improvements.
+
 The repo already includes a technical proof layer:
 
 - Public GitHub demand signal: 300 stars, 21 forks, and 5 subscribers/watchers in a small hardware/software niche as of the 2026-08-27 GitHub API snapshot; use this as supporting context, not the main claim.
@@ -34,7 +39,7 @@ The repo already includes a technical proof layer:
 - Frontier-size agent evidence: a first-party Step 3.7 Flash 198B-total / about 11B-active ROCmFPX target plus MTP draft measured 34.50 t/s at 4K and 33.83 t/s at 16K, allocated 256K context, and returned a native tool call on one 128GB Beelink. This is scoped server/capacity evidence, not a direct speed headline.
 - Frontier-size direct GGUF evidence: a pinned 90.86GB DeepSeek V4 Flash 284.33B `UD-IQ2_XXS` artifact loaded, generated, and passed a basic deterministic check through official `llama.cpp` b10034 Vulkan/RADV on one 128GB Beelink. The 13.27 tg128 row is capacity/current-model evidence with a low-bit quality caveat, not a speed claim.
 - Ryzen AI server-optimization evidence: an isolated official ROCm 7.14 / PyTorch 2.11 / vLLM FP16 A/B reproduced AMD's documented batch-8+ hipBLASLt workaround on `gfx1151`, improving aggregate throughput by 40.50%, 38.96%, and 41.54% at concurrency 8, 9, and 16. This is scoped small-model server evidence, not a universal backend claim.
-- Current HIP compatibility evidence: official `llama.cpp` b10046 locally proved full-UMA discovery and `ROCm_Host` allocation on a small model, but open issue #26209 and the not-yet-locally-qualified released mitigation #28604 keep long-context, multimodal, and multi-slot HIP correctness unqualified. This correction turns a silent-corruption risk into an explicit vendor/upstream test target.
+- Current HIP compatibility evidence: the September 19 v0.4.1 mitigation #28604 route passed bounded Coder retrieval and concurrent-output controls where historical b10687 failed. Both builds passed the Gemma image fixture. Official Qwen3.8, maximum memory and broad correctness remain unqualified; issue #26209 is not declared closed by this result. See [exact scope](RUNTIME_QUALIFICATION_2026-09-19.md).
 - Local model-development evidence: a digest-pinned ROCm 7.2 Unsloth workflow on the retail Beelink passed Radeon GPU detection, one-step SFT, checkpoint inference, `Q4_K_M` GGUF export, ROCm `llama.cpp` inference, artifact persistence, and a post-restart reload. The public guide preserves the exact commands and two real path/export failures without presenting the tiny smoke as useful model quality or training speed. See [`UNSLOTH_STRIX_HALO.md`](UNSLOTH_STRIX_HALO.md).
 - Buyer-friction measurement protocol: [`BUYER_PATH_VALIDATION.md`](BUYER_PATH_VALIDATION.md) defines a repeatable retail-box-to-working-local-AI campaign with timed checkpoints, intervention counts, restart persistence, failure classification, and evidence links. It is a protocol for future system campaigns, not an invented time-to-first-result claim.
 - Platform context: [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).
@@ -69,7 +74,7 @@ The public evidence map currently covers:
 - **10 credited community benchmark contributors**, listed in [`CONTRIBUTORS.md`](CONTRIBUTORS.md), in addition to the primary first-party Beelink measurements.
 - Beelink owner stacks, a three-system Corsair fleet, several independent GMKtec sources, MS-S1-Max, Nimo, and Minix evidence across Linux, Windows, Vulkan/RADV, ROCm, NPU, MTP, power, thermal, RPC, and large-model capacity routes.
 
-The normal first-party buyer path includes an Ollama 0.31.2 system-service check at 60.57 t/s with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. Qwen3.8 27B is separately measured on Ollama 0.32.13 at 20.42 generation t/s with image, tools, thinking, and exact retrieval through 50,059 prompt tokens. Ollama 0.34.2 is the September 19 unmeasured package target; community rows remain separated from first-party headline claims.
+The normal first-party buyer path includes an Ollama 0.31.2 system-service check at 60.57 t/s with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. Qwen3.8 27B is separately measured on Ollama 0.32.13 at 20.42 generation t/s with image, tools, thinking, and exact retrieval through 50,059 prompt tokens. Ollama 0.34.2 passed isolated available-model controls on September 19 but remains an unqualified normal-package/reboot target; community rows remain separated from first-party headline claims.
 
 Community corrections and negative results improve the proof layer rather than being hidden: exact artifacts and commands, raw logs, separated claim types, explicit caveats, and corrected routes remain public. See [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md).
 

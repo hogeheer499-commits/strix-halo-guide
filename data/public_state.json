@@ -1,14 +1,15 @@
 {
   "schema_version": 1,
-  "evidence_reviewed": "2026-08-30",
-  "evidence_reviewed_human": "August 30, 2026",
+  "evidence_reviewed": "2026-09-19",
+  "evidence_reviewed_human": "September 19, 2026",
+  "evidence_review_scope": "ACTIVE_EVIDENCE_REVIEW_2026-09-19.md; active recommendations and source scope, not remeasurement of historical archives",
   "freshness_max_age_days": 21,
   "publication": {
-    "expected_content_revision": "trust-repair-2026-09-19",
-    "deployment_verified": "2026-09-19T17:04:21Z",
-    "scope": "Canonical destination verified after approved publication; this is not a new evidence review or runtime qualification"
+    "expected_content_revision": "closeout-2026-09-19",
+    "deployment_verified": null,
+    "scope": "Final-closeout candidate; set verified only after canonical live checks"
   },
-  "storefront_observed": "2026-09-13",
+  "storefront_observed": "2026-09-19",
   "date_scope": "evidence_reviewed is not a new measurement date; individual evidence bundles retain measurement and qualification dates; availability_checked and storefront_observed are separate observations",
   "release": {
     "current": "v3.0.0",
@@ -19,6 +20,9 @@
     "availability_checked": "2026-09-19",
     "ollama_qwen38_measured": "0.32.13",
     "ollama_reboot_qualified_default": "0.31.2",
+    "ollama_existing_service_qualified": "0.32.15; scoped functions after service restart, no new full reboot",
+    "ollama_candidate_decision": "0.34.2 useful but not default; official Qwen3.8 and normal upgrade/client/reboot acceptance open",
+    "llama_cpp_functional_qualification": "v0.4.1 b29c606; scoped Coder direct/server and HIP controls; see RUNTIME_QUALIFICATION_2026-09-19.md",
     "llama_cpp_current_release": "v0.4.1",
     "llama_cpp_current_build_checked": "b10687",
     "llama_cpp_build_scope": "Latest locally measured numbered sentinel; checked August 30, not latest upstream availability"
@@ -46,7 +50,7 @@
   },
   "affiliate_status": {
     "links_present": false,
-    "checked": "2026-08-30",
+    "checked": "2026-09-19",
     "policy": "VENDOR_DISCLOSURE.md"
   }
 }

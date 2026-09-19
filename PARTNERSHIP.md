@@ -1,5 +1,9 @@
 # Partnership Overview
 
+For the latest bounded technical outcomes and the missing exact-SKU retail
+proof, read [the vendor proof summary](VENDOR_PROOF_SUMMARY.md). No measured
+sales, conversion or support-cost effect is claimed.
+
 `strix-halo-guide` is an independent, evidence-backed AMD Strix Halo / Ryzen AI MAX+ 395 local-AI setup and benchmark guide. It turns scattered setup details into reproducible instructions, benchmark reports, raw logs, CSVs, charts, and caveats so developers and buyers can evaluate real local-LLM workflows before committing time or money to a system.
 
 Public partner overview: <https://strixhaloguide.com/partners/>

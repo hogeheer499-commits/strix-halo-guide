@@ -94,4 +94,21 @@ class ActiveGuidanceTests(unittest.TestCase):
         text = (ROOT / "README.md").read_text()
         self.assertIn("Cursor is not an offline-local guarantee", text)
         self.assertIn("reboot-qualified general baseline remains 0.31.2", text)
-        self.assertIn("not yet passed the guide's hardware/server acceptance tests", text)
+        self.assertIn("passed the scoped direct/server acceptance controls", text)
+        self.assertNotIn("open-webui:main", active_readme(text))
+        self.assertNotIn("**Recommendation tiers:**", active_readme(text))
+        self.assertIn("not local-only", text)
+
+    def test_closeout_claim_boundaries(self):
+        runtime = (ROOT / "RUNTIME_QUALIFICATION_2026-09-19.md").read_text()
+        for fragment in ("not the default", "Qwen2.5-VL", "Devstral",
+                         "14,029", "not a maximum usable-memory",
+                         "No full-host reboot", "not local-only"):
+            self.assertIn(fragment, runtime)
+        buyer = (ROOT / "BUYER_SNAPSHOT_2026-09-19.md").read_text()
+        for fragment in ("128GB/2TB", "$3,649.99", "64GB/1TB",
+                         "not a complete PC", "account-specific",
+                         "no first-party exact-retail-SKU"):
+            self.assertIn(fragment, buyer)
+        self.assertEqual(len(list(csv.DictReader(
+            (ROOT / "data/affiliate_link_registry.csv").read_text().splitlines()))), 0)

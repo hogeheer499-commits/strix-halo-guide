@@ -89,14 +89,16 @@ class PublicValidationTests(unittest.TestCase):
         self.assertEqual(len(authority.publication_checks(authority.PROJECT_BUYER_URL, body, state)), 2)
 
     def test_freshness_boundary_without_changing_review_date(self):
-        self.assertEqual(authority.freshness_checks(dt.date(2026, 9, 20))[0].status, 'PASS')
-        check = authority.freshness_checks(dt.date(2026, 9, 21))[0]
+        state = json.loads((authority.ROOT / 'data/public_state.json').read_text())
+        reviewed = dt.date.fromisoformat(state['evidence_reviewed'])
+        self.assertEqual(authority.freshness_checks(reviewed + dt.timedelta(days=21))[0].status, 'PASS')
+        check = authority.freshness_checks(reviewed + dt.timedelta(days=22))[0]
         self.assertEqual(check.status, 'ERROR')
         self.assertIn('22 days', check.detail)
-        self.assertEqual(authority.freshness_checks(dt.date(2026, 8, 29))[0].status, 'ERROR')
+        self.assertEqual(authority.freshness_checks(reviewed - dt.timedelta(days=1))[0].status, 'ERROR')
         with patch.object(validator, 'date') as date:
             date.fromisoformat.side_effect = dt.date.fromisoformat
-            date.today.return_value = dt.date(2026, 9, 21)
+            date.today.return_value = reviewed + dt.timedelta(days=22)
             errors = []
             validator.check_public_state(errors)
         self.assertTrue(any('stale: 22 days' in e for e in errors))
@@ -104,7 +106,9 @@ class PublicValidationTests(unittest.TestCase):
     def test_stale_run_writes_both_reports_and_still_runs_network(self):
         with tempfile.TemporaryDirectory() as folder:
             md, js = Path(folder) / 'audit.md', Path(folder) / 'audit.json'
-            argv = ['audit', '--as-of', '2026-09-21', '--network', '--markdown-out', str(md), '--json-out', str(js)]
+            state = json.loads((authority.ROOT / 'data/public_state.json').read_text())
+            stale = dt.date.fromisoformat(state['evidence_reviewed']) + dt.timedelta(days=22)
+            argv = ['audit', '--as-of', stale.isoformat(), '--network', '--markdown-out', str(md), '--json-out', str(js)]
             remote = authority.Check('remote-fixture', 'https://fixture.invalid', 'PASS', 'checked')
             with patch.object(authority.sys, 'argv', argv), patch.object(
                     authority, 'network_checks', return_value=([remote], {})) as network, patch('sys.stdout', new_callable=io.StringIO):

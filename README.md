@@ -33,7 +33,7 @@ Maintainer credibility is public and reviewable: 15+ merged upstream contributio
 | Reproducing or contributing benchmarks | [Reproducibility](REPRODUCIBILITY.md), [headline claim index](data/headline_claims.csv), and [benchmark issue](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md) | Exact commands, metadata, raw evidence, caveats, and community credit |
 | Reviewing the project for a vendor or publication | [One-page brief](ONE_PAGE_BRIEF.md), [partnership scope](PARTNERSHIP.md), and [disclosure policy](VENDOR_DISCLOSURE.md) | Which buyer uncertainty the evidence removes and how independence is protected |
 
-**Current evidence state — August 30, 2026:** Qwen3.8 27B is measured through
+**Current evidence state — September 19, 2026:** Qwen3.8 27B is measured through
 the official Ollama route. The August 30 b10687 Vulkan sentinel and Flash-Next
 scout are now indexed with their own stack and caveats; see
 [the measured update](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout).
@@ -86,7 +86,7 @@ Halo owners find it; a reproducible result or correction helps even more.
 | Experimental server frontier | Repeat-confirmed local MTP/server profiles reach 101-141 t/s, but prompt shape, draft acceptance, runtime, and quant are part of each claim. |
 | Cross-system confidence | 13 systems or independent sources and 10 credited community benchmark contributors, with community data separated from first-party Beelink rows. |
 | Trust model | Every headline maps to structured/raw evidence or an explicit caveat; failed paths and negative results remain public. |
-| Commercial independence | No affiliate links are present as of August 30, 2026. Future affiliate/vendor support must be disclosed and cannot buy ranking, positive conclusions, or removal of accurate negative findings. |
+| Commercial independence | No affiliate links are present as of September 19, 2026. Future affiliate/vendor support must be disclosed and cannot buy ranking, positive conclusions, or removal of accurate negative findings. |
 
 ## Quick Start (6 Steps)
 
@@ -107,6 +107,12 @@ reboot-qualified default: the official model is measured here, but its runtime,
 context boundary, and community performance routes need different caveats.
 
 ## Setup Script
+
+**Existing-user result, September 19:** [the scoped qualification](RUNTIME_QUALIFICATION_2026-09-19.md)
+passed text, separate-model image, executed tools and pinned WebUI on the
+existing Ollama 0.32.15 service after restart. The historical fresh-install
+reboot pin stays 0.31.2; isolated 0.34.2 is useful but not default. These tests
+are not a new clean-install or full-host-reboot qualification.
 
 **Scope before running:** this automatic route is for 128GB-class systems with
 at least 120GiB visible RAM. It is not a general 64GB/96GB installer. Configuration
@@ -166,10 +172,10 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 | Open-weight 120B reasoning model | gpt-oss-120b MXFP4: 55.57 t/s direct llama.cpp Vulkan/RADV on current b9049 | 128GB unified memory can run a 117B-parameter MoE locally; this is speed evidence, not a model-quality eval. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/gpt-oss-120b-long-context-vulkan/) |
 | Current 120B-class GGUF capacity route | Nemotron 3 Super 120B-A12B UD-IQ4_XS: 18.43 t/s direct llama.cpp Vulkan/RADV, b9544 control at 18.93 tg128 r3 | Answers a different buyer question: yes, a current 120B-class MoE GGUF route can run directly on one 128GB Strix Halo box. | [`headline claims`](data/headline_claims.csv), [`raw latest/int-dot`](data/raw/2026-06-05/latest-llamacpp-intdot-regression/), [`b9544 control`](data/raw/2026-06-07/latest-llamacpp-b9544-regression/) |
 | Current NVIDIA Omni/FP4 route | The same Nemotron 3 Nano Omni MXFP4 artifact improved from 56.56 tg128 on b9747 to 64.26 on b10034; a separate NVFP4 + F16 projector route measured 53.21 tg128 and correctly read `STRIX 395` from an image | Shows both current runtime maintenance and a first-party image-capable Nemotron route. The OCR check is not broad vision/audio/video validation and neither row replaces the Qwen speed headlines. | [`benchmarks CSV`](data/benchmarks.csv), [`raw MXFP4 sentinel`](data/raw/2026-07-16/nemotron-omni-mxfp4-b10034-sentinel/), [`raw multimodal scout`](data/raw/2026-07-16/nemotron-omni-nvfp4-multimodal/) |
-| Current agent/reasoning scouts | Nemotron Cascade 2 30B-A3B `IQ4_XS`: 78.95 tg128; Qwen AgentWorld 35B-A3B `UD-IQ4_XS`: 65.65 tg128 with a correct terminal-world smoke and 128K allocation pass | These answer current-model and agent-use-case questions without pretending every new model is a speed headline. Cascade's forced no-think prefix did not hide reasoning; AgentWorld's 128K result is an allocation smoke, not a filled-context quality claim. | [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`Cascade evidence`](data/raw/2026-07-16/nemotron-cascade2-iq4xs/), [`AgentWorld evidence`](data/raw/2026-07-16/agentworld-iq4xs/) [Curator: exact retained-run disagreement](EVIDENCE_CORRECTIONS.md#agentworld-retained-run-disagreement); rate provenance pending. |
+| Current agent/reasoning scouts | Nemotron Cascade 2 30B-A3B `IQ4_XS`: 78.95 tg128; Qwen AgentWorld 35B-A3B `UD-IQ4_XS`: rate withheld pending retained-run provenance with a correct terminal-world smoke and 128K allocation pass | These answer current-model and agent-use-case questions without pretending every new model is a speed headline. Cascade's forced no-think prefix did not hide reasoning; AgentWorld's 128K result is an allocation smoke, not a filled-context quality claim. | [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`Cascade evidence`](data/raw/2026-07-16/nemotron-cascade2-iq4xs/), [`AgentWorld evidence`](data/raw/2026-07-16/agentworld-iq4xs/) [Curator: exact retained-run disagreement](EVIDENCE_CORRECTIONS.md#agentworld-retained-run-disagreement); rate provenance pending. |
 | Local API for tools or several clients | Qwen3-Coder 30B-A3B b9979: 228.18 aggregate t/s stock at np8; opt-in density+dense16 reached 234.12 at np9, while density alone reached 266.07 at np16 | A software dispatch cliff, not memory capacity, can limit multi-user value. Keep stock for low concurrency; advanced users should compare density Vulkan and ROCm at their exact target. | [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md), [`summary CSV`](data/moe_density_gate_summary.csv), [`30B chart`](charts/moe_density_gate_30b.svg) |
 | FP16 vLLM at 8-16 concurrent requests | Official ROCm 7.14 image, PyTorch 2.11, Qwen3-0.6B: `TORCH_BLAS_PREFER_HIPBLASLT=1` improved aggregate throughput by 40.50% / 38.96% / 41.54% at concurrency 8/9/16 | This reproduces AMD's Ryzen AI batch-8+ workaround without changing the host. It is a small-model FP16 server A/B, not a direct GGUF or 27B/35B claim; concurrency 4 was slightly slower. | [`ROCm/vLLM notes`](ROCM_VLLM_BUGWATCH.md), [`processed A/B`](data/rocm_714_hipblaslt_ab.csv), [`raw evidence`](data/raw/2026-07-16/rocm-714-vllm-hipblaslt-ab/) |
-| Historical ROCm/HIP `llama.cpp` allocation smoke | Official b10046, Qwen3-0.6B Q8_0: 4666.05 pp512 / 208.73 tg128; full 120,124 MiB free UMA detected and `ROCm_Host` buffers allocated | Reproduced full-UMA discovery without `HSA_OVERRIDE_GFX_VERSION`, but open issue #26209 and the unqualified released mitigation #28604 mean the tiny smoke does not qualify long-context, multimodal, multi-slot, or practical-model correctness. | [`ROCm/HIP notes`](ROCM_VLLM_BUGWATCH.md), [`raw evidence`](data/raw/2026-07-16/llamacpp-b10046-rocm-integrated-host-buffer/) |
+| Historical ROCm/HIP `llama.cpp` allocation smoke | Official b10046, Qwen3-0.6B Q8_0: 4666.05 pp512 / 208.73 tg128; full 120,124 MiB free UMA detected and `ROCm_Host` buffers allocated | Reproduced full-UMA discovery without `HSA_OVERRIDE_GFX_VERSION`, but open issue #26209 and the model-scoped [v0.4.1 mitigation controls](RUNTIME_QUALIFICATION_2026-09-19.md) do not make the tiny smoke qualify long-context, multimodal, multi-slot, or practical-model correctness. | [`ROCm/HIP notes`](ROCM_VLLM_BUGWATCH.md), [`raw evidence`](data/raw/2026-07-16/llamacpp-b10046-rocm-integrated-host-buffer/) |
 | Long documents or codebase context | Qwen3.6 35B-A3B: 32.23 t/s decode after a filled 128K KV cache | Long-context use is possible, but prompt ingestion cost matters. | [`filled KV CSV`](data/filled_kv_decode.csv), [`chart`](charts/filled_kv_decode.svg) |
 | Large-model proof point | MiniMax M2.7 230B-class MoE loaded and generated locally; Llama 4 Scout 109B measured 18.32 t/s historically | 128GB unified memory makes very large local models practical on one compact PC, but capacity and speed are different wins. | [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`benchmarks CSV`](data/benchmarks.csv) |
 
@@ -234,7 +240,7 @@ Start with the public [vendor and reviewer overview](https://strixhaloguide.com/
 
 Start with [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md) and [`PARTNERSHIP.md`](PARTNERSHIP.md). Supporting docs cover [`BEELINK_OUTREACH.md`](BEELINK_OUTREACH.md), [`VENDOR_OUTREACH_PLAN.md`](VENDOR_OUTREACH_PLAN.md), [`SPONSORSHIP.md`](SPONSORSHIP.md), [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md), [`BUYER_USE_CASES.md`](BUYER_USE_CASES.md), [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md), [`TRACTION.md`](TRACTION.md), and [`OUTREACH_TEMPLATES.md`](OUTREACH_TEMPLATES.md).
 
-No affiliate links are present as of August 30, 2026. If monetized product
+No affiliate links are present as of September 19, 2026. If monetized product
 links are added later, each relevant link will be labeled and recorded in the
 public [`affiliate link registry`](data/affiliate_link_registry.csv). Affiliate
 commission does not determine benchmark conclusions, product inclusion, or
@@ -718,7 +724,7 @@ Extended context scaling (b8460 RADV):
 | **b9010** | **RADV** | **1109** | **63.06** | UD-Q4_K_M controlled rerun; plain Q4 blob not loadable by upstream b9010 |
 | b8933 | RADV | 1040 | 63.66 | No regression between builds |
 
-> Qwen3.6 is a drop-in replacement for Qwen3.5 with significantly improved coding and reasoning quality (same architecture, same active parameters, effectively identical speed). Older April data showed a 13% UD-Q4_K_M penalty, but the controlled May b9010 and b9049 reruns did **not** reproduce that large gap. Prefer plain Q4_K_M when you have a direct-compatible GGUF, but treat the old "UD is always 13% slower" warning as superseded until same-build plain-vs-UD is rerun.
+> Qwen3.6 is a measured runtime-compatible successor on these routes; this guide has not established a general coding/reasoning-quality improvement over Qwen3.5. Older April data showed a 13% UD-Q4_K_M penalty, but the controlled May b9010 and b9049 reruns did **not** reproduce that large gap. Prefer plain Q4_K_M when you have a direct-compatible GGUF, but treat the old "UD is always 13% slower" warning as superseded until same-build plain-vs-UD is rerun.
 
 ### ROCm HIP -- historical kernel 6.19.4 / b8460 route
 
@@ -1012,7 +1018,7 @@ leave one active key in `[daemon]`. Reboot deliberately after saving your work.
 
 ### Step 3.1: Kernel Version
 
-> **Measured setup:** This guide's primary system uses kernel 6.19.4.
+> **Measured setup:** historical headline runs used kernel 6.19.4; the September 19 existing-user acceptance used 7.0.0-31. This is not a request to upgrade a working kernel.
 > - Older kernels may have gfx1151 stability or ROCm issues.
 > - The dated b8460/kernel 6.19.4 ROCm route used the documented `11.5.1`
 >   override because that stack otherwise reported the iGPU incorrectly.
@@ -1368,7 +1374,7 @@ llama-bench -m ~/models/your-model.gguf -fa 1 -ngl 999 -mmp 0 -p 128,512 -n 128
 
 ### Step 7.5: Self-Compiling llama.cpp for ROCm
 
-Pinned v0.4.1 ROCm/HIP candidate, **not locally correctness-qualified**. Use a
+Pinned v0.4.1 ROCm/HIP route: **scoped Coder/Gemma controls passed**, not all-model correctness. See [the exact test limits](RUNTIME_QUALIFICATION_2026-09-19.md). Use a
 separate checkout/build; retain the known control. See the
 [HIP correctness queue](ROCM_VLLM_BUGWATCH.md#next-watch-items) before promotion.
 
@@ -1853,7 +1859,7 @@ See [`POWER_BASELINE.md`](POWER_BASELINE.md), [`COMMUNITY_RESULTS.md#whole-syste
 After completing setup, verify each item:
 
 - [ ] `free -h` shows most of your installed memory, not ~31GB (~124GiB on 128GB systems; lower on 96GB systems)
-- [ ] `vulkaninfo --summary` shows RADV Mesa 26.0.2+ (latest full host-state audit here: 26.1.2 on 2026-06-07; per-run raw metadata is the source of truth)
+- [ ] `vulkaninfo --summary` shows the intended RADV driver; September 19 acceptance used Mesa 26.2.3, while historical benchmark rows retain their own driver metadata. Do not upgrade solely to match this checklist.
 - [ ] Record the selected power policy and verify its active manager; tuned is required only for a tuned reproduction
 - [ ] Check GPU clocks/utilization under the actual workload against that profile, not an idle universal 2900 MHz threshold
 - [ ] Compare live GTT/TTM values with the selected RAM/kernel profile; 31457280 pages is the recorded 128GB-system limit, not a 96GB preset
@@ -2004,22 +2010,23 @@ model server to make a cloud-mediated client reach it.
 
 ### ChatGPT-like Web Interface (Open WebUI)
 
-**Unqualified integration example:** Docker must already be installed. On Linux,
-the bridge container's `host-gateway` alias does not by itself reach an Ollama
-service bound only to host loopback. This moving image tag and network recipe
-still need a pinned end-to-end client test. Do not expose Ollama publicly to
-work around connectivity. The measured Ollama service result is not an Open
-WebUI acceptance result.
+**Pinned, scoped client result:** Open WebUI 0.10.2 passed discovery, visible
+Qwen3.6 output and restart checks against the existing Ollama 0.32.15 route.
+See the [exact qualification and network boundary](RUNTIME_QUALIFICATION_2026-09-19.md).
+Docker must already be installed. A bridge container's `host-gateway` alias
+cannot by itself reach a loopback-only Ollama listener. The measured host had
+an existing LAN-reachable Ollama listener: it was **not local-only**. Do not
+broaden an unauthenticated listener merely to copy this example.
 
 ```bash
 docker run -d -p 127.0.0.1:3000:8080 \
   --add-host=host.docker.internal:host-gateway \
   -v open-webui:/app/backend/data \
   --name open-webui \
-  ghcr.io/open-webui/open-webui:main
+  ghcr.io/open-webui/open-webui@sha256:a26effeb220e132482bf7e0560b3404843e7bc40d23051144e062960df8df6b0
 ```
 
-Open `http://localhost:3000`. Privacy depends on the selected models, embeddings, tools and integrations. Provision artifacts first and verify that every enabled component stays local before claiming offline operation. This recipe is not a versioned end-to-end client acceptance test.
+Open `http://localhost:3000`. Privacy depends on the selected models, embeddings, tools and integrations. Provision artifacts first and verify that every enabled component stays local before claiming offline operation. The acceptance result covers the pinned local fixture, not every default setting, plugin or embedding provider.
 
 ### RAG (Document Q&A)
 
@@ -2067,45 +2074,31 @@ The [current model evidence](CURRENT_MODELS.md) records a narrow Qwen3-TTS Engli
 
 ## Buying Guide
 
-Current Strix Halo systems use the same AMD Ryzen AI MAX+ 395 APU with 64GB, 96GB, or 128GB LPDDR5X-8000 depending on vendor and variant. The differentiators are memory size, form factor, cooling, ports, support, stock status, price, and how much public evidence exists for the exact chassis.
+The MAX+ 395 systems compared here share that APU; other Strix Halo variants must be checked separately. Memory options include 64GB, 96GB, or 128GB LPDDR5X-8000 depending on vendor and variant. The differentiators are memory size, form factor, cooling, ports, support, stock status, price, and how much public evidence exists for the exact chassis.
 
-Prices, coupons, and availability change quickly. Treat this as a dated **US-storefront** buyer snapshot checked on **2026-07-27**, not a permanent ranking or a checkout quote. The GMKtec row also records the separate official EU listing because its price and configuration availability differ materially from the US store. The strongest recommendation in this guide is not only price: it is how much reproducible evidence exists for that chassis and workflow. Tax/VAT treatment was not established uniformly; prices and may change with region, shipping, coupons, or cart configuration; verify final cart totals before buying. The configuration-level source, price, and fulfillment states captured in this pass are in [`data/buyer_price_snapshot_2026-07-27.csv`](data/buyer_price_snapshot_2026-07-27.csv).
+**New storefront snapshot: September 19, 2026.** Use the [exact-SKU snapshot](BUYER_SNAPSHOT_2026-09-19.md) for source URLs, variant identifiers, stock/ETA, seller terms and unresolved checkout fields. US-facing/USD examples: GMKtec EVO-X2 **128GB/2TB $3,649.99** (64GB/1TB is a different $2,199.99 offer), Beelink GTR9 Pro **128GB/2TB $4,349** pre-sale, Bosgame M5 **128GB/2TB $2,999**, Minisforum MS-S1 MAX **128GB/2TB $3,799** with early-October shipping, and Nimo **128GB/2TB $3,899.99** with delivery ETA unresolved. These are not delivered checkout quotes.
 
-> **Current storefront review, 2026-09-13:** see the [configuration-specific buyer snapshot](BUYER_SNAPSHOT_2026-09-13.md) for prices, unknown checkout fields, delivery and seller-advertised terms. July observations below remain historical. Earlier August prose about an exact AMD Micro Center price/exclusivity/start date and a Framework 192GB PRO 495 successor was not substantiated by its linked primary pages and is withdrawn from current buying guidance.
+Framework's 128GB **mainboard** is not a complete PC; its current quote was unresolved. Corsair's exact 128GB/4TB SKU was out of stock with price unresolved. HP's selected laptop quote was unresolved. No older price was silently refreshed. GMKtec EVO-X3 uses MAX+ 395 in the observed offers; EVO-X2 evidence does not automatically qualify EVO-X3.
 
-| System | Price/config snapshot checked 2026-07-27 | Evidence depth in this guide | Buyer read |
-|--------|-------------------------------------------|------------------------------|------------|
-| **GMKtec EVO-X2** | **US:** official listing starts at $1,999.99 for 64GB+1TB; the checked 128GB+2TB selection was unavailable, so the base price is not a 128GB quote. **EU:** €3,359.99 for 128GB+2TB, €3,229.99 for 128GB+1TB, and €1,959.99 for 64GB+1TB; all three were marked available. The EU page advertises `GMKEVO50OFF` for €50 off, but no final cart total was recorded. | Strong community evidence: native Ubuntu Vulkan/RADV within about 2% of the Beelink Qwen3.6 row, WSL2/HIP baseline, Qwen3-Coder follow-ups, MTP reproduction, and tuned thermal/power-policy Reddit report. | High-value candidate when the selected 128GB configuration is available and its cart total is favorable. Do not compare the US 64GB base price or an advertised coupon against an EU 128GB price. |
-| **Bosgame M5** | $2,899 for the listed 128GB+2TB configuration ($3,299 compare-at). | No dedicated same-shape guide benchmark row yet; likely relevant as a closely related platform, but not validated here like Beelink/Corsair/GMKtec/Nimo. | Interesting price comparator, but evidence depth is thinner. Buy on ports/support/return terms, not benchmark proof from this repo. |
-| **Framework Desktop** | $3,149 for the 128GB Ryzen AI Max+ 395 mainboard. Full Desktop/cart pricing is regional and configuration-dependent. | External/community interest and Framework ecosystem are strong, but this guide has less same-shape imported evidence than Beelink/Corsair/GMKtec/Nimo. | Repairability/modularity-oriented option; no comparative support-outcome test. Needs more direct guide rows before treating it as a benchmark-proven chassis here. |
-| **Beelink GTR9 Pro** | $4,349 for the listed 128GB+2TB configuration ($4,699 compare-at). The official page describes it as pre-sale and says orders ship within 35 days. | Deepest first-party evidence: this guide's primary Beelink system produced the local headline, regression-control, power-telemetry, backend, server, and current-model rows. | Most evidence-backed choice in this repo, with premium positioning in this dated comparison. Confirm the exact board/NIC revision with the seller. |
-| **Corsair AI Workstation 300** | $3,399.99 for the listed 128GB/4TB configuration; the official product page marked it out of stock. | Strongest community-validated fleet: three systems reproduced the Qwen3-Coder Vulkan/RADV path, plus wall-power rows, USB4/RPC cluster evidence, and a MiMo-V2.5 310B-class prompt-processing capacity row. | Best community validation if you value repeatability across multiple same-vendor systems. Stock status matters. |
-| **Minisforum MS-S1 MAX** | $3,639 for the 128GB+2TB Max AI Compute Edition, with estimated shipping in mid-August. | Windows LM Studio serving/API community evidence is imported for MS-S1-Max; not a same-shape native Linux comparison. | Interesting for dual 10GbE, USB4 v2, PCIe expansion, and rack/cluster experiments. Verify exact regional SKU and shipping date. |
-| **Nimo AI Mini PC** | $3,899.99 for the listed 128GB+2TB configuration; it is marked available under a pre-order selling plan. | Strong compact-chassis community bundle: large-model serving, MTP, StepFun/Qwen 122B, Gemma 4 QAT/MTP assistant-head follow-up data, and thermal context. | Useful compact 128GB option if large-model feasibility and thermal context matter more than raw headline speed. |
-| **HP ZBook Ultra G1a** | HP's US configurator displayed $11,874 MSRP for the selected 128GB+1TB Ryzen AI Max+ PRO 395 configuration. | No same-shape guide benchmark evidence yet. | Portable/workstation-laptop option. Treat as a different buyer category, not a mini-PC value comparison. |
+The [July CSV](data/buyer_price_snapshot_2026-07-27.csv) and [September 13 snapshot](BUYER_SNAPSHOT_2026-09-13.md) remain historical. Earlier unsupported successor/exclusivity claims stay withdrawn.
 
-> Snapshot sources checked 2026-07-27:
-> [GMKtec US](https://www.gmktec.com/products/amd-ryzen%E2%84%A2-ai-max-395-evo-x2-ai-mini-pc),
-> [GMKtec EU](https://de.gmktec.com/en/products/gmktec-evo-x2-amd-ryzen%E2%84%A2-ai-max-395-mini-pc-1),
-> [Bosgame](https://www.bosgamepc.com/products/bosgame-m5-ai-mini-desktop-ryzen-ai-max-395),
-> [Framework mainboard](https://frame.work/products/framework-desktop-mainboard-amd-ryzen-ai-max-300-series),
-> [Beelink](https://www.bee-link.com/products/beelink-gtr9-pro-amd-ryzen-ai-max-395),
-> [Corsair](https://www.corsair.com/us/en/p/gaming-computers/cs-9080003-na/corsair-ai-workstation-300-amd-ryzen-ai-max-395-processor-amd-radeon-8060s-igpu-up-to-96gb-vram-128gb-lpddr5x-memory-4tb-2tb-2tb-m2-ssd-win11-home-cs-9080003-na),
-> [Minisforum 128GB listing](https://store.minisforum.com/products/minisforum-ms-s1-max-mini-pc),
-> [Nimo](https://www.nimopc.com/products/nimos-smallest-office-gaming-ai-pc-amd-ryzen-ai-max-395-up-to-5-1-ghz-128gb-lpddr5-8000mhz-16gb-8-2tb-4tb-ssd-with-3-performance-modes-up-to-120w),
-> [HP US 128GB configuration](https://www.hp.com/us-en/shop/custom/hp-zbook-ultra-g1a-mobile-workstation-pc-customizable-14-inch-amd-ryzen-ai-128gb-ram-1tb-ssd-eclipse-gray-AY8K7AV_156618?catEntryId=3074457345621963823).
-> Dynamic vendor pages can show different currency, stock, and coupon state by region.
+| System | Evidence depth and buying limitation |
+|---|---|
+| Beelink GTR9 Pro | Deepest first-party evidence here; not proof of superior hardware, support or value. Confirm board/NIC revision. |
+| GMKtec EVO-X2 | Native/WSL2 community and external evidence; no first-party exact-retail-SKU buyer-path test. Keep 96GB external results separate from current 128GB offers. |
+| Corsair AI Workstation 300 | Three community fleet systems plus power/RPC evidence; not three new matched retail setup campaigns. |
+| Nimo AI Mini PC | Attributed large-model/server/MTP and thermal context; not a general support-quality claim. |
+| Minisforum MS-S1 MAX | Windows LM Studio serving evidence; no matched native-Linux OEM speed ranking. |
+| Bosgame / Framework / HP | Potential workload fits, but no same-shape first-party buyer-path reproduction here; mainboard and laptop categories need separate total-cost comparisons. |
 
 > **Board/NIC revision note (Beelink GTR9 Pro):** Some, but not all, original v1.0 systems with Intel E610-XT2 networking have reported NIC recovery/disconnection failures. Beelink has published update guidance and later introduced the v2.2 board with Realtek RTL8127 networking. Because field reports vary by unit and revision, confirm the exact board/NIC version with the seller and contact Beelink support with the serial number when troubleshooting. See the [Beelink forum thread](https://bbs.bee-link.com/d/7762-gtr-9-pro-ethernet-malfunction-under-load) and Beelink's [Q1 2026 BIOS summary](https://www.bee-link.com/blogs/all/bios-update-summary-for-q1-2026).
 
-**Recommendation tiers:**
-- **Most evidence-backed in this repo:** Beelink GTR9 Pro, because it is the first-party benchmark system.
-- **Best value candidate:** GMKtec EVO-X2, if the selected cart price and memory config are favorable.
-- **Repairability/modularity-oriented:** Framework Desktop -- modular design, but thinner same-shape guide evidence so far.
-- **Best already community-validated vendor fleet:** Corsair AI Workstation 300 -- three systems reproduced the Qwen3-Coder Vulkan/RADV path.
-- **Best for clustering/expansion experiments:** Minisforum MS-S1 MAX or Beelink GTR9 Pro v2.2 -- dual 10GbE for RDMA/cluster experiments, but verify stock, regional SKU, and board revision.
-- **Compact large-model community evidence:** Nimo AI Mini PC -- useful for large-model serving/MTP/thermal context.
-- **Only if you need portability:** HP ZBook Ultra G1a, with the exact regional configuration and final cart total verified separately.
+**How to compare the systems:** compare memory configuration, dated delivered
+price/availability, evidence depth, cooling/thermals, firmware/support, ports,
+expandability and workload fit. Beelink's deeper first-party evidence is not a
+universal value win; Framework's modularity is not measured support superiority;
+network ports alone do not qualify a cluster. Affiliate commission is not a
+selection criterion.
 
 > **Important:** many Chinese mini PCs in this class, including Bosgame, GMKtec, and Beelink, appear to use closely related Sixunited platform designs. Do not assume every config is literally identical, but the first native GMKtec EVO-X2 community run reproduced the guide's Qwen3.6 Vulkan/RADV row within about 2%. Pick based on price, memory size, ports, cooling, and support.
 
@@ -2183,7 +2176,7 @@ measured generation rows, while HIP can win prompt-processing-heavy rows.
 <details>
 <summary><strong>What is the difference between Ollama and llama.cpp? Why is llama.cpp faster?</strong></summary>
 
-They are not two different programs. **Ollama is a wrapper around llama.cpp.** It adds model management (`ollama pull`), a simple API, and easy commands (`ollama run`). Under the hood, it runs the same llama.cpp inference engine.
+**Ollama and llama.cpp are separate applications.** Ollama adds model management, service APIs and backend selection; these measured GGUF routes use its bundled llama.cpp-derived runner. Do not assume every Ollama model uses an identical engine or commit to a standalone build.
 
 So why can llama.cpp direct be faster on Qwen3.6 and Qwen3-Coder? Two reasons:
 
@@ -2191,7 +2184,7 @@ So why can llama.cpp direct be faster on Qwen3.6 and Qwen3-Coder? Two reasons:
 
 2. **Bundled version.** Ollama ships with a specific llama.cpp version baked in. Direct source builds can pick up new `llama.cpp` optimizations earlier. The March b8298-to-b8460 jump gave +25% on some MoE Vulkan rows; later rows are tracked separately in [`BENCHMARKS.md`](BENCHMARKS.md).
 
-**Think of it like a web browser:** Ollama is Chrome (easy to use, auto-updates, but bundles a specific engine version). llama.cpp direct is building Chromium from source (more work, but you get the latest engine immediately).
+Ollama prioritizes model/service management; standalone llama.cpp exposes explicit build and runtime controls. Neither a version number nor a newer source checkout guarantees a faster or more reliable workflow.
 
 **What should you use?**
 
@@ -2202,7 +2195,7 @@ So why can llama.cpp direct be faster on Qwen3.6 and Qwen3-Coder? Two reasons:
 | Using kyuz0 containers | **kyuz0** -- record the image digest and bundled runtime. A rebuilt moving tag is a new candidate, not an inherited qualification |
 | Benchmarking | **llama-bench** -- direct runtime benchmark without HTTP/client serving; not an overhead-free or pure-GPU measurement |
 
-**Pinned llama-server candidate (not yet hardware-qualified):**
+**Pinned llama-server route (scoped Qwen3-Coder acceptance):**
 
 ```bash
 # Start llama-server with your model (OpenAI-compatible API on port 8080)
@@ -2211,14 +2204,14 @@ So why can llama.cpp direct be faster on Qwen3.6 and Qwen3-Coder? Two reasons:
 cd llama.cpp-v0.4.1-vulkan
 ./build/bin/llama-server --help
 AMD_VULKAN_ICD=RADV ./build/bin/llama-server \
-  -m ~/models/Qwen3.6-35B-A3B-Q4_K_M.gguf \
+  -m ~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf \
   -ngl 999 -fa on --load-mode auto -c 8192 \
   --host 127.0.0.1 --port 8080
 ```
 
 For a client that supports this endpoint, configure `http://localhost:8080/v1`
 and verify its model ID, protocol and tool behavior. This pinned candidate has
-not yet passed the guide's hardware/server acceptance tests; it is not a speed
+passed the scoped direct/server acceptance controls in [the September 19 qualification](RUNTIME_QUALIFICATION_2026-09-19.md); it is not a speed
 promise or a replacement for the reboot-qualified Ollama route.
 
 This example is local-only. Remote serving needs a separately reviewed bind address, authentication, TLS and network access policy; consult the [llama-server documentation](https://github.com/ggml-org/llama.cpp/tree/master/tools/server) before exposing it.
@@ -2249,7 +2242,7 @@ A 128GB configuration supports the specific large artifacts documented here, not
 <details>
 <summary><strong>How does this compare to a Mac Studio?</strong></summary>
 
-Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro US price snapshot is $4,349 (July 27, 2026), and this guide measures 71.82-101.0 t/s on the larger current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row, and smaller active-parameter MoE scouts can be higher. Apple Silicon usually wins per-model bandwidth-sensitive inference. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
+Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro US price snapshot is $4,349 (July 27, 2026), and this guide measures 71.82-101.0 t/s on the larger current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row, and smaller active-parameter MoE scouts can be higher. This guide does not establish a matched Apple-versus-Strix per-model winner. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
 
 </details>
 
@@ -2645,7 +2638,7 @@ These are the highest-value tests to add next, because they answer practical buy
 - **DeepSeek V4 Flash current route:** the pinned 90.86GB ordinary `UD-IQ2_XXS` GGUF now loads and generates directly on official b10034 at 13.27 tg128 and passes a basic deterministic check. The smaller 46.98GiB REAP route still needs its separate ds4 runtime; future work should compare quality/runtime tradeoffs rather than repeat the resolved ordinary-GGUF load test.
 - **Tokens per watt with wall-power data:** Fail-Safe supplied valuable Corsair wall-power telemetry, and this guide now has Beelink amdgpu PPT telemetry. A Beelink wall-meter run would make the efficiency story publishable.
 - **NPU/iGPU telemetry tooling:** `xdna-top` and similar tools could make NPU-sidecar and iGPU contention claims easier to verify, but should be documented as instrumentation until they produce measured model rows.
-- **Lucebox / DFlash / PFlash:** highest-upside experimental route for 27B long-prompt + generation workloads, but local preflight currently needs an isolated ROCm/HIP developer toolchain with `hipcc`; older rocWMMA design notes are historical after the 2026 upstream removal.
+- **Lucebox / DFlash / PFlash:** highest-upside experimental route for 27B long-prompt + generation workloads, but the old preflight lacked a developer toolchain; an isolated HIP toolchain now built the v0.4.1 controls, but this does not qualify Lucebox/DFlash; older rocWMMA design notes are historical after the 2026 upstream removal.
 - **vLLM/AWQ/DFlash throughput:** keep this experimental until it has a reproducible OpenAI-compatible server row that competes with `llama-server`/Ollama for a real use case. Plain AWQ smoke works, but it is not the fastest default.
 - **Future Strix Halo successors:** Gorgon Halo / Ryzen AI Max 400 and later Medusa Halo / Ryzen AI Max 500 should be treated as future comparison targets, not current setup advice.
 

@@ -19,7 +19,7 @@ seo:
 
 # Best Strix Halo Mini PC for Local LLMs (2026)
 
-**Evidence reviewed:** August 30, 2026.
+**Evidence reviewed:** September 19, 2026.
 
 Start with the independent [Strix Halo Guide](https://strixhaloguide.com/) for
 the current setup and evidence model; use this page for the buyer comparison.
@@ -66,9 +66,11 @@ Prices below are dated observations, not current offers or a forecast. The first
 
 The recorded Beelink prices increased over this period. That history does not establish every vendor's cost structure or predict the next price. Compare the exact RAM/SSD variant, region, tax, delivery date and warranty before purchasing; a storefront's lowest advertised price can belong to a smaller configuration.
 
-The [September 13 configuration-specific snapshot](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_SNAPSHOT_2026-09-13.md) records exact RAM/SSD selections, complete-system versus mainboard scope, currency, fulfillment and seller-advertised warranty/return terms. Delivered tax/shipping/import totals remain unknown. The [July CSV](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/buyer_price_snapshot_2026-07-27.csv) is retained as historical evidence.
+The [September 19 exact-SKU snapshot](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_SNAPSHOT_2026-09-19.md) separates complete systems, mainboards, regions, selected variants and unresolved checkout fields. US-facing/USD observations: GMKtec EVO-X2 **128GB/2TB $3,649.99** (the $2,199.99 offer is **64GB/1TB**), Beelink **128GB/2TB $4,349** pre-sale with seller-stated dispatch within 35 days, Bosgame **128GB/2TB $2,999** with present ETA unresolved, Minisforum **128GB/2TB $3,799** with early-October shipping, and Nimo **128GB/2TB $3,899.99**, structured InStock but delivery ETA unresolved.
 
-In the **September 13, 2026 US-facing/USD snapshot**, the observed offers were Beelink 128GB/2TB $4,349, Bosgame M5 128GB/2TB US-plug $2,999, Framework 128GB **mainboard** $3,149, and Minisforum 128GB/2TB $3,799. GMKtec US $2,199.99 was a **64GB/1TB** selection, not a 128GB price. These observations were not re-priced for this editorial update. See the linked snapshot for source URLs and fulfillment conflicts; these are not checkout quotes. At that check, Corsair's exact 128GB/4TB SKU was out of stock with extracted price unknown; Nimo and HP selected quotes remained unresolved. Confirm present stock before ordering.
+Framework's current 128GB **mainboard** quote and HP's selected laptop quote remained unresolved. Corsair's exact 128GB/4TB SKU was out of stock with price unresolved. Tax/shipping/import are not complete delivered quotes. No older price was silently re-dated. GMKtec EVO-X3 128GB/2TB was $3,799.99 with MAX+ 395; EVO-X2 benchmarks do not qualify EVO-X3.
+
+GMKtec evidence here remains community/external, not a first-party exact-retail-SKU buyer-path campaign. The missing proof is a stock exact-SKU setup, text/image/tool/client and restart/reboot reproduction, including firmware, elapsed time and interventions. The [September 13 snapshot](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_SNAPSHOT_2026-09-13.md) and [July CSV](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/buyer_price_snapshot_2026-07-27.csv) remain historical.
 
 Earlier August claims of an exact AMD Micro Center price/exclusivity/start date and a Framework 192GB PRO 495 successor lacked sufficient linked primary substantiation and are withdrawn from current buying guidance. Stock banners do not predict future prices.
 
@@ -110,4 +112,4 @@ Every snapshot has its own date. Verify the exact region, RAM/SSD configuration,
 
 ---
 
-Community corrections are welcome — open an issue in the [repository](https://github.com/hogeheer499-commits/strix-halo-guide/issues). Pricing rows are dated snapshots, not live quotes. This page contains no affiliate links as of August 30, 2026; if that changes, links will be disclosed next to the relevant product and per [`VENDOR_DISCLOSURE.md`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/VENDOR_DISCLOSURE.md).
+Community corrections are welcome — open an issue in the [repository](https://github.com/hogeheer499-commits/strix-halo-guide/issues). Pricing rows are dated snapshots, not live quotes. This page contains no affiliate links as of September 19, 2026; if that changes, links will be disclosed next to the relevant product and per [`VENDOR_DISCLOSURE.md`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/VENDOR_DISCLOSURE.md).

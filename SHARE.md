@@ -46,7 +46,7 @@ The images can be regenerated with `python3 generate_preview.py`.
   reproductions.
 - Link benchmark claims to the most specific evidence page available.
 
-The repository contains no affiliate links as of August 30, 2026. If that
+The repository contains no affiliate links as of September 19, 2026. If that
 changes, the relevant links and relationships must be disclosed under
 [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md).
 
@@ -176,7 +176,7 @@ public headline claims map to their sources in
 
 ## Check Freshness Before Sharing Numbers
 
-Evidence was reviewed on August 30, 2026. New availability checked September 19 includes Ollama 0.34.2; the historical August check covered Ollama 0.33.2 and `llama.cpp`
+Evidence was reviewed on September 19, 2026. New availability checked September 19 includes Ollama 0.34.2; the historical August check covered Ollama 0.33.2 and `llama.cpp`
 v0.3.0 / b10687. Those were checked targets on that date; they are not
 automatic replacements for the runtime versions attached to older measured
 rows.

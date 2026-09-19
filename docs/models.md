@@ -19,7 +19,15 @@ seo:
 
 # AMD Strix Halo Model Hub
 
-**Evidence reviewed:** August 30, 2026.
+**September 19 functional update:** the [scoped runtime qualification](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/RUNTIME_QUALIFICATION_2026-09-19.md)
+records text (Qwen3.6), image (Qwen2.5-VL), executed tools (Devstral) and pinned
+Open WebUI on the existing 0.32.15 service after restart. Isolated 0.34.2 is
+useful but not default; official Qwen3.8 and full-reboot candidate acceptance
+remain open. The tested host's Ollama listener was LAN-reachable, not local-only.
+Released llama.cpp v0.4.1 passed bounded direct/server/HIP controls; this does
+not qualify every model, long-context shape or maximum-memory allocation.
+
+**Evidence reviewed:** September 19, 2026.
 
 This page keeps two claim classes separate: models measured by this guide on its
 primary Strix Halo machine, and publisher-listed artifacts whose remaining
@@ -129,6 +137,6 @@ direct, API/server, speculative, capacity, and community results separate.
 
 ## Independence And Affiliate Disclosure
 
-This guide contains no affiliate links as of August 30, 2026. Future affiliate,
+This guide contains no affiliate links as of September 19, 2026. Future affiliate,
 loaned, gifted, sponsored, or early-access relationships must be disclosed near
 the relevant links or results and do not buy positive conclusions.

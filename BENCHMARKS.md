@@ -1,6 +1,9 @@
 # Benchmark Results - Current Snapshot
 
-**Benchmarks reviewed:** August 30, 2026.
+**Benchmarks reviewed:** September 19, 2026.
+
+This is an [active claim/scope review](ACTIVE_EVIDENCE_REVIEW_2026-09-19.md),
+not a remeasurement date. Historical runs keep their exact original dates.
 
 September 13 label reconciliation: dated campaign takeaways use “current”,
 “latest” and “headline” as of that campaign. The later Qwen3-Coder speed-first
@@ -76,7 +79,7 @@ These rows answer three practical questions: whether the multi-user Vulkan cliff
 | Official `llama.cpp` b10046 ROCm/HIP, Qwen3-0.6B Q8_0 | 4666.05 pp512 / 208.73 tg128; 120,124 MiB free UMA detected | Historical small-model allocation sentinel. It logged `ROCm_Host` buffers, but open issue #26209 means it did not qualify long-context, multimodal, multi-slot, or practical-model correctness. |
 | Nemotron 3 Nano Omni 30B-A3B MXFP4, b10034 | 64.26 tg128 | Exact-artifact runtime improvement versus the earlier 56.56 t/s b9747 row. |
 | Nemotron Cascade 2 30B-A3B IQ4_XS | 78.95 tg128 | Current NVIDIA-branded direct text route with small correctness checks. |
-| Qwen AgentWorld 35B-A3B IQ4_XS | 65.65 tg128 | Runnable agent/environment route with a 128K Q8 KV allocation smoke. |
+| Qwen AgentWorld 35B-A3B IQ4_XS | Rate withheld; see [provenance correction](EVIDENCE_CORRECTIONS.md#agentworld-retained-run-disagreement) | Runnable agent/environment route with a 128K Q8 KV allocation smoke. |
 | Nemotron 3 Nano Omni NVFP4 plus F16 projector | 53.21 tg128 plus image OCR smoke | Experimental multimodal route; OCR smoke is not a broad vision or audio quality claim. |
 | Audex text GGUF MXFP4 | 60.73 tg128 | Portable text route only. Full audio requires a separate runtime, and the model license is NVIDIA OneWay Noncommercial. |
 

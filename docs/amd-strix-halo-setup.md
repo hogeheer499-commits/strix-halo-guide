@@ -19,6 +19,14 @@ seo:
 
 # AMD Strix Halo Setup: BIOS, UMA, IOMMU, Ubuntu and Local LLMs
 
+**September 19 functional update:** the [scoped runtime qualification](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/RUNTIME_QUALIFICATION_2026-09-19.md)
+records text (Qwen3.6), image (Qwen2.5-VL), executed tools (Devstral) and pinned
+Open WebUI on the existing 0.32.15 service after restart. Isolated 0.34.2 is
+useful but not default; official Qwen3.8 and full-reboot candidate acceptance
+remain open. The tested host's Ollama listener was LAN-reachable, not local-only.
+Released llama.cpp v0.4.1 passed bounded direct/server/HIP controls; this does
+not qualify every model, long-context shape or maximum-memory allocation.
+
 **Canonical readable setup:**
 [strixhaloguide.com/amd-strix-halo-setup/](https://strixhaloguide.com/amd-strix-halo-setup/).
 This GitHub Pages page is the technical mirror; exact evidence remains in the
@@ -31,7 +39,7 @@ It targets Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems with 96GB or
 Pro; BIOS labels, firmware, cooling and power modes can differ on other OEM
 systems.
 
-**Setup reviewed:** August 30, 2026. Exact benchmark claims remain canonical in
+**Setup reviewed:** September 19, 2026. Exact benchmark claims remain canonical in
 the repository's structured data and raw evidence.
 
 The setup script preserves administrator Ollama drop-ins and stops on unresolved

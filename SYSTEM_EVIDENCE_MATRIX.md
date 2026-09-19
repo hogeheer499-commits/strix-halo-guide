@@ -1,5 +1,11 @@
 # AMD Strix Halo System Evidence Matrix
 
+**September 19 scoped qualification:** [the existing-user runtime result](RUNTIME_QUALIFICATION_2026-09-19.md)
+separates the 0.32.15 service/client pass, useful-but-not-default isolated 0.34.2,
+and v0.4.1 direct/server/HIP controls. Historical reboot default 0.31.2 and
+Qwen3.8-on-0.32.13 measurements remain separate; official Qwen3.8 on the candidate
+and a new full-host reboot are not qualified.
+
 This matrix summarizes the public system-level evidence represented in the
 Strix Halo Guide. It is designed for buyers, reviewers, contributors, and OEM
 engineering teams that need to see what has actually been measured, what kind

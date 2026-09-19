@@ -19,12 +19,20 @@ seo:
 
 # Qwen3.8 27B on AMD Strix Halo
 
+**September 19 functional update:** the [scoped runtime qualification](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/RUNTIME_QUALIFICATION_2026-09-19.md)
+records text (Qwen3.6), image (Qwen2.5-VL), executed tools (Devstral) and pinned
+Open WebUI on the existing 0.32.15 service after restart. Isolated 0.34.2 is
+useful but not default; official Qwen3.8 and full-reboot candidate acceptance
+remain open. The tested host's Ollama listener was LAN-reachable, not local-only.
+Released llama.cpp v0.4.1 passed bounded direct/server/HIP controls; this does
+not qualify every model, long-context shape or maximum-memory allocation.
+
 Qwen3.8 27B runs locally on AMD Ryzen AI MAX+ 395 / Radeon 8060S Strix Halo
 systems. The useful question is no longer only “does it run?” It is which
 official, stock, MTP, DFlash, ROCmFP4, or performance-fork route fits the
 workload—and which published numbers are actually comparable.
 
-**Evidence reviewed:** August 30, 2026.
+**Evidence reviewed:** September 19, 2026.
 
 Project home: [Strix Halo Guide](https://strixhaloguide.com/). The [canonical Qwen3.8 evidence page](https://strixhaloguide.com/qwen38-strix-halo/) is on the project domain; this page remains a technical mirror.
 
@@ -84,7 +92,7 @@ or submit a [benchmark report](https://github.com/hogeheer499-commits/strix-halo
 
 ## Independence And Affiliate Disclosure
 
-This guide contains no affiliate links as of August 30, 2026. Future affiliate,
+This guide contains no affiliate links as of September 19, 2026. Future affiliate,
 loaned, gifted, sponsored, or early-access relationships must be disclosed near
 the relevant links/results and do not buy positive conclusions. Community
 results remain separate from first-party measurements. The public

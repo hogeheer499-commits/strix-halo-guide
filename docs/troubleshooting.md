@@ -19,7 +19,15 @@ seo:
 
 # AMD Strix Halo Local LLM Troubleshooting
 
-**Evidence reviewed:** August 30, 2026.
+**September 19 functional update:** the [scoped runtime qualification](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/RUNTIME_QUALIFICATION_2026-09-19.md)
+records text (Qwen3.6), image (Qwen2.5-VL), executed tools (Devstral) and pinned
+Open WebUI on the existing 0.32.15 service after restart. Isolated 0.34.2 is
+useful but not default; official Qwen3.8 and full-reboot candidate acceptance
+remain open. The tested host's Ollama listener was LAN-reachable, not local-only.
+Released llama.cpp v0.4.1 passed bounded direct/server/HIP controls; this does
+not qualify every model, long-context shape or maximum-memory allocation.
+
+**Evidence reviewed:** September 19, 2026.
 
 This page extracts the most useful checks from the canonical
 [README troubleshooting](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#troubleshooting),
@@ -108,7 +116,7 @@ service startup files and retry. Keep the older `11.5.1` value only in commands
 that deliberately reproduce the dated b8460/kernel 6.19.4 evidence. See the
 [current ROCm migration check](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#current-rocm-migration-check-july-2026).
 
-## HIP Loads, But Correctness Is Not Yet Qualified
+## HIP Loads, But Does The Exact Workload Remain Correct?
 
 **Symptom:** long-context, vision, or multi-slot HIP output repeats or becomes
 garbled on the integrated-host compute path described by upstream reports.
@@ -118,8 +126,11 @@ b10687 and released v0.4.1, recording the model, prompt, context, backend commit
 usable memory and buffer path. [Issue #26209](https://github.com/ggml-org/llama.cpp/issues/26209)
 remains open. [PR #25863](https://github.com/ggml-org/llama.cpp/pull/25863) closed
 unmerged; [#28604](https://github.com/ggml-org/llama.cpp/pull/28604) shipped the
-revert mitigation. Broader scheduler PR #27311 remains open. Released mitigation
-does not mean the guide has qualified long-context, image or multi-slot HIP.
+revert mitigation. Broader scheduler PR #27311 remains open. The September 19
+Coder controls passed on the release at 4,579 and 14,029 prompt tokens and with
+two concurrent distinct markers; historical b10687 failed retrieval and both
+slots. Both builds passed the Gemma image fixture. These are scoped controls,
+not general Qwen3.8, maximum-memory or all-model HIP qualification.
 
 **Fix:** pin a known-good or patched HIP build and run exact-output controls
 before making a practical-model recommendation; use the documented Vulkan route
@@ -130,6 +141,6 @@ Read the scoped
 
 ## Independence And Affiliate Disclosure
 
-This guide contains no affiliate links as of August 30, 2026. Future affiliate,
+This guide contains no affiliate links as of September 19, 2026. Future affiliate,
 loaned, gifted, sponsored, or early-access relationships must be disclosed near
 the relevant links or results and do not buy positive conclusions.
