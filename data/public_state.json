@@ -5,8 +5,8 @@
   "freshness_max_age_days": 21,
   "publication": {
     "expected_content_revision": "trust-repair-2026-09-19",
-    "deployment_verified": null,
-    "scope": "Expected editorial revision only; deployment is unverified until the canonical destination is checked after approved publication"
+    "deployment_verified": "2026-09-19T17:04:21Z",
+    "scope": "Canonical destination verified after approved publication; this is not a new evidence review or runtime qualification"
   },
   "storefront_observed": "2026-09-13",
   "date_scope": "evidence_reviewed is not a new measurement date; individual evidence bundles retain measurement and qualification dates; availability_checked and storefront_observed are separate observations",
