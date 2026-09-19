@@ -6,8 +6,8 @@
   "freshness_max_age_days": 21,
   "publication": {
     "expected_content_revision": "closeout-2026-09-19",
-    "deployment_verified": null,
-    "scope": "Final-closeout candidate; set verified only after canonical live checks"
+    "deployment_verified": "2026-09-19T21:58:27Z",
+    "scope": "Final-closeout canonical deployment verified: nine routes, exact content apart from Cloudflare email obfuscation, metadata, headers, redirects, 404, strict live checker and authority audit; not a new hardware measurement date"
   },
   "storefront_observed": "2026-09-19",
   "date_scope": "evidence_reviewed is not a new measurement date; individual evidence bundles retain measurement and qualification dates; availability_checked and storefront_observed are separate observations",
