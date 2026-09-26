@@ -1,5 +1,5 @@
 2026-08-30T07:25:16+02:00
-Linux hoge-heer-GTR-Pro 7.0.0-30-generic #30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+Linux <host> 7.0.0-30-generic #30~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Aug  7 13:27:52 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
 performance
                total        used        free      shared  buff/cache   available
 Mem:           124Gi       7.8Gi        60Gi        70Mi        57Gi       117Gi

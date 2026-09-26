@@ -128,13 +128,14 @@ Before opening a PR:
 1. Keep changes scoped to one topic.
 2. Add raw evidence or source links for benchmark changes.
 3. Credit community contributors and link to the original issue/comment/source.
-4. Run the validator:
+4. Run the validator and the offline regression tests (CI runs both):
 
 ```bash
 python3 scripts/validate_repo.py
+python3 -m unittest discover -s tests
 ```
 
-If you cannot run the validator, say so in the PR.
+If you cannot run either command, say so in the PR.
 
 ## Style Guidelines
 

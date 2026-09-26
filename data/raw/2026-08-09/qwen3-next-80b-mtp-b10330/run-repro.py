@@ -15,13 +15,13 @@ import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parent
 SERVER = pathlib.Path(
-    "/home/hoge-heer/local-scratch/llama.cpp-b10330/build-vulkan/bin/llama-server"
+    "~/local-scratch/llama.cpp-b10330/build-vulkan/bin/llama-server"
 )
 MODEL = pathlib.Path(
-    "/home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf"
+    "~/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf"
 )
 DRAFT = pathlib.Path(
-    "/home/hoge-heer/local-scratch/models/qwen3-next-mtp/"
+    "~/local-scratch/models/qwen3-next-mtp/"
     "Qwen3-Next-80B-A3B-Instruct-MTP-ONLY-Q4_K_M.gguf"
 )
 PORT = 18103

@@ -15,7 +15,7 @@ validation run, not a full sweep.
 | Vulkan driver | Mesa RADV 26.0.6, kisak-mesa PPA |
 | llama.cpp | b9010 / `d05fe1d7d` |
 | Server | `llama-server` Vulkan/RADV |
-| Model | `/home/hoge-heer/models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf` |
+| Model | `~/models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf` |
 | Port | `127.0.0.1:18080` |
 | Parallel slots | 8 |
 | Context | 32768 total, 4096 per slot |
@@ -34,8 +34,8 @@ state. They are preserved as captured rather than rewritten.
 ```bash
 AMD_VULKAN_ICD=RADV \
 VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
-/home/hoge-heer/llama-cpp-latest/build-vulkan/bin/llama-server \
-  -m /home/hoge-heer/models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf \
+~/llama-cpp-latest/build-vulkan/bin/llama-server \
+  -m ~/models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf \
   -fa on -ngl 999 --no-mmap \
   -c 32768 -np 8 -cb \
   -b 2048 -ub 512 --no-cache-prompt \

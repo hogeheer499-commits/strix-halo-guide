@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -u
 
-repo=/home/hoge-heer/strix-halo-guide
+repo=~/strix-halo-guide
 runner=$repo/local-scratch/run_density_bench.sh
-out=/home/hoge-heer/benchmark-tools/density-results-20260713
-vk=/home/hoge-heer/benchmark-tools/llama-b9979-density-build/bin/llama-batched-bench
-rocm=/home/hoge-heer/strix-halo-bench-tools/lemonade-llamacpp-rocm-b1259-gfx1151/extracted/llama-batched-bench
-model30=/home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
-model80=/home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf
+out=~/benchmark-tools/density-results-20260713
+vk=~/benchmark-tools/llama-b9979-density-build/bin/llama-batched-bench
+rocm=~/strix-halo-bench-tools/lemonade-llamacpp-rocm-b1259-gfx1151/extracted/llama-batched-bench
+model30=~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
+model80=~/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf
 dpm=/sys/class/drm/card1/device/power_dpm_force_performance_level
 temp_file=/sys/class/drm/card1/device/hwmon/hwmon6/temp1_input
 
@@ -30,7 +30,7 @@ cool_run() {
     sleep 2
 
     echo "[$(date -Is)] start $label at $(cat "$temp_file") mC" | tee -a "$out/campaign.log"
-    if runuser -u hoge-heer -- env HOME=/home/hoge-heer "$runner" "$label" "$out/$group" "$model" "$@"; then
+    if runuser -u hoge-heer -- env HOME=~ "$runner" "$label" "$out/$group" "$model" "$@"; then
         echo "[$(date -Is)] pass $label" | tee -a "$out/campaign.log"
     else
         echo "[$(date -Is)] fail $label status=$?" | tee -a "$out/campaign.log"

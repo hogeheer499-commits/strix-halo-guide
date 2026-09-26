@@ -1,5 +1,5 @@
 2026-06-03T02:28:33+02:00
-Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Linux <host> 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/nvme0n1p6  1.4T  1.2T  114G  92% /
                total        used        free      shared  buff/cache   available

@@ -1,7 +1,7 @@
 date: 2026-06-07T02:26:25+02:00
 host: Beelink GTR9 Pro / Ryzen AI MAX+ 395 / Radeon 8060S / 128GB unified memory
-llama_cpp_binary: /home/hoge-heer/llama.cpp-b9544/build-vulkan/bin/llama-bench
-usage: /home/hoge-heer/llama.cpp-b9544/build-vulkan/bin/llama-bench [options]
+llama_cpp_binary: ~/llama.cpp-b9544/build-vulkan/bin/llama-bench
+usage: ~/llama.cpp-b9544/build-vulkan/bin/llama-bench [options]
 
 options:
   -h, --help
@@ -59,10 +59,10 @@ test parameters:
 Multiple values can be given for each parameter by separating them with ','
 or by specifying the parameter multiple times. Ranges can be given as
 'first-last' or 'first-last+step' or 'first-last*mult'.
-model: /home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+model: ~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
 model_sha256: 56a7d00783419bcb0ae566253c371bcb3678261bb79881a553539f5679864db4
-command: /home/hoge-heer/llama.cpp-b9544/build-vulkan/bin/llama-bench -dev Vulkan0 -m /home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf -fa 1 -ngl 999 -mmp 0 -b 2048 -ub 512 -t 16 --poll 50 -p 512 -n 128 -r 10 -o csv
-Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+command: ~/llama.cpp-b9544/build-vulkan/bin/llama-bench -dev Vulkan0 -m ~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf -fa 1 -ngl 999 -mmp 0 -b 2048 -ub 512 -t 16 --poll 50 -p 512 -n 128 -r 10 -o csv
+Linux <host> 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
 ==========
 VULKANINFO
 ==========

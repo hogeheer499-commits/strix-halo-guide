@@ -1,6 +1,6 @@
 case=mtp-draft4-t16-p10
 date=2026-05-17T12:41:52+02:00
-model=/home/hoge-heer/benchmark-models/qwen36-mtp-iq4xs-q8nextn/Qwen3.6-35B-A3B-MTP-IQ4_XS-Q8nextn.gguf
+model=~/benchmark-models/qwen36-mtp-iq4xs-q8nextn/Qwen3.6-35B-A3B-MTP-IQ4_XS-Q8nextn.gguf
 extra_flags=--spec-type draft-mtp --spec-draft-n-max 4
 
 mean_predicted_per_second=84.961

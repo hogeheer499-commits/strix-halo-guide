@@ -10,7 +10,7 @@
 0.00.018.175 I srv          init: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
 0.00.018.251 I srv         start: binding port with default address family
 0.00.019.413 I srv          main: loading model
-0.00.019.421 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf'
+0.00.019.421 I srv    load_model: loading model '~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf'
 0.00.019.442 I common_init_result: fitting params to device memory ...
 0.00.019.444 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
 0.00.287.278 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden

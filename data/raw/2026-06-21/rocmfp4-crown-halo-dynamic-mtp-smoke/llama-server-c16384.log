@@ -8,12 +8,12 @@
 0.00.016.856 I srv          init: the WebUI is disabled
 0.00.016.917 I srv         start: binding port with default address family
 0.00.018.086 I srv          main: loading model
-0.00.018.089 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/rocmfp4-chadrock/qwen36-35b-crown-halo-dyn/Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf'
+0.00.018.089 I srv    load_model: loading model '~/benchmark-models/rocmfp4-chadrock/qwen36-35b-crown-halo-dyn/Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf'
 0.00.018.113 I common_init_result: fitting params to device memory ...
 0.00.018.114 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
 0.02.333.840 W llama_context: n_ctx_seq (16384) < n_ctx_train (262144) -- the full capacity of the model will not be utilized
 0.02.392.198 W common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
-0.02.611.983 I srv    load_model: creating MTP draft context against the target model '/home/hoge-heer/benchmark-models/rocmfp4-chadrock/qwen36-35b-crown-halo-dyn/Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf'
+0.02.611.983 I srv    load_model: creating MTP draft context against the target model '~/benchmark-models/rocmfp4-chadrock/qwen36-35b-crown-halo-dyn/Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf'
 0.02.612.009 W llama_context: n_ctx_seq (16384) < n_ctx_train (262144) -- the full capacity of the model will not be utilized
 0.02.641.267 I srv    load_model: initializing slots, n_slots = 1
 0.02.668.391 I common_context_can_seq_rm: the context supports bounded partial sequence removal

@@ -51,7 +51,7 @@ explicit `-dev Vulkan0`.
 ## Command Shape
 
 ```bash
-/home/hoge-heer/benchmark-tools/llama-b9851/llama-b9851/llama-bench \
+~/benchmark-tools/llama-b9851/llama-b9851/llama-bench \
   -m /path/to/model.gguf \
   -dev Vulkan0 -fa on -ngl 999 -mmp 0 -b 2048 -ub 512 \
   -p 512 -n 128 -r 50 -o csv

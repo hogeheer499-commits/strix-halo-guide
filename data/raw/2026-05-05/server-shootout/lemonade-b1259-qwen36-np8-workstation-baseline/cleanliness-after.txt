@@ -64,38 +64,11 @@ NAMES     STATUS    PORTS     IMAGE
 NAMES       STATUS      PORTS       IMAGE
 
 == Listening Ports ==
-tcp   LISTEN 0      100                               127.0.0.1:22620      0.0.0.0:*    users:(("nxrunner.bin",pid=11487,fd=31),("nxnode.bin",pid=11441,fd=31))
-tcp   LISTEN 0      100                               127.0.0.1:22619      0.0.0.0:*                                                                           
-tcp   LISTEN 0      128                               127.0.0.1:7001       0.0.0.0:*    users:(("nxnode.bin",pid=11441,fd=23))                                 
-tcp   LISTEN 0      100                               127.0.0.1:12001      0.0.0.0:*    users:(("nxnode.bin",pid=11441,fd=17))                                 
-tcp   LISTEN 0      511                                 0.0.0.0:3773       0.0.0.0:*    users:(("t3code",pid=47906,fd=3))                                      
-tcp   LISTEN 0      511                                 0.0.0.0:3776       0.0.0.0:*    users:(("node",pid=187958,fd=21))                                      
-tcp   LISTEN 0      4096                                0.0.0.0:22         0.0.0.0:*                                                                           
-tcp   LISTEN 0      2048                              127.0.0.1:8910       0.0.0.0:*    users:(("python",pid=136155,fd=13))                                    
-tcp   LISTEN 0      128                                   [::1]:7001          [::]:*    users:(("nxnode.bin",pid=11441,fd=20))                                 
-tcp   LISTEN 0      4096                                   [::]:22            [::]:*                                                                           
+<redacted 10 lines of listening ports on 2026-09-26; benchmark runtime lines kept>
 
 == Top CPU Processes ==
     PID    PPID STAT %CPU %MEM COMMAND
-   2922       1 S<l   6.3  3.2 qemu-system-x86
-  48417   47611 Sl    3.0  0.2 t3code
-   9946    9944 Sl+   2.8  0.0 Xorg
-  47906   47552 Sl    2.1  0.4 t3code
- 655058  655050 Sl    2.1  0.0 codex
-  47888   47608 Sl    1.8  0.1 t3code
-  10306    2310 Ssl   1.2  0.2 gnome-shell
-   1408       1 Ss    0.5  0.0 dbus-daemon
-  11528   10306 Sl    0.3  0.0 gjs
- 537968    2310 Sl    0.2  0.4 firefox
-   2607    2310 Ssl   0.2  0.0 pipewire
-   2630    2310 SLsl  0.1  0.0 pipewire-pulse
-   1417       1 Ssl   0.1  0.0 polkitd
-   1127       2 S     0.1  0.0 napi/phy0-0
-   3433       1 Ssl   0.1  0.0 nxserver.bin
- 136155    2310 Ssl   0.1  0.0 python
- 653208       2 I     0.0  0.0 kworker/u128:0-gfx_0.0.0
-   3429       1 Ssl   0.0  0.0 cloudflared
-  10071       1 S     0.0  0.0 autocutsel
+<redacted 19 lines of top cpu processes on 2026-09-26; benchmark runtime lines kept>
 
 == Verdict ==
 Blockers: 0

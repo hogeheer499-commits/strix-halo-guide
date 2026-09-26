@@ -1,13 +1,13 @@
 2026-05-16T12:43:33+02:00
-Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Linux <host> 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
 TARGET                 SOURCE         FSTYPE OPTIONS
-/home/hoge-heer/models /dev/nvme0n1p4 ext4   rw,noatime
+~/models /dev/nvme0n1p4 ext4   rw,noatime
 Filesystem     Type  Size  Used Avail Use% Mounted on
 /dev/nvme0n1p6 ext4  1.4T  858G  417G  68% /
-/dev/nvme0n1p4 ext4  458G  380G   78G  84% /home/hoge-heer/models
+/dev/nvme0n1p4 ext4  458G  380G   78G  84% ~/models
 ggml_vulkan: Found 1 Vulkan devices:
 ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 0 | matrix cores: KHR_coopmat
-usage: /home/hoge-heer/llama-cpp-upstream-2026-05-16/build-vulkan/bin/llama-bench [options]
+usage: ~/llama-cpp-upstream-2026-05-16/build-vulkan/bin/llama-bench [options]
 
 options:
   -h, --help

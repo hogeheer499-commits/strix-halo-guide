@@ -4,6 +4,8 @@ These are community-reported notes from [Fail-Safe](https://github.com/Fail-Safe
 
 This is advanced Strix Halo cluster material. It is not needed for a normal one-machine local AI setup.
 
+> **RPC protocol version caveat (checked 2026-09-25):** `llama.cpp` v0.5.0 (b11146) raised the RPC protocol major version from 6 to 7 ([PR #28789](https://github.com/ggml-org/llama.cpp/pull/28789)). A client rejects an `rpc-server` with a different major version ("RPC server version mismatch"), so every node in a cluster must run builds with the same RPC protocol major; mixing pre-v0.5.0 and v0.5.0+ builds breaks the cluster. The tuning notes here were measured on older builds and were not rerun on v7.
+
 Structured data:
 
 - [`data/community_usb4_latency.csv`](data/community_usb4_latency.csv)

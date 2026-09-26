@@ -16,7 +16,7 @@ validation run, not a full sweep.
 | llama.cpp | `e77056f` |
 | ROCm build | 7.13.0a20260421 |
 | Server | `llama-server` ROCm |
-| Model | `/home/hoge-heer/models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf` |
+| Model | `~/models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf` |
 | Port | `127.0.0.1:18081` |
 | Parallel slots | 8 |
 | Context | 32768 total, 4096 per slot |
@@ -41,7 +41,7 @@ https://github.com/lemonade-sdk/llamacpp-rocm/releases/download/b1259/llama-b125
 Local path:
 
 ```text
-/home/hoge-heer/strix-halo-bench-tools/lemonade-llamacpp-rocm-b1259-gfx1151/extracted
+~/strix-halo-bench-tools/lemonade-llamacpp-rocm-b1259-gfx1151/extracted
 ```
 
 Archive SHA256:
@@ -58,7 +58,7 @@ HSA_OVERRIDE_GFX_VERSION=11.5.1 \
 HIP_VISIBLE_DEVICES=0 \
 ROCBLAS_USE_HIPBLASLT=1 \
 $TOOL/llama-bench \
-  -m /home/hoge-heer/models/Qwen_Qwen3-0.6B-Q8_0.gguf \
+  -m ~/models/Qwen_Qwen3-0.6B-Q8_0.gguf \
   -ngl 999 -fa 1 -mmp 0 -p 32 -n 16 -r 1
 ```
 
@@ -70,14 +70,14 @@ Observed tiny preflight:
 ## Server Command
 
 ```bash
-TOOL=/home/hoge-heer/strix-halo-bench-tools/lemonade-llamacpp-rocm-b1259-gfx1151/extracted
+TOOL=~/strix-halo-bench-tools/lemonade-llamacpp-rocm-b1259-gfx1151/extracted
 
 LD_LIBRARY_PATH=$TOOL \
 HSA_OVERRIDE_GFX_VERSION=11.5.1 \
 HIP_VISIBLE_DEVICES=0 \
 ROCBLAS_USE_HIPBLASLT=1 \
 $TOOL/llama-server \
-  -m /home/hoge-heer/models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf \
+  -m ~/models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf \
   -fa on -ngl 999 --no-mmap \
   -c 32768 -np 8 -cb \
   -b 2048 -ub 512 --no-cache-prompt \

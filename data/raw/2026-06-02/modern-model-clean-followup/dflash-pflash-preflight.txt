@@ -1,12 +1,12 @@
 # DFlash/PFlash local preflight
 2026-06-02T18:27:54+02:00
 ## local dirs
-/home/hoge-heer/.cache/huggingface/hub/models--z-lab--Qwen3.6-27B-DFlash
-/home/hoge-heer/strix-halo-bench-tools/hec-vllm-awq4-qwen
-/home/hoge-heer/strix-halo-guide/local-scratch/lucebox-hub
-/home/hoge-heer/strix-halo-guide/local-scratch/lucebox-hub/.git/modules/dflash
-/home/hoge-heer/strix-halo-guide/local-scratch/lucebox-hub/dflash
-/home/hoge-heer/strix-halo-guide/local-scratch/server-shootout/kyuz0-vllm-awq-qwen36-t3-baseline
+~/.cache/huggingface/hub/models--z-lab--Qwen3.6-27B-DFlash
+~/strix-halo-bench-tools/hec-vllm-awq4-qwen
+~/strix-halo-guide/local-scratch/lucebox-hub
+~/strix-halo-guide/local-scratch/lucebox-hub/.git/modules/dflash
+~/strix-halo-guide/local-scratch/lucebox-hub/dflash
+~/strix-halo-guide/local-scratch/server-shootout/kyuz0-vllm-awq-qwen36-t3-baseline
 ## tools
 /usr/bin/docker
 Docker version 29.1.3, build 29.1.3-0ubuntu3~24.04.2

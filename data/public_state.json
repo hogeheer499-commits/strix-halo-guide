@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "evidence_reviewed": "2026-09-19",
-  "evidence_reviewed_human": "September 19, 2026",
-  "evidence_review_scope": "ACTIVE_EVIDENCE_REVIEW_2026-09-19.md; active recommendations and source scope, not remeasurement of historical archives",
+  "evidence_reviewed": "2026-09-26",
+  "evidence_reviewed_human": "September 26, 2026",
+  "evidence_review_scope": "ACTIVE_EVIDENCE_REVIEW_2026-09-26.md; independent audit of active recommendations, upstream availability, buyer context and vendor surfaces, not remeasurement of historical archives",
   "freshness_max_age_days": 21,
   "publication": {
     "expected_content_revision": "closeout-2026-09-19",
@@ -10,7 +10,7 @@
     "scope": "Final-closeout canonical deployment verified: nine routes, exact content apart from Cloudflare email obfuscation, metadata, headers, redirects, 404, strict live checker and authority audit; not a new hardware measurement date"
   },
   "storefront_observed": "2026-09-19",
-  "date_scope": "evidence_reviewed is not a new measurement date; individual evidence bundles retain measurement and qualification dates; availability_checked and storefront_observed are separate observations",
+  "date_scope": "evidence_reviewed is not a new measurement date; individual evidence bundles retain measurement and qualification dates; availability_checked, upstream_availability_checked and storefront_observed are separate observations",
   "release": {
     "current": "v3.0.0",
     "date": "2026-08-25"
@@ -23,15 +23,28 @@
     "ollama_existing_service_qualified": "0.32.15; scoped functions after service restart, no new full reboot",
     "ollama_candidate_decision": "0.34.2 useful but not default; official Qwen3.8 and normal upgrade/client/reboot acceptance open",
     "llama_cpp_functional_qualification": "v0.4.1 b29c606; scoped Coder direct/server and HIP controls; see RUNTIME_QUALIFICATION_2026-09-19.md",
-    "llama_cpp_current_release": "v0.4.1",
+    "llama_cpp_current_release": "v0.5.0",
+    "llama_cpp_current_release_build": "b11146; released 2026-09-23; available, not qualified here",
+    "llama_cpp_latest_build_available": "b11191",
     "llama_cpp_current_build_checked": "b10687",
-    "llama_cpp_build_scope": "Latest locally measured numbered sentinel; checked August 30, not latest upstream availability"
+    "llama_cpp_build_scope": "Latest locally measured numbered sentinel; checked August 30, not latest upstream availability",
+    "upstream_availability_checked": "2026-09-25",
+    "upstream_availability_scope": "Latest available only; not latest measured and not recommended. See ROCM_VLLM_BUGWATCH.md Current Upstream Snapshot",
+    "ollama_latest_stable_available": "0.34.4",
+    "ollama_latest_prerelease_available": "0.40.0-rc0",
+    "vllm_latest_available": "0.30.0",
+    "sglang_latest_available": "0.5.20; gfx1151 Docker image on ROCm 7.2.4",
+    "lemonade_latest_available": "v2026.39.1",
+    "rocm_cli_latest_stable_available": "v0.1.0; first stable tag 2026-09-23",
+    "rocm_vendor_support_scope": "ROCm Core SDK 10.0.0 release notes dated 2026-08-26; vendor documentation, not local qualification; measured host is outside AMD's listed Ryzen OS matrix"
   },
   "qwen38": {
     "official_model": "Qwen3.8 27B",
     "first_party_generation_tps": 20.42,
     "first_party_prompt_tps": 292.49,
     "first_party_warm_repeats": 9,
+    "first_party_route": "Ollama API with Ollama-default MTP drafting (draft_num_predict 4; draft-mtp logged in the same-service 64K run; per-run log for the 4K warm runs not captured); not a no-draft result",
+    "first_party_min_ollama": "0.32.12",
     "first_party_exact_retrieval_tokens": 50059,
     "external_exact_retrieval_tokens": 261130,
     "external_retrieval_passes": "13/13",
@@ -44,9 +57,16 @@
     "community_benchmark_contributors": 10
   },
   "public_project_snapshot": {
-    "date": "2026-08-27",
-    "stars": 300,
-    "forks": 21
+    "date": "2026-09-25",
+    "stars": 345,
+    "forks": 24,
+    "source": "GitHub repository page, observed 2026-09-25",
+    "previous": {
+      "date": "2026-08-27",
+      "stars": 300,
+      "forks": 21,
+      "source": "GitHub API snapshot"
+    }
   },
   "affiliate_status": {
     "links_present": false,

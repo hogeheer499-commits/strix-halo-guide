@@ -20,9 +20,10 @@ That uncertainty creates adoption friction. A technically strong AI PC can still
 
 This guide reduces setup friction, provides reproducible benchmark evidence, and helps buyers evaluate AMD local-AI hardware with clearer expectations. It gives developers and buyers a practical path from "what should I install?" to "which backend, model, and settings should I try first?"
 
-The repo also has a visible public project signal: 300 GitHub stars, 21 forks,
-10 credited community benchmark contributors, and 13 Strix Halo-class owner
-systems or independent sources represented as of 2026-08-27. These public
+The repo also has a visible public project signal: 345 GitHub stars and 24 forks
+as of 2026-09-25 (GitHub repository page; 300 stars and 21 forks on 2026-08-27),
+plus 10 credited community benchmark contributors and 13 Strix Halo-class owner
+systems or independent sources represented as of the 2026-09-19 evidence review. These public
 counts should not be treated as attributable buyer conversion or the main
 value proposition. The main value is the proof layer below: reproducible
 public evidence that makes the hardware easier to evaluate, trust, support,
@@ -31,7 +32,7 @@ review, and buy.
 The technical proof layer already includes:
 
 - Setup and workflow guidance in [`README.md`](README.md).
-- Accepted upstream engineering in [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md): 15+ merged contributions with direct merge and review links, including `llama.cpp`, AMD's Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf. This demonstrates the ability to move from reproduction through validation and upstream review without misrepresenting those merges as vendor endorsement or Strix Halo performance fixes.
+- Accepted upstream engineering in [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md): 15 merged engineering PRs across 10 projects, with direct merge and review links, including `llama.cpp`, the AMD-sponsored open-source Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf, plus 3 merged listing/docs PRs (counts reconciled 2026-09-13). This demonstrates the ability to move from reproduction through validation and upstream review without misrepresenting those merges as vendor endorsement or Strix Halo performance fixes.
 - Current buyer-path setup checks, including the normal Ollama 0.31.2 system-service route with `OLLAMA_IGPU_ENABLE=1`, 60.57 t/s Qwen3.6 generation, working vision, and restart/reboot persistence. A controlled same-port/same-cache comparison puts isolated 0.31.1, 0.31.2, and 0.32.0 local binaries in the same 72.55-73.20 t/s class. A later isolated 0.32.3 qualification preserved exact output at 73.13 t/s versus 73.20 t/s on the controlled 0.31.2 binary and passed iGPU vision plus process restart. Qwen3.8 27B is separately measured on Ollama 0.32.13 with multimodal/tool/thinking and 50K-context evidence. The installed 0.31.2 service remains the full-reboot-qualified general buyer default until 0.34.2 (available September 19) completes the normal package-upgrade/Qwen3.8/full-reboot matrix. See [`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md).
 - A repeatable [`BUYER_PATH_VALIDATION.md`](BUYER_PATH_VALIDATION.md) protocol for measuring retail-box-to-working-local-AI friction through timed checkpoints, intervention counts, restart persistence, and public evidence links without inventing a current time-to-result claim.
 - Reproducibility notes in [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
@@ -75,11 +76,12 @@ Possible support includes:
 - Early BIOS or firmware access.
 - Early driver, ROCm, Ryzen AI, or local-AI software access.
 - Sponsorship for a clearly scoped benchmark campaign.
-- Affiliate relationship, if disclosed clearly.
 - Longer-term hardware support for ongoing regression and cross-version testing.
 - Engineering feedback on reproducibility, setup blockers, or driver behavior.
 
 These are options, not demands. The useful collaboration is access to hardware, software, and context that lets the guide produce better public evidence.
+
+There are no affiliate links as of 2026-09-19; any future affiliate link follows [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md).
 
 ## What I Can Deliver
 
@@ -106,6 +108,8 @@ No fake claims, hidden influence, unsupported marketing language, or undisclosed
 
 ## Contact
 
-For collaboration inquiries, open a GitHub issue or contact the maintainer through the GitHub profile.
+Maintainer: software engineer; Strix Halo guide maintainer.
 
-Email: hogeheer499@gmail.com.
+For collaboration, service, or partner inquiries, email the maintainer privately at hogeheer499@gmail.com (see [`SERVICE_INTAKE.md`](SERVICE_INTAKE.md) for paid scopes). Do not put confidential material in a public GitHub issue. Public issues and discussions are for technical corrections and benchmark reports only.
+
+TODO: typical turnaround, capacity, and invoicing entity (pending maintainer confirmation).

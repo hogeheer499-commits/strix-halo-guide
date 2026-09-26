@@ -2,9 +2,9 @@
 set -euo pipefail
 
 OUT_DIR=${OUT_DIR:-$(cd "$(dirname "$0")" && pwd)}
-MODEL=${MODEL:-/home/hoge-heer/benchmark-models/2026-07-16/omni-nvfp4/nemotron-3-30b-NVFP4.gguf}
-MMPROJ=${MMPROJ:-/home/hoge-heer/benchmark-models/2026-07-16/omni-nvfp4/mmproj-nemotron-3-30b-f16.gguf}
-BIN_DIR=${BIN_DIR:-/home/hoge-heer/benchmark-tools/llama-b10034/llama-b10034}
+MODEL=${MODEL:-~/benchmark-models/2026-07-16/omni-nvfp4/nemotron-3-30b-NVFP4.gguf}
+MMPROJ=${MMPROJ:-~/benchmark-models/2026-07-16/omni-nvfp4/mmproj-nemotron-3-30b-f16.gguf}
+BIN_DIR=${BIN_DIR:-~/benchmark-tools/llama-b10034/llama-b10034}
 IMAGE=${IMAGE:-$OUT_DIR/vision-test.png}
 
 mkdir -p "$OUT_DIR"
@@ -18,7 +18,7 @@ sha256sum "$MMPROJ" > "$OUT_DIR/mmproj.sha256"
     uname -a
     lscpu | sed -n '1,30p'
     free -h
-    df -h /home/hoge-heer
+    df -h ~
     vulkaninfo --summary 2>/dev/null | sed -n '1,100p' || true
 } > "$OUT_DIR/host-snapshot.txt"
 

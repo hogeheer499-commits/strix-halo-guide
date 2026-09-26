@@ -10,7 +10,7 @@
 0.00.022.774 I srv          init: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
 0.00.022.859 I srv         start: binding port with default address family
 0.00.023.990 I srv  llama_server: loading model
-0.00.024.003 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/gemma-4-12b-it-qat-unsloth-udq4kxl/gemma-4-12B-it-qat-UD-Q4_K_XL.gguf'
+0.00.024.003 I srv    load_model: loading model '~/benchmark-models/gemma-4-12b-it-qat-unsloth-udq4kxl/gemma-4-12B-it-qat-UD-Q4_K_XL.gguf'
 0.00.024.029 I common_init_result: fitting params to device memory ...
 0.00.024.030 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
 0.00.801.566 W load: control-looking token:    212 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden

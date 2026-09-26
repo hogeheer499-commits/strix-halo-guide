@@ -11,7 +11,7 @@ Loading model...
                                     ▀▀    ▀▀
 
 build      : b1-4114ba1
-model      : /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
+model      : ~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
 ftype      : Q4_K - Medium
 modalities : text
 

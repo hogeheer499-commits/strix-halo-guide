@@ -2,7 +2,7 @@
 
 This file is the checklist for copying, rerunning, or challenging benchmark claims from the guide. The README is the human-facing entry point; structured CSVs and raw logs are the source of truth.
 
-**Checklist reviewed:** September 19, 2026. Per-run raw directories always override this summary.
+**Checklist reviewed:** September 26, 2026. Per-run raw directories always override this summary.
 
 ## Scope
 
@@ -30,12 +30,13 @@ For the August 30 integration, see the [sentinel/scout scope and raw evidence](B
 | Mesa/RADV | Mesa 26.0.6 for the main May 7 headline rows; Mesa 26.1.1 for the May 26/27 MTP spot checks; Mesa 26.1.2 for the June 7 b9544 controls; Mesa 26.1.4 for the July 16 b10034 and current-model runs; Mesa 26.1.7 for the August 30 b10687 sentinel/scout; kisak-mesa PPA where recorded |
 | llama.cpp | b9179 `b81c2cdd7` for the Qwen3-Coder speed-first peak; b9049 `2496f9c14` for the balanced UD headline rerun; b9360 `6b4e4bd58` for the Qwen3.6 MTP 100+ server route; b9467 `1fd5f4803` for the first direct Qwen3-30B-A3B-Instruct-2507 100+ row; b9979 for the AMD/RADV density-gate campaign; official b10034 `505b1ed15` for the July 16 Vulkan sentinel and current-model checks; b10107 for the July 25 vision/ASR/embedding smokes; b10330 for the August 9 Qwen3-Next MTP backend A/B and TTS smoke. b10687 `c841aee` has a short Vulkan/RADV sentinel and Flash-Next scout on August 30; this does not qualify HIP, server behavior or long context |
 | Ollama | 0.31.2 for the fully qualified installed-service buyer path; isolated 0.31.1/0.31.2/0.32.0 binaries for the controlled July 16 comparison; isolated 0.32.3 for the exact-output, iGPU-vision, and process-restart qualification; 0.32.13 for the August 15 Qwen3.8 27B route. 0.32.15 passed the September 19 existing-service restart route; 0.34.2 passed isolated available-model controls but is not promoted |
+| BIOS version / date | Not recorded for the published runs; capture it from `/sys/class/dmi/id/bios_version` and `bios_date` for new runs (see Before Running) |
 | BIOS UMA | 512MB for the measured local setup |
 | IOMMU | Disabled for the primary measured desktop benchmark profile; enabled/default remains the normal buyer recommendation for NPU, mobile suspend, RDMA, VFIO, passthrough, and clustering |
 | AMDVLK | Removed; RADV should be the selected Vulkan ICD |
 | Power profile | Main historical headline runs used `tuned accelerator-performance`; the July 16 b10034 sentinel recorded the desktop power profile as `performance`, `tuned` inactive, and amdgpu DPM forced to `high`. The August 30 direct rows use desktop `performance` with DPM `auto` and recorded CPU-only background load. Never infer one policy from another run. |
 | GPU clock | 2900 MHz was selected during earlier readiness checks; use each raw host snapshot and telemetry file for current clock behavior |
-| Firmware | `linux-firmware` 20240318.git3b128b60-0ubuntu2.27 was recorded for the earlier baseline; later runs must use their own package or host snapshot |
+| Firmware | `linux-firmware` 20240318.git3b128b60-0ubuntu2.27 was recorded for the earlier baseline; later runs must use their own package or host snapshot. Since 2026-09-03 Ubuntu 24.04 ships the AMD GPU blobs in `linux-firmware-amd-graphics` (the `linux-firmware` package became a metapackage); record that package version in every new host snapshot |
 
 Per-run CSVs and raw directories are the source of truth for exact host metadata. Some later current-model rows intentionally record kernel or Mesa as `not recorded`; do not inherit an older system snapshot unless the raw evidence for that run says so.
 
@@ -53,6 +54,8 @@ free -h
 vulkaninfo --summary | sed -n '/Devices:/,$p' | sed -n '1,40p'
 cat /sys/class/drm/card*/device/pp_dpm_sclk
 dpkg -l | grep -E 'amdvlk|mesa-vulkan-drivers|linux-firmware|rocm|hip' || true
+dpkg-query -W 'linux-firmware*' || true   # Ubuntu 24.04: includes linux-firmware-amd-graphics
+cat /sys/class/dmi/id/bios_version /sys/class/dmi/id/bios_date
 ```
 
 Then run the local hygiene check:

@@ -11,13 +11,13 @@ temporarily paused for the clean comparison and resumed afterward.
 Model:
 
 ```text
-/home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
 ```
 
 Build:
 
 ```text
-/home/hoge-heer/llama-cpp-upstream-2026-06-02-1fd5f4803/build-vulkan/bin/llama-bench
+~/llama-cpp-upstream-2026-06-02-1fd5f4803/build-vulkan/bin/llama-bench
 ```
 
 Command shape:

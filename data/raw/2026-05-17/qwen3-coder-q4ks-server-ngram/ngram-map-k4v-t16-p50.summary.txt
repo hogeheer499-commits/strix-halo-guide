@@ -1,6 +1,6 @@
 case=ngram-map-k4v-t16-p50
 date=2026-05-17T12:59:30+02:00
-model=/home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+model=~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
 n_predict=192
 ignore_eos=0
 extra_flags=--poll 50 --spec-type ngram-map-k4v

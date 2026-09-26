@@ -2,7 +2,7 @@
 set -euo pipefail
 
 OUT_DIR=$(cd "$(dirname "$0")" && pwd)
-MODEL_ROOT=/home/hoge-heer/benchmark-models/2026-07-16/step37
+MODEL_ROOT=~/benchmark-models/2026-07-16/step37
 TARGET_REPO=jcbtc/Step-3.7-Flash-ROCmFPX-Q3-QualityPlus
 TARGET_REV=fa311ca5a82bf82a2338151c4790e3f659abd88d
 DRAFT_REPO=notSnix/Step-3.7-Flash-MTP-Draft-GGUF
@@ -36,7 +36,7 @@ hf download "$DRAFT_REPO" \
     printf 'target_revision=%s\n' "$TARGET_REV"
     printf 'draft_repo=%s\n' "$DRAFT_REPO"
     printf 'draft_revision=%s\n' "$DRAFT_REV"
-    git -C /home/hoge-heer/ROCmFPX-ciru rev-parse HEAD
+    git -C ~/ROCmFPX-ciru rev-parse HEAD
 } > "$OUT_DIR/source-revisions.txt"
 
 sha256sum "$MODEL_ROOT"/target/*.gguf > "$OUT_DIR/target-shards.sha256"
@@ -49,13 +49,13 @@ sha256sum "$MODEL_ROOT/target/step37-native-tool-response-template.jinja" \
     uname -a
     lscpu | sed -n '1,30p'
     free -h
-    df -h /home/hoge-heer
+    df -h ~
     vulkaninfo --summary 2>/dev/null | sed -n '1,100p' || true
     distrobox enter vllm-gfx1151 -- /opt/rocm/bin/hipcc --version 2>/dev/null || true
 } > "$OUT_DIR/host-snapshot.txt"
 
 distrobox enter vllm-gfx1151 -- bash -lc \
-    '/home/hoge-heer/ROCmFPX-ciru/build-strix-rocmfp4/bin/llama-server --version' \
+    '~/ROCmFPX-ciru/build-strix-rocmfp4/bin/llama-server --version' \
     > "$OUT_DIR/llama-server-version.txt" 2>&1
 
 python3 "$OUT_DIR/run-repro.py" > "$OUT_DIR/run-repro.stdout.txt" 2>&1

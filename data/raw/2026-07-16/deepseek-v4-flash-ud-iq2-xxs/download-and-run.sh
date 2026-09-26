@@ -3,7 +3,7 @@ set -euo pipefail
 
 REPO=${REPO:-unsloth/DeepSeek-V4-Flash-GGUF}
 REVISION=${REVISION:-e3aa0d6a5fa4f820d9e132ac1fd1d01e1b2b49e0}
-MODEL_DIR=${MODEL_DIR:-/home/hoge-heer/benchmark-models/2026-07-16/deepseek-v4-flash}
+MODEL_DIR=${MODEL_DIR:-~/benchmark-models/2026-07-16/deepseek-v4-flash}
 OUT_DIR=${OUT_DIR:-$(cd "$(dirname "$0")" && pwd)}
 export HF_XET_HIGH_PERFORMANCE=${HF_XET_HIGH_PERFORMANCE:-1}
 

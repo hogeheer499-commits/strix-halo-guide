@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Qwen3.8 27B on AMD Strix Halo: Setup, Speed Routes, and Context Evidence"
-description: "Run Qwen3.8 27B on Ryzen AI MAX+ 395 / Radeon 8060S: official Ollama setup, measured 20.42 t/s route, 50K local retrieval, external 262K evidence, MTP, DFlash, and current 52-65 t/s claims explained."
+description: "Run Qwen3.8 27B on Ryzen AI MAX+ 395 / Radeon 8060S: official Ollama setup, measured 20.42 t/s Ollama-default-MTP route, 50K local retrieval, external 262K evidence, MTP, DFlash, and current 52-65 t/s claims explained."
 permalink: /qwen38-strix-halo/
 canonical_url: "https://strixhaloguide.com/qwen38-strix-halo/"
 sitemap: false
@@ -32,7 +32,7 @@ systems. The useful question is no longer only “does it run?” It is which
 official, stock, MTP, DFlash, ROCmFP4, or performance-fork route fits the
 workload—and which published numbers are actually comparable.
 
-**Evidence reviewed:** September 19, 2026.
+**Evidence reviewed:** September 26, 2026.
 
 Project home: [Strix Halo Guide](https://strixhaloguide.com/). The [canonical Qwen3.8 evidence page](https://strixhaloguide.com/qwen38-strix-halo/) is on the project domain; this page remains a technical mirror.
 
@@ -41,7 +41,7 @@ Project home: [Strix Halo Guide](https://strixhaloguide.com/). The [canonical Qw
 | Question | Current answer |
 | --- | --- |
 | Easiest measured official route | `qwen3.8:27b` through Ollama 0.32.13 and Vulkan/RADV |
-| Guide-measured warm result | 292.49 prompt t/s and 20.42 generation t/s over nine repeats |
+| Guide-measured warm result | 292.49 prompt t/s and 20.42 generation t/s over nine repeats, measured as Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; `draft-mtp` logged in the same-service 64K run; per-run log for the 4K warm runs not captured); not a no-draft result, and a matched no-draft control is queued |
 | Guide-measured capabilities | Image, tool-call, thinking, and exact retrieval through 50,059 prompt tokens passed |
 | Long-context boundary | A 56,051-token attempt caused a recoverable device loss on that exact stack; separate corrected GMKtec evidence reached 261,130 evaluated tokens |
 | 52-65 t/s posts | Advanced fork/quant/speculation leads that require their exact artifacts, prompts, context behavior, and independent reproduction |
@@ -55,17 +55,19 @@ read the canonical
 The measured official route used the 17.7GB-decimal `Q4_K_M` artifact:
 
 ```bash
+# Requires Ollama 0.32.12 or later; measured on 0.32.13
 ollama run qwen3.8:27b
 ```
 
 The Strix Halo service still needs the guide's Vulkan/iGPU environment,
-including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Ollama 0.34.2 is the
-current checked package, but it has not inherited the measured 0.32.13 result
-or the full normal-service/reboot qualification.
+including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Ollama 0.34.2 was the
+current checked package on September 19 (0.34.4 was available on September 25,
+unqualified). Neither has inherited the measured 0.32.13 result or the full
+normal-service/reboot qualification.
 
 ## Why The Speed Claims Differ
 
-Official Ollama, stock `llama.cpp`, custom quants, ROCmFP4, native MTP,
+Official Ollama (which enables its default MTP drafting for `qwen3.8:27b`), stock `llama.cpp`, custom quants, ROCmFP4, native MTP,
 DFlash2, and adaptive speculation are different routes. Code versus prose,
 cold versus cached context, context depth, generated-token count, and draft
 acceptance can change the result again. A useful comparison therefore records

@@ -1,6 +1,6 @@
 ggml_cuda_init: found 1 ROCm devices (Total VRAM: 122880 MiB):
   Device 0: Radeon 8060S Graphics, gfx1151 (0x1151), VMM: no, Wave Size: 32, VRAM: 122880 MiB
-llama_model_loader: loaded meta data with 44 key-value pairs and 579 tensors from /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf (version GGUF V3 (latest))
+llama_model_loader: loaded meta data with 44 key-value pairs and 579 tensors from ~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf (version GGUF V3 (latest))
 llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
 llama_model_loader: - kv   0:                       general.architecture str              = qwen3moe
 llama_model_loader: - kv   1:                               general.type str              = model
@@ -165,7 +165,7 @@ llama_perf_context_print: prompt eval time =   97868.89 ms / 69008 tokens (    1
 llama_perf_context_print:        eval time =    2144.01 ms /   128 runs   (   16.75 ms per token,    59.70 tokens per second)
 llama_perf_context_print:       total time =  102471.11 ms / 69136 tokens
 llama_perf_context_print:    graphs reused =       1169
-	Command being timed: "/home/hoge-heer/strix-halo-bench-tools/lemonade-llamacpp-rocm-b1259-gfx1151/extracted/llama-batched-bench -m /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf -c 32768 -ngl 999 -fa on -ctk q4_0 -ctv q4_0 --no-mmap -npp 512 -ntg 128 -npl 1,2,4,8,9,12,16,24,32 --output-format jsonl"
+	Command being timed: "~/strix-halo-bench-tools/lemonade-llamacpp-rocm-b1259-gfx1151/extracted/llama-batched-bench -m ~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf -c 32768 -ngl 999 -fa on -ctk q4_0 -ctv q4_0 --no-mmap -npp 512 -ntg 128 -npl 1,2,4,8,9,12,16,24,32 --output-format jsonl"
 	User time (seconds): 178.14
 	System time (seconds): 4.37
 	Percent of CPU this job got: 177%

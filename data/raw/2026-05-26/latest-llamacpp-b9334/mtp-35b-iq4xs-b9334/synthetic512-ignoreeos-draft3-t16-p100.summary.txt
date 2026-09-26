@@ -1,7 +1,7 @@
 case=synthetic512-ignoreeos-draft3-t16-p100
 date=2026-05-26T18:04:10+02:00
 llama_cpp=version: 1 (192d8ae);built with GNU 13.3.0 for Linux x86_64;
-model=/home/hoge-heer/benchmark-models/qwen36-mtp-iq4xs-q8nextn/Qwen3.6-35B-A3B-MTP-IQ4_XS-Q8nextn.gguf
+model=~/benchmark-models/qwen36-mtp-iq4xs-q8nextn/Qwen3.6-35B-A3B-MTP-IQ4_XS-Q8nextn.gguf
 n_predict=512
 ignore_eos=1
 threads=16

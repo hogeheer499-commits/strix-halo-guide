@@ -10,7 +10,7 @@ Build:
 
 - `llama.cpp` tag: `b9544`
 - commit: `98d5e8ba8`
-- build: local Vulkan build in `/home/hoge-heer/llama.cpp-b9544/build-vulkan`
+- build: local Vulkan build in `~/llama.cpp-b9544/build-vulkan`
 - device: explicit `-dev Vulkan0`
 
 Important note:

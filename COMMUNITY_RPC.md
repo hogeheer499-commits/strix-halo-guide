@@ -2,6 +2,8 @@
 
 These results are community-reported by [Fail-Safe](https://github.com/Fail-Safe) in [issue #12](https://github.com/hogeheer499-commits/strix-halo-guide/issues/12). They are kept separate from this guide's single-machine headline claims.
 
+> **RPC protocol version caveat (checked 2026-09-25):** `llama.cpp` v0.5.0 (b11146) raised the RPC protocol major version from 6 to 7 ([PR #28789](https://github.com/ggml-org/llama.cpp/pull/28789)). A client rejects an `rpc-server` with a different major version ("RPC server version mismatch"), so every node in a cluster must run builds with the same RPC protocol major; mixing pre-v0.5.0 and v0.5.0+ builds breaks the cluster. The community results here used older builds and were not rerun on v7.
+
 Structured data:
 
 - structured summary: [`data/community_rpc.csv`](data/community_rpc.csv)

@@ -36,7 +36,7 @@
 -- Enabling coopmat glslc support
 -- Configuring done (0.2s)
 -- Generating done (0.0s)
--- Build files have been written to: /home/hoge-heer/llama-cpp-upstream-2026-05-07/build-vulkan/ggml/src/ggml-vulkan/vulkan-shaders-gen-prefix/src/vulkan-shaders-gen-build
+-- Build files have been written to: ~/llama-cpp-upstream-2026-05-07/build-vulkan/ggml/src/ggml-vulkan/vulkan-shaders-gen-prefix/src/vulkan-shaders-gen-build
 [20/548] Building CXX object common/CMakeFiles/llama-common-base.dir/build-info.cpp.o
 [21/548] Linking CXX static library common/libllama-common-base.a
 [22/548] Building C object ggml/src/CMakeFiles/ggml-cpu.dir/ggml-cpu/arch/x86/quants.c.o
@@ -57,7 +57,7 @@
 [1/2] Building CXX object CMakeFiles/vulkan-shaders-gen.dir/vulkan-shaders-gen.cpp.o
 [2/2] Linking CXX executable vulkan-shaders-gen
 [37/548] Performing install step for 'vulkan-shaders-gen'
--- Installing: /home/hoge-heer/llama-cpp-upstream-2026-05-07/build-vulkan/Release/./vulkan-shaders-gen
+-- Installing: ~/llama-cpp-upstream-2026-05-07/build-vulkan/Release/./vulkan-shaders-gen
 [38/548] Completed 'vulkan-shaders-gen'
 [39/548] Generate vulkan shaders header
 [40/548] Generate vulkan shaders for abs.comp

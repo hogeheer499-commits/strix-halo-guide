@@ -11,7 +11,7 @@ Loading model...
                                     ▀▀    ▀▀
 
 build      : b10034-505b1ed15
-model      : /home/hoge-heer/benchmark-models/2026-07-16/cascade2/nvidia_Nemotron-Cascade-2-30B-A3B-IQ4_XS.gguf
+model      : ~/benchmark-models/2026-07-16/cascade2/nvidia_Nemotron-Cascade-2-30B-A3B-IQ4_XS.gguf
 ftype      : IQ4_XS - 4.25 bpw
 modalities : text
 

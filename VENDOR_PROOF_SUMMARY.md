@@ -35,6 +35,15 @@ first-party exact-SKU GMKtec retail setup/reboot campaign; EVO-X3 does not
 inherit EVO-X2 qualification. The [coverage matrix](SYSTEM_EVIDENCE_MATRIX.md)
 is 10 described owner systems plus 3 external sources, not 13 matched repeats.
 
+Per-OEM evidence class (as of the 2026-09-19 evidence review; classes from
+the README [buying-guide table](README.md#buying-guide)): Beelink GTR9 Pro
+first-party (plus two community owner systems); GMKtec EVO-X2 community and
+external-reference, no first-party exact-SKU test; Corsair AI Workstation 300
+community (three-system fleet); Nimo AI Mini PC community; Minisforum MS-S1
+MAX community (Windows LM Studio); Minix Elite ER939 community (Ollama
+beginner path); Framework Desktop external-reference rows only; Bosgame, HP
+and ASUS none (price snapshots or a warning only); GMKtec EVO-X3 none.
+
 ## Most informative next hardware experiment
 
 Apply the [retail buyer-path protocol](BUYER_PATH_VALIDATION.md) to one stock,
@@ -44,7 +53,6 @@ service restart and reboot. Preserve failures and compare the same artifacts
 with Beelink before making any OEM effect claim. No acquisition, outreach,
 sponsorship or completed test is implied here.
 
-Affiliate activation remains separate. Account-specific accepted terms are
-unresolved and the registry is empty. Paid work, hardware support and factual
+There are no affiliate links as of 2026-09-19. Paid work, hardware support and factual
 vendor review follow [the editorial firewall](VENDOR_DISCLOSURE.md); they
 cannot buy ranking, positive conclusions or removal of negative results.

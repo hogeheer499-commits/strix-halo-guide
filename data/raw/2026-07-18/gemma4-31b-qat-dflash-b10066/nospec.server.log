@@ -4,7 +4,7 @@
 0.00.061.104 W srv  llama_server: this can be a security risk (cross-origin attacks)
 0.00.061.105 W srv  llama_server: more info: https://github.com/ggml-org/llama.cpp/pull/25655
 0.00.061.105 W srv  llama_server: -----------------
-0.00.062.451 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/gemma-4-31b-qat-dflash/gemma-4-31B-it-Q4_0.gguf'
+0.00.062.451 I srv    load_model: loading model '~/benchmark-models/gemma-4-31b-qat-dflash/gemma-4-31B-it-Q4_0.gguf'
 0.01.297.415 W load: control-looking token:    212 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
 0.01.298.119 W load: control-looking token:     50 '<|tool_response>' was not control-type; this is probably a bug in the model. its type will be overridden
 0.01.340.556 W load: special_eog_ids contains '<|tool_response>', removing '</s>' token from EOG list

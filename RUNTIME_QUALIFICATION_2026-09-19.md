@@ -55,6 +55,9 @@ The service's first text response became visible after **3.889s**, completed in
 **3.920s**; the warm response became visible after **0.066s**, completed in
 **0.099s**. These are one short acceptance request each, not throughput or
 typical-user latency estimates. Model residency and cache state affect them.
+**Summary-only:** these latency figures have no public CSV or raw artifact, so
+per the guide's evidence rule they are unverified until a sanitized raw subset
+is published.
 GPU/backend evidence came from runtime logs and loaded-model state; HTTP 200
 alone was never a pass. Full requests, streams, counters and memory snapshots
 are retained in the private campaign bundle; this public summary does not
@@ -125,7 +128,10 @@ remain separate.
 A matched short direct benchmark control (pp128/tg32, three repeats, same
 artifact/settings) showed no material change: about 599.70/94.60 t/s on the
 old build and 602.01/94.95 t/s on the release. This is a non-headline sanity
-control, not evidence of a general speed improvement. Direct benchmark,
+control, not evidence of a general speed improvement. **Summary-only:** the
+raw data for these figures is in the private campaign bundle, with no public
+CSV or raw artifact, so treat them as unverified until a sanitized raw subset
+is published. Direct benchmark,
 server/API and speculative/MTP claims remain separate.
 
 ## Limits and next useful work

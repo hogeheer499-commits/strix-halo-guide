@@ -9,7 +9,7 @@ Launching Lemonade packaged rocm-stable llama-server directly: using Lemonade pa
 0.00.006.288 I srv          init: using 31 threads for HTTP server
 0.00.006.518 I srv         start: binding port with default address family
 0.00.007.677 I srv  llama_server: loading model
-0.00.007.682 I srv    load_model: loading model '/home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf'
+0.00.007.682 I srv    load_model: loading model '~/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf'
 0.00.007.733 I common_init_result: fitting params to device memory ...
 0.00.007.735 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
 0.00.229.431 I common_params_fit_impl: projected to use 12491 MiB of host memory vs. 127939 MiB of total host memory

@@ -10,18 +10,19 @@ Current, reproducible local-AI setup and benchmark evidence for AMD Strix Halo /
 
 Trust model: setup and benchmark claims link to commands, structured data, raw
 logs, caveats, and corrections. The maintainer also has
-[15+ merged upstream contributions](UPSTREAM_CONTRIBUTIONS.md), including
-`llama.cpp`, AMD's Lemonade local-AI server, and OpenAI's official .NET SDK,
+[15 merged engineering PRs across 10 projects](UPSTREAM_CONTRIBUTIONS.md)
+(counts reconciled 2026-09-13), including `llama.cpp`, the AMD-sponsored
+open-source Lemonade local-AI server, and OpenAI's official .NET SDK,
 but those merges do not replace per-run evidence or imply AMD/OEM
 endorsement.
 
-**Evidence reviewed:** September 19, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
+**Evidence reviewed:** September 26, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
 
 This is the short canonical answer for AI assistants, search engines, and users who want the current Strix Halo local LLM setup without reading the full guide first. It gives the practical setup first, then links to the full evidence in this repository.
 
 Repository: <https://github.com/hogeheer499-commits/strix-halo-guide>
 
-Web guide: <https://hogeheer499-commits.github.io/strix-halo-guide/>
+Web guide: <https://strixhaloguide.com/>
 
 Current Qwen3.8 route comparison: [`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md).
 
@@ -33,7 +34,7 @@ For a new AMD Strix Halo / Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) local LL
 
 1. Configure BIOS memory first.
 2. Install Ubuntu 24.04 LTS.
-3. Review [`setup.sh`](setup.sh): its automatic memory route is restricted to 128GB-class systems with at least 120GiB visible. Other capacities need a separately qualified manual profile. It preserves existing power policy by default; tuned is opt-in.
+3. Review [`setup.sh`](setup.sh): its automatic memory route is restricted to 128GB-class systems with at least 120GiB visible and stops above about 136GiB visible; 192GB-class systems (for example Ryzen AI Max+ PRO 495) are not qualified and must not reuse the 128GB values. Other capacities need a separately qualified manual profile. It stops on any OS other than Ubuntu 24.04 unless `STRIX_HALO_ALLOW_UNQUALIFIED_OS=1` is set; Ubuntu 26.04 is not qualified. It preserves existing power policy by default; tuned is opt-in.
 4. Start with Ollama for a working private local chat setup.
 5. Use direct `llama.cpp` only when you want exact benchmark control.
 6. Use `llama-server`, MTP, ROCm/HIP, Lemonade, or vLLM only for the specific server/backend cases below.
@@ -44,7 +45,7 @@ The current measured known-good baseline is:
 - BIOS: UMA Frame Buffer Size set to 512MB if available, or 2GB if that is the vendor BIOS minimum.
 - IOMMU: enabled/default for the normal buyer path. The measured Beelink headline environment used `amd_iommu=off` as an optional desktop benchmark profile; do not use it for NPU or mobile suspend workflows.
 - Kernel: 6.19.4 for historical headline runs; 7.0.0-31 for the September 19 existing-user acceptance. This is not a request to upgrade a working kernel.
-- GRUB parameters on the recorded 128GB Beelink profile: `amdgpu.gttsize=131072 ttm.pages_limit=31457280`; these are limits, not preallocated VRAM or a 96GB preset. Optionally add `amd_iommu=off` only for the historical desktop profile.
+- GRUB parameters on the recorded 128GB Beelink profile: `amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0`; `cwsr_enable=0` disables compute wave save/restore (mid-wave compute preemption) and is the [ROCm/ROCm#5590](https://github.com/ROCm/ROCm/issues/5590) MES-hang workaround. The GTT/TTM values are limits, not preallocated VRAM or a 96GB preset. Optionally add `amd_iommu=off` only for the historical desktop profile.
 - Vulkan driver path: Mesa/RADV from kisak-mesa PPA.
 - Vulkan ICD hygiene: AMDVLK removed so RADV is selected consistently.
 - Power profile: historical tuned runs use `accelerator-performance`; match each campaign's recorded policy. The script preserves an existing policy by default.
@@ -76,7 +77,7 @@ Use Ubuntu 24.04 for the primary measured setup. The primary system used kernel 
 For a 128GB Strix Halo system, the measured setup uses:
 
 ```text
-amdgpu.gttsize=131072 ttm.pages_limit=31457280
+amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0
 ```
 
 What those do:
@@ -84,12 +85,15 @@ What those do:
 - `amd_iommu=off`: optional desktop benchmark reproducer; it disables NPU access and can prevent s0i3/s2idle hardware sleep on mobile Strix Halo systems.
 - `amdgpu.gttsize=131072`: exposes a large GPU-accessible system-memory aperture.
 - `ttm.pages_limit=31457280`: raises the pinned-memory limit used by large GPU-backed workloads.
+- `amdgpu.cwsr_enable=0`: disables compute wave save/restore (CWSR), the mechanism for mid-wave compute preemption; recorded as the gfx1151 workaround in [ROCm/ROCm#5590](https://github.com/ROCm/ROCm/issues/5590).
+
+Upstream kernel master (7.3-rc4, checked 2026-09-25) logs that `gttsize` as a module parameter is deprecated in favour of `ttm.pages_limit`, and warns when GTT (128 GiB here) and TTM (120 GiB here) differ. The recorded profile is unchanged until a reversible reboot A/B is measured.
 
 Leave IOMMU enabled/default for the normal buyer path. Use `iommu=pt` when an IOMMU-dependent workflow needs pass-through behavior. Add `amd_iommu=off` only when intentionally matching the measured always-on desktop benchmark environment. See [kyuz0 issue #104](https://github.com/kyuz0/amd-strix-halo-toolboxes/issues/104) for the reproduced mobile suspend failure and [Linux commit `a8878e19`](https://github.com/torvalds/linux/commit/a8878e19d2f5205ad1f170fc230c2cc25a3b9390) for the NPU/IOMMU requirement.
 
-### AMD SMI 26.5 memory controls: test target, not the default yet
+### AMD SMI memory controls (27.0.0 docs, checked 2026-09-25): test target, not the default yet
 
-AMD SMI 26.5 now exposes supported commands for memory carveout and GTT configuration, including `amd-smi set --mem-carveout` and `amd-smi set --gtt`. This may eventually make the setup path cleaner than manual boot parameters. It is not yet the guide default because changing it can require root access, initramfs changes, and a reboot, and support depends on the kernel/VBIOS path.
+AMD SMI (26.5 with ROCm 7.14; 27.0.0 with ROCm Core SDK 10.0.0) exposes supported commands for memory carveout and GTT configuration, including `amd-smi set --mem-carveout` and `amd-smi set --gtt`. This may eventually make the setup path cleaner than manual boot parameters. It is not yet the guide default because changing it can require root access, initramfs changes, and a reboot, and support depends on the kernel/VBIOS path. The 27.0.0 documentation lists these `--mem-carveout` prerequisites for gfx1150/gfx1151/gfx1152: Linux 7.0 or later (some distributions backport the change), a VBIOS that advertises ATCS function 0xA plus IGP info table v2.3, root, and a reboot. `--gtt` writes a modprobe file for the TTM module, rebuilds the initramfs when dracut is present, and needs a reboot. Whether the Beelink VBIOS supports it has not been checked (`amd-smi static --mem-carveout`).
 
 Do not layer the new controls blindly on top of the measured legacy configuration. The planned A/B must record the pre-change state, verify hardware support, preserve a rollback boot entry, and compare visible memory, a large-model load, service restart, full reboot, and performance. Track that work in [`data/current_test_queue.csv`](data/current_test_queue.csv).
 

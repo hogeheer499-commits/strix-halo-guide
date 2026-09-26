@@ -39,8 +39,8 @@ AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json lla
 2.07.693.814 I generated 50 frames, 192044 bytes of WAV audio (24000 Hz)
 2.07.693.822 I timings: prompt eval 0.02s + generation 1.16s + vocoder 0.20s = total 1.38s
 2.07.693.822 I          output audio = 4.00s (audio time = 2.90x process time)
-2.07.693.931 I wrote /home/hoge-heer/local-scratch/qwen3-tts-b10330/first.wav
-	Command being timed: "env AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json /home/hoge-heer/local-scratch/llama.cpp-b10330/build-vulkan/bin/llama-tts -hf ggml-org/Qwen3-TTS-12Hz-1.7B-Base-GGUF:Q4_K_M -p Strix Halo can run local text to speech with llama.cpp. --tts-lang en -ngl 999 --output /home/hoge-heer/local-scratch/qwen3-tts-b10330/first.wav"
+2.07.693.931 I wrote ~/local-scratch/qwen3-tts-b10330/first.wav
+	Command being timed: "env AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json ~/local-scratch/llama.cpp-b10330/build-vulkan/bin/llama-tts -hf ggml-org/Qwen3-TTS-12Hz-1.7B-Base-GGUF:Q4_K_M -p Strix Halo can run local text to speech with llama.cpp. --tts-lang en -ngl 999 --output ~/local-scratch/qwen3-tts-b10330/first.wav"
 	User time (seconds): 2.48
 	System time (seconds): 3.78
 	Percent of CPU this job got: 4%

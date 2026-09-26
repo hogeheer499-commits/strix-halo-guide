@@ -27,7 +27,7 @@ remain open. The tested host's Ollama listener was LAN-reachable, not local-only
 Released llama.cpp v0.4.1 passed bounded direct/server/HIP controls; this does
 not qualify every model, long-context shape or maximum-memory allocation.
 
-**Evidence reviewed:** September 19, 2026.
+**Evidence reviewed:** September 26, 2026.
 
 This page extracts the most useful checks from the canonical
 [README troubleshooting](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#troubleshooting),
@@ -49,6 +49,14 @@ iGPU, and GPU messages.
 `OLLAMA_IGPU_ENABLE=1`, and `HIP_VISIBLE_DEVICES=-1`; reload systemd and restart
 Ollama. Follow the full
 [README troubleshooting entry](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#troubleshooting).
+
+Why the guide keeps the Vulkan route and hides HIP devices: upstream
+[ollama#17895](https://github.com/ollama/ollama/issues/17895) (open, checked
+2026-09-25) reports that Ollama's bundled ROCm backend returns wrong output for
+prompts above about 4K tokens on gfx1151, while Vulkan and CPU are correct on
+the same machine. It was reported on Ollama 0.32.5 through 0.32.14 and has not
+been tested here on 0.33 or 0.34. `OLLAMA_VULKAN=1` plus
+`HIP_VISIBLE_DEVICES=-1` keeps the service off that ROCm path.
 
 ## Prompt Processing Is Slow Because `-ub` Exceeds `-b`
 
@@ -80,11 +88,19 @@ AMDVLK uninstalled. Read the full
 **Symptom:** instability, crashes, or ROCm containers failing to start after a
 firmware-package change.
 
-**Check:** inspect the installed `linux-firmware` package version.
+**Check:** inspect the installed firmware packages with
+`dpkg-query -W 'linux-firmware*'` and
+`apt-cache policy linux-firmware-amd-graphics`. `20251125` is an upstream tag
+reported in Fedora packaging; Ubuntu version strings never contain it. On
+Ubuntu 24.04, `linux-firmware` has been a metapackage since 2026-09-03 and the
+AMD GPU blobs ship in `linux-firmware-amd-graphics` (checked 2026-09-25).
 
 **Fix:** do not use `linux-firmware-20251125` on the documented Strix Halo ROCm
 path; inspect available distro packages, restore an unaffected version, reboot and
-repeat the GPU/model checks. Holding a package does not downgrade it. See
+repeat the GPU/model checks. On Ubuntu 24.04, restore or hold
+`linux-firmware-amd-graphics`; a hold on the `linux-firmware` metapackage does
+not stop amdgpu firmware updates. No known-good version is qualified by the
+guide. Holding a package does not downgrade it. See
 [Step 4.4 of the README](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#step-44-linux-firmware).
 
 ## Large Models Cannot See The Expected GTT Pool
@@ -97,8 +113,12 @@ or a model that should fit fails during allocation.
 `free -h`.
 
 **Fix:** compare the selected RAM/kernel profile with actual allocation needs.
-The guide's `amdgpu.gttsize=131072 ttm.pages_limit=31457280` values belong to
-the 128GB Beelink profile, not a 96GB preset or a universal OOM fix. Preserve
+The guide's recorded 128GB Beelink profile is
+`amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0`
+(`cwsr_enable=0` disables compute wave save/restore, i.e. mid-wave compute preemption; ROCm/ROCm#5590 workaround). It is
+not a 96GB or 192GB preset or a universal OOM fix. Upstream kernel master
+(checked 2026-09-25) logs `gttsize`
+as deprecated in favour of `ttm.pages_limit`. Preserve
 unrelated settings, resolve conflicts, and verify live values after any reboot.
 Use the complete
 [kernel-parameter procedure](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#step-32-configure-grub-boot-parameters).

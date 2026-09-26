@@ -12,7 +12,7 @@ Ollama service remained at 0.23.1 on port `11434`.
 - Hardware: Beelink GTR9 Pro / Ryzen AI MAX+ 395 / Radeon 8060S
 - OS: Ubuntu 24.04-class measured setup
 - Backend: Ollama API with Vulkan/RADV
-- Local binary: `/home/hoge-heer/benchmark-tools/ollama-0.31.1/bin/ollama`
+- Local binary: `~/benchmark-tools/ollama-0.31.1/bin/ollama`
 - Model: `qwen3.6:35b-a3b`
 - Key environment:
   - `OLLAMA_VULKAN=1`

@@ -49,6 +49,17 @@ SENSITIVE_PATTERNS = {
     ),
 }
 
+# Public docs, scripts and structured data only: data/raw/ bundles are excluded
+# here because redacting raw evidence is a separate maintainer decision.
+DOC_SENSITIVE_PATTERNS = {
+    "maintainer home path": re.compile(r"/home/hoge-heer\b"),
+    "maintainer hostname": re.compile(r"\b[\w-]+-GTR-Pro\b"),
+    "private LAN IPv4 address": re.compile(
+        r"\b(?:192\.168|10\.\d{1,3}|172\.(?:1[6-9]|2\d|3[01]))\.\d{1,3}\.\d{1,3}\b"
+    ),
+    "raw listening-port dump": re.compile(r"== Listening Ports =="),
+}
+
 SENSITIVE_SCAN_ALLOWLIST = {
     "scripts/validate_repo.py",
 }
@@ -504,7 +515,7 @@ def check_public_state(errors: list[str]) -> None:
             f"**Evidence reviewed:** {reviewed_human}",
             f"no affiliate links as of {affiliate_checked_human}",
             "Measured On This Machine",
-            "Published Artifacts And Remaining Qualification (2026-08-29 Check)",
+            "Published Artifacts And Remaining Qualification (",  # dated heading; date may move
             "data/current_test_queue.csv",
         ),
         "docs/llms.txt": (
@@ -638,6 +649,10 @@ def check_forbidden_text(files: list[Path], errors: list[str]) -> None:
         for name, pattern in SENSITIVE_PATTERNS.items():
             if pattern.search(text):
                 errors.append(f"{rel} contains {name}")
+        if not rel.startswith("data/raw/"):
+            for name, pattern in DOC_SENSITIVE_PATTERNS.items():
+                if pattern.search(text):
+                    errors.append(f"{rel} contains {name}")
 
 
 def png_dimensions(path: Path) -> tuple[int, int] | None:

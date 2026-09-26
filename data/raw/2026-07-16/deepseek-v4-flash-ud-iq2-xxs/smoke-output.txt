@@ -11,7 +11,7 @@ Loading model...
                                     ▀▀    ▀▀
 
 build      : b10034-505b1ed15
-model      : /home/hoge-heer/benchmark-models/2026-07-16/deepseek-v4-flash/UD-IQ2_XXS/DeepSeek-V4-Flash-UD-IQ2_XXS-00001-of-00003.gguf
+model      : ~/benchmark-models/2026-07-16/deepseek-v4-flash/UD-IQ2_XXS/DeepSeek-V4-Flash-UD-IQ2_XXS-00001-of-00003.gguf
 ftype      : IQ2_XXS - 2.0625 bpw
 modalities : text
 

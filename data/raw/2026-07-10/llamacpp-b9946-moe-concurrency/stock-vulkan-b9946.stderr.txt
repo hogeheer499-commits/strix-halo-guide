@@ -1,5 +1,5 @@
 0.00.114.425 W load: control-looking token: 128247 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
-	Command being timed: "/home/hoge-heer/benchmark-tools/llama-b9946/llama-b9946/llama-batched-bench -m /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf -c 32768 -ngl 999 -fa on -ctk q4_0 -ctv q4_0 --no-mmap -npp 512 -ntg 128 -npl 1,2,4,8,9,12,16,24,32 --output-format jsonl"
+	Command being timed: "~/benchmark-tools/llama-b9946/llama-b9946/llama-batched-bench -m ~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf -c 32768 -ngl 999 -fa on -ctk q4_0 -ctv q4_0 --no-mmap -npp 512 -ntg 128 -npl 1,2,4,8,9,12,16,24,32 --output-format jsonl"
 	User time (seconds): 33.26
 	System time (seconds): 3.51
 	Percent of CPU this job got: 34%

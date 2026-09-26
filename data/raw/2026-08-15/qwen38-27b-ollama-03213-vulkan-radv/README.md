@@ -4,6 +4,8 @@ Status: first-party measured local buyer-route evidence.
 
 This run qualifies the official dense Qwen3.8 27B Ollama artifact as a practical chat, image, tool-call, thinking, and medium-context route on one 128GB Strix Halo system. It is not a direct `llama-bench` result or a broad model-quality benchmark.
 
+**Erratum (2026-09-26):** this route was first published with speculation `none`. The artifact parameters in [`ollama-show.txt`](ollama-show.txt) include `draft_num_predict 4`, and the same-service 64K run in [`qualification/context_64k_ollama_journal.log`](qualification/context_64k_ollama_journal.log) logged `--spec-type draft-mtp --spec-draft-n-max 4` and `adding speculative implementation 'draft-mtp'`. The 292.49 prompt / 20.42 generation t/s warm result is therefore labelled as Ollama API with Ollama-default MTP drafting; no per-run log was captured for the nine 4K warm runs, and [`benchmark.sh`](benchmark.sh) passes no draft override. It is not a no-draft result. The artifact also reports `requires 0.32.12`. The other files in this folder are unchanged; a matched no-draft control is queued in `data/current_test_queue.csv`.
+
 ## Tested Stack
 
 - System: Beelink GTR9 Pro

@@ -43,17 +43,17 @@ Commands:
 
 ```bash
 llama-bench \
-  -m /home/hoge-heer/benchmark-models/minimax-m27-ud-iq4xs/UD-IQ4_XS/MiniMax-M2.7-UD-IQ4_XS-00001-of-00004.gguf \
+  -m ~/benchmark-models/minimax-m27-ud-iq4xs/UD-IQ4_XS/MiniMax-M2.7-UD-IQ4_XS-00001-of-00004.gguf \
   -fa 1 -ngl 999 -mmp 0 -b 512 -ub 128 \
   -p 0 -n 32 -r 1 -o csv
 
 llama-bench \
-  -m /home/hoge-heer/benchmark-models/minimax-m27-ud-iq4xs/UD-IQ4_XS/MiniMax-M2.7-UD-IQ4_XS-00001-of-00004.gguf \
+  -m ~/benchmark-models/minimax-m27-ud-iq4xs/UD-IQ4_XS/MiniMax-M2.7-UD-IQ4_XS-00001-of-00004.gguf \
   -fa 1 -ngl 999 -mmp 0 -b 512 -ub 128 \
   -p 0 -n 128 -r 3 -o csv
 
 llama-bench \
-  -m /home/hoge-heer/benchmark-models/minimax-m27-ud-iq4xs/UD-IQ4_XS/MiniMax-M2.7-UD-IQ4_XS-00001-of-00004.gguf \
+  -m ~/benchmark-models/minimax-m27-ud-iq4xs/UD-IQ4_XS/MiniMax-M2.7-UD-IQ4_XS-00001-of-00004.gguf \
   -fa 1 -ngl 999 -mmp 0 -b 512 -ub 128 \
   -p 512 -n 128 -r 3 -o csv
 ```

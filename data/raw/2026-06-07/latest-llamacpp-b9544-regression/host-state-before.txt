@@ -1,5 +1,5 @@
 2026-06-07T00:56:24+02:00
-Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Linux <host> 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
 ggml_vulkan: Found 1 Vulkan devices:
 ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 0 | matrix cores: KHR_coopmat
 Available devices:
@@ -82,4 +82,4 @@ glslang 14.0.0-2
 Target: SPIR-V 1.0
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/nvme0n1p6  1.4T  1.2T   56G  96% /
-/dev/nvme0n1p4  458G  380G   78G  84% /home/hoge-heer/models
+/dev/nvme0n1p4  458G  380G   78G  84% ~/models

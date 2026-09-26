@@ -20,9 +20,9 @@ MODEL = "qwen3.6:35b-a3b"
 VISION_MODEL = "qwen2.5vl:7b"
 VISION_IMAGE = pathlib.Path(__file__).resolve().parents[4] / "docs/assets/social-preview.png"
 VERSIONS = {
-    "0.31.1": pathlib.Path("/home/hoge-heer/benchmark-tools/ollama-0.31.1/bin/ollama"),
+    "0.31.1": pathlib.Path("~/benchmark-tools/ollama-0.31.1/bin/ollama"),
     "0.31.2": pathlib.Path("/usr/local/bin/ollama"),
-    "0.32.0": pathlib.Path("/home/hoge-heer/benchmark-tools/ollama-0.32.0/bin/ollama"),
+    "0.32.0": pathlib.Path("~/benchmark-tools/ollama-0.32.0/bin/ollama"),
 }
 PROMPT = (
     "Write a concise explanation of why reproducible local AI benchmarks "

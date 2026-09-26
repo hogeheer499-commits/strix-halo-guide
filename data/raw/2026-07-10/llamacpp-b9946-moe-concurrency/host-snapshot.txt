@@ -1,5 +1,5 @@
 2026-07-10T02:27:59+02:00
-Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Linux <host> 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
 Ubuntu 24.04.4 LTS
                total        used        free      shared  buff/cache   available
 Mem:           124Gi        34Gi       4.3Gi       1.4Gi        88Gi        90Gi
@@ -93,4 +93,4 @@ ggml_cuda_init: found 1 ROCm devices (Total VRAM: 122880 MiB):
   Device 0: Radeon 8060S Graphics, gfx1151 (0x1151), VMM: no, Wave Size: 32, VRAM: 122880 MiB
 version: 1 (e77056f)
 built with Clang 23.0.0 for Linux 
-2841aa314d916434860cfb8990347528dcdfe5c350dbcb9d1461dbee88ff2533  /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
+2841aa314d916434860cfb8990347528dcdfe5c350dbcb9d1461dbee88ff2533  ~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf

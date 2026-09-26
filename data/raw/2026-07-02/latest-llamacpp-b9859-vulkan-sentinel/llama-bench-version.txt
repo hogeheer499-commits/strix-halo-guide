@@ -1,4 +1,4 @@
-usage: /home/hoge-heer/benchmark-tools/llama-b9859/llama-b9859/llama-b9859/llama-bench [options]
+usage: ~/benchmark-tools/llama-b9859/llama-b9859/llama-b9859/llama-bench [options]
 
 options:
   -h, --help

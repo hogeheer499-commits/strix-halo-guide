@@ -1,6 +1,6 @@
 captured_at=2026-07-13T05:09:06+02:00
-hostname=hoge-heer-GTR-Pro
-kernel=Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+hostname=<host>
+kernel=Linux <host> 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
 os_release:
 PRETTY_NAME="Ubuntu 24.04.4 LTS"
 NAME="Ubuntu"
@@ -144,8 +144,8 @@ tuned:
 Current active profile: balanced
 dpm=auto
 model_sha256:
-2841aa314d916434860cfb8990347528dcdfe5c350dbcb9d1461dbee88ff2533  /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
-49e554f954afbfc9f627b8be236adf16c1e51d8e5ecaa0e65ac8ede4e2c41a56  /home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf
+2841aa314d916434860cfb8990347528dcdfe5c350dbcb9d1461dbee88ff2533  ~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf
+49e554f954afbfc9f627b8be236adf16c1e51d8e5ecaa0e65ac8ede4e2c41a56  ~/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf
 binary_sha256:
-fecc66631c742d8caeea2e557acb02b915c7f6d719417f4706b5a02661dfefc4  /home/hoge-heer/benchmark-tools/llama-b9979-density-build/bin/llama-batched-bench
-335f705ac22c92e834e19d8b04bd8360ef39305a93d1560d6d19404afd4a42ad  /home/hoge-heer/strix-halo-bench-tools/lemonade-llamacpp-rocm-b1259-gfx1151/extracted/llama-batched-bench
+fecc66631c742d8caeea2e557acb02b915c7f6d719417f4706b5a02661dfefc4  ~/benchmark-tools/llama-b9979-density-build/bin/llama-batched-bench
+335f705ac22c92e834e19d8b04bd8360ef39305a93d1560d6d19404afd4a42ad  ~/strix-halo-bench-tools/lemonade-llamacpp-rocm-b1259-gfx1151/extracted/llama-batched-bench

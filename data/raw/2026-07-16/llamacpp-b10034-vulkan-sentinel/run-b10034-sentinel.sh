@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BIN=${BIN:-/home/hoge-heer/benchmark-tools/llama-b10034/llama-b10034/llama-batched-bench}
+BIN=${BIN:-~/benchmark-tools/llama-b10034/llama-b10034/llama-batched-bench}
 OUT_DIR=${OUT_DIR:-$(cd "$(dirname "$0")" && pwd)}
-QWEN30=${QWEN30:-/home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf}
-QWEN80=${QWEN80:-/home/hoge-heer/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf}
+QWEN30=${QWEN30:-~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf}
+QWEN80=${QWEN80:-~/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf}
 
 hwmon=$(find /sys/class/drm/card*/device/hwmon -mindepth 1 -maxdepth 1 -type l -o -type d 2>/dev/null | while read -r path; do
     [[ -e "$path/temp1_input" && -e "$path/power1_average" ]] && printf '%s\n' "$path"

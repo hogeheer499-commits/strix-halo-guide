@@ -11,7 +11,7 @@ Loading model...
                                     ▀▀    ▀▀
 
 build      : b10034-505b1ed15
-model      : /home/hoge-heer/benchmark-models/2026-07-16/audex/quants/audex-30b-a3b-textonly-MXFP4_MOE.gguf
+model      : ~/benchmark-models/2026-07-16/audex/quants/audex-30b-a3b-textonly-MXFP4_MOE.gguf
 ftype      : MXFP4 MoE
 modalities : text
 

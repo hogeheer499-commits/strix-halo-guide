@@ -1,12 +1,18 @@
 #!/bin/bash
 # AMD Strix Halo LLM Setup Script
 # Automates the entire setup from Phase 3 onwards (after BIOS and OS install)
-# Profile evidence: Beelink GTR9 Pro, Ubuntu 24.04, Kernel 6.18.x/6.19.x.
+# Profile evidence: Beelink GTR9 Pro (128GB), Ubuntu 24.04; kernel 6.19.4 for
+# historical headline runs, Ubuntu HWE kernels 7.0.0-28/-30/-31 for later runs.
 # Revised automation is offline-fixture-tested; fresh-install/upgrade hardware
 # qualification remains pending.
 #
 # Usage: curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/setup.sh | bash
 #    or: bash setup.sh
+# The curl route and a fresh clone both run the unpinned main branch, which is
+# not fresh-install qualified. Prefer a reviewed tag or commit
+# (git checkout <tag-or-commit>). OS releases other than Ubuntu 24.04 stop
+# unless the variable is passed to bash, for example:
+#   STRIX_HALO_ALLOW_UNQUALIFIED_OS=1 bash setup.sh
 #
 # What this script does:
 #   1. Configures kernel parameters (GRUB)
@@ -61,11 +67,38 @@ if ! grep -qi "amd" /proc/cpuinfo 2>/dev/null; then
     warn "This does not appear to be an AMD system. Continuing anyway..."
 fi
 
+# BEGIN PREFLIGHT GUARDS (also exercised by offline fixtures)
+# Only Ubuntu 24.04 is recorded. Ubuntu 26.04 and other distributions are not
+# qualified; STRIX_HALO_ALLOW_UNQUALIFIED_OS=1 continues at the user's risk.
+OS_ID=""
+OS_VERSION_ID=""
+if [ -r /etc/os-release ]; then
+    OS_ID=$(. /etc/os-release && printf '%s' "${ID:-}")
+    OS_VERSION_ID=$(. /etc/os-release && printf '%s' "${VERSION_ID:-}")
+fi
+if [ "$OS_ID" != "ubuntu" ] || [ "$OS_VERSION_ID" != "24.04" ]; then
+    if [ "${STRIX_HALO_ALLOW_UNQUALIFIED_OS:-0}" = "1" ]; then
+        warn "Detected ${OS_ID:-unknown} ${OS_VERSION_ID:-unknown}; this script is only recorded on Ubuntu 24.04. Continuing because STRIX_HALO_ALLOW_UNQUALIFIED_OS=1."
+    else
+        err "Detected ${OS_ID:-unknown} ${OS_VERSION_ID:-unknown}. This script is only recorded on Ubuntu 24.04; Ubuntu 26.04 and other distributions are not qualified. Use the manual guide, or set STRIX_HALO_ALLOW_UNQUALIFIED_OS=1 to continue at your own risk."
+        exit 1
+    fi
+fi
+
 TOTAL_RAM_GB=$(free -g | awk '/^Mem:/{print $2}')
+if ! [[ "$TOTAL_RAM_GB" =~ ^[0-9]+$ ]]; then
+    err "Could not read visible RAM from 'free -g'. Use the manual guide."
+    exit 1
+fi
 if [ "$TOTAL_RAM_GB" -lt 120 ]; then
     err "This automatic memory profile is limited to the measured 128GB-class route with at least 120GiB visible. For 96GB/smaller or larger UMA-reserved systems, use the manual guide; no alternate memory limits are qualified here."
     exit 1
 fi
+if [ "$TOTAL_RAM_GB" -gt 136 ]; then
+    err "About ${TOTAL_RAM_GB}GiB visible RAM is above the measured 128GB-class route. No 192GB-class profile (for example Ryzen AI Max+ PRO 495) is qualified; do not reuse the 128GB values. Use the manual guide."
+    exit 1
+fi
+# END PREFLIGHT GUARDS
 
 # Phase 3: Kernel Configuration
 # Detect known migration holds before the first configuration mutation.
@@ -383,6 +416,12 @@ set -euo pipefail
 MODEL="${1:-qwen3.6:35b-a3b}"
 PROMPT="${2:-hello how are you}"
 echo "Model: $MODEL | $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+if command -v ollama >/dev/null 2>&1; then
+    echo "Local tag and manifest ID (ollama list):"
+    ollama list 2>/dev/null | awk -v m="$MODEL" 'NR==1 || $1==m || $1==m":latest"' || true
+    echo "Model parameters (a draft_num_predict above 0 means Ollama-default speculative drafting):"
+    ollama show --parameters "$MODEL" 2>/dev/null || echo "  (ollama show --parameters unavailable)"
+fi
 python3 -c 'import json,sys; print(json.dumps({"model":sys.argv[1],"prompt":sys.argv[2],"stream":False,"options":{"num_predict":128}}))' "$MODEL" "$PROMPT" |
 curl --fail --silent --show-error --connect-timeout 5 --max-time 600 http://localhost:11434/api/generate -H 'Content-Type: application/json' --data-binary @- | python3 -c "
 import sys,json

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
-MODEL=/home/hoge-heer/benchmark-models/rocmfp4-chadrock/qwen36-35b-crown-halo-dyn/Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf
-BIN=/home/hoge-heer/rocmfp4-llama/build-strix-rocmfp4-hiponly/bin/llama-cli
-PROMPT=/home/hoge-heer/rocmfp4_4k_prompt.txt
+MODEL=~/benchmark-models/rocmfp4-chadrock/qwen36-35b-crown-halo-dyn/Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf
+BIN=~/rocmfp4-llama/build-strix-rocmfp4-hiponly/bin/llama-cli
+PROMPT=~/rocmfp4_4k_prompt.txt
 export HSA_OVERRIDE_GFX_VERSION=11.5.1
 "$BIN" \
   -m "$MODEL" \

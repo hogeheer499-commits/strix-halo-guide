@@ -10,6 +10,7 @@ assignees: ''
 - **Device:** (e.g., Beelink GTR9 Pro, Framework Desktop 13)
 - **CPU/GPU:** (e.g., Ryzen AI MAX+ 395 / Radeon 8060S)
 - **RAM:** (e.g., 128GB LPDDR5X)
+- **BIOS / EC (embedded controller) version:**
 - **BIOS UMA setting:**
 - **IOMMU setting:**
 - **OS:** (`lsb_release -a`)
@@ -17,6 +18,8 @@ assignees: ''
 - **Mesa:** `vulkaninfo --summary 2>&1 | grep driverInfo` output
 - **ROCm:** `rocminfo | head` or container/runtime version, if relevant
 - **Ollama:** `ollama --version` output
+- **Ollama model manifest ID, if using Ollama:** `ollama list` ID column for the tested model
+- **Ollama model parameters, if using Ollama:** `ollama show <model> --parameters` output
 - **tuned profile:** `tuned-adm active` output
 - **Vulkan ICD:** RADV / AMDVLK / other
 
@@ -32,6 +35,8 @@ assignees: ''
 - **Generated tokens:**
 - **Repeats:**
 - **Parallel slots / concurrency, if applicable:**
+- **Speculative decoding (MTP / draft model):** on / off
+- **Draft model and `draft_num_predict` (or equivalent draft-token setting), if on:**
 - **Command used:**
 
 ```bash

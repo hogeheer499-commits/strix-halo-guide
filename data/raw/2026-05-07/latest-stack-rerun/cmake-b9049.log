@@ -42,4 +42,4 @@ CMAKE_BUILD_TYPE=Release
 -- Generating embedded license file for target: llama-common
 -- Configuring done (0.8s)
 -- Generating done (0.0s)
--- Build files have been written to: /home/hoge-heer/llama-cpp-upstream-2026-05-07/build-vulkan
+-- Build files have been written to: ~/llama-cpp-upstream-2026-05-07/build-vulkan

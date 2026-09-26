@@ -7,7 +7,7 @@
 language English<asr_text>Front, center.
 
 
-	Command being timed: "env AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json /home/hoge-heer/benchmark-tools/llama-b10107-vulkan/llama-b10107/llama-mtmd-cli -hf ggml-org/Qwen3-ASR-0.6B-GGUF --audio /usr/share/sounds/alsa/Front_Center.wav -p Transcribe this audio exactly. Return only the spoken words. -ngl 999 -fa on -c 8192 -n 96 --temp 0 --seed 42 --log-verbosity 2"
+	Command being timed: "env AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json ~/benchmark-tools/llama-b10107-vulkan/llama-b10107/llama-mtmd-cli -hf ggml-org/Qwen3-ASR-0.6B-GGUF --audio /usr/share/sounds/alsa/Front_Center.wav -p Transcribe this audio exactly. Return only the spoken words. -ngl 999 -fa on -c 8192 -n 96 --temp 0 --seed 42 --log-verbosity 2"
 	User time (seconds): 0.85
 	System time (seconds): 0.87
 	Percent of CPU this job got: 1%

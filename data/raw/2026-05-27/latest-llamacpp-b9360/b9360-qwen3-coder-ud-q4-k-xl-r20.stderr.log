@@ -1,6 +1,6 @@
 ggml_vulkan: Found 1 Vulkan devices:
 ggml_vulkan: 0 = Radeon 8060S Graphics (RADV STRIX_HALO) (radv) | uma: 1 | fp16: 1 | bf16: 0 | warp size: 64 | shared memory: 65536 | int dot: 0 | matrix cores: KHR_coopmat
-	Command being timed: "/home/hoge-heer/llama-cpp-upstream-2026-05-27-b9360/build-vulkan/bin/llama-bench -m /home/hoge-heer/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf -fa 1 -ngl 999 -mmp 0 -p 512 -n 128 -r 20 -o csv"
+	Command being timed: "~/llama-cpp-upstream-2026-05-27-b9360/build-vulkan/bin/llama-bench -m ~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf -fa 1 -ngl 999 -mmp 0 -p 512 -n 128 -r 20 -o csv"
 	User time (seconds): 15.86
 	System time (seconds): 3.78
 	Percent of CPU this job got: 48%

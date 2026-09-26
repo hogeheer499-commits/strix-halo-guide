@@ -6,7 +6,7 @@ and v0.4.1 direct/server/HIP controls. Historical reboot default 0.31.2 and
 Qwen3.8-on-0.32.13 measurements remain separate; official Qwen3.8 on the candidate
 and a new full-host reboot are not qualified.
 
-**Profiles reviewed:** September 19, 2026.
+**Profiles reviewed:** September 26, 2026.
 
 This is a compact recommendation index, not another benchmark leaderboard. It turns existing evidence into a practical first choice for common workloads. The machine-readable source is [`data/best_known_profiles.csv`](data/best_known_profiles.csv); detailed caveats remain in the linked evidence pages.
 
@@ -16,7 +16,7 @@ This is a compact recommendation index, not another benchmark leaderboard. It tu
 | --- | --- | --- | --- |
 | Existing-service text, image, tools and browser | Ollama 0.32.15 Vulkan/RADV; Qwen3.6 text, Qwen2.5-VL image, Devstral tools; pinned Open WebUI 0.10.2 | Correct visible outputs and genuine tool execution after service restart | [September 19 scope](RUNTIME_QUALIFICATION_2026-09-19.md): not a fresh install or new full-host reboot; backend was LAN-reachable, not local-only. |
 | Historical reboot-qualified API baseline | Ollama 0.31.2 Vulkan/RADV; Qwen3.6 35B-A3B for text, separate Qwen2.5-VL for vision | 60.57 t/s warm Qwen3.6 text API mean; separate-model vision, service restart and reboot passed | Set `OLLAMA_IGPU_ENABLE=1`. Browser/client integration needs its own acceptance test. Qwen3.8 27B is measured separately on 0.32.13; 0.31.2 stays the reboot-qualified default until 0.34.2 (available September 19) passes the normal service-upgrade, Qwen3.8 thinking compatibility, and full-reboot path. |
-| Current official dense multimodal chat | Ollama 0.32.13 system service with Vulkan/RADV, Qwen3.8 27B Q4_K_M | 292.49 prompt t/s and 20.42 generation t/s warm API mean over nine repeats; image, tool-call, thinking, and exact retrieval passed through 50,059 prompt tokens | Use `/api/chat` for the qualified long-context path. A 56,051-token attempt caused a recoverable Vulkan device-loss on this exact stack; the advertised 262K and broad quality remain unqualified. Not a direct speed headline. |
+| Current official dense multimodal chat | Ollama 0.32.13 system service with Vulkan/RADV, Qwen3.8 27B Q4_K_M | 292.49 prompt t/s and 20.42 generation t/s warm API mean over nine repeats, measured as Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; `draft-mtp` logged in the same-service 64K run; per-run log for the 4K warm runs not captured); image, tool-call, thinking, and exact retrieval passed through 50,059 prompt tokens | Requires Ollama 0.32.12 or later; measured on 0.32.13. Not a no-draft result; a matched no-draft control is queued. Use `/api/chat` for the qualified long-context path. A 56,051-token attempt caused a recoverable Vulkan device-loss on this exact stack; the advertised 262K and broad quality remain unqualified. Not a direct speed headline. |
 | Fastest measured direct coding route | llama.cpp Vulkan/RADV, Qwen3-Coder 30B-A3B Q4_K_S | 100.99 tg128 r50 | Speed-first quant, not the balanced quality default. |
 | Balanced direct coding | llama.cpp Vulkan/RADV, Qwen3-Coder 30B-A3B UD-Q4_K_XL | 96.76 tg128 r20 | Use this when the quant tradeoff matters more than the last few t/s. |
 | Current Google-model MTP server | Gemma 4 26B-A4B QAT plus matched MTP head | 102.69 cold / 107.42 T3-only / 110.00 best repeat t/s | Advanced server/speculative route, not direct `llama-bench`. |

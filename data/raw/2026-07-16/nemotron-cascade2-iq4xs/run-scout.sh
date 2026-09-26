@@ -2,8 +2,8 @@
 set -euo pipefail
 
 OUT_DIR=${OUT_DIR:-$(cd "$(dirname "$0")" && pwd)}
-MODEL=${MODEL:-/home/hoge-heer/benchmark-models/2026-07-16/cascade2/nvidia_Nemotron-Cascade-2-30B-A3B-IQ4_XS.gguf}
-BIN_DIR=${BIN_DIR:-/home/hoge-heer/benchmark-tools/llama-b10034/llama-b10034}
+MODEL=${MODEL:-~/benchmark-models/2026-07-16/cascade2/nvidia_Nemotron-Cascade-2-30B-A3B-IQ4_XS.gguf}
+BIN_DIR=${BIN_DIR:-~/benchmark-tools/llama-b10034/llama-b10034}
 
 mkdir -p "$OUT_DIR"
 
@@ -15,7 +15,7 @@ sha256sum "$MODEL" > "$OUT_DIR/model.sha256"
     uname -a
     lscpu | sed -n '1,30p'
     free -h
-    df -h /home/hoge-heer
+    df -h ~
     vulkaninfo --summary 2>/dev/null | sed -n '1,100p' || true
 } > "$OUT_DIR/host-snapshot.txt"
 

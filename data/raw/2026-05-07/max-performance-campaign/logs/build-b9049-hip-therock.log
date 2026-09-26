@@ -12,14 +12,14 @@
 -- Detecting CXX compile features - done
 CMAKE_BUILD_TYPE=Release
 -- Found Git: /usr/bin/git (found version "2.53.0")
-fatal: detected dubious ownership in repository at '/home/hoge-heer/llama-cpp-upstream-2026-05-07'
+fatal: detected dubious ownership in repository at '~/llama-cpp-upstream-2026-05-07'
 To add an exception for this directory, call:
 
-	git config --global --add safe.directory /home/hoge-heer/llama-cpp-upstream-2026-05-07
-fatal: detected dubious ownership in repository at '/home/hoge-heer/llama-cpp-upstream-2026-05-07'
+	git config --global --add safe.directory ~/llama-cpp-upstream-2026-05-07
+fatal: detected dubious ownership in repository at '~/llama-cpp-upstream-2026-05-07'
 To add an exception for this directory, call:
 
-	git config --global --add safe.directory /home/hoge-heer/llama-cpp-upstream-2026-05-07
+	git config --global --add safe.directory ~/llama-cpp-upstream-2026-05-07
 -- The ASM compiler identification is Clang with GNU-like command-line
 -- Found assembler: /opt/rocm/llvm/bin/clang
 -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
@@ -55,7 +55,7 @@ To add an exception for this directory, call:
 -- Generating embedded license file for target: llama-common
 -- Configuring done (2.0s)
 -- Generating done (0.1s)
--- Build files have been written to: /home/hoge-heer/llama-cpp-upstream-2026-05-07/build-hip-therock-b9049
+-- Build files have been written to: ~/llama-cpp-upstream-2026-05-07/build-hip-therock-b9049
 [  0%] Building CXX object vendor/cpp-httplib/CMakeFiles/cpp-httplib.dir/httplib.cpp.o
 [  0%] Building CXX object common/CMakeFiles/llama-common-base.dir/build-info.cpp.o
 [  0%] Building C object ggml/src/CMakeFiles/ggml-base.dir/ggml-alloc.c.o

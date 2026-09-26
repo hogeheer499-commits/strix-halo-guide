@@ -27,7 +27,7 @@ canonical source for commands, benchmark claims, and raw evidence.
 
 It focuses on Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems, practical local setup, and evidence links for benchmark claims. AMD now uses Ryzen AI Halo for its official developer platform; this guide remains an independent setup and evidence source for the wider Strix Halo hardware category.
 
-**Web guide published:** June 13, 2026. **Evidence reviewed:** September 19, 2026. The raw directories and structured claim indexes remain the source of truth for each individual run.
+**Web guide published:** June 13, 2026. **Evidence reviewed:** September 26, 2026. The raw directories and structured claim indexes remain the source of truth for each individual run.
 
 Start with the [Strix Halo Guide website](https://strixhaloguide.com/) for the
 readable buyer/setup route, then use the
@@ -61,10 +61,11 @@ Claims are linked to public commands, CSVs, raw logs, charts, corrections, and
 failed routes instead of relying on screenshots or vendor marketing. Community
 results remain separate from the primary Beelink measurements.
 
-The maintainer also has 15+ merged upstream contributions, including
-[`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), AMD's Lemonade
-local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET
-SDK, and Kubernetes SIG inference-perf. The
+The maintainer also has 15 merged engineering PRs across 10 projects, including
+[`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), the AMD-sponsored
+open-source Lemonade local-AI server, a Strix Halo detection fix in llmfit,
+OpenAI's official .NET SDK, and Kubernetes SIG inference-perf, plus 3 merged
+listing/docs PRs (counts reconciled 2026-09-13). The
 [upstream contribution record](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md)
 links every relevant PR and explains what each merge does and does not prove.
 The `llama.cpp` change is preset/router maintenance, not a Strix Halo
@@ -72,7 +73,7 @@ performance patch.
 
 ## Quick Setup Summary
 
-For the measured 128GB Beelink route, start with Ubuntu 24.04 LTS, a low BIOS UMA reserve (512MB where available, or the vendor's 2GB minimum), IOMMU enabled/default and Mesa/RADV. The recorded GRUB limits `amdgpu.gttsize=131072 ttm.pages_limit=31457280` are not universal 64GB/96GB settings. Preserve the existing power policy; tuned is an optional historical reproduction profile. X11 is conditional on desktop-tool needs. Ollama 0.31.2 remains the reboot-qualified general baseline; the revised installer itself still needs fresh-install/upgrade hardware qualification. Read the [scoped setup route](https://strixhaloguide.com/amd-strix-halo-setup/) before making changes. `amd_iommu=off` is only an optional desktop reproduction setting and is inappropriate for NPU or mobile suspend workflows.
+For the measured 128GB Beelink route, start with Ubuntu 24.04 LTS, a low BIOS UMA reserve (512MB where available, or the vendor's 2GB minimum), IOMMU enabled/default and Mesa/RADV. The recorded GRUB profile `amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0` is not a universal 64GB/96GB setting, and 192GB-class systems (for example Ryzen AI Max+ PRO 495) are not qualified; do not reuse the 128GB values there. `cwsr_enable=0` disables compute wave save/restore, i.e. mid-wave compute preemption ([ROCm/ROCm#5590](https://github.com/ROCm/ROCm/issues/5590) workaround). Preserve the existing power policy; tuned is an optional historical reproduction profile. X11 is conditional on desktop-tool needs. Ollama 0.31.2 remains the reboot-qualified general baseline; the revised installer itself still needs fresh-install/upgrade hardware qualification. Read the [scoped setup route](https://strixhaloguide.com/amd-strix-halo-setup/) before making changes. `amd_iommu=off` is only an optional desktop reproduction setting and is inappropriate for NPU or mobile suspend workflows.
 
 Use direct `llama-bench` with Vulkan/RADV for the measured generation benchmarks. `llama-server` API/server experiments are a separate evidence category; do not use direct rates as client throughput expectations. ROCm/HIP, Lemonade, vLLM, MTP/speculative decoding, long-context and multi-node/RDMA paths retain their documented workload-specific limits.
 
@@ -91,7 +92,7 @@ Vendor BIOS labels, cooling, firmware, power modes, RAM configuration, and therm
 | OS | Ubuntu 24.04 LTS |
 | BIOS memory | UMA Frame Buffer Size set to 512MB if available, or 2GB if that is the vendor BIOS minimum; AMD's reference platform uses its own Variable Graphics Memory controls |
 | IOMMU | Enabled/default for normal buyers, NPU use, mobile suspend, RDMA, VFIO, passthrough, and clustering; `amd_iommu=off` is only an optional always-on desktop benchmark profile |
-| Kernel parameters | The recorded 128GB Beelink profile uses `amdgpu.gttsize=131072 ttm.pages_limit=31457280`; other RAM sizes need a separately qualified profile |
+| Kernel parameters | The recorded 128GB Beelink profile uses `amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0`; other RAM sizes need a separately qualified profile, and 192GB-class systems are not qualified (do not reuse the 128GB values) |
 | Vulkan stack | Mesa/RADV from kisak, with AMDVLK removed for consistent RADV selection |
 | Power profile | Preserve and record the existing policy; tuned is opt-in for a historical reproduction, not a universal requirement |
 | Easiest local chat path | Ollama with Vulkan/RADV |
@@ -111,7 +112,7 @@ These are independent benchmark and setup claims from the repository. They are n
 
 | Question | Current measured answer | Evidence |
 |---|---|---|
-| Current official dense multimodal Qwen route | Qwen3.8 27B `Q4_K_M` through Ollama 0.32.13 measured 292.49 prompt t/s and 20.42 generation t/s over nine warm repeats; image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed. Separate corrected GMKtec evidence reached 261,130 evaluated tokens on a patched HIP route. | [Qwen3.8 route comparison](https://strixhaloguide.com/qwen38-strix-halo/) |
+| Current official dense multimodal Qwen route | Qwen3.8 27B `Q4_K_M` through Ollama 0.32.13 measured 292.49 prompt t/s and 20.42 generation t/s over nine warm repeats through the Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; not a no-draft result); image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed. Separate corrected GMKtec evidence reached 261,130 evaluated tokens on a patched HIP route. | [Qwen3.8 route comparison](https://strixhaloguide.com/qwen38-strix-halo/) |
 | Fastest direct 30B-class Qwen route measured here | Qwen3-30B-A3B-Instruct-2507 `IQ4_XS` reached 100.04 t/s direct `llama-bench` on b9467, with a b9544 control at 103.18 t/s | [headline claims](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv) |
 | Fastest measured Qwen3-Coder 30B route | Qwen3-Coder 30B-A3B `Q4_K_S` reached 100.99 t/s direct `llama-bench` on the official b9851 Vulkan release binary; the older strict-clean b9179 row remains preserved at 98.51 t/s | [headline claims](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv) |
 | Fastest small-MoE speed scout | LFM2.5 8B-A1B `Q4_K_M` reached 170.02 t/s generation-only, with a b9544 control at 176.48 t/s | [headline claims](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv) |
@@ -121,13 +122,13 @@ These are independent benchmark and setup claims from the repository. They are n
 | Experimental MTP/speculative server route | Qwen3.6 MTP reached about 101.1 t/s on b9360; Gemma 4 26B-A4B QAT MTP reached 102.69 t/s cold, 107.42 t/s T3-only, and 110.00 t/s best repeat on ac4cddeb0 | [MTP notes](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MTP_SPECULATIVE_DECODING.md) |
 | Fastest measured advanced server profile | CHADROCK ACE/SABER 35B ROCmFP4 averaged 141.37 t/s over three exact reference-profile repeats at 100% draft acceptance; lower-acceptance prompt shapes were much slower, so this is not direct `llama-bench` or a beginner default | [ROCmFP4/CHADROCK notes](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ROCMFP4_CHADROCK.md) |
 | Frontier-size local agent route | Step 3.7 Flash 198B-total / about 11B-active plus its MTP draft measured 34.50 t/s at 4K and 33.83 t/s at 16K; native tool calling and 256K allocation passed on one 128GB system | [ROCmFP4/CHADROCK notes](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ROCMFP4_CHADROCK.md#step-37-q3-qualityplus-first-party-reproduction) |
-| Current multi-user Vulkan status | Official llama.cpp b10034 still lost 37.34% and 31.69% aggregate decode from concurrency 8 to 9 on the two tested MoE shapes; the opt-in AMD/RADV recovery evidence remains model-specific and experimental | [MoE concurrency report](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MOE_CONCURRENCY.md) |
+| Multi-user Vulkan status (b10034, 2026-07-16) | Official llama.cpp b10034 still lost 37.34% and 31.69% aggregate decode from concurrency 8 to 9 on the two tested MoE shapes; the opt-in AMD/RADV recovery evidence remains model-specific and experimental | [MoE concurrency report](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MOE_CONCURRENCY.md) |
 
 ## FAQ
 
 ### What is the best AMD Strix Halo local LLM setup?
 
-For the measured 128GB Beelink route, start with Ubuntu 24.04 LTS, a low BIOS UMA reserve (512MB where available, or the vendor's 2GB minimum), IOMMU enabled/default and Mesa/RADV. The recorded GRUB limits `amdgpu.gttsize=131072 ttm.pages_limit=31457280` are not universal 64GB/96GB settings. Preserve the existing power policy; tuned is an optional historical reproduction profile. X11 is conditional on desktop-tool needs. Ollama 0.31.2 remains the reboot-qualified general baseline; the revised installer itself still needs fresh-install/upgrade hardware qualification. Read the [scoped setup route](https://strixhaloguide.com/amd-strix-halo-setup/) before making changes. `amd_iommu=off` is only an optional desktop reproduction setting and is inappropriate for NPU or mobile suspend workflows.
+For the measured 128GB Beelink route, start with Ubuntu 24.04 LTS, a low BIOS UMA reserve (512MB where available, or the vendor's 2GB minimum), IOMMU enabled/default and Mesa/RADV. The recorded GRUB profile `amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0` is not a universal 64GB/96GB setting, and 192GB-class systems (for example Ryzen AI Max+ PRO 495) are not qualified; do not reuse the 128GB values there. `cwsr_enable=0` disables compute wave save/restore, i.e. mid-wave compute preemption ([ROCm/ROCm#5590](https://github.com/ROCm/ROCm/issues/5590) workaround). Preserve the existing power policy; tuned is an optional historical reproduction profile. X11 is conditional on desktop-tool needs. Ollama 0.31.2 remains the reboot-qualified general baseline; the revised installer itself still needs fresh-install/upgrade hardware qualification. Read the [scoped setup route](https://strixhaloguide.com/amd-strix-halo-setup/) before making changes. `amd_iommu=off` is only an optional desktop reproduction setting and is inappropriate for NPU or mobile suspend workflows.
 
 ### Is this a Framework Desktop Strix Halo LLM setup guide too?
 

@@ -19,4 +19,4 @@ Describe the user, buyer, benchmark, or reproducibility problem this PR solves.
 - [ ] New or changed relative Markdown links resolve.
 - [ ] Structured data and raw evidence are linked where the change adds a benchmark claim.
 - [ ] Slower results, failures, and material caveats are preserved.
-- [ ] `python3 scripts/validate_repo.py` passes, or I explained why I could not run it.
+- [ ] `python3 scripts/validate_repo.py` and `python3 -m unittest discover -s tests` pass, or I explained why I could not run them.

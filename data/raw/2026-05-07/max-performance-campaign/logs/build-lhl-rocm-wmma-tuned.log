@@ -42,7 +42,7 @@ CMAKE_BUILD_TYPE=Release
 -- ggml commit:  a45e1cd
 -- Configuring done (2.0s)
 -- Generating done (0.1s)
--- Build files have been written to: /home/hoge-heer/strix-halo-bench-tools/lhl-llama-rocm-wmma-tune/build-rocwmma-tuned
+-- Build files have been written to: ~/strix-halo-bench-tools/lhl-llama-rocm-wmma-tune/build-rocwmma-tuned
 [  0%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml.cpp.o
 [  0%] Building CXX object common/CMakeFiles/build_info.dir/build-info.cpp.o
 [  0%] Building CXX object ggml/src/CMakeFiles/ggml-base.dir/ggml-backend.cpp.o
@@ -205,10 +205,10 @@ CMAKE_BUILD_TYPE=Release
 [ 89%] Building CXX object src/CMakeFiles/llama.dir/unicode-data.cpp.o
 [ 89%] Building CXX object src/CMakeFiles/llama.dir/llama-vocab.cpp.o
 [ 89%] Building CXX object src/CMakeFiles/llama.dir/unicode.cpp.o
-/home/hoge-heer/strix-halo-bench-tools/lhl-llama-rocm-wmma-tune/src/llama-quant.cpp:656:66: warning: absolute value function 'abs' given an argument of type 'const int64_t' (aka 'const long') but has parameter of type 'int' which may cause truncation of value [-Wabsolute-value]
+~/strix-halo-bench-tools/lhl-llama-rocm-wmma-tune/src/llama-quant.cpp:656:66: warning: absolute value function 'abs' given an argument of type 'const int64_t' (aka 'const long') but has parameter of type 'int' which may cause truncation of value [-Wabsolute-value]
   656 |                 gguf_set_val_u32(ctx_out.get(), o.key, (uint32_t)abs(o.val_i64));
       |                                                                  ^
-/home/hoge-heer/strix-halo-bench-tools/lhl-llama-rocm-wmma-tune/src/llama-quant.cpp:656:66: note: use function 'std::abs' instead
+~/strix-halo-bench-tools/lhl-llama-rocm-wmma-tune/src/llama-quant.cpp:656:66: note: use function 'std::abs' instead
   656 |                 gguf_set_val_u32(ctx_out.get(), o.key, (uint32_t)abs(o.val_i64));
       |                                                                  ^~~
       |                                                                  std::abs

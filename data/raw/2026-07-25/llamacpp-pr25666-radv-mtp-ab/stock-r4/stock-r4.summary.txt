@@ -1,7 +1,7 @@
 case=stock-r4
 date=2026-07-25T01:14:12+02:00
-model=/home/hoge-heer/benchmark-models/qwen36-mtp-iq4xs-q8nextn/Qwen3.6-35B-A3B-MTP-IQ4_XS-Q8nextn.gguf
-server=/home/hoge-heer/benchmark-tools/pr25666/stock-src/build-ab/bin/llama-server
+model=~/benchmark-models/qwen36-mtp-iq4xs-q8nextn/Qwen3.6-35B-A3B-MTP-IQ4_XS-Q8nextn.gguf
+server=~/benchmark-tools/pr25666/stock-src/build-ab/bin/llama-server
 server_version=version: 10005 (7f575c39d)
 n_predict=512
 ignore_eos=1

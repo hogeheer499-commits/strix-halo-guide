@@ -9,12 +9,12 @@
 0.00.015.637 I srv          init: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
 0.00.015.692 I srv         start: binding port with default address family
 0.00.016.819 I srv          main: loading model
-0.00.016.826 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/qwen36-mtp/Qwen3.6-35B-A3B-MTP-Q4_K_M.gguf'
+0.00.016.826 I srv    load_model: loading model '~/benchmark-models/qwen36-mtp/Qwen3.6-35B-A3B-MTP-Q4_K_M.gguf'
 0.00.016.842 I common_init_result: fitting params to device memory ...
 0.00.016.844 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
 0.04.265.128 W llama_context: n_ctx_seq (4096) < n_ctx_train (262144) -- the full capacity of the model will not be utilized
 0.04.322.822 W common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
-0.06.099.347 I srv    load_model: creating MTP draft context against the target model '/home/hoge-heer/benchmark-models/qwen36-mtp/Qwen3.6-35B-A3B-MTP-Q4_K_M.gguf'
+0.06.099.347 I srv    load_model: creating MTP draft context against the target model '~/benchmark-models/qwen36-mtp/Qwen3.6-35B-A3B-MTP-Q4_K_M.gguf'
 0.06.099.376 W llama_context: n_ctx_seq (4096) < n_ctx_train (262144) -- the full capacity of the model will not be utilized
 0.06.128.129 I srv    load_model: initializing slots, n_slots = 1
 0.06.133.048 I common_context_can_seq_rm: the context supports bounded partial sequence removal

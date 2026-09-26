@@ -13,7 +13,7 @@ Hi there<turn|>
 How are you?<turn|>
 <|turn>model
 
-0.08.290.527 I main: loading model: /home/hoge-heer/benchmark-models/gemma-4-31b-qat-dflash/gemma-4-31B-it-Q4_0.gguf
+0.08.290.527 I main: loading model: ~/benchmark-models/gemma-4-31b-qat-dflash/gemma-4-31B-it-Q4_0.gguf
 0.08.290.870 W WARN: This is an experimental CLI for testing multimodal capability.
 0.08.290.871 W       For normal use cases, please use the standard llama-cli
 0.08.311.895 I encoding mtmd batch, n_chunks = 1 (done = 1, total = 3)

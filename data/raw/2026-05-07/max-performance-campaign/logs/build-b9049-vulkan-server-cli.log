@@ -2,7 +2,7 @@
 [1/70] Performing build step for 'vulkan-shaders-gen'
 ninja: no work to do.
 [2/70] Performing install step for 'vulkan-shaders-gen'
--- Up-to-date: /home/hoge-heer/llama-cpp-upstream-2026-05-07/build-vulkan/Release/./vulkan-shaders-gen
+-- Up-to-date: ~/llama-cpp-upstream-2026-05-07/build-vulkan/Release/./vulkan-shaders-gen
 [3/70] Completed 'vulkan-shaders-gen'
 [4/70] Generate vulkan shaders for mul_mm_cm2.comp
 [5/70] Generate vulkan shaders for flash_attn_cm2.comp

@@ -8,8 +8,8 @@ This is smoke/spot-check evidence, not a replacement for the public headline row
 
 | Build | Commit | Path | Notes |
 |-------|--------|------|-------|
-| b9010 | `d05fe1d7d` | `/home/hoge-heer/llama-cpp-latest/build-vulkan/bin/llama-bench` | Current published llama.cpp build |
-| b9049 | `2496f9c14` | `/home/hoge-heer/llama-cpp-upstream-2026-05-07/build-vulkan/bin/llama-bench` | Separate upstream worktree, built for this spot check |
+| b9010 | `d05fe1d7d` | `~/llama-cpp-latest/build-vulkan/bin/llama-bench` | Current published llama.cpp build |
+| b9049 | `2496f9c14` | `~/llama-cpp-upstream-2026-05-07/build-vulkan/bin/llama-bench` | Separate upstream worktree, built for this spot check |
 
 ## Results
 

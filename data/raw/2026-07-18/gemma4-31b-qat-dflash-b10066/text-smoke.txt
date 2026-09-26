@@ -11,7 +11,7 @@ Loading model...
                                     ▀▀    ▀▀
 
 build      : b10066-86a9c79f8
-model      : /home/hoge-heer/benchmark-models/gemma-4-31b-qat-dflash/gemma-4-31B-it-Q4_0.gguf
+model      : ~/benchmark-models/gemma-4-31b-qat-dflash/gemma-4-31B-it-Q4_0.gguf
 ftype      : Q4_0
 modalities : text
 

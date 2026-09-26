@@ -16,7 +16,7 @@ Host state:
 
 Model:
 
-- `/home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf`
+- `~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf`
 
 Results:
 

@@ -6,7 +6,7 @@ and v0.4.1 direct/server/HIP controls. Historical reboot default 0.31.2 and
 Qwen3.8-on-0.32.13 measurements remain separate; official Qwen3.8 on the candidate
 and a new full-host reboot are not qualified.
 
-**Evidence reviewed:** September 19, 2026.
+**Evidence reviewed:** September 26, 2026.
 
 Qwen3.8 27B is a practical dense multimodal model on AMD Strix Halo / Ryzen AI
 MAX+ 395 with Radeon 8060S and 96GB/128GB unified memory. The difficult part is
@@ -37,11 +37,11 @@ This page separates those routes. It is not a single-number leaderboard.
 
 | Route | Evidence class | What it shows | What it does not show |
 | --- | --- | --- | --- |
-| Official `qwen3.8:27b` through Ollama 0.32.13 / Vulkan-RADV | **First-party measured** on Beelink GTR9 Pro 128GB | 292.49 prompt t/s and 20.42 generation t/s over nine warm repeats; image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed | Not direct `llama-bench`; not broad quality; not 262K validation |
+| Official `qwen3.8:27b` through Ollama 0.32.13 / Vulkan-RADV | **First-party measured** on Beelink GTR9 Pro 128GB | 292.49 prompt t/s and 20.42 generation t/s over nine warm repeats through the Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; `draft-mtp` logged in the same-service 64K run; per-run log for the 4K warm runs not captured); image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed | Not direct `llama-bench`; not a no-draft result (matched no-draft control queued); not broad quality; not 262K validation |
 | Corrected Kyanite Labs GMKtec route | **External public package** on GMKtec EVO-X2 96GB | 13/13 retrieval cases including 261,130 evaluated tokens; 6/6 image pilot; small MTP/no-spec A/B | Patched/reverted HIP build and different quant/system; not a beginner default |
 | Stock b10503 Q8_0 MTP report | **Community-reported** Strix Halo laptop | Reported 7.3 to 22.4 t/s matched MTP uplift | Raw package has not been imported into this guide; not first-party |
 | Tuned Vulkan + ROCmFP4 + DFlash2 route | **Community-reported advanced route** | About 52 t/s on code and 31 t/s on prose in the detailed public report; exposes context/prefill tradeoffs | Different fork, quant, drafter, prompt, and request shape from the Ollama route |
-| Adaptive-speculation 65 t/s report | **Unverified current lead** | A promising fork-level speed target and a request for independent validation | Matching Qwen3.8 FP4 DFlash sidecar was unpublished when checked; not reproducible end to end yet |
+| Adaptive-speculation 65 t/s report | **Unverified current lead** | A promising fork-level speed target and a request for independent validation | Matching Qwen3.8 FP4 DFlash sidecar was unpublished when checked; not reproducible end to end yet. Separately, ggml-org published Q4_0/Q8_0/BF16 Qwen3.8 27B DFlash drafters on 2026-09-19; those do not show that this fork's FP4 sidecar is available |
 | PieBru Q6 quality-first route | **External public package** | Committed setup/evidence policy and a reported roughly 17-21 t/s sustained Q6 route | Different quality/speed objective; not evidence that Q6 should match FP4/Q4 speed |
 
 The machine-readable version is
@@ -58,8 +58,18 @@ artifact reporting 27.3B dense parameters and a 262,144-token model context
 limit. On the measured Ollama 0.32.13 system service:
 
 ```bash
+# Requires Ollama 0.32.12 or later; measured on 0.32.13
 ollama run qwen3.8:27b
 ```
+
+The artifact's parameters include `draft_num_predict 4`, so Ollama enables its
+default MTP drafting for this tag. The 20.42 t/s result is therefore an Ollama
+API plus Ollama-default MTP result, not a no-speculation baseline. The
+same-service 64K run logged `draft-mtp`; the per-run log for the nine 4K warm
+runs was not captured. A matched no-draft control (`qwen3.8:27b-q4_K_M` versus
+`qwen3.8:27b-mtp-q4_K_M` on the same model blob per a 2026-09-25 registry
+check) is queued in
+[`data/current_test_queue.csv`](data/current_test_queue.csv).
 
 Keep the Strix Halo service environment documented in the main guide,
 including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. The Ollama 0.34.2 (available September 19)
@@ -107,7 +117,7 @@ The live queue is [`data/current_test_queue.csv`](data/current_test_queue.csv).
 
 | If you want | Start here |
 | --- | --- |
-| The simplest current official multimodal route | Ollama 0.32.13 evidence plus `qwen3.8:27b`; newer available packages need their own qualification before transferring the measurements |
+| The simplest current official multimodal route | Ollama 0.32.13 evidence plus `qwen3.8:27b` (requires Ollama 0.32.12 or later; measured on 0.32.13; Ollama-default MTP drafting); newer available packages need their own qualification before transferring the measurements |
 | Auditable direct performance | Stock `llama.cpp` control with a pinned GGUF and exact command |
 | Maximum short-context experimental speed | Reproduce the published fork, quant, and drafter as one inseparable profile |
 | Deep or cold context | Prefer the route with demonstrated prompt-ingestion behavior and exact retrieval, not the highest short decode number |

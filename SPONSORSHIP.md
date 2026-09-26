@@ -8,10 +8,11 @@ Sponsorship is about funding friction-removal work and better public evidence. I
 | Permanent hardware sponsorship | Hardware kept by the project for ongoing testing | Repeatable validation, update/regression checks, long-term public evidence, and known-good configuration notes | Disclose gifted/permanent hardware near relevant results |
 | Benchmark campaign sponsorship | Funding for a scoped test campaign | Public test plan, benchmark report, raw logs/CSVs/charts, and findings including failures | Disclose paid sponsorship and scope |
 | Early BIOS/firmware/driver testing | Early or preview software/firmware plus technical context | Setup notes, reproducibility caveats, blocker reports, and public findings where allowed | Mark early-access software clearly, especially if it affects results |
-| Affiliate links | Approved affiliate relationship for hardware links | Clearly disclosed links, while benchmark conclusions remain independent | Disclose affiliate links near the link and in disclosure notes |
 | Technical consulting / setup support | Paid support scope, test system access, or engineering context | Private or public setup help, depending on scope, with no unsupported public claims | Disclose if public conclusions are connected to paid work |
 | Sponsored but independent technical report | Funding for a named report topic | Public report with methodology, raw evidence where possible, conclusions, caveats, and negative findings if accurate | Disclose sponsor, scope, and independence limits |
 | Community benchmark bounty | Hardware, funds, or rewards for community reproductions | Structured community reports, raw attachments, and clearly separated community data | Disclose bounty terms and keep community rows separate from first-party results |
+
+There are no affiliate links as of 2026-09-19; any future affiliate link follows [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md).
 
 ## What Sponsorship Does Not Buy
 

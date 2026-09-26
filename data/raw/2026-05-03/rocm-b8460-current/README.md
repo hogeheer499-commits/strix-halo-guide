@@ -21,7 +21,7 @@ LD_LIBRARY_PATH=/usr/local/lib/ollama/rocm \
 HSA_OVERRIDE_GFX_VERSION=11.5.1 \
 HSA_ENABLE_SDMA=0 \
 ROCBLAS_USE_HIPBLASLT=1 \
-/home/hoge-heer/llama-cpp-latest/build-hip/bin/llama-bench \
+~/llama-cpp-latest/build-hip/bin/llama-bench \
   -m <model.gguf> \
   -fa 1 -ngl 999 -mmp 0 -p 512 -n 128 -r 10 -o csv
 ```

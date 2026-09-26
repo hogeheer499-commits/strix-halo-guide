@@ -12,7 +12,7 @@ SPEC.loader.exec_module(REPRO)
 REPRO.ROOT = ROOT / "hip-control"
 
 REPRO.SERVER = pathlib.Path(
-    "/home/hoge-heer/local-scratch/llama.cpp-b10330/build-hip/bin/llama-server"
+    "~/local-scratch/llama.cpp-b10330/build-hip/bin/llama-server"
 )
 REPRO.PORT = 18104
 REPRO.BASE_URL = f"http://127.0.0.1:{REPRO.PORT}"

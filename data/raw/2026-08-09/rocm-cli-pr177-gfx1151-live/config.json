@@ -32,13 +32,13 @@
   },
   "dashboard": {
     "daemon": {
-      "listen": "unix:/home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/xdg-runtime/rocmdashd.sock",
+      "listen": "unix:~/local-scratch/rocm-cli-pr177-isolated-v1/xdg-runtime/rocmdashd.sock",
       "gpu_tick_secs": 1.0,
       "discovery_tick_secs": 5.0,
       "instance_tick_secs": 2.0
     },
     "tui": {
-      "connect": "unix:/home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/xdg-runtime/rocmdashd.sock",
+      "connect": "unix:~/local-scratch/rocm-cli-pr177-isolated-v1/xdg-runtime/rocmdashd.sock",
       "theme": "default-dark"
     }
   }

@@ -2,8 +2,8 @@ Local model engines
   Built-in engines are included with rocm-cli. External plugins are optional.
   ROCm GPU execution is required.
   Plugin folders:
-    1. /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/data/engines/plugins (primary)
-    2. /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/data/engines (legacy)
+    1. ~/local-scratch/rocm-cli-isolated-20260809-v1/data/engines/plugins (primary)
+    2. ~/local-scratch/rocm-cli-isolated-20260809-v1/data/engines (legacy)
 * lemonade   default embedded Lemonade server with ROCm llama.cpp backend
     adapter: built-in
     runtime: ready

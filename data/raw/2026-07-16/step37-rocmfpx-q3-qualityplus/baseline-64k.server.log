@@ -9,7 +9,7 @@
 0.00.053.111 I srv          init: the WebUI is disabled
 0.00.053.166 I srv         start: binding port with default address family
 0.00.054.317 I srv          main: loading model
-0.00.054.321 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/2026-07-16/step37/target/Step-3.7-Flash-ROCmFPX-Q3-QualityPlus-00001-of-00009.gguf'
+0.00.054.321 I srv    load_model: loading model '~/benchmark-models/2026-07-16/step37/target/Step-3.7-Flash-ROCmFPX-Q3-QualityPlus-00001-of-00009.gguf'
 0.00.054.341 I common_init_result: fitting params to device memory ...
 0.00.054.342 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
 1.10.868.391 W llama_context: n_ctx_seq (65536) < n_ctx_train (262144) -- the full capacity of the model will not be utilized

@@ -56,7 +56,8 @@ first-party default:
 
 The transferable lesson is to publish a paired no-spec control, acceptance,
 prompt class, elapsed time or throughput, and raw outputs. Neither row replaces
-the measured Ollama 0.32.13 buyer path or proves that MTP accelerates every
+the measured Ollama 0.32.13 buyer path (itself an Ollama-default MTP route with
+`draft_num_predict 4`, not a no-draft control) or proves that MTP accelerates every
 Qwen3.8 workload. Sources and system corrections are in the
 [`2026-08-25 scope note`](data/raw/2026-08-25/qwen38-community-runtime-update/).
 
@@ -190,6 +191,8 @@ Step 3.7 Flash capacity/agent route:
 
 Baseline Q4_K_M server:
 
+> Historical command for build b9187 `0253fb21`; current `llama.cpp` builds (v0.4.1 and later) no longer accept `--no-mmap` and use `--load-mode` instead ([details](CURRENT_MODELS.md)). Kept unchanged as evidence.
+
 ```bash
 AMD_VULKAN_ICD=RADV \
 VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
@@ -202,6 +205,8 @@ VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
 ```
 
 Best Q4_K_M MTP server route:
+
+> Historical command for build b9187 `0253fb21`; current `llama.cpp` builds (v0.4.1 and later) no longer accept `--no-mmap` and use `--load-mode` instead ([details](CURRENT_MODELS.md)). Kept unchanged as evidence.
 
 ```bash
 AMD_VULKAN_ICD=RADV \
@@ -217,6 +222,8 @@ VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
 
 Previous best average route with the published IQ4_XS-Q8nextn file:
 
+> Historical command for build b9187 `0253fb21`; current `llama.cpp` builds (v0.4.1 and later) no longer accept `--no-mmap` and use `--load-mode` instead ([details](CURRENT_MODELS.md)). Kept unchanged as evidence.
+
 ```bash
 AMD_VULKAN_ICD=RADV \
 VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
@@ -229,7 +236,9 @@ VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
   --jinja --no-webui
 ```
 
-Best current average MTP route found:
+Best average MTP route found in the May 2026 b9360 sweep (not re-qualified on current builds):
+
+> Historical command for build b9360; current `llama.cpp` builds (v0.4.1 and later) no longer accept `--no-mmap` and use `--load-mode` instead ([details](CURRENT_MODELS.md)). Kept unchanged as evidence.
 
 ```bash
 AMD_VULKAN_ICD=RADV \
@@ -244,6 +253,8 @@ VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json \
 ```
 
 Best Gemma 4 26B-A4B QAT MTP route found:
+
+> Historical command for build `ac4cddeb0` (build 9592); current `llama.cpp` builds (v0.4.1 and later) no longer accept `--no-mmap` and use `--load-mode` instead ([details](CURRENT_MODELS.md)). Kept unchanged as evidence.
 
 ```bash
 AMD_VULKAN_ICD=RADV \

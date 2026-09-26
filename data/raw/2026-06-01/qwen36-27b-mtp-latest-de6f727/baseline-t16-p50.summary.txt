@@ -1,7 +1,7 @@
 case=baseline-t16-p50
 date=2026-06-01T19:33:48+02:00
 llama_cpp=version: 127 (de6f727aa);built with GNU 13.3.0 for Linux x86_64;
-model=/home/hoge-heer/benchmark-models/qwen36-27b-mtp/Qwen3.6-27B-MTP-Q8_0.gguf
+model=~/benchmark-models/qwen36-27b-mtp/Qwen3.6-27B-MTP-Q8_0.gguf
 n_predict=192
 ignore_eos=0
 threads=16

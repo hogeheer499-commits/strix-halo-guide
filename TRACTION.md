@@ -4,17 +4,20 @@ This page records public, independently checkable project signals. It supports
 vendor and reviewer conversations, but it does not claim attributable hardware
 sales, buyer conversion, endorsement, or private audience behavior.
 
-Repository-stat snapshot date: 2026-08-27.
+Repository-stat snapshot date: 2026-09-25.
 
-## Current Public Snapshot
+## Dated Public Snapshot
 
-| Metric | Current value | Public source |
-| --- | ---: | --- |
-| Stars | 300 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) |
-| Forks | 21 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) |
-| GitHub contributors | 4 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
-| Credited community benchmark contributors | 10 | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
-| Strix Halo-class systems or independent sources represented | 13 | [`SYSTEM_EVIDENCE_MATRIX.md`](SYSTEM_EVIDENCE_MATRIX.md) |
+| Metric | Value | As of | Public source |
+| --- | ---: | --- | --- |
+| Stars | 345 | 2026-09-25 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) page |
+| Forks | 24 | 2026-09-25 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) page |
+| GitHub contributors | 4 | 2026-08-27 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
+| Credited community benchmark contributors | 10 | 2026-09-19 evidence review | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
+| Strix Halo-class systems or independent sources represented | 13 | 2026-09-19 evidence review | [`SYSTEM_EVIDENCE_MATRIX.md`](SYSTEM_EVIDENCE_MATRIX.md) |
+
+The previous repository-stat snapshot was 300 stars and 21 forks (GitHub API,
+2026-08-27).
 
 These counts are public project and evidence-coverage signals. They do not show
 who bought hardware, whether the guide caused a sale, or how readers moved
@@ -40,7 +43,10 @@ These signals support the commercial thesis that independent technical evidence
 can reduce adoption friction. They do not establish revenue, unit sales,
 conversion, affiliate performance, or vendor endorsement.
 
-## Current External Evidence And Mentions
+## External Evidence Sources
+
+These sources contribute external evidence to the guide. They are not
+mentions or listings of the guide.
 
 | Source | Date checked | What it contributes |
 | --- | --- | --- |
@@ -52,6 +58,16 @@ conversion, affiliate performance, or vendor endorsement.
 
 External numbers remain external. They become guide headlines only after the
 required artifacts, commands, versions, and evidence class are known.
+
+## Where The Guide Is Listed
+
+| Listing | Date checked | Notes |
+| --- | --- | --- |
+| [`alvinreal/awesome-opensource-ai`](https://github.com/alvinreal/awesome-opensource-ai) README | 2026-09-25 | Listed via [#671](https://github.com/alvinreal/awesome-opensource-ai/pull/671), merged 2026-08-10 |
+| [strixhalo.wiki AI capabilities overview](https://strixhalo.wiki/AI/AI_Capabilities_Overview/), sourced from [`kyuz0/strixhalo-homelab`](https://github.com/kyuz0/strixhalo-homelab) | 2026-09-25 | Originally added via [`deseven/strixhalo-homelab#17`](https://github.com/deseven/strixhalo-homelab/pull/17), merged 2026-08-09; that repository was archived 2026-08-31 and the listing continues in `kyuz0/strixhalo-homelab`. It links to the GitHub repository. |
+
+Listings are adoption signals, not technical review or endorsement. See
+[`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md#external-adoption-of-this-guide).
 
 ## Vendor, Reviewer, And Affiliate Value
 

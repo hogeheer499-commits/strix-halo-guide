@@ -1,5 +1,5 @@
 2026-05-16T12:49:59+02:00
-Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Linux <host> 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
 drwxr-xr-x  2 root root         60 May  4 21:23 /dev/accel
 drwxr-xr-x  2 root root         80 May  4 21:23 /dev/dri/by-path
 crw-rw-rw-+ 1 root render 226,   1 May 16 11:43 /dev/dri/card1

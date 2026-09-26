@@ -2,8 +2,8 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BIN="${BIN:-/home/hoge-heer/benchmark-tools/llama-b10066-vulkan/llama-b10066}"
-MODEL_DIR="${MODEL_DIR:-/home/hoge-heer/benchmark-models/gemma-4-31b-qat-dflash}"
+BIN="${BIN:-~/benchmark-tools/llama-b10066-vulkan/llama-b10066}"
+MODEL_DIR="${MODEL_DIR:-~/benchmark-models/gemma-4-31b-qat-dflash}"
 MODEL="$MODEL_DIR/gemma-4-31B-it-Q4_0.gguf"
 DRAFT="$MODEL_DIR/dflash-gemma-4-31B-it-Q8_0.gguf"
 PORT="${PORT:-18131}"

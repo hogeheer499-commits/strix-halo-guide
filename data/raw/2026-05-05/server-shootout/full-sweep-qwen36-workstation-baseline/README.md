@@ -11,7 +11,7 @@ after the full run.
 | Item | Value |
 |------|-------|
 | System | Beelink GTR9 Pro |
-| Model | `/home/hoge-heer/models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf` |
+| Model | `~/models/Qwen3.6-35B-A3B-UD-Q4_K_M.gguf` |
 | API | OpenAI-compatible `/v1/completions` streaming |
 | Prompt | `scripts/benchmark_openai_server.py` default prompt |
 | Tokens per request | 128 |

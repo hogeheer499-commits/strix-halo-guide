@@ -63,9 +63,9 @@ INFO: T3 Code process is running and protected
 3358167  0.0  0.0 bash
 INFO: T3 semantic proxy is running and protected
 INFO: T3 local semantic proxy is reachable: http://127.0.0.1:3773/
-INFO: T3 LAN semantic proxy is reachable: http://192.168.2.13:3773/
+INFO: T3 LAN semantic proxy is reachable: http://<lan-ip>:3773/
 INFO: T3 local semantic proxy health is healthy: http://127.0.0.1:3773/__t3react185/health
-INFO: T3 LAN semantic proxy health is healthy: http://192.168.2.13:3773/__t3react185/health
+INFO: T3 LAN semantic proxy health is healthy: http://<lan-ip>:3773/__t3react185/health
 INFO: T3 local upstream backend is reachable: http://127.0.0.1:3774/
 
 == Local AI and Containers ==
@@ -77,37 +77,11 @@ hermes-bram    Up 10 days (unhealthy)             9d0a12c02818
 NAMES       STATUS      PORTS       IMAGE
 
 == Listening Ports ==
-tcp   LISTEN 0      100                               127.0.0.1:12001      0.0.0.0:*    users:(("nxnode.bin",pid=8189,fd=17))                                
-tcp   LISTEN 0      128                               127.0.0.1:7001       0.0.0.0:*    users:(("nxnode.bin",pid=8189,fd=24))                                
-tcp   LISTEN 0      511                                 0.0.0.0:3774       0.0.0.0:*    users:(("t3code",pid=2765948,fd=3))                                  
-tcp   LISTEN 0      511                                 0.0.0.0:3773       0.0.0.0:*    users:(("node",pid=890186,fd=21))                                    
-tcp   LISTEN 0      4096                                0.0.0.0:22         0.0.0.0:*                                                                         
-tcp   LISTEN 0      100                               127.0.0.1:22401      0.0.0.0:*                                                                         
-tcp   LISTEN 0      100                               127.0.0.1:22402      0.0.0.0:*    users:(("nxrunner.bin",pid=8209,fd=31),("nxnode.bin",pid=8189,fd=31))
-tcp   LISTEN 0      128                                   [::1]:7001          [::]:*    users:(("nxnode.bin",pid=8189,fd=23))                                
-tcp   LISTEN 0      4096                                   [::]:22            [::]:*                                                                         
+<redacted 9 lines of listening ports on 2026-09-26; benchmark runtime lines kept>
 
 == Top CPU Processes ==
     PID    PPID STAT %CPU %MEM COMMAND
-1365973       1 Ssl  14.2  0.0 libvirtd
-   6591    6589 Sl+   3.6  0.0 Xorg
-   6924    2272 Ssl   2.4  0.1 gnome-shell
-2765948 2765572 Ssl   2.0  0.6 t3code
-1049269 1049262 Sl    1.6  0.3 codex
-   1398       1 Ss    0.8  0.0 dbus-daemon
-   1108       2 S     0.4  0.0 napi/phy0-0
- 290857    6924 Sl    0.3  0.0 gjs
- 771872  683516 SNl   0.3  0.1 software-proper
-   1109       2 S     0.3  0.0 napi/phy0-0
-   2568    2272 Ssl   0.2  0.0 pipewire
-   2574    2272 SLsl  0.2  0.0 pipewire-pulse
-4191512    6924 Sl    0.2  0.3 firefox
- 418076       2 S     0.1  0.0 napi/intigriti-0
- 356677    2272 Ssl   0.1  0.4 python
-   1408       1 Ssl   0.1  0.0 polkitd
-   1309       2 S     0.1  0.0 mt76-tx phy0
-   3400       1 Ssl   0.1  0.0 nxserver.bin
- 770783 4191854 Sl    0.1  0.2 Isolated Web Co
+<redacted 19 lines of top cpu processes on 2026-09-26; benchmark runtime lines kept>
 
 == Verdict ==
 Blockers: 0

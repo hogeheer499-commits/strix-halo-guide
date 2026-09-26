@@ -14,6 +14,6 @@ engine install
   runtime_id: lemonade-embeddable-10.6.0
   reinstall: false
   env_id: lemonade-embeddable-10.10.0
-  env_path: /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/data/engines/lemonade/runtime
+  env_path: ~/local-scratch/rocm-cli-isolated-20260809-v1/data/engines/lemonade/runtime
   warning: Lemonade is installed as a rocm-cli managed embeddable runtime
   warning: Selected the best supported llama.cpp backend for this GPU: llamacpp:rocm

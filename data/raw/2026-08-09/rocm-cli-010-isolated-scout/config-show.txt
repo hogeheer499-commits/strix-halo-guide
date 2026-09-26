@@ -1,5 +1,5 @@
 rocm config
-  file: /home/hoge-heer/local-scratch/rocm-cli-isolated-20260809-v1/config/config.json
+  file: ~/local-scratch/rocm-cli-isolated-20260809-v1/config/config.json
   default_engine: lemonade
   default_runtime_id: <unset>
   active_runtime_key: <unset>

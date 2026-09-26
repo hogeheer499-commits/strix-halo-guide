@@ -3,13 +3,19 @@
 Independent AMD Strix Halo / Ryzen AI MAX+ 395 local-AI setup and benchmark evidence.
 
 Canonical repository: https://github.com/hogeheer499-commits/strix-halo-guide
-Project website: https://strixhaloguide.com/
-Technical web summary: https://hogeheer499-commits.github.io/strix-halo-guide/
-Focused BIOS, UMA, IOMMU and local-LLM setup: https://strixhaloguide.com/amd-strix-halo-setup/
+
+## Site routes
+
+Home: https://strixhaloguide.com/
+Setup (BIOS, UMA, IOMMU and local-LLM setup): https://strixhaloguide.com/amd-strix-halo-setup/
 Qwen3.8 27B route comparison: https://strixhaloguide.com/qwen38-strix-halo/
-Mini PC buying comparison (measured cross-OEM evidence, 64GB vs 128GB, price history): https://strixhaloguide.com/best-strix-halo-mini-pc/
-Troubleshooting (Ollama, Vulkan/RADV, ROCm, firmware, GTT, HIP correctness): https://strixhaloguide.com/troubleshooting/
+Buyer guide (dated prices, 64GB vs 128GB, first-party and community evidence): https://strixhaloguide.com/best-strix-halo-mini-pc/
 Model hub (measured here vs verified-but-unmeasured models and 128GB fit): https://strixhaloguide.com/strix-halo-models/
+Benchmark index: https://strixhaloguide.com/evidence/
+Troubleshooting (Ollama, Vulkan/RADV, ROCm, firmware, GTT, HIP correctness): https://strixhaloguide.com/troubleshooting/
+Professional help: https://strixhaloguide.com/services/
+
+Non-canonical GitHub Pages mirror (pages point to strixhaloguide.com as canonical): https://hogeheer499-commits.github.io/strix-halo-guide/
 
 ## Start here
 

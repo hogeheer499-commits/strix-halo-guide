@@ -87,26 +87,26 @@
     "No llama.cpp binary (llama-cli/llama-server/main) on PATH."
   ],
   "env": {
-    "PATH": "/home/hoge-heer/.local/bin:/home/hoge-heer/.nvm/versions/node/v22.22.1/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/hoge-heer/.local/bin:/home/hoge-heer/.local/bin:/home/hoge-heer/bin:/home/hoge-heer/.local/bin:/home/hoge-heer/.codex/tmp/arg0/codex-arg0xkFQ0k:/home/hoge-heer/.nvm/versions/node/v22.22.1/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:/home/hoge-heer/.local/bin:/home/hoge-heer/.local/bin:/home/hoge-heer/bin:/home/hoge-heer/.opencode/bin:/home/hoge-heer/.cargo/bin:/home/hoge-heer/.local/bin:/home/hoge-heer/.nvm/versions/node/v22.22.1/bin:/home/hoge-heer/.local/bin:/home/hoge-heer/.local/bin:/home/hoge-heer/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+    "PATH": "~/.local/bin:~/.nvm/versions/node/v22.22.1/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:~/.local/bin:~/.local/bin:~/bin:~/.local/bin:~/.codex/tmp/arg0/codex-arg0xkFQ0k:~/.nvm/versions/node/v22.22.1/lib/node_modules/@openai/codex/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/codex-path:~/.local/bin:~/.local/bin:~/bin:~/.opencode/bin:~/.cargo/bin:~/.local/bin:~/.nvm/versions/node/v22.22.1/bin:~/.local/bin:~/.local/bin:~/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
   },
   "in_container": false,
   "container_kind": "",
   "dmesg_amdgpu_tail": [
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring comp_1.0.0 uses VM inv eng 1 on hub 0",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring comp_1.1.0 uses VM inv eng 4 on hub 0",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring comp_1.2.0 uses VM inv eng 6 on hub 0",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring comp_1.3.0 uses VM inv eng 7 on hub 0",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring comp_1.0.1 uses VM inv eng 8 on hub 0",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring comp_1.1.1 uses VM inv eng 9 on hub 0",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring comp_1.2.1 uses VM inv eng 10 on hub 0",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring comp_1.3.1 uses VM inv eng 11 on hub 0",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring sdma0 uses VM inv eng 12 on hub 0",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring vcn_unified_0 uses VM inv eng 0 on hub 8",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring vcn_unified_1 uses VM inv eng 1 on hub 8",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring jpeg_dec_0 uses VM inv eng 4 on hub 8",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring jpeg_dec_1 uses VM inv eng 6 on hub 8",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring mes_kiq_3.1.0 uses VM inv eng 13 on hub 0",
-    "Aug 07 18:42:04 hoge-heer-GTR-Pro kernel: amdgpu 0000:c6:00.0: ring vpe uses VM inv eng 7 on hub 8"
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring comp_1.0.0 uses VM inv eng 1 on hub 0",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring comp_1.1.0 uses VM inv eng 4 on hub 0",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring comp_1.2.0 uses VM inv eng 6 on hub 0",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring comp_1.3.0 uses VM inv eng 7 on hub 0",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring comp_1.0.1 uses VM inv eng 8 on hub 0",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring comp_1.1.1 uses VM inv eng 9 on hub 0",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring comp_1.2.1 uses VM inv eng 10 on hub 0",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring comp_1.3.1 uses VM inv eng 11 on hub 0",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring sdma0 uses VM inv eng 12 on hub 0",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring vcn_unified_0 uses VM inv eng 0 on hub 8",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring vcn_unified_1 uses VM inv eng 1 on hub 8",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring jpeg_dec_0 uses VM inv eng 4 on hub 8",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring jpeg_dec_1 uses VM inv eng 6 on hub 8",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring mes_kiq_3.1.0 uses VM inv eng 13 on hub 0",
+    "Aug 07 18:42:04 <host> kernel: amdgpu 0000:c6:00.0: ring vpe uses VM inv eng 7 on hub 8"
   ],
   "notes": [],
   "probe_failures": [],

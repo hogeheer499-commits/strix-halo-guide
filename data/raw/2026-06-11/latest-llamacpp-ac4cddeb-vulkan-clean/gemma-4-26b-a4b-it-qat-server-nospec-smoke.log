@@ -10,7 +10,7 @@
 0.00.022.404 I srv          init: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
 0.00.022.476 I srv         start: binding port with default address family
 0.00.023.610 I srv  llama_server: loading model
-0.00.023.621 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/gemma-4-26b-a4b-it-qat-unsloth-udq4kxl/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf'
+0.00.023.621 I srv    load_model: loading model '~/benchmark-models/gemma-4-26b-a4b-it-qat-unsloth-udq4kxl/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf'
 0.00.023.643 I common_init_result: fitting params to device memory ...
 0.00.023.644 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
 0.00.698.437 W load: override 'tokenizer.ggml.add_bos_token' to 'true' for Gemma4

@@ -2,7 +2,7 @@
 ![Speed](https://img.shields.io/badge/direct_30B_Qwen-100.0_t/s-brightgreen?style=for-the-badge)
 ![Small MoE](https://img.shields.io/badge/small_MoE-170.0_t/s-brightgreen?style=for-the-badge)
 ![284B](https://img.shields.io/badge/direct_284B_GGUF-13.3_t/s-0ea5e9?style=for-the-badge)
-![MTP](https://img.shields.io/badge/MTP_server-101--140_t/s_experimental-7c3aed?style=for-the-badge)
+![MTP](https://img.shields.io/badge/MTP_server-101--141_t/s_experimental-7c3aed?style=for-the-badge)
 [![Community](https://img.shields.io/badge/community-10_benchmark_contributors_13_systems%2Fsources-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
 ![RAM](https://img.shields.io/badge/128GB_unified-blue?style=for-the-badge)
 ![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
@@ -19,7 +19,7 @@ AMD now publicly frames Ryzen AI Halo-class systems as a local-AI and developer-
 
 Project website: <https://strixhaloguide.com/>. This GitHub repository remains the source of truth for setup commands, benchmark claims, and raw evidence.
 
-Maintainer credibility is public and reviewable: 15+ merged upstream contributions, including [`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), AMD's Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf. See [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md) for every PR link, its scope, and honest boundaries. Upstream acceptance strengthens confidence in the engineering process; it does not replace the raw evidence required for each benchmark claim.
+Maintainer credibility is public and reviewable: 15 merged engineering PRs across 10 upstream projects, including [`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), the AMD-sponsored open-source Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf, plus 3 merged listing/docs PRs (counts reconciled 2026-09-13). See [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md) for every PR link, its scope, and honest boundaries. Upstream acceptance strengthens confidence in the engineering process; it does not replace the raw evidence required for each benchmark claim.
 
 ## Start Here
 
@@ -28,7 +28,7 @@ Maintainer credibility is public and reviewable: 15+ merged upstream contributio
 | Looking for the readable project overview | [Strix Halo Guide website](https://strixhaloguide.com/) | The buyer/setup path, evidence model, and routes into the canonical technical source |
 | Setting up a machine you already own | [Quick Start](#quick-start-6-steps) or the [short setup answer](STRIX_HALO_LOCAL_LLM_SETUP.md) | BIOS, Ubuntu, memory, Vulkan/RADV, Ollama, and the first working model |
 | Deciding what model or backend to run | [Best Known Profiles](BEST_KNOWN_PROFILES.md) and [Current Models](CURRENT_MODELS.md) | Easy chat, direct speed, long context, serving, multimodal, capacity, and experimental routes |
-| Evaluating Qwen3.8 claims | [Qwen3.8 on Strix Halo](QWEN38_STRIX_HALO.md) | Why measured 20.42 t/s and community 22-65 t/s routes are different claims; what is verified locally and what still needs reproduction |
+| Evaluating Qwen3.8 claims | [Qwen3.8 on Strix Halo](QWEN38_STRIX_HALO.md) | Why measured 20.42 t/s (Ollama API with Ollama-default MTP drafting) and community 22-65 t/s routes are different claims; what is verified locally and what still needs reproduction |
 | Comparing or buying Strix Halo hardware | [Buyer Use Cases](BUYER_USE_CASES.md), [Buying Guide](#buying-guide), and [cross-OEM evidence](SYSTEM_EVIDENCE_MATRIX.md) | Memory fit, OS/backend tradeoffs, OEM portability, power, thermals, and missing proof |
 | Reproducing or contributing benchmarks | [Reproducibility](REPRODUCIBILITY.md), [headline claim index](data/headline_claims.csv), and [benchmark issue](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md) | Exact commands, metadata, raw evidence, caveats, and community credit |
 | Reviewing the project for a vendor or publication | [One-page brief](ONE_PAGE_BRIEF.md), [partnership scope](PARTNERSHIP.md), and [disclosure policy](VENDOR_DISCLOSURE.md) | Which buyer uncertainty the evidence removes and how independence is protected |
@@ -80,7 +80,7 @@ Halo owners find it; a reproducible result or correction helps even more.
 | Question | Current answer |
 | --- | --- |
 | Best beginner route | Ollama with Vulkan/RADV. The fully reboot-qualified general baseline remains 0.31.2; Qwen3.8 is separately measured on 0.32.13. Available Ollama 0.34.2 (September 19 check) still needs the controlled upgrade/reboot matrix; the revised installer itself is not yet fresh-install/upgrade qualified. |
-| Current Qwen3.8 route | Official Qwen3.8 27B `Q4_K_M` measured 292.49 prompt t/s and 20.42 generation t/s; image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed. [Read the route comparison.](QWEN38_STRIX_HALO.md) |
+| Current Qwen3.8 route | Official Qwen3.8 27B `Q4_K_M` measured 292.49 prompt t/s and 20.42 generation t/s through the Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; not a no-draft result); image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed. [Read the route comparison.](QWEN38_STRIX_HALO.md) |
 | Fast direct 30B-class route | Qwen3-Coder 30B-A3B `Q4_K_S` reached 100.99 tg128 on official b9851; it is a speed-first quant, not the balanced default. |
 | Largest direct GGUF tested | DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded as a 90.86GB low-bit artifact and measured 13.27 tg128; capacity proof, not broad quality. |
 | Experimental server frontier | Repeat-confirmed local MTP/server profiles reach 101-141 t/s, but prompt shape, draft acceptance, runtime, and quant are part of each claim. |
@@ -94,10 +94,10 @@ For those who want to get running as fast as possible:
 
 1. **BIOS:** Set UMA Frame Buffer to 512MB if available; if your BIOS minimum is 2GB, leave it at 2GB. Keep IOMMU enabled/default for laptops, suspend, and NPU use. Disabling it is an optional desktop benchmark profile.
 2. **Install Ubuntu 24.04 LTS.** X11 is needed only for a desktop tool that requires it, not headless inference.
-3. **Memory profile:** The recorded 128GB Beelink profile uses `amdgpu.gttsize=131072 ttm.pages_limit=31457280`. Do not copy these limits to 64GB/96GB systems; follow the scoped manual memory section. Add `amd_iommu=off` only for the optional desktop benchmark profile after reading [Choose the IOMMU policy](#step-12-choose-the-iommu-policy).
+3. **Memory profile:** The recorded 128GB Beelink profile uses `amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0` (see [Step 3.2](#step-32-configure-grub-boot-parameters) for the `cwsr_enable=0` rationale). Do not copy these limits to 64GB/96GB or 192GB systems; follow the scoped manual memory section. Add `amd_iommu=off` only for the optional desktop benchmark profile after reading [Choose the IOMMU policy](#step-12-choose-the-iommu-policy).
 4. **Driver and power policy:** Follow the measured Mesa/RADV route and record the active power manager. Preserve an existing policy by default; `tuned accelerator-performance` is an opt-in reproduction profile, not a universal requirement or guaranteed speedup.
 5. **Ollama:** Install, configure Vulkan backend with `OLLAMA_VULKAN=1`, `OLLAMA_IGPU_ENABLE=1`, and `HIP_VISIBLE_DEVICES=-1`. Without `OLLAMA_IGPU_ENABLE=1`, measured builds can detect the Radeon 8060S and still fall back to CPU-only inference.
-6. **Test:** `ollama run qwen3.6:35b-a3b` -- the measured Ollama 0.31.2 system-service path reached about 60 t/s generation. Exact speed depends on runtime, model, power state, and background load.
+6. **Test:** `ollama run qwen3.6:35b-a3b` -- the measured Ollama 0.31.2 system-service path reached about 60 t/s generation. That row used the tag's earlier manifest `07d35212591f`. Since then the tag points to an MTP build with `draft_num_predict 2` (`35b-a3b-mtp-q4_K_M-20260824`, registry check 2026-09-25) that this guide has not measured; `ollama list` shows which ID you pulled. Exact speed depends on runtime, model, power state, and background load.
 
 Use the setup script below for the automated path. The phases later in this README are the manual reference and fallback path if you want to inspect or reproduce each change yourself.
 
@@ -115,7 +115,15 @@ reboot pin stays 0.31.2; isolated 0.34.2 is useful but not default. These tests
 are not a new clean-install or full-host-reboot qualification.
 
 **Scope before running:** this automatic route is for 128GB-class systems with
-at least 120GiB visible RAM. It is not a general 64GB/96GB installer. Configuration
+at least 120GiB visible RAM on Ubuntu 24.04. It is not a general 64GB/96GB
+installer, and it stops above about 136GiB visible RAM: 192GB-class systems
+(for example Ryzen AI Max+ PRO 495) are not qualified, so do not reuse the 128GB
+values there. The check reads OS-visible RAM only, so a 192GB system with a
+large BIOS UMA reserve can still pass it; confirm your installed memory first.
+Ubuntu 26.04 is **not qualified** by this guide; the script stops on any OS
+other than Ubuntu 24.04 unless you deliberately pass
+`STRIX_HALO_ALLOW_UNQUALIFIED_OS=1` to it (for example
+`STRIX_HALO_ALLOW_UNQUALIFIED_OS=1 bash setup.sh`). Configuration
 handling has offline fixture coverage; the revised script's fresh-install and
 upgrade paths still need hardware qualification. Review the script and existing
 configuration first: a later conflict can stop a partially completed run; this
@@ -137,6 +145,13 @@ cd strix-halo-guide
 bash setup.sh
 ```
 
+Both the `git clone` route above and the `curl | bash` route below run the
+unpinned `main` branch, which has not been fresh-install qualified on hardware.
+For a reproducible run, review the script and pin it to a tag or commit you have
+reviewed (`git checkout <tag-or-commit>` before `bash setup.sh`, or replace
+`main` in the raw URL with that commit). No tag is currently marked as
+fresh-install qualified for the revised script.
+
 Inspect the script first with `less setup.sh` before running it: it edits GRUB boot parameters, adds the kisak Mesa PPA, and runs a full `apt upgrade`.
 
 For unattended copy/paste installs, the same script can also be run as:
@@ -145,7 +160,27 @@ For unattended copy/paste installs, the same script can also be run as:
 curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/setup.sh | bash
 ```
 
+This also adds the kisak Mesa PPA and runs a full `apt upgrade -y`, and it
+fetches unpinned `main` (see the pinning note above).
+
 This installs the Linux-side Vulkan/RADV + Ollama path, configures Ollama for Vulkan, pulls a model, and prepares a verification benchmark. If the script changes boot parameters, reboot first and then run `bash ~/bench-ollama.sh`.
+
+### Undo the setup script
+
+> **Untested on hardware:** these manual reversal steps have not been run on the
+> test system. Review each one against your own configuration first, and only
+> undo what the script actually changed on your machine.
+
+| Change made by `setup.sh` | Manual reversal |
+|---|---|
+| Added `amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0` to `GRUB_CMDLINE_LINUX_DEFAULT` | `sudoedit /etc/default/grub`, remove only those parameters, run `sudo update-grub`, reboot and check `/proc/cmdline` |
+| Installed `/etc/systemd/system/ollama.service.d/60-strix-halo-guide.conf` | `sudo rm /etc/systemd/system/ollama.service.d/60-strix-halo-guide.conf`, then `sudo systemctl daemon-reload` and `sudo systemctl restart ollama` |
+| Added `ppa:kisak/kisak-mesa` and ran `apt upgrade -y` | `sudo apt install ppa-purge && sudo ppa-purge ppa:kisak/kisak-mesa` (downgrades the PPA packages to Ubuntu's versions); other packages upgraded by `apt upgrade` are not reverted |
+| Added your user to `render` and/or `video` | Only if the script added them: `sudo gpasswd -d "$USER" render` / `video`, then log out and back in |
+| Wrote `~/bench-ollama.sh` | `rm ~/bench-ollama.sh` |
+| Pulled `qwen3.6:35b-a3b` | `ollama rm qwen3.6:35b-a3b` |
+| Installed Ollama (fresh installs only) and `vulkan-tools` if missing | Follow [Ollama's Linux uninstall steps](https://docs.ollama.com/linux#uninstall); `sudo apt remove vulkan-tools` |
+| With `POWER_POLICY=tuned` only: installed/enabled `tuned` | `sudo systemctl disable --now tuned`, then restore your previous power manager |
 
 ## What You Can Run: Quick Snapshot
 
@@ -265,7 +300,7 @@ The quickest sanity check after the setup script finishes is:
 ollama run qwen3.6:35b-a3b
 ```
 
-Expect roughly the same performance class as the guide's Ollama Vulkan/RADV rows if your BIOS, kernel parameters, Vulkan ICD, model, quant, and power profile match.
+Expect roughly the same performance class as the guide's Ollama Vulkan/RADV rows if your BIOS, kernel parameters, Vulkan ICD, model, quant, and power profile match. The ~60 t/s `qwen3.6:35b-a3b` beginner row used the tag's earlier manifest `07d35212591f`; the tag now points to an unmeasured MTP build (see Quick Start step 6), so check `ollama list` for the ID you pulled.
 
 Choose the backend by what you are trying to do:
 
@@ -343,7 +378,7 @@ Measured local result: 100.04 tg128 and 1416.03 pp512 on the r50 confirmation: [
 - A first-party Beelink wall-power tokens-per-watt claim. Local amdgpu `PPT` telemetry exists, and community Corsair wall-power rows exist, but the guide still needs a Beelink wall-meter run before publishing Beelink J/token claims.
 - Same-machine Windows versus Linux performance. Windows LM Studio and WSL2/HIP community rows now exist, but they are not same-machine, same-model, same-shape comparisons against native Linux Vulkan/RADV.
 - A default or balanced first-party 100 t/s Qwen3-Coder claim. The first-party Qwen3-Coder `Q4_K_S` speed-first row now reaches 100.99 t/s on b9851, but the practical balanced `UD-Q4_K_XL` row remains in the 96-99.6 t/s class depending on build/repeat length. A tuned community GMKtec report touched 100.0 t/s on Qwen3-Coder, and a separate first-party Qwen3-30B-A3B-Instruct-2507 IQ4_XS route reached 100.04 t/s, but those are separate evidence categories.
-- Production-ready NPU/FastFlowLM inference. The kernel sees `amdxdna` and `/dev/accel/accel0`, but XRT/FastFlowLM user-space is not installed and no local NPU LLM row is published yet.
+- Production-ready NPU/FastFlowLM inference. In the May 16 preflight the kernel saw `amdxdna` and `/dev/accel/accel0`, but XRT/FastFlowLM user-space is not installed and no local NPU LLM row is published yet.
 - A broadly useful DFlash/PFlash speedup on Strix Halo. The official Gemma 4 31B QAT target and matched DFlash sidecar now load and serve on b10066, but DFlash `n_max=8` was 5.54% slower at 5,471 prompt tokens and 20.42% slower at 21,855 on the measured synthetic shapes because acceptance stayed low. Representative chat, coding, and reasoning prompts still need separate profiling.
 - A vLLM/DFlash server path that competes with `llama-server` or Ollama for a real 35B Strix Halo use case. Plain AWQ without the gated DFlash drafter was only a smoke test here at about 25 t/s.
 - A pinned current-HIP long-context comparison against the current Vulkan/RADV path. Historical external rocWMMA evidence exists, but upstream removed that kernel in 2026 and the older local lhl branch failed to load the current Qwen3.6 GGUFs.
@@ -528,7 +563,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro, primarily with Vu
 | Qwen3-Coder-Next | 51 GB | MoE (80B total / 3B active) | 38-39 t/s | Coding MoE; size is the measured artifact, not parameter count |
 | Llama 3.1 70B (Q4_K_M) | 42 GB | Dense | **4.7-4.9 t/s** | Dense 70B capacity; artifact exceeds 24GB VRAM without offload |
 | Llama 4 Scout 109B (Q4_K_M) | 61 GB | MoE | **18.3 t/s** * | 109B artifact on a mini PC; exceeds 24GB VRAM without offload |
-| Nemotron 3 Nano 30B-A3B (IQ4_XS) | 18.2 GB | MoE | **76.0 t/s** * | Practical NVIDIA Nemotron 30B-class route |
+| Nemotron 3 Nano 30B-A3B (IQ4_XS) | 18.2 GB | MoE | **76.0 t/s** * | Measured NVIDIA Nemotron 30B-class route (June 2026); newer Nemotron 3.5 Lightning is not measured here |
 | DeepSeek V4 Flash 284B (UD-IQ2_XXS) | 90.9 GB | MoE | **13.3 t/s** * | Largest current direct ordinary-GGUF capacity proof; low-bit quant, not a quality recommendation |
 | Nemotron 3 Super 120B-A12B (UD-IQ4_XS) | 64.5 GB | MoE | **18.4 t/s** * | Current 120B-class GGUF route on one 128GB Strix Halo |
 | gpt-oss-120b MXFP4 | 63.4 GB | MoE | **55.6 t/s** * | 117B-parameter open-weight model; local load and long-context speed check |
@@ -710,7 +745,7 @@ Extended context scaling (b8460 RADV):
 
 | Build | Driver | pp512 | tg128 | Notes |
 |-------|--------|-------|-------|-------|
-| **b9172** | **RADV** | **752** | **59.06** | Latest-stack r20 confirmation; historical May 80B Qwen-family path |
+| **b9172** | **RADV** | **752** | **59.06** | May 2026 b9172 strict-profile r20 confirmation; historical May 80B Qwen-family path |
 | **b8933** | **RADV** | **657** | **54.92** | 80B model at 55 t/s |
 
 > 80 billion parameters running at 59 t/s on a mini PC. This measured Qwen3-family MoE has 80B total with only 3B active parameters and a 256K context window. Despite being 42.90 GiB of reported llama-bench model bytes (46.06 decimal GB), the MoE routing keeps only 3B params active per token. The measured route reached 59 t/s versus 38 t/s for the separate Qwen3-Coder-Next 80B-A3B artifact/runtime row. This is not a matched architecture or quality comparison. The 2026-05-16 b9172 check improved this row, while Qwen3-Coder, Qwen3.6, and gpt-oss did not improve on the same latest-stack rerun.
@@ -1010,7 +1045,7 @@ create that section and place the key immediately beneath it. Keep other section
 and settings intact; do not append the key under `[debug]`. Repeated edits should
 leave one active key in `[daemon]`. Reboot deliberately after saving your work.
 
-> **Ubuntu 26.04 LTS** (released April 2026) ships with Linux 7.0, Mesa 26.0, and native `apt install rocm`. However, 26.04 is **Wayland-only** (X11 switch above does not work) and the performance-relevant components (kernel, Mesa RADV) are already available on 24.04 via the [kisak PPA](https://launchpad.net/~kisak/+archive/ubuntu/kisak-mesa) and [mainline kernel PPA](https://kernel.ubuntu.com/mainline/). **Upgrading is not needed for LLM performance.** This guide stays on 24.04 LTS.
+> **Ubuntu 26.04 LTS** (released April 2026) ships with Linux 7.0, Mesa 26.0, and native `apt install rocm`. However, 26.04 is **Wayland-only** (X11 switch above does not work) and it is **not qualified by this guide**; community 26.04 reports stay separate from first-party results. On 24.04, use the stock Ubuntu HWE kernel (`linux-hwe-7.0` has been in noble-updates since 2026-05-28; the September 19 acceptance ran `7.0.0-31`) and Mesa RADV from the [kisak PPA](https://launchpad.net/~kisak/+archive/ubuntu/kisak-mesa). Mainline kernel PPA builds are unsupported and receive no security updates, so this guide no longer recommends them. AMD's [RDNA3.5 system notes](https://rocm.docs.amd.com/en/latest/how-to/system-optimization/rdna3-5.html) list Ubuntu 24.04 HWE `6.17.0-19.19~24.04.2` or later as the minimum. As of 2026-09-25, the point releases Ubuntu 24.04.5 (2026-09-10) and 26.04.1 (2026-08-27) exist; neither has been measured here. **Upgrading is not needed for LLM performance.** This guide stays on 24.04 LTS.
 
 ---
 
@@ -1051,8 +1086,16 @@ amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0
 |-----------|----------------|
 | `amdgpu.gttsize=131072` | 128 GiB GTT limit; not preallocated VRAM or proof that a 128 GiB model fits |
 | `ttm.pages_limit=31457280` | 120 GiB limit with 4 KiB pages; OS, context and runtime still need headroom |
-| `amdgpu.cwsr_enable=0` | Recorded compute wave save/restore setting; qualify against the selected kernel/workload |
+| `amdgpu.cwsr_enable=0` | Recorded setting: disables compute wave save/restore (CWSR), the mechanism for mid-wave compute preemption; the known gfx1151 workaround for MES firmware hangs in [ROCm/ROCm#5590](https://github.com/ROCm/ROCm/issues/5590). Qualify against the selected kernel/workload |
 | `amd_iommu=off` | Optional historical desktop profile; disables NPU access and can break deep suspend |
+
+> **`gttsize` deprecation (checked 2026-09-25):** upstream kernel master
+> (7.3-rc4) logs that configuring `gttsize` via the module parameter is
+> deprecated in favour of `ttm.pages_limit`. Because this profile's GTT size
+> (128 GiB) differs from its TTM limit (120 GiB), that code also logs an
+> "unusual" GTT/TTM mismatch warning. AMD's RDNA3.5 notes raise only the TTM
+> limit (`amd-ttm --set`). The recorded profile is unchanged until a reversible
+> reboot A/B (TTM-only vs this profile; `cwsr_enable` on vs off) is measured.
 
 Leave IOMMU at its normal default for the buyer route. Preserve existing
 configuration and resolve conflicting parameter values before running:
@@ -1165,16 +1208,18 @@ cat /sys/class/drm/card*/device/pp_dpm_sclk
 ### Step 4.4: Linux Firmware
 
 ```bash
-dpkg -l | grep linux-firmware | head -5
+dpkg-query -W 'linux-firmware*'
 ```
 
-> **Firmware compatibility:** `linux-firmware-20251125` has a documented Strix Halo ROCm failure history ([toolbox source](https://github.com/kyuz0/amd-strix-halo-toolboxes)). If symptoms began after installing it, inspect the exact package version and your distribution's available versions. The guide's historical working Ubuntu package is recorded in [Reproducibility](REPRODUCIBILITY.md); it is not a universal firmware guarantee.
+> **Firmware compatibility:** `linux-firmware-20251125` is an upstream firmware tag with a documented Strix Halo ROCm failure history in Fedora (`rpm`) packaging, where that update has since been recalled ([toolbox source](https://github.com/kyuz0/amd-strix-halo-toolboxes)). Ubuntu version strings (for example `20240318.git3b128b60-...`) never contain that tag, so on Ubuntu you cannot identify the affected state by that name. If symptoms began after a firmware update, inspect the exact package versions and your distribution's available versions. The guide's historical working Ubuntu package is recorded in [Reproducibility](REPRODUCIBILITY.md); it is not a universal firmware guarantee.
+>
+> **Ubuntu 24.04 package split (checked 2026-09-25):** since 2026-09-03, `linux-firmware` in noble-updates is a metapackage. The AMD GPU blobs ship in the separate `linux-firmware-amd-graphics` package. Checking, restoring or holding only `linux-firmware` no longer controls the amdgpu firmware; check, hold or restore `linux-firmware-amd-graphics` instead. Downgrading the metapackage to an older monolithic `0ubuntu2.x` package reshuffles the split packages; review what apt proposes before confirming.
 >
 > ```bash
-> dpkg-query -W linux-firmware
-> apt-cache policy linux-firmware
+> dpkg-query -W 'linux-firmware*'
+> apt-cache policy linux-firmware-amd-graphics linux-firmware
 > ```
-> Select an unaffected package available for your distribution, install that exact version using its package manager, then reboot and repeat the GPU/model checks. A version from another distribution is not a safe substitute. `apt-mark hold` only prevents package changes: it does **not** downgrade firmware. If you temporarily hold a restored working package, record the reason and revisit the hold when a suitable update is verified.
+> Select an unaffected package available for your distribution, install that exact version using its package manager, then reboot and repeat the GPU/model checks. A version from another distribution is not a safe substitute. No known-good `linux-firmware-amd-graphics` version has been qualified by the guide. `apt-mark hold` only prevents package changes: it does **not** downgrade firmware. If you temporarily hold a restored working package (on Ubuntu 24.04: `linux-firmware-amd-graphics`, not only the metapackage), record the reason and revisit the hold when a suitable update is verified.
 
 ---
 
@@ -1246,6 +1291,7 @@ sudo systemctl restart ollama
 ollama pull qwen3.6:35b-a3b
 
 # Current official dense multimodal model, measured route in this guide (~18GB)
+# Requires Ollama 0.32.12 or later; measured on 0.32.13 (not the 0.31.2 pin above)
 ollama pull qwen3.8:27b
 
 # Higher quality MoE, Q8_0 quantization (~32GB)
@@ -1323,11 +1369,10 @@ For ROCm-specific workloads, batch processing, and long-context experiments, use
 ### Step 7.1: Install Distrobox and Podman
 
 ```bash
-sudo apt install podman -y
-curl -s https://raw.githubusercontent.com/89luca89/distrobox/main/install | sudo sh
+sudo apt install podman distrobox -y
 ```
 
-> **Note:** Ubuntu 24.04 does not include `toolbox` in its repos. Use Distrobox instead. The default `toolbox` on Ubuntu also breaks GPU access.
+> **Note:** Ubuntu 24.04 ships both `distrobox` (1.7.0 in noble universe, checked 2026-09-25) and a `podman-toolbox` package. This guide uses Distrobox; earlier guide notes reported GPU-access problems with the default `toolbox` on Ubuntu, which has not been re-qualified. If you need a newer Distrobox than the Ubuntu package, install a pinned upstream release after reviewing it; do not pipe an unpinned script into `sudo sh`.
 
 ### Step 7.2: Create the ROCm Container
 
@@ -1538,7 +1583,7 @@ We tested both Vulkan drivers via llama-bench. Results depend heavily on the lla
 | BIOS VRAM increase for speed | "More GPU VRAM = faster" | Zero speed difference, but a very large fixed UMA reserve can cripple OS-visible RAM and GTT capacity. Use 512MB if available; 2GB is fine when that is the vendor minimum. | If Linux only sees ~31GB on a 128GB box, large models will not load |
 | ROCm 7.0 RC | "Use ROCm 7 RC" | Segfaults on kernel 6.18.14+ | `HSA_STATUS_ERROR` crash |
 | Reusing old HSA overrides on a current ROCm image | "Keep the workaround forever" | A stale host `11.0.0` override was inherited by Distrobox and changed native `gfx1151` to `gfx1100` | Current ROCm 7.2.4 crashed in `libamdhip64`; unsetting the obsolete override restored inference |
-| linux-firmware-20251125 | Auto-update | Breaks ROCm on Strix Halo | Instability, crashes |
+| linux-firmware-20251125 (upstream tag; Fedora packaging) | Auto-update | Breaks ROCm on Strix Halo | Instability, crashes; on Ubuntu 24.04 check `linux-firmware-amd-graphics` ([Step 4.4](#step-44-linux-firmware)) |
 | PyTorch / HuggingFace Transformers | "Any model/runtime combination will be fast" | A [reported 70B decode workload](https://github.com/pytorch/pytorch/issues/171687) spent 92-95% of decode time in hipMemcpy and reported ~1.5 t/s versus 4.8 t/s for its llama.cpp comparison | Workload-specific transfer bottleneck, not a verdict on all PyTorch UMA support. The guide separately documents scoped Unsloth and vLLM successes; qualify the exact workload |
 
 ### Things That DO Work
@@ -1601,7 +1646,9 @@ With this fix, ROCm worked on that measured setup and improved prompt
 processing versus the older 6.18.14 row. It is historical reproduction
 metadata, not the current default.
 
-### Current ROCm migration check (July 2026)
+<a id="current-rocm-migration-check-july-2026"></a>
+
+### ROCm migration check (July 2026)
 
 Current ROCm builds with native Strix Halo support should report `gfx1151`.
 Before debugging a current container, check the host and container:
@@ -1831,7 +1878,7 @@ matrix and the measured ROCm 7.2/7.14 evidence remain unchanged.
 **Rules for interpreting this dated matrix:**
 - Kernel 6.18.4+ changed gfx1151 handling; use current ROCm builds/containers instead of old ROCm RC builds
 - The measured b8460/kernel 6.19.4 route used `HSA_OVERRIDE_GFX_VERSION=11.5.1`
-- The documented linux-firmware-20251125 failure applies to the recorded stack; investigate exact package/runtime combinations
+- The documented linux-firmware-20251125 failure (an upstream tag, reported in Fedora packaging) applies to the recorded stack; investigate exact package/runtime combinations, and on Ubuntu 24.04 the `linux-firmware-amd-graphics` package
 - A later date alone does not qualify firmware; preserve known-working package metadata and retest after changes
 
 > **Current measured recommendation:** use a current ROCm build with native
@@ -1890,7 +1937,7 @@ After completing setup, verify each item:
 
 ## Model Recommendation Guide
 
-Use the [Strix Halo model hub](https://hogeheer499-commits.github.io/strix-halo-guide/strix-halo-models/)
+Use the [Strix Halo model hub](https://strixhaloguide.com/strix-halo-models/)
 for a web view that separates models measured by this guide from artifacts
 verified to exist but not measured here, plus dated 128GB published-size fit
 tiers. The tables below remain the canonical in-repository setup guidance.
@@ -1908,7 +1955,7 @@ Not sure which model to run? Here's what we recommend based on use case. Recomme
 | **Code** (80B MoE; advertised 256K ctx) | Qwen3-Next 80B-A3B | 42.90 GiB | **59 t/s** | 80B MoE, only 3B active, 256K context |
 | **Coding-model experiment** | Qwen3-Coder-Next | 51 GB | 38 t/s | 80B-A3B coding MoE; no local quality ranking established |
 | **Reasoning / current Google route** | Gemma 4 26B-A4B IT QAT | 14.2 GB | 74.8 t/s direct; 102.7-110.0 t/s MTP server | Strong current Google-model route. Use the direct row for benchmark comparisons; use MTP only for server/speculative experiments |
-| **Analyze images** | Qwen3.8 27B (`qwen3.8:27b`) | ~18 GB | 20.4 t/s | Current official dense multimodal route, measured here with image, tools, and thinking |
+| **Analyze images** | Qwen3.8 27B (`qwen3.8:27b`) | ~18 GB | 20.4 t/s | Current official dense multimodal route, measured here with image, tools, and thinking; Ollama API with Ollama-default MTP drafting; requires Ollama 0.32.12 or later, measured on 0.32.13 |
 | **Largest direct GGUF capacity tested** | DeepSeek V4 Flash 284B-A13B (UD-IQ2_XXS) | 90.9 GB | 13.3 t/s | Load and basic arithmetic passed; low-bit quality and real-task usefulness remain unqualified |
 | **"Can it run?"** | Llama 4 Scout 109B | 61 GB | 18 t/s | 109B artifact on one 128GB machine; exceeds 24GB VRAM without offload |
 | **Process documents** | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | 63 t/s | Fast enough for RAG pipelines |
@@ -2026,6 +2073,20 @@ docker run -d -p 127.0.0.1:3000:8080 \
   ghcr.io/open-webui/open-webui@sha256:a26effeb220e132482bf7e0560b3404843e7bc40d23051144e062960df8df6b0
 ```
 
+**This command requires a non-loopback Ollama listener.** `setup.sh` leaves
+Ollama on its loopback default, which the bridge container above cannot reach.
+Open WebUI's own README documents a host-network alternative,
+`--network=host -e OLLAMA_BASE_URL=http://127.0.0.1:11434`, which keeps Ollama
+on loopback; it is **untested here**. With host networking the `-p` loopback
+mapping no longer applies, so check which address and port the Open WebUI
+server then listens on before relying on it.
+
+**Security status (checked 2026-09-25):** published advisories cover this
+pinned Open WebUI 0.10.2 image and Ollama 0.30.0-0.33.2, which includes the
+guide's pinned and qualified Ollama versions. See
+[Security status of pinned components](SECURITY.md#security-status-of-pinned-components);
+a patched Open WebUI release is queued but not yet qualified.
+
 Open `http://localhost:3000`. Privacy depends on the selected models, embeddings, tools and integrations. Provision artifacts first and verify that every enabled component stays local before claiming offline operation. The acceptance result covers the pinned local fixture, not every default setting, plugin or embedding provider.
 
 ### RAG (Document Q&A)
@@ -2074,13 +2135,13 @@ The [current model evidence](CURRENT_MODELS.md) records a narrow Qwen3-TTS Engli
 
 ## Buying Guide
 
-The MAX+ 395 systems compared here share that APU; other Strix Halo variants must be checked separately. Memory options include 64GB, 96GB, or 128GB LPDDR5X-8000 depending on vendor and variant. The differentiators are memory size, form factor, cooling, ports, support, stock status, price, and how much public evidence exists for the exact chassis.
+The MAX+ 395 systems compared here share that APU; other Strix Halo variants must be checked separately. AMD's CES 2026 announcement (2026-01-05) added the Ryzen AI Max+ 392 (12 cores) and 388 (8 cores) with the full 40-CU Radeon 8060S. The later Ryzen AI Max PRO 490/485 use 32-CU Radeon 8050S graphics. None of these is measured here, and 395 results do not qualify them. The web [buyer comparison](https://strixhaloguide.com/best-strix-halo-mini-pc/) carries the dated source links and the announced-hardware context. Memory options include 64GB, 96GB, or 128GB LPDDR5X-8000 depending on vendor and variant. The differentiators are memory size, form factor, cooling, ports, support, stock status, price, and how much public evidence exists for the exact chassis.
 
 **New storefront snapshot: September 19, 2026.** Use the [exact-SKU snapshot](BUYER_SNAPSHOT_2026-09-19.md) for source URLs, variant identifiers, stock/ETA, seller terms and unresolved checkout fields. US-facing/USD examples: GMKtec EVO-X2 **128GB/2TB $3,649.99** (64GB/1TB is a different $2,199.99 offer), Beelink GTR9 Pro **128GB/2TB $4,349** pre-sale, Bosgame M5 **128GB/2TB $2,999**, Minisforum MS-S1 MAX **128GB/2TB $3,799** with early-October shipping, and Nimo **128GB/2TB $3,899.99** with delivery ETA unresolved. These are not delivered checkout quotes.
 
 Framework's 128GB **mainboard** is not a complete PC; its current quote was unresolved. Corsair's exact 128GB/4TB SKU was out of stock with price unresolved. HP's selected laptop quote was unresolved. No older price was silently refreshed. GMKtec EVO-X3 uses MAX+ 395 in the observed offers; EVO-X2 evidence does not automatically qualify EVO-X3.
 
-The [July CSV](data/buyer_price_snapshot_2026-07-27.csv) and [September 13 snapshot](BUYER_SNAPSHOT_2026-09-13.md) remain historical. Earlier unsupported successor/exclusivity claims stay withdrawn.
+The [July CSV](data/buyer_price_snapshot_2026-07-27.csv) and [September 13 snapshot](BUYER_SNAPSHOT_2026-09-13.md) remain historical. The Ryzen AI Max PRO 400 Series (announced by AMD on 2026-05-20) had OEM systems announced but not shipping as of 2026-09-25; it is not measured here and does not inherit 128GB results. AMD calls Micro Center the "first global launch partner" for its Ryzen AI Halo reference platform (AMD post of 2026-07-06); no Micro Center price is used here.
 
 | System | Evidence depth and buying limitation |
 |---|---|
@@ -2107,7 +2168,7 @@ selection criterion.
 | Route | Evidence here | Decision limit |
 |---|---|---|
 | Native Linux | Strongest first-party Vulkan/RADV evidence; scoped HIP and experimental vLLM routes | Follow the exact measured build/driver recipe; no universal kernel/HSA requirement |
-| Native Windows | Community LM Studio serving/API report; AMD's external Windows 11 24H2 / ROCm 7.2.1 ComfyUI recipe | Not a local reproduction of image generation or matched Linux throughput test |
+| Native Windows | Community LM Studio serving/API report; AMD's external Windows 11 24H2 / ROCm 7.2.1 ComfyUI recipe (dated; ROCm 10.0 now lists Windows 11 25H2 for Ryzen AI Max, unmeasured here) | Not a local reproduction of image generation or matched Linux throughput test |
 | WSL2 | Community GMKtec HIP baseline with a different TG512 workload | Separate from native Windows; not a general OS speed ranking or qualified vLLM path |
 
 Model fit and setup effort depend on configuration and workload on all three routes; neither a fixed usable-memory allowance nor lower setup effort is established here.
@@ -2230,6 +2291,8 @@ Yes. Qwen3.6-35B-A3B and Qwen3-Coder 30B-A3B are fast enough here for practical 
 
 Linux gives the best-tested performance and the strongest native Vulkan/RADV evidence. Windows works for Vulkan-based inference via Ollama/LM Studio, and AMD's Adrenalin 25.8.1+ drivers added Variable Graphics Memory support for up to 96GB VGM. The guide now includes a Windows MS-S1-Max LM Studio serving/API report and a GMKtec EVO-X2 WSL2/HIP baseline. Treat both as useful Windows-path evidence, not proof that Windows matches native Linux `llama-bench`.
 
+**ROCm on Windows (checked 2026-09-25, unmeasured here):** AMD's ROCm Core SDK 10.0.0 release notes list Windows 11 25H2 with AMD Software: Adrenalin Edition 26.8.1 as supported for Ryzen AI Max, and `llama.cpp` publishes `win-rocm-10.0` release builds whose target list includes `gfx1151`. The guide has not measured either route; this is not evidence of parity with Linux, and no Windows speed claim follows from it.
+
 </details>
 
 <details>
@@ -2242,7 +2305,7 @@ A 128GB configuration supports the specific large artifacts documented here, not
 <details>
 <summary><strong>How does this compare to a Mac Studio?</strong></summary>
 
-Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 were useful for comparison, but high-memory Mac Studio availability changed quickly during the same month. Beelink's official GTR9 Pro US price snapshot is $4,349 (July 27, 2026), and this guide measures 71.82-101.0 t/s on the larger current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row, and smaller active-parameter MoE scouts can be higher. This guide does not establish a matched Apple-versus-Strix per-model winner. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
+Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 are superseded: Apple [announced](https://www.apple.com/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/) the Mac Studio with M5 Max and M5 Ultra on 2026-08-25, available from 2026-09-22. On 2026-09-25 the US Apple Store listed M5 Max 36GB/512GB at $2,499, M5 Max 64GB/1TB at $3,099 and M5 Ultra 96GB/1TB at $5,499; the 128GB M5 Max price was not captured, and the 512GB M5 Ultra option was listed as coming late October. No M5 performance comparison is made here. Beelink's official GTR9 Pro US price snapshot is $4,349 (September 19, 2026, [snapshot](BUYER_SNAPSHOT_2026-09-19.md)), and this guide measures 71.82-101.0 t/s on the larger current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row, and smaller active-parameter MoE scouts can be higher. This guide does not establish a matched Apple-versus-Strix per-model winner. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
 
 </details>
 
@@ -2326,6 +2389,45 @@ free, and paid work does not buy positive conclusions.
 ---
 
 ## Changelog
+
+### 2026-09-26 -- Audit Fixes: Labels, Setup Safety And Dated Upstream State
+
+- **Qwen3.8 route relabelled, numbers unchanged:** the 292.49/20.42 t/s Ollama result is now labelled as an Ollama API result with Ollama-default MTP drafting (`draft_num_predict 4`), not a no-draft result; a matched no-draft control is queued. `qwen3.8:27b` requires Ollama 0.32.12 or later. The `qwen3.6:35b-a3b` beginner row is tied to its measured manifest because the tag now resolves to an MTP build.
+- **Setup safety:** `setup.sh` stops on non-24.04 systems (explicit override) and above the 128GB class; the one-liner is documented as unpinned `main`; firmware checks target `linux-firmware-amd-graphics`; the recorded boot profile, including `amdgpu.cwsr_enable=0`, is quoted identically everywhere; an undo section was added.
+- **Security:** [`SECURITY.md`](SECURITY.md) lists advisories affecting pinned Ollama and Open WebUI versions, a lookalike-repository warning, the canonical site, and a private route for script vulnerabilities.
+- **Dated upstream state (2026-09-25):** runtime availability, ROCm 10 vendor scope, new models and dates, and a re-triaged [`data/current_test_queue.csv`](data/current_test_queue.csv). Availability does not upgrade any measurement.
+- **Buyer and vendor pages:** announced PRO 400-series hardware (not measured), dated Apple/NVIDIA context, EU prices, daily-use links, per-OEM coverage, a new dated star snapshot and a private-first contact route.
+
+### 2026-09-19 -- Active-Evidence Review And Scoped Runtime Qualification
+
+- **Active recommendation surfaces reviewed:** [`ACTIVE_EVIDENCE_REVIEW_2026-09-19.md`](ACTIVE_EVIDENCE_REVIEW_2026-09-19.md) records what was reviewed and which boundaries apply. It is not a remeasurement date for historical benchmarks.
+- **Existing-user and isolated runtime qualification:** [`RUNTIME_QUALIFICATION_2026-09-19.md`](RUNTIME_QUALIFICATION_2026-09-19.md) separates the existing Ollama 0.32.15 service/client pass, the useful-but-not-default isolated 0.34.2 candidate, and `llama.cpp` v0.4.1 direct/server/HIP controls. Official Qwen3.8 on the candidate and a new full-host reboot remain unqualified.
+- **Buyer and vendor evidence refreshed:** a new [storefront snapshot](BUYER_SNAPSHOT_2026-09-19.md) and a [vendor proof summary](VENDOR_PROOF_SUMMARY.md) were added; the September 13 snapshot became historical.
+- **Canonical publication recorded:** active guidance and canonical publication sources were synchronized, and the verified deployment was recorded in `data/public_state.json` without refreshing the evidence date.
+
+### 2026-09-13 -- Setup, Evidence-Contract And Buyer-Guidance Repair
+
+- **Setup and scripts repaired:** existing configuration and raw evidence were preserved while setup and measurement scripts were corrected; offline regression tests (`python3 -m unittest discover -s tests`) were added and run in CI next to the validator.
+- **Evidence corrections recorded:** [`EVIDENCE_CORRECTIONS.md`](EVIDENCE_CORRECTIONS.md) corrects or qualifies authored interpretation while retaining original submissions and raw measurements; measurement semantics and provenance were corrected across benchmark, community and data docs.
+- **Dated snapshots refreshed:** upstream state and a [buyer snapshot](BUYER_SNAPSHOT_2026-09-13.md) were refreshed and public claims qualified.
+
+### 2026-09-08 -- GMKtec Four-Model Follow-Up
+
+- **Issue #4 follow-up imported:** the GMKtec native contributor's four-model follow-up was added to community results, MTP notes, current-model guidance, contributor credit and the system matrix, with the submitted CSVs preserved under `data/raw/2026-08-26/community-gmktec-issue4/`. It stays community evidence, separate from first-party rows.
+
+### 2026-09-05 -- August 30 Evidence Integrated And Buyer Comparisons Clarified
+
+- **August 30 evidence integrated:** the b10687 sentinel and first Qwen3.8-Flash-Next rows were reviewed into structured claims, benchmarks and the model hub, with setup and model claims corrected.
+- **Buyer comparisons clarified:** the buyer page now separates memory fit and dated price evidence more clearly.
+- **Guide mirrors point to project-domain pages:** mirrored web pages now point to the verified strixhaloguide.com routes.
+
+### 2026-08-30 -- Evidence-Count Split, Runtime Targets And Upstream State
+
+- **Auditable coverage split:** the evidence count is documented as described owner systems plus independently attributable external sources, with a per-row identity basis, and the validator enforces it.
+- **Runtime targets refreshed:** Ollama 0.33.2 and `llama.cpp` b10687 became current checked, still-unqualified targets; measured claims stayed pinned to their tested versions.
+- **Stale claims fixed:** the retracted rocWMMA long-context row was removed after upstream removed the rocWMMA FlashAttention kernel; ROCm 10.0 and Lemonade 11.8.0 were recorded as checked but unqualified; buyer pricing was refreshed with dated spot-checks.
+- **New web pages and title rule:** troubleshooting and model-hub pages were published with validator coverage, and the maintainer title convention ("software engineer") was documented.
+- **New raw sentinel lane:** a b10687 current-stack sentinel and a first Qwen3.8-Flash-Next measurement were added as raw evidence, labelled as not comparable with the pinned headline controls.
 
 ### 2026-08-25 -- Qwen3.8 Decision Layer, GMKtec Portability, And Public Freshness
 
@@ -2632,7 +2734,7 @@ free, and paid work does not buy positive conclusions.
 
 These are the highest-value tests to add next, because they answer practical buyer/setup questions that current evidence only partially covers:
 
-- **Lemonade/FastFlowLM NPU on Linux:** local preflight shows `amdxdna` and `/dev/accel/accel0`, but XRT/FastFlowLM are not installed. Next step is a separate NPU lane: install XRT/FastFlowLM, reboot, run `flm validate`, then test small Qwen/Gemma rows for speed and power.
+- **Lemonade/FastFlowLM NPU on Linux:** the May 16 preflight showed `amdxdna` and `/dev/accel/accel0` (NPU firmware version not recorded), but XRT/FastFlowLM are not installed. Next step is a separate NPU lane. Prerequisites per the FastFlowLM Linux guide (checked 2026-09-25): an IOMMU-on boot profile (the measured desktop host boots with `amd_iommu=off`), the `amdxdna` driver from kernel 7.0 or later or `amdxdna-dkms`, NPU firmware 1.1.0.0 or later (check with `flm validate`), and XRT from `ppa:lemonade-team/stable` (`libxrt-npu2`). Then reboot, run `flm validate`, and test small Qwen/Gemma rows for speed and power.
 - **Same-machine Windows native Vulkan/Ollama/LM Studio vs Linux:** Windows LM Studio and WSL2/HIP now have community baselines, but the most useful beginner answer is still a same-machine native Windows app result versus native Linux Vulkan/RADV with the same model and benchmark shape.
 - **More GMKtec/Bosgame/Framework native Linux reproductions:** The first GMKtec native result matched within about 2%; more vendors turn the guide from one-machine evidence into a platform map.
 - **DeepSeek V4 Flash current route:** the pinned 90.86GB ordinary `UD-IQ2_XXS` GGUF now loads and generates directly on official b10034 at 13.27 tg128 and passes a basic deterministic check. The smaller 46.98GiB REAP route still needs its separate ds4 runtime; future work should compare quality/runtime tradeoffs rather than repeat the resolved ordinary-GGUF load test.
@@ -2640,7 +2742,7 @@ These are the highest-value tests to add next, because they answer practical buy
 - **NPU/iGPU telemetry tooling:** `xdna-top` and similar tools could make NPU-sidecar and iGPU contention claims easier to verify, but should be documented as instrumentation until they produce measured model rows.
 - **Lucebox / DFlash / PFlash:** highest-upside experimental route for 27B long-prompt + generation workloads, but the old preflight lacked a developer toolchain; an isolated HIP toolchain now built the v0.4.1 controls, but this does not qualify Lucebox/DFlash; older rocWMMA design notes are historical after the 2026 upstream removal.
 - **vLLM/AWQ/DFlash throughput:** keep this experimental until it has a reproducible OpenAI-compatible server row that competes with `llama-server`/Ollama for a real use case. Plain AWQ smoke works, but it is not the fastest default.
-- **Future Strix Halo successors:** Gorgon Halo / Ryzen AI Max 400 and later Medusa Halo / Ryzen AI Max 500 should be treated as future comparison targets, not current setup advice.
+- **Strix Halo successors:** AMD announced the Ryzen AI Max PRO 400 Series (formerly Gorgon Halo) on 2026-05-20; OEM systems were announced, systems pending, as of 2026-09-25. It is a comparison target, not current setup advice; 192GB configurations are not qualified here. Later Medusa Halo / Ryzen AI Max 500 remains a future target.
 
 ---
 

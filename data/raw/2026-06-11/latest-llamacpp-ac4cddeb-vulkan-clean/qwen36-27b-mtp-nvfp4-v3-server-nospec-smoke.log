@@ -10,7 +10,7 @@
 0.00.026.416 I srv          init: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
 0.00.026.501 I srv         start: binding port with default address family
 0.00.027.627 I srv  llama_server: loading model
-0.00.027.640 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/qwen36-27b-nvfp4-mtp/Qwen3.6-27B-MTP-NVFP4_v3.gguf'
+0.00.027.640 I srv    load_model: loading model '~/benchmark-models/qwen36-27b-nvfp4-mtp/Qwen3.6-27B-MTP-NVFP4_v3.gguf'
 0.00.027.666 I common_init_result: fitting params to device memory ...
 0.00.027.667 I common_init_result: (for bugs during this step try to reproduce them with -fit off, or provide --verbose logs if the bug only occurs with -fit on)
 0.02.039.669 W llama_context: n_ctx_seq (4096) < n_ctx_train (262144) -- the full capacity of the model will not be utilized

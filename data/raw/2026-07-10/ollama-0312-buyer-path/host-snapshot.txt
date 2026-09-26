@@ -1,5 +1,5 @@
 2026-07-10T02:30:13+02:00
-Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+Linux <host> 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
 Ubuntu 24.04.4 LTS
                total        used        free      shared  buff/cache   available
 Mem:           124Gi        34Gi       3.3Gi       1.4Gi        89Gi        90Gi
@@ -25,5 +25,5 @@ qwen3-coder:30b-a3b-q8_0                                                7b438a19
 qwen3-coder-next:latest                                                 ca06e9e4087c    51 GB     3 months ago    
 qwen2.5vl:7b                                                            5ced39dfa4ba    6.0 GB    3 months ago    
 llama2:latest                                                           78e26419b446    3.8 GB    4 months ago    
-2c88f0f31a959bac5a3cad4cc5296ec568551d4aa79f548f554adb2b575b3133  /home/hoge-heer/benchmark-tools/ollama-0.31.2/downloads/ollama-linux-amd64.tar.zst
-f0fad39e184daab11d172a855580abd7338b2f049afa462435fee15d76b4e437  /home/hoge-heer/benchmark-tools/ollama-0.31.2/downloads/ollama-linux-amd64-rocm.tar.zst
+2c88f0f31a959bac5a3cad4cc5296ec568551d4aa79f548f554adb2b575b3133  ~/benchmark-tools/ollama-0.31.2/downloads/ollama-linux-amd64.tar.zst
+f0fad39e184daab11d172a855580abd7338b2f049afa462435fee15d76b4e437  ~/benchmark-tools/ollama-0.31.2/downloads/ollama-linux-amd64-rocm.tar.zst

@@ -12,11 +12,11 @@ import urllib.request
 
 
 ROOT = pathlib.Path(__file__).resolve().parent
-MODEL_ROOT = pathlib.Path("/home/hoge-heer/benchmark-models/2026-07-16/step37")
+MODEL_ROOT = pathlib.Path("~/benchmark-models/2026-07-16/step37")
 TARGET = MODEL_ROOT / "target/Step-3.7-Flash-ROCmFPX-Q3-QualityPlus-00001-of-00009.gguf"
 DRAFT = MODEL_ROOT / "draft/Step-3.7-Flash-MTP-Q8_0.gguf"
 TEMPLATE = MODEL_ROOT / "target/step37-native-tool-response-template.jinja"
-SERVER = pathlib.Path("/home/hoge-heer/ROCmFPX-ciru/build-strix-rocmfp4/bin/llama-server")
+SERVER = pathlib.Path("~/ROCmFPX-ciru/build-strix-rocmfp4/bin/llama-server")
 PORT = 18037
 BASE_URL = f"http://127.0.0.1:{PORT}"
 

@@ -5,7 +5,7 @@ Date: 2026-07-06T22:44:32+02:00
 System:
 
 ```text
-Linux hoge-heer-GTR-Pro 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 GNU/Linux
+Linux <host> 6.19.4-061904-generic #202602262342 SMP PREEMPT_DYNAMIC Fri Feb 27 00:13:55 UTC 2026 x86_64 GNU/Linux
 ```
 
 Tool:

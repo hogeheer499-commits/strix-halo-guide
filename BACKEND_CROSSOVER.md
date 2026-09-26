@@ -113,10 +113,10 @@ Practical read: this package strengthens the advanced-research lane. It does not
 
 ## Negative Result
 
-Gemma 4 26B-A4B loaded and ran on Vulkan/RADV, but the local HIP b8460 path failed to load the GGUF:
+Gemma 4 26B-A4B loaded and ran on Vulkan/RADV, but the local HIP b8460 path failed to load the GGUF (home path shortened to `~`):
 
 ```text
-main: error: failed to load model '/home/hoge-heer/models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf'
+main: error: failed to load model '~/models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf'
 ```
 
 That means this guide should not publish a Gemma 4 HIP speed claim from the local machine yet.

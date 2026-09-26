@@ -23,9 +23,9 @@ outcomes, not measured conversion or support-cost improvements.
 
 The repo already includes a technical proof layer:
 
-- Public GitHub demand signal: 300 stars, 21 forks, and 5 subscribers/watchers in a small hardware/software niche as of the 2026-08-27 GitHub API snapshot; use this as supporting context, not the main claim.
-- Upstream-reviewed engineering: 15+ merged upstream contributions, including `llama.cpp`, AMD's Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf. The exact PRs, validation scope, and boundaries are listed in [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md). The `llama.cpp` merge is preset/router maintenance, not a Strix Halo performance claim.
-- Public project signal: 300 stars and 21 forks on the public repository as of 2026-08-27, alongside 10 credited community benchmark contributors and 13 represented systems or independent sources. These are visible project and evidence-coverage signals, not attributable-sales claims.
+- Public GitHub demand signal: 345 stars and 24 forks in a small hardware/software niche as of 2026-09-25 (GitHub repository page); the previous 2026-08-27 GitHub API snapshot showed 300 stars, 21 forks, and 5 subscribers/watchers. Use this as supporting context, not the main claim.
+- Upstream-reviewed engineering: 15 merged engineering PRs across 10 projects, including `llama.cpp`, the AMD-sponsored open-source Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf, plus 3 merged listing/docs PRs (counts reconciled 2026-09-13). The exact PRs, validation scope, and boundaries are listed in [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md). The `llama.cpp` merge is preset/router maintenance, not a Strix Halo performance claim.
+- Public evidence-coverage signal: 10 credited community benchmark contributors and 13 represented systems or independent sources (2026-09-19 evidence review). These are visible project and evidence-coverage signals, not attributable-sales claims.
 - Setup and workflow guide: [`README.md`](README.md).
 - Current benchmark snapshot: [`BENCHMARKS.md`](BENCHMARKS.md).
 - Reproducibility notes: [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md).
@@ -73,8 +73,9 @@ The public evidence map currently covers:
   table without recounting repeated evidence from one physical machine.
 - **10 credited community benchmark contributors**, listed in [`CONTRIBUTORS.md`](CONTRIBUTORS.md), in addition to the primary first-party Beelink measurements.
 - Beelink owner stacks, a three-system Corsair fleet, several independent GMKtec sources, MS-S1-Max, Nimo, and Minix evidence across Linux, Windows, Vulkan/RADV, ROCm, NPU, MTP, power, thermal, RPC, and large-model capacity routes.
+- **Per-OEM evidence class (as of the 2026-09-19 evidence review; classes from the README [buying-guide table](README.md#buying-guide) and [`SYSTEM_EVIDENCE_MATRIX.md`](SYSTEM_EVIDENCE_MATRIX.md)):** Beelink GTR9 Pro: first-party (plus two community owner systems); GMKtec EVO-X2: community and external-reference, no first-party exact-SKU test; Corsair AI Workstation 300: community (three-system fleet); Nimo AI Mini PC: community; Minisforum MS-S1 MAX: community (Windows LM Studio); Minix Elite ER939: community (Ollama beginner path); Framework Desktop: external-reference rows only; Bosgame, HP and ASUS: none (price snapshots or a warning only); GMKtec EVO-X3: none (does not inherit EVO-X2 evidence).
 
-The normal first-party buyer path includes an Ollama 0.31.2 system-service check at 60.57 t/s with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. Qwen3.8 27B is separately measured on Ollama 0.32.13 at 20.42 generation t/s with image, tools, thinking, and exact retrieval through 50,059 prompt tokens. Ollama 0.34.2 passed isolated available-model controls on September 19 but remains an unqualified normal-package/reboot target; community rows remain separated from first-party headline claims.
+The normal first-party buyer path includes an Ollama 0.31.2 system-service check at 60.57 t/s with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. Qwen3.8 27B is separately measured on Ollama 0.32.13 at 20.42 generation t/s (Ollama API with Ollama-default MTP drafting, `draft_num_predict 4`) with image, tools, thinking, and exact retrieval through 50,059 prompt tokens. Ollama 0.34.2 passed isolated available-model controls on September 19 but remains an unqualified normal-package/reboot target; community rows remain separated from first-party headline claims.
 
 Community corrections and negative results improve the proof layer rather than being hidden: exact artifacts and commands, raw logs, separated claim types, explicit caveats, and corrected routes remain public. See [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md).
 
@@ -82,7 +83,7 @@ Community corrections and negative results improve the proof layer rather than b
 
 I can produce independent, reproducible, public technical evidence that reduces adoption friction and helps buyers understand the value and limits of your hardware.
 
-Useful collaboration can include technical contacts, review or loaner systems, early BIOS/firmware/software access, scoped benchmark campaign sponsorship, affiliate relationships, or engineering feedback.
+Useful collaboration can include technical contacts, review or loaner systems, early BIOS/firmware/software access, scoped benchmark campaign sponsorship, or engineering feedback. There are no affiliate links as of 2026-09-19; any future affiliate link follows [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md).
 
 ## Example Deliverables
 
@@ -106,6 +107,8 @@ No paid-positive reviews. No hidden influence. No unsupported marketing claims. 
 
 ## Contact
 
-For collaboration inquiries, open a GitHub issue or contact the maintainer through the GitHub profile.
+Maintainer: software engineer; Strix Halo guide maintainer.
 
-Email: hogeheer499@gmail.com.
+For collaboration, service, or partner inquiries, email the maintainer privately at hogeheer499@gmail.com (see [`SERVICE_INTAKE.md`](SERVICE_INTAKE.md) for paid scopes). Do not put confidential material in a public GitHub issue. Public issues and discussions are for technical corrections and benchmark reports only.
+
+TODO: typical turnaround, capacity, and invoicing entity (pending maintainer confirmation).

@@ -39,7 +39,7 @@ It targets Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems with 96GB or
 Pro; BIOS labels, firmware, cooling and power modes can differ on other OEM
 systems.
 
-**Setup reviewed:** September 19, 2026. Exact benchmark claims remain canonical in
+**Setup reviewed:** September 26, 2026. Exact benchmark claims remain canonical in
 the repository's structured data and raw evidence.
 
 The setup script preserves administrator Ollama drop-ins and stops on unresolved
@@ -81,8 +81,14 @@ For a normal retail AMD Strix Halo local-AI setup:
    that is the vendor BIOS minimum.
 3. Leave **IOMMU enabled/default** for the normal buyer path, NPU use, suspend,
    RDMA, VFIO, passthrough and clustering.
-4. The recorded 128GB Beelink profile uses `amdgpu.gttsize=131072 ttm.pages_limit=31457280`.
-   These are limits, not allocated VRAM; do not apply them as a 96GB preset.
+4. The recorded 128GB Beelink profile uses
+   `amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0`.
+   `cwsr_enable=0` disables compute wave save/restore (mid-wave compute
+   preemption); it is the gfx1151 workaround
+   from [ROCm/ROCm#5590](https://github.com/ROCm/ROCm/issues/5590). The
+   GTT/TTM values are limits, not allocated VRAM; do not apply them as a 96GB
+   preset. 192GB-class systems (for example Ryzen AI Max+ PRO 495) are not
+   qualified; do not reuse the 128GB values there.
    Preserve unrelated boot parameters and verify live values after reboot.
 5. Use Mesa/RADV and verify the selected ICD. Record a power policy per campaign;
    `tuned accelerator-performance` is one historical reproduction profile,
@@ -126,6 +132,12 @@ cd strix-halo-guide
 less setup.sh
 bash setup.sh
 ```
+
+This clones the unpinned `main` branch, which has not been fresh-install
+qualified on hardware. For a reproducible run, review the script and pin it with
+`git checkout <tag-or-commit>` before `bash setup.sh`. The script stops on
+anything other than Ubuntu 24.04 unless `STRIX_HALO_ALLOW_UNQUALIFIED_OS=1` is
+set, and above about 136GiB visible RAM (no 192GB-class profile is qualified).
 
 If the script changes boot parameters, reboot before running the verification
 benchmark. The first local-chat check is:
@@ -174,6 +186,9 @@ X11 is conditional on desktop-tool needs. The revised script's configuration
 checks do not replace fresh-install/upgrade hardware qualification. Other distributions can work, but they
 are not automatic substitutes for this exact measured path; compare their
 kernel, Mesa, Vulkan ICD and runtime versions against the evidence.
+**Ubuntu 26.04 is not qualified** by this guide (checked 2026-09-25; the
+26.04.1 point release shipped 2026-08-27). Community 26.04 reports stay
+separate from first-party results.
 
 ## What This Setup Does Not Guarantee
 

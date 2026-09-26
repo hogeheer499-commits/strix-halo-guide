@@ -15,7 +15,7 @@ Hi there<|im_end|>
 How are you?<|im_end|>
 <|im_start|>assistant
 
-1.36.261.316 I main: loading model: /home/hoge-heer/.cache/huggingface/hub/models--ggml-org--Qwen3-ASR-0.6B-GGUF/snapshots/928ab958557df9aa2ef1c93e0e83c7ad0933fae2/Qwen3-ASR-0.6B-Q8_0.gguf
+1.36.261.316 I main: loading model: ~/.cache/huggingface/hub/models--ggml-org--Qwen3-ASR-0.6B-GGUF/snapshots/928ab958557df9aa2ef1c93e0e83c7ad0933fae2/Qwen3-ASR-0.6B-Q8_0.gguf
 1.36.261.507 W WARN: This is an experimental CLI for testing multimodal capability.
 1.36.261.508 W       For normal use cases, please use the standard llama-cli
 1.36.269.710 I encoding mtmd batch, n_chunks = 1 (done = 1, total = 3)
@@ -24,7 +24,7 @@ How are you?<|im_end|>
 language English<asr_text>Strix Halo can run local text-to-speech with Llama.CPP.
 
 
-	Command being timed: "env AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json /home/hoge-heer/local-scratch/llama.cpp-b10330/build-vulkan/bin/llama-mtmd-cli -hf ggml-org/Qwen3-ASR-0.6B-GGUF --audio /home/hoge-heer/local-scratch/qwen3-tts-b10330/repeat.wav -p Transcribe this audio exactly. Return only the spoken words. -ngl 999 -fa on -c 8192 -n 96 --temp 0 --seed 42"
+	Command being timed: "env AMD_VULKAN_ICD=RADV VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json ~/local-scratch/llama.cpp-b10330/build-vulkan/bin/llama-mtmd-cli -hf ggml-org/Qwen3-ASR-0.6B-GGUF --audio ~/local-scratch/qwen3-tts-b10330/repeat.wav -p Transcribe this audio exactly. Return only the spoken words. -ngl 999 -fa on -c 8192 -n 96 --temp 0 --seed 42"
 	User time (seconds): 1.35
 	System time (seconds): 2.59
 	Percent of CPU this job got: 4%

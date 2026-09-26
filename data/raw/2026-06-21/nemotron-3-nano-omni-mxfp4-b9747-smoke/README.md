@@ -20,7 +20,7 @@ Purpose: quick first-party Beelink smoke test for a current NVIDIA Nemotron 3 Na
 See [`command.txt`](command.txt).
 
 ```bash
-/home/hoge-heer/benchmark-tools/llama-b9747/llama-b9747/llama-bench \
+~/benchmark-tools/llama-b9747/llama-b9747/llama-bench \
   --hf-repo unsloth/NVIDIA-Nemotron-3-Nano-Omni-30B-A3B-Reasoning-GGUF \
   --hf-file NVIDIA-Nemotron-3-Nano-Omni-30B-A3B-Reasoning-MXFP4_MOE.gguf \
   -ngl 999 -fa on -p 512 -n 128 -r 3 -o csv

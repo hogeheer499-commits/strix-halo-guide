@@ -11,7 +11,7 @@ Loading model... |-\|/-\|/-\|/-\|/-\|/-\|/-\|/-\|
                                     ▀▀    ▀▀
 
 build      : b1-c841aee
-model      : /home/hoge-heer/models/qwen38-flash-next-ud-iq4xs/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf
+model      : ~/models/qwen38-flash-next-ud-iq4xs/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf
 ftype      : IQ4_XS - 4.25 bpw
 modalities : text
 

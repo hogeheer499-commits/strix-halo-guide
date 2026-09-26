@@ -34,7 +34,7 @@ llama-bench -p 0 -n 32 -r 1
 Observed failure:
 
 ```text
-llama_bench: error: failed to load model '/home/hoge-heer/benchmark-models/deepseek-v4-flash-162b-0xsero/DeepSeek-V4-Flash-Spark-Mini-Q2-REAP-ds4.gguf'
+llama_bench: error: failed to load model '~/benchmark-models/deepseek-v4-flash-162b-0xsero/DeepSeek-V4-Flash-Spark-Mini-Q2-REAP-ds4.gguf'
 ```
 
 Captured files:

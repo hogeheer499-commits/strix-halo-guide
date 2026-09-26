@@ -11,7 +11,7 @@ Loading model... |-\|/-\|/ 
                                     ▀▀    ▀▀
 
 build      : b10046-32e789fdf
-model      : /home/hoge-heer/models/Qwen_Qwen3-0.6B-Q8_0.gguf
+model      : ~/models/Qwen_Qwen3-0.6B-Q8_0.gguf
 ftype      : Q8_0
 modalities : text
 

@@ -38,8 +38,8 @@
           "ResolvConfPath": "/run/user/1000/containers/overlay-containers/4cedcda103244e23c7f6d590aa70146737d75cefe0a230f873fc45f3e479424d/userdata/resolv.conf",
           "HostnamePath": "/run/user/1000/containers/overlay-containers/4cedcda103244e23c7f6d590aa70146737d75cefe0a230f873fc45f3e479424d/userdata/hostname",
           "HostsPath": "/run/user/1000/containers/overlay-containers/4cedcda103244e23c7f6d590aa70146737d75cefe0a230f873fc45f3e479424d/userdata/hosts",
-          "StaticDir": "/home/hoge-heer/.local/share/containers/storage/overlay-containers/4cedcda103244e23c7f6d590aa70146737d75cefe0a230f873fc45f3e479424d/userdata",
-          "OCIConfigPath": "/home/hoge-heer/.local/share/containers/storage/overlay-containers/4cedcda103244e23c7f6d590aa70146737d75cefe0a230f873fc45f3e479424d/userdata/config.json",
+          "StaticDir": "~/.local/share/containers/storage/overlay-containers/4cedcda103244e23c7f6d590aa70146737d75cefe0a230f873fc45f3e479424d/userdata",
+          "OCIConfigPath": "~/.local/share/containers/storage/overlay-containers/4cedcda103244e23c7f6d590aa70146737d75cefe0a230f873fc45f3e479424d/userdata/config.json",
           "OCIRuntime": "crun",
           "ConmonPidFile": "/run/user/1000/containers/overlay-containers/4cedcda103244e23c7f6d590aa70146737d75cefe0a230f873fc45f3e479424d/userdata/conmon.pid",
           "PidFile": "/run/user/1000/containers/overlay-containers/4cedcda103244e23c7f6d590aa70146737d75cefe0a230f873fc45f3e479424d/userdata/pidfile",
@@ -79,16 +79,16 @@
           "GraphDriver": {
                "Name": "overlay",
                "Data": {
-                    "LowerDir": "/home/hoge-heer/.local/share/containers/storage/overlay/9285e0493d2ef613995b8f7bb8fd9126431baa117f4e7f4a138604c874d716cc/diff:/home/hoge-heer/.local/share/containers/storage/overlay/af215787d91f0dc85c91235a731282aaba24a15faa4255b37e1e148587872f1b/diff:/home/hoge-heer/.local/share/containers/storage/overlay/5cd945e350a173fd83eb23cfac2aac179742b13cdb0277e89862b4ee3945be08/diff:/home/hoge-heer/.local/share/containers/storage/overlay/7d625533592515c65367e3d5f3e47ab7fdc46bc1fabd1d434e8e9fcaff81e322/diff:/home/hoge-heer/.local/share/containers/storage/overlay/0a102d0b997dc448d5e2dcbe34320827b6a5c940b23b4b74e3ac4a5ceeeed72c/diff:/home/hoge-heer/.local/share/containers/storage/overlay/73cf38e076581d2e4ac49410f6bd50b7531c466f6614c8a33079c9f1d9248145/diff:/home/hoge-heer/.local/share/containers/storage/overlay/84013c9184fb12673800b56e56c5170ce85981a776d768518020663aa45ab1b0/diff:/home/hoge-heer/.local/share/containers/storage/overlay/6dc61affb314c4a64b99c9969588a2c880e6def55233a576477669dec6e3813d/diff:/home/hoge-heer/.local/share/containers/storage/overlay/c4bdf15454f2b6467281ca23cf2df63e140d51d846e6d80e437cb870273b8d79/diff:/home/hoge-heer/.local/share/containers/storage/overlay/1da0c74dac6fdba44d27dcb68648b9f51682da1d3e1ae9630eee94d9db0ca499/diff:/home/hoge-heer/.local/share/containers/storage/overlay/13d349b8d6c06fc2011b1182c33632b53cb233b0d31a066fd55715816f9694e3/diff:/home/hoge-heer/.local/share/containers/storage/overlay/c427d635f5cbb9624f77960b6d2423dbae4ebc69d2b3a4fa1e37b7ccf3cb128b/diff:/home/hoge-heer/.local/share/containers/storage/overlay/68bd6fbb48e6512f076a17670513fcc6ebac18afa9c76077223a23cc0bb1906e/diff:/home/hoge-heer/.local/share/containers/storage/overlay/1112d447ac9ab5bded9999778452ea11f91ac05c45c8cacb5882ac4e59677d34/diff:/home/hoge-heer/.local/share/containers/storage/overlay/d0cef523d194e75130dd1201f3a6e8008e10d98a06e923c0ca3295489aacb8ee/diff:/home/hoge-heer/.local/share/containers/storage/overlay/f37e7d1bf07945670b914b0126575343b57d4bc29423804930b8b6c7534da883/diff:/home/hoge-heer/.local/share/containers/storage/overlay/7e0ec1341d184420c36d263c86697c9d7d6244ef438e13534658886cc55da287/diff:/home/hoge-heer/.local/share/containers/storage/overlay/d1c00dbf79eb71e1a4bec001651be677cdc062964f2438d1baac31a8ec2360fe/diff:/home/hoge-heer/.local/share/containers/storage/overlay/0c132c20c8ca2510695220428f58c2d91729a70a26d11a241b0ad247d184b71f/diff:/home/hoge-heer/.local/share/containers/storage/overlay/ff705ee08c222e0edc250b92ec565207ff0c2d4c3ad1da5d8387c7698a5c82da/diff:/home/hoge-heer/.local/share/containers/storage/overlay/9f43432cf441b660a926317cfe802454c0bff94d2534b09e4f979ce0ee2b397e/diff:/home/hoge-heer/.local/share/containers/storage/overlay/4c2c0fdc63f97eb9621b2e194593a26fb2071ccc4ecae6027d3d3d55b506f2ee/diff:/home/hoge-heer/.local/share/containers/storage/overlay/77df95019896f8d3079c33acf5e0599fb09ec38ee997c35db6c3a919e092d1d8/diff:/home/hoge-heer/.local/share/containers/storage/overlay/dfe453a88d08fcbe886b044e3ffb9de5fce0ae64620c17a6980b8502012f5f49/diff:/home/hoge-heer/.local/share/containers/storage/overlay/33e60c4311d5c7575e637c23c1ceb469d78e3639e903eb551e36e9dd4b802ef6/diff:/home/hoge-heer/.local/share/containers/storage/overlay/c60ad3a92579bf3fd825a9dcf05e19dd58a97a48ab9f0ee95393c22077687e9e/diff:/home/hoge-heer/.local/share/containers/storage/overlay/3e9e20d01a4bf179e0946b5dac2525ea182f0ffc3cb9c113ec8af2eba54b4d81/diff:/home/hoge-heer/.local/share/containers/storage/overlay/669b23f5a3f118ef741bfab21ba91922f823aef3e5c50e9d1b3b467b0522dbed/diff:/home/hoge-heer/.local/share/containers/storage/overlay/662fff824c65876b5012107893793778217f8d8f65f6fc76008e7bc61b89ea77/diff:/home/hoge-heer/.local/share/containers/storage/overlay/c884f013b8cd16c7650e31cece4115198a4c2c2ca34f7f255ca1c33c8aa468df/diff:/home/hoge-heer/.local/share/containers/storage/overlay/f103cd120fdd6cbc7f3d0e1d5bfb3e16290c32ead7b822d15c34460ecdf64b29/diff",
-                    "MergedDir": "/home/hoge-heer/.local/share/containers/storage/overlay/a76c4045abc4c91cbcfff78b5f9572265bd34bfdd63934ead59298c1d9d2903e/merged",
-                    "UpperDir": "/home/hoge-heer/.local/share/containers/storage/overlay/a76c4045abc4c91cbcfff78b5f9572265bd34bfdd63934ead59298c1d9d2903e/diff",
-                    "WorkDir": "/home/hoge-heer/.local/share/containers/storage/overlay/a76c4045abc4c91cbcfff78b5f9572265bd34bfdd63934ead59298c1d9d2903e/work"
+                    "LowerDir": "~/.local/share/containers/storage/overlay/9285e0493d2ef613995b8f7bb8fd9126431baa117f4e7f4a138604c874d716cc/diff:~/.local/share/containers/storage/overlay/af215787d91f0dc85c91235a731282aaba24a15faa4255b37e1e148587872f1b/diff:~/.local/share/containers/storage/overlay/5cd945e350a173fd83eb23cfac2aac179742b13cdb0277e89862b4ee3945be08/diff:~/.local/share/containers/storage/overlay/7d625533592515c65367e3d5f3e47ab7fdc46bc1fabd1d434e8e9fcaff81e322/diff:~/.local/share/containers/storage/overlay/0a102d0b997dc448d5e2dcbe34320827b6a5c940b23b4b74e3ac4a5ceeeed72c/diff:~/.local/share/containers/storage/overlay/73cf38e076581d2e4ac49410f6bd50b7531c466f6614c8a33079c9f1d9248145/diff:~/.local/share/containers/storage/overlay/84013c9184fb12673800b56e56c5170ce85981a776d768518020663aa45ab1b0/diff:~/.local/share/containers/storage/overlay/6dc61affb314c4a64b99c9969588a2c880e6def55233a576477669dec6e3813d/diff:~/.local/share/containers/storage/overlay/c4bdf15454f2b6467281ca23cf2df63e140d51d846e6d80e437cb870273b8d79/diff:~/.local/share/containers/storage/overlay/1da0c74dac6fdba44d27dcb68648b9f51682da1d3e1ae9630eee94d9db0ca499/diff:~/.local/share/containers/storage/overlay/13d349b8d6c06fc2011b1182c33632b53cb233b0d31a066fd55715816f9694e3/diff:~/.local/share/containers/storage/overlay/c427d635f5cbb9624f77960b6d2423dbae4ebc69d2b3a4fa1e37b7ccf3cb128b/diff:~/.local/share/containers/storage/overlay/68bd6fbb48e6512f076a17670513fcc6ebac18afa9c76077223a23cc0bb1906e/diff:~/.local/share/containers/storage/overlay/1112d447ac9ab5bded9999778452ea11f91ac05c45c8cacb5882ac4e59677d34/diff:~/.local/share/containers/storage/overlay/d0cef523d194e75130dd1201f3a6e8008e10d98a06e923c0ca3295489aacb8ee/diff:~/.local/share/containers/storage/overlay/f37e7d1bf07945670b914b0126575343b57d4bc29423804930b8b6c7534da883/diff:~/.local/share/containers/storage/overlay/7e0ec1341d184420c36d263c86697c9d7d6244ef438e13534658886cc55da287/diff:~/.local/share/containers/storage/overlay/d1c00dbf79eb71e1a4bec001651be677cdc062964f2438d1baac31a8ec2360fe/diff:~/.local/share/containers/storage/overlay/0c132c20c8ca2510695220428f58c2d91729a70a26d11a241b0ad247d184b71f/diff:~/.local/share/containers/storage/overlay/ff705ee08c222e0edc250b92ec565207ff0c2d4c3ad1da5d8387c7698a5c82da/diff:~/.local/share/containers/storage/overlay/9f43432cf441b660a926317cfe802454c0bff94d2534b09e4f979ce0ee2b397e/diff:~/.local/share/containers/storage/overlay/4c2c0fdc63f97eb9621b2e194593a26fb2071ccc4ecae6027d3d3d55b506f2ee/diff:~/.local/share/containers/storage/overlay/77df95019896f8d3079c33acf5e0599fb09ec38ee997c35db6c3a919e092d1d8/diff:~/.local/share/containers/storage/overlay/dfe453a88d08fcbe886b044e3ffb9de5fce0ae64620c17a6980b8502012f5f49/diff:~/.local/share/containers/storage/overlay/33e60c4311d5c7575e637c23c1ceb469d78e3639e903eb551e36e9dd4b802ef6/diff:~/.local/share/containers/storage/overlay/c60ad3a92579bf3fd825a9dcf05e19dd58a97a48ab9f0ee95393c22077687e9e/diff:~/.local/share/containers/storage/overlay/3e9e20d01a4bf179e0946b5dac2525ea182f0ffc3cb9c113ec8af2eba54b4d81/diff:~/.local/share/containers/storage/overlay/669b23f5a3f118ef741bfab21ba91922f823aef3e5c50e9d1b3b467b0522dbed/diff:~/.local/share/containers/storage/overlay/662fff824c65876b5012107893793778217f8d8f65f6fc76008e7bc61b89ea77/diff:~/.local/share/containers/storage/overlay/c884f013b8cd16c7650e31cece4115198a4c2c2ca34f7f255ca1c33c8aa468df/diff:~/.local/share/containers/storage/overlay/f103cd120fdd6cbc7f3d0e1d5bfb3e16290c32ead7b822d15c34460ecdf64b29/diff",
+                    "MergedDir": "~/.local/share/containers/storage/overlay/a76c4045abc4c91cbcfff78b5f9572265bd34bfdd63934ead59298c1d9d2903e/merged",
+                    "UpperDir": "~/.local/share/containers/storage/overlay/a76c4045abc4c91cbcfff78b5f9572265bd34bfdd63934ead59298c1d9d2903e/diff",
+                    "WorkDir": "~/.local/share/containers/storage/overlay/a76c4045abc4c91cbcfff78b5f9572265bd34bfdd63934ead59298c1d9d2903e/work"
                }
           },
           "Mounts": [
                {
                     "Type": "bind",
-                    "Source": "/home/hoge-heer/distrobox/vllm-gfx1151/.cache/huggingface/hub/models--Qwen--Qwen3-0.6B",
+                    "Source": "~/distrobox/vllm-gfx1151/.cache/huggingface/hub/models--Qwen--Qwen3-0.6B",
                     "Destination": "/models/qwen",
                     "Driver": "",
                     "Mode": "",
@@ -139,7 +139,7 @@
           "KubeExitCodePropagation": "invalid",
           "lockNumber": 11,
           "Config": {
-               "Hostname": "hoge-heer-GTR-Pro",
+               "Hostname": "<host>",
                "Domainname": "",
                "User": "",
                "AttachStdin": false,
@@ -187,7 +187,7 @@
                     "MAX_JOBS=64",
                     "ROCM_PATH=/opt/python/lib/python3.14/site-packages/_rocm_sdk_devel",
                     "HOME=/root",
-                    "HOSTNAME=hoge-heer-GTR-Pro"
+                    "HOSTNAME=<host>"
                ],
                "Cmd": [
                     "-lc",
@@ -228,7 +228,7 @@
                     "--security-opt",
                     "label=disable",
                     "-v",
-                    "/home/hoge-heer/distrobox/vllm-gfx1151/.cache/huggingface/hub/models--Qwen--Qwen3-0.6B:/models/qwen:ro",
+                    "~/distrobox/vllm-gfx1151/.cache/huggingface/hub/models--Qwen--Qwen3-0.6B:/models/qwen:ro",
                     "-e",
                     "HSA_OVERRIDE_GFX_VERSION=11.0.0",
                     "-e",
@@ -247,7 +247,7 @@
           },
           "HostConfig": {
                "Binds": [
-                    "/home/hoge-heer/distrobox/vllm-gfx1151/.cache/huggingface/hub/models--Qwen--Qwen3-0.6B:/models/qwen:ro,rprivate,rbind"
+                    "~/distrobox/vllm-gfx1151/.cache/huggingface/hub/models--Qwen--Qwen3-0.6B:/models/qwen:ro,rprivate,rbind"
                ],
                "CgroupManager": "systemd",
                "CgroupMode": "private",

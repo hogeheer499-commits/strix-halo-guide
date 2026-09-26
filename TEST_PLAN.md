@@ -2,7 +2,7 @@
 
 This guide should spread because it contains useful, reproducible data that other Strix Halo owners can use immediately. The goal is not to make louder claims. The goal is to keep the guide current, measured, practical, and hard to replace.
 
-For the focused "how far can this Beelink be pushed?" track, see [`MAX_PERFORMANCE_PLAN.md`](MAX_PERFORMANCE_PLAN.md). That file records the current max-performance truth, open test routes, and claim rules for future benchmark campaigns.
+For the focused "how far can this Beelink be pushed?" track, see [`MAX_PERFORMANCE_PLAN.md`](MAX_PERFORMANCE_PLAN.md). That file is a historical campaign log (2026-05-07 to 2026-06) of max-performance results, routes, and claim rules; the active queue is [`data/current_test_queue.csv`](data/current_test_queue.csv) and current recommendations are in [`BEST_KNOWN_PROFILES.md`](BEST_KNOWN_PROFILES.md).
 
 ## Principles
 

@@ -9,7 +9,7 @@
 0.00.030.425 I srv          init: Use --ui/--no-ui (or deprecated --webui/--no-webui) to enable/disable
 0.00.030.971 I srv         start: binding port with default address family
 0.00.032.209 I srv  llama_server: loading model
-0.00.032.215 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/gemma-4-26b-a4b-it-qat-unsloth-udq4kxl/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf'
+0.00.032.215 I srv    load_model: loading model '~/benchmark-models/gemma-4-26b-a4b-it-qat-unsloth-udq4kxl/gemma-4-26B-A4B-it-qat-UD-Q4_K_XL.gguf'
 0.00.459.076 E llama_init_from_model: failed to initialize the context: Gemma4Assistant requires ctx_other to be set (this is normal during memory fitting)
 0.00.588.169 W srv    load_model: [spec] failed to measure draft model memory: failed to create llama_context from model
 0.00.588.198 I common_init_result: fitting params to device memory ...
@@ -20,7 +20,7 @@
 0.01.603.812 W load: special_eog_ids contains '<|tool_response>', removing '</s>' token from EOG list
 0.13.520.457 W llama_context: n_ctx_seq (4096) < n_ctx_train (262144) -- the full capacity of the model will not be utilized
 0.13.544.595 I common_init_from_params: warming up the model with an empty run - please wait ... (--no-warmup to disable)
-0.13.583.210 I srv    load_model: loading draft model '/home/hoge-heer/benchmark-models/gemma-4-26b-a4b-it-qat-unsloth-udq4kxl/MTP/gemma-4-26B-A4B-it-Q4_0-MTP.gguf'
+0.13.583.210 I srv    load_model: loading draft model '~/benchmark-models/gemma-4-26b-a4b-it-qat-unsloth-udq4kxl/MTP/gemma-4-26B-A4B-it-Q4_0-MTP.gguf'
 0.14.041.982 W load: control-looking token:    212 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
 0.14.042.587 W load: control-looking token:     50 '<|tool_response>' was not control-type; this is probably a bug in the model. its type will be overridden
 0.14.082.244 W load: special_eog_ids contains '<|tool_response>', removing '</s>' token from EOG list

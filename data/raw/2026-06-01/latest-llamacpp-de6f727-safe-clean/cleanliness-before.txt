@@ -63,9 +63,9 @@ INFO: T3 Code process is running and protected
 3358167  0.0  0.0 bash
 INFO: T3 semantic proxy is running and protected
 INFO: T3 local semantic proxy is reachable: http://127.0.0.1:3773/
-INFO: T3 LAN semantic proxy is reachable: http://192.168.2.13:3773/
+INFO: T3 LAN semantic proxy is reachable: http://<lan-ip>:3773/
 INFO: T3 local semantic proxy health is healthy: http://127.0.0.1:3773/__t3react185/health
-INFO: T3 LAN semantic proxy health is healthy: http://192.168.2.13:3773/__t3react185/health
+INFO: T3 LAN semantic proxy health is healthy: http://<lan-ip>:3773/__t3react185/health
 INFO: T3 local upstream backend is reachable: http://127.0.0.1:3774/
 
 == Local AI and Containers ==
@@ -77,38 +77,11 @@ hermes-bram    Up 4 days (healthy)               9d0a12c02818
 NAMES       STATUS      PORTS       IMAGE
 
 == Listening Ports ==
-tcp   LISTEN 0      100                               127.0.0.1:12001      0.0.0.0:*    users:(("nxnode.bin",pid=8189,fd=17))
-tcp   LISTEN 0      128                               127.0.0.1:7001       0.0.0.0:*    users:(("nxnode.bin",pid=8189,fd=24))
-tcp   LISTEN 0      511                                 0.0.0.0:3774       0.0.0.0:*    users:(("t3code",pid=891369,fd=3))
-tcp   LISTEN 0      511                                 0.0.0.0:3773       0.0.0.0:*    users:(("node",pid=890186,fd=21))
-tcp   LISTEN 0      4096                                0.0.0.0:22         0.0.0.0:*
-tcp   LISTEN 0      100                               127.0.0.1:22401      0.0.0.0:*
-tcp   LISTEN 0      100                               127.0.0.1:22402      0.0.0.0:*    users:(("nxrunner.bin",pid=8209,fd=31),("nxnode.bin",pid=8189,fd=31))
-tcp   LISTEN 0      128                                   [::1]:7001          [::]:*    users:(("nxnode.bin",pid=8189,fd=23))
-tcp   LISTEN 0      511                                       *:3000             *:*    users:(("next-server (v1",pid=1673899,fd=24))
-tcp   LISTEN 0      4096                                   [::]:22            [::]:*
+<redacted 10 lines of listening ports on 2026-09-26; benchmark runtime lines kept>
 
 == Top CPU Processes ==
     PID    PPID STAT %CPU %MEM COMMAND
- 947989       1 Ssl  12.8  0.0 libvirtd
- 891369  890997 Ssl  10.9  0.8 t3code
- 891984  891014 Sl    8.8  0.4 t3code
- 891058  891010 Sl    5.0  0.1 t3code
-   6591    6589 Sl+   4.7  0.1 Xorg
- 906462  906455 Sl    3.2  0.1 codex
-   6924    2272 Ssl   3.2  0.3 gnome-shell
- 902819  902812 Sl    1.0  0.1 codex
-   1398       1 Ss    1.0  0.0 dbus-daemon
- 821894    6924 Sl    0.9  0.6 firefox
- 290857    6924 Sl    0.5  0.0 gjs
- 890997    2272 Ssl   0.4  0.1 t3code
-   2568    2272 Ssl   0.3  0.0 pipewire
-   7563    2272 SNsl  0.3  0.0 tracker-miner-f
-   2574    2272 SLsl  0.3  0.0 pipewire-pulse
- 932450       2 I     0.2  0.0 kworker/u128:0-gfx_0.0.0
-   1109       2 S     0.2  0.0 napi/phy0-0
-   1408       1 Ssl   0.2  0.0 polkitd
- 934962       2 I     0.2  0.0 kworker/u128:1-gfx_0.0.0
+<redacted 19 lines of top cpu processes on 2026-09-26; benchmark runtime lines kept>
 
 == Verdict ==
 Blockers: 0

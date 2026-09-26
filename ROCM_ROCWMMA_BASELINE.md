@@ -17,17 +17,17 @@ Local host state:
 
 - Full host ROCm SDK is not installed in `/opt/rocm`; `hipcc` is not available on the host.
 - Ollama ships ROCm runtime libraries under `/usr/local/lib/ollama/rocm`, which is enough for existing HIP binary spot checks but not a clean build environment.
-- The currently usable local HIP `llama-bench` path remains `/home/hoge-heer/llama-cpp-latest/build-hip/bin/llama-bench` with `LD_LIBRARY_PATH=/usr/local/lib/ollama/rocm`.
+- The currently usable local HIP `llama-bench` path remains `~/llama-cpp-latest/build-hip/bin/llama-bench` with `LD_LIBRARY_PATH=/usr/local/lib/ollama/rocm`.
 
 Existing local llama.cpp HIP builds:
 
 | Path | Commit / state | ROCm/rocWMMA state |
 |------|----------------|--------------------|
-| `/home/hoge-heer/llama-cpp-latest/build-hip` | llama.cpp `d05fe1d7d` source tree; HIP binary used for May spot check | `GGML_HIP=ON`, `GGML_HIP_ROCWMMA_FATTN=OFF`, unroll flag present |
-| `/home/hoge-heer/llama.cpp/build` | local fork branch `fix/hip-uma-detection` | `GGML_HIP=ON`, `GGML_HIP_ROCWMMA_FATTN=OFF` |
-| `/home/hoge-heer/llama.cpp/build-opt` | local fork branch `fix/hip-uma-detection` | `GGML_HIP=ON`, `GGML_HIP_ROCWMMA_FATTN=OFF`, unroll flag present |
-| `/home/hoge-heer/Desktop/llama-evidence-worktrees/master/build-rocm-evidence` | llama.cpp `a95a11e5b` evidence worktree | `GGML_HIP=ON`, `GGML_HIP_ROCWMMA_FATTN=OFF` |
-| `/home/hoge-heer/Desktop/llama-evidence-worktrees/pr-20472/build-rocm-evidence` | llama.cpp `97ae46e46` evidence worktree | `GGML_HIP=ON`, `GGML_HIP_ROCWMMA_FATTN=OFF` |
+| `~/llama-cpp-latest/build-hip` | llama.cpp `d05fe1d7d` source tree; HIP binary used for May spot check | `GGML_HIP=ON`, `GGML_HIP_ROCWMMA_FATTN=OFF`, unroll flag present |
+| `~/llama.cpp/build` | local fork branch `fix/hip-uma-detection` | `GGML_HIP=ON`, `GGML_HIP_ROCWMMA_FATTN=OFF` |
+| `~/llama.cpp/build-opt` | local fork branch `fix/hip-uma-detection` | `GGML_HIP=ON`, `GGML_HIP_ROCWMMA_FATTN=OFF`, unroll flag present |
+| `~/llama-evidence-worktrees/master/build-rocm-evidence` | llama.cpp `a95a11e5b` evidence worktree | `GGML_HIP=ON`, `GGML_HIP_ROCWMMA_FATTN=OFF` |
+| `~/llama-evidence-worktrees/pr-20472/build-rocm-evidence` | llama.cpp `97ae46e46` evidence worktree | `GGML_HIP=ON`, `GGML_HIP_ROCWMMA_FATTN=OFF` |
 
 Conclusion:
 

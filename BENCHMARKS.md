@@ -1,6 +1,6 @@
 # Benchmark Results - Current Snapshot
 
-**Benchmarks reviewed:** September 19, 2026.
+**Benchmarks reviewed:** September 26, 2026.
 
 This is an [active claim/scope review](ACTIVE_EVIDENCE_REVIEW_2026-09-19.md),
 not a remeasurement date. Historical runs keep their exact original dates.
@@ -121,7 +121,7 @@ Raw evidence: [`data/raw/2026-07-16/`](data/raw/2026-07-16/). The structured con
 | Qwen3.6 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1064 | **63.76** | Recommended all-rounder |
 | Qwen3.5 35B-A3B | Vulkan RADV, llama.cpp b8460 | Q4_K_M | 1080 | **64.85** | Used for backend/build comparison |
 | gpt-oss-120b | Vulkan RADV, llama.cpp b9049 | MXFP4 MoE | 727 | **55.57** | 117B-parameter open-weight MoE loaded from split GGUF |
-| Qwen3-Next 80B-A3B | Vulkan RADV, llama.cpp b9172 | UD-Q4_K_XL | 752 | **59.06** | Latest-stack r20 confirmation; historical May 80B Qwen-family path |
+| Qwen3-Next 80B-A3B | Vulkan RADV, llama.cpp b9172 | UD-Q4_K_XL | 752 | **59.06** | May 2026 b9172 strict-profile r20 confirmation; historical May 80B Qwen-family path; the separate 2026-08-30 b10687 sentinel measured 62.09 under different host conditions |
 | Qwen3-Next 80B-A3B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_XL | 657 | **54.92** | 80B MoE, 256K context capable |
 | Gemma 4 26B-A4B | Vulkan RADV, llama.cpp b8933 | UD-Q4_K_M | 1142 | **48.46** | Slower than Qwen MoE at similar active params |
 | Llama 4 Scout 109B | Vulkan RADV, llama.cpp b8933 | Q4_K_M | 331 | **18.32** | 109B params on one mini PC |
@@ -327,6 +327,16 @@ Raw data:
 Takeaway: the 128GB Strix Halo setup can load and run a 117B-parameter open-weight MoE locally at about 55-56 t/s generation on the measured direct Vulkan path. The first tg32 attempt was correctly aborted by the benchmark guard when swap-free dropped under 2 GiB; after clearing swap with ample free RAM, tg32 and tg128 completed. The later paused-system rerun also proves prompt processing through 65K tokens, but the 65K row is one repeat.
 
 ## Ollama Vulkan
+
+### Qwen3.8 27B, Ollama 0.32.13 API With Ollama-Default MTP (API Class)
+
+This is an API-class row with speculative drafting enabled by the Ollama model
+default. Keep it separate from the direct `llama-bench` rows above and from
+no-draft controls.
+
+| Date | Prompt Tokens | Context | Prompt Eval | Generation | Speculation | Notes |
+|------|---------------|---------|-------------|------------|-------------|-------|
+| 2026-08-15 | 45 | 4096 | 292.49 t/s | **20.42 t/s** | Ollama-default MTP drafting (`draft_num_predict 4`; `draft-mtp` logged in the same-service 64K run; per-run log for the 4K warm runs not captured) | Official `qwen3.8:27b` `Q4_K_M`; 9 warm API repeats, 19.85-20.79 t/s range; requires Ollama 0.32.12 or later. Not a no-draft result; matched no-draft control queued. [Raw evidence](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/) |
 
 ### Qwen3.6-35B-A3B, Ollama 0.23.1 and isolated 0.24.0, Vulkan RADV
 

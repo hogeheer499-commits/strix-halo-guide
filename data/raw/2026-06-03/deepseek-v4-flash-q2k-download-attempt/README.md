@@ -30,7 +30,7 @@ Attempted commands:
 ```bash
 HF_HUB_DISABLE_XET=1 hf download Preyazz/DeepSeek-V4-Flash-GGUF \
   --include 'DeepSeek-V4-Flash-Q2_K.gguf' \
-  --local-dir /home/hoge-heer/benchmark-models/deepseek-v4-flash-q2k \
+  --local-dir ~/benchmark-models/deepseek-v4-flash-q2k \
   --max-workers 1
 ```
 
@@ -39,7 +39,7 @@ Regular HF download failed because the file is too large for the non-Xet downloa
 ```bash
 hf download Preyazz/DeepSeek-V4-Flash-GGUF \
   --include 'DeepSeek-V4-Flash-Q2_K.gguf' \
-  --local-dir /home/hoge-heer/benchmark-models/deepseek-v4-flash-q2k \
+  --local-dir ~/benchmark-models/deepseek-v4-flash-q2k \
   --max-workers 1
 ```
 
@@ -49,7 +49,7 @@ The Xet path downloaded a partial file to about 53 GiB, then stopped making prog
 HF_XET_HIGH_PERFORMANCE=1 HF_XET_NUM_CONCURRENT_RANGE_GETS=32 \
 hf download Preyazz/DeepSeek-V4-Flash-GGUF \
   --include 'DeepSeek-V4-Flash-Q2_K.gguf' \
-  --local-dir /home/hoge-heer/benchmark-models/deepseek-v4-flash-q2k \
+  --local-dir ~/benchmark-models/deepseek-v4-flash-q2k \
   --max-workers 1
 ```
 

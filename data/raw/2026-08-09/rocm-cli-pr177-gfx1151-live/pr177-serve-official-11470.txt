@@ -13,6 +13,6 @@ managed service launched
   service_id: lemonade-qwen3-0-6b-gguf-1786229628081
   process_pid: 2037706
   endpoint: http://127.0.0.1:11470/v1
-  log_path: /home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/data/services/lemonade-qwen3-0-6b-gguf-1786229628081.log
-  manifest_path: /home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/data/services/lemonade-qwen3-0-6b-gguf-1786229628081.json
+  log_path: ~/local-scratch/rocm-cli-pr177-isolated-v1/data/services/lemonade-qwen3-0-6b-gguf-1786229628081.log
+  manifest_path: ~/local-scratch/rocm-cli-pr177-isolated-v1/data/services/lemonade-qwen3-0-6b-gguf-1786229628081.json
   readiness: ready

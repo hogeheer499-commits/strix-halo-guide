@@ -2,8 +2,8 @@
 set -euo pipefail
 
 OUT_DIR=${OUT_DIR:-$(cd "$(dirname "$0")" && pwd)}
-MODEL=${MODEL:-/home/hoge-heer/benchmark-models/2026-07-16/audex/quants/audex-30b-a3b-textonly-MXFP4_MOE.gguf}
-BIN_DIR=${BIN_DIR:-/home/hoge-heer/benchmark-tools/llama-b10034/llama-b10034}
+MODEL=${MODEL:-~/benchmark-models/2026-07-16/audex/quants/audex-30b-a3b-textonly-MXFP4_MOE.gguf}
+BIN_DIR=${BIN_DIR:-~/benchmark-tools/llama-b10034/llama-b10034}
 
 sha256sum "$MODEL" > "$OUT_DIR/model.sha256"
 "$BIN_DIR/llama-bench" --list-devices > "$OUT_DIR/llama-version.txt" 2>&1
@@ -13,7 +13,7 @@ sha256sum "$MODEL" > "$OUT_DIR/model.sha256"
     uname -a
     lscpu | sed -n '1,30p'
     free -h
-    df -h /home/hoge-heer
+    df -h ~
     vulkaninfo --summary 2>/dev/null | sed -n '1,100p' || true
 } > "$OUT_DIR/host-snapshot.txt"
 

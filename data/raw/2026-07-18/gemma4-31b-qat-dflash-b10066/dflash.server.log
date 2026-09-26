@@ -4,7 +4,7 @@
 0.00.031.572 W srv  llama_server: this can be a security risk (cross-origin attacks)
 0.00.031.572 W srv  llama_server: more info: https://github.com/ggml-org/llama.cpp/pull/25655
 0.00.031.572 W srv  llama_server: -----------------
-0.00.032.778 I srv    load_model: loading model '/home/hoge-heer/benchmark-models/gemma-4-31b-qat-dflash/gemma-4-31B-it-Q4_0.gguf'
+0.00.032.778 I srv    load_model: loading model '~/benchmark-models/gemma-4-31b-qat-dflash/gemma-4-31B-it-Q4_0.gguf'
 0.00.589.163 E llama_init_from_model: failed to initialize the context: dflash requires ctx_other to be set (this warning is normal during memory fitting)
 0.00.713.657 W srv    load_model: [spec] failed to measure draft model memory: failed to create llama_context from model
 0.01.890.233 W load: control-looking token:    212 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden

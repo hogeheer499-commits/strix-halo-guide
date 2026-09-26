@@ -20,8 +20,8 @@
   "restart_count": 0,
   "last_restart_unix_ms": null,
   "startup_phase": null,
-  "manifest_path": "/home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/data/services/lemonade-qwen3-0-6b-gguf-1786229628081.json",
-  "log_path": "/home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/data/services/lemonade-qwen3-0-6b-gguf-1786229628081.log",
-  "engine_state_path": "/home/hoge-heer/local-scratch/rocm-cli-pr177-isolated-v1/data/engines/lemonade/state/lemonade-qwen3-0-6b-gguf-1786229628081.json",
+  "manifest_path": "~/local-scratch/rocm-cli-pr177-isolated-v1/data/services/lemonade-qwen3-0-6b-gguf-1786229628081.json",
+  "log_path": "~/local-scratch/rocm-cli-pr177-isolated-v1/data/services/lemonade-qwen3-0-6b-gguf-1786229628081.log",
+  "engine_state_path": "~/local-scratch/rocm-cli-pr177-isolated-v1/data/engines/lemonade/state/lemonade-qwen3-0-6b-gguf-1786229628081.json",
   "created_at_unix_ms": 1786229628081
 }

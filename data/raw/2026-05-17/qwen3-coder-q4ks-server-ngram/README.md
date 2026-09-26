@@ -16,7 +16,7 @@ Purpose: check whether the 98.51 t/s direct Qwen3-Coder Q4_K_S route can become 
 ## Model
 
 - File: `Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf`
-- Local path: `/home/hoge-heer/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf`
+- Local path: `~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf`
 
 ## Main Results
 

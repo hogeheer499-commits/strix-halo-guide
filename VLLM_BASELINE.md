@@ -13,7 +13,7 @@ Container:
 - Image: `docker.io/kyuz0/vllm-therock-gfx1151:stable`
 - Image ID: `4723cfafb369`
 - Image size: 30.5 GB
-- Container home: `/home/hoge-heer/distrobox/vllm-gfx1151`
+- Container home: `~/distrobox/vllm-gfx1151` (a separate Distrobox home directory)
 
 Host/GPU visibility from inside the container:
 
@@ -46,7 +46,7 @@ TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=1
 Smoke command:
 
 ```bash
-podman exec --user hoge-heer vllm-gfx1151 bash -lc '
+podman exec --user "$USER" vllm-gfx1151 bash -lc '
   cd "$HOME" &&
   VLLM_DISABLE_COMPILE_CACHE=1 vllm serve Qwen/Qwen3-0.6B \
     --host 127.0.0.1 \
