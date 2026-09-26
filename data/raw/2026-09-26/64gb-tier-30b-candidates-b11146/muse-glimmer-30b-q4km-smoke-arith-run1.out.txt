@@ -1,0 +1,23 @@
+<|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-09-26.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|start|>user<|message|>What is 17 multiplied by 23? Answer with the number only.<|start|>assistant to=self<|message|>What is 17 multiplied by 23? Answer with the number only.
+
+Answer with the number only.
+
+17 * 23 = 391
+
+Check: 17*20=340, 17*3=51, total 391.
+
+Answer with number only. Probably just 391.
+
+No extra text? "Answer with the number only." So output 391.
+
+Probably just 391.
+
+Ensure no extra.<|start|>assistant to=user<|message|>391 [end of text]
+
+

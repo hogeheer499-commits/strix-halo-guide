@@ -1,0 +1,14 @@
+laguna-xs21-q4km-smoke-arith-run1.out.txt: PASS
+laguna-xs21-q4km-smoke-arith-run2.out.txt: PASS
+laguna-xs21-q4km-smoke-code-n4096-run1.out.txt: PASS
+laguna-xs21-q4km-smoke-code-n4096-run2.out.txt: PASS
+laguna-xs21-q4km-smoke-code-run1.out.txt: NO FINAL CODE (SyntaxError)
+laguna-xs21-q4km-smoke-code-run2.out.txt: NO FINAL CODE (SyntaxError)
+muse-glimmer-30b-q4km-smoke-arith-run1.out.txt: PASS
+muse-glimmer-30b-q4km-smoke-arith-run2.out.txt: PASS
+muse-glimmer-30b-q4km-smoke-code-run1.out.txt: PASS
+muse-glimmer-30b-q4km-smoke-code-run2.out.txt: PASS
+nemotron35-lightning-q4_0-smoke-arith-run1.out.txt: PASS
+nemotron35-lightning-q4_0-smoke-arith-run2.out.txt: PASS
+nemotron35-lightning-q4_0-smoke-code-run1.out.txt: PASS
+nemotron35-lightning-q4_0-smoke-code-run2.out.txt: PASS

@@ -57,13 +57,14 @@ dash in the artifact-size column means neither `data/headline_claims.csv` nor
 | Gemma 4 26B-A4B IT QAT, Vulkan server/MTP | `UD-Q4_K_XL` plus `Q4_0` MTP head | 102.69 t/s cold; 107.42 t/s T3-only; 110.00 t/s best repeat; 73.96 t/s no-spec baseline | — | [2026-06-12 raw repeat](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-06-12/gemma4-26b-qat-mtp-cold-repeat-ac4cddeb) |
 | Step 3.7 Flash 198B-A11B, ROCmFPX server/MTP | ROCmFPX `Q3 QualityPlus` plus `Q8_0` MTP draft | 34.50 t/s at 4K; 33.83 t/s at 16K; native tool call and 256K allocation passed | — | [2026-07-16 raw route](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-07-16/step37-rocmfpx-q3-qualityplus) |
 
-**Newer coding candidates (not measured here; checked 2026-09-25):** the
+**Newer coding candidates (routine direct scout, 2026-09-26):** the
 measured Qwen3-Coder 30B-A3B rows above are speed evidence for that exact model,
-not a claim that it is the newest or best coding model. Newer 30B-class
-artifacts with coding relevance include Laguna XS 2.1 (`Q4_K_M` 19.56GB),
-Nemotron 3.5 Lightning 30B-A3B (`Q4_0` 18.90GB) and Muse Glimmer 30B (`Q4_K_M`
-16.76GB); sizes are publisher-listed, not measured here, and none has a guide
-speed or quality result. They are queued for a matched coding campaign in the
+not a claim that it is the newest or best coding model. Three newer 30B-class
+artifacts with coding relevance were run on the official llama.cpp v0.5.0
+Vulkan build (b11146) under **routine** host conditions (nothing paused); see the
+64GB tier below for the numbers. They are direct `llama-bench` and two-prompt
+smoke results only, not a coding-quality ranking or a recommendation; IBM
+Granite 4.2 30B and a matched Qwen3.8 27B control remain open in the
 [current test queue](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/current_test_queue.csv).
 
 ## August 30 Direct Sentinel And Flash-Next Scout
@@ -172,6 +173,24 @@ KV cache, projectors, drafters and the operating system still need room.
 | --- | --- |
 | Under about 20GB | [Qwen3.8 27B](https://huggingface.co/ggml-org/Qwen3.8-27B-GGUF) Q4_K_M 18.97GB; [Nemotron 3.5 Lightning](https://huggingface.co/ggml-org/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF) Q4_0 18.90GB; [Laguna XS 2.1](https://huggingface.co/ggml-org/Laguna-XS-2.1-GGUF) Q4_K_M 19.56GB; [Granite 4.2 30B](https://huggingface.co/ibm-granite/granite-4.2-30b-GGUF) Q4_K_M 17.72GB; [Muse Glimmer 30B](https://huggingface.co/meta-models/Muse-Glimmer-30B-GGUF) Q4_K_M 16.76GB plus 1.40GB mmproj |
 | About 40-50GB | [Qwen3-Coder-Next](https://huggingface.co/unsloth/Qwen3-Coder-Next-GGUF) Q4_K_M 48.5GB (2026-08-29 listing); leaves much less headroom on 64GB once context is added |
+
+**Routine direct scout of three under-20GB candidates (2026-09-26):** measured
+on this 128GB machine, so this is speed and load evidence, not a 64GB fit or
+memory-use result. Official llama.cpp v0.5.0 Vulkan build (b11146), `-fa 1
+-ngl 999`, llama-bench defaults, routine background load (VM and desktop not
+paused, `balanced` power profile). Direct `llama-bench` rows only; server, MTP,
+DFlash and vision were not tested. Mean t/s; ranges and a second pass are in
+the [raw bundle](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-09-26/64gb-tier-30b-candidates-b11146).
+
+| Model / quant (file size) | pp512 (r10) | tg128 (r10) | pp8192 (r3) | tg128 at depth 8192 (r3) | Smoke (arithmetic and `is_prime`, 2 greedy runs each) |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Nemotron 3.5 Lightning 30B-A3B Q4_0 (18.90GB) | 1450.33 | 66.80 | 1409.10 | 65.99 | pass; identical across runs |
+| Laguna XS 2.1 Q4_K_M (19.56GB) | 1399.02 | 80.45 | 1026.84 | 70.05 | pass; the code prompt needed more than 1024 tokens of reasoning (no answer at `-n 1024`, pass at `-n 4096`); identical across runs |
+| Muse Glimmer 30B Q4_K_M, text only (16.76GB) | 370.89 | 13.24 | 346.52 | 13.01 | pass; identical across runs |
+
+All three loaded without an unsupported-architecture error. Muse Glimmer is a
+dense model and decodes in the dense-30B speed class, not the 3B-active MoE
+class. Two prompts are a smoke test, not a coding or Dutch-quality result.
 
 ## 128GB Fit Tiers
 

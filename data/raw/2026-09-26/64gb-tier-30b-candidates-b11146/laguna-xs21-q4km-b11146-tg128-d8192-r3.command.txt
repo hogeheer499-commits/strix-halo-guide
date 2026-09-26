@@ -1,0 +1,1 @@
+~/llama-cpp-b11146/llama-b11146/llama-bench -m ~/models/2026-09-26/Laguna-XS-2.1-Q4_K_M.gguf -fa 1 -ngl 999 -p 0 -n 128 -d 8192 -r 3 -o csv

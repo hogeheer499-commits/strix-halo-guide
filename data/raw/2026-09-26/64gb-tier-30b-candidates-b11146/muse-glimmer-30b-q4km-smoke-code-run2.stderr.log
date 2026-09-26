@@ -1,0 +1,34 @@
+0.00.023.613 I llama_completion: llama backend init
+0.00.023.624 I llama_completion: load the model and apply lora adapter, if any
+0.00.865.009 W load: setting token '<|message|>' (200023) attribute to USER_DEFINED (16), old attributes: 8
+0.00.865.013 W load: setting token '<|start|>' (200022) attribute to USER_DEFINED (16), old attributes: 8
+0.00.869.342 W load: special_eot_id is not in special_eog_ids - the tokenizer config may be incorrect
+0.02.944.145 I cmn          init: llama threadpool init, n_threads = 16
+0.03.031.978 I llama_completion: chat template is available, enabling conversation mode (disable it with -no-cnv)
+0.03.031.982 W *** User-specified prompt will pre-start conversation, did you mean to set --system-prompt (-sys) instead?
+0.03.032.527 I llama_completion: chat template example:
+<|start|>system<|message|>You are a helpful assistant
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|eot|><|start|>user<|message|>Hello<|eot|><|start|>assistant to=user<|message|>Hi there<|eot|><|start|>user<|message|>How are you?<|eot|><|start|>assistant
+0.03.032.529 I 
+0.03.032.590 I system_info: n_threads = 16 (n_threads_batch = 16) / 32 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | AVX512 = 1 | AVX512_VBMI = 1 | AVX512_VNNI = 1 | AVX512_BF16 = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+0.03.032.591 I 
+0.03.035.550 I sampler seed: 42
+0.03.035.563 I sampler params: 
+	repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+	dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+	top_k = 1, top_p = 0.950, min_p = 0.050, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+	mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+0.03.035.571 I sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> top-p -> min-p -> ?xtc -> temp-ext -> dist 
+0.03.035.572 I generate: n_ctx = 4096, n_batch = 2048, n_predict = 1024, n_keep = 0
+0.03.035.572 I 
+0.38.729.144 I common_perf_print:    sampling time =      98.09 ms
+0.38.729.146 I common_perf_print:    samplers time =      36.17 ms /   549 tokens
+0.38.729.152 I common_perf_print:        load time =    2337.97 ms
+0.38.729.153 I common_perf_print: prompt eval time =     372.46 ms /    83 tokens (    4.49 ms per token,   222.84 tokens per second)
+0.38.729.154 I common_perf_print:        eval time =   35206.19 ms /   465 runs   (   75.71 ms per token,    13.21 tokens per second)
+0.38.729.155 I common_perf_print:       total time =   35697.18 ms /   548 tokens
+0.38.729.156 I common_perf_print: unaccounted time =      20.43 ms /   0.1 %      (total - sampling - prompt eval - eval) / (total)
+0.38.729.156 I common_perf_print:    graphs reused =        462

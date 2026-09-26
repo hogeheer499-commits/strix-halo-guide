@@ -1,0 +1,1 @@
+~/llama-cpp-b11146/llama-b11146/llama-completion -m ~/models/2026-09-26/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-Q4_0.gguf -ngl 999 -fa 1 -c 4096 -n 1024 --temp 0 --top-k 1 --seed 42 --jinja -st -p "What is 17 multiplied by 23? Answer with the number only."

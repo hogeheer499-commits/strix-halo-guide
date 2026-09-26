@@ -1,0 +1,95 @@
+<|start|>system<|message|>You are a helpful AI assistant.
+Knowledge cutoff: 2026-01-04.
+Current date: 2026-09-26.
+
+Reasoning strength: high.
+
+# Valid recipients: "self", "user".<|start|>user<|message|>Write a Python function is_prime(n) that returns True if n is a prime number and False otherwise. Reply with only the code.<|start|>assistant to=self<|message|>Write a Python function is_prime(n) that returns True if n is a prime number and False otherwise. Reply with only the code.
+
+We need output only code. Probably simple implementation.
+
+Constraints? No. Just return code.
+
+Probably define function is_prime(n): ...
+
+Edge cases: n <=1 false, n==2 true, even false, check up to sqrt.
+
+Reply with only the code. No explanation.
+
+Probably just code block? "Reply with only the code." Might be just code, no markdown? Safer to output code without extra text. Maybe just function definition.
+
+Probably:
+
+def is_prime(n):
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+    i = 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+    return True
+
+That's fine.
+
+Could also simpler.
+
+The instruction: Reply with only the code.
+
+Probably no markdown fences? Might be okay. Usually code block is okay. Safer to just output plain code.
+
+I'll output:
+
+def is_prime(n):
+    ...
+
+No extra text.
+
+Let's produce minimal.
+
+Potential pitfalls: negative numbers.
+
+I'll output simple version.
+
+def is_prime(n):
+    if n < 2:
+        return False
+    if n % 2 == 0:
+        return n == 2
+    i = 3
+    while i * i <= n:
+        if n % i == 0:
+            return False
+        i += 2
+    return True
+
+That's fine.
+
+Return only code.
+
+Probably ensure no extra commentary.
+
+I'll output code.
+
+Maybe include if __name__... No.
+
+Just function.
+
+Ok.<|start|>assistant to=user<|message|>def is_prime(n):
+    if n < 2:
+        return False
+    if n % 2 == 0:
+        return n == 2
+    i = 3
+    while i * i <= n:
+        if n % i == 0:
+            return False
+        i += 2
+    return True
+ [end of text]
+
+

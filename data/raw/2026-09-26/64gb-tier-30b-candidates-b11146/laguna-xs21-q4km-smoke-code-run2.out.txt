@@ -1,0 +1,59 @@
+<system>You are a helpful, conversationally-fluent assistant made by Poolside. You are here to be helpful to users through natural language conversations.</system>
+<user>Write a Python function is_prime(n) that returns True if n is a prime number and False otherwise. Reply with only the code.</user>
+<assistant><think>Okay, I need to write a Python function called is_prime that takes an integer n and returns True if it's a prime number, False otherwise. Let me think about how to approach this.
+
+First, what's a prime number? A prime is a number greater than 1 that has no divisors other than 1 and itself. So, the first thing I should check is if n is less than 2. If it is, then it's not prime, so return False.
+
+Next, for numbers 2 and above, I need to check if any number divides them. But checking all numbers up to n-1 would be inefficient. Wait, there's a smarter way. I remember that if a number has a divisor greater than its square root, then it must also have a corresponding divisor smaller than the square root. So, I only need to check up to the square root of n.
+
+So the steps would be:
+
+1. If n is less than 2, return False.
+2. If n is 2, return True (since it's the only even prime).
+3. If n is even, return False (since even numbers greater than 2 aren't prime).
+4. Check odd numbers from 3 up to sqrt(n). If any divide n, return False.
+5. If none divide, return True.
+
+Wait, but how do I handle the square root part? Let me think. The square root of n can be found using math.sqrt(n), but since we're dealing with integers, maybe I should take the integer part and add 1 to cover the upper bound.
+
+Also, I need to import math for that. Oh right, but maybe I can avoid using math.sqrt by using a loop that increments up to i*i <= n. That might be better because it avoids floating point inaccuracies.
+
+Let me outline the code structure.
+
+First, handle the base cases:
+
+def is_prime(n):
+    if n < 2:
+        return False
+    if n == 2:
+        return True
+    if n % 2 == 0:
+        return False
+    # Now check odd numbers from 3 up to sqrt(n)
+    for i in range(3, int(n**0.5) + 1, 2):
+        if n % i == 0:
+            return False
+    return True
+
+Wait, but what about n being 3? Let's test that. For n=3, the loop would start at 3, and the upper limit is sqrt(3) which is ~1.732, so int(1.732) is 1, so the range would be from 3 to 1+1=2, which is not executed. So the loop doesn't run, and returns True. That's correct.
+
+Another test case: n=9. sqrt(9) is 3. So the loop runs from 3 to 3 (since 3+1 is 4, but the step is 2, so 3 is included). 9%3 is 0, so returns False. Correct.
+
+What about n=25? sqrt is 5. The loop runs 3,5. 25%5 is 0, so returns False.
+
+Edge cases: n=1, returns False. n=0, same. n=2 returns True. n=4, even, returns False.
+
+Wait, but in the code, after checking if n is even, we return False. So for n=4, which is even, it returns False. Correct.
+
+What about n=3? The code skips the even check (since 3 is odd), then the loop runs from 3 to sqrt(3) ~1.732, so the upper limit is 1+1=2. So the range is 3 to 2, which doesn't run. So returns True. Correct.
+
+Another case: n=5. sqrt(5) is ~2.236, so int(2.236) is 2. So the range is 3 to 2+1=3. So the loop runs once with i=3. 5%3 is 2, so no divisor found. Returns True. Correct.
+
+Hmm, seems like this code should work. Let me think about possible optimizations. For example, checking 2 first, then only odd numbers. That's already done here.
+
+Wait, the loop starts at 3 and steps by 2, so it checks 3,5,7 etc. That's correct.
+
+I think this should handle all cases. Let me test n=2: returns True. n=1: returns False. n=0: same. n= -5: returns False. All correct.
+
+So the code should be as above. Let
+

@@ -1,0 +1,64 @@
+timestamp: 2026-09-26T05:12:23+02:00
+kernel: Linux 7.0.0-31-generic x86_64
+power_profile: balanced
+amdgpu_dpm_level: auto
+gpu_busy_percent: 1
+loadavg: 1.24 1.26 1.11 1/4186 2967730
+--- vulkaninfo --summary (GPU0)
+	apiVersion         = 1.4.354
+	driverVersion      = 26.2.3
+	deviceName         = AMD Radeon 8060S Graphics (RADV STRIX_HALO)
+	driverName         = radv
+--- packages
+linux-firmware 20240318.git3b128b60.0ubuntu3.1
+mesa-vulkan-drivers 26.2.3~kisak1~n
+--- memory
+               total        used        free      shared  buff/cache   available
+Mem:             124          19          42           3          67         105
+Swap:              7           7           0
+MemAvailable:   110533972 kB
+SwapFree:         168372 kB
+--- disk (home filesystem: size used avail use%)
+Size Used Avail Use%
+1.4T 1.1T 168G 87%
+--- ollama ps
+NAME    ID    SIZE    PROCESSOR    CONTEXT    UNTIL 
+--- libvirt domains (not paused: routine run)
+ Id   Name          State
+-----------------------------
+ 1    vm-1   running
+
+--- GPU render node holders (runtime names only)
+      2 chrome
+      1 gnome-shell
+      1 mutter-x11-fram
+      1 remote-desktop
+      1 snapd-desktop-i
+      1 t3code
+      1 xdg-desktop-por
+      1 zoom
+      1 ZoomWebviewHost
+--- top -bn1 (by CPU; %CPU %MEM COMMAND name only)
+18.2 0.0 python3
+9.1 0.1 systemd-journal
+9.1 2.4 qemu-system-x86
+9.1 0.0 ollama
+9.1 0.1 polkitd
+0.0 0.0 systemd
+0.0 0.0 kthreadd
+0.0 0.0 pool_workqueue_release
+0.0 0.0 kworker/R-rcu_gp
+0.0 0.0 kworker/R-sync_wq
+0.0 0.0 kworker/R-kvfree_rcu_reclaim
+0.0 0.0 kworker/R-slub_flushwq
+0.0 0.0 kworker/R-netns
+0.0 0.0 kworker/R-mm_percpu_wq
+0.0 0.0 ksoftirqd/0
+0.0 0.0 rcu_preempt
+0.0 0.0 rcu_exp_par_gp_kthread_worker/1
+0.0 0.0 rcu_exp_gp_kthread_worker
+0.0 0.0 migration/0
+0.0 0.0 kprobe-optimizer
+0.0 0.0 idle_inject/0
+0.0 0.0 cpuhp/0
+0.0 0.0 cpuhp/1

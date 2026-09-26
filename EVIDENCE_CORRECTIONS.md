@@ -4,6 +4,15 @@ Reviewed September 13, 2026. These notes correct or qualify authored interpretat
 while retaining original contributor submissions, model-card snapshots, filenames
 and raw measurements. They do not claim new hardware validation.
 
+## Ollama 0.32.3 Response-Hash Match
+
+The [July 25 buyer qualification](data/raw/2026-07-25/ollama-0.32.3-buyer-qualification/)
+states that all nine measured response hashes matched between Ollama 0.31.2 and
+0.32.3. Seven of those nine visible responses are empty strings because the
+256-token limit was reached before visible output, so the match mostly compares
+empty responses. The bundle README now carries this qualification (September 26,
+2026). The decode means (73.20 and 73.13 t/s) are unchanged.
+
 ## May 26 Control Build
 
 The [control CSV](data/raw/2026-05-26/latest-llamacpp-b9334/control-b9179-qwen3-coder-q4-k-s-r20.csv)

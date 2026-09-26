@@ -1,0 +1,33 @@
+0.00.026.290 I llama_completion: llama backend init
+0.00.026.304 I llama_completion: load the model and apply lora adapter, if any
+0.00.295.870 W load: special_eos_id is not in special_eog_ids - the tokenizer config may be incorrect
+0.00.295.875 W load: special_eot_id is not in special_eog_ids - the tokenizer config may be incorrect
+0.02.747.858 I cmn          init: llama threadpool init, n_threads = 16
+0.02.772.944 I llama_completion: chat template is available, enabling conversation mode (disable it with -no-cnv)
+0.02.772.947 W *** User-specified prompt will pre-start conversation, did you mean to set --system-prompt (-sys) instead?
+0.02.780.006 I llama_completion: chat template example:
+<system>You are a helpful assistant</system>
+<user>Hello</user>
+<assistant><think></think>Hi there</assistant>
+<user>How are you?</user>
+<assistant><think>
+0.02.780.009 I 
+0.02.780.076 I system_info: n_threads = 16 (n_threads_batch = 16) / 32 | CPU : SSE3 = 1 | SSSE3 = 1 | AVX = 1 | AVX2 = 1 | F16C = 1 | FMA = 1 | BMI2 = 1 | AVX512 = 1 | AVX512_VBMI = 1 | AVX512_VNNI = 1 | AVX512_BF16 = 1 | LLAMAFILE = 1 | OPENMP = 1 | REPACK = 1 | 
+0.02.780.078 I 
+0.02.793.257 I sampler seed: 42
+0.02.793.273 I sampler params: 
+	repeat_last_n = 64, repeat_penalty = 1.000, frequency_penalty = 0.000, presence_penalty = 0.000
+	dry_multiplier = 0.000, dry_base = 1.750, dry_allowed_length = 2, dry_penalty_last_n = 64
+	top_k = 1, top_p = 1.000, min_p = 0.000, xtc_probability = 0.000, xtc_threshold = 0.100, typical_p = 1.000, top_n_sigma = -1.000, temp = 0.000
+	mirostat = 0, mirostat_lr = 0.100, mirostat_ent = 5.000, adaptive_target = -1.000, adaptive_decay = 0.900
+0.02.793.282 I sampler chain: logits -> ?penalties -> ?dry -> ?top-n-sigma -> top-k -> ?typical -> ?top-p -> ?min-p -> ?xtc -> temp-ext -> dist 
+0.02.793.284 I generate: n_ctx = 8192, n_batch = 2048, n_predict = 4096, n_keep = 0
+0.02.793.284 I 
+0.17.429.943 I common_perf_print:    sampling time =     101.06 ms
+0.17.429.944 I common_perf_print:    samplers time =      38.78 ms /  1185 tokens
+0.17.429.950 I common_perf_print:        load time =    2536.81 ms
+0.17.429.952 I common_perf_print: prompt eval time =     175.12 ms /    69 tokens (    2.54 ms per token,   394.00 tokens per second)
+0.17.429.953 I common_perf_print:        eval time =   14348.00 ms /  1115 runs   (   12.87 ms per token,    77.71 tokens per second)
+0.17.429.953 I common_perf_print:       total time =   14657.01 ms /  1184 tokens
+0.17.429.954 I common_perf_print: unaccounted time =      32.83 ms /   0.2 %      (total - sampling - prompt eval - eval) / (total)
+0.17.429.955 I common_perf_print:    graphs reused =       1110

@@ -29,6 +29,14 @@ The mean difference was -0.09%, which is measurement noise rather than evidence
 of a version regression. All nine measured response hashes matched between the
 two versions.
 
+Correction (September 26, 2026): in seven of those nine measured responses the
+visible `response` field is empty, because the 256-token limit was used up
+before the model produced visible output (`eval_count` is 256 in every record).
+Only the `json` prompt's first two measured repeats contain text (62 characters,
+identical in both versions). The hash match therefore shows that both versions
+produced the same visible output under this limit; it does not show that full
+answers were equivalent. The decode-speed result is unaffected.
+
 ## Vision and restart result
 
 Ollama 0.32.3:

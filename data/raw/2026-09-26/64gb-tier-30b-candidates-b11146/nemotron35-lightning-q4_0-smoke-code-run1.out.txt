@@ -1,0 +1,94 @@
+system
+
+user
+Write a Python function is_prime(n) that returns True if n is a prime number and False otherwise. Reply with only the code.
+assistant
+<think>
+Here's a thinking process:
+
+1.  **Analyze User Request:**
+   - User wants a Python function `is_prime(n)`
+   - It should return `True` if `n` is prime, `False` otherwise
+   - Output should contain *only* the code
+
+2.  **Identify Key Requirements for Primality Testing:**
+   - A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself.
+   - Edge cases: n <= 1 (not prime), n == 2 (prime), n == 3 (prime), even numbers > 2 (not prime).
+   - Efficiency: Check divisors up to sqrt(n). Skip even numbers after checking 2.
+
+3.  **Draft the Function:**
+   ```python
+   def is_prime(n):
+       if n <= 1:
+           return False
+       if n <= 3:
+           return True
+       if n % 2 == 0 or n % 3 == 0:
+           return False
+       i = 5
+       while i * i <= n:
+           if n % i == 0 or n % (i + 2) == 0:
+               return False
+           i += 6
+       return True
+   ```
+   This is the standard 6k±1 optimization. It's efficient and correct.
+
+   Alternatively, a simpler version:
+   ```python
+   def is_prime(n):
+       if n < 2:
+           return False
+       for i in range(2, int(n**0.5) + 1):
+           if n % i == 0:
+               return False
+       return True
+   ```
+   Both are fine. I'll provide the efficient one since it's standard, but the simple one is also acceptable. I'll stick with the efficient 6k±1 version, or maybe just the simple one for clarity. The prompt says "Reply with only the code." I'll provide a clean, correct implementation.
+
+   Let's go with the optimized version, but I'll make sure it's correct and concise.
+
+   Draft:
+   ```python
+   def is_prime(n):
+       if n <= 1:
+           return False
+       if n <= 3:
+           return True
+       if n % 2 == 0 or n % 3 == 0:
+           return False
+       i = 5
+       while i * i <= n:
+           if n % i == 0 or n % (i + 2) == 0:
+               return False
+           i += 6
+       return True
+   ```
+
+   Check edge cases:
+   - n=0,1 -> False
+   - n=2,3 -> True
+   - n=4 -> 4%2==0 -> False
+   - n=5 -> i=5, 5*5=25>5, loop doesn't run -> True
+   - n=25 -> i=5, 5*5<=25, 25%5==0 -> False
+   - n=49 -> i=5, 5*5<=49, 49%5!=0, 49%7==0 -> False (i+2=7)
+   Works perfectly.
+
+   I'll output just the code as requested.✅
+</think>```python
+def is_prime(n):
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+    i = 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+    return True
+``` [end of text]
+
+
