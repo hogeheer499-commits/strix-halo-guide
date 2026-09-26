@@ -29,6 +29,14 @@ Use the most specific category near the relevant result:
 - First-party Beelink results, community-submitted results, server/API results, MTP/speculative results, and direct `llama-bench` results must remain clearly scoped.
 - Official AMD, Beelink, OEM, or vendor endorsement must not be implied unless it is explicitly documented.
 
+## Current Relationships And Hardware Provenance
+
+As of September 26, 2026: the first-party test system (Beelink GTR9 Pro, 128GB)
+was purchased by the maintainer. No loaned, gifted, sponsored or early-access
+hardware is used for first-party results, and no paid sponsorship or affiliate
+relationship is recorded in this repository. Any future relationship will be
+disclosed here and next to the affected results.
+
 ## Affiliate Link Rules
 
 This repository contains no affiliate links as of September 19, 2026. The public

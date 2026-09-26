@@ -66,10 +66,11 @@ The artifact's parameters include `draft_num_predict 4`, so Ollama enables its
 default MTP drafting for this tag. The 20.42 t/s result is therefore an Ollama
 API plus Ollama-default MTP result, not a no-speculation baseline. The
 same-service 64K run logged `draft-mtp`; the per-run log for the nine 4K warm
-runs was not captured. A matched no-draft control (`qwen3.8:27b-q4_K_M` versus
-`qwen3.8:27b-mtp-q4_K_M` on the same model blob per a 2026-09-25 registry
-check) is queued in
-[`data/current_test_queue.csv`](data/current_test_queue.csv).
+runs was not captured. A matched control on 2026-09-26 (Ollama 0.32.15, same
+blob, same harness, routine background load) measured 12.89 generation t/s
+without drafting (`qwen3.8:27b-q4_K_M`) versus 22.71 t/s with Ollama-default
+MTP (`qwen3.8:27b-mtp-q4_K_M`); see the
+[raw bundle](data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/).
 
 Keep the Strix Halo service environment documented in the main guide,
 including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. The Ollama 0.34.2 (available September 19)

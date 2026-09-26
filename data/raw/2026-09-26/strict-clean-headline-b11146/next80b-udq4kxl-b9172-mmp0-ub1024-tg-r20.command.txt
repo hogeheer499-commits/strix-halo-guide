@@ -1,0 +1,1 @@
+~/llama-cpp-upstream-2026-05-16/build-vulkan/bin/llama-bench -m ~/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf -fa 1 -ngl 999 -mmp 0 -b 2048 -ub 1024 -p 0 -n 128 -r 20

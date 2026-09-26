@@ -1,0 +1,1 @@
+qwen3.8:27b-q4_K_M                                                      25b843619e94    17 GB     About a minute ago    

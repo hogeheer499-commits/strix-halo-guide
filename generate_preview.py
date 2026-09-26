@@ -115,7 +115,7 @@ qwen_subtitle_font = font_bold(23)
 qwen_draw.text((72, 162), qwen_subtitle, fill=DIM, font=qwen_subtitle_font)
 
 qwen_stats = [
-    ("20.4", "t/s", "measured official Ollama"),
+    ("20.4", "t/s", "official Ollama · default MTP"),
     ("50K", "", "exact local retrieval"),
     ("262K", "class", "external corrected route"),
 ]

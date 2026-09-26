@@ -1,0 +1,56 @@
+[
+  {
+    "prompt_tokens": 45,
+    "prompt_tps": 389.7284891525571,
+    "generated_tokens": 128,
+    "generation_tps": 12.895866582588303
+  },
+  {
+    "prompt_tokens": 45,
+    "prompt_tps": 391.4541215769512,
+    "generated_tokens": 128,
+    "generation_tps": 12.90250394257176
+  },
+  {
+    "prompt_tokens": 45,
+    "prompt_tps": 375.2001067235859,
+    "generated_tokens": 128,
+    "generation_tps": 12.88784483920853
+  },
+  {
+    "prompt_tokens": 45,
+    "prompt_tps": 382.8093099224173,
+    "generated_tokens": 128,
+    "generation_tps": 12.886300845391673
+  },
+  {
+    "prompt_tokens": 45,
+    "prompt_tps": 386.9137182408323,
+    "generated_tokens": 128,
+    "generation_tps": 12.884570455096116
+  },
+  {
+    "prompt_tokens": 45,
+    "prompt_tps": 386.1136375336777,
+    "generated_tokens": 128,
+    "generation_tps": 12.870969237277425
+  },
+  {
+    "prompt_tokens": 45,
+    "prompt_tps": 385.85870711609203,
+    "generated_tokens": 128,
+    "generation_tps": 12.887172702310238
+  },
+  {
+    "prompt_tokens": 45,
+    "prompt_tps": 380.6720129936047,
+    "generated_tokens": 128,
+    "generation_tps": 12.870275565671236
+  },
+  {
+    "prompt_tokens": 45,
+    "prompt_tps": 383.18743826424605,
+    "generated_tokens": 128,
+    "generation_tps": 12.896099151658326
+  }
+]

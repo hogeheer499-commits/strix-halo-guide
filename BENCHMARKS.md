@@ -14,6 +14,40 @@ the separately reboot-qualified 60.57 system-service result.
 
 This file is the compact benchmark source-of-truth for numbers already published in the README. It reconciles historical and current measurements so old ROCm, driver, serving, and long-context notes do not contradict the current guide.
 
+## 2026-09-26 strict-clean re-check on llama.cpp b11146
+
+Direct `llama-bench` re-check of the headline rows whose model files are still on
+the Beelink, on the official v0.5.0 release binary (b11146, `7fe450e19`,
+prebuilt Ubuntu Vulkan asset) with same-night controls on the original builds.
+Kernel 7.0.0-31, Mesa/RADV 26.2.3, desktop `performance` profile, DPM `auto`.
+The desktop VM was paused and no Ollama model was loaded; the desktop session,
+Zoom client, browser, remote-access agent and terminal sessions stayed active and
+are recorded. This does **not** change any headline number above or below: the
+host stack differs from every original row, and b11146 is compared with the
+same-night control, not with the original date.
+
+| Headline row | Original pp512 / tg128 | b11146 pp512 / tg128 | Same-night control pp512 / tg128 | Repeats |
+| --- | --- | ---: | ---: | ---: |
+| Qwen3-Coder 30B-A3B UD-Q4_K_XL, b10687 sentinel | 1264.16 / 94.64 (2026-08-30) | 1437.52 / 96.33 | b10687: 1275.67 / 99.39 | 20 |
+| Qwen3-Coder 30B-A3B UD-Q4_K_XL, guide flags | 1320.52 / 96.76 (2026-05-07, b9049) | 1418.26 / 96.30 | b9049: 1243.38 / 96.83 | 20 |
+| Qwen3-Next 80B-A3B UD-Q4_K_XL, b10687 sentinel | 675.76 / 62.09 (2026-08-30) | 865.62 / 62.88 | b10687: 677.88 / 64.31 | 20 |
+| Qwen3-Next 80B-A3B UD-Q4_K_XL, `-ub 1024` | 751.70 / 59.06 (2026-05-16, b9172) | 866.86 / 63.58 | b9172: 696.83 / 60.76 | 20 |
+| gpt-oss-120b MXFP4 | 726.99 / 55.57 (2026-05-07, b9049) | 772.03 / 56.14 | b9049: 651.98 / 55.54 | 3 / 20 |
+| gpt-oss-120b MXFP4, pp65536 | 293.73 (2026-05-07, b9049) | 289.95 | not run | 1 |
+| Qwen3.8-Flash-Next UD-IQ4_XS | 394.73 / 27.16 (2026-08-30) | 508.29 / 28.61 | b10687: 396.56 / 27.83 | 10 |
+
+Read: b11146 raises pp512 by 13-28% over the same-night original build on every
+re-checked model. Decode is mixed and small: 2-3% below the b10687 control on
+Qwen3-Coder and Qwen3-Next, within about 1% of b9049, and above b9172 and the
+b10687 Flash-Next control. The May prefill values did not reproduce on their own
+builds tonight, so the stack change matters as much as the build. Flash-Next ran
+last and filled swap; no correctness smoke was repeated on b11146. Eight
+headline direct rows were not re-run because their artifacts are no longer on the
+host, and the HIP/Vulkan split row was out of scope. Server, MTP and Ollama rows
+were not part of this check.
+
+Evidence: [raw bundle, commands, host snapshots and skipped-row list](data/raw/2026-09-26/strict-clean-headline-b11146/).
+
 ## 2026-08-30 Vulkan Sentinel And Flash-Next Scout
 
 These first-party direct `llama-bench` rows use locally built b10687 (`c841aee`),
@@ -336,7 +370,9 @@ no-draft controls.
 
 | Date | Prompt Tokens | Context | Prompt Eval | Generation | Speculation | Notes |
 |------|---------------|---------|-------------|------------|-------------|-------|
-| 2026-08-15 | 45 | 4096 | 292.49 t/s | **20.42 t/s** | Ollama-default MTP drafting (`draft_num_predict 4`; `draft-mtp` logged in the same-service 64K run; per-run log for the 4K warm runs not captured) | Official `qwen3.8:27b` `Q4_K_M`; 9 warm API repeats, 19.85-20.79 t/s range; requires Ollama 0.32.12 or later. Not a no-draft result; matched no-draft control queued. [Raw evidence](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/) |
+| 2026-08-15 | 45 | 4096 | 292.49 t/s | **20.42 t/s** | Ollama-default MTP drafting (`draft_num_predict 4`; `draft-mtp` logged in the same-service 64K run; per-run log for the 4K warm runs not captured) | Official `qwen3.8:27b` `Q4_K_M`; 9 warm API repeats, 19.85-20.79 t/s range; requires Ollama 0.32.12 or later. Not a no-draft result; matched control in the next two rows. [Raw evidence](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/) |
+| 2026-09-26 | 45 | 4096 | 384.66 t/s | 12.89 t/s | none (`qwen3.8:27b-q4_K_M`, no draft parameter; no `--spec-type` in the runner launch) | Matched control on Ollama 0.32.15, same blob `f5f1dd8920d4`, 9 warm repeats (12.87-12.90); routine background load. [Raw evidence](data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/) |
+| 2026-09-26 | 45 | 4096 | 360.01 t/s | 22.71 t/s | Ollama-default MTP (`draft_num_predict 4`; `--spec-type draft-mtp` logged) | Same run, `qwen3.8:27b-mtp-q4_K_M` (the 2026-08-15 artifact), 9 warm repeats (22.46-22.89); routine background load. [Raw evidence](data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/) |
 
 ### Qwen3.6-35B-A3B, Ollama 0.23.1 and isolated 0.24.0, Vulkan RADV
 

@@ -1,0 +1,1 @@
+qwen3.6:35b-a3b-measured-07d352                                         07d35212591f    23 GB     18 minutes ago            

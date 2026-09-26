@@ -1,0 +1,45 @@
+2026-09-26T04:07:03+02:00 BEGIN
+Domain 'ubuntu-zoom' suspended
+
+2026-09-26T04:07:03+02:00 VM ubuntu-zoom suspended
+AI boost enabled for 120 minutes; the daemon applies it within 15 seconds
+2026-09-26T04:07:34+02:00 START coder-udq4kxl-b11146-p512-n128-r20
+2026-09-26T04:08:23+02:00 END coder-udq4kxl-b11146-p512-n128-r20 rc=0
+2026-09-26T04:08:33+02:00 START coder-udq4kxl-b10687-p512-n128-r20
+2026-09-26T04:09:12+02:00 END coder-udq4kxl-b10687-p512-n128-r20 rc=0
+2026-09-26T04:09:22+02:00 START coder-udq4kxl-b11146-lmnone-guide-r20
+2026-09-26T04:09:59+02:00 END coder-udq4kxl-b11146-lmnone-guide-r20 rc=0
+2026-09-26T04:10:09+02:00 START coder-udq4kxl-b9049-mmp0-guide-r20
+2026-09-26T04:10:50+02:00 END coder-udq4kxl-b9049-mmp0-guide-r20 rc=0
+2026-09-26T04:11:00+02:00 START next80b-udq4kxl-b11146-p512-n128-r20
+2026-09-26T04:12:35+02:00 END next80b-udq4kxl-b11146-p512-n128-r20 rc=0
+2026-09-26T04:12:45+02:00 START next80b-udq4kxl-b10687-p512-n128-r20
+2026-09-26T04:14:19+02:00 END next80b-udq4kxl-b10687-p512-n128-r20 rc=0
+2026-09-26T04:14:29+02:00 START next80b-udq4kxl-b11146-lmnone-ub1024-pp-r20
+2026-09-26T04:15:18+02:00 END next80b-udq4kxl-b11146-lmnone-ub1024-pp-r20 rc=0
+2026-09-26T04:15:28+02:00 START next80b-udq4kxl-b11146-lmnone-ub1024-tg-r20
+2026-09-26T04:16:47+02:00 END next80b-udq4kxl-b11146-lmnone-ub1024-tg-r20 rc=0
+2026-09-26T04:16:57+02:00 START next80b-udq4kxl-b9172-mmp0-ub1024-pp-r20
+2026-09-26T04:17:54+02:00 END next80b-udq4kxl-b9172-mmp0-ub1024-pp-r20 rc=0
+2026-09-26T04:18:04+02:00 START next80b-udq4kxl-b9172-mmp0-ub1024-tg-r20
+2026-09-26T04:19:27+02:00 END next80b-udq4kxl-b9172-mmp0-ub1024-tg-r20 rc=0
+2026-09-26T04:19:37+02:00 START gptoss120b-b11146-lmnone-pp512-r3
+2026-09-26T04:20:32+02:00 END gptoss120b-b11146-lmnone-pp512-r3 rc=0
+2026-09-26T04:20:42+02:00 START gptoss120b-b11146-lmnone-tg128-r20
+2026-09-26T04:22:21+02:00 END gptoss120b-b11146-lmnone-tg128-r20 rc=0
+2026-09-26T04:22:31+02:00 START gptoss120b-b9049-mmp0-pp512-r3
+2026-09-26T04:23:31+02:00 END gptoss120b-b9049-mmp0-pp512-r3 rc=0
+2026-09-26T04:23:41+02:00 START gptoss120b-b9049-mmp0-tg128-r20
+2026-09-26T04:25:22+02:00 END gptoss120b-b9049-mmp0-tg128-r20 rc=0
+2026-09-26T04:25:32+02:00 START gptoss120b-b11146-lmnone-pp65536-r1
+2026-09-26T04:33:56+02:00 END gptoss120b-b11146-lmnone-pp65536-r1 rc=0
+2026-09-26T04:34:06+02:00 MemAvailable before flash-next: 104680244 kB
+2026-09-26T04:34:06+02:00 START flashnext-udiq4xs-b11146-p512-n128-r10
+2026-09-26T04:36:21+02:00 END flashnext-udiq4xs-b11146-p512-n128-r10 rc=0
+2026-09-26T04:36:31+02:00 START flashnext-udiq4xs-b10687-p512-n128-r10
+2026-09-26T04:38:49+02:00 END flashnext-udiq4xs-b10687-p512-n128-r10 rc=0
+Domain 'ubuntu-zoom' resumed
+
+2026-09-26T04:38:59+02:00 VM resumed
+AI boost cleared; the daemon applies the normal profile within 15 seconds
+2026-09-26T04:39:20+02:00 DONE

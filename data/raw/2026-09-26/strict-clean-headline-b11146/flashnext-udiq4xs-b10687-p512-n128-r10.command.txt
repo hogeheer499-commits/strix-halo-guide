@@ -1,0 +1,1 @@
+~/benchmark-tools/llama-b10687-src/build/bin/llama-bench -m ~/models/qwen38-flash-next-ud-iq4xs/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf -fa 1 -ngl 999 -p 512 -n 128 -r 10

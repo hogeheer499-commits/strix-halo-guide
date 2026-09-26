@@ -3,7 +3,10 @@ message: "If you use the setup guidance, benchmark data, or raw evidence from th
 title: "Strix Halo Guide: AMD Ryzen AI MAX+ 395 Local LLM Setup & Benchmarks"
 type: dataset
 authors:
-  - name: "hogeheer499-commits (Strix Halo Guide maintainer)"
+  - given-names: "Jesse"
+    name-particle: "van"
+    family-names: "Dijk"
+    alias: "hogeheer499-commits"
 repository-code: "https://github.com/hogeheer499-commits/strix-halo-guide"
 url: "https://strixhaloguide.com/"
 license: MIT

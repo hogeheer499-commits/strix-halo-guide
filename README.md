@@ -33,12 +33,13 @@ Maintainer credibility is public and reviewable: 15 merged engineering PRs acros
 | Reproducing or contributing benchmarks | [Reproducibility](REPRODUCIBILITY.md), [headline claim index](data/headline_claims.csv), and [benchmark issue](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md) | Exact commands, metadata, raw evidence, caveats, and community credit |
 | Reviewing the project for a vendor or publication | [One-page brief](ONE_PAGE_BRIEF.md), [partnership scope](PARTNERSHIP.md), and [disclosure policy](VENDOR_DISCLOSURE.md) | Which buyer uncertainty the evidence removes and how independence is protected |
 
-**Current evidence state — September 19, 2026:** Qwen3.8 27B is measured through
-the official Ollama route. The August 30 b10687 Vulkan sentinel and Flash-Next
-scout are now indexed with their own stack and caveats; see
+**Current evidence state — September 26, 2026 review:** Qwen3.8 27B is measured through
+the official Ollama route, labelled as Ollama-default MTP drafting; see
+[the active-evidence review](ACTIVE_EVIDENCE_REVIEW_2026-09-26.md). The August 30 b10687 Vulkan sentinel and Flash-Next
+scout are indexed with their own stack and caveats; see
 [the measured update](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout).
-The [September 19 availability check](ROCM_VLLM_BUGWATCH.md#current-upstream-snapshot)
-lists newer candidates, including Ollama 0.34.2, without promoting them. The
+The [September 25 availability check](ROCM_VLLM_BUGWATCH.md#current-upstream-snapshot)
+lists newer candidates, including Ollama 0.34.4 and `llama.cpp` v0.5.0, without promoting them. The
 machine-readable freshness record is [`data/public_state.json`](data/public_state.json).
 
 What you get:
@@ -79,7 +80,7 @@ Halo owners find it; a reproducible result or correction helps even more.
 
 | Question | Current answer |
 | --- | --- |
-| Best beginner route | Ollama with Vulkan/RADV. The fully reboot-qualified general baseline remains 0.31.2; Qwen3.8 is separately measured on 0.32.13. Available Ollama 0.34.2 (September 19 check) still needs the controlled upgrade/reboot matrix; the revised installer itself is not yet fresh-install/upgrade qualified. |
+| Best beginner route | Ollama with Vulkan/RADV. The fully reboot-qualified general baseline remains 0.31.2; Qwen3.8 is separately measured on 0.32.13. Available Ollama 0.34.4 (September 25 check; 0.34.2 passed isolated controls on September 19) still needs the controlled upgrade/reboot matrix; the revised installer itself is not yet fresh-install/upgrade qualified. |
 | Current Qwen3.8 route | Official Qwen3.8 27B `Q4_K_M` measured 292.49 prompt t/s and 20.42 generation t/s through the Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; not a no-draft result); image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed. [Read the route comparison.](QWEN38_STRIX_HALO.md) |
 | Fast direct 30B-class route | Qwen3-Coder 30B-A3B `Q4_K_S` reached 100.99 tg128 on official b9851; it is a speed-first quant, not the balanced default. |
 | Largest direct GGUF tested | DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded as a 90.86GB low-bit artifact and measured 13.27 tg128; capacity proof, not broad quality. |
@@ -97,7 +98,7 @@ For those who want to get running as fast as possible:
 3. **Memory profile:** The recorded 128GB Beelink profile uses `amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0` (see [Step 3.2](#step-32-configure-grub-boot-parameters) for the `cwsr_enable=0` rationale). Do not copy these limits to 64GB/96GB or 192GB systems; follow the scoped manual memory section. Add `amd_iommu=off` only for the optional desktop benchmark profile after reading [Choose the IOMMU policy](#step-12-choose-the-iommu-policy).
 4. **Driver and power policy:** Follow the measured Mesa/RADV route and record the active power manager. Preserve an existing policy by default; `tuned accelerator-performance` is an opt-in reproduction profile, not a universal requirement or guaranteed speedup.
 5. **Ollama:** Install, configure Vulkan backend with `OLLAMA_VULKAN=1`, `OLLAMA_IGPU_ENABLE=1`, and `HIP_VISIBLE_DEVICES=-1`. Without `OLLAMA_IGPU_ENABLE=1`, measured builds can detect the Radeon 8060S and still fall back to CPU-only inference.
-6. **Test:** `ollama run qwen3.6:35b-a3b` -- the measured Ollama 0.31.2 system-service path reached about 60 t/s generation. That row used the tag's earlier manifest `07d35212591f`. Since then the tag points to an MTP build with `draft_num_predict 2` (`35b-a3b-mtp-q4_K_M-20260824`, registry check 2026-09-25) that this guide has not measured; `ollama list` shows which ID you pulled. Exact speed depends on runtime, model, power state, and background load.
+6. **Test:** `ollama run qwen3.6:35b-a3b` -- the measured Ollama 0.31.2 system-service path reached about 60 t/s generation. That row used the tag's earlier manifest `07d35212591f`. Since then the tag points to an MTP build with `draft_num_predict 2` (`35b-a3b-mtp-q4_K_M-20260824`). A matched check on 2026-09-26 found the same performance class plus a small MTP gain ([raw](data/raw/2026-09-26/qwen36-35b-a3b-ollama-03215-manifest-mtp-check/)); `ollama list` shows which ID you pulled. Exact speed depends on runtime, model, power state, and background load.
 
 Use the setup script below for the automated path. The phases later in this README are the manual reference and fallback path if you want to inspect or reproduce each change yourself.
 
@@ -300,7 +301,7 @@ The quickest sanity check after the setup script finishes is:
 ollama run qwen3.6:35b-a3b
 ```
 
-Expect roughly the same performance class as the guide's Ollama Vulkan/RADV rows if your BIOS, kernel parameters, Vulkan ICD, model, quant, and power profile match. The ~60 t/s `qwen3.6:35b-a3b` beginner row used the tag's earlier manifest `07d35212591f`; the tag now points to an unmeasured MTP build (see Quick Start step 6), so check `ollama list` for the ID you pulled.
+Expect roughly the same performance class as the guide's Ollama Vulkan/RADV rows if your BIOS, kernel parameters, Vulkan ICD, model, quant, and power profile match. The ~60 t/s `qwen3.6:35b-a3b` beginner row used the tag's earlier manifest `07d35212591f`; the tag now points to an MTP build that a 2026-09-26 matched check placed in the same performance class (see Quick Start step 6); check `ollama list` for the ID you pulled.
 
 Choose the backend by what you are trying to do:
 

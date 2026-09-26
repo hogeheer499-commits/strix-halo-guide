@@ -1,0 +1,1 @@
+~/llama-cpp-upstream-2026-05-07/build-vulkan/bin/llama-bench -m ~/models/gpt-oss-120b-GGUF/gpt-oss-120b-mxfp4-00001-of-00003.gguf -fa 1 -ngl 999 -mmp 0 -b 2048 -ub 512 -p 512 -n 0 -r 3
