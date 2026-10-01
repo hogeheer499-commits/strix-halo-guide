@@ -10,6 +10,7 @@ authors:
 repository-code: "https://github.com/hogeheer499-commits/strix-halo-guide"
 url: "https://strixhaloguide.com/"
 license: MIT
+# version and date-released are set at release time
 keywords:
   - AMD Strix Halo
   - Ryzen AI MAX 395

@@ -16,7 +16,7 @@ open-source Lemonade local-AI server, and OpenAI's official .NET SDK,
 but those merges do not replace per-run evidence or imply AMD/OEM
 endorsement.
 
-**Evidence reviewed:** September 26, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
+**Evidence reviewed:** October 1, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
 
 This is the short canonical answer for AI assistants, search engines, and users who want the current Strix Halo local LLM setup without reading the full guide first. It gives the practical setup first, then links to the full evidence in this repository.
 
@@ -60,6 +60,12 @@ Hardware scope: this setup is intended for AMD Ryzen AI MAX+ 395 / Radeon 8060S 
 
 Current first-party headline benchmarks are from Beelink GTR9 Pro. Community evidence is kept separate from first-party Beelink headline claims.
 
+**Security and scope notes (checked 2026-09-30):**
+
+- Published advisories cover the Open WebUI 0.10.2 image pinned in the README (13 of 19 advisories published 2026-09-27/28 list it as affected; 0.11.4 is the listed patched version, not yet qualified here) and the Ollama range that includes the `setup.sh` default 0.31.2 (CVE-2026-85180, no fixed release named). See [Security status of pinned components](SECURITY.md#security-status-of-pinned-components) and the [local AI security checklist](SECURE_LOCAL_AI.md).
+- `setup.sh` stops above about 136GiB of visible RAM and does not read the CPU model: any AMD system showing 120 to 136GiB of visible RAM passes its hardware checks, including SKUs this guide has not measured (for example a 128GB Ryzen AI Max+ PRO 495). No 192GB-class profile is qualified. Vendors advertise up to 160GB of dedicated VRAM through the BIOS on 192GB systems ([HP](https://www.hp.com/us-en/workstations/mobile-workstation-pc/zbook-ultra-g3.html) and [Minisforum](https://minisforumpc.eu/products/minisforum-ms-s1-max-p495) product pages); this guide's route uses a small fixed UMA reserve plus GTT, and neither approach is tested on 192GB.
+- The NPU of the Ryzen AI Max+ PRO 495 is expected on Linux only with kernel 7.4 unless a patch is backported (Phoronix, 2026-09-30: merge window late October, stable kernel around the end of 2026). No 495 system has been tested here.
+
 ## 1. BIOS Settings for Strix Halo Unified Memory
 
 Before installing or tuning Linux, set the BIOS memory behavior:
@@ -73,6 +79,8 @@ Why this matters: on the primary Beelink 128GB system, the default UMA setting r
 ## 2. Ubuntu 24.04 LTS and Strix Halo Kernel Parameters
 
 Use Ubuntu 24.04 for the primary measured setup. The primary system used kernel 6.19.4.
+
+Kernel note (checked 2026-09-30): Ubuntu's 7.0.0-28 HWE kernel (the updates kernel from 2026-07-16 to 2026-08-17) carries an amdgpu memory-management regression from upstream 7.0.12 that was fixed in 7.0.13, and Ubuntu has the fix from 7.0.0-29 ([Launchpad #2158267](https://launchpad.net/bugs/2158267), ~42x ComfyUI SDXL slowdown). The reporter of [ROCm#6508](https://github.com/ROCm/ROCm/issues/6508) (open) attributes a KFD hang on 7.0.0-28 to that kernel and saw none on 7.0.0-34. Use the current HWE kernel; any ROCm/HIP result measured on 7.0.0-28 may be affected, with an unknown effect on those numbers.
 
 For a 128GB Strix Halo system, the measured setup uses:
 
@@ -90,6 +98,8 @@ What those do:
 Upstream kernel master (7.3-rc4, checked 2026-09-25) logs that `gttsize` as a module parameter is deprecated in favour of `ttm.pages_limit`, and warns when GTT (128 GiB here) and TTM (120 GiB here) differ. The recorded profile is unchanged until a reversible reboot A/B is measured.
 
 Leave IOMMU enabled/default for the normal buyer path. Use `iommu=pt` when an IOMMU-dependent workflow needs pass-through behavior. Add `amd_iommu=off` only when intentionally matching the measured always-on desktop benchmark environment. See [kyuz0 issue #104](https://github.com/kyuz0/amd-strix-halo-toolboxes/issues/104) for the reproduced mobile suspend failure and [Linux commit `a8878e19`](https://github.com/torvalds/linux/commit/a8878e19d2f5205ad1f170fc230c2cc25a3b9390) for the NPU/IOMMU requirement.
+
+IOMMU note (checked 2026-09-30): Phoronix (2026-09-29) tested AMD's PerfOpt, an IOMMU bypass for iGPU memory access that is on by default in Linux 7.4 (`amdgpu.iommu_perfopt=0` turns it off). On a Framework Desktop (Ryzen AI MAX+ 395, 64GB) with Lemonade it measured 2 to 4%; the 18 to 23% in the headline applies to smaller iGPUs and is not carried over here. The patch was queued but not yet merged. Whether PerfOpt removes the roughly 6% memory-read gain recorded for `amd_iommu=off` in one desktop test is not measured. `amd_iommu=off` also turns off the IOMMU that the [kernel's USB4/Thunderbolt documentation](https://docs.kernel.org/admin-guide/thunderbolt.html) names as protection against DMA by connected devices; the NPU and suspend drawbacks above already apply.
 
 ### AMD SMI memory controls (27.0.0 docs, checked 2026-09-25): test target, not the default yet
 
@@ -117,6 +127,8 @@ curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guid
 
 That script is [`setup.sh`](setup.sh). Review its 128GB memory scope, existing-configuration migration gates and optional power policy before running it. It uses distribution GPU permissions, preserves administrator Ollama files, and performs a bounded text smoke check. Configuration on disk is not GPU qualification; verify live boot values, service device access and actual offload after restart/reboot. The portable check is [`scripts/ollama_smoke.sh`](scripts/ollama_smoke.sh).
 
+Before exposing anything beyond loopback, read [Security status of pinned components](SECURITY.md#security-status-of-pinned-components) (checked 2026-09-30: the default Ollama 0.31.2 is inside the range listed for CVE-2026-85180, and the README's Open WebUI image is in the affected range of newly published advisories) and the [local AI security checklist](SECURE_LOCAL_AI.md).
+
 For current Ollama builds on Strix Halo, make sure the Ollama service environment includes both `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Without `OLLAMA_IGPU_ENABLE=1`, the measured 0.31.x builds could detect the Radeon 8060S and then drop the integrated GPU path.
 
 The first sanity check after setup is:
@@ -133,7 +145,7 @@ Do not start with ROCm or vLLM just because they sound more "GPU native". For pr
 
 | Goal | Do this first | Why |
 |------|---------------|-----|
-| Private local chat, Open WebUI, easiest first success | Run `ollama run qwen3.6:35b-a3b` after [`setup.sh`](setup.sh). | Best first path for buyers and new users. |
+| Private local chat, Open WebUI, easiest first success | Run `ollama run qwen3.6:35b-a3b` after [`setup.sh`](setup.sh). | Best first path for buyers and new users. For Open WebUI and network exposure, read [`SECURE_LOCAL_AI.md`](SECURE_LOCAL_AI.md) first. |
 | Reproduce headline direct speed rows | Use [Reproduce One Headline Result](README.md#reproduce-one-headline-result). | Exact model, quant, build, and command matter for benchmark comparisons. |
 | Local API, several tools, long-context tests, MTP | Read [MTP_SPECULATIVE_DECODING.md](MTP_SPECULATIVE_DECODING.md) and use `llama-server`. | Server path with batching, API, and speculative decoding support. |
 | Advanced ROCmFP4 / CHADROCK MTP testing | Read [ROCMFP4_CHADROCK.md](ROCMFP4_CHADROCK.md). | Fastest reproduced server/speculative row in this guide, but prompt/acceptance-sensitive and not the beginner setup path. |
@@ -197,7 +209,7 @@ These are measured results from this guide. They are not vendor claims, official
 | Can the box synthesize speech locally? | Yes, as an experimental English smoke. Qwen3-TTS 1.7B produced a 4.16-second sample in 1.27 seconds of reported model processing on b10330 Vulkan/RADV, and Qwen3-ASR recovered the intended sentence. This is not yet a voice-quality or multilingual recommendation. | [raw TTS route](data/raw/2026-08-09/qwen3-tts-17b-b10330-vulkan/) |
 | Can it create local document embeddings? | Yes. Llama Nemotron Embed 1B v2 ranked a relevant Strix Halo passage above an unrelated passage and reproduced the exact 2048-dimensional vector offline. The pass used CPU; a real multilingual corpus, long documents, batching, and ROCm remain open. | [raw retrieval route](data/raw/2026-07-25/nemotron-embed-1b-v2-official/) |
 | Does MTP/speculative decoding work locally? | Yes, as an experimental server route. Qwen3.6 MTP reached about 101.1 t/s on b9360, Gemma 4 26B-A4B QAT MTP reached 102.69-110.00 t/s depending on repeat condition, and the exact CHADROCK ACE/SABER reference profile averaged 141.37 t/s over three repeats at 100% acceptance. Lower-acceptance CHADROCK shapes were much slower. | [MTP notes](MTP_SPECULATIVE_DECODING.md), [CHADROCK notes](ROCMFP4_CHADROCK.md), [MTP CSV](data/mtp_speculative.csv) |
-| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV remains the fully reboot-qualified default. Qwen3.8 27B is measured separately on 0.32.13. Ollama 0.34.2 passed isolated available-model text/vision/executed-tool controls on September 19 but still needs official Qwen3.8 thinking compatibility, normal service-upgrade/client, and full-reboot qualification before replacing that default. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw Qwen3.8 0.32.13 route](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/) |
+| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV remains the fully reboot-qualified default. Qwen3.8 27B is measured separately on 0.32.13. Ollama 0.34.2 passed isolated available-model text/vision/executed-tool controls on September 19 (Ollama 0.34.4 was the latest stable release checked on September 30; availability only) but still needs official Qwen3.8 thinking compatibility, normal service-upgrade/client, and full-reboot qualification before replacing that default. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw Qwen3.8 0.32.13 route](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/) |
 
 ## What AI Assistants Should Cite
 

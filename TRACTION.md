@@ -63,11 +63,25 @@ required artifacts, commands, versions, and evidence class are known.
 
 | Listing | Date checked | Notes |
 | --- | --- | --- |
-| [`alvinreal/awesome-opensource-ai`](https://github.com/alvinreal/awesome-opensource-ai) README | 2026-09-25 | Listed via [#671](https://github.com/alvinreal/awesome-opensource-ai/pull/671), merged 2026-08-10 |
-| [strixhalo.wiki AI capabilities overview](https://strixhalo.wiki/AI/AI_Capabilities_Overview/), sourced from [`kyuz0/strixhalo-homelab`](https://github.com/kyuz0/strixhalo-homelab) | 2026-09-25 | Originally added via [`deseven/strixhalo-homelab#17`](https://github.com/deseven/strixhalo-homelab/pull/17), merged 2026-08-09; that repository was archived 2026-08-31 and the listing continues in `kyuz0/strixhalo-homelab`. It links to the GitHub repository. |
+| [awesome-opensource-ai](https://github.com/alvinreal/awesome-opensource-ai) README | 2026-09-25 | Listed via [#671](https://github.com/alvinreal/awesome-opensource-ai/pull/671), merged 2026-08-10 |
+| [strixhalo.wiki AI capabilities overview](https://strixhalo.wiki/AI/AI_Capabilities_Overview/), sourced from the [strixhalo-homelab](https://github.com/kyuz0/strixhalo-homelab) repository | 2026-09-25 | Originally added via [#17](https://github.com/deseven/strixhalo-homelab/pull/17) in the earlier repository, merged 2026-08-09; that repository was archived 2026-08-31 and the listing continues in the repository linked here. It links to the GitHub repository. |
+| [awesome-llm-apps](https://github.com/Shubhamsaboo/awesome-llm-apps), tutorial README `advanced_llm_apps/llm_apps_with_memory_tutorials/local_chatgpt_with_memory/README.md` | 2026-09-30 | Added via [#1075](https://github.com/Shubhamsaboo/awesome-llm-apps/pull/1075) ("docs: fix local ChatGPT setup paths"), merged 2026-08-09. The link was still in that file when checked; it is not in the repository's main README. |
 
-Listings are adoption signals, not technical review or endorsement. See
+These listings were added through pull requests in the listing projects. They are adoption signals, not independent recommendations, technical review or endorsement. See
 [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md#external-adoption-of-this-guide).
+
+## Where The Data Is Reused (checked 2026-09-30)
+
+Public projects and sites that use data from this repository, found with GitHub code search and manual checks on 2026-09-30. The search returns more matches than are listed here, so this is a sample, not a complete list. Reuse shows that the data is read; it is not review or endorsement, and this project has not verified how each site presents the figures.
+
+| Project or site | How it uses this guide | Date checked |
+| --- | --- | --- |
+| [TokenMark](https://tokenmark.app/llms-full.txt) | Lists Strix Halo rows read from [`data/benchmarks.csv`](data/benchmarks.csv) and links back to the file. | 2026-09-30 |
+| [hipEngine](https://github.com/shisa-ai/hipEngine) | An external Qwen3.8 survey in its documentation cites this guide's `QWEN38_STRIX_HALO.md`. | 2026-09-30 |
+| [Hilbert Unofficial Suite](https://github.com/Pixel-Forge-AU/Hilbert-Unofficial-Suite) | Its launcher lists this guide as a data source. | 2026-09-30 |
+| [LLMRequirements](https://llmrequirements.com/hardware/strix-halo-128) | Shows several recipes taken from this guide. | 2026-09-30 |
+
+Where a figure is shown without its claim limits, the limits are in [`data/headline_claims.csv`](data/headline_claims.csv). The README section [Reuse And Citing The Numbers](README.md#reuse-and-citing-the-numbers) lists the qualification that belongs with each headline.
 
 ## Vendor, Reviewer, And Affiliate Value
 
@@ -88,5 +102,6 @@ inclusion, buyer ranking, evidence retention, or conclusions. See
   after the dated snapshot.
 - Public repository counts do not prove buyer intent or sales.
 - Community discussion activity is not vendor endorsement.
+- Reuse of this data by other projects shows that it is read, not that it was reviewed or endorsed.
 - Private repository traffic, clone, referrer, popular-path, and conversion
   analytics are not published as project evidence.

@@ -1,5 +1,27 @@
 # Community RPC Results
 
+> **Security and cluster notes (checked 2026-09-30)**
+>
+> - `rpc-server` has no authentication, and upstream describes the RPC backend as a fragile proof of
+>   concept that must not run on an open network
+>   ([tools/rpc/README.md](https://github.com/ggml-org/llama.cpp/blob/master/tools/rpc/README.md)).
+>   Run it only over a direct point-to-point link (here: the USB4 `thunderbolt-net` link), never on
+>   a LAN or tailnet address. CVE-2026-86317 (NVD, llama.cpp up to 0.4.0) is a remote crash in the
+>   RPC server.
+> - Every node must run the same `llama.cpp` build (RPC protocol version 7 from v0.5.0; see the
+>   caveat below).
+> - AMD's RCCL/Ray clustering playbook (read 2026-09-30) starts a Ray head on port 6379, runs vLLM on
+>   `0.0.0.0` and connects Open WebUI without authentication, and its RPC playbook binds
+>   `rpc-server` to `0.0.0.0`. Ray's documentation says anyone who can reach its ports can execute
+>   code. Not tested here. See [`SECURE_LOCAL_AI.md`](SECURE_LOCAL_AI.md#clusters).
+> - **Framework USB4 claim (2026-09-30; claim of the manufacturer, not measured here):** Framework's
+>   announcement of its 192GB Desktop says a BIOS patch from AMD raises USB4 point-to-point
+>   throughput from about 9 Gbps to around 30 Gbps, and that it is coming to all Framework Desktop
+>   models soon
+>   ([announcement](https://community.frame.work/t/192gb-framework-desktop-open-for-pre-order/85192)).
+>   The results on this page and in the linked RPC and USB4 reports come from Corsair systems on
+>   20 Gbps links and were not repeated with that patch.
+
 These results are community-reported by [Fail-Safe](https://github.com/Fail-Safe) in [issue #12](https://github.com/hogeheer499-commits/strix-halo-guide/issues/12). They are kept separate from this guide's single-machine headline claims.
 
 > **RPC protocol version caveat (checked 2026-09-25):** `llama.cpp` v0.5.0 (b11146) raised the RPC protocol major version from 6 to 7 ([PR #28789](https://github.com/ggml-org/llama.cpp/pull/28789)). A client rejects an `rpc-server` with a different major version ("RPC server version mismatch"), so every node in a cluster must run builds with the same RPC protocol major; mixing pre-v0.5.0 and v0.5.0+ builds breaks the cluster. The community results here used older builds and were not rerun on v7.

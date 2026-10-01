@@ -4,6 +4,34 @@ Reviewed September 13, 2026. These notes correct or qualify authored interpretat
 while retaining original contributor submissions, model-card snapshots, filenames
 and raw measurements. They do not claim new hardware validation.
 
+## Qwen3.8 20.42 t/s Was An Ollama-Default MTP Result (label corrected 2026-09-26; recorded 2026-10-01)
+
+The first-party Qwen3.8 27B result of 2026-08-15 (292.49 prompt and 20.42
+generation t/s, official `qwen3.8:27b` through Ollama 0.32.13) was first published
+with speculation `none`. That label was wrong until the review of 2026-09-26. The
+artifact's parameters include `draft_num_predict 4`, so Ollama enabled its default
+MTP drafting, and the same-service 64K run logged `--spec-type draft-mtp`. The
+per-run log for the nine 4K warm repeats was not captured, and the benchmark
+script passes no draft override. The numbers did not change; only the label did.
+
+A matched control on Ollama 0.32.15 (2026-09-26, same model blob, same harness,
+routine background load) measured 12.89 generation t/s without drafting
+(`qwen3.8:27b-q4_K_M`) versus 22.71 t/s with default MTP
+(`qwen3.8:27b-mtp-q4_K_M`). The 20.42 value and the 12.89/22.71 pair are
+different runs (Ollama 0.32.13 versus 0.32.15) and are not one ratio. The text
+produced with MTP differed from the no-draft text at temperature 0, so output
+equality is not established. Evidence: the
+[2026-09-26 matched pair](data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/),
+the [2026-08-15 run](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/),
+[`data/mtp_speculative.csv`](data/mtp_speculative.csv) and the new `speculation`
+column in [`data/benchmarks.csv`](data/benchmarks.csv).
+
+Texts written before the correction, such as the v3.0.0 release notes
+(2026-08-25) and GitHub Discussion #32, still presented 20.42 as the plain Ollama
+route when checked on 2026-09-30; repository commits do not change them, so read
+them together with this note. Copies of the figure made before 2026-09-26 may
+carry the original label.
+
 ## Ollama 0.32.3 Response-Hash Match
 
 The [July 25 buyer qualification](data/raw/2026-07-25/ollama-0.32.3-buyer-qualification/)

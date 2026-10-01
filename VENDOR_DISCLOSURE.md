@@ -37,6 +37,37 @@ hardware is used for first-party results, and no paid sponsorship or affiliate
 relationship is recorded in this repository. Any future relationship will be
 disclosed here and next to the affected results.
 
+## How We Work With Vendors
+
+- **Independence.** A vendor relationship, a payment, a loaned unit or early
+  access does not change how a result is measured or what it concludes. The
+  disclosure categories above apply to every relationship.
+- **Hardware provenance.** The first-party test system (Beelink GTR9 Pro,
+  128GB) was purchased by the maintainer (statement as of 2026-09-26, see
+  above). Results from other systems are community results and are labeled as
+  such.
+- **Reporting a factual error.** A vendor, or anyone else, can report a factual
+  error about a product or a claim by email to the maintainer (address in
+  [`SERVICES.md`](SERVICES.md#how-to-request-a-scope)) or, for a technical
+  correction that can be public, with the
+  [bug report template](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=bug-report.md).
+  Name the page and the claim, what is wrong, and the primary source (a vendor
+  document, a firmware version, or a measurement with its command).
+- **What happens next.** A confirmed factual error is corrected, with a dated
+  entry in [`EVIDENCE_CORRECTIONS.md`](EVIDENCE_CORRECTIONS.md); no fixed
+  turnaround is promised. A claim that cannot be
+  checked is labeled "not measured here" or "claim of a third party" instead of
+  being removed or silently changed.
+- **A vendor response is kept apart.** If a vendor response is published, it is
+  recorded apart from the guide's own measurements, labeled as a vendor
+  statement and dated. It does not replace a measurement.
+- **Negative results stay.** Accurate negative results remain published, also
+  after a vendor response or a firmware fix. A later result that supersedes
+  them is added with its own date and the earlier one is kept.
+- **Review is limited to facts.** A vendor may be asked to check a draft for
+  factual accuracy; that is disclosed in the report (see the template below).
+  A vendor does not edit or approve conclusions.
+
 ## Affiliate Link Rules
 
 This repository contains no affiliate links as of September 19, 2026. The public

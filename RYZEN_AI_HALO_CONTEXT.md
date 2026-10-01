@@ -1,5 +1,7 @@
 # AMD Ryzen AI Halo Context
 
+**Status:** the AMD launch statements below date from July 2026 and are vendor statements, not measurements. The section [Validated Versions: Reference Platform Versus Retail Systems](#validated-versions-reference-platform-versus-retail-systems) was checked on 2026-09-30 and 2026-10-01; the rest of this page has not been re-checked since July 2026.
+
 This page explains how AMD's public Ryzen AI Halo / Ryzen AI Developer Platform direction relates to this independent Strix Halo local-AI guide. AMD launched the Ryzen AI Halo Developer Platform publicly in July 2026 and positions it as a preconfigured local-AI development system with 128GB unified memory, AMD-curated playbooks, and support for models up to 200B parameters.
 
 It is not a benchmark page and it is not an AMD endorsement. Use it as platform context: AMD is publicly positioning Ryzen AI Halo-class hardware for local AI and developer workflows, while this repository documents the practical setup, benchmark evidence, failures, caveats, and community reproductions needed to make that hardware less confusing for buyers.
@@ -39,7 +41,13 @@ Keep these two evidence types separate:
 | Official AMD Playbooks and preinstalled applications | Reproduction notes showing whether equivalent workflows work on retail systems |
 | AMD platform performance and capacity claims | First-party Beelink and separately labeled community benchmark evidence |
 
-The highest-value follow-up is a compatibility matrix that runs selected AMD Playbooks on retail Strix Halo systems and records whether each workflow works unchanged, needs an OEM-specific adjustment, or remains blocked. That turns official platform guidance into practical cross-OEM buyer evidence without implying AMD or OEM endorsement.
+The highest-value follow-up is a compatibility matrix that runs selected AMD Playbooks on retail Strix Halo systems and records whether each workflow works unchanged, needs an OEM-specific adjustment, or remains blocked. That turns official platform guidance into practical cross-OEM buyer evidence without implying AMD or OEM endorsement. It is listed in [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md) and has not been started.
+
+## Validated Versions: Reference Platform Versus Retail Systems
+
+AMD's playbooks repository records validated software versions per hardware category (`reference`, `apu`, `gpu`) in [`playbooks/dependency-versions.json`](https://github.com/amd/playbooks/blob/main/playbooks/dependency-versions.json) (file read 2026-09-30). In that file ROCm 10.0.0 and PyTorch 2.13 are listed for the `apu` category as well as for the reference platform. The Linux driver for `apu` is listed as the latest inbox driver. Several applications are pinned on the reference platform only, for example Lemonade 11.8 and vLLM 0.27, and are listed as `Latest` elsewhere; the file says that CI tests the current release there.
+
+Whether a retail Ryzen AI Max+ system falls under AMD's `apu` category is not verified here, and this guide has not run these playbooks on a retail system (not measured here). AMD's [Ryzen AI Halo product page](https://www.amd.com/en/products/processors/desktops/ryzen/ryzen-ai-halo.html) lists a Halo configuration with the Ryzen AI Max+ PRO 495 and 192GB memory support as "coming soon" (checked 2026-10-01). This guide has no measurement of any Ryzen AI Max PRO 400 Series system.
 
 ## How This Guide Fits
 
@@ -53,7 +61,7 @@ The guide turns the general "Ryzen AI Halo can run local AI" story into reproduc
 | What can one 128GB-class system run? | [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`BENCHMARKS.md`](BENCHMARKS.md) |
 | What differs across OEM systems? | [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md), [`USB4_CLUSTER_TUNING.md`](USB4_CLUSTER_TUNING.md) |
 | What is still experimental? | [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md), [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md), [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md) |
-| What should vendors improve or clarify? | [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md), [`VENDOR_OUTREACH_PLAN.md`](VENDOR_OUTREACH_PLAN.md), [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md) |
+| What should vendors improve or clarify? | [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md), [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md), [how this guide works with vendors](VENDOR_DISCLOSURE.md#how-we-work-with-vendors) |
 
 The adoption value is simple: a buyer who can copy a working setup, inspect raw benchmark evidence, and understand caveats is more likely to trust, keep, and recommend the hardware.
 

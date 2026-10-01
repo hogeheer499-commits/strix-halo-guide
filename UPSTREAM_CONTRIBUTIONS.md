@@ -84,14 +84,15 @@ source-of-truth links.
 
 ## External Adoption Of This Guide
 
-These are not engineering contributions. They are public signals that other
-maintainers chose to list this guide:
+These are not engineering contributions. These listings were added through pull
+requests in the listing projects; they are public adoption signals, not
+independent recommendations:
 
 | Project | Accepted listing |
 |---|---|
-| `alvinreal/awesome-opensource-ai` | [`#671 Add AMD Strix Halo local LLM guide`](https://github.com/alvinreal/awesome-opensource-ai/pull/671), merged 2026-08-10 |
-| `deseven/strixhalo-homelab` (strixhalo.wiki source) | [`#17 docs: add reproducible Strix Halo LLM guide`](https://github.com/deseven/strixhalo-homelab/pull/17), merged 2026-08-09. Repository archived 2026-08-31; the listing continues in [`kyuz0/strixhalo-homelab`](https://github.com/kyuz0/strixhalo-homelab) and on [strixhalo.wiki](https://strixhalo.wiki/AI/AI_Capabilities_Overview/) (checked 2026-09-25). |
-| `Shubhamsaboo/awesome-llm-apps` | [`#1075 docs: fix local ChatGPT setup paths`](https://github.com/Shubhamsaboo/awesome-llm-apps/pull/1075), merged 2026-08-09 (documentation fix) |
+| `awesome-opensource-ai` | [`#671 Add AMD Strix Halo local LLM guide`](https://github.com/alvinreal/awesome-opensource-ai/pull/671), merged 2026-08-10 |
+| `strixhalo-homelab` (earlier repository, strixhalo.wiki source) | [`#17 docs: add reproducible Strix Halo LLM guide`](https://github.com/deseven/strixhalo-homelab/pull/17), merged 2026-08-09. Repository archived 2026-08-31; the listing continues in [`strixhalo-homelab`](https://github.com/kyuz0/strixhalo-homelab) and on [strixhalo.wiki](https://strixhalo.wiki/AI/AI_Capabilities_Overview/) (checked 2026-09-25). |
+| `awesome-llm-apps` | [`#1075 docs: fix local ChatGPT setup paths`](https://github.com/Shubhamsaboo/awesome-llm-apps/pull/1075), merged 2026-08-09 (documentation fix) |
 
 ## Honest Boundaries
 

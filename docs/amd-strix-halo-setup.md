@@ -6,7 +6,7 @@ permalink: /amd-strix-halo-setup/
 canonical_url: "https://strixhaloguide.com/amd-strix-halo-setup/"
 sitemap: false
 date: "2026-08-14T00:00:00+02:00"
-last_modified_at: "2026-09-19T00:00:00+02:00"
+last_modified_at: "2026-10-01T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo Local LLM Guide with direct, server, and unified-memory evidence highlights"
 seo:
   type: "TechArticle"
-  date_modified: "2026-09-19T00:00:00+02:00"
+  date_modified: "2026-10-01T00:00:00+02:00"
 ---
 
 # AMD Strix Halo Setup: BIOS, UMA, IOMMU, Ubuntu and Local LLMs
@@ -39,7 +39,7 @@ It targets Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems with 96GB or
 Pro; BIOS labels, firmware, cooling and power modes can differ on other OEM
 systems.
 
-**Setup reviewed:** September 26, 2026. Exact benchmark claims remain canonical in
+**Setup reviewed:** October 1, 2026. Exact benchmark claims remain canonical in
 the repository's structured data and raw evidence.
 
 The setup script preserves administrator Ollama drop-ins and stops on unresolved
@@ -97,9 +97,43 @@ For a normal retail AMD Strix Halo local-AI setup:
    benchmarks and to the documented ROCm or server routes only when the
    workload requires them.
 
+**192GB-class and PRO 495 systems (checked 2026-09-30).** `setup.sh` stops above
+about 136GiB of visible RAM, and no 192GB-class profile is qualified here. Vendors
+advertise up to 160GB of dedicated VRAM through the BIOS for their 192GB systems
+(for example the
+[HP ZBook Ultra G3a page](https://www.hp.com/us-en/workstations/mobile-workstation-pc/zbook-ultra-g3.html)
+and the [Minisforum MS-S1 MAX page](https://minisforumpc.eu/products/minisforum-ms-s1-max-p495));
+this guide's route uses a small fixed UMA reserve plus GTT. Neither approach has
+been tested on 192GB here. On Linux the NPU of the Ryzen AI Max+ PRO 495 is
+expected only with kernel 7.4 unless a patch is backported (Phoronix,
+2026-09-30: the XDNA driver patch targets 7.4, with its merge window in late
+October and a stable kernel around the end of 2026; a backport is possible but
+uncertain). No 495 system has been tested here.
+
 Do not treat `amd_iommu=off` as a universal recommendation. It is an optional
 always-on desktop benchmark profile used by some measured first-party runs; it
 disables NPU access and can break mobile suspend.
+
+**IOMMU notes (checked 2026-09-30).** Phoronix (2026-09-29) tested AMD's PerfOpt,
+an IOMMU bypass for iGPU memory access that is on by default in Linux 7.4 and can
+be turned off with `amdgpu.iommu_perfopt=0`. On a Framework Desktop (Ryzen AI
+MAX+ 395, 64GB) with Lemonade it measured 2 to 4%; the 18 to 23% in its headline
+applies to smaller iGPUs and should not be carried over to Strix Halo. The patch
+was queued but not yet merged. Whether PerfOpt removes the roughly 6% memory-read
+gain recorded here for `amd_iommu=off` in one desktop test is not measured.
+Separately, `amd_iommu=off` also turns off the IOMMU that the kernel's USB4 and
+Thunderbolt documentation names as the protection against DMA by connected
+devices ([kernel docs](https://docs.kernel.org/admin-guide/thunderbolt.html)).
+
+**Kernel (checked 2026-09-30).** Ubuntu's 7.0.0-28 HWE kernel (the updates kernel
+from 2026-07-16 to 2026-08-17) carries an amdgpu memory-management regression from
+upstream 7.0.12 that was fixed in 7.0.13; Ubuntu has the fix from 7.0.0-29
+([Launchpad #2158267](https://launchpad.net/bugs/2158267) reports a roughly 42x
+ComfyUI SDXL slowdown; 7.0.0-34 was in noble-updates on 2026-09-22). The reporter
+of [ROCm#6508](https://github.com/ROCm/ROCm/issues/6508) (open) attributes a KFD
+hang on 7.0.0-28 to that kernel and saw none on 7.0.0-34. Use the current HWE
+kernel. Any ROCm/HIP result in this guide that was measured on 7.0.0-28 may be
+affected; the effect on those numbers is unknown.
 
 ## Which Configuration Should I Use?
 
@@ -137,7 +171,10 @@ This clones the unpinned `main` branch, which has not been fresh-install
 qualified on hardware. For a reproducible run, review the script and pin it with
 `git checkout <tag-or-commit>` before `bash setup.sh`. The script stops on
 anything other than Ubuntu 24.04 unless `STRIX_HALO_ALLOW_UNQUALIFIED_OS=1` is
-set, and above about 136GiB visible RAM (no 192GB-class profile is qualified).
+set, and above about 136GiB visible RAM (no 192GB-class profile is qualified). It
+does not read the CPU model: any AMD system that shows 120 to 136GiB of visible
+RAM passes its hardware checks, including SKUs this guide has not measured (for example a 128GB Ryzen
+AI Max+ PRO 495).
 
 If the script changes boot parameters, reboot before running the verification
 benchmark. The first local-chat check is:
@@ -150,6 +187,14 @@ The script configures the measured Linux-side Vulkan/RADV and Ollama path. It
 does not change BIOS settings or install Ubuntu. Read
 [`setup.sh`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/setup.sh)
 before using it on a production system.
+
+**Security (checked 2026-09-30):** a fresh `setup.sh` run installs Ollama 0.31.2,
+a version inside the range listed for CVE-2026-85180 (no fixed release is named),
+and the README's Open WebUI command pins an image that 13 of 19 newly published
+advisories list as affected. Read
+[Security status of pinned components](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#security-status-of-pinned-components)
+and the [local AI security checklist](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURE_LOCAL_AI.md)
+before exposing anything beyond loopback.
 
 ## Choose The Backend By Workload
 
@@ -164,6 +209,11 @@ before using it on a production system.
 There is no single backend that wins every Strix Halo workload. Direct
 `llama-bench`, Ollama API, server, MTP/speculative, concurrency and community
 results are separate claim types in this project.
+
+**Open WebUI (checked 2026-09-30):** the advisories list 0.11.4 as the patched
+version, and one of them (GHSA-vpq8-f445-hcq7) applies while community sharing is
+enabled, which is the default. This guide has not qualified a patched image yet;
+see [Open WebUI in SECURITY.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#open-webui).
 
 ## Frequently Asked Setup Questions
 

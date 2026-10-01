@@ -6,6 +6,8 @@ This run qualifies the official dense Qwen3.8 27B Ollama artifact as a practical
 
 **Erratum (2026-09-26):** this route was first published with speculation `none`. The artifact parameters in [`ollama-show.txt`](ollama-show.txt) include `draft_num_predict 4`, and the same-service 64K run in [`qualification/context_64k_ollama_journal.log`](qualification/context_64k_ollama_journal.log) logged `--spec-type draft-mtp --spec-draft-n-max 4` and `adding speculative implementation 'draft-mtp'`. The 292.49 prompt / 20.42 generation t/s warm result is therefore labelled as Ollama API with Ollama-default MTP drafting; no per-run log was captured for the nine 4K warm runs, and [`benchmark.sh`](benchmark.sh) passes no draft override. It is not a no-draft result. The artifact also reports `requires 0.32.12`. The other files in this folder are unchanged; a matched no-draft control is queued in `data/current_test_queue.csv`.
 
+**Update (2026-10-01):** the matched control was measured on 2026-09-26 on Ollama 0.32.15 (a different Ollama version from this run): 12.89 t/s without drafting versus 22.71 t/s with default MTP; see [the control's raw data](../../2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/). The text above keeps its original wording.
+
 ## Tested Stack
 
 - System: Beelink GTR9 Pro

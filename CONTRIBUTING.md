@@ -73,10 +73,11 @@ Use [Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discus
 
 Include enough detail for someone else to understand why your result matches or differs from the guide:
 
-- device and memory size
+- device and memory size, configured memory speed (`sudo dmidecode -t memory | grep -i "configured memory speed"`) and OS-visible RAM (`free -g`)
 - CPU/GPU name
-- BIOS UMA setting
+- BIOS UMA setting and the active GTT/TTM limits (`cat /sys/module/amdgpu/parameters/gttsize /sys/module/ttm/parameters/pages_limit`)
 - IOMMU setting
+- BIOS version and date (`cat /sys/class/dmi/id/bios_version /sys/class/dmi/id/bios_date`)
 - OS and kernel
 - Mesa/RADV, AMDVLK, ROCm, Ollama, or container version
 - backend and tool build/commit
@@ -84,7 +85,7 @@ Include enough detail for someone else to understand why your result matches or 
 - context length, prompt tokens, generated tokens, repeats, and concurrency
 - exact command
 - raw output, CSV, logs, screenshots, or attachments
-- power profile, clocks, thermals, and background load if known
+- platform profile (`cat /sys/firmware/acpi/platform_profile`) and any other power-profile setting, clocks, thermals, and background load if known
 
 For `llama.cpp` rows, raw `llama-bench -o csv` output is ideal. For server/API rows, include request shape, prompt, generated token count, concurrency, TTFT if measured, and whether streaming was enabled.
 
@@ -102,6 +103,18 @@ For power reports, please include:
 - cooling/fan profile, ambient temperature, and attached displays/peripherals if known
 
 Do not mix APU `PPT` telemetry with wall-power claims. If the source is `amdgpu` PPT, label it as PPT, not total system power.
+
+## Before You Post: What To Redact
+
+Raw logs, CSVs, and screenshots are welcome, but they often contain data that is not needed to reproduce a result. Before you paste or attach them, replace or remove:
+
+- your host name (use `<host>`) and the user name in file paths (use `~` for your home directory);
+- IPv4 and IPv6 addresses (use `<lan-ip>`) and MAC addresses;
+- serial numbers (board, memory, drive, and `dmidecode` output) and license keys;
+- tokens, API keys, passwords, and private URLs;
+- full process lists and `ss`, `netstat`, `docker ps`, or similar dumps. Keep only the benchmark runtime lines and say which background workloads were running.
+
+Keep everything that affects the result: versions, build flags, kernel parameters, clocks, power profile, model hashes, and the exact command. [`data/raw/REDACTION.md`](data/raw/REDACTION.md) shows the replacements used in this repository.
 
 ## How Data Is Used
 
@@ -135,7 +148,7 @@ python3 scripts/validate_repo.py
 python3 -m unittest discover -s tests
 ```
 
-If you cannot run either command, say so in the PR.
+The tests are written for Linux, and CI runs them on Ubuntu. On Windows, run both commands in WSL or on a Linux machine: on native Windows, 6 of the 49 unit tests failed when checked on 2026-10-01 (with `PYTHONUTF8=1`), for platform reasons: process groups, bash scripts, `/etc/os-release`, and path separators. If you cannot run either command, say so in the PR.
 
 ## Style Guidelines
 

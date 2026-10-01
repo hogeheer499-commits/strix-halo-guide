@@ -16,8 +16,9 @@ AMD's public Ryzen AI Halo / Ryzen AI Developer Platform direction makes this ca
 
 ## Proof Already Available
 
-The [September 19 vendor proof summary](VENDOR_PROOF_SUMMARY.md) describes the
-new existing-user qualification, scoped HIP controls, exact-SKU storefront
+The [vendor proof summary](VENDOR_PROOF_SUMMARY.md) (scope: the 2026-09-19
+functional campaign; the 2026-09-26 controls are listed below) describes the
+existing-user qualification, scoped HIP controls, exact-SKU storefront
 comparison and remaining GMKtec retail-evidence gap. These are technical
 outcomes, not measured conversion or support-cost improvements.
 
@@ -75,7 +76,9 @@ The public evidence map currently covers:
 - Beelink owner stacks, a three-system Corsair fleet, several independent GMKtec sources, MS-S1-Max, Nimo, and Minix evidence across Linux, Windows, Vulkan/RADV, ROCm, NPU, MTP, power, thermal, RPC, and large-model capacity routes.
 - **Per-OEM evidence class (as of the 2026-09-19 evidence review; classes from the README [buying-guide table](README.md#buying-guide) and [`SYSTEM_EVIDENCE_MATRIX.md`](SYSTEM_EVIDENCE_MATRIX.md)):** Beelink GTR9 Pro: first-party (plus two community owner systems); GMKtec EVO-X2: community and external-reference, no first-party exact-SKU test; Corsair AI Workstation 300: community (three-system fleet); Nimo AI Mini PC: community; Minisforum MS-S1 MAX: community (Windows LM Studio); Minix Elite ER939: community (Ollama beginner path); Framework Desktop: external-reference rows only; Bosgame, HP and ASUS: none (price snapshots or a warning only); GMKtec EVO-X3: none (does not inherit EVO-X2 evidence).
 
-The normal first-party buyer path includes an Ollama 0.31.2 system-service check at 60.57 t/s with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. Qwen3.8 27B is separately measured on Ollama 0.32.13 at 20.42 generation t/s (Ollama API with Ollama-default MTP drafting, `draft_num_predict 4`) with image, tools, thinking, and exact retrieval through 50,059 prompt tokens. Ollama 0.34.2 passed isolated available-model controls on September 19 but remains an unqualified normal-package/reboot target; community rows remain separated from first-party headline claims.
+The normal first-party buyer path includes an Ollama 0.31.2 system-service check at 60.57 t/s (measured 2026-07-10 on the `qwen3.6:35b-a3b` tag's earlier manifest `07d35212591f`; the current tag is an MTP build, and a matched check on 2026-09-26 found the same performance class) with the Strix Halo iGPU retained, vision working, and service-restart plus full-host-reboot persistence verified. Qwen3.8 27B is separately measured on Ollama 0.32.13 at 20.42 generation t/s (Ollama API with Ollama-default MTP drafting, `draft_num_predict 4`) with image, tools, thinking, and exact retrieval through 50,059 prompt tokens. Ollama 0.34.2 passed isolated available-model controls on 2026-09-19 but remains an unqualified normal-package/reboot target, and later stable releases are not qualified here; community rows remain separated from first-party headline claims.
+
+**Corrections (2026-09-26).** The Qwen3.8 27B result of 20.42 generation t/s is an Ollama-default MTP result (`draft_num_predict 4`), not a no-draft baseline: a matched control on the same Ollama 0.32.15 blob and harness measured 12.89 t/s without drafting and 22.71 t/s with Ollama-default MTP ([`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md), [raw bundle](data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/)). The 60.57 t/s Qwen3.6 row was measured on the tag's earlier manifest; the matched check on the current MTP manifest found the same performance class ([raw bundle](data/raw/2026-09-26/qwen36-35b-a3b-ollama-03215-manifest-mtp-check/)). The Ollama 0.32.3 response-hash match was qualified because seven of nine visible responses were empty strings ([`EVIDENCE_CORRECTIONS.md`](EVIDENCE_CORRECTIONS.md#ollama-0323-response-hash-match)). Both 2026-09-26 controls were routine measurements with a known background workload.
 
 Community corrections and negative results improve the proof layer rather than being hidden: exact artifacts and commands, raw logs, separated claim types, explicit caveats, and corrected routes remain public. See [`COMMUNITY_FEEDBACK.md`](COMMUNITY_FEEDBACK.md).
 
@@ -111,4 +114,4 @@ Maintainer: software engineer; Strix Halo guide maintainer.
 
 For collaboration, service, or partner inquiries, email the maintainer privately at hogeheer499@gmail.com (see [`SERVICE_INTAKE.md`](SERVICE_INTAKE.md) for paid scopes). Do not put confidential material in a public GitHub issue. Public issues and discussions are for technical corrections and benchmark reports only.
 
-TODO: typical turnaround, capacity, and invoicing entity (pending maintainer confirmation).
+The request is reviewed first. Work starts only after the scope, deliverables, schedule, price, confidentiality, publication status, and payment terms are confirmed in writing (see [`SERVICES.md`](SERVICES.md)).

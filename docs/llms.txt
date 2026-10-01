@@ -29,6 +29,11 @@ Model hub web source: https://github.com/hogeheer499-commits/strix-halo-guide/bl
 Best-known profiles: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BEST_KNOWN_PROFILES.md
 Buyer-path validation: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_PATH_VALIDATION.md
 Cross-OEM system evidence matrix: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SYSTEM_EVIDENCE_MATRIX.md
+Securing a local AI box (dated public sources, what is not tested here): https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURE_LOCAL_AI.md
+Storefront snapshot (observations of 2026-09-30, country, currency and tax status per row): https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_SNAPSHOT_2026-10-01.md
+Inference engines (claims of third parties, checked 2026-09-30): https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ENGINES.md
+Windows start (community and vendor sources, not measured here): https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/WINDOWS_START.md
+Laptops, homelab, clusters and extra GPUs (community sources, not measured here): https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/LAPTOPS_AND_HOMELAB.md
 
 ## Machine-readable evidence
 

@@ -10,12 +10,13 @@ assignees: ''
 - **Device:** (e.g., Beelink GTR9 Pro, Corsair AI Workstation 300, Framework Desktop, GMKtec EVO-X2)
 - **CPU/GPU:** (e.g., Ryzen AI MAX+ 395 / Radeon 8060S)
 - **RAM:** (e.g., 128GB LPDDR5X)
+- **BIOS version and date:** `cat /sys/class/dmi/id/bios_version /sys/class/dmi/id/bios_date` output
 - **BIOS UMA setting:**
 - **IOMMU setting:**
 - **OS / kernel:** (`lsb_release -a`, `uname -r`)
 - **Mesa / ROCm / driver stack:**
 - **Backend / build / container:**
-- **Power profile:** (`tuned-adm active`, `powerprofilesctl get`, or equivalent)
+- **Power profile:** (`cat /sys/firmware/acpi/platform_profile`, `tuned-adm active`, `powerprofilesctl get`, or equivalent)
 - **Cooling / fan profile / ambient room temp, if known:**
 
 ## Measurement Method
@@ -50,3 +51,6 @@ paste benchmark output and/or power summary here
 
 ## Notes
 Anything that could affect the result: thermal state, clocks, throttling, plugged-in peripherals, display attached, GUI/no-GUI, container limits, network storage, or meter limitations.
+
+## Before you post
+Remove or replace anything that is not needed to reproduce the result: host name (`<host>`), user name in paths (`~`), IP and MAC addresses (`<lan-ip>`), serial numbers (including `dmidecode` output), tokens and passwords, and full process or port listings (`ps`, `ss`, `docker ps`). Keep versions, flags, clocks, power profile, hashes, and the exact command. See [CONTRIBUTING.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CONTRIBUTING.md#before-you-post-what-to-redact).

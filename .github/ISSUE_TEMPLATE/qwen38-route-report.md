@@ -23,7 +23,8 @@ directly comparable.
 - **Mesa / Vulkan driver or ROCm version:**
 - **Runtime and exact version/commit:**
 - **Backend:** Vulkan/RADV / ROCm/HIP / ROCmFP4 / DFlash / Ollama / other
-- **BIOS UMA / IOMMU / power profile:**
+- **BIOS version and date / BIOS UMA / IOMMU:**
+- **Platform profile (`cat /sys/firmware/acpi/platform_profile`) and power profile:**
 - **Background workload:**
 
 ## Exact Artifacts
@@ -69,3 +70,6 @@ paste raw output or link logs/CSV here
 What does this reproduce, contradict, or leave unresolved? Slower and failed
 routes are valuable. Do not describe one tuned route as universal Strix Halo
 performance.
+
+## Before you post
+Remove or replace anything that is not needed to reproduce the result: host name (`<host>`), user name in paths (`~`), IP and MAC addresses (`<lan-ip>`), serial numbers (including `dmidecode` output), tokens and passwords, and full process or port listings (`ps`, `ss`, `docker ps`). Keep versions, flags, clocks, power profile, hashes, and the exact command. See [CONTRIBUTING.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CONTRIBUTING.md#before-you-post-what-to-redact).

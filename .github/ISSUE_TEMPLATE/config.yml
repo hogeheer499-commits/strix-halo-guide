@@ -9,3 +9,6 @@ contact_links:
   - name: Support the project / paid help
     url: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SUPPORT.md
     about: Ways to support continued testing, plus paid setup help and benchmark scopes.
+  - name: Service or partner inquiry (private email)
+    url: https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SERVICES.md#how-to-request-a-scope
+    about: For paid help, a quote, or a vendor or partner inquiry, email the maintainer privately (the address is in SERVICES.md). Do not post quotes, prices, or confidential material in a public issue.

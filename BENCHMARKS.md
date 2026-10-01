@@ -1,8 +1,8 @@
 # Benchmark Results - Current Snapshot
 
-**Benchmarks reviewed:** September 26, 2026.
+**Benchmarks reviewed:** October 1, 2026.
 
-This is an [active claim/scope review](ACTIVE_EVIDENCE_REVIEW_2026-09-19.md),
+This is an [active claim/scope review](ACTIVE_EVIDENCE_REVIEW_2026-10-01.md),
 not a remeasurement date. Historical runs keep their exact original dates.
 
 September 13 label reconciliation: dated campaign takeaways use “current”,
@@ -14,7 +14,9 @@ the separately reboot-qualified 60.57 system-service result.
 
 This file is the compact benchmark source-of-truth for numbers already published in the README. It reconciles historical and current measurements so old ROCm, driver, serving, and long-context notes do not contradict the current guide.
 
-## 2026-09-26 strict-clean re-check on llama.cpp b11146
+## 2026-09-26 controlled re-check (not a fully idle host) on llama.cpp b11146
+
+Originally published on 2026-09-26 as the "strict-clean re-check"; relabelled on 2026-10-01 (see the 2026-10-01 entry in the README changelog).
 
 Direct `llama-bench` re-check of the headline rows whose model files are still on
 the Beelink, on the official v0.5.0 release binary (b11146, `7fe450e19`,
@@ -22,7 +24,11 @@ prebuilt Ubuntu Vulkan asset) with same-night controls on the original builds.
 Kernel 7.0.0-31, Mesa/RADV 26.2.3, desktop `performance` profile, DPM `auto`.
 The desktop VM was paused and no Ollama model was loaded; the desktop session,
 Zoom client, browser, remote-access agent and terminal sessions stayed active and
-are recorded. This does **not** change any headline number above or below: the
+are recorded, so this is a controlled re-check, not a fully idle host, and it does
+not meet the strict-clean standard of pausing nonessential workloads; the name
+strict-clean is kept for a repeat on an idle host. The raw bundle directory keeps
+its original name (`strict-clean-headline-b11146`). This does **not** change any
+headline number above or below: the
 host stack differs from every original row, and b11146 is compared with the
 same-night control, not with the original date.
 
@@ -362,17 +368,27 @@ Takeaway: the 128GB Strix Halo setup can load and run a 117B-parameter open-weig
 
 ## Ollama Vulkan
 
-### Qwen3.8 27B, Ollama 0.32.13 API With Ollama-Default MTP (API Class)
+### Qwen3.8 27B, Ollama API: Ollama-Default MTP (0.32.13) And Matched No-Draft Control (0.32.15)
 
-This is an API-class row with speculative drafting enabled by the Ollama model
-default. Keep it separate from the direct `llama-bench` rows above and from
-no-draft controls.
+These are API-class rows. Speculative drafting is enabled by the Ollama model
+default except in the no-draft control. Keep them separate from the direct
+`llama-bench` rows above. The 2026-08-15 row and the two 2026-09-26 rows are
+separate runs (Ollama 0.32.13 versus 0.32.15, different dates and background
+load); compare MTP with no-draft only within the 2026-09-26 pair. Machine-readable
+rows: [`data/mtp_speculative.csv`](data/mtp_speculative.csv).
 
 | Date | Prompt Tokens | Context | Prompt Eval | Generation | Speculation | Notes |
 |------|---------------|---------|-------------|------------|-------------|-------|
 | 2026-08-15 | 45 | 4096 | 292.49 t/s | **20.42 t/s** | Ollama-default MTP drafting (`draft_num_predict 4`; `draft-mtp` logged in the same-service 64K run; per-run log for the 4K warm runs not captured) | Official `qwen3.8:27b` `Q4_K_M`; 9 warm API repeats, 19.85-20.79 t/s range; requires Ollama 0.32.12 or later. Not a no-draft result; matched control in the next two rows. [Raw evidence](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/) |
 | 2026-09-26 | 45 | 4096 | 384.66 t/s | 12.89 t/s | none (`qwen3.8:27b-q4_K_M`, no draft parameter; no `--spec-type` in the runner launch) | Matched control on Ollama 0.32.15, same blob `f5f1dd8920d4`, 9 warm repeats (12.87-12.90); routine background load. [Raw evidence](data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/) |
 | 2026-09-26 | 45 | 4096 | 360.01 t/s | 22.71 t/s | Ollama-default MTP (`draft_num_predict 4`; `--spec-type draft-mtp` logged) | Same run, `qwen3.8:27b-mtp-q4_K_M` (the 2026-08-15 artifact), 9 warm repeats (22.46-22.89); routine background load. [Raw evidence](data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/) |
+
+With Ollama-default MTP the generated text differed from the no-draft text at
+temperature 0 (Ollama 0.32.15, 2026-09-26; see the
+[bundle README](data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/README.md)),
+so output equality is not established. In the
+[Qwen3.6 manifest check](data/raw/2026-09-26/qwen36-35b-a3b-ollama-03215-manifest-mtp-check/README.md)
+the MTP output also varied between repeats. Draft acceptance was not captured in either bundle.
 
 ### Qwen3.6-35B-A3B, Ollama 0.23.1 and isolated 0.24.0, Vulkan RADV
 

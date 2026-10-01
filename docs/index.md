@@ -6,7 +6,7 @@ permalink: /
 canonical_url: "https://strixhaloguide.com/"
 sitemap: false
 date: "2026-06-13T22:57:42+02:00"
-last_modified_at: "2026-09-19T00:00:00+02:00"
+last_modified_at: "2026-10-01T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo Local LLM Guide with direct, server, and unified-memory evidence highlights"
 seo:
   type: "TechArticle"
-  date_modified: "2026-09-19T00:00:00+02:00"
+  date_modified: "2026-10-01T00:00:00+02:00"
 ---
 
 # Strix Halo Local LLM Setup for AMD Ryzen AI MAX+ 395
@@ -27,14 +27,14 @@ canonical source for commands, benchmark claims, and raw evidence.
 
 It focuses on Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems, practical local setup, and evidence links for benchmark claims. AMD now uses Ryzen AI Halo for its official developer platform; this guide remains an independent setup and evidence source for the wider Strix Halo hardware category.
 
-**Web guide published:** June 13, 2026. **Evidence reviewed:** September 26, 2026. The raw directories and structured claim indexes remain the source of truth for each individual run.
+**Web guide published:** June 13, 2026. **Evidence reviewed:** October 1, 2026. The raw directories and structured claim indexes remain the source of truth for each individual run.
 
 Start with the [Strix Halo Guide website](https://strixhaloguide.com/) for the
 readable buyer/setup route, then use the
 [full AMD Strix Halo setup and benchmark repository](https://github.com/hogeheer499-commits/strix-halo-guide)
 for canonical evidence.
 
-Deciding which system to buy? Use the [Strix Halo mini PC comparison](https://strixhaloguide.com/best-strix-halo-mini-pc/): measured cross-OEM evidence, 64GB versus 128GB fit guidance, and a documented price history. For the shortest current answer to the BIOS, UMA, IOMMU, Ubuntu and runtime questions, use the [focused AMD Strix Halo setup page](https://strixhaloguide.com/amd-strix-halo-setup/). For the deeper copyable path and caveats, use the [concise Strix Halo local LLM setup](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md).
+Deciding which system to buy? Use the [Strix Halo mini PC comparison](https://strixhaloguide.com/best-strix-halo-mini-pc/): measured cross-OEM evidence, 64GB versus 128GB fit guidance, a dated table of the first 192GB (Ryzen AI Max PRO 495) systems, European buying notes with seller terms and local retailers, and a documented price history. For the shortest current answer to the BIOS, UMA, IOMMU, Ubuntu and runtime questions, use the [focused AMD Strix Halo setup page](https://strixhaloguide.com/amd-strix-halo-setup/). For the deeper copyable path and caveats, use the [concise Strix Halo local LLM setup](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/STRIX_HALO_LOCAL_LLM_SETUP.md).
 
 For the current official dense Qwen route, use [Qwen3.8 27B on Strix Halo](https://strixhaloguide.com/qwen38-strix-halo/): the measured official Ollama path, context boundary, external 262K-class evidence, and why current 52-65 t/s community routes are not directly comparable. For platform terminology and scope, read [AMD Ryzen AI Halo versus retail Strix Halo systems](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/RYZEN_AI_HALO_CONTEXT.md).
 
@@ -112,13 +112,13 @@ These are independent benchmark and setup claims from the repository. They are n
 
 | Question | Current measured answer | Evidence |
 |---|---|---|
-| Current official dense multimodal Qwen route | Qwen3.8 27B `Q4_K_M` through Ollama 0.32.13 measured 292.49 prompt t/s and 20.42 generation t/s over nine warm repeats through the Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; not a no-draft result); image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed. Separate corrected GMKtec evidence reached 261,130 evaluated tokens on a patched HIP route. | [Qwen3.8 route comparison](https://strixhaloguide.com/qwen38-strix-halo/) |
+| Current official dense multimodal Qwen route | Qwen3.8 27B `Q4_K_M` through Ollama 0.32.13 measured 292.49 prompt t/s and 20.42 generation t/s over nine warm repeats through the Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; not a no-draft result). A matched control on Ollama 0.32.15 (2026-09-26, same model blob, routine background load, nine warm repeats) measured 12.89 t/s without drafting versus 22.71 t/s with Ollama-default MTP; these are separate runs from the 20.42 t/s row ([matched rows](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BENCHMARKS.md#ollama-vulkan)). Image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed. Separate corrected GMKtec evidence reached 261,130 evaluated tokens on a patched HIP route. | [Qwen3.8 route comparison](https://strixhaloguide.com/qwen38-strix-halo/) |
 | Fastest direct 30B-class Qwen route measured here | Qwen3-30B-A3B-Instruct-2507 `IQ4_XS` reached 100.04 t/s direct `llama-bench` on b9467, with a b9544 control at 103.18 t/s | [headline claims](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv) |
 | Fastest measured Qwen3-Coder 30B route | Qwen3-Coder 30B-A3B `Q4_K_S` reached 100.99 t/s direct `llama-bench` on the official b9851 Vulkan release binary; the older strict-clean b9179 row remains preserved at 98.51 t/s | [headline claims](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv) |
 | Fastest small-MoE speed scout | LFM2.5 8B-A1B `Q4_K_M` reached 170.02 t/s generation-only, with a b9544 control at 176.48 t/s | [headline claims](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv) |
 | Largest direct GGUF capacity route | DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded as a pinned 90.86GB ordinary GGUF and measured 155.64 pp512 / 13.27 tg128 on official b10034; this is low-bit capacity/basic-correctness evidence, not a speed or broad quality claim | [raw DeepSeek evidence](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-07-16/deepseek-v4-flash-ud-iq2-xxs) |
 | 120B-class GGUF capacity route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS` ran directly at 18.43 t/s, with a b9544 control at 18.93 t/s | [headline claims](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv) |
-| Easiest normal local chat path | Qwen3.6 35B-A3B `Q4_K_M` through the fully reboot-qualified Ollama 0.31.2 system service measured 60.57 t/s warm API generation on Vulkan/RADV. Isolated Ollama 0.32.3 preserved exact text output at 73.13 t/s versus 73.20 t/s on the controlled 0.31.2 binary and passed iGPU vision plus process restart. Ollama 0.34.2 passed isolated available-model controls; normal-service/full-reboot and official Qwen3.8 candidate acceptance remain open. Existing 0.32.15 passed the separate-model text/image/executed-tool and pinned-client route after service restart. | [current model status](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md) |
+| Easiest normal local chat path | Qwen3.6 35B-A3B `Q4_K_M` through the fully reboot-qualified Ollama 0.31.2 system service measured 60.57 t/s warm API generation on Vulkan/RADV. Isolated Ollama 0.32.3 preserved exact text output at 73.13 t/s versus 73.20 t/s on the controlled 0.31.2 binary and passed iGPU vision plus process restart. Ollama 0.34.2 passed isolated available-model controls on September 19, and Ollama 0.34.4 was the latest stable release checked on September 30 (availability only, not qualified); normal-service/full-reboot and official Qwen3.8 candidate acceptance remain open. Existing 0.32.15 passed the separate-model text/image/executed-tool and pinned-client route after service restart. | [current model status](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md) |
 | Experimental MTP/speculative server route | Qwen3.6 MTP reached about 101.1 t/s on b9360; Gemma 4 26B-A4B QAT MTP reached 102.69 t/s cold, 107.42 t/s T3-only, and 110.00 t/s best repeat on ac4cddeb0 | [MTP notes](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MTP_SPECULATIVE_DECODING.md) |
 | Fastest measured advanced server profile | CHADROCK ACE/SABER 35B ROCmFP4 averaged 141.37 t/s over three exact reference-profile repeats at 100% draft acceptance; lower-acceptance prompt shapes were much slower, so this is not direct `llama-bench` or a beginner default | [ROCmFP4/CHADROCK notes](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ROCMFP4_CHADROCK.md) |
 | Frontier-size local agent route | Step 3.7 Flash 198B-total / about 11B-active plus its MTP draft measured 34.50 t/s at 4K and 33.83 t/s at 16K; native tool calling and 256K allocation passed on one 128GB system | [ROCmFP4/CHADROCK notes](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ROCMFP4_CHADROCK.md#step-37-q3-qualityplus-first-party-reproduction) |
@@ -164,7 +164,7 @@ Use these repository files for verification:
 - [Current model and runtime status](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md)
 - [Machine-readable current test queue](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/current_test_queue.csv)
 - [Retail-box buyer-path validation protocol](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_PATH_VALIDATION.md)
-- [Machine-readable AI/search source index](https://hogeheer499-commits.github.io/strix-halo-guide/llms.txt)
+- [Machine-readable AI/search source index](https://strixhaloguide.com/llms.txt)
 - [Multi-user MoE concurrency evidence](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MOE_CONCURRENCY.md)
 - [MTP and speculative decoding evidence](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MTP_SPECULATIVE_DECODING.md)
 - [ROCmFP4 / CHADROCK advanced server evidence](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ROCMFP4_CHADROCK.md)

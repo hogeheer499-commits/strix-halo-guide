@@ -3,7 +3,9 @@
 #
 # Set BENCHMARK_POWER_POLICY=tuned only for a tuned reproduction. Optional
 # BENCHMARK_HEALTH_URLS lists JSON health endpoints. This inventory cannot prove
-# GPU inactivity or strict-clean conditions from process names alone.
+# GPU inactivity or strict-clean conditions from process names alone. It does not
+# record process names, listening ports, or container names: note any known
+# background workload in your own run notes.
 
 set -u
 
@@ -57,6 +59,20 @@ date -Is
 uptime
 free -h
 
+section "Platform"
+for file in /sys/class/dmi/id/bios_version /sys/class/dmi/id/bios_date; do
+  if [ -r "$file" ]; then
+    printf '%s: %s\n' "$(basename "$file")" "$(cat "$file")"
+  else
+    info "$(basename "$file") is not readable on this system"
+  fi
+done
+if [ -r /sys/firmware/acpi/platform_profile ]; then
+  printf 'platform_profile: %s\n' "$(cat /sys/firmware/acpi/platform_profile)"
+else
+  info "platform_profile is not exposed on this system; record the power profile another way"
+fi
+
 section "tuned"
 BENCHMARK_POWER_POLICY="${BENCHMARK_POWER_POLICY:-recorded}"
 if [ "$BENCHMARK_POWER_POLICY" != recorded ] && [ "$BENCHMARK_POWER_POLICY" != tuned ]; then
@@ -73,6 +89,9 @@ else
 fi
 if systemctl is-active --quiet power-profiles-daemon 2>/dev/null; then
   if [ "$BENCHMARK_POWER_POLICY" = tuned ]; then blocker "active power-profiles-daemon conflicts with selected tuned policy"; else info "power-profiles-daemon active; record its profile"; fi
+  if command -v powerprofilesctl >/dev/null 2>&1; then
+    printf 'powerprofilesctl: %s\n' "$(powerprofilesctl get 2>&1)"
+  fi
 else
   info "power-profiles-daemon is inactive"
 fi
@@ -100,18 +119,27 @@ else
   warn "vulkaninfo is not installed"
 fi
 
-section "Known Benchmark Noise"
-if pgrep -i rustdesk >/dev/null; then
-  pgrep -i rustdesk | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
-  warn "RustDesk process present; measure actual CPU/GPU/I/O activity before classifying conditions"
+section "Background Load"
+# Uses the load average, the GPU busy counter, and a VM count; no names are recorded.
+load1="$(cut -d' ' -f1 /proc/loadavg 2>/dev/null || echo 0)"
+if awk -v l1="$load1" 'BEGIN { exit !(l1 >= 1.0) }'; then
+  warn "1-minute load average is $load1; record the background load and measure its CPU, GPU, and I/O activity before classifying conditions"
+else
+  info "1-minute load average is $load1"
 fi
-if pgrep -i 'zoom|ZoomClips' >/dev/null; then
-  pgrep -i 'zoom|ZoomClips' | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
-  warn "Zoom process present; measure actual CPU/GPU/I/O activity before classifying conditions"
-fi
-if command -v virsh >/dev/null 2>&1 && virsh list --state-running --name 2>/dev/null | grep -q .; then
-  virsh list --state-running
-  warn "VMs are present; record their actual load and control them for strict comparisons"
+for file in /sys/class/drm/card*/device/gpu_busy_percent; do
+  [ -e "$file" ] || continue
+  gpu_busy="$(cat "$file" 2>/dev/null || echo 0)"
+  info "GPU busy: ${gpu_busy}%"
+  if [ "$gpu_busy" -gt 5 ] 2>/dev/null; then
+    warn "GPU is busy (${gpu_busy}%) before the run; find out which workload holds it"
+  fi
+done
+if command -v virsh >/dev/null 2>&1; then
+  vm_count="$(virsh list --state-running --name 2>/dev/null | grep -c . || true)"
+  if [ "${vm_count:-0}" -gt 0 ]; then
+    warn "$vm_count VM(s) running; record their actual load and control them for strict comparisons"
+  fi
 fi
 
 section "Optional Health Dependencies"
@@ -125,25 +153,21 @@ ai_pids="$(
   {
     pgrep -x ollama 2>/dev/null || true
     pgrep -x llama-server 2>/dev/null || true
-    pgrep -f -i 'vllm|open_webui|comfy|webui' 2>/dev/null || true
+    pgrep -f -i 'vllm' 2>/dev/null || true
   } | sort -nu
 )"
 if [ -n "$ai_pids" ]; then
   printf '%s\n' "$ai_pids" | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
   warn "local AI services are already running; confirm they are part of the test"
 fi
-if command -v docker >/dev/null 2>&1; then
-  docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}\t{{.Image}}' 2>/dev/null || true
-fi
-if command -v podman >/dev/null 2>&1; then
-  podman ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}\t{{.Image}}' 2>/dev/null || true
-fi
-
-section "Listening Ports"
-ss -tulpn | grep -E '(:11434|:8080|:18001|:3000|:3773|:3774|:3776|:3777|:22|ollama|llama|vllm|node|rustdesk|python)' || true
-
-section "Top CPU Processes"
-ps -eo pid,ppid,stat,pcpu,pmem,comm --sort=-pcpu | head -20
+for engine in docker podman; do
+  if command -v "$engine" >/dev/null 2>&1; then
+    running="$("$engine" ps -q 2>/dev/null | grep -c . || true)"
+    if [ "${running:-0}" -gt 0 ]; then
+      info "$engine reports $running running container(s); names and ports are not recorded"
+    fi
+  fi
+done
 
 section "Verdict"
 printf 'Blockers: %s\n' "$blockers"

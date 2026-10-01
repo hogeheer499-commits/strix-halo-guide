@@ -39,7 +39,7 @@ python3 scripts/generate_charts.py
   or owner. It is a coverage map, not a benchmark ranking.
 - `current_test_queue.csv`: prioritized candidate/runtime queue with readiness, estimated artifact size, blockers, and the buyer question each unmeasured test should answer. It is not a benchmark-claim file.
 - `public_state.json`: dated state for release, runtime, Qwen3.8, coverage and disclosure facts. The validator checks freshness and selected required fragments, not every semantic disagreement. Evidence review, upstream availability, storefront observation and expected publication revision are separate; measurement/qualification dates stay in their evidence bundles. A null deployment verification is not a successful publication. The authority audit produces a report even when evidence is stale; `--as-of 2026-09-21` exercises that boundary without changing review dates. Remote `guide-content-revision` meta markers are deployment signals, supplemented by targeted wording checks and human review, not certification of all claims.
-- `qwen38_route_matrix.csv`: claim-separated index of the measured official route, external/community performance routes, current caveats, and the matched comparison still required. Community values are leads, not guide-owned headline results.
+- `qwen38_route_matrix.csv`: claim-separated index of the measured official route, external/community performance routes, current caveats, and the matched comparison still required. Community values are leads, not guide-owned headline results. It includes the matched no-draft control (`guide-ollama-nodraft-control`, Ollama 0.32.15, 2026-09-26) next to the Ollama-default-MTP row.
 - `affiliate_link_registry.csv`: public registry for any future monetized product links. It is intentionally header-only while the guide has no affiliate links.
 - `buyer_path_validation_template.csv`: empty capture template for the retail-box-to-working-local-AI protocol in [`BUYER_PATH_VALIDATION.md`](../BUYER_PATH_VALIDATION.md). It contains no measured result until a named campaign fills and publishes it.
 - `community_results.csv`: benchmark reports from other Strix Halo systems. These rows are useful external validation but are kept separate from public headline claims.
@@ -57,8 +57,8 @@ python3 scripts/generate_charts.py
 - `community_rpc_model_hashes.csv`: community-reported model source and SHA256 provenance for RPC rows.
 - `community_usb4_latency.csv`: community-reported USB4 latency tuning rows for Strix Halo clusters. These are advanced cluster-tuning results and are not relevant to the default single-machine setup.
 - `community_usb4_idle_power.csv`: community-reported idle-power measurements for the USB4 `pm_qos` tuning step.
-- `benchmarks.csv`: existing short-context and backend benchmark rows already published in the guide.
-- `mtp_speculative.csv`: local and community `llama-server` MTP speculative-decoding rows for Qwen3.6 MTP GGUFs and Gemma 4 QAT matched-head routes, including official 35B Q8_0, local 35B Q4_K_M requant, 35B IQ4_XS-Q8nextn, the GMKtec exact-model reproduction, the b9360 100+ t/s MTP rerun, Gemma 4 26B-A4B QAT 102.7 cold / 107.4 T3-only / 110.0 best-repeat t/s server evidence, and official 27B Q8_0/NVFP4 negative-speed tests.
+- `benchmarks.csv`: existing short-context and backend benchmark rows already published in the guide. Two columns were appended to the header on 2026-10-01 (see [Column Changes](#column-changes)): `speculation` and `evidence_class`.
+- `mtp_speculative.csv`: local and community `llama-server` MTP speculative-decoding rows for Qwen3.6 MTP GGUFs and Gemma 4 QAT matched-head routes, including official 35B Q8_0, local 35B Q4_K_M requant, 35B IQ4_XS-Q8nextn, the GMKtec exact-model reproduction, the b9360 100+ t/s MTP rerun, Gemma 4 26B-A4B QAT 102.7 cold / 107.4 T3-only / 110.0 best-repeat t/s server evidence, and official 27B Q8_0/NVFP4 negative-speed tests. Since 2026-10-01 it also holds Ollama API rows (`tool` = Ollama API, not `llama-server`) for the Qwen3.8 27B Ollama-default-MTP run (2026-08-15, Ollama 0.32.13), the matched no-draft/MTP pair (2026-09-26, Ollama 0.32.15) and the `qwen3.6:35b-a3b` manifest check (2026-09-26); runtime is in `tool` and `build_or_version`, background load in `notes`, and the raw bundle in `source`.
 - `max_performance_campaign.csv`: 2026-05-07 "push the Beelink further" campaign summary, including quant sweeps, same-source HIP/Vulkan, gpt-oss long-context, vLLM AWQ smoke, and negative results.
 - `multi_user.csv`: controlled `llama-server` concurrency results with aggregate throughput, per-request throughput, TTFT, and request-mean decode-interval summaries (not token-gap p95).
 - `server_shootout.csv`: practical local-AI-server comparison rows across Ollama, `llama-server`, ROCm builds, and vLLM candidates.
@@ -158,6 +158,44 @@ python3 scripts/generate_charts.py
 - `raw/2026-06-02/qwen3-coder-next-iq4xs/`: earlier modern Qwen3-Coder-Next 80B-A3B IQ4_XS Vulkan/RADV row. It measured 61.68 t/s tg128 and 735.72 t/s pp512, useful for current-model context but superseded by the b9467 repeat in `raw/2026-06-02/modern-model-clean-followup/`.
 - `raw/2026-07-21/unsloth-rocm72-train-export-smoke/`: pinned first-party Unsloth/ROCm workflow qualification. Radeon GPU detection, one-step SFT, checkpoint inference, `Q4_K_M` export, ROCm `llama.cpp` inference, and post-restart loading from the host-persisted artifact passed. This is workflow compatibility evidence, not useful fine-tuning quality or a speed headline.
 
+## Column Changes
+
+Columns are appended at the end of a header; existing columns are not renamed or
+reordered. Additions are listed here with their date.
+
+- 2026-10-01, `benchmarks.csv`: `speculation` and `evidence_class` added.
+  - `speculation` is `none`, `mtp:<n>` (draft tokens; Ollama-default MTP counts as
+    MTP), `dflash:<n>` (draft tokens; no row uses it yet) or `unknown` when the
+    retained evidence does not establish it. `none` is
+    used for `llama-bench` rows, because `llama-bench` does not run speculative
+    drafting, and for Ollama rows whose recorded model manifest (`07d35212591f`)
+    carries no draft parameter (checked in the 2026-09-26 manifest bundle). The
+    2026-08-15 Qwen3.8 27B row is `mtp:4` (`draft_num_predict 4`; `draft-mtp` was
+    logged only in the same-service 64K run). Older Ollama rows without recorded
+    manifest evidence stay `unknown`.
+  - `evidence_class` is `direct-llama-bench` for `tool` = llama-bench and
+    `ollama-service` for rows measured through a running Ollama (API or CLI), which
+    keeps direct and API results separate for readers of this one file.
+    First-party versus community stays in `status` and `system`.
+
+## Raw Index, 2026-08-15 To 2026-09-26
+
+Every dated folder under `raw/` for this window, plus the redaction note. The
+entries above index only some earlier folders.
+
+- `raw/REDACTION.md`: 2026-09-26 note on what was redacted from text files under `raw/` after capture: the maintainer's home directory became `~`, the host name `<host>`, private LAN addresses `<lan-ip>`, and listening-port and top-process sections were reduced to benchmark-runtime lines, except in the two 2026-09-26 bundles `strict-clean-headline-b11146` and `64gb-tier-30b-candidates-b11146`, whose host snapshots keep their original process and virtual-machine listings. Benchmark numbers, commands, model file names, kernel, Mesa, runtime builds, firmware and power fields were not changed, and files listed in `SHA256SUMS` manifests were left untouched.
+- `raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/`: first-party official Qwen3.8 27B Ollama 0.32.13 Vulkan/RADV route: nine warm API repeats (292.49 prompt / 20.42 generation t/s with Ollama-default MTP drafting, relabelled 2026-09-26), image, tool, thinking and exact-retrieval smokes through 50,059 prompt tokens, and a recoverable Vulkan device loss at 56,051 tokens.
+- `raw/2026-08-18/community-gmktec-gemma4-issue4/`: community-reported direct `llama-bench` rows for Gemma 4 26B-A4B `UD-Q4_K_M` on a GMKtec EVO-X2 96GB (Ubuntu 26.04, Mesa 26.0.3, b9235), posted 2026-08-18 on issue #4 and normalized from the issue comment; one pasted field was restored and is documented in the bundle README.
+- `raw/2026-08-21/community-reddit-ornery-ub-clamp/`: community-reported Reddit comment from a separate Beelink GTR9 Pro (Ubuntu 24.04): `llama-bench` Qwen3.6-35B-A3B `UD-Q4_K_M` with stock Mesa 25.2.8 and Mesa 26.1.7 and with `-b 256 -ub 1024` versus `-b 2048 -ub 512` (pp512 733.90 to 1105.75 t/s as reported); kernel, BIOS UMA and build number were not reported.
+- `raw/2026-08-25/qwen38-community-runtime-update/`: dated scope and provenance note for the Qwen3.8 community and runtime reports (listed above).
+- `raw/2026-08-26/community-gmktec-issue4/`: community-reported four-model follow-up on the same GMKtec EVO-X2 (kernel 7.0.0-30, runtime labelled `llama.cpp v0.3.0` commit `c1d0e7a` by the contributor): four hashed direct pp512/tg128 CSVs, submitted 2026-08-26 and imported 2026-09-08. Model files were not rehashed here; the separate server and Q6/draft observations are narrative-only.
+- `raw/2026-08-30/b10687-vulkan-sentinel/`: first-party b10687 (`c841aee`) Vulkan/RADV sentinel on kernel 7.0.0-30 and Mesa 26.1.7 for Qwen3-Coder 30B-A3B and Qwen3-Next 80B-A3B `UD-Q4_K_XL` (20 repeats). It starts a separately recorded current-stack lane and is not a control for the kernel-6.19.4 headline rows.
+- `raw/2026-08-30/qwen38-flash-next-scout/`: first-party Qwen3.8-Flash-Next `UD-IQ4_XS` direct scout (about 93.7GB, three shards; 394.73 pp512 / 27.16 tg128, 10 repeats) on the same stack, with a separate arithmetic smoke. Capacity and direct-speed evidence only. `raw/2026-08-30/artifact-sha256.txt` lists the SHA-256 values of the three artifacts used that day.
+- `raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/`: first-party matched pair on Ollama 0.32.15: `qwen3.8:27b-q4_K_M` (no draft) 12.89 versus `qwen3.8:27b-mtp-q4_K_M` (Ollama-default MTP) 22.71 generation t/s over nine warm repeats each, same model blob, routine background load.
+- `raw/2026-09-26/qwen36-35b-a3b-ollama-03215-manifest-mtp-check/`: first-party check of the `qwen3.6:35b-a3b` beginner tag on its earlier manifest (70.25 t/s), its current MTP manifest (74.51 t/s) and the same blob without drafting (70.35 t/s), nine warm repeats each, routine background load; the harness differs from the 2026-07-10 beginner-path row.
+- `raw/2026-09-26/strict-clean-headline-b11146/`: first-party direct `llama-bench` re-check of headline rows on v0.5.0 (b11146) with same-night controls. Despite the directory name this is a controlled re-check on a host that was not fully idle; see [BENCHMARKS.md](../BENCHMARKS.md#2026-09-26-controlled-re-check-not-a-fully-idle-host-on-llamacpp-b11146). It changes no headline number.
+- `raw/2026-09-26/64gb-tier-30b-candidates-b11146/`: first-party routine direct `llama-bench` scout of Nemotron 3.5 Lightning, Laguna XS 2.1 and Muse Glimmer 30B on b11146 with a two-prompt smoke; no server, MTP, DFlash or vision result and no 64GB fit claim (see [CURRENT_MODELS.md](../CURRENT_MODELS.md#2026-09-26-30b-class-scout-b11146-routine)).
+
 ## Status Values
 
 - `measured-local`: measured on this guide's Beelink GTR9 Pro and suitable for current claims.
@@ -179,6 +217,7 @@ Every new benchmark row should include:
 - Mesa/RADV or ROCm version
 - backend and driver
 - tool and build/commit where available
+- speculation (`none`, `mtp:<n>`, `dflash:<n>` or `unknown`)
 - model name
 - quant
 - prompt/context settings

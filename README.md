@@ -33,13 +33,16 @@ Maintainer credibility is public and reviewable: 15 merged engineering PRs acros
 | Reproducing or contributing benchmarks | [Reproducibility](REPRODUCIBILITY.md), [headline claim index](data/headline_claims.csv), and [benchmark issue](https://github.com/hogeheer499-commits/strix-halo-guide/issues/new?template=benchmark-report.md) | Exact commands, metadata, raw evidence, caveats, and community credit |
 | Reviewing the project for a vendor or publication | [One-page brief](ONE_PAGE_BRIEF.md), [partnership scope](PARTNERSHIP.md), and [disclosure policy](VENDOR_DISCLOSURE.md) | Which buyer uncertainty the evidence removes and how independence is protected |
 
-**Current evidence state — September 26, 2026 review:** Qwen3.8 27B is measured through
-the official Ollama route, labelled as Ollama-default MTP drafting; see
-[the active-evidence review](ACTIVE_EVIDENCE_REVIEW_2026-09-26.md). The August 30 b10687 Vulkan sentinel and Flash-Next
+**Current evidence state — October 1, 2026 review (observations of September 30):** Qwen3.8 27B is
+measured through the official Ollama route, labelled as Ollama-default MTP drafting; a matched
+control on Ollama 0.32.15 (2026-09-26) measured 12.89 t/s without drafting versus 22.71 t/s with
+default MTP. See [the active-evidence review](ACTIVE_EVIDENCE_REVIEW_2026-10-01.md); the
+[September 26 review](ACTIVE_EVIDENCE_REVIEW_2026-09-26.md) keeps its original wording. The August 30 b10687 Vulkan sentinel and Flash-Next
 scout are indexed with their own stack and caveats; see
 [the measured update](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout).
-The [September 25 availability check](ROCM_VLLM_BUGWATCH.md#current-upstream-snapshot)
-lists newer candidates, including Ollama 0.34.4 and `llama.cpp` v0.5.0, without promoting them. The
+The [September 30 availability check](ROCM_VLLM_BUGWATCH.md#2026-09-30-upstream-recheck)
+lists newer candidates, including Ollama 0.34.4 (the latest stable release that day) and `llama.cpp`
+v0.5.0 with build b11265, without promoting them. The
 machine-readable freshness record is [`data/public_state.json`](data/public_state.json).
 
 What you get:
@@ -80,8 +83,8 @@ Halo owners find it; a reproducible result or correction helps even more.
 
 | Question | Current answer |
 | --- | --- |
-| Best beginner route | Ollama with Vulkan/RADV. The fully reboot-qualified general baseline remains 0.31.2; Qwen3.8 is separately measured on 0.32.13. Available Ollama 0.34.4 (September 25 check; 0.34.2 passed isolated controls on September 19) still needs the controlled upgrade/reboot matrix; the revised installer itself is not yet fresh-install/upgrade qualified. |
-| Current Qwen3.8 route | Official Qwen3.8 27B `Q4_K_M` measured 292.49 prompt t/s and 20.42 generation t/s through the Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; not a no-draft result); image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed. [Read the route comparison.](QWEN38_STRIX_HALO.md) |
+| Best beginner route | Ollama with Vulkan/RADV. The fully reboot-qualified general baseline remains 0.31.2; Qwen3.8 is separately measured on 0.32.13. Available Ollama 0.34.4 (September 30 check; GitHub lists the then pre-release 0.35.0 as the latest release on October 1, not qualified; 0.34.2 passed isolated controls on September 19) still needs the controlled upgrade/reboot matrix; the revised installer itself is not yet fresh-install/upgrade qualified. |
+| Current Qwen3.8 route | Official Qwen3.8 27B `Q4_K_M` measured 292.49 prompt t/s and 20.42 generation t/s through the Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; not a no-draft result); a separate matched control on Ollama 0.32.15 (2026-09-26) measured 12.89 t/s without drafting versus 22.71 t/s with default MTP; image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed. [Read the route comparison.](QWEN38_STRIX_HALO.md) |
 | Fast direct 30B-class route | Qwen3-Coder 30B-A3B `Q4_K_S` reached 100.99 tg128 on official b9851; it is a speed-first quant, not the balanced default. |
 | Largest direct GGUF tested | DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded as a 90.86GB low-bit artifact and measured 13.27 tg128; capacity proof, not broad quality. |
 | Experimental server frontier | Repeat-confirmed local MTP/server profiles reach 101-141 t/s, but prompt shape, draft acceptance, runtime, and quant are part of each claim. |
@@ -192,7 +195,7 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 | Fastest direct 30B-class Qwen MoE row | Qwen3-30B-A3B-Instruct-2507 IQ4_XS: 100.04 t/s direct llama.cpp Vulkan/RADV on b9467; b9544 control measured 103.18 tg128 r10 | First local direct `llama-bench` row above 100 t/s. Treat it as a separate general-instruct Qwen route, not as a Qwen3-Coder replacement or balanced-default claim. | [`headline claims`](data/headline_claims.csv), [`raw r50`](data/raw/2026-06-02/qwen3-30b-a3b-2507-direct-scout/qwen3-30b-2507-iq4xs-b9467-r50.csv), [`b9544 control`](data/raw/2026-06-07/latest-llamacpp-b9544-regression/) |
 | Fastest current small-MoE scout | LFM2.5 8B-A1B Q4_K_M: 168.96 tg128 in pp512/tg128, 170.02 t/s generation-only, b9544 control at 176.48 tg128 r10 | Shows how fast newer small active-parameter MoE routes can be on Strix Halo. Do not compare it as a 30B-class coding/reasoning replacement. | [`headline claims`](data/headline_claims.csv), [`raw latest/int-dot`](data/raw/2026-06-05/latest-llamacpp-intdot-regression/), [`b9544 control`](data/raw/2026-06-07/latest-llamacpp-b9544-regression/) |
 | Fastest local coding speed | Qwen3-Coder 30B-A3B Q4_K_S: 100.99 t/s direct llama.cpp Vulkan/RADV on the official b9851 release binary; older strict-clean b9179 row measured 98.51 t/s | Speed-first quant candidate. Use it when raw t/s matters and you accept the quality tradeoff. This is direct `llama-bench`, not MTP/server speculation. | [`headline claims`](data/headline_claims.csv), [`b9851 raw r50`](data/raw/2026-06-30/latest-llamacpp-b9851-vulkan-sentinel/qwen3-coder-q4ks-b9851-p512-n128-r50.csv), [`older strict-clean raw r50`](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv) |
-| Fast balanced local coding model | Qwen3-Coder 30B-A3B UD-Q4_K_XL: 96.76 t/s direct llama.cpp Vulkan/RADV on current b9049 | Strong first model for coding scripts, editors, and agent loops. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv) |
+| Fast balanced local coding model | Qwen3-Coder 30B-A3B UD-Q4_K_XL: 96.76 t/s direct llama.cpp Vulkan/RADV on current b9049 | Coding-speed row for the balanced quant: a speed measurement, not a coding-quality ranking. Third-party quality signals and public scores are in [`docs/models.md`](docs/models.md). | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv) |
 | Newer Qwen coding model | Qwen3-Coder-Next 80B-A3B IQ4_XS: 61.91 t/s direct llama.cpp Vulkan/RADV on b9467 | Modern coding-model row for people who want current Qwen Coder-Next rather than the older 30B speed headline. Use it for capability/currentness, not maximum raw t/s. | [`benchmarks CSV`](data/benchmarks.csv), [`raw run`](data/raw/2026-06-02/modern-model-clean-followup/) |
 | Easy private chat setup | Qwen3.6 35B-A3B Q4_K_M: 60.57 t/s warm API generation through the normal Ollama 0.31.2 system service with `OLLAMA_IGPU_ENABLE=1`; vision, service restart, and full-host reboot persistence passed | This is the copyable default for model pulling, Open WebUI, vision, and simple local chat. A later controlled local-binary comparison measured 0.31.1/0.31.2/0.32.0 at 72.55/73.19/73.20 t/s, so do not treat the earlier 60.57-versus-71.82 gap as a version-wide regression. | [`headline claims`](data/headline_claims.csv), [`raw service run`](data/raw/2026-07-10/ollama-0312-buyer-path/), [`raw controlled comparison`](data/raw/2026-07-16/ollama-0311-0312-0320-controlled/) |
 | Fine-tune, export, and reload a local model | Pinned ROCm 7.2 Unsloth route: Radeon GPU gate, one SFT step, checkpoint inference, `Q4_K_M` GGUF export, ROCm `llama.cpp` inference, and post-restart artifact load all passed | End-to-end developer workflow evidence on a retail box. The Qwen3 0.6B one-step run is a plumbing smoke, not a quality or performance headline. | [`Unsloth guide`](UNSLOTH_STRIX_HALO.md), [`raw evidence`](data/raw/2026-07-21/unsloth-rocm72-train-export-smoke/) |
@@ -274,9 +277,11 @@ This guide is primarily a technical resource for AMD Strix Halo local-AI users. 
 
 Start with the public [vendor and reviewer overview](https://strixhaloguide.com/partners/), then inspect the linked GitHub evidence, raw artifacts, negative results, disclosure policy, and upstream contribution record here.
 
-Start with [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md) and [`PARTNERSHIP.md`](PARTNERSHIP.md). Supporting docs cover [`BEELINK_OUTREACH.md`](BEELINK_OUTREACH.md), [`VENDOR_OUTREACH_PLAN.md`](VENDOR_OUTREACH_PLAN.md), [`SPONSORSHIP.md`](SPONSORSHIP.md), [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md), [`BUYER_USE_CASES.md`](BUYER_USE_CASES.md), [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md), [`TRACTION.md`](TRACTION.md), and [`OUTREACH_TEMPLATES.md`](OUTREACH_TEMPLATES.md).
+Start with [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md) and [`PARTNERSHIP.md`](PARTNERSHIP.md). Supporting docs cover [`SPONSORSHIP.md`](SPONSORSHIP.md), [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md), [`BUYER_USE_CASES.md`](BUYER_USE_CASES.md), [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md), and [`TRACTION.md`](TRACTION.md). How vendors can report a factual error, how vendor responses are recorded and how hardware provenance is disclosed: [How We Work With Vendors](VENDOR_DISCLOSURE.md#how-we-work-with-vendors).
 
-No affiliate links are present as of September 19, 2026. If monetized product
+No affiliate links are present as of September 19, 2026. The links added on October 1, 2026
+were checked by URL pattern for tracking parameters and affiliate-network domains and none was
+found (the destinations themselves were not inspected). If monetized product
 links are added later, each relevant link will be labeled and recorded in the
 public [`affiliate link registry`](data/affiliate_link_registry.csv). Affiliate
 commission does not determine benchmark conclusions, product inclusion, or
@@ -393,12 +398,29 @@ Performance depends on the exact hardware SKU, RAM configuration, BIOS UMA setti
 
 If your setup differs, rerun the benchmark scripts and cite the date, command, CSV, raw log, chart, model file, and backend version with any copied claim.
 
+## Reuse And Citing The Numbers
+
+Other projects and sites already read the data in this repository (see [`TRACTION.md`](TRACTION.md#where-the-data-is-reused-checked-2026-09-30)), and a number copied without its qualification can say more than the measurement shows. The repository license stays MIT (see [`LICENSE`](LICENSE)). When you cite a headline, keep its qualification next to it, and give the date, the commit or release you read, and the source file.
+
+| Headline | Keep this qualification with it | Source |
+| --- | --- | --- |
+| 20.42 generation t/s, Qwen3.8 27B | Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`), Ollama 0.32.13, one 128GB Beelink; not a no-draft result. A matched control on 2026-09-26 (Ollama 0.32.15, same blob and harness, routine background load) measured 12.89 t/s without drafting and 22.71 t/s with MTP. | [`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md), [raw control](data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/) |
+| 141.37 t/s, CHADROCK ROCmFP4 | `llama-server` speculative decoding on the exact 3946-token reference prompt at 100% mean draft acceptance (three repeats, 140.84-141.79 range); not `llama-bench`. The 1K and 8K profiles measured 78.00 and 83.85 t/s as acceptance fell. | [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md), [`data/best_known_profiles.csv`](data/best_known_profiles.csv) |
+| 60.57 t/s, Qwen3.6 35B-A3B on Ollama | Ollama 0.31.2 system service, measured 2026-07-10 on the tag's earlier manifest `07d35212591f`; the current tag is an MTP build. A matched check on 2026-09-26 (Ollama 0.32.15, different harness: compare its arms with each other, not with 60.57) measured 70.25 t/s on the old manifest, 74.51 t/s on the current MTP manifest, and 70.35 t/s on the same blob without drafting. | [raw bundle](data/raw/2026-09-26/qwen36-35b-a3b-ollama-03215-manifest-mtp-check/) |
+| 101.16 t/s (Qwen3.6 MTP) and 110.00 t/s (Gemma 4 QAT MTP) | `llama-server` speculative decoding with a matched MTP head; prompt shape and host workload change the result (Gemma 4: 102.69 t/s cold repeat, 73.96 t/s no-spec baseline). | [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md), [`data/mtp_speculative.csv`](data/mtp_speculative.csv) |
+| 100.99 and 100.04 t/s | Direct `llama-bench` tg128 at short context on one machine: a speed-first quant (Qwen3-Coder `Q4_K_S`) and a separate general-instruct model. Not server or MTP results. | [`data/headline_claims.csv`](data/headline_claims.csv) |
+
+All first-party numbers come from one Beelink GTR9 Pro with 128GB; community rows are labeled as such. The notes for each headline claim are in [`data/headline_claims.csv`](data/headline_claims.csv). To cite this repository, use [`CITATION.cff`](CITATION.cff) and add the commit hash or release tag you used and the date you read it.
+
 ## Documentation Map
 
 | File | Purpose |
 |------|---------|
 | [`REPRODUCIBILITY.md`](REPRODUCIBILITY.md) | Exact machine, BIOS/software state, commands, raw data paths, and chart generation. |
 | [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md) | Practical local-AI-server comparison: Ollama, `llama-server`, Lemonade ROCm, and vLLM candidates. |
+| [`ENGINES.md`](ENGINES.md) | Inference engines for Strix Halo (Gufo, Halogen, forks, Lemonade, LM Studio, Ollama, `llama.cpp`): licence, claim class of each headline, what this guide verified (only its own `llama.cpp` and Ollama routes), questions to ask before running a community engine, and Ollama compared with other servers. |
+| [`WINDOWS_START.md`](WINDOWS_START.md) | Starting on Windows: Variable Graphics Memory and the open large-model loading reports, AMD's official Windows routes, LM Studio versions and open issues, display-off throttling. Community and vendor sources, not measured by this guide. |
+| [`LAPTOPS_AND_HOMELAB.md`](LAPTOPS_AND_HOMELAB.md) | Laptops and tablets, Proxmox/LXC and VMs, clusters (RPC, Ray), one 192GB box against two 128GB boxes, extra GPUs and the NAS form. Community sources, not measured by this guide. |
 | [`BACKEND_CROSSOVER.md`](BACKEND_CROSSOVER.md) | HIP versus Vulkan workload split: prompt processing versus token generation. |
 | [`POWER_BASELINE.md`](POWER_BASELINE.md) | Local amdgpu `PPT` telemetry status and Beelink power-sampling caveats. |
 | [`PERFORMANCE_NOTES.md`](PERFORMANCE_NOTES.md) | Narrow notes on strict-stack reruns, failed headline reproduction attempts, and useful negative model results. |
@@ -421,10 +443,11 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 | [`data/README.md`](data/README.md) | Structured CSV schema and raw-data conventions. |
 | [`charts/README.md`](charts/README.md) | Generated chart inventory and regeneration command. |
 | [`SHARE.md`](SHARE.md) | Copyable Reddit/HN/forum/Discord text and share links. |
-| [`SECURITY.md`](SECURITY.md) | Official-source and impersonation reporting policy. |
+| [`SECURE_LOCAL_AI.md`](SECURE_LOCAL_AI.md) | Checklist for securing a local AI box: network exposure, shared servers, community recipes, containers, clusters, SSH, RAG and agents, firmware, with dated public sources and what is not tested here. |
+| [`SECURITY.md`](SECURITY.md) | Official-source and impersonation reporting policy, plus the dated advisory status of the pinned components. |
 | [`SUPPORT.md`](SUPPORT.md), [`SERVICES.md`](SERVICES.md) | How to support ongoing testing, or request scoped professional help, without changing the evidence-first benchmark policy. |
-| [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md), [`PARTNERSHIP.md`](PARTNERSHIP.md), [`SPONSORSHIP.md`](SPONSORSHIP.md), [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md) | Vendor/partner-facing explanation of how the technical proof layer reduces buyer adoption friction while preserving independence. |
-| [`BUYER_USE_CASES.md`](BUYER_USE_CASES.md), [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md), [`TRACTION.md`](TRACTION.md), [`BEELINK_OUTREACH.md`](BEELINK_OUTREACH.md), [`VENDOR_OUTREACH_PLAN.md`](VENDOR_OUTREACH_PLAN.md), [`OUTREACH_TEMPLATES.md`](OUTREACH_TEMPLATES.md) | Buyer-use-case, roadmap, public-evidence, and outreach support docs. |
+| [`ONE_PAGE_BRIEF.md`](ONE_PAGE_BRIEF.md), [`PARTNERSHIP.md`](PARTNERSHIP.md), [`SPONSORSHIP.md`](SPONSORSHIP.md), [`VENDOR_DISCLOSURE.md`](VENDOR_DISCLOSURE.md) | Vendor/partner-facing explanation of how the technical proof layer reduces buyer adoption friction while preserving independence, including how vendors can report factual corrections. |
+| [`BUYER_USE_CASES.md`](BUYER_USE_CASES.md), [`SPONSOR_ROADMAP.md`](SPONSOR_ROADMAP.md), [`TRACTION.md`](TRACTION.md) | Buyer-use-case, roadmap, and public-evidence docs, including where this repository's data is reused by other projects. |
 
 ## Table of Contents
 
@@ -443,6 +466,7 @@ If your setup differs, rerun the benchmark scripts and cite the date, command, C
 - [Reproduce One Headline Result](#reproduce-one-headline-result)
 - [Not Yet Proven Here](#not-yet-proven-here)
 - [Do Not Copy These Claims Without Matching Setup](#do-not-copy-these-claims-without-matching-setup)
+- [Reuse And Citing The Numbers](#reuse-and-citing-the-numbers)
 - [Documentation Map](#documentation-map)
 - [Hardware](#hardware)
 - [What You Can Run](#what-you-can-run)
@@ -564,7 +588,7 @@ Real-world generation speeds measured on the Beelink GTR9 Pro, primarily with Vu
 | Qwen3-Coder-Next | 51 GB | MoE (80B total / 3B active) | 38-39 t/s | Coding MoE; size is the measured artifact, not parameter count |
 | Llama 3.1 70B (Q4_K_M) | 42 GB | Dense | **4.7-4.9 t/s** | Dense 70B capacity; artifact exceeds 24GB VRAM without offload |
 | Llama 4 Scout 109B (Q4_K_M) | 61 GB | MoE | **18.3 t/s** * | 109B artifact on a mini PC; exceeds 24GB VRAM without offload |
-| Nemotron 3 Nano 30B-A3B (IQ4_XS) | 18.2 GB | MoE | **76.0 t/s** * | Measured NVIDIA Nemotron 30B-class route (June 2026); newer Nemotron 3.5 Lightning is not measured here |
+| Nemotron 3 Nano 30B-A3B (IQ4_XS) | 18.2 GB | MoE | **76.0 t/s** * | Measured NVIDIA Nemotron 30B-class route (June 2026); the newer Nemotron 3.5 Lightning was measured on 2026-09-26 as a routine direct scout ([66.80 tg128 on b11146](CURRENT_MODELS.md#2026-09-26-30b-class-scout-b11146-routine)); no recommendation between the two |
 | DeepSeek V4 Flash 284B (UD-IQ2_XXS) | 90.9 GB | MoE | **13.3 t/s** * | Largest current direct ordinary-GGUF capacity proof; low-bit quant, not a quality recommendation |
 | Nemotron 3 Super 120B-A12B (UD-IQ4_XS) | 64.5 GB | MoE | **18.4 t/s** * | Current 120B-class GGUF route on one 128GB Strix Halo |
 | gpt-oss-120b MXFP4 | 63.4 GB | MoE | **55.6 t/s** * | 117B-parameter open-weight model; local load and long-context speed check |
@@ -1288,11 +1312,14 @@ sudo systemctl restart ollama
 ### Step 5.3: Pull Models
 
 ```bash
-# Fast MoE model, great for general use and coding (~20GB)
+# Fast MoE model (~20GB): measured for speed, not ranked for general or coding quality (see docs/models.md)
 ollama pull qwen3.6:35b-a3b
 
 # Current official dense multimodal model, measured route in this guide (~18GB)
 # Requires Ollama 0.32.12 or later; measured on 0.32.13 (not the 0.31.2 pin above)
+# The plain tag carries draft_num_predict 4, so it gives the MTP build (registry check 2026-09-30).
+# The artifact is identified by its model blob (f5f1dd8920d4) next to the manifest ID; to reproduce
+# the measurement exactly, pin qwen3.8:27b-mtp-q4_K_M (MTP) or qwen3.8:27b-q4_K_M (no draft).
 ollama pull qwen3.8:27b
 
 # Higher quality MoE, Q8_0 quantization (~32GB)
@@ -1388,6 +1415,14 @@ distrobox create llama-rocm-72 \
   --additional-flags "--device /dev/dri --device /dev/kfd --group-add video --group-add render --group-add sudo --security-opt seccomp=unconfined"
 ```
 
+**Container risk (checked 2026-09-30):** this image comes from a third party and is
+selected by a moving tag, not a digest. The command runs it without the default
+seccomp profile (`--security-opt seccomp=unconfined`) and with the `sudo` group, and
+Distrobox gives the container access to your home directory. These flags come from
+the toolbox's own instructions, and this guide has not tested whether the image works
+without them. Record and pin an image digest, and see
+[Containers and closed binaries](SECURE_LOCAL_AI.md#containers-and-closed-binaries).
+
 ### Step 7.3: Enter and Test
 
 ```bash
@@ -1469,6 +1504,12 @@ rocm-smi
 start-vllm
 ```
 
+The same container caveat applies (checked 2026-09-30): third-party image, moving
+tag, `--security-opt seccomp=unconfined` and a shared home directory. Keep the vLLM
+server on loopback; the text of AMD's clustering playbooks read on 2026-09-30 binds it to
+`0.0.0.0` and contains no authentication or exposure note (not exhaustively checked), see
+[Clusters](SECURE_LOCAL_AI.md#clusters).
+
 Record vLLM results separately from llama.cpp server results. At minimum, capture image tag, ROCm/TheRock build, model, quant, max context, concurrency, aggregate throughput, TTFT, p50/p95 latency, memory use, and any kernel compile/cache warmup behavior.
 
 **Known vLLM issues on gfx1151:**
@@ -1535,6 +1576,37 @@ sudo systemctl restart ssh
 ```
 
 > fail2ban starts automatically and blocks IPs after repeated failed login attempts. We found **68 brute-force attempts** on our system within hours of enabling SSH -- fail2ban is essential.
+
+### Step 10.3: Use Key Login, Then Turn Off Passwords
+
+On your client, create a key and install it on the box. Confirm that key login
+works from a second terminal before changing anything on the server:
+
+```bash
+ssh-keygen -t ed25519
+ssh-copy-id <user>@<box>
+```
+
+Only then set `PasswordAuthentication no` in `/etc/ssh/sshd_config` (see
+[`sshd_config(5)`](https://man.openbsd.org/sshd_config)) and restart `ssh`, keeping
+the first session open until the second login works. `fail2ban` reduces noise; key
+login and a firewall do more.
+
+### Step 10.4: Limit Who Can Reach SSH And Open WebUI
+
+- Allow port 22 only from your LAN or a VPN, for example
+  `sudo ufw allow from <lan-subnet> to any port 22 proto tcp`, and do not forward it
+  on your router. Docker-published ports bypass ufw and Tailscale accepts tailnet
+  traffic early; see [Network exposure](SECURE_LOCAL_AI.md#network-exposure).
+- Check IPv6: `ss -ltn 'sport = :22'` showing `[::]:22` means a global address may
+  be reachable. Whether your router blocks inbound IPv6 is router-specific, so test
+  from outside your network.
+- Reach Open WebUI remotely through a tunnel instead of an open port:
+  `ssh -L 3000:127.0.0.1:3000 <user>@<box>`, then open `http://localhost:3000` on
+  your client.
+
+These steps are standard OpenSSH practice and are **not tested here** on this
+guide's hardware (checked 2026-09-30).
 
 ---
 
@@ -1949,7 +2021,7 @@ Not sure which model to run? Here's what we recommend based on use case. Recomme
 |--------------|-------|------|-------|-----|
 | **Fastest 30B-class Qwen direct row** | Qwen3-30B-A3B-Instruct-2507 (IQ4_XS) | 13.9 GB | 100.0 t/s | First direct `llama-bench` row above 100 t/s; general-instruct, not coding-specific |
 | **Code** (best speed) | Qwen3-Coder 30B-A3B (Q4_K_S) | 17.5 GB | 101.0 t/s | Fastest measured coding speed on official b9851 Vulkan; speed-first quant |
-| **Code** (balanced quant) | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | 96-97 t/s | Strong coding default, MoE architecture |
+| **Code** (balanced quant) | Qwen3-Coder 30B-A3B (UD-Q4_K_XL) | 17.7 GB | 96-97 t/s | Coding-speed row for the balanced quant, MoE architecture; a speed measurement, not a quality ranking ([`docs/models.md`](docs/models.md)) |
 | **Code** (higher-bit quant) | Qwen3-Coder 30B-A3B (Q8_0) | 32 GB | 51 t/s | Same model, higher fidelity quantization |
 | **Chat** (general) | Qwen3.6 35B-A3B (Q4_K_M) | 20 GB | **63 t/s** | Measured general-chat starting point; task quality depends on the workload |
 | **Chat** (no thinking) | Qwen3.6 35B-A3B (no-think) | 20 GB | 63 t/s | Same speed, direct answers |
@@ -2015,6 +2087,14 @@ Monthly ownership = purchase_cost / assumed_lifetime_months + electricity + main
 
 For example, **assumed**, unmeasured 120 W active for one hour/day plus 30 W idle
 for 23 hours/day costs $3.65 over 30 days at $0.15/kWh. At 140 W active it is $3.74.
+At Eurostat household electricity prices for the second half of 2025 (page checked
+2026-09-30: about €0.2896/kWh EU average, about €0.3869/kWh Germany) the same
+assumed duty cycle costs €7.04 (EU average) or €9.40 (Germany) over 30 days. A
+continuous 140 W load (an assumption inside the community-reported sustained-generation
+range of 137.4-173.6 W) is about 1,226 kWh per year, or about €355 (EU average) and
+€474 (Germany). Tweakers measured desktop idle of 11.6 W (Framework Desktop) and
+12.8 W (GMKtec EVO-X2) with CPU-load tests, not LLM inference. See
+[electricity cost with EU tariffs](https://strixhaloguide.com/best-strix-halo-mini-pc/#electricity-cost-with-eu-tariffs).
 These duty cycles are explicit assumptions, not inferred from token counts.
 The dated $4,349 Beelink example amortized over an assumed 60 months adds $72.48
 per month before maintenance/resale. Beelink wall power remains
@@ -2056,6 +2136,10 @@ API key does not establish that those features stay on-device. Verify the
 specific client/function/network path; do not expose an unauthenticated local
 model server to make a cloud-mediated client reach it.
 
+Coding and computer-use agents that read repository files, web pages or tool output
+are exposed to prompt injection as well; see
+[RAG and agents](SECURE_LOCAL_AI.md#rag-and-agents).
+
 ### ChatGPT-like Web Interface (Open WebUI)
 
 **Pinned, scoped client result:** Open WebUI 0.10.2 passed discovery, visible
@@ -2071,6 +2155,7 @@ docker run -d -p 127.0.0.1:3000:8080 \
   --add-host=host.docker.internal:host-gateway \
   -v open-webui:/app/backend/data \
   --name open-webui \
+  -e ENABLE_COMMUNITY_SHARING=False \
   ghcr.io/open-webui/open-webui@sha256:a26effeb220e132482bf7e0560b3404843e7bc40d23051144e062960df8df6b0
 ```
 
@@ -2082,11 +2167,17 @@ on loopback; it is **untested here**. With host networking the `-p` loopback
 mapping no longer applies, so check which address and port the Open WebUI
 server then listens on before relying on it.
 
-**Security status (checked 2026-09-25):** published advisories cover this
-pinned Open WebUI 0.10.2 image and Ollama 0.30.0-0.33.2, which includes the
-guide's pinned and qualified Ollama versions. See
-[Security status of pinned components](SECURITY.md#security-status-of-pinned-components);
-a patched Open WebUI release is queued but not yet qualified.
+**Security status (checked 2026-09-30):** 19 Open WebUI advisories published on
+2026-09-27 and 2026-09-28 list 0.11.4 as the patched version, and 13 of them list
+this pinned 0.10.2 image as affected. One of them, GHSA-vpq8-f445-hcq7, applies
+while community sharing is enabled (the default), which is why the command above
+sets `-e ENABLE_COMMUNITY_SHARING=False`. That flag is **not tested here** and does
+not make the pinned image a patched one. Published advisories also cover Ollama
+0.30.0-0.33.2, which includes the guide's pinned and qualified Ollama versions. No
+patched Open WebUI image has been qualified here, so the command still pins 0.10.2
+by digest; do not replace the digest with a tag. See
+[Security status of pinned components](SECURITY.md#security-status-of-pinned-components)
+and the [local AI security checklist](SECURE_LOCAL_AI.md).
 
 Open `http://localhost:3000`. Privacy depends on the selected models, embeddings, tools and integrations. Provision artifacts first and verify that every enabled component stays local before claiming offline operation. The acceptance result covers the pinned local fixture, not every default setting, plugin or embedding provider.
 
@@ -2101,6 +2192,16 @@ ollama pull nomic-embed-text
 # 2. Use Open WebUI's built-in RAG (easiest)
 #    or set up LangChain + ChromaDB for custom pipelines
 ```
+
+**Documents are untrusted input (checked 2026-09-30).** A document, web page or
+repository file that a RAG assistant or an agent reads can carry instructions that the
+model may follow (indirect prompt injection,
+[OWASP LLM01:2025](https://genai.owasp.org/llmrisk/llm01-prompt-injection/)). Treat
+retrieved text as data, not instructions; do not load images or links from answers
+automatically; run agents in a sandbox without secrets; and have a person approve
+actions such as file writes, shell commands and network calls. That section
+summarises public sources; the guide has not tested these controls. See
+[RAG and agents](SECURE_LOCAL_AI.md#rag-and-agents).
 
 For a more current local embedding route, NVIDIA Llama Nemotron Embed 1B v2 now has a first-party CPU sanity pass. It ranked a relevant Strix Halo UMA passage above an unrelated passage, returned 2048-dimensional embeddings, and reproduced the exact vector in a fresh offline process. Follow the pinned [`reproduction and raw evidence`](data/raw/2026-07-25/nemotron-embed-1b-v2-official/). Keep this scoped to local functionality: a real Dutch/English corpus, long documents, batch throughput, memory, and ROCm acceleration still need measurement.
 
@@ -2136,13 +2237,15 @@ The [current model evidence](CURRENT_MODELS.md) records a narrow Qwen3-TTS Engli
 
 ## Buying Guide
 
-The MAX+ 395 systems compared here share that APU; other Strix Halo variants must be checked separately. AMD's CES 2026 announcement (2026-01-05) added the Ryzen AI Max+ 392 (12 cores) and 388 (8 cores) with the full 40-CU Radeon 8060S. The later Ryzen AI Max PRO 490/485 use 32-CU Radeon 8050S graphics. None of these is measured here, and 395 results do not qualify them. The web [buyer comparison](https://strixhaloguide.com/best-strix-halo-mini-pc/) carries the dated source links and the announced-hardware context. Memory options include 64GB, 96GB, or 128GB LPDDR5X-8000 depending on vendor and variant. The differentiators are memory size, form factor, cooling, ports, support, stock status, price, and how much public evidence exists for the exact chassis.
+The MAX+ 395 systems compared here share that APU; other Strix Halo variants must be checked separately. AMD's CES 2026 announcement (2026-01-05) added the Ryzen AI Max+ 392 (12 cores) and 388 (8 cores) with the full 40-CU Radeon 8060S. The later Ryzen AI Max PRO 490/485 use 32-CU Radeon 8050S graphics. None of these is measured here, and 395 results do not qualify them. The web [buyer comparison](https://strixhaloguide.com/best-strix-halo-mini-pc/) carries the dated source links, the Ryzen AI Max PRO 400 hardware context and a [128GB or 192GB?](https://strixhaloguide.com/best-strix-halo-mini-pc/#128gb-or-192gb) section. Memory options include 64GB, 96GB, or 128GB LPDDR5X-8000 depending on vendor and variant; the Ryzen AI Max PRO 495 systems add a 192GB option (most vendors state LPDDR5X-8533; neither that speed nor the 192GB setup is measured or qualified here). The differentiators are memory size, form factor, cooling, ports, support, stock status, price, and how much public evidence exists for the exact chassis.
 
-**New storefront snapshot: September 19, 2026.** Use the [exact-SKU snapshot](BUYER_SNAPSHOT_2026-09-19.md) for source URLs, variant identifiers, stock/ETA, seller terms and unresolved checkout fields. US-facing/USD examples: GMKtec EVO-X2 **128GB/2TB $3,649.99** (64GB/1TB is a different $2,199.99 offer), Beelink GTR9 Pro **128GB/2TB $4,349** pre-sale, Bosgame M5 **128GB/2TB $2,999**, Minisforum MS-S1 MAX **128GB/2TB $3,799** with early-October shipping, and Nimo **128GB/2TB $3,899.99** with delivery ETA unresolved. These are not delivered checkout quotes.
+**Newest storefront snapshot: observations of September 30, 2026.** The [exact-SKU snapshot](BUYER_SNAPSHOT_2026-10-01.md) (rows also in [`data/buyer_price_snapshot_2026-09-30.csv`](data/buyer_price_snapshot_2026-09-30.csv)) records, with country, currency and tax status per row: US store prices in USD, EU manufacturer-store prices with seller terms as stated on the pages, Dutch and German retailer listings, and the first Ryzen AI Max PRO 495 (192GB) systems. For example, Framework's NL store listed a 192GB Desktop DIY Edition at €7,659 (VAT included per the store; pre-order, ships in November) and the 128GB DIY edition as out of stock. These are seller listings, not delivered checkout quotes.
 
-Framework's 128GB **mainboard** is not a complete PC; its current quote was unresolved. Corsair's exact 128GB/4TB SKU was out of stock with price unresolved. HP's selected laptop quote was unresolved. No older price was silently refreshed. GMKtec EVO-X3 uses MAX+ 395 in the observed offers; EVO-X2 evidence does not automatically qualify EVO-X3.
+**Earlier storefront snapshot: September 19, 2026.** Use the [exact-SKU snapshot](BUYER_SNAPSHOT_2026-09-19.md) for source URLs, variant identifiers, stock/ETA, seller terms and unresolved checkout fields. US-facing/USD examples: GMKtec EVO-X2 **128GB/2TB $3,649.99** (64GB/1TB is a different $2,199.99 offer), Beelink GTR9 Pro **128GB/2TB $4,349** pre-sale, Bosgame M5 **128GB/2TB $2,999**, Minisforum MS-S1 MAX **128GB/2TB $3,799** with early-October shipping, and Nimo **128GB/2TB $3,899.99** with delivery ETA unresolved. These are not delivered checkout quotes.
 
-The [July CSV](data/buyer_price_snapshot_2026-07-27.csv) and [September 13 snapshot](BUYER_SNAPSHOT_2026-09-13.md) remain historical. The Ryzen AI Max PRO 400 Series (announced by AMD on 2026-05-20) had OEM systems announced but not shipping as of 2026-09-25; it is not measured here and does not inherit 128GB results. AMD calls Micro Center the "first global launch partner" for its Ryzen AI Halo reference platform (AMD post of 2026-07-06); no Micro Center price is used here.
+In the September 19 snapshot, Framework's 128GB **mainboard** was not a complete PC and its quote was unresolved (the Framework NL store prices are in the September 30 snapshot). Corsair's exact 128GB/4TB SKU was out of stock with price unresolved. HP's selected laptop quote was unresolved on that date. No older price was silently refreshed. GMKtec EVO-X3 uses MAX+ 395 in the observed offers; EVO-X2 evidence does not automatically qualify EVO-X3.
+
+The [July CSV](data/buyer_price_snapshot_2026-07-27.csv) and [September 13 snapshot](BUYER_SNAPSHOT_2026-09-13.md) remain historical. The first Ryzen AI Max PRO 400 Series (announced by AMD on 2026-05-20) systems with 192GB opened for order between 2026-09-28 and 2026-09-30, with shipping from mid-October to November (dated table: [PRO 400 systems](https://strixhaloguide.com/best-strix-halo-mini-pc/#ryzen-ai-max-pro-400-systems-checked-2026-09-30), checked 2026-09-30); none is measured here, and none inherits 128GB results. AMD calls Micro Center the "first global launch partner" for its Ryzen AI Halo reference platform (AMD post of 2026-07-06); no Micro Center price is used here. A footnote on AMD's Ryzen AI Halo product page (checked 2026-09-30) states a retail price of $3,999 (USD; testing as of May 2026); that is a price AMD states in a performance footnote, not a store observation.
 
 | System | Evidence depth and buying limitation |
 |---|---|
@@ -2153,7 +2256,7 @@ The [July CSV](data/buyer_price_snapshot_2026-07-27.csv) and [September 13 snaps
 | Minisforum MS-S1 MAX | Windows LM Studio serving evidence; no matched native-Linux OEM speed ranking. |
 | Bosgame / Framework / HP | Potential workload fits, but no same-shape first-party buyer-path reproduction here; mainboard and laptop categories need separate total-cost comparisons. |
 
-> **Board/NIC revision note (Beelink GTR9 Pro):** Some, but not all, original v1.0 systems with Intel E610-XT2 networking have reported NIC recovery/disconnection failures. Beelink has published update guidance and later introduced the v2.2 board with Realtek RTL8127 networking. Because field reports vary by unit and revision, confirm the exact board/NIC version with the seller and contact Beelink support with the serial number when troubleshooting. See the [Beelink forum thread](https://bbs.bee-link.com/d/7762-gtr-9-pro-ethernet-malfunction-under-load) and Beelink's [Q1 2026 BIOS summary](https://www.bee-link.com/blogs/all/bios-update-summary-for-q1-2026).
+> **Board/NIC revision note (Beelink GTR9 Pro):** Some, but not all, original v1.0 systems with Intel E610-XT2 networking have reported NIC recovery/disconnection failures. Beelink has published update guidance and later introduced the v2.2 board with Realtek RTL8127 networking. Because field reports vary by unit and revision, confirm the exact board/NIC version with the seller and contact Beelink support with the serial number when troubleshooting. See the [Beelink forum thread](https://bbs.bee-link.com/d/7762-gtr-9-pro-ethernet-malfunction-under-load) and Beelink's [Q1 2026 BIOS summary](https://www.bee-link.com/blogs/all/bios-update-summary-for-q1-2026). Independent press ([ComputerBase](https://www.computerbase.de/news/pc-systeme/gtr9-pro-beelinks-2-400-euro-strix-halo-pc-ist-von-problemen-geplagt.95273/), 2025-12-03, before the v2.2 board) reported reproducible system crashes under a local LLM run via the Intel E610 LAN ports; the ports worked again only after the power cable was removed.
 
 **How to compare the systems:** compare memory configuration, dated delivered
 price/availability, evidence depth, cooling/thermals, firmware/support, ports,
@@ -2246,7 +2349,7 @@ So why can llama.cpp direct be faster on Qwen3.6 and Qwen3-Coder? Two reasons:
 
 2. **Bundled version.** Ollama ships with a specific llama.cpp version baked in. Direct source builds can pick up new `llama.cpp` optimizations earlier. The March b8298-to-b8460 jump gave +25% on some MoE Vulkan rows; later rows are tracked separately in [`BENCHMARKS.md`](BENCHMARKS.md).
 
-Ollama prioritizes model/service management; standalone llama.cpp exposes explicit build and runtime controls. Neither a version number nor a newer source checkout guarantees a faster or more reliable workflow.
+Ollama prioritizes model/service management; standalone llama.cpp exposes explicit build and runtime controls. Neither a version number nor a newer source checkout guarantees a faster or more reliable workflow. Some community users report that Ollama is slower than `llama-server`, Unsloth Studio or Lemonade on Strix Halo (claims of third parties, not reproduced here); this guide's own comparison rows are dated and measure different shapes. See [`ENGINES.md`](ENGINES.md#ollama-compared-with-other-servers) and [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md).
 
 **What should you use?**
 
@@ -2268,6 +2371,7 @@ cd llama.cpp-v0.4.1-vulkan
 AMD_VULKAN_ICD=RADV ./build/bin/llama-server \
   -m ~/models/Qwen3-Coder-30B-A3B-Instruct-UD-Q4_K_XL.gguf \
   -ngl 999 -fa on --load-mode auto -c 8192 \
+  --cache-ram 0 --no-cache-idle-slots \
   --host 127.0.0.1 --port 8080
 ```
 
@@ -2277,6 +2381,16 @@ passed the scoped direct/server acceptance controls in [the September 19 qualifi
 promise or a replacement for the reboot-qualified Ollama route.
 
 This example is local-only. Remote serving needs a separately reviewed bind address, authentication, TLS and network access policy; consult the [llama-server documentation](https://github.com/ggml-org/llama.cpp/tree/master/tools/server) before exposing it.
+
+**Prompt-cache flags (mitigation reported by others, not tested here):** with the
+default prompt cache, `llama-server` can place an unrelated, finished conversation
+into the slot of a new request, so an answer can belong to another conversation
+([llama.cpp#27148](https://github.com/ggml-org/llama.cpp/issues/27148), open on
+2026-09-30; reporters reproduced it on Strix Halo with ROCm, and whether Vulkan is
+affected is not established). The reporters' mitigation is `--cache-ram 0
+--no-cache-idle-slots`, added to the command above. The September 19 qualification
+does not mention these flags, so its scoped result does not cover them. See
+[shared servers](SECURE_LOCAL_AI.md#shared-servers).
 
 </details>
 
@@ -2290,7 +2404,7 @@ Yes. Qwen3.6-35B-A3B and Qwen3-Coder 30B-A3B are fast enough here for practical 
 <details>
 <summary><strong>Do I need Linux? Can I use Windows?</strong></summary>
 
-Linux gives the best-tested performance and the strongest native Vulkan/RADV evidence. Windows works for Vulkan-based inference via Ollama/LM Studio, and AMD's Adrenalin 25.8.1+ drivers added Variable Graphics Memory support for up to 96GB VGM. The guide now includes a Windows MS-S1-Max LM Studio serving/API report and a GMKtec EVO-X2 WSL2/HIP baseline. Treat both as useful Windows-path evidence, not proof that Windows matches native Linux `llama-bench`.
+Linux gives the best-tested performance and the strongest native Vulkan/RADV evidence, and many community sources recommend Linux for this hardware. Windows works for Vulkan-based inference via Ollama/LM Studio, and AMD's Adrenalin 25.8.1+ drivers added Variable Graphics Memory support for up to 96GB VGM. **Caveats from community reports (checked 2026-09-30, not measured here):** one community Windows report with VGM at 96GB listed about 31.6GB usable by Windows, and [LM Studio issue #1790](https://github.com/lmstudio-ai/lmstudio-bug-tracker/issues/1790) (opened 2026-04-13, reported on Adrenalin 26.3.1, still open on 2026-10-01) describes loads of models above about 48 to 64GB failing even with 96GB VGM; whether Adrenalin 26.9.x changes that is unknown. The guide now includes a Windows MS-S1-Max LM Studio serving/API report and a GMKtec EVO-X2 WSL2/HIP baseline. Treat both as useful Windows-path evidence, not proof that Windows matches native Linux `llama-bench`. AMD's official Windows routes, LM Studio versions and open issues, and display-off throttling are collected in [`WINDOWS_START.md`](WINDOWS_START.md).
 
 **ROCm on Windows (checked 2026-09-25, unmeasured here):** AMD's ROCm Core SDK 10.0.0 release notes list Windows 11 25H2 with AMD Software: Adrenalin Edition 26.8.1 as supported for Ryzen AI Max, and `llama.cpp` publishes `win-rocm-10.0` release builds whose target list includes `gfx1151`. The guide has not measured either route; this is not evidence of parity with Linux, and no Windows speed claim follows from it.
 
@@ -2306,7 +2420,7 @@ A 128GB configuration supports the specific large artifacts documented here, not
 <details>
 <summary><strong>How does this compare to a Mac Studio?</strong></summary>
 
-Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 are superseded: Apple [announced](https://www.apple.com/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/) the Mac Studio with M5 Max and M5 Ultra on 2026-08-25, available from 2026-09-22. On 2026-09-25 the US Apple Store listed M5 Max 36GB/512GB at $2,499, M5 Max 64GB/1TB at $3,099 and M5 Ultra 96GB/1TB at $5,499; the 128GB M5 Max price was not captured, and the 512GB M5 Ultra option was listed as coming late October. No M5 performance comparison is made here. Beelink's official GTR9 Pro US price snapshot is $4,349 (September 19, 2026, [snapshot](BUYER_SNAPSHOT_2026-09-19.md)), and this guide measures 71.82-101.0 t/s on the larger current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row, and smaller active-parameter MoE scouts can be higher. This guide does not establish a matched Apple-versus-Strix per-model winner. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
+Prices, availability, and external benchmark numbers change quickly; treat this as a dated comparison snapshot. Earlier May 2026 Mac Studio M4 Max 128GB price snapshots around $3,699 are superseded: Apple [announced](https://www.apple.com/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/) the Mac Studio with M5 Max and M5 Ultra on 2026-08-25, available from 2026-09-22. On 2026-09-25 and again on 2026-09-30 the US Apple Store listed M5 Max 36GB/512GB at $2,499, M5 Max 64GB/1TB at $3,099 and M5 Ultra 96GB/1TB at $5,499, plus (2026-09-30) an M5 Ultra configuration from $6,799; the 128GB M5 Max price was not captured, and the 512GB M5 Ultra option was listed as coming late October. No M5 performance comparison is made here; for third-party measurements from the Dutch press see [What European reviews report](https://strixhaloguide.com/best-strix-halo-mini-pc/#what-european-reviews-report-claims-of-third-parties). Beelink's official GTR9 Pro US price snapshot is $4,349 (September 19, 2026, [snapshot](BUYER_SNAPSHOT_2026-09-19.md); unchanged on September 30, 2026, [snapshot](BUYER_SNAPSHOT_2026-10-01.md)), and this guide measures 71.82-101.0 t/s on the larger current Vulkan/Ollama headline paths, depending on model, backend, and quant, with ~215 GB/s bandwidth; Qwen3.6 also has an 81.30 t/s speed-first quant row, and smaller active-parameter MoE scouts can be higher. This guide does not establish a matched Apple-versus-Strix per-model winner. Strix Halo's advantages are Linux flexibility, ROCm/vLLM ecosystem access, dual 10GbE on some systems, and broader vendor choice with lower-priced alternatives.
 
 </details>
 
@@ -2390,6 +2504,17 @@ free, and paid work does not buy positive conclusions.
 ---
 
 ## Changelog
+
+### 2026-10-01 -- Corrections, Security Notes, Buyer Prices, Engines And Vendor Pages
+
+- **Qwen3.8 matched control recorded everywhere:** the 20.42 t/s result is an Ollama-default MTP result. The matched no-draft control on Ollama 0.32.15 (2026-09-26) measured 12.89 t/s without drafting versus 22.71 t/s with default MTP; the model pages, profile and claim indexes, the route matrix and the share text now give the measured result instead of "queued", and [`EVIDENCE_CORRECTIONS.md`](EVIDENCE_CORRECTIONS.md) records the corrected label. [`data/mtp_speculative.csv`](data/mtp_speculative.csv) gained the Ollama API rows and [`data/benchmarks.csv`](data/benchmarks.csv) gained `speculation` and `evidence_class` columns. The 2026-09-26 entry below keeps its original wording.
+- **Labels:** the 2026-09-26 b11146 re-check is renamed "controlled re-check (not a fully idle host)"; "latest control" labels carry dates; routine scout rows for Nemotron 3.5 Lightning, Laguna XS 2.1 and Muse Glimmer 30B are in [`CURRENT_MODELS.md`](CURRENT_MODELS.md#2026-09-26-30b-class-scout-b11146-routine); an artifact is identified by its model-blob digest next to the manifest ID.
+- **Dated upstream state (2026-09-30):** [bugwatch recheck](ROCM_VLLM_BUGWATCH.md#2026-09-30-upstream-recheck) (Ollama 0.35.0 and 0.35.1-rc0, marked pre-release on 2026-09-30, with 0.35.0 listed as the latest release by 2026-10-01 and unqualified; `llama.cpp` b11265, Lemonade v2026.40.0 stable, an amdgpu kernel fix, the `llama-server` prompt-cache report, ROCm-runner carry-over reports, AMD playbook CI failures, AMD security bulletins), new rows in [`data/current_test_queue.csv`](data/current_test_queue.csv), and a raw-folder index for 2026-08-15 to 2026-09-26 in [`data/README.md`](data/README.md).
+- **Security:** new [`SECURE_LOCAL_AI.md`](SECURE_LOCAL_AI.md) checklist (network exposure, shared servers, community recipes, containers, clusters, SSH, RAG and agents, firmware) and a dated advisory status in [`SECURITY.md`](SECURITY.md). The setup commands gained key-login, firewall, prompt-cache and container notes; steps that are not tested here say so.
+- **Buyer pages:** a [storefront snapshot of 2026-09-30](BUYER_SNAPSHOT_2026-10-01.md) with country, currency and tax status per row, the first Ryzen AI Max PRO 495 (192GB) listings (none measured here), a 128GB-or-192GB section and European buying notes in the web buyer comparison.
+- **New pages:** [`ENGINES.md`](ENGINES.md), [`WINDOWS_START.md`](WINDOWS_START.md) and [`LAPTOPS_AND_HOMELAB.md`](LAPTOPS_AND_HOMELAB.md) collect community and vendor sources and label what this guide did not verify; `docs/models.md` gained a capability-versus-fit table and an other-workloads section.
+- **Vendor pages and reuse:** [How We Work With Vendors](VENDOR_DISCLOSURE.md#how-we-work-with-vendors) describes the correction route; [`TRACTION.md`](TRACTION.md) lists where the data is reused; a new README section asks readers to keep each headline's qualification when citing it. Issue and pull-request templates and the CI workflows were updated, and the tests are documented as needing Linux or WSL.
+- **Review record:** [`ACTIVE_EVIDENCE_REVIEW_2026-10-01.md`](ACTIVE_EVIDENCE_REVIEW_2026-10-01.md) records what was checked on 2026-09-30 and what that date does not certify.
 
 ### 2026-09-26 -- Audit Fixes: Labels, Setup Safety And Dated Upstream State
 
@@ -2743,7 +2868,7 @@ These are the highest-value tests to add next, because they answer practical buy
 - **NPU/iGPU telemetry tooling:** `xdna-top` and similar tools could make NPU-sidecar and iGPU contention claims easier to verify, but should be documented as instrumentation until they produce measured model rows.
 - **Lucebox / DFlash / PFlash:** highest-upside experimental route for 27B long-prompt + generation workloads, but the old preflight lacked a developer toolchain; an isolated HIP toolchain now built the v0.4.1 controls, but this does not qualify Lucebox/DFlash; older rocWMMA design notes are historical after the 2026 upstream removal.
 - **vLLM/AWQ/DFlash throughput:** keep this experimental until it has a reproducible OpenAI-compatible server row that competes with `llama-server`/Ollama for a real use case. Plain AWQ smoke works, but it is not the fastest default.
-- **Strix Halo successors:** AMD announced the Ryzen AI Max PRO 400 Series (formerly Gorgon Halo) on 2026-05-20; OEM systems were announced, systems pending, as of 2026-09-25. It is a comparison target, not current setup advice; 192GB configurations are not qualified here. Later Medusa Halo / Ryzen AI Max 500 remains a future target.
+- **Strix Halo successors:** AMD announced the Ryzen AI Max PRO 400 Series (formerly Gorgon Halo) on 2026-05-20. The first PRO 495 systems with 192GB opened for order between 2026-09-28 and 2026-09-30, with shipping from mid-October to November (dated table in the [buyer comparison](https://strixhaloguide.com/best-strix-halo-mini-pc/#ryzen-ai-max-pro-400-systems-checked-2026-09-30), checked 2026-09-30). It is a comparison target, not current setup advice; 192GB configurations are not qualified here and none is measured. Later Medusa Halo / Ryzen AI Max 500 remains a future target (rumored only, not confirmed by AMD).
 
 ---
 

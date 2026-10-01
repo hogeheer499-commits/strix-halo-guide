@@ -1,6 +1,6 @@
 # Vendor and reviewer proof summary
 
-**Scope: September 19, 2026 functional campaign, plus attributed historical evidence.**
+**Scope: September 19, 2026 functional campaign and the matched controls of September 26, 2026, plus attributed historical evidence. Each statement carries its own date; versions named are the versions tested, not the latest available.**
 
 ## Buyer questions now answered more precisely
 
@@ -9,8 +9,9 @@
   executed Devstral tool round-trip and pinned Open WebUI discovery/response
   after service restart. Different models are not conflated into one quality claim.
 - **Can a newer release replace the known route?** Isolated Ollama 0.34.2
-  passed available-model controls but was not promoted without official
-  Qwen3.8, normal upgrade/client and reboot acceptance.
+  passed available-model controls on 2026-09-19 but was not promoted without
+  official Qwen3.8, normal upgrade/client and reboot acceptance. Later stable
+  releases are not qualified here.
 - **Is a successful load enough?** No. Historical HIP b10687 returned HTTP 200
   but failed exact retrieval and concurrent outputs; released v0.4.1 passed
   the tested Coder controls. Both passed the Gemma image fixture. The
@@ -25,6 +26,8 @@
 
 These resolve documentation and qualification uncertainties; they are not
 measured reductions in support tickets, conversion uplift, revenue or setup time.
+
+**Corrections (2026-09-26).** The Qwen3.8 27B result of 20.42 generation t/s is an Ollama-default MTP result (`draft_num_predict 4`), not a no-draft baseline: a matched control on the same Ollama 0.32.15 blob and harness measured 12.89 t/s without drafting and 22.71 t/s with Ollama-default MTP ([`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md), [raw bundle](data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/)). The 60.57 t/s Qwen3.6 row was measured on the tag's earlier manifest (`07d35212591f`); the matched check on the current MTP manifest found the same performance class ([raw bundle](data/raw/2026-09-26/qwen36-35b-a3b-ollama-03215-manifest-mtp-check/)). The Ollama 0.32.3 response-hash match was qualified because seven of nine visible responses were empty strings ([`EVIDENCE_CORRECTIONS.md`](EVIDENCE_CORRECTIONS.md#ollama-0323-response-hash-match)). Both 2026-09-26 controls were routine measurements with a known background workload.
 
 ## Main remaining limitation
 

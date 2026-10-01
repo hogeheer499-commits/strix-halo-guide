@@ -13,7 +13,7 @@ If it saved you setup time, helped you choose hardware, or helped you avoid a ba
 
 The free guide and community support remain available. People and teams that
 want a private setup session, an independent reproduction, or a scoped
-system/vendor campaign can review [`SERVICES.md`](SERVICES.md).
+system/vendor campaign can review [`SERVICES.md`](SERVICES.md). Scope requests go by private email as described there; public issues are for technical corrections and benchmark reports, not for quotes or confidential material.
 
 Paid work funds focused time and deliverables. It does not buy positive
 benchmark conclusions or priority changes to public claims.

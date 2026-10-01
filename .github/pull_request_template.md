@@ -19,4 +19,5 @@ Describe the user, buyer, benchmark, or reproducibility problem this PR solves.
 - [ ] New or changed relative Markdown links resolve.
 - [ ] Structured data and raw evidence are linked where the change adds a benchmark claim.
 - [ ] Slower results, failures, and material caveats are preserved.
-- [ ] `python3 scripts/validate_repo.py` and `python3 -m unittest discover -s tests` pass, or I explained why I could not run them.
+- [ ] Logs, CSVs, and screenshots contain no host name, user name in paths, IP or MAC addresses, serial numbers, tokens, or full process lists (see [Before You Post](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CONTRIBUTING.md#before-you-post-what-to-redact)).
+- [ ] `python3 scripts/validate_repo.py` and `python3 -m unittest discover -s tests` pass (run on Linux or WSL), or I explained why I could not run them.

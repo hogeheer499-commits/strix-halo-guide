@@ -2,7 +2,7 @@
 
 This file is the checklist for copying, rerunning, or challenging benchmark claims from the guide. The README is the human-facing entry point; structured CSVs and raw logs are the source of truth.
 
-**Checklist reviewed:** September 26, 2026. Per-run raw directories always override this summary.
+**Checklist reviewed:** October 1, 2026. Per-run raw directories always override this summary.
 
 ## Scope
 
@@ -30,11 +30,11 @@ For the August 30 integration, see the [sentinel/scout scope and raw evidence](B
 | Mesa/RADV | Mesa 26.0.6 for the main May 7 headline rows; Mesa 26.1.1 for the May 26/27 MTP spot checks; Mesa 26.1.2 for the June 7 b9544 controls; Mesa 26.1.4 for the July 16 b10034 and current-model runs; Mesa 26.1.7 for the August 30 b10687 sentinel/scout; kisak-mesa PPA where recorded |
 | llama.cpp | b9179 `b81c2cdd7` for the Qwen3-Coder speed-first peak; b9049 `2496f9c14` for the balanced UD headline rerun; b9360 `6b4e4bd58` for the Qwen3.6 MTP 100+ server route; b9467 `1fd5f4803` for the first direct Qwen3-30B-A3B-Instruct-2507 100+ row; b9979 for the AMD/RADV density-gate campaign; official b10034 `505b1ed15` for the July 16 Vulkan sentinel and current-model checks; b10107 for the July 25 vision/ASR/embedding smokes; b10330 for the August 9 Qwen3-Next MTP backend A/B and TTS smoke. b10687 `c841aee` has a short Vulkan/RADV sentinel and Flash-Next scout on August 30; this does not qualify HIP, server behavior or long context |
 | Ollama | 0.31.2 for the fully qualified installed-service buyer path; isolated 0.31.1/0.31.2/0.32.0 binaries for the controlled July 16 comparison; isolated 0.32.3 for the exact-output, iGPU-vision, and process-restart qualification; 0.32.13 for the August 15 Qwen3.8 27B route. 0.32.15 passed the September 19 existing-service restart route; 0.34.2 passed isolated available-model controls but is not promoted |
-| BIOS version / date | Not recorded for the published runs; capture it from `/sys/class/dmi/id/bios_version` and `bios_date` for new runs (see Before Running) |
+| BIOS version / date | Not recorded for the published runs, including the four 2026-09-26 bundles (not recorded, not estimated); capture it from `/sys/class/dmi/id/bios_version` and `bios_date` for new runs (see Before Running) |
 | BIOS UMA | 512MB for the measured local setup |
 | IOMMU | Disabled for the primary measured desktop benchmark profile; enabled/default remains the normal buyer recommendation for NPU, mobile suspend, RDMA, VFIO, passthrough, and clustering |
 | AMDVLK | Removed; RADV should be the selected Vulkan ICD |
-| Power profile | Main historical headline runs used `tuned accelerator-performance`; the July 16 b10034 sentinel recorded the desktop power profile as `performance`, `tuned` inactive, and amdgpu DPM forced to `high`. The August 30 direct rows use desktop `performance` with DPM `auto` and recorded CPU-only background load. Never infer one policy from another run. |
+| Power profile | Main historical headline runs used `tuned accelerator-performance`; the July 16 b10034 sentinel recorded the desktop power profile as `performance`, `tuned` inactive, and amdgpu DPM forced to `high`. The August 30 direct rows use desktop `performance` with DPM `auto` and recorded CPU-only background load. Never infer one policy from another run. The kernel platform profile (`/sys/firmware/acpi/platform_profile`) is not recorded in any published run; record it for new runs next to the desktop power profile. |
 | GPU clock | 2900 MHz was selected during earlier readiness checks; use each raw host snapshot and telemetry file for current clock behavior |
 | Firmware | `linux-firmware` 20240318.git3b128b60-0ubuntu2.27 was recorded for the earlier baseline; later runs must use their own package or host snapshot. Since 2026-09-03 Ubuntu 24.04 ships the AMD GPU blobs in `linux-firmware-amd-graphics` (the `linux-firmware` package became a metapackage); record that package version in every new host snapshot |
 
@@ -56,7 +56,12 @@ cat /sys/class/drm/card*/device/pp_dpm_sclk
 dpkg -l | grep -E 'amdvlk|mesa-vulkan-drivers|linux-firmware|rocm|hip' || true
 dpkg-query -W 'linux-firmware*' || true   # Ubuntu 24.04: includes linux-firmware-amd-graphics
 cat /sys/class/dmi/id/bios_version /sys/class/dmi/id/bios_date
+cat /sys/firmware/acpi/platform_profile
+sudo dmidecode -t memory | grep -i "configured memory speed"
+cat /sys/module/amdgpu/parameters/gttsize /sys/module/ttm/parameters/pages_limit
 ```
+
+The `dmidecode` output also contains module serial numbers; keep only the configured-speed line. Redact host names, user names in paths and addresses from anything you publish (see [`CONTRIBUTING.md`](CONTRIBUTING.md#before-you-post-what-to-redact)).
 
 Then run the local hygiene check:
 
@@ -64,8 +69,10 @@ Then run the local hygiene check:
 scripts/check_benchmark_cleanliness.sh
 ```
 
-The checker inventories the current host; it does not certify GPU inactivity or
-strict-clean conditions from process names. Set `BENCHMARK_POWER_POLICY=tuned`
+The checker inventories the current host (BIOS version and date, platform
+profile, power policy, load average, GPU busy counter); it does not certify GPU
+inactivity or strict-clean conditions. It does not record process names, listening
+ports, or container names. Set `BENCHMARK_POWER_POLICY=tuned`
 only for a tuned reproduction. Optional `BENCHMARK_HEALTH_URLS` must return JSON
 `{"ok":true}`; no private service is required by default. The historical
 `scripts/run_with_t3_guard.py` filename is retained, but its URLs are now opt-in
@@ -73,7 +80,7 @@ and its swap threshold defaults to zero for systems without swap. Cleanup target
 only the command's new process group plus explicitly supplied cleanup commands;
 review those commands before invoking the wrapper.
 
-The hygiene script is read-only. On the maintainer workstation it also checks local workflow dependencies. If you are reproducing on another machine, record equivalent background load, remote desktop state, VMs, local AI servers, power profile, GPU clock, and selected Vulkan ICD.
+The hygiene script is read-only. Record the background load, remote desktop state, VMs, local AI servers, power profile, GPU clock, and selected Vulkan ICD in your own run notes.
 
 On Ubuntu, `tuned` conflicts with `power-profiles-daemon`. If `power-profiles-daemon` starts, it can stop `tuned` and change the active power policy. For headline reproductions, match the exact policy recorded by that run; the main historical headline path used `tuned accelerator-performance`. If a campaign intentionally uses another fixed policy, as the July 16 b10034 sentinel did, record it explicitly and keep its comparisons within that campaign. Avoid changing power policy during a run.
 

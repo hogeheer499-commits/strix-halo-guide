@@ -6,7 +6,7 @@ permalink: /qwen38-strix-halo/
 canonical_url: "https://strixhaloguide.com/qwen38-strix-halo/"
 sitemap: false
 date: "2026-08-25T00:00:00+02:00"
-last_modified_at: "2026-09-19T00:00:00+02:00"
+last_modified_at: "2026-10-01T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/qwen38-route-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "Qwen3.8 27B routes on AMD Strix Halo with measured official and external context evidence"
 seo:
   type: "TechArticle"
-  date_modified: "2026-09-19T00:00:00+02:00"
+  date_modified: "2026-10-01T00:00:00+02:00"
 ---
 
 # Qwen3.8 27B on AMD Strix Halo
@@ -32,7 +32,7 @@ systems. The useful question is no longer only “does it run?” It is which
 official, stock, MTP, DFlash, ROCmFP4, or performance-fork route fits the
 workload—and which published numbers are actually comparable.
 
-**Evidence reviewed:** September 26, 2026.
+**Evidence reviewed:** October 1, 2026.
 
 Project home: [Strix Halo Guide](https://strixhaloguide.com/). The [canonical Qwen3.8 evidence page](https://strixhaloguide.com/qwen38-strix-halo/) is on the project domain; this page remains a technical mirror.
 
@@ -41,7 +41,8 @@ Project home: [Strix Halo Guide](https://strixhaloguide.com/). The [canonical Qw
 | Question | Current answer |
 | --- | --- |
 | Easiest measured official route | `qwen3.8:27b` through Ollama 0.32.13 and Vulkan/RADV |
-| Guide-measured warm result | 292.49 prompt t/s and 20.42 generation t/s over nine repeats, measured as Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; `draft-mtp` logged in the same-service 64K run; per-run log for the 4K warm runs not captured); not a no-draft result, and a matched no-draft control is queued |
+| Guide-measured warm result | 292.49 prompt t/s and 20.42 generation t/s over nine repeats, measured as Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; `draft-mtp` logged in the same-service 64K run; per-run log for the 4K warm runs not captured); not a no-draft result; the matched no-draft control is the next row |
+| Matched no-draft control (separate run) | Without MTP 12.89 generation t/s versus 22.71 t/s with Ollama-default MTP on the same model blob (Ollama 0.32.15, 2026-09-26, routine background load, nine warm repeats each); not strict-clean, and the two values are not combined with the 20.42 run. [Raw evidence](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft) |
 | Guide-measured capabilities | Image, tool-call, thinking, and exact retrieval through 50,059 prompt tokens passed |
 | Long-context boundary | A 56,051-token attempt caused a recoverable device loss on that exact stack; separate corrected GMKtec evidence reached 261,130 evaluated tokens |
 | 52-65 t/s posts | Advanced fork/quant/speculation leads that require their exact artifacts, prompts, context behavior, and independent reproduction |
@@ -60,10 +61,11 @@ ollama run qwen3.8:27b
 ```
 
 The Strix Halo service still needs the guide's Vulkan/iGPU environment,
-including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Ollama 0.34.2 was the
-current checked package on September 19 (0.34.4 was available on September 25,
-unqualified). Neither has inherited the measured 0.32.13 result or the full
-normal-service/reboot qualification.
+including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Ollama 0.34.4 was the latest
+stable release checked (September 30, 2026; availability only; GitHub listed 0.35.0 as the
+latest release on October 1, unqualified here) and Ollama 0.34.2
+was the September 19 check. Neither has inherited the measured 0.32.13 result or
+the full normal-service/reboot qualification.
 
 ## Why The Speed Claims Differ
 

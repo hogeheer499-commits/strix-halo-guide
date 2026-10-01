@@ -10,8 +10,11 @@ assignees: ''
 - **Device:** (e.g., Beelink GTR9 Pro, Framework Desktop 13)
 - **CPU/GPU:** (e.g., Ryzen AI MAX+ 395 / Radeon 8060S)
 - **RAM:** (e.g., 128GB LPDDR5X)
-- **BIOS / EC (embedded controller) version:**
+- **Configured memory speed:** `sudo dmidecode -t memory | grep -i "configured memory speed"` output (do not paste serial numbers)
+- **Visible RAM:** `free -g` output
+- **BIOS / EC (embedded controller) version and BIOS date:** `cat /sys/class/dmi/id/bios_version /sys/class/dmi/id/bios_date` output
 - **BIOS UMA setting:**
+- **GTT / TTM limits:** `cat /sys/module/amdgpu/parameters/gttsize /sys/module/ttm/parameters/pages_limit` output, or the GRUB parameters you set
 - **IOMMU setting:**
 - **OS:** (`lsb_release -a`)
 - **Kernel:** `uname -r` output
@@ -20,6 +23,7 @@ assignees: ''
 - **Ollama:** `ollama --version` output
 - **Ollama model manifest ID, if using Ollama:** `ollama list` ID column for the tested model
 - **Ollama model parameters, if using Ollama:** `ollama show <model> --parameters` output
+- **Platform profile:** `cat /sys/firmware/acpi/platform_profile` output
 - **tuned profile:** `tuned-adm active` output
 - **Vulkan ICD:** RADV / AMDVLK / other
 
@@ -59,3 +63,6 @@ If you are reproducing a specific guide row, link it here:
 Any other relevant observations: temperature, power draw, clocks, throttling, background load, stability, model loading time, storage path, or failure mode.
 
 Slower, failed, and surprising results are useful too if the setup details are complete.
+
+## Before you post
+Remove or replace anything that is not needed to reproduce the result: host name (`<host>`), user name in paths (`~`), IP and MAC addresses (`<lan-ip>`), serial numbers (including `dmidecode` output), tokens and passwords, and full process or port listings (`ps`, `ss`, `docker ps`). Keep versions, flags, clocks, power profile, hashes, and the exact command. See [CONTRIBUTING.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CONTRIBUTING.md#before-you-post-what-to-redact).
