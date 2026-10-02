@@ -18,12 +18,13 @@ GitHub-generated source archives for tagged releases are expected. Extra binary
 download assets are not part of this project unless they are explicitly
 documented in this repository by the maintainer.
 
-**Lookalike repositories (checked 2026-09-25):** at least one unrelated
-repository with the same name, `GetNyrex/strix-halo-guide` (plus a GitHub Pages
-copy), links a `.zip` bundle and tells Windows users to run an `.exe`. It is not
-part of this project. Do not download or run its files. This guide never ships
-`.exe` or `.zip` installers; the setup route is the reviewed shell script from
-the canonical repository.
+**Lookalike repositories and websites (checked 2026-09-25):** copies can use
+this guide's name. At least one unrelated repository with the same name (plus a
+GitHub Pages copy) links a `.zip` bundle and tells Windows users to run an
+`.exe`. None of them is part of this project. Do not download or run files from
+anywhere except the canonical repository. This guide does not ship `.exe` files
+or binary `.zip` packages; the setup route is the reviewed shell script from the
+canonical repository.
 
 ## What To Report
 
@@ -69,8 +70,9 @@ project and should be treated as unofficial.
 
 ## Security Status Of Pinned Components
 
-Checked 2026-09-30 (previous check 2026-09-25). This lists published advisories
-for runtimes the guide pins, qualified or plans to test. It is not a full audit.
+Checked 2026-09-30 (previous check 2026-09-25); the Open WebUI count was redone on
+2026-10-02. This lists published advisories for runtimes the guide pins, qualified or
+plans to test. It is not a full audit.
 The guide has not tested any exploit, and "not tested here" below means exactly
 that. Sources are the projects' own advisory lists and issue trackers, the
 [NVD](https://nvd.nist.gov/) and AMD
@@ -80,13 +82,23 @@ bulletins. Practical guidance built on this list is in
 
 ### Open WebUI
 
-- **19 advisories were published on 2026-09-27 and 2026-09-28.** All list 0.11.4
-  (released 2026-09-21) as the patched version
+- **47 published advisories include the pinned 0.10.2 image (counted 2026-10-02).**
+  Method: the count of published advisories whose affected-version range includes
+  0.10.2, taken from Open WebUI's GitHub security advisories
   ([advisory list](https://github.com/open-webui/open-webui/security/advisories),
-  checked 2026-09-30). 13 of them list 0.10.2 as affected, 3 of those rated high.
-  The digest-pinned 0.10.2 image in the README is therefore in the affected
-  range. CVE-2026-70491 (0.10.2 and earlier, fixed in 0.11.0; checked 2026-09-25)
-  is an older, separate advisory for the same version.
+  read through the repository advisories API with `state=published`, checked
+  2026-10-02). Of 165 published advisories, 47
+  include 0.10.2: 15 rated high, 31 medium and 1 low, none critical. The newest
+  advisory in the list was published on 2026-09-28. This counts advisories as
+  published, not separate weaknesses. It does not say which of them can be used against
+  a single-user, loopback-only setup: that was not assessed here, and no advisory was
+  tested here.
+- **Two groups.** 13 of the 47 (3 high, 10 medium) belong to the batch of 19 advisories
+  published on 2026-09-27 and 2026-09-28; all 19 list 0.11.4 (released 2026-09-21) as
+  the patched version. The other 34 (12 high, 21 medium, 1 low) were published between
+  2026-08-02 and 2026-09-09 and list 0.11.0 or 0.11.1 as the patched version.
+  CVE-2026-70491 (0.10.2 and earlier, fixed in 0.11.0; checked 2026-09-25) is one of the
+  34. The digest-pinned 0.10.2 image in the README is in the affected range of all 47.
 - **[GHSA-vpq8-f445-hcq7](https://github.com/open-webui/open-webui/security/advisories/GHSA-vpq8-f445-hcq7)**
   (high, CVSS 8.1, affects 0.7.0 up to but excluding 0.11.4): the community-stats
   message listener does not check `event.origin`. According to the advisory, any
@@ -96,14 +108,34 @@ bulletins. Practical guidance built on this list is in
   deployments with it disabled are not affected. The attack runs in the user's own
   browser, so binding the server to loopback does not appear to prevent it (our
   reading of the advisory, not tested here).
-- **Mitigation:** use 0.11.4 or later. Releases 0.11.1 to 0.11.3 fall under other
-  advisories (for example GHSA-f9xp-mfmq-x6cg, high, 0.11.1 to 0.11.3), so "a
-  patched release" means 0.11.4 or later. Until a patched image is qualified here,
-  set `ENABLE_COMMUNITY_SHARING=False` on a new container (not tested here). For an
-  existing install, check the admin settings: Open WebUI can keep a setting in its
-  data volume, so the environment variable may not override it (to verify).
-- A patched release has not been qualified here
-  ([`data/current_test_queue.csv`](data/current_test_queue.csv)).
+- **With default settings, `ENABLE_COMMUNITY_SHARING=False` does not change an existing data volume.** In Open WebUI's
+  source (`backend/open_webui/models/config.py`, tags v0.10.2 and v0.11.4, read
+  2026-10-02) the start-up step that stores default values says "Existing DB values
+  take precedence over defaults", and the setting is stored as
+  `ui.enable_community_sharing` (`backend/open_webui/config.py`; the variable defaults
+  to on). A data volume on which Open WebUI has already started therefore keeps its
+  stored value and, with default settings, ignores the variable. In the same source,
+  `ENABLE_PERSISTENT_CONFIG=False` makes Open WebUI use the environment values and not
+  store admin changes (read in the source, not tested here). For an existing volume with default
+  settings, turn community sharing
+  off in the admin settings: in the v0.10.2 source the General tab of the admin
+  settings has an "Enable Community Sharing" switch
+  (`src/lib/components/admin/Settings/General.svelte`). Neither the variable nor the
+  switch was tested here; the menu path comes from the source, not from clicking through
+  it.
+- **One version rule.** The digest-pinned 0.10.2 image is the only Open WebUI version
+  qualified here ([`RUNTIME_QUALIFICATION_2026-09-19.md`](RUNTIME_QUALIFICATION_2026-09-19.md)).
+  A patched release (0.11.4 or later) is not qualified here; the row with `priority` 40
+  ("Patched Open WebUI qualification and advisory recheck") in
+  [`data/current_test_queue.csv`](data/current_test_queue.csv) tracks it. Releases
+  0.11.1 to 0.11.3 are not patched releases: the affected ranges of all 19 advisories
+  in the batch include 0.11.3 (for example GHSA-f9xp-mfmq-x6cg, high, 0.11.1 to
+  0.11.3), and on 2026-10-02 no published advisory listed 0.11.4 as affected. If you
+  upgrade anyway, pin the new image by digest (not a moving tag), rerun the acceptance
+  checks of the September 19 qualification and report the result.
+- **If you stay on the pin,** keep it bound to loopback, turn community sharing off as
+  described above and do not create accounts for untrusted users. These steps reduce
+  exposure. They do not make the pinned image a patched one.
 
 ### Ollama
 
@@ -155,8 +187,19 @@ bulletins. Practical guidance built on this list is in
   insecure proof of concept. CVE-2026-86317 (NVD, "Deferred": llama.cpp up to
   0.4.0, a remote reachable assertion in `rpc_server::deserialize_tensor`; the
   upstream issue was closed as inactive). A source reading of v0.5.0 on 2026-09-30
-  showed no dimension check in that function (not tested). Use it only over a
-  direct point-to-point link; see [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md).
+  showed no dimension check in that function (not tested).
+  [GHSA-j8rj-fmpv-wcxw](https://github.com/ggml-org/llama.cpp/security/advisories/GHSA-j8rj-fmpv-wcxw)
+  (CVE-2026-34159, critical, CVSS 9.8, published 2026-03-26, checked 2026-10-02) is titled
+  "Unauthenticated RCE via GRAPH_COMPUTE buffer=0 bypass in llama.cpp RPC backend". The
+  advisory says no authentication is required, only TCP access to the RPC server port
+  (default 50052), to run commands as the server's user. It lists llama.cpp
+  `<= b7991` as affected and names no patched version. It also says the RPC backend must
+  be enabled at build time and defaults to localhost. The builds this guide currently
+  uses (v0.4.1 and v0.5.0 = b11146) are newer than b7991, but the advisory names no patched version, so newer does not
+  by itself mean fixed. This guide has not compared current builds with the advisory's
+  description and has not tested them; whether they are affected is to verify. Use
+  RPC only over a direct point-to-point link, never on a LAN or tailnet address; see
+  [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md).
 - **AMD's clustering playbooks** ([`amd/playbooks`](https://github.com/amd/playbooks),
   read 2026-09-30) start `rpc-server` and `llama-server` with `--host 0.0.0.0`,
   and the RCCL playbook starts a Ray head on port 6379, serves vLLM on `0.0.0.0`
@@ -241,9 +284,11 @@ recorded for the published runs ([`REPRODUCIBILITY.md`](REPRODUCIBILITY.md)).
 - Keep Ollama on its loopback default (`127.0.0.1:11434`); do not expose an
   unauthenticated Ollama listener to a LAN, a tailnet or the internet.
 - Pull models only from registries you trust.
-- Prefer Open WebUI 0.11.4 or later (the patched version in the advisories, not
-  qualified here), keep it bound to loopback, turn community sharing off and do not
-  create accounts for untrusted users.
+- Open WebUI: the qualified image is the digest-pinned 0.10.2, which 47 published
+  advisories include (see above); a patched release (0.11.4 or later) is not qualified
+  here. Either way keep it bound to loopback, turn community sharing off (in the admin
+  settings on an existing volume; from source, not clicked through here) and do not create accounts for untrusted users. If you
+  upgrade, pin by digest, rerun the acceptance checks and report the result.
 - Do not share one `llama-server` between people or agents of different trust
   without the cache settings above, and avoid `--slot-save-path` on shared servers.
 - Keep `rpc-server`, Ray and vLLM off the LAN; see
@@ -256,7 +301,9 @@ recorded for the published runs ([`REPRODUCIBILITY.md`](REPRODUCIBILITY.md)).
   commands in the README come from a third party's instructions, use moving tags and
   share your home directory.
 - SSH: key login, `PasswordAuthentication no`, a firewall, an IPv6 check and a VPN or
-  `ssh -L` tunnel instead of an open port; see [SSH](SECURE_LOCAL_AI.md#ssh).
+  `ssh -L` tunnel instead of an open port. Check the effective settings with
+  `sudo sshd -T` and `sudo ufw status numbered`, because a drop-in file or an existing
+  broader firewall rule can undo your change; see [SSH](SECURE_LOCAL_AI.md#ssh).
 - RAG and agents: treat documents, web pages and repository files as data, not
   instructions (OWASP LLM01:2025); see [RAG and agents](SECURE_LOCAL_AI.md#rag-and-agents).
 

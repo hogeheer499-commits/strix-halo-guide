@@ -1,13 +1,16 @@
 # USB4 Cluster Tuning
 
-> **Security and cluster notes (checked 2026-09-30)**
+> **Security and cluster notes (checked 2026-09-30; advisory line 2026-10-02)**
 >
 > - `rpc-server` has no authentication, and upstream describes the RPC backend as a fragile proof of
 >   concept that must not run on an open network
 >   ([tools/rpc/README.md](https://github.com/ggml-org/llama.cpp/blob/master/tools/rpc/README.md)).
 >   Run it only over a direct point-to-point link (here: the USB4 `thunderbolt-net` link), never on
 >   a LAN or tailnet address. CVE-2026-86317 (NVD, llama.cpp up to 0.4.0) is a remote crash in the
->   RPC server.
+>   RPC server. [GHSA-j8rj-fmpv-wcxw](https://github.com/ggml-org/llama.cpp/security/advisories/GHSA-j8rj-fmpv-wcxw)
+>   (CVE-2026-34159, critical, CVSS 9.8, checked 2026-10-02) describes, according to the advisory,
+>   unauthenticated remote code execution with only TCP access to the RPC server port (default
+>   50052); it lists llama.cpp `<= b7991` as affected and names no patched version. Not tested here.
 > - Every node must run the same `llama.cpp` build (RPC protocol version 7 from v0.5.0; see the
 >   caveat below).
 > - AMD's RCCL/Ray clustering playbook (read 2026-09-30) starts a Ray head on port 6379, runs vLLM on

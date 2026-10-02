@@ -41,8 +41,9 @@ default MTP. See [the active-evidence review](ACTIVE_EVIDENCE_REVIEW_2026-10-01.
 scout are indexed with their own stack and caveats; see
 [the measured update](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout).
 The [September 30 availability check](ROCM_VLLM_BUGWATCH.md#2026-09-30-upstream-recheck)
-lists newer candidates, including Ollama 0.34.4 (the latest stable release that day) and `llama.cpp`
-v0.5.0 with build b11265, without promoting them. The
+lists newer candidates without promoting them: Ollama 0.34.4 (the latest stable release that day),
+`llama.cpp` v0.5.0 (the same commit as build b11146, which the 2026-09-26 routine scouts used) and
+the numbered build b11265 (the newest numbered build when that check was made, published 2026-09-29 23:24 UTC; newer builds followed within hours; not measured here). The
 machine-readable freshness record is [`data/public_state.json`](data/public_state.json).
 
 What you get:
@@ -197,7 +198,7 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 | Fastest local coding speed | Qwen3-Coder 30B-A3B Q4_K_S: 100.99 t/s direct llama.cpp Vulkan/RADV on the official b9851 release binary; older strict-clean b9179 row measured 98.51 t/s | Speed-first quant candidate. Use it when raw t/s matters and you accept the quality tradeoff. This is direct `llama-bench`, not MTP/server speculation. | [`headline claims`](data/headline_claims.csv), [`b9851 raw r50`](data/raw/2026-06-30/latest-llamacpp-b9851-vulkan-sentinel/qwen3-coder-q4ks-b9851-p512-n128-r50.csv), [`older strict-clean raw r50`](data/raw/2026-05-16/break-97-24-strict-noise-settings/b9179-q4-k-s-r50.csv) |
 | Fast balanced local coding model | Qwen3-Coder 30B-A3B UD-Q4_K_XL: 96.76 t/s direct llama.cpp Vulkan/RADV on current b9049 | Coding-speed row for the balanced quant: a speed measurement, not a coding-quality ranking. Third-party quality signals and public scores are in [`docs/models.md`](docs/models.md). | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv) |
 | Newer Qwen coding model | Qwen3-Coder-Next 80B-A3B IQ4_XS: 61.91 t/s direct llama.cpp Vulkan/RADV on b9467 | Modern coding-model row for people who want current Qwen Coder-Next rather than the older 30B speed headline. Use it for capability/currentness, not maximum raw t/s. | [`benchmarks CSV`](data/benchmarks.csv), [`raw run`](data/raw/2026-06-02/modern-model-clean-followup/) |
-| Easy private chat setup | Qwen3.6 35B-A3B Q4_K_M: 60.57 t/s warm API generation through the normal Ollama 0.31.2 system service with `OLLAMA_IGPU_ENABLE=1`; vision, service restart, and full-host reboot persistence passed | This is the copyable default for model pulling, Open WebUI, vision, and simple local chat. A later controlled local-binary comparison measured 0.31.1/0.31.2/0.32.0 at 72.55/73.19/73.20 t/s, so do not treat the earlier 60.57-versus-71.82 gap as a version-wide regression. | [`headline claims`](data/headline_claims.csv), [`raw service run`](data/raw/2026-07-10/ollama-0312-buyer-path/), [`raw controlled comparison`](data/raw/2026-07-16/ollama-0311-0312-0320-controlled/) |
+| Easy local chat setup | Qwen3.6 35B-A3B Q4_K_M: 60.57 t/s warm API generation through the normal Ollama 0.31.2 system service with `OLLAMA_IGPU_ENABLE=1`; vision, service restart, and full-host reboot persistence passed | This is the copyable default for model pulling, Open WebUI, vision, and simple local chat. A later controlled local-binary comparison measured 0.31.1/0.31.2/0.32.0 at 72.55/73.19/73.20 t/s, so do not treat the earlier 60.57-versus-71.82 gap as a version-wide regression. | [`headline claims`](data/headline_claims.csv), [`raw service run`](data/raw/2026-07-10/ollama-0312-buyer-path/), [`raw controlled comparison`](data/raw/2026-07-16/ollama-0311-0312-0320-controlled/) |
 | Fine-tune, export, and reload a local model | Pinned ROCm 7.2 Unsloth route: Radeon GPU gate, one SFT step, checkpoint inference, `Q4_K_M` GGUF export, ROCm `llama.cpp` inference, and post-restart artifact load all passed | End-to-end developer workflow evidence on a retail box. The Qwen3 0.6B one-step run is a plumbing smoke, not a quality or performance headline. | [`Unsloth guide`](UNSLOTH_STRIX_HALO.md), [`raw evidence`](data/raw/2026-07-21/unsloth-rocm72-train-export-smoke/) |
 | Fast all-rounder direct path | Qwen3.6 35B-A3B UD-Q4_K_M: 62.56 t/s direct llama.cpp Vulkan/RADV on current b9049 | Use this when you care more about speed and control than the easiest UI. | [`headline claims`](data/headline_claims.csv), [`raw run`](data/raw/2026-05-07/latest-stack-rerun/clean-b9049-rerun/qwen36-35b-b9049-clean-r20.csv) |
 | Fastest Qwen3.6 direct path | Qwen3.6 35B-A3B Q4_0: 81.30 t/s direct llama.cpp Vulkan/RADV on current b9049 | Speed-first option. Use the default/balanced quant if quality matters more than raw t/s. | [`max campaign`](data/max_performance_campaign.csv), [`raw run`](data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen36-top-confirm-r20/q4-0-ub2048.csv) |
@@ -222,7 +223,7 @@ This is the quick "what can I actually run on my AI PC?" view. It is not the ful
 
 | Goal | Start with | Why | Evidence |
 |------|------------|-----|----------|
-| Easiest private local chat | Ollama 0.31.2 system service with Vulkan/RADV | normal install path; model pulling, vision, restart/reboot persistence, and Open WebUI compatibility | 60.57 t/s fully qualified service run; controlled isolated 0.31.1/0.31.2/0.32.0 binaries later measured 72.55-73.20 t/s, [`data/benchmarks.csv`](data/benchmarks.csv) |
+| Easiest local chat | Ollama 0.31.2 system service with Vulkan/RADV | normal install path; model pulling, vision, restart/reboot persistence, and Open WebUI compatibility. Local is not automatically private: prompts can end up in logs and caches, see [`SECURE_LOCAL_AI.md`](SECURE_LOCAL_AI.md#the-short-version) | 60.57 t/s fully qualified service run; controlled isolated 0.31.1/0.31.2/0.32.0 binaries later measured 72.55-73.20 t/s, [`data/benchmarks.csv`](data/benchmarks.csv) |
 | Fast coding or scripts on one machine | `llama-server` Vulkan/RADV | fastest measured Qwen3.6 path at 1-4 parallel requests | [`SERVER_SHOOTOUT.md`](SERVER_SHOOTOUT.md) |
 | Speculative decoding experiments | `llama-server` MTP on current master / ROCmFPX | measured server speedups on Qwen3.6 MTP GGUFs, Gemma 4 QAT matched MTP heads, and CHADROCK ROCmFP4; Qwen3.6 reached about 101.1 t/s on b9360, Gemma 4 26B-A4B QAT reached 110.0 t/s best-repeat, and the exact CHADROCK reference profile averaged 141.37 t/s over three repeats at 100% draft acceptance | [`MTP_SPECULATIVE_DECODING.md`](MTP_SPECULATIVE_DECODING.md), [`ROCMFP4_CHADROCK.md`](ROCMFP4_CHADROCK.md), [`data/mtp_speculative.csv`](data/mtp_speculative.csv) |
 | Several local tools or users hitting one API | Start with stock Vulkan up to 8; above that, compare opt-in density Vulkan and Lemonade ROCm on the exact model | b9979 repeats show density recovers the Vulkan np9 cliff, but the backend winner differs between the tested 30B and 80B models | [`MOE_CONCURRENCY.md`](MOE_CONCURRENCY.md), [`data/moe_density_gate_summary.csv`](data/moe_density_gate_summary.csv) |
@@ -297,7 +298,7 @@ If you are new, do this first:
 2. Set BIOS UMA Frame Buffer Size to 512MB if available, or 2GB if that is your vendor minimum.
 3. Keep IOMMU enabled/default if you use suspend, the NPU, RDMA, VFIO, passthrough, or clustering. On an always-on desktop benchmark box, `amd_iommu=off` remains an optional measured performance profile.
 4. Use the [setup script](#setup-script) to install the Vulkan/RADV + Ollama path.
-5. Start with Ollama for chat, then add [Open WebUI](#chatgpt-like-web-interface-open-webui) if you want a browser UI.
+5. Start with Ollama for chat, then add [Open WebUI](#chatgpt-like-web-interface-open-webui) if you want a browser UI (read its security status first: the pinned version is in the range of 47 published advisories).
 6. Move to direct `llama.cpp` only when you want exact benchmark control or the fastest measured single-box path.
 
 The quickest sanity check after the setup script finishes is:
@@ -312,7 +313,7 @@ Choose the backend by what you are trying to do:
 
 | Use case | Do this first | Why |
 |----------|---------------|-----|
-| You want private chat working today | Use the [setup script](#setup-script), then run `ollama run qwen3.6:35b-a3b`. | Easiest path to model pulling, local chat, and Open WebUI. |
+| You want local chat working today | Use the [setup script](#setup-script), then run `ollama run qwen3.6:35b-a3b`. | Easiest path to model pulling, local chat, and Open WebUI. |
 | You want to reproduce the headline speed rows | Use [Reproduce One Headline Result](#reproduce-one-headline-result). | Exact model, quant, build, and command matter for benchmark comparisons. |
 | You want a local API server or MTP tests | Read [MTP/speculative decoding](MTP_SPECULATIVE_DECODING.md) and use `llama-server`. | Supports serving, batching, long-context tests, and speculative decoding. |
 | You have many parallel local requests | Read [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md) for the measured Lemonade `llamacpp-rocm` b1259 profile before planning a new comparison. | The 8-16 parallel advice was measured on 2026-05-05. [Lemonade v11.9.0](https://github.com/lemonade-sdk/lemonade/releases/tag/v11.9.0), checked September 19, is available but unqualified here and has not inherited that result. |
@@ -1002,9 +1003,10 @@ Based on [lhl's measurements](https://github.com/lhl/strix-halo-testing) with gp
 
 Historical external evidence at 130K tokens from
 [strixhalo.wiki](https://strixhalo.wiki/AI/llamacpp-performance) is preserved
-below. The linked tracker was last updated 2025-08-08 and therefore predates
-the 2026-07-24 rocWMMA removal and ROCm 7.x/10.0; do not use it as current build
-guidance.
+below. The wiki's public mirror repository lists 2025-11-01 as the last change to that page
+([history](https://github.com/kyuz0/strixhalo-homelab/commits/main/AI/llamacpp-performance.md),
+checked 2026-10-02), so its content may predate the 2026-07-24 rocWMMA removal and
+ROCm 7.x/10.0; do not use it as current build guidance.
 
 | Backend | pp512 (t/s) | tg128 (t/s) |
 |---------|-------------|-------------|
@@ -1575,7 +1577,7 @@ sudo sed -i 's/^#*PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
 sudo systemctl restart ssh
 ```
 
-> fail2ban starts automatically and blocks IPs after repeated failed login attempts. We found **68 brute-force attempts** on our system within hours of enabling SSH -- fail2ban is essential.
+> fail2ban starts automatically and blocks IPs after repeated failed login attempts. It reduces failed-login noise; it does not replace key login and a firewall (Steps 10.3 and 10.4).
 
 ### Step 10.3: Use Key Login, Then Turn Off Passwords
 
@@ -1592,21 +1594,54 @@ Only then set `PasswordAuthentication no` in `/etc/ssh/sshd_config` (see
 the first session open until the second login works. `fail2ban` reduces noise; key
 login and a firewall do more.
 
+Then check what sshd actually uses, not what the file says:
+
+```bash
+sudo sshd -T | grep -E "^(passwordauthentication|permitrootlogin|pubkeyauthentication)"
+```
+
+`sshd -T` prints the effective configuration. The Ubuntu 24.04 manual page for
+`sshd_config(5)` says that for each keyword "the first obtained value will be used",
+and that the Debian `openssh-server` package includes `/etc/ssh/sshd_config.d/*.conf`
+at the start of the configuration file, so options set there override those in
+`/etc/ssh/sshd_config`
+([manual page](https://manpages.ubuntu.com/manpages/noble/en/man5/sshd_config.5.html),
+read 2026-10-02). A drop-in with `PasswordAuthentication yes` can therefore leave
+password login on although your own line says `no`. If the output shows
+`passwordauthentication yes`, find the file that sets it with
+`sudo grep -ri passwordauthentication /etc/ssh/sshd_config /etc/ssh/sshd_config.d/`
+and change that one. The same check covers `PermitRootLogin` from Step 10.2.
+
 ### Step 10.4: Limit Who Can Reach SSH And Open WebUI
 
 - Allow port 22 only from your LAN or a VPN, for example
   `sudo ufw allow from <lan-subnet> to any port 22 proto tcp`, and do not forward it
-  on your router. Docker-published ports bypass ufw and Tailscale accepts tailnet
-  traffic early; see [Network exposure](SECURE_LOCAL_AI.md#network-exposure).
+  on your router. ufw is disabled after installation
+  ([ufw(8)](https://manpages.ubuntu.com/manpages/noble/en/man8/ufw.8.html), Ubuntu
+  24.04, read 2026-10-02), so a rule does nothing until `sudo ufw enable`; allow your
+  own SSH source before you enable it. Docker-published ports bypass ufw and Tailscale
+  accepts tailnet traffic early; see
+  [Network exposure](SECURE_LOCAL_AI.md#network-exposure).
+- Check the firewall with `sudo ufw status numbered`. It lists each rule with its
+  number, and a firewall reported as inactive applies no rule. ufw(8) says rule
+  ordering is important and the first match wins: a narrow allow rule does not close
+  port 22 while a broader allow such as `22/tcp ALLOW Anywhere` is in the list. Remove
+  that rule by its number with `sudo ufw delete <number>`. With IPv6 enabled, ufw(8)
+  says deleting a generic rule by number deletes only the specified rule, so look in the
+  numbered list for the matching IPv6 entry (shown with `(v6)`), delete it too and run
+  `sudo ufw status numbered` again to confirm that both are gone.
 - Check IPv6: `ss -ltn 'sport = :22'` showing `[::]:22` means a global address may
   be reachable. Whether your router blocks inbound IPv6 is router-specific, so test
   from outside your network.
 - Reach Open WebUI remotely through a tunnel instead of an open port:
   `ssh -L 3000:127.0.0.1:3000 <user>@<box>`, then open `http://localhost:3000` on
-  your client.
+  your client. This assumes the bridge command in the Open WebUI section, which
+  publishes loopback port 3000; with the untested host-network variant the UI listens
+  on port 8080 by default.
 
-These steps are standard OpenSSH practice and are **not tested here** on this
-guide's hardware (checked 2026-09-30).
+These steps and checks are standard OpenSSH and ufw practice and are **not tested
+here** on this guide's own system. The statements about `sshd_config` and ufw come
+from the Ubuntu 24.04 manual pages (read 2026-10-02).
 
 ---
 
@@ -2001,7 +2036,7 @@ After completing setup, verify each item:
 - [lhl/strix-halo-testing](https://github.com/lhl/strix-halo-testing) -- Deep performance research and rocWMMA patches
 - [nabe2030/hip-vs-vulkan-evo-x2](https://github.com/nabe2030/hip-vs-vulkan-evo-x2) -- Independent HIP versus Vulkan workload-crossover benchmark on Strix Halo
 - [hec-ovi/vllm-awq4-qwen](https://github.com/hec-ovi/vllm-awq4-qwen) -- Experimental Qwen3.6 AWQ/DFlash vLLM path for Strix Halo
-- [strixhalo.wiki](https://strixhalo.wiki/AI/llamacpp-with-ROCm) and [llm-tracker.info](https://llm-tracker.info/AMD-Strix-Halo-(Ryzen-AI-Max+-395)-GPU-Performance) -- historical community references last updated 2025-08-08; they predate the 2026-07-24 rocWMMA removal and ROCm 7.x/10.0, so do not follow their ROCm 6.5-nightly or rocWMMA advice as current guidance
+- [strixhalo.wiki](https://strixhalo.wiki/AI/llamacpp-with-ROCm) and [llm-tracker.info](https://llm-tracker.info/AMD-Strix-Halo-(Ryzen-AI-Max+-395)-GPU-Performance) -- historical community references; their content may predate the 2026-07-24 rocWMMA removal and ROCm 7.x/10.0, so do not follow their rocWMMA advice as current guidance. Dates (checked 2026-10-02): the wiki's public mirror repository lists 2025-11-01 as the last change to its [llama.cpp performance page](https://github.com/kyuz0/strixhalo-homelab/commits/main/AI/llamacpp-performance.md) and 2026-08-26 (commit message: internal link fixes) for its [llama.cpp with ROCm page](https://github.com/kyuz0/strixhalo-homelab/commits/main/AI/llamacpp-with-ROCm.md); the ROCm page opens with a recommendation dated August 2025 and carries its own warning that the rocWMMA path should not be used with ROCm 7.0.2 and later; llm-tracker.info shows the date May 17, 2025 on the page and the same date in its sitemap, without saying that it is an update date
 - [Level1Techs Forum](https://forum.level1techs.com/t/strix-halo-ryzen-ai-max-395-llm-benchmark-results/233796) -- Community benchmark results
 - [Framework Community](https://community.frame.work/t/pytorch-w-flash-attention-vllm-for-strix-halo/74736) -- Framework Desktop discussions
 - [ROCm Strix Halo Optimization Guide](https://rocm.docs.amd.com/en/latest/how-to/system-optimization/strixhalo.html) -- Official AMD guide
@@ -2164,18 +2199,43 @@ Ollama on its loopback default, which the bridge container above cannot reach.
 Open WebUI's own README documents a host-network alternative,
 `--network=host -e OLLAMA_BASE_URL=http://127.0.0.1:11434`, which keeps Ollama
 on loopback; it is **untested here**. With host networking the `-p` loopback
-mapping no longer applies, so check which address and port the Open WebUI
-server then listens on before relying on it.
+mapping no longer applies, and Open WebUI's start script (`backend/start.sh`,
+v0.10.2 and v0.11.4, read 2026-10-02) defaults `HOST` to `0.0.0.0` and `PORT` to
+`8080`; its README likewise says the port changes from 3000 to 8080 with host
+networking. The UI would then listen on port 8080 on every interface of the machine,
+not on loopback port 3000, and the `ssh -L 3000:127.0.0.1:3000` tip in Step 10.4
+would not match. Adding `-e HOST=127.0.0.1` should limit it to loopback (not tested
+here). Before relying on any of this, run `sudo ss -ltnp` and check which address and
+port the Open WebUI server listens on.
 
-**Security status (checked 2026-09-30):** 19 Open WebUI advisories published on
-2026-09-27 and 2026-09-28 list 0.11.4 as the patched version, and 13 of them list
-this pinned 0.10.2 image as affected. One of them, GHSA-vpq8-f445-hcq7, applies
-while community sharing is enabled (the default), which is why the command above
-sets `-e ENABLE_COMMUNITY_SHARING=False`. That flag is **not tested here** and does
-not make the pinned image a patched one. Published advisories also cover Ollama
-0.30.0-0.33.2, which includes the guide's pinned and qualified Ollama versions. No
-patched Open WebUI image has been qualified here, so the command still pins 0.10.2
-by digest; do not replace the digest with a tag. See
+**Security status (checked 2026-10-02):** 47 of the 165 published advisories in
+Open WebUI's GitHub security advisories include this pinned 0.10.2 image in their
+affected range: 15 rated high (none critical), 31 medium and 1 low. Method: count of
+published advisories whose affected range includes 0.10.2, Open WebUI's GitHub security
+advisories, checked 2026-10-02. Of the 47, 13 (3 high) belong to the batch of 19 advisories
+published on 2026-09-27 and 2026-09-28 that list 0.11.4 as the patched version; the
+other 34 were published from 2026-08-02 to 2026-09-09 and list fixes in 0.11.0 or
+0.11.1. The count is of advisories. It does not say which of them work against a
+loopback-only, single-user setup; that was not assessed, and nothing was tested here.
+One of the batch, GHSA-vpq8-f445-hcq7, applies while community sharing is enabled
+(the default), which is why the command above sets `-e ENABLE_COMMUNITY_SHARING=False`.
+With default settings that variable only takes effect while no stored value exists,
+such as on a new data volume: Open WebUI's source (`models/config.py`, v0.10.2) gives
+existing database values precedence over it. If `ENABLE_PERSISTENT_CONFIG=False` is also
+set, the environment values apply and admin changes are not stored (from source; not
+tested here). On an existing volume, turn community sharing off in the admin settings
+instead (the v0.10.2 source has an "Enable Community Sharing" switch on the General
+tab; from source, not clicked through here). The variable is **not tested here**, and
+neither measure makes the pinned image a patched one. Published
+advisories also cover Ollama 0.30.0-0.33.2, which includes the guide's pinned and
+qualified Ollama versions.
+
+**One rule for versions:** the digest-pinned 0.10.2 image above is the only Open WebUI
+version this guide has qualified. A patched release (0.11.4 or newer) is not qualified
+here; the row with `priority` 40 ("Patched Open WebUI qualification and advisory recheck") in [`data/current_test_queue.csv`](data/current_test_queue.csv) tracks it.
+If you upgrade anyway, pin the new image by digest (never a moving tag), rerun the
+acceptance checks of the [qualification](RUNTIME_QUALIFICATION_2026-09-19.md) and report
+the result. See
 [Security status of pinned components](SECURITY.md#security-status-of-pinned-components)
 and the [local AI security checklist](SECURE_LOCAL_AI.md).
 
@@ -2225,13 +2285,13 @@ This is the low-download, lightweight vision route in the measured profiles. It 
 
 ### Image Generation
 
-kyuz0's [ComfyUI toolboxes](https://github.com/kyuz0/amd-strix-halo-gfx1151-toolboxes) provide ROCm containers for Flux, Wan 2.2, and Hunyuan on gfx1151. For Vulkan-only: `stable-diffusion.cpp` works with the RADV driver.
+This guide has not run image generation. A community [ComfyUI toolbox](https://github.com/kyuz0/amd-strix-halo-comfyui-toolboxes) is a ROCm container with bundled ComfyUI workflows for gfx1151. Its README (checked 2026-10-02) lists HunyuanVideo 1.5, LTX-2.3, MiniMax-H3, Qwen Image, Qwen Image Edit and Wan 2.2 workflows; Flux is not on that list. For Vulkan-only: the `stable-diffusion.cpp` README lists a Vulkan backend (checked 2026-10-02); whether it works on gfx1151 with the RADV driver was not checked here. Third-party run times and open problems are in the [model hub](docs/models.md#image-and-video).
 
 AMD also publishes an [official native-Windows ComfyUI route](https://rocm.blogs.amd.com/artificial-intelligence/comfyui-windows/README.html) for Windows 11 24H2, current Adrenalin drivers, and ROCm 7.2.1, covering SDXL, Flux, and WAN workflows. That is useful official setup guidance, but this guide has not reproduced it on the Beelink or compared it with the measured Linux paths.
 
 ### Voice / TTS
 
-The [current model evidence](CURRENT_MODELS.md) records a narrow Qwen3-TTS English speech generation and ASR back-check. A complete listen-answer-speak workflow, Dutch quality and streaming remain unqualified. Chatterbox and third-party voice applications are not established by that test.
+The [current model evidence](CURRENT_MODELS.md) records a narrow Qwen3-TTS English speech generation and ASR back-check. A complete listen-answer-speak workflow, Dutch quality and streaming remain unqualified. Chatterbox and third-party voice applications are not established by that test. Third-party speech routes, none run here, are listed in the [model hub](docs/models.md#speech).
 
 ---
 
@@ -2376,9 +2436,7 @@ AMD_VULKAN_ICD=RADV ./build/bin/llama-server \
 ```
 
 For a client that supports this endpoint, configure `http://localhost:8080/v1`
-and verify its model ID, protocol and tool behavior. This pinned candidate has
-passed the scoped direct/server acceptance controls in [the September 19 qualification](RUNTIME_QUALIFICATION_2026-09-19.md); it is not a speed
-promise or a replacement for the reboot-qualified Ollama route.
+and verify its model ID, protocol and tool behavior. [The September 19 qualification](RUNTIME_QUALIFICATION_2026-09-19.md) passed the scoped direct/server acceptance controls with this model on a Vulkan `llama-server` (v0.4.1), but its summary records neither the two cache flags above nor the full command line, and it allocated 16,384 context across two slots rather than `-c 8192`. The command shown is therefore a candidate built from that result, not the exact tested command. It is not a speed promise or a replacement for the reboot-qualified Ollama route.
 
 This example is local-only. Remote serving needs a separately reviewed bind address, authentication, TLS and network access policy; consult the [llama-server documentation](https://github.com/ggml-org/llama.cpp/tree/master/tools/server) before exposing it.
 
@@ -2389,8 +2447,10 @@ into the slot of a new request, so an answer can belong to another conversation
 2026-09-30; reporters reproduced it on Strix Halo with ROCm, and whether Vulkan is
 affected is not established). The reporters' mitigation is `--cache-ram 0
 --no-cache-idle-slots`, added to the command above. The September 19 qualification
-does not mention these flags, so its scoped result does not cover them. See
-[shared servers](SECURE_LOCAL_AI.md#shared-servers).
+does not mention these flags, so its scoped result does not cover them. The
+llama-server documentation describes `--cache-ram 0` as disabling that cache, so a
+prompt whose slot was reused is processed again; what this costs was not measured
+here. See [shared servers](SECURE_LOCAL_AI.md#shared-servers).
 
 </details>
 
@@ -2451,7 +2511,7 @@ server-mediated BYOK path must not be described as an all-local coding route.
 <details>
 <summary><strong>Can I run image generation (Stable Diffusion, Flux)?</strong></summary>
 
-Yes. kyuz0's [ComfyUI toolboxes](https://github.com/kyuz0/amd-strix-halo-gfx1151-toolboxes) provide ROCm containers for image and video generation on gfx1151, supporting Flux, Wan 2.2, and Hunyuan models.
+This guide has not run image generation. A community [ComfyUI toolbox](https://github.com/kyuz0/amd-strix-halo-comfyui-toolboxes) bundles ROCm workflows for image and video generation on gfx1151; its README (checked 2026-10-02) lists HunyuanVideo 1.5, LTX-2.3, MiniMax-H3, Qwen Image, Qwen Image Edit and Wan 2.2, and Flux is not among them. Third-party run times and open problems are in the [model hub](docs/models.md#image-and-video).
 
 </details>
 

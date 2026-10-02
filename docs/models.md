@@ -54,7 +54,7 @@ dash in the artifact-size column means neither `data/headline_claims.csv` nor
 
 | Model and route | Quant | Measured result | Artifact size | Measurement date and raw evidence |
 | --- | --- | --- | ---: | --- |
-| Qwen3.8 27B, Ollama API/Vulkan with Ollama-default MTP drafting (`draft_num_predict 4`; not a no-draft result; requires Ollama 0.32.12+) | `Q4_K_M` | 292.49 prompt t/s; 20.42 generation t/s; exact retrieval through 50,059 prompt tokens | — | [2026-08-15 raw route](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv) |
+| Qwen3.8 27B, Ollama API/Vulkan with Ollama-default MTP drafting (`draft_num_predict 4`; not a no-draft result; requires Ollama 0.32.12+) | `Q4_K_M` | 292.49 prompt t/s; 20.42 generation t/s on Ollama 0.32.13; exact retrieval through 50,059 prompt tokens. A separate matched control on Ollama 0.32.15 (2026-09-26) measured 12.89 t/s without draft and 22.71 t/s with MTP; the two MTP numbers come from different runs and builds | — | [2026-08-15 raw route](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv) |
 | Qwen3-Coder 30B-A3B, direct Vulkan speed-first | `Q4_K_S` | 100.99 tg128; 1423.05 pp512 | — | [2026-06-30 raw r50](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/raw/2026-06-30/latest-llamacpp-b9851-vulkan-sentinel/qwen3-coder-q4ks-b9851-p512-n128-r50.csv) |
 | Qwen3-Coder 30B-A3B, direct Vulkan balanced | `UD-Q4_K_XL` | 96.76 tg128; 1320.52 pp512 | — | [2026-05-07 raw r20](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/raw/2026-05-07/max-performance-campaign/benchmarks/qwen3-coder-top-confirm-r20/guide.csv) |
 | Qwen3-30B-A3B-Instruct-2507, direct Vulkan | `IQ4_XS` | 100.04 tg128; 1416.03 pp512; r20 was 100.58 tg128 | — | [2026-06-02 raw r50](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/raw/2026-06-02/qwen3-30b-a3b-2507-direct-scout/qwen3-30b-2507-iq4xs-b9467-r50.csv) |
@@ -154,16 +154,18 @@ the number shown, and by how much has not been measured here.
 | GLM-5.3 (licence "other" in the HF API) | 44.8 | 1480 (`glm-5.3-max`) | 753.3B | none recorded here | multiple boxes | not checked; Ollama: `:cloud` tag only | no |
 | Kimi K3 (licence "other" in the HF API) | 43.6 | 1488 (`kimi-k3-max`) | 2.780T | none recorded here | multiple boxes | not checked; Ollama: `:cloud` tag only | no |
 | GLM-5.3-Flash (MIT) | 41.8 | 1474 | 321.3B | `UD-IQ1_S` 93.09GB | 128GB: tight, 1 to 2 bit; 192GB: yes; 64GB: no | PR #27773 merged 2026-09-30, after v0.5.0; Ollama: `:cloud` tag only | no |
-| Qwen3.8-Flash-Next (qwen-community-1.0) | 39.8 | not recorded | 125B total, 6B active, plus n-gram embeddings | `UD-IQ1_S` 72.55GB; `UD-IQ4_XS` 93.7GB | 128GB: yes (workable tier); 64GB: no | yes; Ollama local tag `125b-a6b-q4_K_M`, 120.06GB | **yes**: `UD-IQ4_XS` 28.61 tg128 / 508.29 pp512 (b11146 re-check, 2026-09-26); 27.16 / 394.73 (b10687, 2026-08-30) |
+| Qwen3.8-Flash-Next (qwen-community-1.0) | 39.8 | not recorded | 125B total, 6B active, plus n-gram embeddings | `UD-IQ1_S` 72.55GB; `UD-IQ4_XS` 93.7GB | 128GB: yes on paper (workable tier); fit claim: see the swap note above (the 2026-09-26 re-check filled swap); 64GB: no | yes; Ollama local tag `125b-a6b-q4_K_M`, 120.06GB | **yes**: `UD-IQ4_XS` 28.61 tg128 / 508.29 pp512 (b11146 re-check, 2026-09-26); 27.16 / 394.73 (b10687, 2026-08-30) |
 | DeepSeek V4.1 Flash (MIT) | 39.5 | not recorded | 763.2B | Q2 about 163GB (vendor's tier table, below) | multiple boxes or SSD streaming (not checked); 192GB: vendor claim, below | none as of 2026-09-25 (not rechecked); Ollama: `:cloud` tag only | no |
 | MiMo-V2.6-Flash (MIT) | 37.9 | not recorded | 310.8B total, about 15B active | community quants 77.40 to 96.74GB; ggml-org `Q2_K` 126.21GB | 128GB: community quants on paper, unqualified | convert support merged 2026-09-22 (in v0.5.0), DFlash support merged 2026-09-30; Ollama: not checked | no |
-| Qwen3.8 27B, dense (Apache 2.0) | 33.7 | not recorded | 27B | `Q4_K_M` 18.97GB | 64GB: yes | yes; Ollama local tag | **yes**, via the Ollama API: 12.89 t/s without draft, 22.71 t/s with MTP (2026-09-26) |
+| Qwen3.8 27B, dense (Apache 2.0) | 33.7 | not recorded | 27B | ggml-org GGUF `Q4_K_M` 18.97GB (publisher-listed; the Ollama `Q4_K_M` artifact measured here is 17.7GB) | 64GB: yes | yes; Ollama local tag | **yes**, via the Ollama API: 12.89 t/s without draft, 22.71 t/s with MTP (2026-09-26) |
 | K2 Horizon MoVA 36B-A4B (Apache 2.0) | 25.3 | not recorded | 37.44B total, about 4B active | `Q4_K_M` 22.37GB | 64GB: yes, on paper | needs open PR #29535 (not merged when re-read 2026-10-01); Ollama: not checked | no |
 
 Notes on the table:
 
 - On this index Qwen3.8-Flash-Next scores 39.8 against 41.8 for Opus 4.8. Both are
-  full-precision API scores; the local quantised model was not scored.
+  full-precision API scores; the local quantised model was not scored. The quality
+  gap is from third-party scores, not a measurement here, so do not read it as a
+  128GB box matching Opus 4.8. Fit claim: see the swap note above.
 - Agentic coding differs by memory class on the same source: Artificial Analysis
   lists Terminal-Bench 4.0 at 5.6% for Qwen3.8 27B and 25.3% for
   Qwen3.8-Flash-Next (2026-09-30).
@@ -371,11 +373,18 @@ is in
 The guide has not measured a 64GB system. These are artifact-size estimates
 from publisher listings checked on 2026-09-25, not fit results: how much of a
 64GB machine the GPU can address depends on firmware and driver settings, and
-KV cache, projectors, drafters and the operating system still need room.
+KV cache, projectors, drafters and the operating system still need room. Claim of a
+third party, not tested here: a Level1Techs review of a 64GB Minisforum N5 MAX
+(read 2026-10-02; source and detail in
+[LAPTOPS_AND_HOMELAB.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/LAPTOPS_AND_HOMELAB.md#nas-style-chassis-minisforum-n5-max))
+reports that the GPU sees about 30 GiB by default and that models above about
+30 GiB load only after the memory split is changed. By that report a file such as
+the 48.5GB Qwen3-Coder-Next below would not load with the default split. This guide
+has no 64GB memory profile.
 
 | Published file size | Examples (weights only unless noted) |
 | --- | --- |
-| Under about 20GB | [Qwen3.8 27B](https://huggingface.co/ggml-org/Qwen3.8-27B-GGUF) Q4_K_M 18.97GB; [Nemotron 3.5 Lightning](https://huggingface.co/ggml-org/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF) Q4_0 18.90GB; [Laguna XS 2.1](https://huggingface.co/ggml-org/Laguna-XS-2.1-GGUF) Q4_K_M 19.56GB; [Granite 4.2 30B](https://huggingface.co/ibm-granite/granite-4.2-30b-GGUF) Q4_K_M 17.72GB; [Muse Glimmer 30B](https://huggingface.co/meta-models/Muse-Glimmer-30B-GGUF) Q4_K_M 16.76GB plus 1.40GB mmproj; [MiMo-V2.6-Distill-Qwen-9B](https://huggingface.co/ggml-org/MiMo-V2.6-Distill-Qwen-9B-GGUF) Q8_0 9.53GB (2026-09-21, MIT; 2026-09-30 listing) |
+| Under about 20GB | [Qwen3.8 27B](https://huggingface.co/ggml-org/Qwen3.8-27B-GGUF) Q4_K_M 18.97GB (ggml-org GGUF as listed, checked 2026-10-02; the Ollama `Q4_K_M` artifact measured on the 128GB machine is 17.7GB); [Nemotron 3.5 Lightning](https://huggingface.co/ggml-org/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF) Q4_0 18.90GB; [Laguna XS 2.1](https://huggingface.co/ggml-org/Laguna-XS-2.1-GGUF) Q4_K_M 19.56GB; [Granite 4.2 30B](https://huggingface.co/ibm-granite/granite-4.2-30b-GGUF) Q4_K_M 17.72GB; [Muse Glimmer 30B](https://huggingface.co/meta-models/Muse-Glimmer-30B-GGUF) Q4_K_M 16.76GB plus 1.40GB mmproj; [MiMo-V2.6-Distill-Qwen-9B](https://huggingface.co/ggml-org/MiMo-V2.6-Distill-Qwen-9B-GGUF) Q8_0 9.53GB (2026-09-21, MIT; 2026-09-30 listing) |
 | About 20-30GB | [K2 Horizon MoVA 36B-A4B](https://huggingface.co/IFM/K2-Horizon-MoVA-36B-A4B-GGUF) Q4_K_M 22.37GB (2026-09-30 listing); requires the open llama.cpp PR #29535 |
 | About 40-50GB | [Qwen3-Coder-Next](https://huggingface.co/unsloth/Qwen3-Coder-Next-GGUF) Q4_K_M 48.5GB (2026-08-29 listing); leaves much less headroom on 64GB once context is added |
 
@@ -407,9 +416,9 @@ size class score as follows:
 
 | Model | Index v4.3.2 | Note |
 | --- | ---: | --- |
-| Qwen3.8 27B (`xhigh` reasoning effort) | 33.7 | `Q4_K_M` 18.97GB; measured here through the Ollama API |
+| Qwen3.8 27B (`xhigh` reasoning effort) | 33.7 | ggml-org GGUF `Q4_K_M` 18.97GB (publisher-listed, not measured here); the Ollama `Q4_K_M` artifact measured here through the Ollama API is 17.7GB (17,741,872,154 bytes) |
 | K2 Horizon MoVA 36B-A4B | 25.3 | Needs the open llama.cpp PR #29535 |
-| Gemma 4 31B | 14.7 (Reasoning entry, not estimated; read 2026-10-01). Read as 19.0, estimated, on 2026-09-30 | Not measured here |
+| Gemma 4 31B | 14.7 (Reasoning entry, not estimated; read 2026-10-01). Read as 19.0, estimated, on 2026-09-30 | Measured here (2026-07-18, Beelink GTR9 Pro, 128GB): official QAT `Q4_0` GGUF, direct `llama-bench` on b10066 with Vulkan/RADV, 308.28 pp512 / 11.38 tg128 (r3). Practical workstation-state row with a known CPU-only background load, not a strict-clean headline; text, vision and tool-call smokes passed separately. The matched `Q8_0` DFlash sidecar was slower in the server comparison: generation was 5.54% and 20.42% slower than the matched no-spec baseline on 5.5K and 21.9K synthetic prompts (9.73 versus 10.30 and 7.48 versus 9.40 t/s). Speed and load only, not a 64GB fit. [Raw bundle](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-07-18/gemma4-31b-qat-dflash-b10066) |
 | Qwen3.6 35B-A3B | 18.2 | Measured here (direct Vulkan, `UD-Q4_K_M`, 62.56 tg128) |
 | Muse Glimmer 30B | 17.5 | Scouted 2026-09-26 |
 | Granite 4.2 30B | 14.8 (estimated) | Not measured here |
@@ -471,8 +480,10 @@ third party.
 - **This guide.** Qwen3-ASR 0.6B and Qwen3-TTS 1.7B English smoke tests only. Dutch
   speech output needs a separate Dutch-capable TTS candidate
   ([CURRENT_MODELS.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/CURRENT_MODELS.md)).
-- **faster-whisper.** CTranslate2 4.7.1 ships an official ROCm wheel that includes
-  gfx1151. A [recipe](https://github.com/nabe2030/faster-whisper-rocm-strix-halo)
+- **faster-whisper.** CTranslate2 releases since v4.7.0 include ROCm wheel archives as
+  release assets, and the Linux ROCm build script at tag v4.7.1 lists gfx1151 among its
+  target architectures (read 2026-10-02); whether the released wheels run on Strix Halo
+  was not tested here. A [recipe](https://github.com/nabe2030/faster-whisper-rocm-strix-halo)
   (EVO-X2, Ubuntu 26.04, ROCm 7.2.2, 2026-04-29) claims Whisper large-v3 at about
   11.5 times realtime on English, and 30 minutes of Japanese in 4 minutes 41
   seconds, without memory faults.

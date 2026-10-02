@@ -59,7 +59,7 @@ Notes on rows above:
 | Date | Route | Result | Scope |
 | --- | --- | --- | --- |
 | 2026-09-26 | Ollama 0.32.15, Qwen3.8 27B `qwen3.8:27b-q4_K_M`, no draft | 12.89 t/s generation, 384.66 prompt t/s | Vulkan/RADV, 4096-context API, 9 warm repeats, routine background load. |
-| 2026-09-26 | Same service, `qwen3.8:27b-mtp-q4_K_M`, Ollama-default MTP (`draft_num_predict 4`) | 22.71 t/s generation, 360.01 prompt t/s | Same run and conditions. The output text differed from the no-draft arm at temperature 0 in the raw notes. |
+| 2026-09-26 | Same service, `qwen3.8:27b-mtp-q4_K_M`, Ollama-default MTP (`draft_num_predict 4`) | 22.71 t/s generation, 360.01 prompt t/s | Same run and conditions. The output text differed from the no-draft arm at temperature 0 in the raw notes; output equivalence is not established here, so 22.71 t/s is a speed result only. |
 | 2026-05-05 and 2026-05-07 | `llama-server` Vulkan/RADV (concurrency sweep, 2026-05-05) and Ollama 0.23.1 (API warm average, 2026-05-07), Qwen3.6 35B-A3B | 58.80 t/s aggregate at 1 request against 50.51 t/s | Different measurement shapes and old builds. Later controlled Ollama runs on the same model measured 72.55 to 73.20 t/s ([README.md](README.md), FAQ on Ollama and `llama.cpp`); see [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md) for the caveats. |
 
 Sources: [BENCHMARKS.md](BENCHMARKS.md), [raw bundle](data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/).

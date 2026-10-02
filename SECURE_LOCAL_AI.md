@@ -1,6 +1,7 @@
 # Securing A Local AI Box
 
-Checked 2026-09-30. This is a checklist for a Strix Halo local-AI box (Ollama, `llama.cpp`, Open
+Checked 2026-09-30; the Open WebUI count, the RPC advisory and the SSH and ufw statements
+2026-10-02. This is a checklist for a Strix Halo local-AI box (Ollama, `llama.cpp`, Open
 WebUI, containers) built from public documentation, advisories and issue threads. It is not a
 security audit or a guarantee. The guide has not tested any exploit or attack described here, and
 "not tested here" marks what no one has checked on this guide's hardware. Dated advisories for the
@@ -12,8 +13,10 @@ pinned components are in [`SECURITY.md`](SECURITY.md#security-status-of-pinned-c
    2026-09-30), so the network is the only barrier.
 2. Do not rely on ufw alone: ports published by Docker bypass it, and Tailscale accepts tailnet
    traffic early (both documented below). Test from a second device.
-3. Open WebUI: the advisories list 0.11.4 as the patched version (not qualified here); turn community
-   sharing off (GHSA-vpq8-f445-hcq7).
+3. Open WebUI: the digest-pinned 0.10.2 image is the only qualified one, and 47 published advisories
+   include it; a patched release (0.11.4 or later) is not qualified here. Turn community sharing off
+   (GHSA-vpq8-f445-hcq7); with default settings on an existing volume that means the admin
+   settings, not the environment variable (from Open WebUI's source; not tested here).
 4. A shared `llama-server` can answer with another conversation's text (llama.cpp#27148). The
    reporters' mitigation is `--cache-ram 0 --no-cache-idle-slots` (not tested here).
 5. Treat documents, web pages and repository files as data, never as instructions (OWASP
@@ -21,7 +24,8 @@ pinned components are in [`SECURITY.md`](SECURITY.md#security-status-of-pinned-c
 6. Before pasting a community recipe, check its bind addresses, passwords, container privileges and
    binaries.
 7. `rpc-server` and Ray have no safe LAN mode: use a direct link only.
-8. SSH: key login, `PasswordAuthentication no`, a firewall, and a VPN or `ssh -L`.
+8. SSH: key login, `PasswordAuthentication no` (confirm with `sudo sshd -T`: a drop-in file can
+   override it), a firewall (`sudo ufw status numbered`), and a VPN or `ssh -L`.
 9. AMD firmware fixes reach a BIOS only when the system vendor ships them: check your update route.
 10. "Local" is not automatically "private": cloud model tags, logs, caches and tools can move data
     off the box.
@@ -37,7 +41,11 @@ pinned components are in [`SECURITY.md`](SECURITY.md#security-status-of-pinned-c
   port can use the box and its models.
 - **Open WebUI in Docker.** The README's bridge-network command needs a non-loopback Ollama
   listener, and widening the listener puts an API without authentication on the network. The README
-  documents a host-network alternative that is untested here. Decide the bind address first, then
+  documents a host-network alternative that is untested here. With host networking the
+  `-p 127.0.0.1:3000:8080` mapping no longer applies, and Open WebUI's start script defaults `HOST`
+  to `0.0.0.0` and `PORT` to `8080` (`backend/start.sh`, v0.10.2 and v0.11.4, read 2026-10-02), so
+  the UI would listen on all interfaces on port 8080. Setting `-e HOST=127.0.0.1` should limit it
+  to loopback (not tested here); check with `sudo ss -ltnp`. Decide the bind address first, then
   add a firewall.
 - **See what listens, then test from another device.** `sudo ss -ltnp` lists listeners; `0.0.0.0`,
   `*` and `[::]` are reachable from other machines unless a firewall stops them.
@@ -70,10 +78,16 @@ pinned components are in [`SECURITY.md`](SECURITY.md#security-status-of-pinned-c
 One box serving people or agents of different trust has more risks than a single-user box.
 Everything below is a claim from a public source, not a result of this guide.
 
-- **Open WebUI.** 19 advisories were published on 2026-09-27 and 2026-09-28, all patched in 0.11.4.
-  GHSA-vpq8-f445-hcq7 lets any website a signed-in user visits obtain that user's session token when
-  community sharing is enabled (the default). Set `ENABLE_COMMUNITY_SHARING=False` on a new
-  container (not tested here) and do not create accounts for untrusted users. Details:
+- **Open WebUI.** 47 published advisories include the pinned 0.10.2 image (count of published
+  advisories whose affected range includes 0.10.2, Open WebUI's GitHub security advisories, checked 2026-10-02): 15
+  high, 31 medium, 1 low. 13 of them are in the batch of 19 published on 2026-09-27 and 2026-09-28,
+  which list 0.11.4 as the patched version; the other 34 list 0.11.0 or 0.11.1. GHSA-vpq8-f445-hcq7
+  lets any website a signed-in user visits obtain that user's session token when community sharing
+  is enabled (the default). With default settings, `ENABLE_COMMUNITY_SHARING=False` only takes
+  effect while no stored value exists, such as on a new data volume, because Open WebUI's source lets
+  existing database values take precedence (`ENABLE_PERSISTENT_CONFIG=False` changes this; from
+  source, not tested here); on an existing volume use the admin settings (from source; not tested
+  here). Do not create accounts for untrusted users. Details:
   [`SECURITY.md`](SECURITY.md#open-webui).
 - **`llama-server` prompt cache.** With default settings an unrelated, finished conversation can be
   restored into a slot for a new request
@@ -146,9 +160,13 @@ pattern, not the author.
   the RPC server on an open network or in a sensitive environment!"
   ([tools/rpc/README.md](https://github.com/ggml-org/llama.cpp/blob/master/tools/rpc/README.md),
   checked 2026-09-30). It has no authentication. CVE-2026-86317 (NVD, llama.cpp up to 0.4.0) is a
-  remote crash through a malformed tensor. Bind it only to a direct point-to-point link such as the
-  USB4 `thunderbolt-net` interface, never to a LAN or tailnet address. All nodes need the same build
-  (RPC protocol 7 from v0.5.0).
+  remote crash through a malformed tensor. GHSA-j8rj-fmpv-wcxw (CVE-2026-34159, critical, CVSS 9.8,
+  checked 2026-10-02) describes, according to the advisory, unauthenticated remote code execution
+  with only TCP access to the RPC server port (default 50052). It lists llama.cpp `<= b7991` as
+  affected and names no patched version; see
+  [`SECURITY.md`](SECURITY.md#other-runtimes-the-guide-tests-or-plans-to-test). Bind it only to a
+  direct point-to-point link such as the USB4 `thunderbolt-net` interface, never to a LAN or
+  tailnet address. All nodes need the same build (RPC protocol 7 from v0.5.0).
 - **AMD's playbooks.** The `clustering-rpc-server` playbook starts `rpc-server` and `llama-server`
   with `--host 0.0.0.0`. The `clustering-rccl` playbook starts a Ray head on port 6379, serves vLLM
   on `0.0.0.0` without an API key and connects Open WebUI with authentication set to none (both read 2026-09-30,
@@ -170,23 +188,49 @@ pattern, not the author.
 
 ## SSH
 
-The README's Phase 10 installs `openssh-server` and `fail2ban` and disables root login. Passwords,
-firewall and IPv6 are not covered there.
+README Steps 10.1 to 10.4 install `openssh-server` and `fail2ban`, disable root login, set up key
+login and limit who can reach SSH and Open WebUI. This section gives the sources and the checks.
 
 1. Create a key on your client (`ssh-keygen -t ed25519`) and install it with
    `ssh-copy-id <user>@<box>`. Confirm key login in a second terminal.
 2. Then set `PasswordAuthentication no` in `/etc/ssh/sshd_config` and reload `ssh` while the first
    session stays open ([sshd_config](https://man.openbsd.org/sshd_config), checked 2026-09-30).
-3. Allow port 22 only from your LAN or VPN
+3. Check what sshd actually uses, not what the file says:
+   `sudo sshd -T | grep -E "^(passwordauthentication|permitrootlogin|pubkeyauthentication)"`.
+   `sshd -T` prints the effective configuration (sshd(8): "extended test mode"). The Ubuntu 24.04
+   manual page for `sshd_config(5)` says that for each keyword "the first obtained value will be
+   used", and that the Debian `openssh-server` package includes `/etc/ssh/sshd_config.d/*.conf` at
+   the start of the configuration file, so options set there override those in
+   `/etc/ssh/sshd_config`
+   ([manual page](https://manpages.ubuntu.com/manpages/noble/en/man5/sshd_config.5.html), read
+   2026-10-02). A drop-in with `PasswordAuthentication yes` can therefore leave password login on
+   although your own line says `no`. If the output shows `passwordauthentication yes`, find the
+   file with `sudo grep -ri passwordauthentication /etc/ssh/sshd_config /etc/ssh/sshd_config.d/`
+   and change that one. `sshd -T` shows the global values; `Match` blocks can change them for some
+   users or addresses (`-C` applies connection parameters, see sshd(8)).
+4. Allow port 22 only from your LAN or VPN
    (`sudo ufw allow from <lan-subnet> to any port 22 proto tcp`) and do not forward port 22 on your
-   router. `fail2ban` reduces noise; it does not replace this.
-4. Check IPv6: `ss -ltn 'sport = :22'` showing `[::]:22` means a global address may be reachable.
+   router. ufw is disabled after installation
+   ([ufw(8)](https://manpages.ubuntu.com/manpages/noble/en/man8/ufw.8.html), Ubuntu 24.04, read
+   2026-10-02), so a rule does nothing until `sudo ufw enable`; allow your own SSH source first.
+   `fail2ban` reduces noise; it does not replace this.
+5. Check the firewall: `sudo ufw status numbered` lists each rule with its number, and a firewall
+   reported as inactive applies no rule. ufw(8) says rule ordering is important and the first match
+   wins. A narrow allow rule does not close port 22 while a broader allow such as
+   `22/tcp ALLOW Anywhere` is in the list: remove that rule by its number
+   (`sudo ufw delete <number>`, documented in ufw(8)). With IPv6 enabled, ufw(8) says deleting a
+   generic rule by number deletes only the specified rule, so look for the matching IPv6 entry
+   (shown with `(v6)`), delete it too and run `sudo ufw status numbered` again to confirm.
+6. Check IPv6: `ss -ltn 'sport = :22'` showing `[::]:22` means a global address may be reachable.
    Whether your router blocks inbound IPv6 is router-specific; test from outside your network.
-5. For Open WebUI from another machine, tunnel instead of opening a port:
+7. For Open WebUI from another machine, tunnel instead of opening a port:
    `ssh -L 3000:127.0.0.1:3000 <user>@<box>`, then open `http://localhost:3000` on the client
-   ([ssh](https://man.openbsd.org/ssh)).
+   ([ssh](https://man.openbsd.org/ssh)). This assumes the README's bridge command, which publishes
+   loopback port 3000; with the untested host-network variant the UI listens on port 8080 by default
+   (see [Network Exposure](#network-exposure)).
 
-Steps 1 to 5 are standard OpenSSH practice, not tested here on this guide's hardware.
+Steps 1 to 7 are standard OpenSSH and ufw practice, not tested on this guide's own system. The
+statements about `sshd_config` and ufw come from the Ubuntu 24.04 manual pages (read 2026-10-02).
 
 ## RAG And Agents
 
@@ -231,11 +275,11 @@ contains them. The bulletins, minimum versions and update routes per brand are i
 
 - No exploit, advisory or leak described on this page was reproduced on this guide's hardware; every
   claim above is from the cited public source.
-- Open WebUI 0.11.4 and `ENABLE_COMMUNITY_SHARING=False`, `OLLAMA_NO_CLOUD=1`, and the
-  `--cache-ram 0 --no-cache-idle-slots` flags are documented or reported by others, not qualified
-  here.
-- Tailscale and ufw interaction, IPv6 exposure, and the SSH steps have no published test in this
-  guide.
+- A patched Open WebUI release (0.11.4 or later), `ENABLE_COMMUNITY_SHARING=False` and the admin
+  settings switch, `OLLAMA_NO_CLOUD=1`, and the `--cache-ram 0 --no-cache-idle-slots` flags are
+  documented or reported by others, not qualified here.
+- Tailscale and ufw interaction, IPv6 exposure, and the SSH and ufw checks have no published test in
+  this guide.
 - RPC, Ray, vLLM and RCCL cluster routes, and every closed-source engine, are untested.
 - The preprint's findings were not repeated on Strix Halo.
 - Firmware was not updated or inspected on the first-party test system; its BIOS version is not

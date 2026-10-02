@@ -1,6 +1,7 @@
 # Curator Notes On Preserved Evidence
 
-Reviewed September 13, 2026. These notes correct or qualify authored interpretation
+Reviewed September 13, 2026; entries added or updated on 2026-09-26, 2026-10-01 and
+2026-10-02 (last update 2026-10-02). These notes correct or qualify authored interpretation
 while retaining original contributor submissions, model-card snapshots, filenames
 and raw measurements. They do not claim new hardware validation.
 
@@ -31,6 +32,10 @@ Texts written before the correction, such as the v3.0.0 release notes
 route when checked on 2026-09-30; repository commits do not change them, so read
 them together with this note. Copies of the figure made before 2026-09-26 may
 carry the original label.
+
+Update 2026-10-02 (read through the GitHub API on that date): the v3.0.0 release
+notes now begin with a correction note and Discussion #32 has a correction comment,
+both dated 2026-10-02; the original text of each is unchanged.
 
 ## Ollama 0.32.3 Response-Hash Match
 

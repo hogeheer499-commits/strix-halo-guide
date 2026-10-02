@@ -23,7 +23,12 @@ This is the short web version of the independent AMD Strix Halo local LLM guide.
 
 **Canonical web home:** [Strix Halo Guide](https://strixhaloguide.com/). This
 GitHub Pages copy remains a technical mirror; the GitHub repository remains the
-canonical source for commands, benchmark claims, and raw evidence.
+canonical source for commands, benchmark claims, and raw evidence. The only official sources of
+this guide are the [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) and
+[strixhaloguide.com](https://strixhaloguide.com/) (and this GitHub Pages copy of it); the project
+publishes no Windows installers, `.exe` files or binary `.zip` packages (GitHub's automatic source
+archives of tagged releases excepted), and a copy that offers one is not this guide (see the
+[security policy](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#official-source)).
 
 It focuses on Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems, practical local setup, and evidence links for benchmark claims. AMD now uses Ryzen AI Halo for its official developer platform; this guide remains an independent setup and evidence source for the wider Strix Halo hardware category.
 
@@ -136,7 +141,7 @@ Yes. The setup targets AMD Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) Strix Ha
 
 ### Should I use Ollama, llama.cpp, ROCm, or vLLM on Strix Halo?
 
-Use Ollama with Vulkan/RADV first if you want the easiest private local chat path. Use direct `llama.cpp` with Vulkan/RADV if you want reproducible benchmark control and the fastest measured generation-heavy GGUF rows. Use `llama-server` for local API, MTP/speculative decoding, and server experiments. Use ROCm/HIP, Lemonade, or vLLM only for the prompt-processing-heavy, high-concurrency, batching, long-context, and experimental server cases documented in the repository.
+Use Ollama with Vulkan/RADV first if you want the easiest local chat path. Use direct `llama.cpp` with Vulkan/RADV if you want reproducible benchmark control and the fastest measured generation-heavy GGUF rows. Use `llama-server` for local API, MTP/speculative decoding, and server experiments. Use ROCm/HIP, Lemonade, or vLLM only for the prompt-processing-heavy, high-concurrency, batching, long-context, and experimental server cases documented in the repository.
 
 ### Can Ryzen AI MAX+ 395 / Radeon 8060S run 70B, 120B, or larger local models?
 

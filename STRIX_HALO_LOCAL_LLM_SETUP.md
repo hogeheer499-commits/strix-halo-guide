@@ -35,7 +35,7 @@ For a new AMD Strix Halo / Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) local LL
 1. Configure BIOS memory first.
 2. Install Ubuntu 24.04 LTS.
 3. Review [`setup.sh`](setup.sh): its automatic memory route is restricted to 128GB-class systems with at least 120GiB visible and stops above about 136GiB visible; 192GB-class systems (for example Ryzen AI Max+ PRO 495) are not qualified and must not reuse the 128GB values. Other capacities need a separately qualified manual profile. It stops on any OS other than Ubuntu 24.04 unless `STRIX_HALO_ALLOW_UNQUALIFIED_OS=1` is set; Ubuntu 26.04 is not qualified. It preserves existing power policy by default; tuned is opt-in.
-4. Start with Ollama for a working private local chat setup.
+4. Start with Ollama for a working local chat setup (local is not automatically private; see [`SECURE_LOCAL_AI.md`](SECURE_LOCAL_AI.md#the-short-version)).
 5. Use direct `llama.cpp` only when you want exact benchmark control.
 6. Use `llama-server`, MTP, ROCm/HIP, Lemonade, or vLLM only for the specific server/backend cases below.
 
@@ -62,7 +62,7 @@ Current first-party headline benchmarks are from Beelink GTR9 Pro. Community evi
 
 **Security and scope notes (checked 2026-09-30):**
 
-- Published advisories cover the Open WebUI 0.10.2 image pinned in the README (13 of 19 advisories published 2026-09-27/28 list it as affected; 0.11.4 is the listed patched version, not yet qualified here) and the Ollama range that includes the `setup.sh` default 0.31.2 (CVE-2026-85180, no fixed release named). See [Security status of pinned components](SECURITY.md#security-status-of-pinned-components) and the [local AI security checklist](SECURE_LOCAL_AI.md).
+- Published advisories cover the Open WebUI 0.10.2 image pinned in the README (47 published advisories list it as affected, 15 of them rated high: count of published advisories whose affected range includes 0.10.2, Open WebUI's GitHub security advisories, checked 2026-10-02; the newest batch of 2026-09-27/28 lists 0.11.4 as the patched version, which is not qualified here) and the Ollama range that includes the `setup.sh` default 0.31.2 (CVE-2026-85180, no fixed release named). See [Security status of pinned components](SECURITY.md#security-status-of-pinned-components) and the [local AI security checklist](SECURE_LOCAL_AI.md).
 - `setup.sh` stops above about 136GiB of visible RAM and does not read the CPU model: any AMD system showing 120 to 136GiB of visible RAM passes its hardware checks, including SKUs this guide has not measured (for example a 128GB Ryzen AI Max+ PRO 495). No 192GB-class profile is qualified. Vendors advertise up to 160GB of dedicated VRAM through the BIOS on 192GB systems ([HP](https://www.hp.com/us-en/workstations/mobile-workstation-pc/zbook-ultra-g3.html) and [Minisforum](https://minisforumpc.eu/products/minisforum-ms-s1-max-p495) product pages); this guide's route uses a small fixed UMA reserve plus GTT, and neither approach is tested on 192GB.
 - The NPU of the Ryzen AI Max+ PRO 495 is expected on Linux only with kernel 7.4 unless a patch is backported (Phoronix, 2026-09-30: merge window late October, stable kernel around the end of 2026). No 495 system has been tested here.
 
@@ -145,7 +145,7 @@ Do not start with ROCm or vLLM just because they sound more "GPU native". For pr
 
 | Goal | Do this first | Why |
 |------|---------------|-----|
-| Private local chat, Open WebUI, easiest first success | Run `ollama run qwen3.6:35b-a3b` after [`setup.sh`](setup.sh). | Best first path for buyers and new users. For Open WebUI and network exposure, read [`SECURE_LOCAL_AI.md`](SECURE_LOCAL_AI.md) first. |
+| Local chat, Open WebUI, easiest first success | Run `ollama run qwen3.6:35b-a3b` after [`setup.sh`](setup.sh). | Best first path for buyers and new users. For Open WebUI and network exposure, read [`SECURE_LOCAL_AI.md`](SECURE_LOCAL_AI.md) first. |
 | Reproduce headline direct speed rows | Use [Reproduce One Headline Result](README.md#reproduce-one-headline-result). | Exact model, quant, build, and command matter for benchmark comparisons. |
 | Local API, several tools, long-context tests, MTP | Read [MTP_SPECULATIVE_DECODING.md](MTP_SPECULATIVE_DECODING.md) and use `llama-server`. | Server path with batching, API, and speculative decoding support. |
 | Advanced ROCmFP4 / CHADROCK MTP testing | Read [ROCMFP4_CHADROCK.md](ROCMFP4_CHADROCK.md). | Fastest reproduced server/speculative row in this guide, but prompt/acceptance-sensitive and not the beginner setup path. |
@@ -240,7 +240,7 @@ Yes. The primary first-party benchmark machine is Beelink GTR9 Pro, but the setu
 
 ### Should I use Ollama, llama.cpp, ROCm, or vLLM on Strix Halo?
 
-Use Ollama with Vulkan/RADV first if you want the easiest private local chat path. Use direct `llama.cpp` with Vulkan/RADV if you want reproducible benchmark control and the fastest measured generation-heavy GGUF rows in this guide. Use `llama-server` for local API, MTP/speculative decoding, and server experiments. Use ROCm/HIP, Lemonade, ROCmFP4/CHADROCK, or vLLM only for the prompt-processing-heavy, high-concurrency, batching, long-context, and experimental server cases documented in the linked evidence files.
+Use Ollama with Vulkan/RADV first if you want the easiest local chat path. Use direct `llama.cpp` with Vulkan/RADV if you want reproducible benchmark control and the fastest measured generation-heavy GGUF rows in this guide. Use `llama-server` for local API, MTP/speculative decoding, and server experiments. Use ROCm/HIP, Lemonade, ROCmFP4/CHADROCK, or vLLM only for the prompt-processing-heavy, high-concurrency, batching, long-context, and experimental server cases documented in the linked evidence files.
 
 ### Can Ryzen AI MAX+ 395 / Radeon 8060S run 70B, 120B, or larger local models?
 

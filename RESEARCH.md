@@ -78,10 +78,14 @@ override restored native detection and inference.
 
 **What they do best:** index community resources, cross-link hardware notes, and collect independent benchmark pointers.
 
-**Freshness caveat (2026-08-30 review):** the linked tracker was last updated
-2025-08-08. It predates ROCm 7.x/10.0 and the 2026-07-24 rocWMMA removal, so its
-ROCm 6.5-nightly and rocWMMA recommendations are historical rather than current
-setup guidance.
+**Freshness caveat (2026-08-30 review; dates rechecked 2026-10-02):** the content of these
+sources may predate ROCm 7.x/10.0 and the 2026-07-24 rocWMMA removal, so their rocWMMA
+recommendations are historical rather than current setup guidance.
+The Strix Halo Wiki's public mirror repository lists 2025-11-01 as the last change to its llama.cpp
+performance page
+([history](https://github.com/kyuz0/strixhalo-homelab/commits/main/AI/llamacpp-performance.md)).
+llm-tracker.info shows the date May 17, 2025 on the page and the same date as `lastmod` in its
+sitemap (read 2026-10-02); the page does not label it as an update date.
 
 **Key imported context:**
 - Extreme-context behavior can look very different from short-context tg128

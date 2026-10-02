@@ -1,13 +1,14 @@
-# Starting On Windows (community and vendor sources, checked 2026-09-30, not measured by this guide)
+# Starting On Windows (community and vendor sources, checked 2026-09-30, parts re-read 2026-10-02, not measured by this guide)
 
 This page collects what AMD, LM Studio and community reports say about running local LLMs on a Strix Halo system under Windows 11. The guide's measured route is native Linux. **No first-party Windows measurement exists in this guide**; the Windows rows it does have are community reports (see the last section). Versions, issue states and dates below were read on 2026-09-30 unless a different date is given.
 
 ## Short Version
 
-- Windows works for Vulkan-based inference with Ollama or LM Studio ([README.md](README.md), FAQ "Do I need Linux? Can I use Windows?").
+- Windows works for Vulkan-based inference with Ollama or LM Studio ([README.md](README.md), FAQ "Do I need Linux? Can I use Windows?"); check that the GPU is actually in use (last two bullets of this list).
 - Many community sources recommend Linux for this hardware. The reasons they give are memory handling, loading of large models and speed. These are claims of third parties; the guide has not run a same-machine comparison ([README.md#windows-vs-linux](README.md#windows-vs-linux)).
 - Two things to check before planning around a large model on Windows: how much memory Variable Graphics Memory leaves for Windows, and whether models above about 48 to 64GB load at all (open reports, below).
-- In LM Studio, choose the Vulkan runtime. The ROCm runtime has open correctness reports on this GPU.
+- In LM Studio, choose the Vulkan runtime and then check that the GPU is in use. The ROCm runtime has open correctness reports on this GPU. LM Studio's 0.4.17 changelog (dated 2026-06-26, Build 4 is its latest entry; the iGPU line is listed under Build 2; read 2026-10-02: [release notes](https://lmstudio.ai/changelog/lmstudio-v0.4.17)) says integrated GPUs under the Vulkan backend are now visible and disabled by default, and the Radeon 8060S is an integrated GPU. **Not verified on Strix Halo:** this guide has not checked what that default means for the 8060S on Windows. After loading a model, confirm that the Radeon 8060S is enabled in the runtime settings and that GPU load rises in Task Manager while the model generates. A result far below the 89.49 tok/s script average of the one community Windows report below (LM Studio 0.4.15, Qwen3.6 35B-A3B, one machine with its own settings) can mean that the model runs on the CPU, so confirm the GPU use as described above; this is a prompt to check, not a diagnosis, and no threshold was measured here.
+- For Ollama on Windows, run `ollama ps` and check that the PROCESSOR column says `100% GPU`. On Linux this guide needs `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1` to avoid a silent CPU fallback ([README.md](README.md), Quick Start step 5); whether Windows needs them was not checked. Not verified on Strix Halo under Windows.
 
 ## Memory: Variable Graphics Memory
 
@@ -39,7 +40,7 @@ The guide's only LM Studio result used version 0.4.15 with the Vulkan runtime. W
 | Version or issue | What the source says | Status |
 | --- | --- | --- |
 | 0.4.25 (2026-09-19) | Latest version read. | Not measured here. |
-| 0.4.17 (2026-06-26) | Strix Halo supported through the `llama.cpp` 2.22.1 runtime (a maintainer says ROCm 7 is bundled). iGPUs under the Vulkan backend are shown but disabled by default. | What the Vulkan default means for Strix Halo was not checked. |
+| 0.4.17 (2026-06-26) | Strix Halo supported through the `llama.cpp` 2.22.1 runtime (a maintainer says ROCm 7 is bundled). iGPUs under the Vulkan backend are shown but disabled by default ([release notes](https://lmstudio.ai/changelog/lmstudio-v0.4.17), read 2026-10-02). | What the Vulkan default means for Strix Halo was not checked; see the GPU check in the Short Version. |
 | 0.4.22 (2026-08-28) | MTP, DFlash and DSpark drafters, engine 2.29.1 or newer. | Not measured here. |
 | 0.4.24 (2026-09-09) | Custom `llama.cpp` arguments. | Not measured here. |
 | [#2310](https://github.com/lmstudio-ai/lmstudio-bug-tracker/issues/2310) | ROCm runtime newer than 2.25 gives incorrect output on Ryzen AI Max (Windows). | Open, no LM Studio reply when read. |

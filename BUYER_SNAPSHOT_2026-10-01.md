@@ -149,11 +149,11 @@ what listens on the LAN, and see [`SECURE_LOCAL_AI.md`](SECURE_LOCAL_AI.md).
 | MSI EdgeXpert (NVIDIA Marketplace, US) | $6,499.99 (USD, tax not stated) | Out of stock | [Marketplace](https://marketplace.nvidia.com/en-us/enterprise/personal-ai-supercomputers/) |
 | ASUS Ascent GX10, default 2TB configuration (GX10-GG0020BN), ASUS eShop US | $6,999.00 (USD, tax not stated) | "Add to Cart"; the store states that all sales are final and that no returns are accepted once an order is processed | [ASUS eShop](https://eshop.asus.com/us/ascent-gx10.html) |
 | Apple Mac Studio, US Apple Store | M5 Max 36GB/512GB $2,499; M5 Max 64GB/1TB $3,099; M5 Ultra 96GB/1TB $5,499; an M5 Ultra configuration from $6,799 (USD, tax not stated) | The 512GB M5 Ultra memory option is listed as coming late October; the 128GB M5 Max price was not captured | [Apple Store](https://www.apple.com/shop/buy-mac/mac-studio) |
-| ASUS Ascent GX10, DE/AT (Geizhals) | 1TB from €4,999 (EUR, includes VAT) | 26 offers | [Geizhals sidebar](https://geizhals.de/msi-msi-pro-max-edge-ai-00b4001s-001xat-a3947566.html) |
-| NVIDIA DGX Spark Founders Edition, DE/AT (Geizhals) | 4TB from €5,799 (EUR, includes VAT) | Not recorded | [Geizhals sidebar](https://geizhals.de/msi-msi-pro-max-edge-ai-00b4001s-001xat-a3947566.html) |
-| Gigabyte AI TOP ATOM, DE/AT (Geizhals) | 4TB from €5,499 (EUR, includes VAT) | Not recorded | [Geizhals sidebar](https://geizhals.de/msi-msi-pro-max-edge-ai-00b4001s-001xat-a3947566.html) |
-| Lenovo ThinkStation PGX, DE/AT (Geizhals) | 1TB from €4,999.99 (EUR, includes VAT) | Not recorded | [Geizhals sidebar](https://geizhals.de/msi-msi-pro-max-edge-ai-00b4001s-001xat-a3947566.html) |
-| Apple Mac Studio M5 Max 36GB/512GB, DE/AT (Geizhals) | From €2,727.10 (EUR, includes VAT) | Not recorded | [Geizhals sidebar](https://geizhals.de/msi-msi-pro-max-edge-ai-00b4001s-001xat-a3947566.html) |
+| ASUS Ascent GX10, DE/AT (Geizhals) | 1TB from €4,999 (EUR, includes VAT) | 26 offers | [Geizhals sidebar](https://geizhals.de/msi-msi-pro-max-edge-ai-00b4001s-001xat-a3947566.html) (annotation added 2026-10-02: observed on that page on 2026-09-30, not reproducible by URL) |
+| NVIDIA DGX Spark Founders Edition, DE/AT (Geizhals) | 4TB from €5,799 (EUR, includes VAT) | Not recorded | [Geizhals sidebar](https://geizhals.de/msi-msi-pro-max-edge-ai-00b4001s-001xat-a3947566.html) (annotation added 2026-10-02: observed on that page on 2026-09-30, not reproducible by URL) |
+| Gigabyte AI TOP ATOM, DE/AT (Geizhals) | 4TB from €5,499 (EUR, includes VAT) | Not recorded | [Geizhals sidebar](https://geizhals.de/msi-msi-pro-max-edge-ai-00b4001s-001xat-a3947566.html) (annotation added 2026-10-02: observed on that page on 2026-09-30, not reproducible by URL) |
+| Lenovo ThinkStation PGX, DE/AT (Geizhals) | 1TB from €4,999.99 (EUR, includes VAT) | Not recorded | [Geizhals sidebar](https://geizhals.de/msi-msi-pro-max-edge-ai-00b4001s-001xat-a3947566.html) (annotation added 2026-10-02: observed on that page on 2026-09-30, not reproducible by URL) |
+| Apple Mac Studio M5 Max 36GB/512GB, DE/AT (Geizhals) | From €2,727.10 (EUR, includes VAT) | Not recorded | [Geizhals sidebar](https://geizhals.de/msi-msi-pro-max-edge-ai-00b4001s-001xat-a3947566.html) (annotation added 2026-10-02: observed on that page on 2026-09-30, not reproducible by URL) |
 | ASUS Ascent GX10 (GX10-GG0003BN; also GG0026BN and GG0027BN), NL | From €5,299 (12 shops); €5,699 (10 shops); €6,899 (11 shops) (EUR; VAT status not confirmed per page) | As stated | [Tweakers](https://tweakers.net/reviews/14328/nvidia-dgx-spark-asus-ascent-gx10-je-eigen-ai-supercomputer-op-je-bureau.html) |
 | NVIDIA DGX Spark Founders Edition, NL | €6,143.06 on a first reading and €6,199 at about 18:20 UTC (14 prices); EUR; VAT status not confirmed per page | As stated | [Tweakers search](https://tweakers.net/pricewatch/zoeken/?keyword=dgx+spark) |
 | Apple Mac Studio M5 Ultra, NL | From €6,629 (EUR; as stated on the Tweakers review page) | Not recorded | [Tweakers](https://tweakers.net/reviews/15318/mac-mini-m6-en-mac-studio-m5-ultra-nieuwste-hardware-voor-vertrouwde-macs.html) |
@@ -213,3 +213,7 @@ Beelink GTR9 Pro was bought by the maintainer (see [disclosure](VENDOR_DISCLOSUR
 The links in this file are plain links; none is an affiliate link. See
 [disclosure](VENDOR_DISCLOSURE.md) and the
 [link registry](data/affiliate_link_registry.csv).
+
+Update 2026-10-02: the statement above rests on a check of the URLs by pattern only (tracking
+parameters and affiliate-network domains, 2026-10-01); the destinations themselves were not
+inspected (see the README note on affiliate status).

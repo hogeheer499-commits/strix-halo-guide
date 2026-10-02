@@ -188,10 +188,11 @@ does not change BIOS settings or install Ubuntu. Read
 [`setup.sh`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/setup.sh)
 before using it on a production system.
 
-**Security (checked 2026-09-30):** a fresh `setup.sh` run installs Ollama 0.31.2,
-a version inside the range listed for CVE-2026-85180 (no fixed release is named),
-and the README's Open WebUI command pins an image that 13 of 19 newly published
-advisories list as affected. Read
+**Security (checked 2026-09-30; Open WebUI count 2026-10-02):** a fresh `setup.sh` run
+installs Ollama 0.31.2, a version inside the range listed for CVE-2026-85180 (no fixed
+release is named), and the README's Open WebUI command pins an image (0.10.2) that 47
+published advisories list as affected (count of published advisories whose affected
+range includes 0.10.2, Open WebUI's GitHub security advisories, checked 2026-10-02). Read
 [Security status of pinned components](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#security-status-of-pinned-components)
 and the [local AI security checklist](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURE_LOCAL_AI.md)
 before exposing anything beyond loopback.
@@ -200,7 +201,7 @@ before exposing anything beyond loopback.
 
 | Goal | Start here | Reason |
 |---|---|---|
-| Private local chat and Open WebUI | Ollama with Vulkan/RADV | Easiest measured buyer path |
+| Local chat and Open WebUI | Ollama with Vulkan/RADV | Easiest measured buyer path |
 | Reproducible generation benchmark | Direct `llama.cpp` with Vulkan/RADV | Exact control over model, quant, build and command |
 | Local API, batching or speculative decoding | `llama-server` | Supports the documented server and MTP experiments |
 | Higher concurrency or prompt-heavy work | The measured Lemonade or ROCm/HIP profile | These routes can suit batching and prompt processing better than the single-stream default |
@@ -210,10 +211,12 @@ There is no single backend that wins every Strix Halo workload. Direct
 `llama-bench`, Ollama API, server, MTP/speculative, concurrency and community
 results are separate claim types in this project.
 
-**Open WebUI (checked 2026-09-30):** the advisories list 0.11.4 as the patched
-version, and one of them (GHSA-vpq8-f445-hcq7) applies while community sharing is
-enabled, which is the default. This guide has not qualified a patched image yet;
-see [Open WebUI in SECURITY.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#open-webui).
+**Open WebUI (checked 2026-10-02):** 47 published advisories include the pinned
+0.10.2 image. The batch of 19 published on 2026-09-27 and 2026-09-28 (13 of them
+include 0.10.2) lists 0.11.4 as the patched version, and one of them (GHSA-vpq8-f445-hcq7)
+applies while community sharing is enabled, which is the default. The digest-pinned 0.10.2 image is the only Open WebUI
+version this guide has qualified; a patched release is not qualified here.
+See [Open WebUI in SECURITY.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#open-webui).
 
 ## Frequently Asked Setup Questions
 
