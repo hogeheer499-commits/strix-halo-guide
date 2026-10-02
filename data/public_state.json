@@ -12,8 +12,8 @@
   "storefront_observed": "2026-09-30",
   "date_scope": "evidence_reviewed is not a new measurement date; individual evidence bundles retain measurement and qualification dates; availability_checked, upstream_availability_checked and storefront_observed are separate observations",
   "release": {
-    "current": "v3.0.0",
-    "date": "2026-08-25"
+    "current": "v3.1.0",
+    "date": "2026-10-02"
   },
   "runtime": {
     "ollama_current_checked": "0.34.4",
