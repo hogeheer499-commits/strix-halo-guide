@@ -511,3 +511,21 @@ These are prioritized for buyer/vendor guide value, not social-media hooks:
 - Qwen3-ASR 1.7B HF artifact: <https://huggingface.co/Qwen/Qwen3-ASR-1.7B-hf>
 - `llama.cpp` issue #25356: <https://github.com/ggml-org/llama.cpp/issues/25356>
 - Ollama 0.30.11 historical watch target: <https://github.com/ollama/ollama/releases/tag/v0.30.11>
+
+## Additional Candidate Checks, 2026-10-03
+
+These are artifact/license watchlist entries, not new local measurements or
+64/128/192GB fit qualifications. Weight-file size alone excludes KV cache, runtime
+overhead, GPU allocation and other workloads.
+
+- [Microsoft FrogNano-4B-2609](https://huggingface.co/microsoft/FrogNano-4B-2609):
+  released September 22 according to the author; the model card's MIT metadata
+  and qwen-community-1.0 text conflict. Resolve the weight license before a
+  commercial recommendation; repo-agent correctness/runtime fit remain open.
+- [LiquidAI LFM2.5-VL-3B-GGUF](https://huggingface.co/LiquidAI/LFM2.5-VL-3B-GGUF):
+  small vision candidate; test the exact projector, runtime, image task and memory
+  shape before recommending it. LFM Open License v1.0 applies; see the
+  [official license](https://huggingface.co/LiquidAI/LFM2.5-VL-3B-GGUF/blob/main/LICENSE).
+- Existing LFM2.5-8B-A1B and VL-1.6B artifacts also use LFM Open License v1.0.
+  Commercial use above the US$10 million annual-revenue threshold is not granted
+  by that license; see the [model hub's artifact-license check](docs/models.md).

@@ -23,10 +23,12 @@ Maintainer credibility is public and reviewable: 15 merged engineering PRs acros
 
 ## Start Here
 
+> **Before copying an install command:** [the short local-chat path](LOCAL_CHAT_START.md) puts runtime status, loopback binding, the patched WebUI candidate and acceptance checks together. Start with terminal chat; add a UI only after Ollama works. Historical qualification is not a security approval or a guarantee for a fresh install.
+
 | You are... | Best first page | What it answers |
 | --- | --- | --- |
 | Looking for the readable project overview | [Strix Halo Guide website](https://strixhaloguide.com/) | The buyer/setup path, evidence model, and routes into the canonical technical source |
-| Setting up a machine you already own | [Quick Start](#quick-start-6-steps) or the [short setup answer](STRIX_HALO_LOCAL_LLM_SETUP.md) | BIOS, Ubuntu, memory, Vulkan/RADV, Ollama, and the first working model |
+| Setting up a machine you already own | [Local chat: start and acceptance checks](LOCAL_CHAT_START.md) or the [short setup answer](STRIX_HALO_LOCAL_LLM_SETUP.md) | BIOS, Ubuntu, memory, Vulkan/RADV, Ollama, and the first working model |
 | Deciding what model or backend to run | [Best Known Profiles](BEST_KNOWN_PROFILES.md) and [Current Models](CURRENT_MODELS.md) | Easy chat, direct speed, long context, serving, multimodal, capacity, and experimental routes |
 | Evaluating Qwen3.8 claims | [Qwen3.8 on Strix Halo](QWEN38_STRIX_HALO.md) | Why measured 20.42 t/s (Ollama API with Ollama-default MTP drafting) and community 22-65 t/s routes are different claims; what is verified locally and what still needs reproduction |
 | Comparing or buying Strix Halo hardware | [Buyer Use Cases](BUYER_USE_CASES.md), [Buying Guide](#buying-guide), and [cross-OEM evidence](SYSTEM_EVIDENCE_MATRIX.md) | Memory fit, OS/backend tradeoffs, OEM portability, power, thermals, and missing proof |
@@ -298,7 +300,7 @@ If you are new, do this first:
 2. Set BIOS UMA Frame Buffer Size to 512MB if available, or 2GB if that is your vendor minimum.
 3. Keep IOMMU enabled/default if you use suspend, the NPU, RDMA, VFIO, passthrough, or clustering. On an always-on desktop benchmark box, `amd_iommu=off` remains an optional measured performance profile.
 4. Use the [setup script](#setup-script) to install the Vulkan/RADV + Ollama path.
-5. Start with Ollama for chat, then add [Open WebUI](#chatgpt-like-web-interface-open-webui) if you want a browser UI (read its security status first: the pinned version is in the range of 47 published advisories).
+5. Start with Ollama for chat, then read [the patched Open WebUI candidate and acceptance checks](LOCAL_CHAT_START.md#2-optional-browser-ui-linux-docker-engine) if you want a browser UI; do not install the historical 0.10.2 image for a new setup.
 6. Move to direct `llama.cpp` only when you want exact benchmark control or the fastest measured single-box path.
 
 The quickest sanity check after the setup script finishes is:
@@ -1498,16 +1500,23 @@ Local preflight status: `vllm-gfx1151` was created and smoke-tested on 2026-05-0
 
 ```bash
 distrobox create vllm-gfx1151 \
+  --home "$HOME/distrobox/vllm-gfx1151" \
   --image docker.io/kyuz0/vllm-therock-gfx1151:stable \
   --additional-flags "--device /dev/kfd --device /dev/dri --group-add video --group-add render --security-opt seccomp=unconfined"
 
 distrobox enter vllm-gfx1151
 rocm-smi
-start-vllm
+# Historical small-model smoke shape; this moving image is not an immutable pin.
+VLLM_DISABLE_COMPILE_CACHE=1 vllm serve Qwen/Qwen3-0.6B \
+  --host 127.0.0.1 --port 18001 \
+  --max-model-len 2048 --max-num-seqs 1 --gpu-memory-utilization 0.20 \
+  --dtype auto --attention-backend TRITON_ATTN --enforce-eager
+# In another terminal: curl --fail http://127.0.0.1:18001/health
+# Inspect ss -ltn: port 18001 must be loopback-only; test other-device denial.
 ```
 
 The same container caveat applies (checked 2026-09-30): third-party image, moving
-tag, `--security-opt seccomp=unconfined` and a shared home directory. Keep the vLLM
+tag, `--security-opt seccomp=unconfined` and host integration. A separate home keeps application files apart but is not a security sandbox. Do not use the launcher's unspecified HOST default; the explicit vllm command above supplies --host. Keep the vLLM
 server on loopback; the text of AMD's clustering playbooks read on 2026-09-30 binds it to
 `0.0.0.0` and contains no authentication or exposure note (not exhaustively checked), see
 [Clusters](SECURE_LOCAL_AI.md#clusters).
@@ -1634,10 +1643,9 @@ and change that one. The same check covers `PermitRootLogin` from Step 10.2.
   be reachable. Whether your router blocks inbound IPv6 is router-specific, so test
   from outside your network.
 - Reach Open WebUI remotely through a tunnel instead of an open port:
-  `ssh -L 3000:127.0.0.1:3000 <user>@<box>`, then open `http://localhost:3000` on
-  your client. This assumes the bridge command in the Open WebUI section, which
-  publishes loopback port 3000; with the untested host-network variant the UI listens
-  on port 8080 by default.
+  `ssh -N -L 127.0.0.1:3000:127.0.0.1:3000 <user>@<box>`, then open `http://127.0.0.1:3000` on
+  your client. This matches the candidate's explicit `HOST=127.0.0.1` and `PORT=3000`;
+  verify the actual listener before relying on the tunnel.
 
 These steps and checks are standard OpenSSH and ufw practice and are **not tested
 here** on this guide's own system. The statements about `sshd_config` and ufw come
@@ -2177,69 +2185,15 @@ are exposed to prompt injection as well; see
 
 ### ChatGPT-like Web Interface (Open WebUI)
 
-**Pinned, scoped client result:** Open WebUI 0.10.2 passed discovery, visible
-Qwen3.6 output and restart checks against the existing Ollama 0.32.15 route.
-See the [exact qualification and network boundary](RUNTIME_QUALIFICATION_2026-09-19.md).
-Docker must already be installed. A bridge container's `host-gateway` alias
-cannot by itself reach a loopback-only Ollama listener. The measured host had
-an existing LAN-reachable Ollama listener: it was **not local-only**. Do not
-broaden an unauthenticated listener merely to copy this example.
+For a new setup, use [the Linux loopback-only candidate and acceptance checklist](LOCAL_CHAT_START.md#2-optional-browser-ui-linux-docker-engine). It pins Open WebUI 0.11.4 by registry digest, sets the UI host and port explicitly, and reaches a loopback-only native Ollama without widening its API listener. This candidate has **not passed a hardware/client/reboot qualification here**; terminal Ollama is the first checkpoint.
 
-```bash
-docker run -d -p 127.0.0.1:3000:8080 \
-  --add-host=host.docker.internal:host-gateway \
-  -v open-webui:/app/backend/data \
-  --name open-webui \
-  -e ENABLE_COMMUNITY_SHARING=False \
-  ghcr.io/open-webui/open-webui@sha256:a26effeb220e132482bf7e0560b3404843e7bc40d23051144e062960df8df6b0
-```
+**Historical, scoped client result:** Open WebUI 0.10.2 passed discovery, visible Qwen3.6 output and restart checks against the existing Ollama 0.32.15 route. The measured host was LAN-reachable, **not local-only**. Keep [that qualification](RUNTIME_QUALIFICATION_2026-09-19.md) as historical evidence; its bridge command is not a fresh local-only installation recipe.
 
-**This command requires a non-loopback Ollama listener.** `setup.sh` leaves
-Ollama on its loopback default, which the bridge container above cannot reach.
-Open WebUI's own README documents a host-network alternative,
-`--network=host -e OLLAMA_BASE_URL=http://127.0.0.1:11434`, which keeps Ollama
-on loopback; it is **untested here**. With host networking the `-p` loopback
-mapping no longer applies, and Open WebUI's start script (`backend/start.sh`,
-v0.10.2 and v0.11.4, read 2026-10-02) defaults `HOST` to `0.0.0.0` and `PORT` to
-`8080`; its README likewise says the port changes from 3000 to 8080 with host
-networking. The UI would then listen on port 8080 on every interface of the machine,
-not on loopback port 3000, and the `ssh -L 3000:127.0.0.1:3000` tip in Step 10.4
-would not match. Adding `-e HOST=127.0.0.1` should limit it to loopback (not tested
-here). Before relying on any of this, run `sudo ss -ltnp` and check which address and
-port the Open WebUI server listens on.
+**Security status, read 2026-10-03:** 47 of the 165 published Open WebUI advisories include 0.10.2 in their affected ranges (15 high, 31 medium, 1 low). The same advisory review found no ranges including 0.11.4; that is not a general safety guarantee. Turning community sharing off addresses one condition and does not patch the old image. Environment settings normally lose to persistent database values; the new candidate uses a separate volume and explicit nonpersistent configuration. See [SECURITY.md](SECURITY.md#open-webui) for the source and scope.
 
-**Security status (checked 2026-10-02):** 47 of the 165 published advisories in
-Open WebUI's GitHub security advisories include this pinned 0.10.2 image in their
-affected range: 15 rated high (none critical), 31 medium and 1 low. Method: count of
-published advisories whose affected range includes 0.10.2, Open WebUI's GitHub security
-advisories, checked 2026-10-02. Of the 47, 13 (3 high) belong to the batch of 19 advisories
-published on 2026-09-27 and 2026-09-28 that list 0.11.4 as the patched version; the
-other 34 were published from 2026-08-02 to 2026-09-09 and list fixes in 0.11.0 or
-0.11.1. The count is of advisories. It does not say which of them work against a
-loopback-only, single-user setup; that was not assessed, and nothing was tested here.
-One of the batch, GHSA-vpq8-f445-hcq7, applies while community sharing is enabled
-(the default), which is why the command above sets `-e ENABLE_COMMUNITY_SHARING=False`.
-With default settings that variable only takes effect while no stored value exists,
-such as on a new data volume: Open WebUI's source (`models/config.py`, v0.10.2) gives
-existing database values precedence over it. If `ENABLE_PERSISTENT_CONFIG=False` is also
-set, the environment values apply and admin changes are not stored (from source; not
-tested here). On an existing volume, turn community sharing off in the admin settings
-instead (the v0.10.2 source has an "Enable Community Sharing" switch on the General
-tab; from source, not clicked through here). The variable is **not tested here**, and
-neither measure makes the pinned image a patched one. Published
-advisories also cover Ollama 0.30.0-0.33.2, which includes the guide's pinned and
-qualified Ollama versions.
+The historical 0.10.2 digest remains in the qualification report. A patched release is not qualified here; priority 40 in [the test queue](data/current_test_queue.csv) tracks text, image, tool, login, restart, reboot and network acceptance. Use the same UI port in your [SSH tunnel](LOCAL_CHAT_START.md#3-use-from-another-computer).
 
-**One rule for versions:** the digest-pinned 0.10.2 image above is the only Open WebUI
-version this guide has qualified. A patched release (0.11.4 or newer) is not qualified
-here; the row with `priority` 40 ("Patched Open WebUI qualification and advisory recheck") in [`data/current_test_queue.csv`](data/current_test_queue.csv) tracks it.
-If you upgrade anyway, pin the new image by digest (never a moving tag), rerun the
-acceptance checks of the [qualification](RUNTIME_QUALIFICATION_2026-09-19.md) and report
-the result. See
-[Security status of pinned components](SECURITY.md#security-status-of-pinned-components)
-and the [local AI security checklist](SECURE_LOCAL_AI.md).
-
-Open `http://localhost:3000`. Privacy depends on the selected models, embeddings, tools and integrations. Provision artifacts first and verify that every enabled component stays local before claiming offline operation. The acceptance result covers the pinned local fixture, not every default setting, plugin or embedding provider.
+Privacy depends on models, embeddings, tools and integrations. Provision artifacts first and verify that every enabled component stays local before claiming offline operation; a local UI alone does not prove this.
 
 ### RAG (Document Q&A)
 

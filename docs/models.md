@@ -6,7 +6,7 @@ permalink: /strix-halo-models/
 canonical_url: "https://strixhaloguide.com/strix-halo-models/"
 sitemap: false
 date: "2026-08-30T00:00:00+02:00"
-last_modified_at: "2026-10-01T00:00:00+02:00"
+last_modified_at: "2026-10-03T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo model hub with measured evidence and published GGUF fit tiers"
 seo:
   type: "TechArticle"
-  date_modified: "2026-10-01T00:00:00+02:00"
+  date_modified: "2026-10-03T00:00:00+02:00"
 ---
 
 # AMD Strix Halo Model Hub
@@ -44,6 +44,8 @@ features or context limits still need qualification, and third-party public
 capability scores, which are neither measured nor qualified here. The canonical sources for the first section are the
 [headline claim index](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/headline_claims.csv)
 and [best-known profiles](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BEST_KNOWN_PROFILES.md).
+
+**Weight-license check, read 2026-10-03:** the existing LiquidAI LFM2.5-8B-A1B and LFM2.5-VL-1.6B routes use LFM Open License v1.0. Its commercial grant has a US$10 million annual-revenue threshold; commercial use above that threshold is not permitted by this agreement. Check the exact artifact and your situation against the [8B license](https://huggingface.co/LiquidAI/LFM2.5-8B-A1B-GGUF/blob/49c14831707011e64d70b2ebd8462ba08d608434/LICENSE) and [VL license](https://huggingface.co/LiquidAI/LFM2.5-VL-1.6B-GGUF/blob/36fc16bc95133424921bcc3da009e83b2f23ffb5/LICENSE). The guide's own license does not license model weights.
 
 ## Measured On This Machine
 

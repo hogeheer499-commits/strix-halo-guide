@@ -15,7 +15,7 @@ validator = load('validate_repo')
 class PublicValidationTests(unittest.TestCase):
     def network(self, bad_qwen=False, equivalent_wording=False):
         state = json.loads((authority.ROOT / 'data/public_state.json').read_text())
-        common = ('AMD Strix Halo Qwen3.8 partner Affiliate commission does not determine '
+        common = ('evidence raw scope ' 'AMD Strix Halo Qwen3.8 partner Affiliate commission does not determine '
                   f"{state['coverage']['systems_or_sources']} systems or independent sources "
                   f"{state['coverage']['community_benchmark_contributors']} credited community benchmark contributors "
                   + state['evidence_reviewed_human'] + ' 20.42 50,059 261,130 '
@@ -59,11 +59,20 @@ class PublicValidationTests(unittest.TestCase):
     def test_all_decision_surfaces_are_monitored(self):
         checks = self.network()
         for name in ('project-home', 'project-setup', 'project-buyer', 'project-models',
-                     'project-qwen', 'project-troubleshooting', 'project-partners', 'project-disclosure'):
+                     'project-qwen', 'project-troubleshooting', 'project-partners', 'project-evidence', 'project-services', 'project-disclosure'):
             self.assertEqual([c.status for c in checks if c.name == name], ['PASS'])
         revisions = [c for c in checks if c.name == 'publication-revision']
-        self.assertEqual(len(revisions), 7)  # disclosure is the linked repository policy
+        self.assertEqual(len(revisions), 9)  # disclosure is the linked repository policy
         self.assertTrue(all(c.status == 'PASS' for c in revisions))
+
+    def test_availability_is_not_isolated_qualification(self):
+        state = {'publication': {'expected_content_revision': 'fixture'},
+                 'runtime': {'ollama_previous_checked': '0.34.2', 'ollama_current_checked': '0.34.4'}}
+        marker = '<meta name="guide-content-revision" content="fixture">'
+        bad = authority.publication_checks(authority.PROJECT_URL, marker + 'Isolated 0.34.4 is useful', state)
+        self.assertTrue(any(c.name == 'publication-guidance' for c in bad))
+        good = authority.publication_checks(authority.PROJECT_URL, marker + 'Isolated 0.34.2 is useful', state)
+        self.assertFalse(any(c.name == 'publication-guidance' for c in good))
 
     def test_equivalent_wording_does_not_trigger_marker_warnings(self):
         checks = self.network(equivalent_wording=True)

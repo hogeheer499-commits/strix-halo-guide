@@ -26,8 +26,11 @@ beginner-path harness, so compare the arms with each other, not with ~60 t/s.
 
 **Scope and caveats:** routine measurement with a known background workload
 (see `../qwen38-27b-ollama-03215-mtp-vs-nodraft/host-context.txt`). Draft
-acceptance was not captured. With MTP the generated text varied between
-repeats; without drafting it was identical across repeats.
+acceptance was not captured. Correction, 2026-10-03: all three arms have two
+distinct generated texts across nine warm repeats: old-07d352 has a 5 + 4
+split; current-mtp and current-nodraft each have a 1 + 8 split. The earlier
+claim of identical no-draft output was wrong. These counts do not establish
+that MTP caused the variation or measure task quality.
 
 **Conclusion:** on this workload the current MTP build gives a small gain
 (about 6 percent) over the same blob without drafting, which matches the

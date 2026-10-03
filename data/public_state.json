@@ -5,9 +5,14 @@
   "evidence_review_scope": "ACTIVE_EVIDENCE_REVIEW_2026-10-01.md; review of active recommendation surfaces, upstream availability, buyer context, security status and vendor surfaces (checked 2026-09-30); not remeasurement of historical archives",
   "freshness_max_age_days": 21,
   "publication": {
-    "expected_content_revision": "closeout-2026-09-19",
-    "deployment_verified": "2026-09-19T21:58:27Z",
-    "scope": "Final-closeout canonical deployment verified: nine routes, exact content apart from Cloudflare email obfuscation, metadata, headers, redirects, 404, strict live checker and authority audit; not a new hardware measurement date"
+    "expected_content_revision": "audit-fixes-2026-10-03-01",
+    "deployment_verified": null,
+    "scope": "Prepared documentation/security correction; deployment pending. Verify all nine route bodies and the site build manifest against the exact guide source commit after authorized publication. Not a new hardware qualification.",
+    "previous_verified_record": {
+      "revision": "closeout-2026-09-19",
+      "deployment_verified": "2026-09-19T21:58:27Z",
+      "scope": "Final-closeout canonical deployment verified: nine routes, exact content apart from Cloudflare email obfuscation, metadata, headers, redirects, 404, strict live checker and authority audit; not a new hardware measurement date"
+    }
   },
   "storefront_observed": "2026-09-30",
   "date_scope": "evidence_reviewed is not a new measurement date; individual evidence bundles retain measurement and qualification dates; availability_checked, upstream_availability_checked and storefront_observed are separate observations",
@@ -38,7 +43,14 @@
     "sglang_latest_available": "0.5.20; gfx1151 Docker image on ROCm 7.2.4",
     "lemonade_latest_available": "v2026.40.0; stable since 2026-09-30",
     "rocm_cli_latest_stable_available": "v0.1.0; first stable tag 2026-09-23",
-    "rocm_vendor_support_scope": "ROCm Core SDK 10.0.0 release notes dated 2026-08-26; vendor documentation, not local qualification; measured host is outside AMD's listed Ryzen OS matrix"
+    "rocm_vendor_support_scope": "ROCm Core SDK 10.0.0 release notes dated 2026-08-26; vendor documentation, not local qualification; measured host is outside AMD's listed Ryzen OS matrix",
+    "observed_update_2026_10_03": {
+      "ollama_stable": "0.35.1",
+      "llama_cpp_numbered_build": "b11379",
+      "mesa": "26.2.4",
+      "sglang": "0.5.21",
+      "scope": "Release observations read 2026-10-03; not newly measured or qualified. Existing dated availability observations and qualification versions above are retained."
+    }
   },
   "qwen38": {
     "official_model": "Qwen3.8 27B",
@@ -75,5 +87,6 @@
     "links_present": false,
     "checked": "2026-09-19",
     "policy": "VENDOR_DISCLOSURE.md"
-  }
+  },
+  "content_modified": "2026-10-03"
 }

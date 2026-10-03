@@ -389,3 +389,22 @@ The README recommendation should stay conservative:
 10. For DeepSeek ROCm controls, remove `GGML_CUDA_ENABLE_UNIFIED_MEMORY` from the environment instead of setting it to `0`.
 11. Recheck ROCm 7.14.0 RCCL notes before any future multi-node Strix Halo claim; AMD-SB-6033 (2026-09-30) lists ROCm 7.14 as the RCCL fix and does not state whether `gfx1151` builds are exposed.
 12. If installing ROCm 7.14.0 host-wide becomes necessary, treat it as a dedicated maintenance window and record a new system snapshot before publishing numbers.
+
+## 2026-10-03 Availability And Patch Recheck
+
+Primary release/advisory sources read October 3. These are available candidates,
+not a transfer of the old measurements or a blind upgrade recommendation.
+
+| Component | Observed source | Qualification boundary |
+|---|---|---|
+| Ollama | [0.35.1 stable](https://github.com/ollama/ollama/releases/tag/v0.35.1) | Existing 0.31.2 full-reboot and 0.34.2 isolated results retain their original versions; normal upgrade/client/reboot acceptance remains open |
+| llama.cpp | [b11379](https://github.com/ggml-org/llama.cpp/releases/tag/b11379), published October 3; semantic [v0.5.0](https://github.com/ggml-org/llama.cpp/releases/tag/v0.5.0) | b11146 remains latest locally measured; [probabilistic drafting #27694](https://github.com/ggml-org/llama.cpp/pull/27694) is opt-in and not tested here |
+| Mesa | [26.2.4](https://docs.mesa3d.org/relnotes/26.2.4.html), October 1 | ACO/GFX11 correctness and RADV fixes; discrete PCIe gains are not demonstrated on this integrated GPU |
+| SGLang | [0.5.21](https://github.com/sgl-project/sglang/releases/tag/v0.5.21), October 2 | Contains both SafeUnpickler hardening changes; exact CVE fixed-version status and local gfx1151 qualification not established |
+| Open WebUI | [0.11.4](https://github.com/open-webui/open-webui/releases/tag/v0.11.4) | [New pinned local candidate](LOCAL_CHAT_START.md); not client/reboot-qualified here; historical 0.10.2 is not new-install advice |
+
+[Loader padding-overflow #26979](https://github.com/ggml-org/llama.cpp/pull/26979)
+and [tensor parsing overflow checks #29384](https://github.com/ggml-org/llama.cpp/pull/29384)
+are present in the later numbered builds. No new CVE or directly exploitable RCE
+was established from these changes. Treat untrusted model files as a separate
+update/qualification concern alongside network advisories.

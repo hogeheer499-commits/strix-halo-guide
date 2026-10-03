@@ -62,6 +62,22 @@ systemctl() {
         self.assertNotEqual(result.returncode, 0)
         self.assertIsNone(content)
 
+    def test_nonlocal_or_wrong_port_binding_stops_without_writing(self):
+        for binding in ('0.0.0.0:11434', '[::]:11434', 'other-host:11434',
+                        '127.0.0.1:11435', '127.0.0.1:11434/path', 'localhost:11434', '[::1]:11434', '127.0.0.2:11434', '127.0.0.1:0', 'ftp://127.0.0.1:11434', ''):
+            with self.subTest(binding=binding):
+                result, content = self.run_fixture(environment='OLLAMA_HOST="' + binding + '"')
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIsNone(content)
+                self.assertIn('binding requires manual review', result.stderr)
+
+    def test_loopback_bindings_are_accepted(self):
+        for binding in ('127.0.0.1:11434', 'http://127.0.0.1:11434'):
+            with self.subTest(binding=binding):
+                result, content = self.run_fixture(environment='OLLAMA_HOST="' + binding + '"')
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertIn('OLLAMA_HOST=127.0.0.1:11434', content)
+
     def test_file_and_unset_contracts_require_review(self):
         for options in ({'files': '/etc/ollama.env'}, {'unsets': 'OLLAMA_VULKAN'}):
             with self.subTest(options=options):

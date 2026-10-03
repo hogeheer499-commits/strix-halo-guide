@@ -6,7 +6,7 @@ permalink: /best-strix-halo-mini-pc/
 canonical_url: "https://strixhaloguide.com/best-strix-halo-mini-pc/"
 sitemap: false
 date: "2026-08-21T00:00:00+02:00"
-last_modified_at: "2026-10-01T00:00:00+02:00"
+last_modified_at: "2026-10-03T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo local AI setup, benchmarks and buyer evidence"
 seo:
   type: "TechArticle"
-  date_modified: "2026-10-01T00:00:00+02:00"
+  date_modified: "2026-10-03T00:00:00+02:00"
 ---
 
 # Best Strix Halo Mini PC for Local LLMs (2026)
@@ -29,6 +29,14 @@ the current setup and evidence model; use this page for the buyer comparison.
 This page interprets the evidence in the [canonical Strix Halo guide repository](https://github.com/hogeheer499-commits/strix-halo-guide). Every number links to a dated source; first-party and community measurements stay labeled. The first-party Beelink GTR9 Pro was bought by the maintainer; no loaned, gifted or sponsored hardware is used for first-party results (statement as of 2026-09-26 in [`VENDOR_DISCLOSURE.md`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/VENDOR_DISCLOSURE.md#current-relationships-and-hardware-provenance)).
 
 Newest price observations (US, EU, NL/DE; observed 2026-09-30): the [September 30 exact-SKU snapshot](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_SNAPSHOT_2026-10-01.md) and its [CSV](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/buyer_price_snapshot_2026-09-30.csv).
+
+## Before Choosing Memory Or Sending A System For Repair
+
+**Checked 2026-10-03:** Framework's 32/64/128/192GB configurators identify LPDDR5x as non-upgradeable. Modular storage/other parts do not make RAM upgradeable: select capacity before purchase and confirm the exact board-repair route with the seller. Framework's published model-fit table was measured on a PRO 495/192GB reference machine; a model listed under its 64GB tier is not an independent native-64GB load/context qualification here.
+
+The [Framework NL warranty](https://frame.work/nl/en/warranty), read 2026-10-03, names Framework Computer B.V. and gives a two-year voluntary EU warranty, with country-specific exceptions and prepaid full-unit repair arrangements. B2B applicability and the customer's eventual repair outcome are not established. Separately, [ACM/ConsuWijzer](https://www.consuwijzer.nl/garantie-reparatie-geld-terug/garantie) explains that Dutch statutory conformity rights have no fixed two-year limit; a voluntary manufacturer warranty is not the same entitlement.
+
+Local chat databases, documents, embeddings and credentials may leave with the SSD at repair. Check [backup, storage retention and data removal before RMA](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURE_LOCAL_AI.md#before-repair-or-return); do not assume a factory reset securely erases them or that the seller permits retaining storage.
 
 ## Beelink GTR9 Pro vs GMKtec EVO-X2 and Corsair: measured results
 

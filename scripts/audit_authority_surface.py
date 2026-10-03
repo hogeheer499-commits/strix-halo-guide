@@ -31,6 +31,8 @@ PAGES_SETUP_URL = f"{PAGES_URL}amd-strix-halo-setup/"
 PAGES_QWEN_URL = f"{PAGES_URL}qwen38-strix-halo/"
 PROJECT_BUYER_URL = f"{PROJECT_URL}best-strix-halo-mini-pc/"
 PROJECT_MODELS_URL = f"{PROJECT_URL}strix-halo-models/"
+PROJECT_EVIDENCE_URL = f"{PROJECT_URL}evidence/"
+PROJECT_SERVICES_URL = f"{PROJECT_URL}services/"
 PROJECT_TROUBLESHOOTING_URL = f"{PROJECT_URL}troubleshooting/"
 # This is the actual disclosure destination linked by the partner page,
 # not a guessed /disclosure/ route on the canonical site.
@@ -80,6 +82,9 @@ def publication_checks(url: str, body: str, state: dict) -> list[Check]:
     # Targeted regressions supplement the revision check; absence is NOT a
     # general semantic pass. Do not use these patterns on historical archives.
     stale = []
+    isolated = state.get("runtime", {}).get("ollama_previous_checked")
+    if isolated and re.search(r"isolated\s+" + re.escape(state["runtime"]["ollama_current_checked"]) + r"\s+is useful", text) and state["runtime"]["ollama_current_checked"] != isolated:
+        stale.append("available Ollama version labelled as isolated-tested")
     if url == PROJECT_BUYER_URL:
         for phrase in ("cheapest 128gb", "best ecosystem/support", "192gb pro 495"):
             # A transparent withdrawal is not an active buying recommendation.
@@ -253,6 +258,8 @@ def network_checks() -> tuple[list[Check], dict[str, int]]:
         ("project-models", PROJECT_MODELS_URL, ("Strix Halo", "model"), PROJECT_MODELS_URL),
         ("project-troubleshooting", PROJECT_TROUBLESHOOTING_URL,
          ("Strix Halo", "troubleshooting"), PROJECT_TROUBLESHOOTING_URL),
+        ("project-evidence", PROJECT_EVIDENCE_URL, ("evidence", "raw"), PROJECT_EVIDENCE_URL),
+        ("project-services", PROJECT_SERVICES_URL, ("Strix Halo", "scope"), PROJECT_SERVICES_URL),
         ("project-disclosure", DISCLOSURE_URL,
          ("Vendor Disclosure Policy", "Affiliate links", "Negative results stay"), None),
     )

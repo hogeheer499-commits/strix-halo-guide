@@ -100,6 +100,101 @@ if [ "$TOTAL_RAM_GB" -gt 136 ]; then
 fi
 # END PREFLIGHT GUARDS
 
+# BEGIN OLLAMA CONFIGURATION FUNCTIONS (also exercised by offline fixtures)
+check_ollama_environment() {
+    local require_all="$1" environment files unsets
+    environment=$(systemctl show ollama -p Environment --value) || return 1
+    files=$(systemctl show ollama -p EnvironmentFiles --value) || return 1
+    unsets=$(systemctl show ollama -p UnsetEnvironment --value) || return 1
+    # EnvironmentFile and UnsetEnvironment apply after Environment. Do not
+    # pretend that checking a drop-in filename resolves those contracts.
+    if [ -n "$files" ] || [ -n "$unsets" ]; then
+        err "Ollama uses EnvironmentFile or UnsetEnvironment; review its effective environment manually before applying this profile."
+        return 1
+    fi
+    OLLAMA_CHECK_ENV="$environment" python3 - "$require_all" <<'PY'
+import ipaddress, os, shlex, sys
+from urllib.parse import urlsplit
+expected = {
+    'OLLAMA_VULKAN': '1', 'OLLAMA_IGPU_ENABLE': '1',
+    'HIP_VISIBLE_DEVICES': '-1', 'OLLAMA_FLASH_ATTENTION': '1',
+    'OLLAMA_CONTEXT_LENGTH': '8192', 'AMD_VULKAN_ICD': 'RADV',
+    'VK_ICD_FILENAMES': '/usr/share/vulkan/icd.d/radeon_icd.json',
+    'OLLAMA_NUM_PARALLEL': '1',
+}
+try:
+    actual = dict(item.split('=', 1) for item in shlex.split(os.environ['OLLAMA_CHECK_ENV']))
+except ValueError:
+    sys.exit('Cannot parse the effective Ollama environment; manual review required.')
+binding = actual.get('OLLAMA_HOST', '127.0.0.1:11434')
+try:
+    endpoint = urlsplit(binding if '://' in binding else 'http://' + binding)
+    host = endpoint.hostname
+    port = 11434 if endpoint.port is None else endpoint.port
+    local = host == 'localhost' or (host is not None and ipaddress.ip_address(host).is_loopback)
+except ValueError:
+    local = False
+if not local or endpoint.scheme not in ('http', 'https') or host != '127.0.0.1' or port != 11434 or endpoint.username is not None or endpoint.password is not None or endpoint.path not in ('', '/') or endpoint.query or endpoint.fragment:
+    sys.exit('Ollama binding requires manual review: use the exact IPv4 endpoint 127.0.0.1:11434 for this profile. '
+             'Existing administrator settings were preserved; do not widen the unauthenticated API for WebUI.')
+bad = [key for key, value in expected.items()
+       if (key in actual and actual[key] != value)
+       or (sys.argv[1] == 'required' and key not in actual)]
+if bad:
+    sys.exit('Ollama profile conflicts or missing values: ' + ', '.join(bad)
+             + '. Review service/drop-in precedence; existing settings were preserved.')
+PY
+}
+
+configure_ollama() {
+    local directory="$1" target desired
+    target="$directory/60-strix-halo-guide.conf"
+    desired=$(mktemp) || return 1
+    cat > "$desired" << 'OLLAMA'
+# Owned by strix-halo-guide; existing administrator drop-ins are preserved.
+[Service]
+Environment="OLLAMA_HOST=127.0.0.1:11434"
+Environment="OLLAMA_VULKAN=1"
+Environment="OLLAMA_IGPU_ENABLE=1"
+Environment="HIP_VISIBLE_DEVICES=-1"
+Environment="OLLAMA_FLASH_ATTENTION=1"
+Environment="OLLAMA_CONTEXT_LENGTH=8192"
+Environment="AMD_VULKAN_ICD=RADV"
+Environment="VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json"
+Environment="OLLAMA_NUM_PARALLEL=1"
+OLLAMA
+    # Reload existing files before inspecting their effective precedence.
+    if ! sudo systemctl daemon-reload || ! check_ollama_environment optional; then
+        rm -f "$desired"
+        return 1
+    fi
+    if [ -e "$target" ] || [ -L "$target" ]; then
+        if [ -L "$target" ] || ! cmp -s "$desired" "$target"; then
+            err "Guide drop-in already exists with different content: $target. Review it manually; it was not overwritten."
+            rm -f "$desired"
+            return 1
+        fi
+    else
+        sudo mkdir -p "$directory" || { rm -f "$desired"; return 1; }
+        sudo install -m 0644 "$desired" "$target" || { rm -f "$desired"; return 1; }
+    fi
+    rm -f "$desired"
+    sudo systemctl daemon-reload || return 1
+    check_ollama_environment required || return 1
+    sudo systemctl restart ollama || return 1
+    log "Ollama environment matches the Vulkan profile. Actual GPU offload still needs runtime verification."
+}
+# END OLLAMA CONFIGURATION FUNCTIONS
+
+# Read-only existing-service review before boot, driver or service changes.
+if command -v ollama >/dev/null 2>&1; then
+    if [ "$(systemctl show ollama -p NeedDaemonReload --value)" = "yes" ]; then
+        err "Ollama unit changes are pending daemon-reload. Review the unit before running this installer."
+        exit 1
+    fi
+    check_ollama_environment optional || exit 1
+fi
+
 # Phase 3: Kernel Configuration
 # Detect known migration holds before the first configuration mutation.
 for legacy_file in /etc/modprobe.d/amdgpu_llm_optimized.conf /etc/udev/rules.d/99-amd-kfd.rules; do
@@ -261,80 +356,8 @@ else
     log "Ollama already installed: $(ollama --version 2>/dev/null)"
     warn "Keeping the existing runtime; no automatic upgrade or downgrade to ${OLLAMA_VERSION}."
 fi
+warn "Known advisory ranges include the historical 0.31.2 default. Read SECURITY.md; this is not a fully patched fresh-install qualification."
 warn "Only the runtime installation is pinned. Match the model, driver, kernel and reboot checks before comparing with a measured profile."
-
-# BEGIN OLLAMA CONFIGURATION FUNCTIONS (also exercised by offline fixtures)
-check_ollama_environment() {
-    local require_all="$1" environment files unsets
-    environment=$(systemctl show ollama -p Environment --value) || return 1
-    files=$(systemctl show ollama -p EnvironmentFiles --value) || return 1
-    unsets=$(systemctl show ollama -p UnsetEnvironment --value) || return 1
-    # EnvironmentFile and UnsetEnvironment apply after Environment. Do not
-    # pretend that checking a drop-in filename resolves those contracts.
-    if [ -n "$files" ] || [ -n "$unsets" ]; then
-        err "Ollama uses EnvironmentFile or UnsetEnvironment; review its effective environment manually before applying this profile."
-        return 1
-    fi
-    OLLAMA_CHECK_ENV="$environment" python3 - "$require_all" <<'PY'
-import os, shlex, sys
-expected = {
-    'OLLAMA_VULKAN': '1', 'OLLAMA_IGPU_ENABLE': '1',
-    'HIP_VISIBLE_DEVICES': '-1', 'OLLAMA_FLASH_ATTENTION': '1',
-    'OLLAMA_CONTEXT_LENGTH': '8192', 'AMD_VULKAN_ICD': 'RADV',
-    'VK_ICD_FILENAMES': '/usr/share/vulkan/icd.d/radeon_icd.json',
-    'OLLAMA_NUM_PARALLEL': '1',
-}
-try:
-    actual = dict(item.split('=', 1) for item in shlex.split(os.environ['OLLAMA_CHECK_ENV']))
-except ValueError:
-    sys.exit('Cannot parse the effective Ollama environment; manual review required.')
-bad = [key for key, value in expected.items()
-       if (key in actual and actual[key] != value)
-       or (sys.argv[1] == 'required' and key not in actual)]
-if bad:
-    sys.exit('Ollama profile conflicts or missing values: ' + ', '.join(bad)
-             + '. Review service/drop-in precedence; existing settings were preserved.')
-PY
-}
-
-configure_ollama() {
-    local directory="$1" target desired
-    target="$directory/60-strix-halo-guide.conf"
-    desired=$(mktemp) || return 1
-    cat > "$desired" << 'OLLAMA'
-# Owned by strix-halo-guide; existing administrator drop-ins are preserved.
-[Service]
-Environment="OLLAMA_VULKAN=1"
-Environment="OLLAMA_IGPU_ENABLE=1"
-Environment="HIP_VISIBLE_DEVICES=-1"
-Environment="OLLAMA_FLASH_ATTENTION=1"
-Environment="OLLAMA_CONTEXT_LENGTH=8192"
-Environment="AMD_VULKAN_ICD=RADV"
-Environment="VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/radeon_icd.json"
-Environment="OLLAMA_NUM_PARALLEL=1"
-OLLAMA
-    # Reload existing files before inspecting their effective precedence.
-    if ! sudo systemctl daemon-reload || ! check_ollama_environment optional; then
-        rm -f "$desired"
-        return 1
-    fi
-    if [ -e "$target" ] || [ -L "$target" ]; then
-        if [ -L "$target" ] || ! cmp -s "$desired" "$target"; then
-            err "Guide drop-in already exists with different content: $target. Review it manually; it was not overwritten."
-            rm -f "$desired"
-            return 1
-        fi
-    else
-        sudo mkdir -p "$directory" || { rm -f "$desired"; return 1; }
-        sudo install -m 0644 "$desired" "$target" || { rm -f "$desired"; return 1; }
-    fi
-    rm -f "$desired"
-    sudo systemctl daemon-reload || return 1
-    check_ollama_environment required || return 1
-    sudo systemctl restart ollama || return 1
-    log "Ollama environment matches the Vulkan profile. Actual GPU offload still needs runtime verification."
-}
-# END OLLAMA CONFIGURATION FUNCTIONS
 
 configure_ollama /etc/systemd/system/ollama.service.d
 warn "Verify the Ollama service user has access to the distribution's render nodes (README Step 3.4)."

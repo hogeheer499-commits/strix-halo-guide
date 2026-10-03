@@ -6,7 +6,7 @@ permalink: /amd-strix-halo-setup/
 canonical_url: "https://strixhaloguide.com/amd-strix-halo-setup/"
 sitemap: false
 date: "2026-08-14T00:00:00+02:00"
-last_modified_at: "2026-10-01T00:00:00+02:00"
+last_modified_at: "2026-10-03T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo Local LLM Guide with direct, server, and unified-memory evidence highlights"
 seo:
   type: "TechArticle"
-  date_modified: "2026-10-01T00:00:00+02:00"
+  date_modified: "2026-10-03T00:00:00+02:00"
 ---
 
 # AMD Strix Halo Setup: BIOS, UMA, IOMMU, Ubuntu and Local LLMs
@@ -71,6 +71,10 @@ Unified memory does not mean that applications should reserve all physical RAM
 as fixed VRAM. Linux, the model runtime and other processes still need memory.
 On the measured Vulkan/RADV path, a small fixed UMA reserve leaves memory visible
 to Linux while the integrated GPU accesses a much larger GTT-backed shared pool.
+
+## Start With One Local Chat Path
+
+Read the [short local-chat path and acceptance checks](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/LOCAL_CHAT_START.md) before installing. It puts runtime qualification, a patched WebUI candidate, loopback binding and the matching SSH tunnel together. The revised installer and UI candidate remain unqualified for a fresh installation; do not transfer the historical LAN-reachable client result to a new local-only setup.
 
 ## Short Answer
 

@@ -4,6 +4,8 @@ The public guide remains free. These paid scopes are for people and teams who
 want hands-on help, a controlled reproduction, or evidence for a specific
 system.
 
+Services are offered through JVD Netwerk. The contractual supplier details, applicable tax, data handling and terms are confirmed in writing before payment.
+
 All work remains evidence-led. Payment does not buy a positive conclusion,
 hidden edits, or removal of accurate negative results.
 
@@ -24,6 +26,16 @@ The scope includes:
 
 It does not include an operating-system reinstall, hardware repair, data
 recovery, unattended administration, or a guaranteed performance number.
+
+## When An Installation Counts As Delivered
+
+A troubleshooting session can identify a blocker; a completed installation is
+an agreed working system. For an installation scope, agree on the exact model,
+client, GPU use, login, loopback/network boundary and restart/reboot checks in
+[the acceptance checklist](LOCAL_CHAT_START.md#4-acceptance-when-is-the-installation-working).
+Record the results, hand over versions and backup/update ownership, and agree
+on the remedy for a failed acceptance before payment. Installing packages or
+passing a text-only smoke test is not by itself completed delivery.
 
 ## Independent Reproduction Sprint
 

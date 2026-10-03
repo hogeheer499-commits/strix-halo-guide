@@ -123,7 +123,7 @@ bulletins. Practical guidance built on this list is in
   (`src/lib/components/admin/Settings/General.svelte`). Neither the variable nor the
   switch was tested here; the menu path comes from the source, not from clicking through
   it.
-- **One version rule.** The digest-pinned 0.10.2 image is the only Open WebUI version
+- **Historical qualification, separate from installation advice.** The digest-pinned 0.10.2 image is the only Open WebUI version
   qualified here ([`RUNTIME_QUALIFICATION_2026-09-19.md`](RUNTIME_QUALIFICATION_2026-09-19.md)).
   A patched release (0.11.4 or later) is not qualified here; the row with `priority` 40
   ("Patched Open WebUI qualification and advisory recheck") in
@@ -131,7 +131,7 @@ bulletins. Practical guidance built on this list is in
   0.11.1 to 0.11.3 are not patched releases: the affected ranges of all 19 advisories
   in the batch include 0.11.3 (for example GHSA-f9xp-mfmq-x6cg, high, 0.11.1 to
   0.11.3), and on 2026-10-02 no published advisory listed 0.11.4 as affected. If you
-  upgrade anyway, pin the new image by digest (not a moving tag), rerun the acceptance
+  choose a new installation, use [the pinned loopback-only 0.11.4 candidate](LOCAL_CHAT_START.md#2-optional-browser-ui-linux-docker-engine), not 0.10.2. Rerun the acceptance
   checks of the September 19 qualification and report the result.
 - **If you stay on the pin,** keep it bound to loopback, turn community sharing off as
   described above and do not create accounts for untrusted users. These steps reduce
@@ -173,7 +173,16 @@ bulletins. Practical guidance built on this list is in
   [GHSA-25q3-v2hm-8vpf](https://github.com/vllm-project/vllm/security/advisories/GHSA-25q3-v2hm-8vpf)
   (high, before 0.28.0, a negative token id can stop the engine). The vLLM build
   recorded in [`VLLM_BASELINE.md`](VLLM_BASELINE.md) (0.19.2rc1.dev113) is in that
-  range. Newer vLLM has not been qualified here.
+  range. Newer vLLM has not been qualified here. Two additional high advisories,
+  read 2026-10-03, cover versions before 0.22.0:
+  [GHSA-94f4-hr76-p5j6](https://github.com/vllm-project/vllm/security/advisories/GHSA-94f4-hr76-p5j6)
+  describes API-key authentication bypass (the advisory excludes deployment
+  behind an RFC-conforming proxy); a key on the historical baseline does not
+  replace network isolation.
+  [GHSA-q8gq-377p-jq3r](https://github.com/vllm-project/vllm/security/advisories/GHSA-q8gq-377p-jq3r)
+  requires a malicious cross-encoder model plus `python -O`/`PYTHONOPTIMIZE=1`.
+  These conditions are not demonstrated by the Qwen loopback smoke. No exploit
+  was tested; both advisories name 0.22.0 as the patch boundary.
 - **SGLang:** CVE-2026-86793 (NVD, 9.8 critical, status "Deferred"):
   unauthenticated pickle deserialization through `/update_weights_from_tensor`
   when no auth keys are configured; NVD names no versions. The hardening PRs
@@ -194,10 +203,13 @@ bulletins. Practical guidance built on this list is in
   advisory says no authentication is required, only TCP access to the RPC server port
   (default 50052), to run commands as the server's user. It lists llama.cpp
   `<= b7991` as affected and names no patched version. It also says the RPC backend must
-  be enabled at build time and defaults to localhost. The builds this guide currently
-  uses (v0.4.1 and v0.5.0 = b11146) are newer than b7991, but the advisory names no patched version, so newer does not
-  by itself mean fixed. This guide has not compared current builds with the advisory's
-  description and has not tested them; whether they are affected is to verify. Use
+  be enabled at build time and defaults to localhost.
+  [NVD](https://nvd.nist.gov/vuln/detail/CVE-2026-34159) identifies b8492 as patched
+  and links [fix 39bf0d3](https://github.com/ggml-org/llama.cpp/commit/39bf0d3c6a95803e0f41aaba069ffbee26721042).
+  The fix is contained in both v0.4.1 and v0.5.0 (upstream compare and source
+  read 2026-10-03). These pins contain the fix for this specific RCE; no exploit
+  was tested here. This does not add authentication or make RPC safe on an open
+  network. Use
   RPC only over a direct point-to-point link, never on a LAN or tailnet address; see
   [`COMMUNITY_RPC.md`](COMMUNITY_RPC.md).
 - **AMD's clustering playbooks** ([`amd/playbooks`](https://github.com/amd/playbooks),
@@ -299,7 +311,7 @@ recorded for the published runs ([`REPRODUCIBILITY.md`](REPRODUCIBILITY.md)).
   [recipe checklist](SECURE_LOCAL_AI.md#community-recipes-checklist) and
   [containers](SECURE_LOCAL_AI.md#containers-and-closed-binaries). The container
   commands in the README come from a third party's instructions, use moving tags and
-  share your home directory.
+  can share your home directory; a separate Distrobox home is still not a sandbox.
 - SSH: key login, `PasswordAuthentication no`, a firewall, an IPv6 check and a VPN or
   `ssh -L` tunnel instead of an open port. Check the effective settings with
   `sudo sshd -T` and `sudo ufw status numbered`, because a drop-in file or an existing

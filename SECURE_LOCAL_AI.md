@@ -39,14 +39,14 @@ pinned components are in [`SECURITY.md`](SECURITY.md#security-status-of-pinned-c
 - **No authentication.** The local Ollama API requires none; API keys apply to ollama.com
   ([docs](https://docs.ollama.com/api/authentication), checked 2026-09-30). Anyone who can reach the
   port can use the box and its models.
-- **Open WebUI in Docker.** The README's bridge-network command needs a non-loopback Ollama
-  listener, and widening the listener puts an API without authentication on the network. The README
-  documents a host-network alternative that is untested here. With host networking the
-  `-p 127.0.0.1:3000:8080` mapping no longer applies, and Open WebUI's start script defaults `HOST`
-  to `0.0.0.0` and `PORT` to `8080` (`backend/start.sh`, v0.10.2 and v0.11.4, read 2026-10-02), so
-  the UI would listen on all interfaces on port 8080. Setting `-e HOST=127.0.0.1` should limit it
-  to loopback (not tested here); check with `sudo ss -ltnp`. Decide the bind address first, then
-  add a firewall.
+- **Open WebUI in Docker.** [The new Linux candidate](LOCAL_CHAT_START.md#2-optional-browser-ui-linux-docker-engine)
+  uses a 0.11.4 registry digest, host networking, explicit `HOST=127.0.0.1`,
+  `PORT=3000` and `OLLAMA_BASE_URL=http://127.0.0.1:11434`. It reaches native
+  loopback-only Ollama without publishing its API. It is source-reviewed, not
+  hardware/client/reboot-qualified here. Host networking shares the host network
+  namespace and ignores `-p`; inspect both actual listeners and test from another
+  device. The historical 0.10.2 bridge qualification used a LAN-reachable API
+  and is not the new-install recipe. Decide the binding before adding a firewall.
 - **See what listens, then test from another device.** `sudo ss -ltnp` lists listeners; `0.0.0.0`,
   `*` and `[::]` are reachable from other machines unless a firewall stops them.
   `curl -m 5 http://<box-address>:11434/api/version` from another device should time out; a check on
@@ -163,7 +163,9 @@ pattern, not the author.
   remote crash through a malformed tensor. GHSA-j8rj-fmpv-wcxw (CVE-2026-34159, critical, CVSS 9.8,
   checked 2026-10-02) describes, according to the advisory, unauthenticated remote code execution
   with only TCP access to the RPC server port (default 50052). It lists llama.cpp `<= b7991` as
-  affected and names no patched version; see
+  affected and names no patched version. NVD additionally identifies b8492 as patched;
+  fix 39bf0d3 is contained in both v0.4.1 and v0.5.0 (source/compare read 2026-10-03).
+  This fixes that specific RCE, not the absence of authentication; see
   [`SECURITY.md`](SECURITY.md#other-runtimes-the-guide-tests-or-plans-to-test). Bind it only to a
   direct point-to-point link such as the USB4 `thunderbolt-net` interface, never to a LAN or
   tailnet address. All nodes need the same build (RPC protocol 7 from v0.5.0).
@@ -292,3 +294,18 @@ Found an error, a missing advisory or a broken source? Open a public issue as de
 [What To Report](SECURITY.md#what-to-report). Report a vulnerability in `setup.sh` or another script
 privately, as described in [SECURITY.md](SECURITY.md#vulnerabilities-in-setupsh-or-other-scripts).
 Do not paste passwords, keys or private logs into a public issue.
+
+## Before Repair Or Return
+
+Local data travel with a storage device. Back up chat databases, documents,
+embeddings and configuration, and verify a restore before an RMA. Ask the seller
+in writing whether you may retain/remove your SSD; do not remove parts against
+the agreed repair instructions. If storage must be returned, remove customer
+data and revoke credentials using an appropriate storage-specific method; a
+factory reset alone is not a proven secure erase. After replacement, restore
+deliberately and recheck accounts, integrations and listeners.
+
+Vendor statements read 2026-10-03: [Minisforum EU, data handling](https://minisforumpc.eu/policies/refund-policy),
+[Framework NL warranty, data loss](https://frame.work/nl/en/warranty) and
+[GMKtec warranty, backup](https://de.gmktec.com/pages/warranty). Those are sellers'
+terms, not a tested recovery or a promise that an SSD can always be retained.
