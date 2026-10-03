@@ -46,9 +46,9 @@
       "user_can_write": true
     }
   ],
-  "user_name": "hoge-heer",
+  "user_name": "<user>",
   "user_groups": [
-    "hoge-heer",
+    "<user>",
     "adm",
     "cdrom",
     "sudo",

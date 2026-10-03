@@ -44,7 +44,7 @@ downloaded: speculative decoding and vision are separate lanes.
 ## Host conditions (Background-Load Policy: routine)
 
 Nothing was paused. The libvirt desktop VM stayed `running`; the desktop session,
-Zoom, Chrome, the remote-access agent and CLI sessions stayed active; the power
+a video-call client, a web browser, the remote-access agent and CLI sessions stayed active; the power
 profile stayed `balanced` with AMDGPU DPM `auto` (no boost). Ollama had no model
 loaded before, during or after the run (`ollama ps` empty in every snapshot).
 `gpu_busy_percent` was 0 before and after; the 7GB swap was already full before

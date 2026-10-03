@@ -11,9 +11,9 @@ serve plan
   gpu: auto (selected none)
   helper: started background automation daemon
 managed service launched
-  service_id: lemonade-home-hoge-heer-models-qw-1786227820734
+  service_id: lemonade-home-<user>-models-qw-1786227820734
   process_pid: 1975136
   endpoint: http://127.0.0.1:11465/v1
-  log_path: ~/local-scratch/rocm-cli-isolated-20260809-v1/data/services/lemonade-home-hoge-heer-models-qw-1786227820734.log
-  manifest_path: ~/local-scratch/rocm-cli-isolated-20260809-v1/data/services/lemonade-home-hoge-heer-models-qw-1786227820734.json
+  log_path: ~/local-scratch/rocm-cli-isolated-20260809-v1/data/services/lemonade-home-<user>-models-qw-1786227820734.log
+  manifest_path: ~/local-scratch/rocm-cli-isolated-20260809-v1/data/services/lemonade-home-<user>-models-qw-1786227820734.json
   readiness: starting

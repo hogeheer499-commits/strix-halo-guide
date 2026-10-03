@@ -157,8 +157,8 @@ ai_pids="$(
   } | sort -nu
 )"
 if [ -n "$ai_pids" ]; then
-  printf '%s\n' "$ai_pids" | xargs -r ps -o pid,pcpu,pmem,comm --no-headers -p
-  warn "local AI services are already running; confirm they are part of the test"
+  ai_count="$(printf '%s\n' "$ai_pids" | grep -c .)"
+  warn "$ai_count local AI service process(es) already running; confirm they are part of the test (names and PIDs are not recorded)"
 fi
 for engine in docker podman; do
   if command -v "$engine" >/dev/null 2>&1; then

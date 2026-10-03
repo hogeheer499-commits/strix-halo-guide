@@ -16,19 +16,19 @@ rocm/dev-ubuntu-22.04:6.3-complete 29.7GB
 ## main...origin/main
 5d9d6cc896aca01bc30864de3954ab4e7a20af65
 total 136
-drwxrwxr-x 6 hoge-heer hoge-heer  4096 May  7 08:04 .
-drwxrwxr-x 5 hoge-heer hoge-heer  4096 May  7 08:04 ..
--rw-rw-r-- 1 hoge-heer hoge-heer  4467 May  7 08:04 .env.template
-drwxrwxr-x 8 hoge-heer hoge-heer  4096 Jun  2 18:27 .git
--rw-rw-r-- 1 hoge-heer hoge-heer  1144 May  7 08:04 .gitignore
--rw-rw-r-- 1 hoge-heer hoge-heer  7658 May  7 08:04 Dockerfile
--rw-rw-r-- 1 hoge-heer hoge-heer  1212 May  7 08:04 LICENSE
--rw-rw-r-- 1 hoge-heer hoge-heer 58713 May  7 08:04 README.md
-drwxrwxr-x 3 hoge-heer hoge-heer  4096 May  7 08:04 csrc
--rw-rw-r-- 1 hoge-heer hoge-heer  7051 May  7 08:04 docker-compose.yml
--rwxrwxr-x 1 hoge-heer hoge-heer 20180 May  7 08:04 glados.py
-drwxrwxr-x 2 hoge-heer hoge-heer  4096 May  7 08:04 scripts
-drwxrwxr-x 2 hoge-heer hoge-heer  4096 May  7 08:04 test
+drwxrwxr-x 6 <user> <user>  4096 May  7 08:04 .
+drwxrwxr-x 5 <user> <user>  4096 May  7 08:04 ..
+-rw-rw-r-- 1 <user> <user>  4467 May  7 08:04 .env.template
+drwxrwxr-x 8 <user> <user>  4096 Jun  2 18:27 .git
+-rw-rw-r-- 1 <user> <user>  1144 May  7 08:04 .gitignore
+-rw-rw-r-- 1 <user> <user>  7658 May  7 08:04 Dockerfile
+-rw-rw-r-- 1 <user> <user>  1212 May  7 08:04 LICENSE
+-rw-rw-r-- 1 <user> <user> 58713 May  7 08:04 README.md
+drwxrwxr-x 3 <user> <user>  4096 May  7 08:04 csrc
+-rw-rw-r-- 1 <user> <user>  7051 May  7 08:04 docker-compose.yml
+-rwxrwxr-x 1 <user> <user> 20180 May  7 08:04 glados.py
+drwxrwxr-x 2 <user> <user>  4096 May  7 08:04 scripts
+drwxrwxr-x 2 <user> <user>  4096 May  7 08:04 test
 ## lucebox dflash status
 ## main...origin/main
 6fe0d9a0a9b79855cc56967a60f6d35a5532cdd7

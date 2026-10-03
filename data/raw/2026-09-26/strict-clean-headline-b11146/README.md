@@ -48,7 +48,7 @@ workstation's own power guard with a temporary boost and cleared afterwards
 This matches the August 30 lane, not the May `tuned accelerator-performance` lane.
 
 Remained active (not stopped, by design): the desktop session (gnome-shell,
-Xorg), the Zoom desktop client, Chrome, the RustDesk remote-access agent,
+Xorg), a video-call client, a web browser, a remote-access agent,
 terminal and CLI-agent sessions, and the power guard. Processes holding the GPU
 render node are listed by runtime name in the host snapshots; none showed
 sustained GPU load (`gpu_busy_percent` 0 before and after). Therefore this is a

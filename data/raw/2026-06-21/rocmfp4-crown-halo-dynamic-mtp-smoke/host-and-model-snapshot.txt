@@ -7,7 +7,7 @@ rocmfp4_llama_commit=4795079b04f5e0ada6e5d2e85b12bac1e27e7873
 rocmfp4_llama_describe=4795079b0
 model_dir=~/benchmark-models/rocmfp4-chadrock/qwen36-35b-crown-halo-dyn
 total 22G
--rw-rw-r-- 1 hoge-heer hoge-heer  22G Jun 21 04:36 Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf
--rw-rw-r-- 1 hoge-heer hoge-heer 858M Jun 21 04:10 mmproj-F16.mmproj
+-rw-rw-r-- 1 <user> <user>  22G Jun 21 04:36 Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf
+-rw-rw-r-- 1 <user> <user> 858M Jun 21 04:10 mmproj-F16.mmproj
 342e3ee059792dbcba016dc3274a2de73a2372c0ea300a8e56aa615190f58ba9  ~/benchmark-models/rocmfp4-chadrock/qwen36-35b-crown-halo-dyn/Qwen3.6-35B-A3B-HaloStrix-Dyn-MTP-v7.gguf
 8971ee4f331ff0a4c609374f32984b3d4e6dc086c0aa35f1d637fad1829e887f  ~/benchmark-models/rocmfp4-chadrock/qwen36-35b-crown-halo-dyn/mmproj-F16.mmproj

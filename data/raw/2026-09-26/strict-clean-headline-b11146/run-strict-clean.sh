@@ -4,7 +4,7 @@ set -u
 OUT="$HOME/strix-halo-guide-audit/data/raw/2026-09-26/strict-clean-headline-b11146"
 mkdir -p "$OUT"
 cd "$OUT"
-DOM=ubuntu-zoom
+DOM=vm-1
 V="virsh -c qemu:///system"
 LOG="$OUT/run-order.log"
 NEW="$HOME/llama-cpp-b11146/llama-b11146/llama-bench"

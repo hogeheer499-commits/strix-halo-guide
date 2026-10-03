@@ -34,9 +34,9 @@ SENSITIVE_PATTERNS = {
     "github token": re.compile(r"(?:gho|ghp|ghs|ghu|ghr)_[A-Za-z0-9_]{20,}"),
     "github fine-grained token": re.compile(r"github_pat_[A-Za-z0-9_]{20,}"),
     "libvirt master key path": re.compile(r"master-key\.aes"),
-    "private VM MAC from raw host-state": re.compile(r"52:54:00:78:91:06"),
+    "QEMU/libvirt VM MAC address": re.compile(r"\b52:54:00(?::[0-9A-Fa-f]{2}){3}\b"),
     "raw websocket remote address": re.compile(r"remoteAddress"),
-    "local Zoom profile path": re.compile(r"/home/hoge-heer/\.zoom"),
+    "local Zoom profile path": re.compile(r"/home/[^/\s]+/\.zoom\b"),
     "local DocFlock process path": re.compile(r"docflock-sharer"),
     "private GitHub analytics path": re.compile(r"github-traction-snapshot"),
     "private GitHub unique-traffic metric": re.compile(

@@ -29,15 +29,15 @@ NAME    ID    SIZE    PROCESSOR    CONTEXT    UNTIL
  1    vm-1   running
 
 --- GPU render node holders (runtime names only)
-      2 chrome
+      2 web-browser
       1 gnome-shell
       1 mutter-x11-fram
       1 remote-desktop
       1 snapd-desktop-i
-      1 t3code
+      1 coding-app
       1 xdg-desktop-por
-      1 zoom
-      1 ZoomWebviewHost
+      1 video-call-app
+      1 video-call-app-helper
 --- top -bn1 (by CPU; %CPU %MEM COMMAND name only)
 18.2 2.4 qemu-system-x86
 9.1 0.0 ZoomClips

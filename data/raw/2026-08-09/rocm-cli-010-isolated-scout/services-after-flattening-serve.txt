@@ -3,10 +3,10 @@ Local Servers
 Status: 1 ready
 
 Servers
-- lemonade-home-hoge-heer-models-qw-1786228131519
+- lemonade-home-<user>-models-qw-1786228131519
   status: ready
   engine: lemonade
   model: ~/models/Qwen3-Next-80B-A3B-Instruct-UD-Q4_K_XL.gguf
   endpoint: http://127.0.0.1:11467/v1
-  logs: rocm services logs lemonade-home-hoge-heer-models-qw-1786228131519
-  stop: rocm services stop lemonade-home-hoge-heer-models-qw-1786228131519 --yes
+  logs: rocm services logs lemonade-home-<user>-models-qw-1786228131519
+  stop: rocm services stop lemonade-home-<user>-models-qw-1786228131519 --yes

@@ -54,7 +54,7 @@ local test server env: OLLAMA_HOST=127.0.0.1:11435 OLLAMA_MODELS=/usr/share/olla
  158197 rustdesk        /usr/share/rustdesk/rustdesk --server
  158204 rustdesk        /usr/share/rustdesk/rustdesk --tray
  158876 rustdesk        /usr/share/rustdesk/rustdesk --cm
- 158196 sudo            sudo -E XDG_RUNTIME_DIR=/run/user/1000 -u hoge-heer /usr/share/rustdesk/rustdesk --server
+ 158196 sudo            sudo -E XDG_RUNTIME_DIR=/run/user/1000 -u <user> /usr/share/rustdesk/rustdesk --server
 2010398 t3code          ~/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --disable-gpu --disable-gpu-compositing --disable-gpu-rasterization --disable-accelerated-2d-canvas --disable-accelerated-video-decode --disable-features=UseSkiaRenderer,Vulkan,CanvasOopRasterization,VaapiVideoDecoder
 2010409 t3code          ~/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote --no-zygote-sandbox
 2010410 t3code          ~/t3-code-ops/artifacts/t3code-appimage-patched/squashfs-root/t3code --type=zygote

@@ -30,7 +30,7 @@ cool_run() {
     sleep 2
 
     echo "[$(date -Is)] start $label at $(cat "$temp_file") mC" | tee -a "$out/campaign.log"
-    if runuser -u hoge-heer -- env HOME=~ "$runner" "$label" "$out/$group" "$model" "$@"; then
+    if runuser -u <user> -- env HOME=~ "$runner" "$label" "$out/$group" "$model" "$@"; then
         echo "[$(date -Is)] pass $label" | tee -a "$out/campaign.log"
     else
         echo "[$(date -Is)] fail $label status=$?" | tee -a "$out/campaign.log"

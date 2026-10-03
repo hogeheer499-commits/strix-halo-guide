@@ -1,7 +1,7 @@
 2026-09-26T04:07:03+02:00 BEGIN
-Domain 'ubuntu-zoom' suspended
+Domain 'vm-1' suspended
 
-2026-09-26T04:07:03+02:00 VM ubuntu-zoom suspended
+2026-09-26T04:07:03+02:00 VM vm-1 suspended
 AI boost enabled for 120 minutes; the daemon applies it within 15 seconds
 2026-09-26T04:07:34+02:00 START coder-udq4kxl-b11146-p512-n128-r20
 2026-09-26T04:08:23+02:00 END coder-udq4kxl-b11146-p512-n128-r20 rc=0
@@ -38,7 +38,7 @@ AI boost enabled for 120 minutes; the daemon applies it within 15 seconds
 2026-09-26T04:36:21+02:00 END flashnext-udiq4xs-b11146-p512-n128-r10 rc=0
 2026-09-26T04:36:31+02:00 START flashnext-udiq4xs-b10687-p512-n128-r10
 2026-09-26T04:38:49+02:00 END flashnext-udiq4xs-b10687-p512-n128-r10 rc=0
-Domain 'ubuntu-zoom' resumed
+Domain 'vm-1' resumed
 
 2026-09-26T04:38:59+02:00 VM resumed
 AI boost cleared; the daemon applies the normal profile within 15 seconds

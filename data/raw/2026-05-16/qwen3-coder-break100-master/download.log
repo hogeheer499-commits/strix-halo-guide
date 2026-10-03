@@ -300,7 +300,7 @@
  99 16.1G   99 16.0G    0     0  56.2M      0  0:04:54  0:04:52  0:00:02 56.2M
  99 16.1G   99 16.1G    0     0  56.2M      0  0:04:54  0:04:53  0:00:01 56.2M
 100 16.1G  100 16.1G    0     0  56.2M      0  0:04:54  0:04:54 --:--:-- 55.9M
--rw-rw-r-- 1 hoge-heer hoge-heer 17G May 16 14:08 ~/models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_0.gguf
+-rw-rw-r-- 1 <user> <user> 17G May 16 14:08 ~/models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_0.gguf
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/nvme0n1p4  458G  397G   62G  87% ~/models
 == 2026-05-16T14:08:12+02:00 downloading Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf ==
@@ -601,7 +601,7 @@ Filesystem      Size  Used Avail Use% Mounted on
  99 16.2G   99 16.1G    0     0  57.3M      0  0:04:50  0:04:48  0:00:02 59.8M
  99 16.2G   99 16.2G    0     0  57.3M      0  0:04:50  0:04:49  0:00:01 57.2M
 100 16.2G  100 16.2G    0     0  57.3M      0  0:04:50  0:04:50 --:--:-- 57.3M
--rw-rw-r-- 1 hoge-heer hoge-heer 17G May 16 14:13 ~/models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+-rw-rw-r-- 1 <user> <user> 17G May 16 14:13 ~/models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/nvme0n1p4  458G  413G   46G  91% ~/models
 == 2026-05-16T14:13:02+02:00 downloading Qwen3-Coder-30B-A3B-Instruct-IQ4_NL.gguf ==
@@ -731,14 +731,14 @@ Filesystem      Size  Used Avail Use% Mounted on
 == 2026-05-16T14:16:13+02:00 checking Qwen3-Coder-30B-A3B-Instruct-Q4_0.gguf current=17379990688 expected=17379990688 ==
 complete Qwen3-Coder-30B-A3B-Instruct-Q4_0.gguf
 actual=17379990688 expected=17379990688
--rw-rw-r-- 1 hoge-heer hoge-heer 17G May 16 14:08 ~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_0.gguf
+-rw-rw-r-- 1 <user> <user> 17G May 16 14:08 ~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_0.gguf
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/nvme0n1p4  458G  380G   78G  84% ~/models
 /dev/nvme0n1p6  1.4T  898G  377G  71% /
 == 2026-05-16T14:16:13+02:00 checking Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf current=17456012448 expected=17456012448 ==
 complete Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
 actual=17456012448 expected=17456012448
--rw-rw-r-- 1 hoge-heer hoge-heer 17G May 16 14:13 ~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
+-rw-rw-r-- 1 <user> <user> 17G May 16 14:13 ~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_S.gguf
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/nvme0n1p4  458G  380G   78G  84% ~/models
 /dev/nvme0n1p6  1.4T  898G  377G  71% /
@@ -929,7 +929,7 @@ Filesystem      Size  Used Avail Use% Mounted on
  99 9978M   99 9946M    0     0  56.4M      0  0:02:56  0:02:56 --:--:-- 59.4M
 100 9978M  100 9978M    0     0  56.4M      0  0:02:56  0:02:56 --:--:-- 59.7M
 actual=17310784672 expected=17310784672
--rw-rw-r-- 1 hoge-heer hoge-heer 17G May 16 14:19 ~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-IQ4_NL.gguf
+-rw-rw-r-- 1 <user> <user> 17G May 16 14:19 ~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-IQ4_NL.gguf
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/nvme0n1p4  458G  380G   78G  84% ~/models
 /dev/nvme0n1p6  1.4T  907G  367G  72% /
@@ -1253,7 +1253,7 @@ Filesystem      Size  Used Avail Use% Mounted on
 100 17.2G  100 17.2G    0     0  57.0M      0  0:05:10  0:05:10 --:--:-- 57.2M
 100 17.2G  100 17.2G    0     0  57.0M      0  0:05:10  0:05:10 --:--:-- 56.3M
 actual=18556689568 expected=18556689568
--rw-rw-r-- 1 hoge-heer hoge-heer 18G May 16 14:24 ~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf
+-rw-rw-r-- 1 <user> <user> 18G May 16 14:24 ~/benchmark-models/qwen3-coder-break100/Qwen3-Coder-30B-A3B-Instruct-Q4_K_M.gguf
 Filesystem      Size  Used Avail Use% Mounted on
 /dev/nvme0n1p4  458G  380G   78G  84% ~/models
 /dev/nvme0n1p6  1.4T  925G  350G  73% /

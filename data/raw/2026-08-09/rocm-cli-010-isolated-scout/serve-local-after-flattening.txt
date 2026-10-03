@@ -10,9 +10,9 @@ serve plan
   device_policy: gpu_required
   gpu: auto (selected none)
 managed service launched
-  service_id: lemonade-home-hoge-heer-models-qw-1786228131519
+  service_id: lemonade-home-<user>-models-qw-1786228131519
   process_pid: 1984098
   endpoint: http://127.0.0.1:11467/v1
-  log_path: ~/local-scratch/rocm-cli-isolated-20260809-v1/data/services/lemonade-home-hoge-heer-models-qw-1786228131519.log
-  manifest_path: ~/local-scratch/rocm-cli-isolated-20260809-v1/data/services/lemonade-home-hoge-heer-models-qw-1786228131519.json
+  log_path: ~/local-scratch/rocm-cli-isolated-20260809-v1/data/services/lemonade-home-<user>-models-qw-1786228131519.log
+  manifest_path: ~/local-scratch/rocm-cli-isolated-20260809-v1/data/services/lemonade-home-<user>-models-qw-1786228131519.json
   readiness: ready

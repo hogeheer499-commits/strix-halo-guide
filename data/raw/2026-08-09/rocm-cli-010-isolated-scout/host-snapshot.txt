@@ -33,5 +33,5 @@ Relevant processes:
    3238 swtpm            0.0  0.0 /usr/bin/swtpm socket --ctrl type=unixio,path=/run/libvirt/qemu/swtpm/1-ubuntu-zoom-swtpm.sock,mode=0600 --tpmstate dir=/var/lib/libvirt/swtpm/a144b174-affb-422f-88dc-14e7a9d65524/tpm2,mode=0600 --log file=/var/log/swtpm/libvirt/qemu/ubuntu-zoom-swtpm.log --terminate --tpm2
  126875 systemd-inhibit  0.0  0.0 systemd-inhibit --what=idle:sleep --who=Adaptive Power Guard --why=Zoom/bot gebruikt video; remote sessie actief: tailscaled:c11, tailscaled:c7 --mode=block /usr/bin/sleep infinity
 1678258 zoom             0.0  0.0 /usr/bin/zoom
-1784362 sudo             0.0  0.0 sudo -E XDG_RUNTIME_DIR=/run/user/1000 -u hoge-heer /usr/share/rustdesk/rustdesk --server
+1784362 sudo             0.0  0.0 sudo -E XDG_RUNTIME_DIR=/run/user/1000 -u <user> /usr/share/rustdesk/rustdesk --server
 1966410 rg               0.0  0.0 rg -i zoom|ffmpeg|rustdesk|qemu|ollama|llama|rocm
