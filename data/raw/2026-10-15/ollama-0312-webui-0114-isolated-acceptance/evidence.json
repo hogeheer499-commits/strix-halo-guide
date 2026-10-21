@@ -1,0 +1,65 @@
+{
+  "test_date": "2026-10-15",
+  "scope": "Isolated component acceptance on an existing Beelink GTR9 Pro; not a fresh native setup.sh installation",
+  "host": {
+    "kernel": "7.0.0-38-generic",
+    "mesa_vulkan": "26.2.4~kisak1~n",
+    "gpu": "Radeon 8060S",
+    "backend": "Vulkan/RADV"
+  },
+  "runtime": {
+    "version": "0.31.2",
+    "archive_sha256": "2c88f0f31a959bac5a3cad4cc5296ec568551d4aa79f548f554adb2b575b3133",
+    "archive_release_digest_verified": true,
+    "binary_sha256": "c7ff3fc14739850ae2c57cda8eb6fb354cf4e436595cdf1946172e4ebc517661"
+  },
+  "model": {
+    "tag": "qwen3.6:35b-a3b",
+    "manifest_sha256": "a7eb95c53bcf96b4bdd008d0fab4a5dac88047d9c1a7a9ab88ed453423fbd87c",
+    "weight_sha256": "d372de8e934898a59e6ccfabc3368474711384d8f1fd4d22d87a3f0a45400cdc",
+    "all_five_blobs_full_sha256_verified": true,
+    "new_model_download_bytes": 0,
+    "context_length": 8192,
+    "mtp": "draft-mtp present in runner log; no speed measurement"
+  },
+  "ui": {
+    "version": "0.11.4",
+    "image_index_digest": "sha256:9591b13f13843c7721c2b8eaf7382846c81b3ffe126526d1888d1fed50c6a33f",
+    "linux_amd64_manifest": "sha256:332438e079ad23bb11b0ab278b43e7c98b50e8cec14b0840281644e8a289f49f",
+    "fresh_data_directory": true,
+    "image_already_cached": true,
+    "initial_start_network_access": "embedding-model download and release check observed; not an offline/no-egress qualification"
+  },
+  "adaptations": {
+    "runtime_port": 11436,
+    "ui_port": 13000,
+    "helper_source_sha256": "0954ff8cab7a6a1757e594dce15c0cf93cd39dedac3e6a60c4bea38839adcc67",
+    "helper_change": "Imported unchanged module with PORT set to 11436; its success message still printed hard-coded 11434",
+    "ui_storage": "new bind directory instead of the guide named volume",
+    "ui_restart_policy": "no for temporary test, not guide unless-stopped",
+    "runtime": "official binary unpacked in isolated read-only-host sandbox; no host systemd installation"
+  },
+  "checks": {
+    "helper_known_answer": "STRIX_CHECK=391",
+    "helper_done": true,
+    "helper_done_reason": "stop",
+    "helper_exit": 0,
+    "browser_before_restart": "STRIX_CHECK=391",
+    "browser_after_runtime_and_ui_restart": "STRIX_RESTART=391",
+    "first_admin_creation_with_signup_disabled": true,
+    "normal_login_after_restart": true,
+    "second_signup_http_status": 403,
+    "anonymous_model_list_http_status": 401,
+    "anonymous_generation_http_status": 401,
+    "community_sharing": false,
+    "direct_connections": false,
+    "test_listeners_loopback_only": true,
+    "offloaded_layers": "42/42",
+    "host_reboot_tested": false
+  },
+  "limits": [
+    "No fresh native installation, BIOS/driver configuration, GPU-specific upstream install path, Docker installation, host reboot, restore, second-device reachability, security certification or performance qualification.",
+    "Existing model blobs and host kernel/drivers reused; official model identity and all blob hashes verified.",
+    "A browser fetch with no Authorization header still sent its login cookie; a separate cookie-free request established the anonymous 401."
+  ]
+}

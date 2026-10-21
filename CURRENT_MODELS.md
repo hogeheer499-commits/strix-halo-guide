@@ -1,5 +1,7 @@
 # Current Model Triage
 
+**Availability check October 21, 2026:** [Ollama 0.40.7](https://github.com/ollama/ollama/releases/tag/v0.40.7) is stable and unqualified here. The [0.40.8-rc0 Flint prerelease](https://github.com/ollama/ollama/releases/tag/v0.40.8-rc0) explicitly supports macOS first, with other GPU support later; it is not a Strix Halo route. [Scope and limits](MAINTENANCE_REVIEW_2026-10-21.md).
+
 **September 19 scoped qualification:** [the existing-user runtime result](RUNTIME_QUALIFICATION_2026-09-19.md)
 separates the 0.32.15 service/client pass, useful-but-not-default isolated 0.34.2,
 and v0.4.1 direct/server/HIP controls. Historical reboot default 0.31.2 and
@@ -10,6 +12,13 @@ and a new full-host reboot are not qualified.
 September 25, 2026) and the [September 30 recheck](ROCM_VLLM_BUGWATCH.md#2026-09-30-upstream-recheck).
 Latest available, latest locally measured, historical best and recommended
 profile are separate states. New runtime availability does not upgrade old measurements.
+
+**Scoped saved-output correction 2026-10-14:** the historical first-party Gemma 4
+26B QAT server profile is not a practical recommendation. Six sampled Python/C++
+answers failed in saved no-spec, best-repeat and cold-repeat records. See the
+[saved-output review](BEST_KNOWN_PROFILES.md#historical-throughput-sampled-coding-outputs-failed); historical
+speeds below remain evidence, not useful-output qualification. This does not
+judge different community artifacts or establish MTP as the cause.
 
 Imported model-card metadata has [curator annotations](EVIDENCE_CORRECTIONS.md#captured-nvidia-model-cards): NVFP4 element/scaling formats and Cascade's configured example context are distinct from advertised capacity and local qualification.
 
@@ -61,7 +70,7 @@ The complete machine-readable queue, including blocked model downloads and maint
 | Largest current direct GGUF capacity route | DeepSeek V4 Flash 284B `UD-IQ2_XXS`: 155.64 pp512 / 13.27 tg128 direct `llama-bench` on official b10034 | Proves a pinned 90.86GB ordinary GGUF can load, generate, and answer a basic correctness check on one 128GB box. This is low-bit capacity/current-model evidence, not a speed or broad quality recommendation. |
 | Current 120B-class direct GGUF route | Nemotron 3 Super 120B-A12B `UD-IQ4_XS`: 18.43 tg128 direct `llama-bench`; latest control (b9544, 2026-06-07; not part of the 2026-09-26 b11146 re-check) measured 18.93 tg128 r3 | Keeps a more balanced 120B-class MoE capacity route visible separately from the much larger low-bit DeepSeek scout. |
 | Largest first-party agent/MTP route | StepFun Step-3.7-Flash ROCmFPX Q3 QualityPlus: 198B total / about 11B active, 34.50 t/s at 4K and 33.83 t/s at 16K with MTP; 256K target-plus-draft allocation and native tool-call smokes passed | Shows what 128GB unified memory buys beyond short speed tests: a current sparse agent model, its draft, long-context headroom, and tools on one box. Advanced pinned server route, not direct `llama-bench`. |
-| Fastest measured MTP server route (CHADROCK profile, 2026-07-16) | CHADROCK ACE/SABER 35B ROCmFP4 through `ciru-ai/ROCmFPX`: 141.37 t/s mean across three repeats on the exact 3946-token reference profile, with a 140.84-141.79 t/s range and 100% mean draft acceptance; Gemma 4 26B-A4B QAT remains the stronger six-prompt repeat at 110.00 t/s | Shows tuned ROCmFP4/MTP can be much faster than stock routes when draft acceptance is high. Keep separate from direct `llama-bench`: the CHADROCK number is a repeat-confirmed reference profile, not a universal 4K speed, while Gemma is the broader prompt mix. |
+| Fastest measured MTP server route (CHADROCK profile, 2026-07-16) | CHADROCK ACE/SABER 35B ROCmFP4 through `ciru-ai/ROCmFPX`: 141.37 t/s mean across three repeats on the exact 3946-token reference profile, with a 140.84-141.79 t/s range and 100% mean draft acceptance; Gemma 4 26B-A4B QAT has a historical six-prompt repeat at 110.00 t/s whose sampled coding outputs failed | Shows tuned ROCmFP4/MTP can be much faster than stock routes when draft acceptance is high. Keep separate from direct `llama-bench`: the CHADROCK number is a repeat-confirmed reference profile, not a universal 4K speed. The historical Gemma six-prompt speed has failed sampled coding outputs and is not a practical recommendation; see the [saved-output review](BEST_KNOWN_PROFILES.md#historical-throughput-sampled-coding-outputs-failed). |
 | Ollama fresh-install pin (historical reboot-qualified; 0.32.15 is the qualified existing service, see [BEST_KNOWN_PROFILES.md](BEST_KNOWN_PROFILES.md)) | Qwen3.6 35B-A3B through Ollama 0.31.2 (manifest ID `07d35212591f`): 60.57 t/s warm API generation mean on Vulkan/RADV; Qwen2.5-VL 7B vision smoke passed | This is the normal installed-service path, not a direct `llama-bench` headline. A later controlled same-port/same-cache comparison put 0.31.1, 0.31.2, and 0.32.0 in the same 72.55-73.20 t/s class, so the slower installed-service row is not evidence of a version-wide regression. Requires `OLLAMA_IGPU_ENABLE=1`. |
 | Current official dense multimodal Qwen route | Qwen3.8 27B `Q4_K_M` through Ollama 0.32.13: 292.49 prompt t/s and 20.42 generation t/s warm API mean over nine repeats as Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; `draft-mtp` logged in the same-service 64K run; per-run log for the 4K warm runs not captured); image, tool-call, thinking, and exact-retrieval smokes passed; exact retrieval held through 50,059 prompt tokens | Current official 27.3B dense buyer route; requires Ollama 0.32.12 or later, measured on 0.32.13. Not a no-draft result; a separate matched control on Ollama 0.32.15 measured 12.89 t/s without drafting versus 22.71 t/s with Ollama-default MTP on the same model blob (2026-09-26, routine background load; [raw evidence](data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/)). A 56,051-token attempt caused a recoverable Vulkan device-loss on the measured Beelink/RADV stack, so 50K is the verified local band and the advertised 262K remains unqualified. This is an Ollama API route, not a direct speed headline. |
 | Current ROCm 7.14 FP16 vLLM batch route | Qwen3-0.6B FP16 in the pinned official ROCm image: hipBLASLt on versus off improved aggregate throughput by 40.50% at concurrency 8, 38.96% at 9, and 41.54% at 16 | Reproduces AMD's Ryzen AI batch-8+ workaround without changing the host. It is small-model server evidence, not a direct GGUF or practical 27B/35B throughput claim; concurrency 4 was 0.77% slower. |
@@ -299,7 +308,7 @@ Gemma 4 12B is the strongest current-model brand hook in this scout. The practic
 
 Nimo's Gemma QAT submission reports faster MTP profiles, but plain/MTP rows also change KV precision and context. Head compatibility is distinct from an isolated speed effect; historical aggregate topology is unresolved. See [curator notes](EVIDENCE_CORRECTIONS.md#nimo-gemma-qat-profiles-and-topology). A merged concurrency fix does not retroactively clarify the original rows; fresh matched-profile measurements remain useful and separate from first-party direct results.
 
-The first-party Beelink update adds the missing local counterpart: Gemma 4 26B-A4B QAT runs directly at 74.80 tg128, then the matched MTP head lifts `llama-server` from a 73.96 t/s no-spec six-prompt baseline to 102.69 t/s cold repeat, 107.42 t/s T3-only repeat, and 110.00 t/s best repeat. This is now the strongest current-model server route in the guide, but it is still a server/speculative result rather than a direct benchmark replacement.
+The first-party Beelink update adds the missing local counterpart: Gemma 4 26B-A4B QAT runs directly at 74.80 tg128, then the matched MTP head lifts `llama-server` from a 73.96 t/s no-spec six-prompt baseline to 102.69 t/s cold repeat, 107.42 t/s T3-only repeat, and 110.00 t/s best repeat. These historical server speeds are not a practical recommendation: sampled saved coding outputs failed in both no-spec and MTP records. See the [saved-output review](BEST_KNOWN_PROFILES.md#historical-throughput-sampled-coding-outputs-failed). Correctness must be re-qualified on a stated task set; direct benchmark speed is a separate claim.
 
 Qwen3.5 9B is a historical community comparator. Current dense multimodal framing uses the separately measured Qwen3.8 27B route; retain Qwen3.6 and Qwen3-Coder as distinct MoE profiles.
 
@@ -340,7 +349,7 @@ Nemotron 3 Ultra shows the same pattern at a larger scale. The new Ultra release
 
 - "LFM2.5 8B-A1B at 170 t/s generation-only on Strix Halo: new small-MoE models are a different speed class."
 - "Google Gemma 4 12B runs locally on Strix Halo, but Qwen/LFM are faster for text-only generation."
-- "Gemma 4 26B-A4B QAT with matched MTP head: 110.0 t/s best-repeat on Strix Halo as a local server route."
+- Withdrawn Gemma 4 26B QAT speed-only hook (2026-10-14): sampled saved server coding answers failed. Do not promote the historical 110.0 t/s as a practical route; see the [saved-output review](BEST_KNOWN_PROFILES.md#historical-throughput-sampled-coding-outputs-failed).
 - "Current model reality check: newest does not automatically mean fastest."
 - "A 230B-class MiniMax MoE runs locally on one 128 GB Strix Halo system, but speed and capacity are different wins."
 - "DeepSeek V4 Flash 284B runs as a 90.86GB ordinary GGUF on one 128GB Strix Halo system: 13.27 t/s, with the low-bit quality caveat kept visible."

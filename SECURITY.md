@@ -82,6 +82,18 @@ bulletins. Practical guidance built on this list is in
 
 ### Open WebUI
 
+**Scoped recheck 2026-10-21:** [GHSA-3vvh-g22g-jq6r](https://github.com/open-webui/open-webui/security/advisories/GHSA-3vvh-g22g-jq6r),
+published October 18, includes the component-tested 0.11.4 pin in its affected
+range (>=0.7.0,<0.12.2; patched in 0.12.2). Channel members can impersonate a
+channel webhook. Preconditions are enabled channels, at least one channel
+webhook and a member with write access. The advisory says disabled channels or
+no channel webhooks are not affected. Keep these features off for the local
+single-user candidate; this has not been exploit-tested here. Stable 0.12.3 is
+available, not locally qualified. Two feed-page requests returned duplicate
+100-record pages, so this is not a complete advisory census or security clearance.
+[Review scope](MAINTENANCE_REVIEW_2026-10-21.md). Older counts below retain their
+original check dates.
+
 - **47 published advisories include the pinned 0.10.2 image (counted 2026-10-02).**
   Method: the count of published advisories whose affected-version range includes
   0.10.2, taken from Open WebUI's GitHub security advisories
@@ -123,9 +135,9 @@ bulletins. Practical guidance built on this list is in
   (`src/lib/components/admin/Settings/General.svelte`). Neither the variable nor the
   switch was tested here; the menu path comes from the source, not from clicking through
   it.
-- **Historical qualification, separate from installation advice.** The digest-pinned 0.10.2 image is the only Open WebUI version
-  qualified here ([`RUNTIME_QUALIFICATION_2026-09-19.md`](RUNTIME_QUALIFICATION_2026-09-19.md)).
-  A patched release (0.11.4 or later) is not qualified here; the row with `priority` 40
+- **Historical qualification, separate from installation advice.** The digest-pinned 0.10.2 image has the older September 19 qualification
+  ([`RUNTIME_QUALIFICATION_2026-09-19.md`](RUNTIME_QUALIFICATION_2026-09-19.md)); do not install it on that basis.
+  The pinned 0.11.4 image passed a separate [isolated component check on October 15](data/raw/2026-10-15/ollama-0312-webui-0114-isolated-acceptance/): new data, first admin/login, a visible answer, closed signup, rejected anonymous requests, loopback listeners and UI/runtime restart. This does not qualify a fresh native installation, host reboot, restore or current security status. The row with `priority` 40
   ("Patched Open WebUI qualification and advisory recheck") in
   [`data/current_test_queue.csv`](data/current_test_queue.csv) tracks it. Releases
   0.11.1 to 0.11.3 are not patched releases: the affected ranges of all 19 advisories
@@ -296,9 +308,9 @@ recorded for the published runs ([`REPRODUCIBILITY.md`](REPRODUCIBILITY.md)).
 - Keep Ollama on its loopback default (`127.0.0.1:11434`); do not expose an
   unauthenticated Ollama listener to a LAN, a tailnet or the internet.
 - Pull models only from registries you trust.
-- Open WebUI: the qualified image is the digest-pinned 0.10.2, which 47 published
-  advisories include (see above); a patched release (0.11.4 or later) is not qualified
-  here. Either way keep it bound to loopback, turn community sharing off (in the admin
+- Open WebUI: do not install the historical 0.10.2 pin, which 47 published
+  advisories include (see above). The 0.11.4 pin has the limited October 15
+  component evidence above, not a current security qualification; the October 18 advisory above includes it. Keep channels and channel webhooks disabled. Keep it bound to loopback, turn community sharing off (in the admin
   settings on an existing volume; from source, not clicked through here) and do not create accounts for untrusted users. If you
   upgrade, pin by digest, rerun the acceptance checks and report the result.
 - Do not share one `llama-server` between people or agents of different trust

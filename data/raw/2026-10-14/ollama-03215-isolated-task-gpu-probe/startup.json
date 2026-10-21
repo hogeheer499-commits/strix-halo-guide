@@ -1,0 +1,36 @@
+{
+  "version": {
+    "version": "0.32.15"
+  },
+  "tags": {
+    "models": [
+      {
+        "name": "qwen3.6:35b-a3b",
+        "model": "qwen3.6:35b-a3b",
+        "modified_at": "2026-10-14T22:38:49.146283927+02:00",
+        "size": 22621314381,
+        "digest": "096fdbd02fe620fc10cbeb6537e080f8041aece851e5d696aed024d4f70f2e47",
+        "details": {
+          "parent_model": "qwen3.6-source:35b-a3b-mtp-q4_K_M-20260824",
+          "format": "gguf",
+          "family": "qwen35moe",
+          "families": [
+            "qwen35moe"
+          ],
+          "parameter_size": "35.5B",
+          "quantization_level": "Q4_K_M"
+        },
+        "capabilities": [
+          "completion",
+          "tools",
+          "thinking",
+          "vision"
+        ]
+      }
+    ]
+  },
+  "listener": {
+    "local_address": "127.0.0.1:11436",
+    "note": "Only the isolated probe address is retained from the captured listener row."
+  }
+}

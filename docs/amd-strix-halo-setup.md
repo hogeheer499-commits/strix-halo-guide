@@ -6,7 +6,7 @@ permalink: /amd-strix-halo-setup/
 canonical_url: "https://strixhaloguide.com/amd-strix-halo-setup/"
 sitemap: false
 date: "2026-08-14T00:00:00+02:00"
-last_modified_at: "2026-10-03T00:00:00+02:00"
+last_modified_at: "2026-10-21T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo Local LLM Guide with direct, server, and unified-memory evidence highlights"
 seo:
   type: "TechArticle"
-  date_modified: "2026-10-03T00:00:00+02:00"
+  date_modified: "2026-10-21T00:00:00+02:00"
 ---
 
 # AMD Strix Halo Setup: BIOS, UMA, IOMMU, Ubuntu and Local LLMs
@@ -39,13 +39,15 @@ It targets Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems with 96GB or
 Pro; BIOS labels, firmware, cooling and power modes can differ on other OEM
 systems.
 
-**Setup reviewed:** October 1, 2026. Exact benchmark claims remain canonical in
+**Setup reviewed:** October 1, 2026 (the recorded configuration baseline).
+**Beginner route text reviewed:** October 14, 2026; the configuration evidence
+keeps its original dates. Exact benchmark claims remain canonical in
 the repository's structured data and raw evidence.
 
 The setup script preserves administrator Ollama drop-ins and stops on unresolved
 environment conflicts or legacy custom GPU rules. Existing installations may
 therefore need manual review; writing configuration does not qualify an upgrade
-or prove GPU offload. See [the manual configuration and access checks](../README.md#step-34-verify-gpu-access).
+or prove GPU offload. See [the manual configuration and access checks](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#step-34-verify-gpu-access).
 
 Running the current official dense Qwen model? Use the dedicated
 [Qwen3.8 27B on Strix Halo route comparison](https://strixhaloguide.com/qwen38-strix-halo/)
@@ -74,7 +76,16 @@ to Linux while the integrated GPU accesses a much larger GTT-backed shared pool.
 
 ## Start With One Local Chat Path
 
-Read the [short local-chat path and acceptance checks](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/LOCAL_CHAT_START.md) before installing. It puts runtime qualification, a patched WebUI candidate, loopback binding and the matching SSH tunnel together. The revised installer and UI candidate remain unqualified for a fresh installation; do not transfer the historical LAN-reachable client result to a new local-only setup.
+If you want to install, start with [Get local AI running, step by step](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/LOCAL_CHAT_START.md).
+That page is the complete beginner route: what you need, the installation, your
+first answer, a question with a known answer, the GPU check, the current
+Ollama loopback-listener check, and help at every step. Browser and
+second-device access have separate checks. A chat
+window in your browser is the natural next step for everyday use. This page
+explains the configuration behind the route; the copyable commands live on that
+one page to reduce duplication. GPU answers and the pinned browser interface
+passed an isolated hardware check on October 15; a complete fresh native
+installation remains unverified. The start route records the test boundaries.
 
 ## Short Answer
 
@@ -162,44 +173,33 @@ do not assume every OEM uses the same label or range.
 
 ## Install The Working Buyer Path
 
-After configuring BIOS and installing Ubuntu 24.04 LTS:
+Follow the [complete beginner route](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/LOCAL_CHAT_START.md).
+Read its sections on the required system, backups, disk space and security
+first; after that it gives you every command, what it should print and where
+to stop, on one page. The script does not install Ubuntu and does not touch the
+BIOS. It changes the boot settings (GRUB), GPU access and the Ollama service
+configuration, adds the kisak Mesa PPA, runs a full `apt upgrade -y` and
+downloads a model. If it fails halfway, the earlier changes stay in place; the
+[manual undo table](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#undo-the-setup-script)
+exists but is untested on hardware.
 
-```bash
-git clone https://github.com/hogeheer499-commits/strix-halo-guide
-cd strix-halo-guide
-less setup.sh
-bash setup.sh
-```
+The automatic route is for Ubuntu 24.04 on the measured 128GB-class hardware,
+with 120–136GiB visible to Linux. Check your installed memory and CPU yourself:
+the script does not check the exact processor model, and a larger machine that
+reserves memory in the BIOS can pass its visible-memory check. Other memory
+sizes and operating systems need their own testing. A fresh run installs Ollama
+**0.31.2**; if Ollama is already installed, that version is kept. Neither the
+revised installer nor a newer Ollama has been through a complete fresh-install
+test here.
 
-This clones the unpinned `main` branch, which has not been fresh-install
-qualified on hardware. For a reproducible run, review the script and pin it with
-`git checkout <tag-or-commit>` before `bash setup.sh`. The script stops on
-anything other than Ubuntu 24.04 unless `STRIX_HALO_ALLOW_UNQUALIFIED_OS=1` is
-set, and above about 136GiB visible RAM (no 192GB-class profile is qualified). It
-does not read the CPU model: any AMD system that shows 120 to 136GiB of visible
-RAM passes its hardware checks, including SKUs this guide has not measured (for example a 128GB Ryzen
-AI Max+ PRO 495).
-
-If the script changes boot parameters, reboot before running the verification
-benchmark. The first local-chat check is:
-
-```bash
-ollama run qwen3.6:35b-a3b
-```
-
-The script configures the measured Linux-side Vulkan/RADV and Ollama path. It
-does not change BIOS settings or install Ubuntu. Read
-[`setup.sh`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/setup.sh)
-before using it on a production system.
-
-**Security (checked 2026-09-30; Open WebUI count 2026-10-02):** a fresh `setup.sh` run
-installs Ollama 0.31.2, a version inside the range listed for CVE-2026-85180 (no fixed
-release is named), and the README's Open WebUI command pins an image (0.10.2) that 47
-published advisories list as affected (count of published advisories whose affected
-range includes 0.10.2, Open WebUI's GitHub security advisories, checked 2026-10-02). Read
+**Security:** published advisories include the historical 0.31.2 version.
+Ollama has no password, so keep its API listening only on this computer, and
+never open it to the network to make a browser interface work. The start route
+describes the digest-pinned **Open WebUI 0.11.4 candidate**; it does not tell
+you to install the historical 0.10.2 image. Its new loopback-only installation,
+login, client, restart and reboot checks have not yet been performed here. Read
 [Security status of pinned components](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#security-status-of-pinned-components)
-and the [local AI security checklist](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURE_LOCAL_AI.md)
-before exposing anything beyond loopback.
+and the [local AI security checklist](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURE_LOCAL_AI.md).
 
 ## Choose The Backend By Workload
 
@@ -215,12 +215,11 @@ There is no single backend that wins every Strix Halo workload. Direct
 `llama-bench`, Ollama API, server, MTP/speculative, concurrency and community
 results are separate claim types in this project.
 
-**Open WebUI (checked 2026-10-02):** 47 published advisories include the pinned
-0.10.2 image. The batch of 19 published on 2026-09-27 and 2026-09-28 (13 of them
-include 0.10.2) lists 0.11.4 as the patched version, and one of them (GHSA-vpq8-f445-hcq7)
-applies while community sharing is enabled, which is the default. The digest-pinned 0.10.2 image is the only Open WebUI
-version this guide has qualified; a patched release is not qualified here.
-See [Open WebUI in SECURITY.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#open-webui).
+**Browser interface:** the [start route's Open WebUI section](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/LOCAL_CHAT_START.md#2-optional-browser-ui-linux-docker-engine)
+is the single place for the new 0.11.4 candidate and its checks. The historical
+0.10.2 result is not current installation advice. A patched version and a
+reading of its source do not show that the new route works; see
+[Open WebUI in SECURITY.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#open-webui).
 
 ## Frequently Asked Setup Questions
 

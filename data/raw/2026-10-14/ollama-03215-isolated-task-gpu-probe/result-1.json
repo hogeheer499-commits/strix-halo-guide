@@ -1,0 +1,23 @@
+{
+  "request": 1,
+  "chunks": 26,
+  "content": "Confirming GPU usage ensures the model is actually running locally and leveraging hardware acceleration, rather than just displaying cached or simulated output.",
+  "thinking": "",
+  "terminal": {
+    "model": "qwen3.6:35b-a3b",
+    "created_at": "2026-10-14T20:38:57.035472877Z",
+    "message": {
+      "role": "assistant",
+      "content": ""
+    },
+    "done": true,
+    "done_reason": "stop",
+    "total_duration": 7637014241,
+    "load_duration": 6485991263,
+    "prompt_eval_count": 35,
+    "prompt_eval_duration": 598248000,
+    "eval_count": 26,
+    "eval_duration": 550455000
+  },
+  "wall_seconds": 7.637604
+}

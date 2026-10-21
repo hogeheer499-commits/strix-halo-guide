@@ -1,0 +1,13 @@
+# Whitelisted device, offload, context and speculative-decoding lines only; all other original log lines omitted.
+cmn  common_param:   - Vulkan0 : AMD Radeon 8060S Graphics (RADV STRIX_HALO) (131584 MiB, 130185 MiB free)
+load_tensors: offloading output layer to GPU
+load_tensors: offloading 40 repeating layers to GPU
+load_tensors: offloaded 42/42 layers to GPU
+load_tensors:      Vulkan0 model buffer size = 20428.12 MiB
+load_tensors:  Vulkan_Host model buffer size =   272.81 MiB
+llama_context: n_ctx                 = 8192
+llama_context: n_ctx_seq             = 8192
+srv    load_model: initializing, n_slots = 1, n_ctx_slot = 8192, kv_unified = 'false'
+spec common_specu: adding speculative implementation 'draft-mtp'
+spec common_specu: - n_max=2, n_min=0, p_min=0.00, n_embd=2048, backend_sampling=1
+spec common_specu: - gpu_layers=-1, cache_k=f16, cache_v=f16, ctx_tgt=yes, ctx_dft=yes, devices=[default]

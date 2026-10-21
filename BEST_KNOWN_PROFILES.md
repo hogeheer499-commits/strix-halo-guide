@@ -8,7 +8,7 @@ and a new full-host reboot are not qualified.
 
 **Profiles reviewed:** October 1, 2026.
 
-This is a compact recommendation index, not another benchmark leaderboard. It turns existing evidence into a practical first choice for common workloads. The machine-readable source is [`data/best_known_profiles.csv`](data/best_known_profiles.csv); detailed caveats remain in the linked evidence pages.
+This is a compact recommendation index, not another benchmark leaderboard. It turns qualified evidence into a practical first choice for common workloads; the separate historical-throughput section is not a recommendation. The machine-readable source is [`data/best_known_profiles.csv`](data/best_known_profiles.csv); detailed caveats remain in the linked evidence pages.
 
 ## Start Here
 
@@ -19,7 +19,6 @@ This is a compact recommendation index, not another benchmark leaderboard. It tu
 | Current official dense multimodal chat | Ollama 0.32.13 system service with Vulkan/RADV, Qwen3.8 27B Q4_K_M | 292.49 prompt t/s and 20.42 generation t/s warm API mean over nine repeats, measured as Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; `draft-mtp` logged in the same-service 64K run; per-run log for the 4K warm runs not captured); image, tool-call, thinking, and exact retrieval passed through 50,059 prompt tokens | Requires Ollama 0.32.12 or later; measured on 0.32.13. Not a no-draft result; a separate matched control on Ollama 0.32.15 measured 12.89 t/s without drafting versus 22.71 t/s with Ollama-default MTP on the same model blob (2026-09-26, routine background load; [raw evidence](data/raw/2026-09-26/qwen38-27b-ollama-03215-mtp-vs-nodraft/)). Use `/api/chat` for the qualified long-context path. A 56,051-token attempt caused a recoverable Vulkan device-loss on this exact stack; the advertised 262K and broad quality remain unqualified. Not a direct speed headline. |
 | Fastest measured direct coding route | llama.cpp Vulkan/RADV, Qwen3-Coder 30B-A3B Q4_K_S | 100.99 tg128 r50 | Speed-first quant, not the balanced quality default. |
 | Balanced direct coding | llama.cpp Vulkan/RADV, Qwen3-Coder 30B-A3B UD-Q4_K_XL | 96.76 tg128 r20 | Use this when the quant tradeoff matters more than the last few t/s. |
-| Current Google-model MTP server | Gemma 4 26B-A4B QAT plus matched MTP head | 102.69 cold / 107.42 T3-only / 110.00 best repeat t/s | Advanced server/speculative route, not direct `llama-bench`. |
 | Qwen3-Coder 30B-A3B around 16 parallel sequences | Lemonade ROCm b1259, UD-Q4_K_XL | 287.64 aggregate decode t/s mean | [Measured July 13, 2026](MOE_CONCURRENCY.md#qwen3-coder-30b-a3b): three repeats at np16 in the density-gate campaign. The May Qwen3.6 sweep is a different model/campaign. Newer Lemonade releases require separate qualification. |
 | 80B service around 16 parallel sequences | b9979 Vulkan with opt-in AMD/RADV density gate | 150.82 aggregate decode t/s mean | Experimental patch while upstream issue #25356 remains open. |
 | A direct 120B-class GGUF on one box | Nemotron 3 Super 120B-A12B UD-IQ4_XS | 18.43 tg128 | Capacity proof, not a speed result. |
@@ -42,6 +41,27 @@ measured under one protocol. The guide's official Ollama result, the external
 and the unpublished-sidecar lead are separated in
 [`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md) and
 [`data/qwen38_route_matrix.csv`](data/qwen38_route_matrix.csv).
+
+## Historical Throughput: Sampled Coding Outputs Failed
+
+**Scoped saved-output review 2026-10-14:** Gemma 4 26B-A4B QAT with the matched MTP
+head is not a practical recommendation. The historical server measurements
+remain 102.69 cold / 107.42 T3-only / 110.00 best-repeat t/s; they are not direct
+`llama-bench` results and do not establish useful answers.
+
+The first two records (Python quicksort and C++ CSV parsing) in each of
+[`nospec.jsonl`](data/raw/2026-06-11/gemma4-26b-qat-mtp-sixprompt-ac4cddeb/nospec.jsonl),
+the [best-repeat bundle](data/raw/2026-06-11/gemma4-26b-qat-mtp-sixprompt-ac4cddeb/repeat-best-draft3-ub512-poll50/repeat.jsonl)
+and the [cold-repeat bundle](data/raw/2026-06-12/gemma4-26b-qat-mtp-cold-repeat-ac4cddeb/repeat.jsonl)
+contain repetition or invalid code instead of the requested implementation.
+These six sampled outputs fail the requested coding tasks. This is a review of
+saved answers, not a new runtime run or a full evaluation of every prompt.
+The sampled harness used plain completion requests capped at 192 output tokens;
+this review does not identify a template, harness, quant or runtime root cause,
+or judge the general Gemma family.
+Failures occur in both sampled no-spec and MTP records, so this does not isolate
+MTP as the cause. Re-qualify visible output correctness on a stated task set
+before recommending this exact profile again; preserve the raw speed evidence.
 
 ## Rules
 

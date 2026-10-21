@@ -1,0 +1,54 @@
+{
+  "started_utc": "2026-10-14T20:38:49Z",
+  "binary_sha256": "eb99a47aad366636488ebd9c163a9180254dffcfdfe359939f9aabc36e2399c8",
+  "model": "qwen3.6:35b-a3b",
+  "source_manifest_sha256": "096fdbd02fe620fc10cbeb6537e080f8041aece851e5d696aed024d4f70f2e47",
+  "source_manifest_bytes": 1022,
+  "limits": {
+    "requests": 3,
+    "total_seconds": 480,
+    "log_output_bytes": 16777216,
+    "minimum_available_memory_bytes": 34359738368
+  },
+  "scope": "existing 0.32.15 runtime + existing cache; not fresh install or 0.31.2",
+  "blobs": [
+    {
+      "digest": "sha256:99afa5bbf1e7038bda7d028e100ee76b7337c943468d52590de3282db7b52adb",
+      "expected_bytes": 220,
+      "present_bytes": 220
+    },
+    {
+      "digest": "sha256:d372de8e934898a59e6ccfabc3368474711384d8f1fd4d22d87a3f0a45400cdc",
+      "expected_bytes": 21718480960,
+      "present_bytes": 21718480960
+    },
+    {
+      "digest": "sha256:a62390d25b4b4a2d8afd7cc3c90021c11935c1fdd48d7cb0723ab71cd02a598e",
+      "expected_bytes": 902821728,
+      "present_bytes": 902821728
+    },
+    {
+      "digest": "sha256:5f3a3c817e78f5b8a4ad2d2c458a3e4b2cce470d6c12642c4eeb12cb8a9bf51d",
+      "expected_bytes": 11357,
+      "present_bytes": 11357
+    },
+    {
+      "digest": "sha256:ce44c0f3ca1f7a126724e5285be7e1afdab202186c6379515ab0c1ffd40d3ecc",
+      "expected_bytes": 116,
+      "present_bytes": 116
+    }
+  ],
+  "environment": {
+    "MESA_SHADER_CACHE_DISABLE": "true",
+    "OLLAMA_HOST": "127.0.0.1:11436",
+    "OLLAMA_VULKAN": "1",
+    "OLLAMA_IGPU_ENABLE": "1",
+    "HIP_VISIBLE_DEVICES": "-1",
+    "OLLAMA_FLASH_ATTENTION": "1",
+    "OLLAMA_CONTEXT_LENGTH": "8192",
+    "AMD_VULKAN_ICD": "RADV",
+    "OLLAMA_NUM_PARALLEL": "1",
+    "OLLAMA_MAX_LOADED_MODELS": "1",
+    "OLLAMA_KEEP_ALIVE": "30s"
+  }
+}

@@ -6,7 +6,7 @@ permalink: /strix-halo-models/
 canonical_url: "https://strixhaloguide.com/strix-halo-models/"
 sitemap: false
 date: "2026-08-30T00:00:00+02:00"
-last_modified_at: "2026-10-03T00:00:00+02:00"
+last_modified_at: "2026-10-21T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -33,6 +33,9 @@ not qualify every model, long-context shape or maximum-memory allocation.
 2026-10-01):** adds a table of third-party public capability scores next to fit on
 one box, the MiMo-V2.6 and K2 Horizon releases, the mainline status of
 GLM-5.3-Flash, a checklist for fork-only quants and a section on other workloads.
+
+**Scoped correction 2026-10-14:** K2 Horizon PR #29535 merged on October 6. This updates only the merge status; it does not re-review the other model rows or qualify a local runtime.
+
 Nothing in the new sections is a measurement by this guide unless a Measured
 column says so; the review date above is not a new measurement date.
 Related pages: [inference engines](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ENGINES.md), [starting on Windows](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/WINDOWS_START.md)
@@ -68,6 +71,12 @@ dash in the artifact-size column means neither `data/headline_claims.csv` nor
 | DeepSeek V4 Flash 284B, direct Vulkan capacity | `UD-IQ2_XXS` | 155.64 pp512; 13.27 tg128; correctness answer `9` | 90.86GB | [2026-07-16 raw route](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-07-16/deepseek-v4-flash-ud-iq2-xxs) |
 | Gemma 4 26B-A4B IT QAT, Vulkan server/MTP | `UD-Q4_K_XL` plus `Q4_0` MTP head | 102.69 t/s cold; 107.42 t/s T3-only; 110.00 t/s best repeat; 73.96 t/s no-spec baseline | — | [2026-06-12 raw repeat](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-06-12/gemma4-26b-qat-mtp-cold-repeat-ac4cddeb) |
 | Step 3.7 Flash 198B-A11B, ROCmFPX server/MTP | ROCmFPX `Q3 QualityPlus` plus `Q8_0` MTP draft | 34.50 t/s at 4K; 33.83 t/s at 16K; native tool call and 256K allocation passed | — | [2026-07-16 raw route](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-07-16/step37-rocmfpx-q3-qualityplus) |
+
+**Gemma saved-output correction 2026-10-14:** the historical 26B QAT server row
+above is not a practical recommendation. Six sampled coding answers in its
+saved no-spec, best-repeat and cold-repeat records fail the requested tasks;
+see the [scoped output review](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BEST_KNOWN_PROFILES.md#historical-throughput-sampled-coding-outputs-failed).
+The speed evidence remains; no new runtime test or MTP-only cause is established.
 
 **Newer coding candidates (routine direct scout, 2026-09-26):** the measured
 Qwen3-Coder 30B-A3B rows above are speed evidence for that exact model (the
@@ -160,7 +169,7 @@ the number shown, and by how much has not been measured here.
 | DeepSeek V4.1 Flash (MIT) | 39.5 | not recorded | 763.2B | Q2 about 163GB (vendor's tier table, below) | multiple boxes or SSD streaming (not checked); 192GB: vendor claim, below | none as of 2026-09-25 (not rechecked); Ollama: `:cloud` tag only | no |
 | MiMo-V2.6-Flash (MIT) | 37.9 | not recorded | 310.8B total, about 15B active | community quants 77.40 to 96.74GB; ggml-org `Q2_K` 126.21GB | 128GB: community quants on paper, unqualified | convert support merged 2026-09-22 (in v0.5.0), DFlash support merged 2026-09-30; Ollama: not checked | no |
 | Qwen3.8 27B, dense (Apache 2.0) | 33.7 | not recorded | 27B | ggml-org GGUF `Q4_K_M` 18.97GB (publisher-listed; the Ollama `Q4_K_M` artifact measured here is 17.7GB) | 64GB: yes | yes; Ollama local tag | **yes**, via the Ollama API: 12.89 t/s without draft, 22.71 t/s with MTP (2026-09-26) |
-| K2 Horizon MoVA 36B-A4B (Apache 2.0) | 25.3 | not recorded | 37.44B total, about 4B active | `Q4_K_M` 22.37GB | 64GB: yes, on paper | needs open PR #29535 (not merged when re-read 2026-10-01); Ollama: not checked | no |
+| K2 Horizon MoVA 36B-A4B (Apache 2.0) | 25.3 | not recorded | 37.44B total, about 4B active | `Q4_K_M` 22.37GB | 64GB: yes, on paper | [PR #29535](https://github.com/ggml-org/llama.cpp/pull/29535) merged 2026-10-06; first containing release not established here; locally unqualified; Ollama: not checked | no |
 
 Notes on the table:
 
@@ -264,7 +273,7 @@ sizes are publisher-listed decimal gigabytes, not measured here.
 | GLM-5.3-Flash | [zai-org/GLM-5.3-Flash](https://huggingface.co/zai-org/GLM-5.3-Flash) | 2026-08-25 (HF repository creation; corrected *2026-09-25*) | 320B total / 18B active MoE (card), natively multimodal; the card's 300K figure is an evaluation setting, not a stated context limit. **No mainline `llama.cpp` support as of 2026-09-25:** PRs [#27752](https://github.com/ggml-org/llama.cpp/pull/27752), [#27754](https://github.com/ggml-org/llama.cpp/pull/27754) and [#27773](https://github.com/ggml-org/llama.cpp/pull/27773) were open. **Rechecked 2026-10-01:** #27773 was merged on 2026-09-30; #27752 and #27754 are closed without merging. The named release v0.5.0 (b11146) predates the merge; a build tagged b11295 contains it and b11275 does not, and the first build containing it was not determined | [unsloth/GLM-5.3-Flash-GGUF](https://huggingface.co/unsloth/GLM-5.3-Flash-GGUF) (its card, read 2026-10-01, still points to PR #27754, now closed, or to Unsloth Desktop; whether these quants load on a mainline build with #27773 was not tested here): UD-IQ1_S 93.09GB, UD-IQ1_M 97.58GB, UD-IQ2_XXS 101.84GB, UD-Q2_K_XL 108.72GB, plus mmproj about 1.1GB *(checked 2026-09-25)* | MIT |
 | MiMo-V2.6-Flash-MOPD | [XiaomiMiMo/MiMo-V2.6-Flash-MOPD](https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Flash-MOPD) | 2026-09-27 (HF repository creation) *(checked 2026-09-30)* | 310.76B total / about 15B active MoE (HF API total; card), multimodal; mainline convert support [#29257](https://github.com/ggml-org/llama.cpp/pull/29257) merged 2026-09-22 (in v0.5.0), DFlash support [#29650](https://github.com/ggml-org/llama.cpp/pull/29650) merged 2026-09-30 | [ggml-org/MiMo-V2.6-Flash-MOPD-GGUF](https://huggingface.co/ggml-org/MiMo-V2.6-Flash-MOPD-GGUF) (created 2026-09-28): Q2_K 126.21GB, MXFP4 167.37GB plus MTP, DFlash and mmproj sidecars; community quants [BPW2.0 77.40GB and BPW2.5 96.74GB](https://huggingface.co/AesSedai/MiMo-V2.6-Flash-MOPD-GGUF) and an [IQ2_XXS of 81.75GB](https://huggingface.co/fresherbz/MiMo-V2.6-Flash-MOPD-IQ2_XXS-GGUF) *(checked 2026-09-30; publisher-listed sizes, not loaded here)* | MIT |
 | MiMo-V2.6-Pro-MOPD | [XiaomiMiMo/MiMo-V2.6-Pro-MOPD](https://huggingface.co/XiaomiMiMo/MiMo-V2.6-Pro-MOPD) | 2026-09-27 (HF repository creation; RL variants 2026-09-21) *(checked 2026-09-30)* | 1.024T total MoE (HF API); multiple-box class | No single-box GGUF checked here | MIT |
-| K2 Horizon MoVA 36B-A4B | [IFM/K2-Horizon-MoVA-36B-A4B](https://huggingface.co/IFM/K2-Horizon-MoVA-36B-A4B) | 2026-09-01 (HF repository creation) *(checked 2026-09-30)* | 37.44B total / about 4B active MoE (HF API; model name) | [IFM/K2-Horizon-MoVA-36B-A4B-GGUF](https://huggingface.co/IFM/K2-Horizon-MoVA-36B-A4B-GGUF): Q4_K_M 22.37GB. Requires [llama.cpp PR #29535](https://github.com/ggml-org/llama.cpp/pull/29535), open when re-read on 2026-10-01; the GGUF card says llama.cpp support is in progress | Apache 2.0 |
+| K2 Horizon MoVA 36B-A4B | [IFM/K2-Horizon-MoVA-36B-A4B](https://huggingface.co/IFM/K2-Horizon-MoVA-36B-A4B) | 2026-09-01 (HF repository creation) *(checked 2026-09-30)* | 37.44B total / about 4B active MoE (HF API; model name) | [IFM/K2-Horizon-MoVA-36B-A4B-GGUF](https://huggingface.co/IFM/K2-Horizon-MoVA-36B-A4B-GGUF): Q4_K_M 22.37GB. [llama.cpp PR #29535](https://github.com/ggml-org/llama.cpp/pull/29535) merged 2026-10-06 (merge state checked 2026-10-14). The first containing release is not established here; local loading, output correctness and multimodal behavior remain unqualified | Apache 2.0 |
 
 ### Important Compatibility And Lineage Notes
 
@@ -387,7 +396,7 @@ has no 64GB memory profile.
 | Published file size | Examples (weights only unless noted) |
 | --- | --- |
 | Under about 20GB | [Qwen3.8 27B](https://huggingface.co/ggml-org/Qwen3.8-27B-GGUF) Q4_K_M 18.97GB (ggml-org GGUF as listed, checked 2026-10-02; the Ollama `Q4_K_M` artifact measured on the 128GB machine is 17.7GB); [Nemotron 3.5 Lightning](https://huggingface.co/ggml-org/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-GGUF) Q4_0 18.90GB; [Laguna XS 2.1](https://huggingface.co/ggml-org/Laguna-XS-2.1-GGUF) Q4_K_M 19.56GB; [Granite 4.2 30B](https://huggingface.co/ibm-granite/granite-4.2-30b-GGUF) Q4_K_M 17.72GB; [Muse Glimmer 30B](https://huggingface.co/meta-models/Muse-Glimmer-30B-GGUF) Q4_K_M 16.76GB plus 1.40GB mmproj; [MiMo-V2.6-Distill-Qwen-9B](https://huggingface.co/ggml-org/MiMo-V2.6-Distill-Qwen-9B-GGUF) Q8_0 9.53GB (2026-09-21, MIT; 2026-09-30 listing) |
-| About 20-30GB | [K2 Horizon MoVA 36B-A4B](https://huggingface.co/IFM/K2-Horizon-MoVA-36B-A4B-GGUF) Q4_K_M 22.37GB (2026-09-30 listing); requires the open llama.cpp PR #29535 |
+| About 20-30GB | [K2 Horizon MoVA 36B-A4B](https://huggingface.co/IFM/K2-Horizon-MoVA-36B-A4B-GGUF) Q4_K_M 22.37GB (2026-09-30 listing); [llama.cpp PR #29535](https://github.com/ggml-org/llama.cpp/pull/29535) merged 2026-10-06; first containing release not established here; locally unqualified |
 | About 40-50GB | [Qwen3-Coder-Next](https://huggingface.co/unsloth/Qwen3-Coder-Next-GGUF) Q4_K_M 48.5GB (2026-08-29 listing); leaves much less headroom on 64GB once context is added |
 
 **Routine direct scout of three under-20GB candidates (2026-09-26):** measured
@@ -419,7 +428,7 @@ size class score as follows:
 | Model | Index v4.3.2 | Note |
 | --- | ---: | --- |
 | Qwen3.8 27B (`xhigh` reasoning effort) | 33.7 | ggml-org GGUF `Q4_K_M` 18.97GB (publisher-listed, not measured here); the Ollama `Q4_K_M` artifact measured here through the Ollama API is 17.7GB (17,741,872,154 bytes) |
-| K2 Horizon MoVA 36B-A4B | 25.3 | Needs the open llama.cpp PR #29535 |
+| K2 Horizon MoVA 36B-A4B | 25.3 | [llama.cpp PR #29535](https://github.com/ggml-org/llama.cpp/pull/29535) merged 2026-10-06; first containing release not established here; locally unqualified |
 | Gemma 4 31B | 14.7 (Reasoning entry, not estimated; read 2026-10-01). Read as 19.0, estimated, on 2026-09-30 | Measured here (2026-07-18, Beelink GTR9 Pro, 128GB): official QAT `Q4_0` GGUF, direct `llama-bench` on b10066 with Vulkan/RADV, 308.28 pp512 / 11.38 tg128 (r3). Practical workstation-state row with a known CPU-only background load, not a strict-clean headline; text, vision and tool-call smokes passed separately. The matched `Q8_0` DFlash sidecar was slower in the server comparison: generation was 5.54% and 20.42% slower than the matched no-spec baseline on 5.5K and 21.9K synthetic prompts (9.73 versus 10.30 and 7.48 versus 9.40 t/s). Speed and load only, not a 64GB fit. [Raw bundle](https://github.com/hogeheer499-commits/strix-halo-guide/tree/main/data/raw/2026-07-18/gemma4-31b-qat-dflash-b10066) |
 | Qwen3.6 35B-A3B | 18.2 | Measured here (direct Vulkan, `UD-Q4_K_M`, 62.56 tg128) |
 | Muse Glimmer 30B | 17.5 | Scouted 2026-09-26 |

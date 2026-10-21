@@ -1,0 +1,43 @@
+{
+  "capture_date": "2026-10-14",
+  "bundle_method": "Explicit field and line whitelist from nine existing capture files; no new run.",
+  "source_sha256": {
+    "configuration.json": "7b4930b8844c6f21da0972e65d857a9c5546628284baf58b87ad06c245d6b381",
+    "startup.json": "79424e71f91289ca45565c35636842f976d8ecc31515ef0ee2d628ba9cc2f34d",
+    "result-1.json": "b13cbe3850e5d2954e1c7ee84879c00fce1553d622971d77a877dbdb67426a4c",
+    "result-2.json": "8b1632dc19c4df644b7af0e24962b54cbfff58c02b90fc5f8ba3013826fed3f5",
+    "summary.json": "32bdfff5b9d1c70c4a43ffe9263c031a02b630096f67dd06daef5361db0808bd",
+    "server.log": "79dc417e2149c41b98dfb1877445062e6b136e84808df7d2f17ffebd4ee67271",
+    "samenvatting.md": "ec4721a1ab09cc9d46f5f1729e48f0a3afe7ac1de79bb68666db325eb9b992e6",
+    "request-1.json": "d22a3be0a68c9416de9f045899daa5af0895c1aa1010fb1e18c671784e096580",
+    "request-2.json": "2c30353e0a63c2b9e2304f58ec1b7396c298b3308ee0c667708d7f175512106b"
+  },
+  "byte_identical_source_files": [
+    "request-1.json",
+    "request-2.json",
+    "result-1.json",
+    "result-2.json"
+  ],
+  "server_log_original_line_numbers": [
+    33,
+    203,
+    204,
+    205,
+    206,
+    207,
+    217,
+    218,
+    333,
+    334,
+    335,
+    336
+  ],
+  "redaction": {
+    "configuration.json": "Only listed technical fields, blob digests/sizes and runtime environment settings retained; all file paths, account settings and unrelated runtime state omitted.",
+    "startup.json": "Version and model metadata retained; listener reduced to the probe loopback address; process information omitted.",
+    "summary.json": "Only probe status, task results, model/context/allocation and scope fields retained; unrelated runtime state omitted.",
+    "server.log": "Only the documented device/offload/context/speculative-decoding line numbers retained.",
+    "samenvatting.md": "Not copied; only technical facts are restated in README.md."
+  },
+  "integrity_scope": "Source hashes identify the original capture files. Blob digest names and sizes were recorded during the probe; weight files were not rehashed for this bundle."
+}

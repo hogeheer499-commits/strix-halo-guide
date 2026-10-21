@@ -57,6 +57,26 @@ echo "  github.com/hogeheer499-commits/strix-halo-guide"
 echo "============================================="
 echo ""
 
+# Check prerequisites before even the read-only OS/RAM checks, and before any
+# boot, package or service mutation. Do not install missing prerequisites here.
+# The retained-runtime path skips the upstream installer and its archive tools.
+preflight_tools=(curl python3 id grep free awk sudo systemctl cut tr sed tee
+    update-grub usermod apt add-apt-repository mktemp cat cmp mkdir install rm
+    seq sleep uname head date)
+if ! command -v ollama >/dev/null 2>&1; then
+    preflight_tools+=(sh zstd tar gzip dirname xargs ln useradd getent whoami)
+fi
+preflight_missing=()
+for preflight_tool in "${preflight_tools[@]}"; do
+    if ! command -v "$preflight_tool" >/dev/null 2>&1; then
+        preflight_missing+=("$preflight_tool")
+    fi
+done
+if [ "${#preflight_missing[@]}" -ne 0 ]; then
+    err "Missing required commands: ${preflight_missing[*]}. Install the prerequisites manually, then rerun; no system changes were made."
+    exit 1
+fi
+
 # Pre-flight checks
 if [ "$(id -u)" -eq 0 ]; then
     err "Do not run this script as root. Run as your normal user (it will use sudo when needed)."
@@ -211,6 +231,22 @@ REBOOT_REQUIRED=0
 SESSION_REFRESH_REQUIRED=0
 
 GRUB_FILE="/etc/default/grub"
+# update-grub sources *.cfg after the main file. Arbitrary administrator shell
+# fragments cannot be safely merged by this installer; stop before any mutation
+# instead of reporting success for parameters that a later fragment discards.
+GRUB_DROPIN_DIR="/etc/default/grub.d"
+if [ -e "$GRUB_DROPIN_DIR" ] || [ -L "$GRUB_DROPIN_DIR" ]; then
+    if [ ! -d "$GRUB_DROPIN_DIR" ] || [ ! -r "$GRUB_DROPIN_DIR" ] || [ ! -x "$GRUB_DROPIN_DIR" ]; then
+        err "Cannot inspect GRUB drop-in directory $GRUB_DROPIN_DIR. Use the manual guide; no system changes were made."
+        exit 1
+    fi
+    for grub_dropin in "$GRUB_DROPIN_DIR"/*.cfg; do
+        if [ -e "$grub_dropin" ] || [ -L "$grub_dropin" ]; then
+            err "GRUB drop-in needs manual review: $grub_dropin. These fragments can override $GRUB_FILE during update-grub; use the manual guide to check the effective boot settings. No system changes were made."
+            exit 1
+        fi
+    done
+fi
 CURRENT_CMDLINE=$(grep "^GRUB_CMDLINE_LINUX_DEFAULT" "$GRUB_FILE" 2>/dev/null || echo "")
 
 # Keep IOMMU at the firmware/kernel default on the general buyer path. Disabling

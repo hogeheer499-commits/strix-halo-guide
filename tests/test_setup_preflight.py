@@ -1,4 +1,4 @@
-"""Offline fixtures for the setup.sh OS and RAM guards; never runs setup.sh."""
+"""Offline fixtures for setup.sh preflight blocks; never runs the installer."""
 import os
 from pathlib import Path
 import subprocess
@@ -9,6 +9,75 @@ ROOT = Path(__file__).resolve().parents[1]
 SETUP = (ROOT / 'setup.sh').read_text()
 BLOCK = SETUP.split('# BEGIN PREFLIGHT GUARDS', 1)[1].split('\n', 1)[1].split('# END PREFLIGHT GUARDS', 1)[0]
 UBUNTU_2404 = 'ID=ubuntu\nVERSION_ID="24.04"\n'
+EARLY_PREFLIGHT = SETUP.split('# Pre-flight checks\n', 1)[0]
+
+
+class DependencyPreflightTests(unittest.TestCase):
+    # Closed PATH: the host must not supply a tool missing from a fixture.
+    COMMON_TOOLS = ('curl python3 id grep free awk sudo systemctl cut tr sed tee '
+                    'update-grub usermod apt add-apt-repository mktemp cat cmp '
+                    'mkdir install rm seq sleep uname head date').split()
+    FRESH_TOOLS = 'sh zstd tar gzip dirname xargs ln useradd getent whoami'.split()
+
+    def run_preflight(self, missing=(), existing=False):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            tools = set(self.COMMON_TOOLS + self.FRESH_TOOLS) - set(missing)
+            if existing:
+                tools.add('ollama')
+            for tool in tools:
+                path = directory / tool
+                # Availability checks may inspect these files, never run them.
+                path.write_text('#!/bin/bash\nprintf "UNEXPECTED_TOOL_EXECUTION\\n" >&2\nexit 88\n')
+                path.chmod(0o755)
+            env = dict(os.environ, PATH=temporary, OLLAMA_VERSION='0.31.2')
+            env.pop('BASH_ENV', None)
+            marker = directory / 'mutation-reached'
+            command = EARLY_PREFLIGHT + '\nprintf mutated > "$1"\necho CONTINUED\n'
+            result = subprocess.run(['/bin/bash', '-c', command, 'fixture', str(marker)],
+                                    env=env, capture_output=True, text=True)
+            return result, marker.exists()
+
+    def assert_stopped(self, result, mutated, tools):
+        self.assertNotEqual(result.returncode, 0, result.stdout)
+        self.assertFalse(mutated, result.stdout)
+        self.assertNotIn('CONTINUED', result.stdout)
+        self.assertNotIn('STATUS:PASS', result.stdout)
+        self.assertNotIn('UNEXPECTED_TOOL_EXECUTION', result.stderr)
+        for tool in tools:
+            self.assertIn(tool, result.stdout + result.stderr)
+
+    def test_missing_common_dependencies_stop_before_mutation_on_both_paths(self):
+        for existing in (False, True):
+            for tool in self.COMMON_TOOLS:
+                with self.subTest(existing=existing, tool=tool):
+                    result, mutated = self.run_preflight(missing=(tool,), existing=existing)
+                    self.assert_stopped(result, mutated, (tool,))
+
+    def test_fresh_install_requires_extraction_and_bootstrap_tools_early(self):
+        for tool in self.FRESH_TOOLS:
+            with self.subTest(tool=tool):
+                result, mutated = self.run_preflight(missing=(tool,))
+                self.assert_stopped(result, mutated, (tool,))
+
+    def test_reports_multiple_missing_dependencies_together(self):
+        missing = ('curl', 'python3', 'zstd', 'systemctl')
+        result, mutated = self.run_preflight(missing=missing)
+        self.assert_stopped(result, mutated, missing)
+
+    def test_fresh_install_with_prerequisites_continues_without_running_tools(self):
+        result, mutated = self.run_preflight()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(mutated)
+        self.assertIn('CONTINUED', result.stdout)
+        self.assertNotIn('UNEXPECTED_TOOL_EXECUTION', result.stderr)
+
+    def test_existing_runtime_does_not_require_or_execute_fresh_installer_tools(self):
+        result, mutated = self.run_preflight(missing=self.FRESH_TOOLS, existing=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(mutated)
+        self.assertIn('CONTINUED', result.stdout)
+        self.assertNotIn('UNEXPECTED_TOOL_EXECUTION', result.stderr)
 
 
 class PreflightGuardTests(unittest.TestCase):

@@ -1,5 +1,7 @@
 # ROCm and vLLM Bugwatch
 
+**Latest scoped check: October 21, 2026.** Ollama 0.40.7 is available, not qualified; its automatic compatibility-migration call remains commented out. The October 18 Open WebUI channel-webhook advisory includes 0.11.4. [Sources, buyer update and limits](MAINTENANCE_REVIEW_2026-10-21.md); older snapshots below retain their own dates.
+
 **September 19 scoped qualification:** [the existing-user runtime result](RUNTIME_QUALIFICATION_2026-09-19.md)
 separates the 0.32.15 service/client pass, useful-but-not-default isolated 0.34.2,
 and v0.4.1 direct/server/HIP controls. Historical reboot default 0.31.2 and
@@ -381,7 +383,7 @@ The README recommendation should stay conservative:
 2. Run a historical stock b10687 versus released v0.4.1 HIP mitigation correctness/memory A/B with exact short, 4K/16K nonce, vision, multi-slot, and long-retrieval outputs before promoting current integrated-host buffers.
 3. Repeat the measured ROCm 7.14 hipBLASLt A/B on a practical 27B/35B FP16 or supported low-precision model before promoting it from a small-model server proof to a normal operator profile.
 4. If the v0.4.1 mitigation A/B passes, repeat it on a practical 27B/35B GGUF and record performance, full-UMA visibility, and whether a self-contained package can avoid the manual Ollama library path.
-5. Recheck warmup behavior on vLLM 0.30.0 (available 2026-09-25; AMD's ROCm 10.0.0 notes validate vLLM 0.27.0 including `gfx1151`) in a pinned isolated image before treating any newer lane as a Radeon default; the measured lane remains 0.25.x on ROCm 7.14.
+5. Recheck warmup behavior on vLLM 0.30.0 (available 2026-09-25; AMD's ROCm 10.0.0 notes validate vLLM 0.27.0 including `gfx1151`) in a pinned isolated image before treating any newer lane as a Radeon default; the measured July 16 lane is `0.23.1.dev1+g9ddef7117.d20260715` on ROCm 7.14, as recorded by both [hipBLASLt-off](data/raw/2026-07-16/rocm-714-vllm-hipblaslt-ab/hipblaslt-off/container-versions.json) and [hipBLASLt-on](data/raw/2026-07-16/rocm-714-vllm-hipblaslt-ab/hipblaslt-on/container-versions.json) containers. This version correction does not qualify a newer vLLM build.
 6. Seek a supported successor implementation for DFlash/SWA; `vllm-project/vllm#40898` closed unmerged and is not a runnable support guarantee.
 7. Use the SGLang 0.5.20 `gfx1151` image (ROCm 7.2.4, triton attention; available 2026-09-25) for the next isolated smoke and keep affected MoE/ASR routes labeled experimental.
 8. Verify local memory reporting inside the exact ROCm 7.14.0, TheRock, vLLM, or Ollama container before making a capacity or autoscheduling claim.

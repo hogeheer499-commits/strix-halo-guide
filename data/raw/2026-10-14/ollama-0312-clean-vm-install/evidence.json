@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "test_date_utc": "2026-10-14",
+  "conclusion": "Original installer completed in a clean VM, but post-reboot boot acceptance failed. The revised guard correctly stopped on a second clean VM before system mutation.",
+  "image": {
+    "url": "https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-amd64.img",
+    "sha256": "6a81c37564db9b1ee84e141922625e1d7c5b389b99bb3c572e0243607d5bb4d2",
+    "signed_checksums_url": "https://cloud-images.ubuntu.com/releases/noble/release/SHA256SUMS",
+    "signature_url": "https://cloud-images.ubuntu.com/releases/noble/release/SHA256SUMS.gpg",
+    "signature_verified": true,
+    "signing_key_fingerprint": "D2EB44626FDDC30B513D5BB71A5D6C4C7DB87C81",
+    "verification_command": "gpgv --keyring /usr/share/keyrings/ubuntu-cloudimage-keyring.gpg SHA256SUMS.gpg SHA256SUMS",
+    "base_sha256_rechecked_before_second_vm": true
+  },
+  "environment": {
+    "type": "unprivileged QEMU/KVM x86_64, Ubuntu server cloud image",
+    "os": "Ubuntu 24.04.5 LTS",
+    "os_version_id": "24.04",
+    "guest_configured_ram_gib": 128,
+    "guest_free_g_total_gib": 125,
+    "vcpus": 2,
+    "virtual_disk_gib": 48,
+    "gpu_passthrough": false,
+    "dev_dri_present": false,
+    "kernel_before_upgrade_reboot": "6.8.0-142-generic",
+    "kernel_after_upgrade_reboot": "6.8.0-147-generic",
+    "mesa_after_setup": "26.2.4 - kisak-mesa PPA",
+    "shared_writable_host_filesystem": false
+  },
+  "test_resource_controls": {
+    "qemu_memory_max_gib": 48,
+    "qemu_swap_max_bytes": 0,
+    "qemu_cpu_quota_percent": 200,
+    "session_deadline_minutes": 40,
+    "monitor_interval_seconds": 3,
+    "stop_if_host_available_ram_below_gib": 48,
+    "stop_if_tmpfs_free_below_gib": 8,
+    "safety_stop_occurred": false,
+    "qemu_cgroup_peak_bytes": 36878675968,
+    "guest_free_page_reporting": true,
+    "balloon_inflation": false,
+    "guest_cache_reclamation": "Test-only bounded loop: up to 220 iterations, every 8 seconds, sync and drop guest caches when Cached+SReclaimable exceeds 1GiB. This reduces duplicate caching with tmpfs-backed virtual disk; it invalidates performance claims."
+  },
+  "guest_commands": {
+    "documented_prerequisite_preparation": [
+      "sudo apt update",
+      "sudo apt install -y git curl python3 zstd software-properties-common"
+    ],
+    "original_run": [
+      "bash setup.sh",
+      "sudo reboot",
+      "python3 scripts/check_local_ai.py boot"
+    ],
+    "fixed_guard_run_on_second_empty_overlay": [
+      "sudo apt update",
+      "sudo apt install -y git curl python3 zstd software-properties-common",
+      "sudo python3 acceptance_snapshot.py",
+      "bash setup.fixed.sh",
+      "sudo python3 acceptance_snapshot.py"
+    ]
+  },
+  "original_run": {
+    "setup_sha256": "ed71157fda053f7dbd3d3f5b70e1631cb7581ef0ef44b654a406506f5e58472b",
+    "prerequisite_prep_exit": 0,
+    "setup_exit": 0,
+    "ollama_version": "0.31.2",
+    "ollama_binary_sha256": "c7ff3fc14739850ae2c57cda8eb6fb354cf4e436595cdf1946172e4ebc517661",
+    "apt_upgrade_completed": true,
+    "ollama_service_active": true,
+    "api_tags_ready_check_passed": true,
+    "observed_listener": "127.0.0.1:11434 only",
+    "actual_listener_parser_component_exit": 0,
+    "model_download_and_digest_verification_completed": true,
+    "benchmark_skipped_by_script_for_reboot": true,
+    "bench_helper_created_mode": "0755",
+    "terminal_result_excerpt": [
+      "[OK] Model pulled successfully.",
+      "[!!] Skipping the final benchmark because boot-time GPU/kernel changes were applied.",
+      "Configuration run finished; qualification pending",
+      "[!!] REBOOT REQUIRED for boot-time GPU/kernel changes to take effect."
+    ]
+  },
+  "model": {
+    "tag": "qwen3.6:35b-a3b",
+    "manifest_sha256": "a7eb95c53bcf96b4bdd008d0fab4a5dac88047d9c1a7a9ab88ed453423fbd87c",
+    "size_bytes": 22621314381,
+    "weights_blob_sha256": "d372de8e934898a59e6ccfabc3368474711384d8f1fd4d22d87a3f0a45400cdc",
+    "projector_blob_sha256": "a62390d25b4b4a2d8afd7cc3c90021c11935c1fdd48d7cb0723ab71cd02a598e",
+    "quantization": "Q4_K_M",
+    "recorded_tag_parameter_draft_num_predict": 2,
+    "inference_run": false
+  },
+  "post_reboot": {
+    "same_guest_disk_preserved": true,
+    "method": "Guest sudo reboot; QEMU -no-reboot exited on the request, then the same guest disk was booted again.",
+    "checker_sha256": "0954ff8cab7a6a1757e594dce15c0cf93cd39dedac3e6a60c4bea38839adcc67",
+    "boot_check_exit": 1,
+    "boot_check_output": [
+      "MISSING amdgpu.gttsize=131072",
+      "MISSING ttm.pages_limit=31457280",
+      "MISSING amdgpu.cwsr_enable=0",
+      "OK render in current session",
+      "OK video in current session",
+      "STOP: Boot parameters or session groups are missing/conflicting; review the boot and GPU access steps. → see \"If A Step Fails\""
+    ],
+    "cloud_dropin": "/etc/default/grub.d/50-cloudimg-settings.cfg",
+    "override_assignment": "GRUB_CMDLINE_LINUX_DEFAULT=\"console=tty1 console=ttyS0\"",
+    "three_required_parameters_in_base_grub_file": true,
+    "three_required_parameters_in_generated_grub": false,
+    "three_required_parameters_in_live_cmdline": false,
+    "ollama_and_downloaded_model_remained_available": true
+  },
+  "fixed_guard": {
+    "setup_sha256": "2429f316f88dd68fe48ed84c9a9de4835742410d05776b7bf53506312f478b4e",
+    "separate_fresh_empty_overlay": true,
+    "same_verified_base_image": true,
+    "no_prior_runtime_or_model_cache": true,
+    "prerequisite_prep_exit": 0,
+    "setup_exit": 1,
+    "output_excerpt": "[ERR] GRUB drop-in needs manual review: /etc/default/grub.d/50-cloudimg-settings.cfg. These fragments can override /etc/default/grub during update-grub; use the manual guide to check the effective boot settings. No system changes were made.",
+    "snapshot_entry_count": 108,
+    "before_snapshot_sha256": "13a2e83b454a2542c4d9b27b3742d56a1b255435da7d467730983274caf98405",
+    "after_snapshot_sha256": "13a2e83b454a2542c4d9b27b3742d56a1b255435da7d467730983274caf98405",
+    "system_snapshots_equal": true,
+    "snapshot_roots": [
+      "/etc/default/grub",
+      "/etc/default/grub.d",
+      "/boot/grub/grub.cfg",
+      "/etc/group",
+      "/etc/passwd",
+      "/var/lib/dpkg/status",
+      "/etc/apt/sources.list.d",
+      "/etc/systemd/system",
+      "/etc/modprobe.d",
+      "/etc/udev/rules.d"
+    ],
+    "snapshot_method": "Sorted JSON of regular-file SHA-256 values and symlink targets, plus runtime/store presence; captured after prerequisite prep and before/after fixed setup. File access times are excluded.",
+    "ollama_present_before_after": false,
+    "model_store_present_before_after": false
+  },
+  "limits": [
+    "VM installer plumbing and negative boot/guard validation only; this cloud image is not the native Ubuntu Desktop buyer environment.",
+    "No Strix Halo BIOS, physical GPU, GPU-targeted installer archive, GPU offload, inference, answer quality, WebUI or hardware reboot qualification.",
+    "The fixed script did not complete a fresh full installation: it correctly stopped at the cloud GRUB fragment.",
+    "The 0.31.2 default remains within known advisory ranges; this test is not a fully patched runtime endorsement.",
+    "This model identity and 0.31.2 runtime are separate from the earlier 0.32.15 GPU probe; neither result completes the other."
+  ],
+  "host_change_boundary": "Only new disposable user-owned VM files and a transient user-scoped resource unit were created. No host sudo, package update, persistent service, routing, firewall or reboot changes. Test guests were powered off.",
+  "retained_private_source_captures": {
+    "image-provenance.txt": {
+      "sha256": "c8ca74e0adf9879e3d3b736b2f6bff3e36b621bf759baf17bda3fec96984f0b7",
+      "scope": "private source capture, not included in this two-file candidate"
+    },
+    "01-prerequisite-prep.log": {
+      "sha256": "5f47eb14fda3d903dc87448ee22df301a86b2bbb0b5e46ecd3bd339194840620",
+      "scope": "private source capture, not included in this two-file candidate"
+    },
+    "02-grub-precedence-original.txt": {
+      "sha256": "8f93bc6b62aa0bfa23f7aecb1a57ca51b089b65084472695422fc77a62d707b1",
+      "scope": "private source capture, not included in this two-file candidate"
+    },
+    "03-runtime-installed-facts.txt": {
+      "sha256": "f156caac559d46ab5deca2fba3397586d90ed3818d85584b403a25783852688a",
+      "scope": "private source capture, not included in this two-file candidate"
+    },
+    "04-listener-parser-only.txt": {
+      "sha256": "5929dba9b585b14791eae9cb424ee5429753c7f59ab40f792ca1e4e396e2fb22",
+      "scope": "private source capture, not included in this two-file candidate"
+    },
+    "05-original-setup-full.log": {
+      "sha256": "a3c74aa60183fc3c7b9e6b4da3ac35365d678c39dd3aa4e36a3df3e2dfc67664",
+      "scope": "private source capture, not included in this two-file candidate"
+    },
+    "06-original-result-facts.txt": {
+      "sha256": "c0544f0d2b0115f8a91f73f10454c69ea748c492059258819d32a9f565424704",
+      "scope": "private source capture, not included in this two-file candidate"
+    },
+    "07-original-post-reboot.txt": {
+      "sha256": "445476495d849829ef06c072740df64ba9e82288a6ad7f800aba094362a09f93",
+      "scope": "private source capture, not included in this two-file candidate"
+    },
+    "08-guard-fresh-guest-facts.txt": {
+      "sha256": "56d13b67f681b818b372001db0f3112567cc1d0d3b91504d8da3ea14376707e4",
+      "scope": "private source capture, not included in this two-file candidate"
+    },
+    "09-guard-prerequisite-prep.log": {
+      "sha256": "9f5c4538eb825b40f972d261e6d6796f107d8aa5d76fc771c8bff86a25191032",
+      "scope": "private source capture, not included in this two-file candidate"
+    },
+    "10-guard-system-before.json": {
+      "sha256": "13a2e83b454a2542c4d9b27b3742d56a1b255435da7d467730983274caf98405",
+      "scope": "private source capture, not included in this two-file candidate"
+    },
+    "11-guard-system-after.json": {
+      "sha256": "13a2e83b454a2542c4d9b27b3742d56a1b255435da7d467730983274caf98405",
+      "scope": "private source capture, not included in this two-file candidate"
+    },
+    "12-fixed-guard-run.log": {
+      "sha256": "97b31ce1d65f3dd255dfe570d284f61ce591868dd1b8c394e09d3dc77273108d",
+      "scope": "private source capture, not included in this two-file candidate"
+    },
+    "guard-snapshot-command.py": {
+      "sha256": "dfceac761ce8b8424ca78f64c5d553e7a7174db1a3416e7ce4e42c00958d41fc",
+      "scope": "private source capture, not included in this two-file candidate"
+    }
+  }
+}

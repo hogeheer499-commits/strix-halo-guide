@@ -45,6 +45,7 @@ class SetupOutcomeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)
             env = dict(os.environ, FIXTURE_DIR=temporary)
+            (directory / 'grub.d').mkdir()
             grub = directory / 'grub'
             grub.write_text('# keep this comment\nGRUB_TIMEOUT=5\n')
             (directory / 'cmdline').write_text('quiet splash\n')
@@ -59,6 +60,67 @@ class SetupOutcomeTests(unittest.TestCase):
             result = subprocess.run(command, env=env, capture_output=True)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('gttsize=1', grub.read_text())
+
+    def test_grub_dropins_stop_before_any_mutation(self):
+        block = 'GRUB_FILE=' + SETUP.split('GRUB_FILE=', 1)[1].split('# Modprobe configuration', 1)[0]
+        block = block.replace('/etc/default/grub', '${FIXTURE_DIR}/grub').replace('/proc/cmdline', '${FIXTURE_DIR}/cmdline')
+        params = 'amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0'
+        prelude = '''set -euo pipefail
+REBOOT_REQUIRED=0
+log() { :; }; info() { :; }; warn() { :; }; err() { echo "$1" >&2; }
+sudo() { printf '%s\\n' "$*" >> "$FIXTURE_DIR/mutations"; "$@"; }
+update-grub() { :; }
+'''
+        # This is the same shell sourcing order used by grub-mkconfig. Verify
+        # the actual override, rather than mocking a desired effective value.
+        source_grub = '''. "$1/grub"
+for fragment in "$1"/grub.d/*.cfg; do
+    [ ! -e "$fragment" ] || . "$fragment"
+done
+printf '%s\\n' "$GRUB_CMDLINE_LINUX_DEFAULT"
+'''
+        for base_value in ('quiet', 'quiet ' + params):
+            with self.subTest(base_value=base_value), tempfile.TemporaryDirectory() as temporary:
+                directory = Path(temporary)
+                grub = directory / 'grub'
+                original = 'GRUB_CMDLINE_LINUX_DEFAULT="' + base_value + '"\n'
+                grub.write_text(original)
+                (directory / 'cmdline').write_text('quiet ' + params + '\n')
+                fragments = directory / 'grub.d'
+                fragments.mkdir()
+                cloud = fragments / '50-cloudimg-settings.cfg'
+                cloud_text = 'GRUB_CMDLINE_LINUX_DEFAULT="console=tty1 console=ttyS0"\n'
+                cloud.write_text(cloud_text)
+                effective = subprocess.run(['/bin/sh', '-c', source_grub, 'fixture', temporary],
+                                           capture_output=True, text=True, check=True)
+                self.assertEqual(effective.stdout.strip(), 'console=tty1 console=ttyS0')
+                result = subprocess.run(['bash', '-c', prelude + block + '\necho CONTINUED'],
+                                        env=dict(os.environ, FIXTURE_DIR=temporary),
+                                        capture_output=True, text=True)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('GRUB drop-in needs manual review', result.stderr)
+                self.assertIn('can override', result.stderr)
+                self.assertNotIn('CONTINUED', result.stdout)
+                self.assertFalse((directory / 'mutations').exists())
+                self.assertEqual(grub.read_text(), original)
+                self.assertEqual(cloud.read_text(), cloud_text)
+
+    def test_grub_dropin_path_not_a_directory_stops_before_mutation(self):
+        block = 'GRUB_FILE=' + SETUP.split('GRUB_FILE=', 1)[1].split('# Modprobe configuration', 1)[0]
+        block = block.replace('/etc/default/grub', '${FIXTURE_DIR}/grub').replace('/proc/cmdline', '${FIXTURE_DIR}/cmdline')
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            original = 'GRUB_CMDLINE_LINUX_DEFAULT="quiet"\n'
+            (directory / 'grub').write_text(original)
+            (directory / 'grub.d').write_text('# unexpected file\n')
+            prelude = 'set -euo pipefail\nerr() { echo "$1" >&2; }; sudo() { touch "$FIXTURE_DIR/mutations"; return 99; }\n'
+            result = subprocess.run(['bash', '-c', prelude + block],
+                                    env=dict(os.environ, FIXTURE_DIR=temporary),
+                                    capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('Cannot inspect GRUB drop-in directory', result.stderr)
+            self.assertFalse((directory / 'mutations').exists())
+            self.assertEqual((directory / 'grub').read_text(), original)
 
     def test_readiness_exhaustion_cannot_continue(self):
         block = SETUP.split('OLLAMA_READY=0', 1)[1].split('# Pull recommended model', 1)[0]

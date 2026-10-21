@@ -1,0 +1,18 @@
+{
+  "model": "qwen3.6:35b-a3b",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Answer in one short sentence: why should a local AI setup confirm GPU use instead of only checking that text appears?"
+    }
+  ],
+  "think": false,
+  "stream": true,
+  "keep_alive": "30s",
+  "options": {
+    "num_ctx": 8192,
+    "num_predict": 192,
+    "temperature": 0,
+    "seed": 42
+  }
+}

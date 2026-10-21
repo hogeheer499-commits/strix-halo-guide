@@ -5,9 +5,9 @@
   "evidence_review_scope": "ACTIVE_EVIDENCE_REVIEW_2026-10-01.md; review of active recommendation surfaces, upstream availability, buyer context, security status and vendor surfaces (checked 2026-09-30); not remeasurement of historical archives",
   "freshness_max_age_days": 21,
   "publication": {
-    "expected_content_revision": "audit-fixes-2026-10-03-01",
+    "expected_content_revision": "beginner-maintenance-2026-10-21",
     "deployment_verified": null,
-    "scope": "Prepared documentation/security correction; deployment pending. Verify all nine route bodies and the site build manifest against the exact guide source commit after authorized publication. Not a new hardware qualification.",
+    "scope": "Local beginner-route and scoped maintenance candidate; not published. Broad evidence review remains October 1. No new fresh-install or hardware qualification. Verify exact guide/mirror/site identities after separately authorized publication.",
     "previous_verified_record": {
       "revision": "closeout-2026-09-19",
       "deployment_verified": "2026-09-19T21:58:27Z",
@@ -50,6 +50,13 @@
       "mesa": "26.2.4",
       "sglang": "0.5.21",
       "scope": "Release observations read 2026-10-03; not newly measured or qualified. Existing dated availability observations and qualification versions above are retained."
+    },
+    "observed_update_2026_10_21": {
+      "ollama_stable": "0.40.7",
+      "ollama_prerelease": "0.40.8-rc0; Flint explicitly macOS-only at this release",
+      "open_webui_stable": "0.12.3",
+      "open_webui_pin_advisory": "GHSA-3vvh-g22g-jq6r; includes 0.11.4; channels/webhook preconditions; patched 0.12.2",
+      "scope": "Scoped availability/advisory observations only; historical fields retain their checked dates. See MAINTENANCE_REVIEW_2026-10-21.md."
     }
   },
   "qwen38": {
@@ -88,5 +95,7 @@
     "checked": "2026-09-19",
     "policy": "VENDOR_DISCLOSURE.md"
   },
-  "content_modified": "2026-10-03"
+  "content_modified": "2026-10-21",
+  "maintenance_reviewed": "2026-10-21",
+  "maintenance_review_scope": "MAINTENANCE_REVIEW_2026-10-21.md; scoped beginner-route, saved-output, release/advisory and 495 dispatch checks; does not reset broad evidence review or its freshness limit"
 }

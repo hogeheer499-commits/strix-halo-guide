@@ -1,0 +1,18 @@
+{
+  "model": "qwen3.6:35b-a3b",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Compute 17 * 23. Reply with exactly this format and no other text: STRIX_CHECK=<integer>"
+    }
+  ],
+  "think": false,
+  "stream": true,
+  "keep_alive": "30s",
+  "options": {
+    "num_ctx": 8192,
+    "num_predict": 96,
+    "temperature": 0,
+    "seed": 42
+  }
+}

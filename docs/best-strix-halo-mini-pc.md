@@ -6,7 +6,7 @@ permalink: /best-strix-halo-mini-pc/
 canonical_url: "https://strixhaloguide.com/best-strix-halo-mini-pc/"
 sitemap: false
 date: "2026-08-21T00:00:00+02:00"
-last_modified_at: "2026-10-03T00:00:00+02:00"
+last_modified_at: "2026-10-21T00:00:00+02:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo local AI setup, benchmarks and buyer evidence"
 seo:
   type: "TechArticle"
-  date_modified: "2026-10-03T00:00:00+02:00"
+  date_modified: "2026-10-21T00:00:00+02:00"
 ---
 
 # Best Strix Halo Mini PC for Local LLMs (2026)
@@ -29,6 +29,21 @@ the current setup and evidence model; use this page for the buyer comparison.
 This page interprets the evidence in the [canonical Strix Halo guide repository](https://github.com/hogeheer499-commits/strix-halo-guide). Every number links to a dated source; first-party and community measurements stay labeled. The first-party Beelink GTR9 Pro was bought by the maintainer; no loaned, gifted or sponsored hardware is used for first-party results (statement as of 2026-09-26 in [`VENDOR_DISCLOSURE.md`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/VENDOR_DISCLOSURE.md#current-relationships-and-hardware-provenance)).
 
 Newest price observations (US, EU, NL/DE; observed 2026-09-30): the [September 30 exact-SKU snapshot](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_SNAPSHOT_2026-10-01.md) and its [CSV](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/buyer_price_snapshot_2026-09-30.csv).
+
+## PRO 495 / 192GB: Platform And Dispatch Check
+
+**Checked October 21, 2026:** [AMD presents its own Ryzen AI Halo with PRO 495
+and 192GB](https://www.amd.com/en/products/processors/desktops/ryzen/ryzen-ai-halo.html)
+([introduction dated October 12](https://www.amd.com/en/blogs/2026/meet-the-next-amd-ryzen-ai-halo.html)).
+This confirms vendor specifications, not local performance, an EU retail SKU or
+customer delivery. The guide's own 395/128GB results do not qualify a 495/192GB.
+
+The [GMKtec EU EVO-X5 Pro 495 listing](https://de.gmktec.com/en/products/gmktec-evo-x5-pro-ai-max-495)
+now says orders placed by October 15 are expected to dispatch at the end of
+October, and orders from October 16 are expected to dispatch **November 20–30**.
+The seller explicitly calls this dispatch, not delivery. Check the exact SKU,
+destination and checkout terms before buying; no Dutch delivery or speed
+advantage is established here. [Scope of this update](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MAINTENANCE_REVIEW_2026-10-21.md).
 
 ## Before Choosing Memory Or Sending A System For Repair
 

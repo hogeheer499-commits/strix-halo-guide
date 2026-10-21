@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "stop_reason": null,
+  "started_utc": "2026-10-14T20:38:49Z",
+  "elapsed_seconds": 9.157,
+  "runtime_version_tested": "0.32.15",
+  "model": "qwen3.6:35b-a3b",
+  "model_manifest_sha256": "096fdbd02fe620fc10cbeb6537e080f8041aece851e5d696aed024d4f70f2e47",
+  "requests_completed": 2,
+  "results": [
+    {
+      "request": 1,
+      "content": "Confirming GPU usage ensures the model is actually running locally and leveraging hardware acceleration, rather than just displaying cached or simulated output.",
+      "thinking": "",
+      "done": true,
+      "done_reason": "stop",
+      "wall_seconds": 7.637604,
+      "prompt_eval_count": 35,
+      "eval_count": 26
+    },
+    {
+      "request": 2,
+      "content": "STRIX_CHECK=391",
+      "thinking": "",
+      "done": true,
+      "done_reason": "stop",
+      "wall_seconds": 0.423025,
+      "prompt_eval_count": 37,
+      "eval_count": 8
+    }
+  ],
+  "max_observed_model_vram_bytes": 22045985340,
+  "contexts_observed": [
+    8192
+  ],
+  "server_returncode_after_stop": 0,
+  "scope_exclusions": [
+    "fresh installation",
+    "Ollama 0.31.2",
+    "package or driver changes",
+    "service/configuration changes",
+    "host reboot",
+    "browser UI",
+    "ranking benchmark"
+  ]
+}
