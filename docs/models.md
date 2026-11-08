@@ -1,12 +1,12 @@
 ---
 layout: default
-title: "AMD Strix Halo Models: Measured Results, New GGUFs, and 128GB Fit"
-description: "Evidence-backed AMD Strix Halo model hub separating guide-measured local LLM routes from published 2026 model artifacts, third-party public capability scores and published 128GB GGUF fit tiers."
+title: "What Can I Run on Strix Halo? Models for 32GB to 192GB"
+description: "Choose a Strix Halo model by RAM and task: one tested 128GB retrieval route, 96GB community results and clearly labeled untested candidates from 32GB to 192GB."
 permalink: /strix-halo-models/
 canonical_url: "https://strixhaloguide.com/strix-halo-models/"
 sitemap: false
 date: "2026-08-30T00:00:00+02:00"
-last_modified_at: "2026-10-21T00:00:00+02:00"
+last_modified_at: "2026-11-09T00:01:20+01:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,10 +14,63 @@ image:
   alt: "AMD Strix Halo model hub with measured evidence and published GGUF fit tiers"
 seo:
   type: "TechArticle"
-  date_modified: "2026-10-03T00:00:00+02:00"
+  date_modified: "2026-11-09T00:01:20+01:00"
 ---
 
 # AMD Strix Halo Model Hub
+
+## What Can I Run With My RAM?
+
+Find your installed memory, then the task you want to try. **One row is tested
+here: Qwen3.8-27B on 128GB, finding exact information in a long prompt.** The
+other models are candidates to try, not installation or quality
+recommendations. Sources checked November 8, 2026; historical test dates stay
+attached to their results.
+
+[32GB](#ram-32gb) · [64GB](#ram-64gb) · [96GB](#ram-96gb) ·
+[128GB](#ram-128gb) · [192GB](#ram-192gb)
+
+| Installed RAM | Task to try | Exact model | Evidence |
+| --- | --- | --- | --- |
+| <a id="ram-32gb"></a>**32GB** | Small coding and agent tasks | **MiMo-V2.6-Distill-Qwen-9B** `Q4_K_M` | **Publisher artifact; not tested here.** |
+| <a id="ram-64gb"></a>**64GB** | Screenshots, tools and documents | **Nemotron 3.5 Bolt 74B-A9B**, official IQ2/QAT `24GB` GGUF | **Publisher artifact; not tested here.** |
+| <a id="ram-96gb"></a>**96GB** | No separate first-party recommendation; community generation and prompt benchmarks exist | **Qwen3.6 35B-A3B** `UD-Q4_K_M` | **Community evidence only.** |
+| <a id="ram-128gb"></a>**128GB: tested task** | Find exact information in a long prompt | **Qwen3.8-27B** `Q4_K_M`, Ollama **0.32.13** | **Tested here, August 15:** exact retrieval through **50,059 prompt tokens**. |
+| **128GB: candidate** | Image and tool tasks | **Nemotron 3.5 Super VL 120B-A12B** `Q4_0` | **Publisher artifact; not tested here.** |
+| <a id="ram-192gb"></a>**192GB** | Higher weight precision | **Nemotron 3.5 Super VL 120B-A12B** `Q8_0` | **Capacity hypothesis; not tested here.** |
+
+What each row rests on, and where to go next:
+
+- **32GB: MiMo-V2.6-Distill-Qwen-9B.** The route is Ollama 0.40.15 with the `llamacpp` runner and `Q4_K_M`. The [Ollama manifest](https://registry.ollama.ai/v2/library/mimo-v2.6/manifests/9b) lists 5.63GB of weights plus a 0.92GB projector. Those are download sizes, not measured RAM use. A Framework Max 385 has a smaller GPU than the measured Max+ 395, so do not transfer speeds. Next: [manual setup and memory limits](amd-strix-halo-setup.md#other-memory-sizes); the 128GB automatic profile does not apply.
+- **64GB: Nemotron 3.5 Bolt 74B-A9B.** The official IQ2/QAT `24GB` GGUF plus its projector: [pinned files](https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-GGUF/tree/e0fecb69cb3e5e4c5e8a056fa2aec98c78e91246) of 22.02GB + 1.73GB. “24GB” is the publisher's target, not an AMD fit measurement or a completed-task result. Next: [manual setup and memory limits](amd-strix-halo-setup.md#other-memory-sizes); runtime and task acceptance remain open.
+- **96GB: community results.** Community generation and prompt benchmarks include Qwen3.6 35B-A3B `UD-Q4_K_M` with direct Vulkan on an EVO-X2, Ubuntu 26.04, llama.cpp b9156 (May 14). The [dated results](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/COMMUNITY_RESULTS.md) establish that 96GB systems are used; they do not measure the benefit over 64GB. No special 96GB boot profile is qualified here. Next: follow the exact community stack and the [manual setup limits](amd-strix-halo-setup.md#other-memory-sizes), not the 128GB installer values.
+- **128GB, tested: Qwen3.8-27B.** The route is `Q4_K_M` on Ollama **0.32.13**, Vulkan/RADV with Ollama-default MTP. The [raw context results](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/qualification/context_results.csv) show exact retrieval through **50,059 prompt tokens**; a 56,051-token run hit a recoverable `ErrorDeviceLost`. The test covers finding exact information on that stack. It is not general document or coding quality, and not proof for another version or RAM size. Next: [Qwen route and context limits](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/QWEN38_STRIX_HALO.md) and the [128GB Ubuntu start route](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/LOCAL_CHAT_START.md). The installer pins a different Ollama version from the one measured.
+- **128GB, candidate: Nemotron 3.5 Super VL 120B-A12B `Q4_0`.** With its BF16 projector: [pinned files](https://huggingface.co/ggml-org/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF/tree/99144d1d7a318f045f1412a85bbb807f3c8a17a0) of 71.93GB + 1.73GB. This is a different model from the measured Nemotron 3 Super below. No ready-tested command is supplied for this candidate. Next: read the [setup scope](amd-strix-halo-setup.md#start-with-one-local-chat-path), then qualify the exact runtime, projector and tasks.
+- **192GB: Nemotron 3.5 Super VL 120B-A12B `Q8_0`.** With its BF16 projector: [pinned files](https://huggingface.co/ggml-org/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-GGUF/tree/99144d1d7a318f045f1412a85bbb807f3c8a17a0) of 128.47GB (**119.65GiB**) of weights plus a 1.73GB projector. No 192GB result or quality gain is established. Next: [192GB hardware and setup limits](best-strix-halo-mini-pc.md#128gb-or-192gb). Do not reuse the 128GB boot profile.
+
+**A file size is not a memory budget.** GB means 10⁹ bytes; GiB means 2³⁰ bytes.
+Whether a session works also depends on projectors, runtime buffers, context,
+concurrent requests, GPU access and the OS. For the rows above, that means:
+
+- Super VL Q4 plus its projector is about 73.7GB. That exceeds 64GiB even
+  before those costs, which excludes that route as fully resident; it does not
+  exclude smaller quants.
+- Super VL Q8 on 128GB is very tight and untested. A decimal file size does not
+  prove it impossible.
+- Optional MTP heads need additional memory.
+
+There is no universal reserve that qualifies every model.
+
+For reproducibility: the MiMo manifest above was read with model blob
+`sha256:8f367423ee68d5712710ceda6a21a840ee6b4ff507065aebad155ce92789ccbc`
+(5,629,105,568 bytes) and projector
+`sha256:baff60250a59bea97ed4bc111ec4ea0f8f2a817f0b1a3406ad76ddccc3bd17fc`
+(921,705,024 bytes). Tags and library-page sizes can change, so record the
+runner and blobs you actually get rather than treating another download as
+this artifact.
+
+The deeper tables below preserve measured routes, dated listings and external
+capability scores; they are not a ranking of these new candidates.
 
 **September 19 functional update:** the [scoped runtime qualification](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/RUNTIME_QUALIFICATION_2026-09-19.md)
 records text (Qwen3.6), image (Qwen2.5-VL), executed tools (Devstral) and pinned
@@ -439,18 +492,20 @@ The vendor's own per-tier table lists a 122B-parameter MoE at Q3 (52.5GB) for 64
 not a 30B-class file; see the vendor-published section above. This guide has not
 measured a 64GB system and has not reproduced the vendor's figures.
 
-## 128GB Fit Tiers
+<a id="128gb-fit-tiers"></a>
 
-These are published artifact-size tiers from the 2026-08-29 check, not local
-memory-use measurements. Runtime buffers, KV cache, the operating system, and
+## Published Artifact Sizes
+
+These are published artifact-size bands from the 2026-08-29 check, not RAM
+budgets or local memory-use measurements. Runtime buffers, KV cache, the operating system, and
 other workloads still need room; a file fitting on paper is not a usability or
 correctness result.
 
 | Tier | Published-size examples |
 | --- | --- |
-| Comfortable: under 70GB | [gpt-oss-120b GGUF](https://huggingface.co/ggml-org/gpt-oss-120b-GGUF) at about 63GB; [Qwen3-Coder-Next](https://huggingface.co/unsloth/Qwen3-Coder-Next-GGUF) Q6 at about 66GB; and the measured 35B-and-smaller routes listed above |
-| Workable: 70-100GB | [Mistral Medium 3.5](https://huggingface.co/unsloth/Mistral-Medium-3.5-128B-GGUF) Q4/Q5; [Nemotron 3 Super](https://huggingface.co/unsloth/NVIDIA-Nemotron-3-Super-120B-A12B-GGUF) Q4/Q5; [Qwen3.8-Flash-Next](https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF) through IQ4_XS at about 94GB; [Step 3.7 Flash](https://huggingface.co/stepfun-ai/Step-3.7-Flash-GGUF) IQ3_XXS 75.76GB and Q3_K_M 93.80GB; [DeepSeek V4-Flash-Vision-Exp](https://huggingface.co/ggml-org/DeepSeek-V4-Flash-Vision-Exp-GGUF) Q2_K_S 98.59GB (2026-09-25 listings); [MiMo-V2.6-Flash-MOPD](https://huggingface.co/AesSedai/MiMo-V2.6-Flash-MOPD-GGUF) community quants at 77.40GB, 81.75GB and 96.74GB (2026-09-30 listings; about 2 to 2.5 bits per weight; unqualified) |
-| Tight: over 100GB | [DeepSeek V4-Flash](https://huggingface.co/unsloth/DeepSeek-V4-Flash-GGUF) IQ3_XXS at 103GB; [Step 3.7 Flash](https://huggingface.co/stepfun-ai/Step-3.7-Flash-GGUF) Q4_K_S at 111.5GB; [Qwen3.8-Flash-Next](https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF) Q4_K_XL at 111GB; Ollama `qwen3.8-flash-next:125b-a6b-q4_K_M` at 120.06GB (2026-09-25 listing) |
+| Under 70GB of artifacts | [gpt-oss-120b GGUF](https://huggingface.co/ggml-org/gpt-oss-120b-GGUF) at about 63GB; [Qwen3-Coder-Next](https://huggingface.co/unsloth/Qwen3-Coder-Next-GGUF) Q6 at about 66GB; and the measured 35B-and-smaller routes listed above |
+| 70–100GB of artifacts | [Mistral Medium 3.5](https://huggingface.co/unsloth/Mistral-Medium-3.5-128B-GGUF) Q4/Q5; [Nemotron 3 Super](https://huggingface.co/unsloth/NVIDIA-Nemotron-3-Super-120B-A12B-GGUF) Q4/Q5; [Qwen3.8-Flash-Next](https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF) through IQ4_XS at about 94GB; [Step 3.7 Flash](https://huggingface.co/stepfun-ai/Step-3.7-Flash-GGUF) IQ3_XXS 75.76GB and Q3_K_M 93.80GB; [DeepSeek V4-Flash-Vision-Exp](https://huggingface.co/ggml-org/DeepSeek-V4-Flash-Vision-Exp-GGUF) Q2_K_S 98.59GB (2026-09-25 listings); [MiMo-V2.6-Flash-MOPD](https://huggingface.co/AesSedai/MiMo-V2.6-Flash-MOPD-GGUF) community quants at 77.40GB, 81.75GB and 96.74GB (2026-09-30 listings; about 2 to 2.5 bits per weight; unqualified) |
+| Over 100GB of artifacts | [DeepSeek V4-Flash](https://huggingface.co/unsloth/DeepSeek-V4-Flash-GGUF) IQ3_XXS at 103GB; [Step 3.7 Flash](https://huggingface.co/stepfun-ai/Step-3.7-Flash-GGUF) Q4_K_S at 111.5GB; [Qwen3.8-Flash-Next](https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF) Q4_K_XL at 111GB; Ollama `qwen3.8-flash-next:125b-a6b-q4_K_M` at 120.06GB (2026-09-25 listing) |
 
 ## Other Workloads (third-party routes, not measured here, checked 2026-09-30)
 

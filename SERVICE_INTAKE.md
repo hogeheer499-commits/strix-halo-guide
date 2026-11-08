@@ -3,7 +3,7 @@
 Use this intake for a paid setup session, reproduction sprint, OEM buyer-path
 pilot, or custom local-AI proof of concept.
 
-Send it privately to `hogeheer499@gmail.com`. Do not put credentials, private
+Send it privately to `info@strixhaloguide.com`. Do not put credentials, private
 model weights, personal information, or confidential logs in a public GitHub
 issue.
 

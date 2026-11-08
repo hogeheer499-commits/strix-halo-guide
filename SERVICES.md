@@ -4,17 +4,27 @@ The public guide remains free. These paid scopes are for people and teams who
 want hands-on help, a controlled reproduction, or evidence for a specific
 system.
 
-Services are offered through JVD Netwerk. The contractual supplier details, applicable tax, data handling and terms are confirmed in writing before payment.
+Strix Halo Guide is a project of Kleine Koe (JVD Netwerk). Services are offered
+and invoiced by JVD Netwerk. The contractual supplier details, applicable tax, data handling and terms are confirmed in writing before payment.
 
 All work remains evidence-led. Payment does not buy a positive conclusion,
 hidden edits, or removal of accurate negative results.
 
 ## Setup Rescue
 
-**Introductory fixed price: EUR 199**
+**Fixed price: €229 excluding VAT for the first three customers, then €299
+excluding VAT.** The price that applies to you is confirmed in writing before
+work starts.
 
 For an owner who has a Strix Halo system but is stuck between BIOS settings,
 Linux, GPU access, Ollama, `llama.cpp`, model formats, or quantization choices.
+The supported setup scope is a **128GB-class system on Ubuntu 24.04**. Other
+memory sizes or operating systems can be considered after an intake, for a
+bounded diagnosis only; they do not come with an installation guarantee.
+
+The complete [start route](LOCAL_CHAT_START.md) and
+[troubleshooting reference](docs/troubleshooting.md) remain free. Setup Rescue
+adds personal help with your own machine.
 
 The scope includes:
 
@@ -87,7 +97,7 @@ licensing, and success criteria vary substantially.
 
 ## How To Request A Scope
 
-Email `hogeheer499@gmail.com` with the subject:
+Email `info@strixhaloguide.com` with the subject:
 
 ```text
 Strix Halo service request: [setup / reproduction / OEM pilot]
@@ -103,8 +113,8 @@ confirmed in writing.
 
 ## Commercial And Editorial Boundaries
 
-- Prices are introductory starting prices in euros. Applicable VAT and invoice
-  treatment are confirmed before payment.
+- Setup Rescue has the fixed-price terms above. Other scopes list starting
+  prices in euros; applicable VAT and invoice treatment are confirmed before payment.
 - Purchasing time or a report does not guarantee that an issue can be fixed or
   that a target speed, quality score, or compatibility result will be reached.
 - Additional work outside the agreed scope requires approval.

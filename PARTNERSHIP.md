@@ -112,6 +112,6 @@ No fake claims, hidden influence, unsupported marketing language, or undisclosed
 
 Maintainer: software engineer; Strix Halo guide maintainer.
 
-For collaboration, service, or partner inquiries, email the maintainer privately at hogeheer499@gmail.com (see [`SERVICE_INTAKE.md`](SERVICE_INTAKE.md) for paid scopes). Do not put confidential material in a public GitHub issue. Public issues and discussions are for technical corrections and benchmark reports only.
+For collaboration, service, or partner inquiries, email the maintainer privately at info@strixhaloguide.com (see [`SERVICE_INTAKE.md`](SERVICE_INTAKE.md) for paid scopes). Do not put confidential material in a public GitHub issue. Public issues and discussions are for technical corrections and benchmark reports only.
 
 The request is reviewed first. Work starts only after the scope, deliverables, schedule, price, confidentiality, publication status, and payment terms are confirmed in writing (see [`SERVICES.md`](SERVICES.md)).

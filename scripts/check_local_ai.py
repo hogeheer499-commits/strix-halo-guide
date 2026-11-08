@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Read-only Linux setup checks; not yet run on a fresh Ollama 0.31.2 install.
 
-Run from the guide checkout: python3 scripts/check_local_ai.py boot|answer
+Run from the guide checkout: python3 scripts/check_local_ai.py boot|answer|report
 The answer check sends one fixed, nonprivate task to native loopback Ollama.
-Neither check establishes GPU placement, speed or broad model quality.
+Report only reads metadata; it never loads a model or sends an inference request.
+Report exits: 0 = known allocation (GPU, CPU or mixed), 2 = unknown/incomplete,
+1 = stopped/error. None establishes execution, speed or broad model quality.
 """
 
 import argparse
@@ -28,6 +30,16 @@ MODEL = "qwen3.6:35b-a3b"
 HOST, PORT = "127.0.0.1", 11434
 CONNECT_TIMEOUT, TOTAL_TIMEOUT = 5, 180
 MAX_RESPONSE_BYTES = 64 * 1024
+REPORT_TIMEOUT = 10  # Per GET; at most two GETs, no retries.
+GUIDE_URL = "https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/LOCAL_CHAT_START.md"
+# Report prose is kept here and in render_report for editorial review.
+REPORT_NEXT = {
+    "GPU": "Free next step: check the visible answer separately in the guide's Step 5.",
+    "CPU": "Free next step: follow the guide's CPU fallback troubleshooting before checking speed.",
+    "mixed": "Free next step: review model/context memory needs and CPU fallback troubleshooting.",
+    "unknown": "Free next step: review the guide's Step 6 and failure table; no model was loaded by this report.",
+    "STOP": "Free next step: review the guide's listener/service failure steps; do not open the service to the network.",
+}
 EXPECTED_ANSWER = "STRIX_CHECK=391"
 PAYLOAD = {
     "model": MODEL,
@@ -45,7 +57,7 @@ class CheckFailed(Exception):
 
 class CheckParser(argparse.ArgumentParser):
     def error(self, message):
-        raise CheckFailed("Choose exactly one check: boot or answer (use --help for usage).")
+        raise CheckFailed("Choose exactly one check: boot, answer or report (use --help for usage).")
 
 
 def check_boot(cmdline_path=Path("/proc/cmdline")):
@@ -108,7 +120,7 @@ def listener_addresses(text, ipv6=False):
     return addresses
 
 
-def check_listeners(tables=None):
+def check_listeners(tables=None, *, quiet=False):
     if tables is None:
         tables = (Path("/proc/net/tcp"), Path("/proc/net/tcp6"))
     if len(tables) != 2:
@@ -124,18 +136,19 @@ def check_listeners(tables=None):
         raise CheckFailed("Service not ready: no listener on port 11434; no request was sent.")
     if any(address != HOST for address in addresses):
         raise CheckFailed("Port 11434 has a non-profile listener; require only 127.0.0.1, with no IPv6 or broader listener. No request was sent.")
-    print("OK listener: 127.0.0.1:11434 only")
+    if not quiet:
+        print("OK listener: 127.0.0.1:11434 only")
 
 
 @contextmanager
-def request_deadline():
+def request_deadline(seconds=TOTAL_TIMEOUT):
     # A socket inactivity timeout alone cannot bound slowly arriving headers or
     # body bytes. Linux SIGALRM also bounds the entire request, including those.
     def expired(_signum, _frame):
         raise TimeoutError("total request deadline")
 
     previous_handler = signal.signal(signal.SIGALRM, expired)
-    signal.setitimer(signal.ITIMER_REAL, TOTAL_TIMEOUT)
+    signal.setitimer(signal.ITIMER_REAL, seconds)
     try:
         yield
     finally:
@@ -143,17 +156,20 @@ def request_deadline():
         signal.signal(signal.SIGALRM, previous_handler)
 
 
-def fetch_answer():
+def fetch_json(path, payload=None, *, timeout=TOTAL_TIMEOUT, strict=False):
     # http.client connects directly: no proxy environment, OLLAMA_HOST, DNS
     # target override, redirect following, cloud fallback or retry loop.
     connection = http.client.HTTPConnection(HOST, PORT, timeout=CONNECT_TIMEOUT)
     try:
-        with request_deadline():
+        with request_deadline(timeout):
             connection.connect()
             connection.auto_open = 0
-            connection.sock.settimeout(TOTAL_TIMEOUT)
-            connection.request("POST", "/api/chat", json.dumps(PAYLOAD).encode("utf-8"),
-                               {"Content-Type": "application/json"})
+            connection.sock.settimeout(timeout)
+            if payload is None:
+                connection.request("GET", path)
+            else:
+                connection.request("POST", path, json.dumps(payload).encode("utf-8"),
+                                   {"Content-Type": "application/json"})
             response = connection.getresponse()
             if response.status != 200:
                 raise CheckFailed(f"Ollama returned HTTP {response.status}; no redirect was followed.")
@@ -167,9 +183,188 @@ def fetch_answer():
     finally:
         connection.close()
     try:
-        return json.loads(body)
+        return json.loads(body, object_pairs_hook=unique_json_object,
+                          parse_constant=invalid_json_constant) if strict else json.loads(body)
     except (ValueError, UnicodeError, RecursionError) as exc:
         raise CheckFailed("Ollama returned invalid JSON.") from exc
+
+
+def unique_json_object(pairs):
+    """Do not silently choose one of conflicting JSON fields in a report."""
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate JSON field")
+        result[key] = value
+    return result
+
+
+def invalid_json_constant(_value):
+    raise ValueError("non-finite JSON number")
+
+
+def fetch_answer():
+    return fetch_json("/api/chat", PAYLOAD)
+
+
+def fetch_metadata(path):
+    if path not in ("/api/version", "/api/ps"):
+        raise CheckFailed("Unsupported metadata endpoint.")
+    return fetch_json(path, timeout=REPORT_TIMEOUT, strict=True)
+
+
+def read_metadata_file(path):
+    """Bound proc reads and never return raw contents to report output."""
+    try:
+        with path.open(encoding="ascii") as source:
+            text = source.read(MAX_RESPONSE_BYTES + 1)
+        return text if len(text) <= MAX_RESPONSE_BYTES else None
+    except (OSError, UnicodeError):
+        return None
+
+
+def system_metadata():
+    memory = None
+    text = read_metadata_file(Path("/proc/meminfo"))
+    if text is not None:
+        rows = [line for line in text.splitlines() if line.startswith("MemTotal:")]
+        match = re.fullmatch(r"MemTotal:\s+([0-9]{1,16})\s+kB\s*", rows[0]) if len(rows) == 1 else None
+        if match and 0 < int(match[1]) <= (2**63 - 1) // 1024:
+            memory = int(match[1]) * 1024  # Linux meminfo kB is KiB.
+    kernel = "unknown"
+    try:
+        # Custom kernel suffixes can contain private names. Only numeric release.
+        match = re.match(r"([0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,6})(?:$|[-+])", os.uname().release)
+        if match:
+            kernel = match[1]
+    except OSError:
+        pass
+    text = read_metadata_file(Path("/proc/cmdline"))
+    boot = {}
+    for expected in BOOT_PARAMETERS:
+        key = expected.split("=", 1)[0]
+        values = [] if text is None else [token for token in text.split() if token.split("=", 1)[0] == key]
+        boot[key] = ("unknown" if text is None else "absent" if not values
+                     else "conflicting" if len(values) > 1 else "match" if values == [expected]
+                     else "different")
+    groups = {name: "unknown" for name in ("render", "video")}
+    try:
+        active = set(os.getgroups()) | {os.getegid()}
+        for name in groups:
+            try:
+                groups[name] = "active" if grp.getgrnam(name).gr_gid in active else "inactive"
+            except KeyError:
+                groups[name] = "absent"
+            except OSError:
+                pass
+    except OSError:
+        pass
+    return {"memory_bytes": memory, "kernel": kernel, "boot": boot, "groups": groups}
+
+
+def allocation_metadata(reply):
+    """Classify only the exact guide model's loaded row; never choose a fallback.
+
+    Ollama v0.31.2 server/routes.go PsHandler exposes runtime totalSize/MemorySize
+    and vramSize as size and size_vram (bytes), not /api/tags download size.
+    cmd/cmd.go ListRunningHandler and https://docs.ollama.com/faq describe the
+    allocation labels. We require positive size and valid int64 fields before
+    classifying, including CPU: zero/zero is unknown, not a loaded-model proof.
+    """
+    if not isinstance(reply, dict) or "error" in reply or not isinstance(reply.get("models"), list):
+        return "unknown", "invalid model metadata", None
+    selected = []
+    for row in reply["models"]:
+        if not isinstance(row, dict):
+            return "unknown", "invalid model row", None
+        # Both are supplied by upstream. Reject conflicting identities rather
+        # than treating a missing/malformed identifier as a different model.
+        name, model = row.get("name"), row.get("model")
+        if not isinstance(name, str) or not name or model != name:
+            return "unknown", "invalid model identity", None
+        if name == MODEL:
+            selected.append(row)
+    if len(selected) != 1:
+        return "unknown", "selected model not loaded" if not selected else "ambiguous selected model", None
+    row = selected[0]
+    size, vram = row.get("size"), row.get("size_vram")
+    if (type(size) is not int or type(vram) is not int
+            or not 0 < size <= 2**63 - 1 or not 0 <= vram <= size):
+        return "unknown", "invalid allocation fields", None
+    state = "CPU" if vram == 0 else "GPU" if vram == size else "mixed"
+    return state, "Ollama allocation metadata", (size, vram)
+
+
+def runtime_version(reply):
+    version = reply.get("version") if isinstance(reply, dict) and "error" not in reply else None
+    # No arbitrary local build labels, paths, identifiers or API error text.
+    return version if isinstance(version, str) and re.fullmatch(
+        r"[0-9]{1,4}\.[0-9]{1,4}\.[0-9]{1,4}(?:-rc[0-9]{1,4})?", version) else "unknown"
+
+
+def render_report(system, version, allocation, *, stopped=False):
+    """Only allowlisted fields reach this renderer; no API/host blobs or errors."""
+    state, reason, sizes = allocation
+    print("Local AI report (metadata only)")
+    memory = system["memory_bytes"]
+    if memory is None:
+        print("Memory: unknown")
+    else:
+        gib = memory / 2**30
+        near = next((n for n in (32, 64, 96, 128, 192) if abs(gib - n) <= 8), None)
+        band = f"near {near} GiB" if near is not None else "unclassified"
+        print(f"Memory: {gib:.2f} GiB MemTotal; {band} (approximate visible-memory class, not installed RAM/SKU)")
+    print(f"Kernel: {system['kernel']} (numeric release only)")
+    print("Boot parameters (128GB reference only): " + "; ".join(f"{k}={v}" for k, v in system["boot"].items()))
+    print("Session GPU groups: " + "; ".join(f"{k}={v}" for k, v in system["groups"].items()))
+    print("Profile: metadata cannot confirm installed capacity; use the matching manual route, never copy the 128GB boot values to another size.")
+    print(f"Ollama version: {version}")
+    print(f"Selected model: {MODEL} (exact tag only)")
+    print(f"Allocation: {state} ({reason})")
+    if sizes is not None:
+        print(f"Reported bytes: size={sizes[0]}, size_vram={sizes[1]}")
+    print("Scope: allocation is not proof of GPU execution, correct answers or speed; boot/answer checks were not run.")
+    print(REPORT_NEXT["STOP" if stopped else state])
+    print(f"Guide: {GUIDE_URL}#if-a-step-fails")
+
+
+def check_report():
+    """0 known allocation; 2 unknown/incomplete metadata; 1 refused/failed read.
+
+    Exit 0 includes CPU/mixed and is not a setup/GPU/boot acceptance result.
+    Known boot mismatches are observations, never recommendations or fixes.
+    """
+    system = system_metadata()
+    version = "unknown"
+    allocation = ("unknown", "not read", None)
+    stopped = None
+    try:
+        try:
+            check_listeners(quiet=True)
+        except CheckFailed:
+            # Existing listener messages contain the fixed endpoint; a shareable
+            # report prints neither addresses nor untrusted exception contents.
+            stopped = "Listener contract not met or unreadable; no HTTP request was sent."
+        if stopped is None:
+            version = runtime_version(fetch_metadata("/api/version"))
+            allocation = allocation_metadata(fetch_metadata("/api/ps"))
+    except TimeoutError:
+        stopped = "Metadata request timed out (5s connect, 10s total per GET); no retry."
+    except CheckFailed:
+        stopped = "Listener or metadata check failed; no further request was sent."
+    except (OSError, http.client.HTTPException):
+        stopped = "Cannot read local runtime metadata; no retry."
+    except KeyboardInterrupt:
+        stopped = "Report cancelled."
+    render_report(system, version, allocation, stopped=stopped is not None)
+    if stopped:
+        print(f"STOP: {stopped}")
+        return 1
+    incomplete = (allocation[0] == "unknown" or version == "unknown"
+                  or system["memory_bytes"] is None or system["kernel"] == "unknown"
+                  or "unknown" in system["boot"].values() or "unknown" in system["groups"].values())
+    print("REPORT: incomplete/unknown" if incomplete else "REPORT: complete (allocation only)")
+    return 2 if incomplete else 0
 
 
 def check_answer():
@@ -203,11 +398,13 @@ def check_answer():
 
 def main(argv=None):
     parser = CheckParser(description=__doc__)
-    parser.add_argument("check", choices=("boot", "answer"))
+    parser.add_argument("check", choices=("boot", "answer", "report"))
     try:
         args = parser.parse_args(argv)
         if args.check == "boot":
             check_boot()
+        elif args.check == "report":
+            return check_report()
         else:
             check_answer()
     except CheckFailed as exc:

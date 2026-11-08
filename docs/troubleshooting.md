@@ -6,7 +6,7 @@ permalink: /troubleshooting/
 canonical_url: "https://strixhaloguide.com/troubleshooting/"
 sitemap: false
 date: "2026-08-30T00:00:00+02:00"
-last_modified_at: "2026-10-01T00:00:00+02:00"
+last_modified_at: "2026-11-09T00:01:20+01:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo local LLM troubleshooting for Ollama, Vulkan, ROCm, and unified memory"
 seo:
   type: "TechArticle"
-  date_modified: "2026-10-01T00:00:00+02:00"
+  date_modified: "2026-11-09T00:01:20+01:00"
 ---
 
 # AMD Strix Halo Local LLM Troubleshooting
@@ -29,10 +29,11 @@ not qualify every model, long-context shape or maximum-memory allocation.
 
 **Evidence reviewed:** October 1, 2026.
 
-**Security status (checked 2026-09-30):** published advisories cover the pinned
-Open WebUI 0.10.2 image and the Ollama 0.31.2 version that `setup.sh` installs;
-see [Security status of pinned components](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#security-status-of-pinned-components)
-and the [local AI security checklist](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURE_LOCAL_AI.md).
+**Scoped security recheck November 8:** the start route uses a component-tested
+Open WebUI **0.11.4 candidate**, not the historical 0.10.2 image. A later
+channel-webhook advisory includes 0.11.4, and published Ollama advisories include
+the historical 0.31.2 installer pin. The exact conditions and acceptance limits
+are in [Security status of pinned components](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#security-status-of-pinned-components).
 
 This page extracts the most useful checks from the canonical
 [README troubleshooting](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#troubleshooting),
@@ -41,14 +42,90 @@ and [concise setup guide](https://github.com/hogeheer499-commits/strix-halo-guid
 Those files remain the source of truth for full commands, dated evidence, and
 caveats.
 
+## Is It Running On The GPU?
+
+After you get an answer, ask Ollama where it reports the model's memory:
+
+```bash
+OLLAMA_HOST=http://127.0.0.1:11434 ollama ps
+```
+
+Look at the **PROCESSOR** column of the loaded model:
+
+- **`100% GPU`:** Ollama reports full GPU placement for that loaded model.
+- **`100% CPU` or a CPU/GPU split:** this does not pass the full-offload check.
+  Follow the [CPU fallback checks](#ollama-runs-but-falls-back-to-cpu) below
+  before reinstalling or trying a larger model.
+- **No model listed:** it may have unloaded. Ask it another question and check
+  again while it is loaded.
+
+This is placement evidence, not a speed or correct-answer test. Combine it with the
+[start route's known-answer and GPU checks](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/LOCAL_CHAT_START.md#step-5-get-your-first-answer-and-check-a-known-task).
+Review logs locally; do not paste unfiltered logs, addresses, prompts or credentials
+into a public help request.
+
+### A Short Report For The Starter Model
+
+For the guide's starter model, a compact report is also available. Run it from
+the guide folder:
+
+```bash
+python3 scripts/check_local_ai.py report
+```
+
+The report only reads: limited Linux metadata, plus Ollama's version and
+loaded-model metadata. It does not load or download a model, generate an answer
+or change settings. It selects only the exact **`qwen3.6:35b-a3b`** tag and
+does not silently choose another loaded model.
+
+Its allocation line shows one of these labels:
+
+- **GPU:** Ollama reports all of that model's allocation as GPU memory.
+- **CPU / mixed:** Ollama reports none or only part of that allocation as GPU memory.
+- **unknown:** allocation cannot be established, for example because the exact
+  model is not loaded or its metadata is invalid.
+
+These labels describe reported memory allocation. They are not proof that every
+operation ran on the GPU, that an answer was correct or that a model is fast.
+Keep the separate known-answer check.
+
+The exit code says how complete the report is, not whether the GPU is used:
+
+- Exit **0**: a complete report, including CPU or mixed.
+- Exit **2**: incomplete/unknown.
+- Exit **1**: stopped/error.
+
+No exit code is a GPU or setup pass. A listener warning stops the report before
+it accesses the API; do not expose Ollama to the network to bypass it.
+
+**What to do with the result.** For CPU/mixed, use the free fallback checks
+below. For unknown, review
+[Step 6 and the failure table](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/LOCAL_CHAT_START.md#step-6-confirm-gpu-use).
+
+**On another memory size.** The report cannot identify installed RAM from
+Linux-visible memory alone. Follow the
+[manual limits for your memory size](amd-strix-halo-setup.md#other-memory-sizes);
+do not copy the 128GB boot settings to another capacity.
+
+**Before you share it.** Review the report and keep its scope lines. Its output
+omits arbitrary logs and identifying host details; separately attached logs
+still need redaction.
+
+**Still stuck at boot, GPU setup or browser chat?** The checks here and
+[GitHub Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discussions)
+are free. [Setup Rescue](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SERVICES.md#setup-rescue)
+is paid personal help: one 128GB machine on Ubuntu 24.04, up to 90 minutes,
+ending in a working path or a documented blocker. Other configurations get a
+bounded diagnosis only, after an intake.
+
 ## Ollama Runs, But Falls Back To CPU
 
 **Symptom:** generation completes but is far slower than the guide's measured
 GPU routes. The measured Ollama 0.31.x builds could detect Radeon 8060S and then
 drop the integrated-GPU path when `OLLAMA_IGPU_ENABLE=1` was missing.
 
-**Check:** run `ollama ps`, then inspect `journalctl -u ollama` for Vulkan,
-iGPU, and GPU messages.
+**Check:** run `OLLAMA_HOST=http://127.0.0.1:11434 ollama ps`, then inspect
+`journalctl -u ollama` for Vulkan, iGPU, and GPU messages.
 
 **Fix:** make sure the service has `OLLAMA_VULKAN=1`,
 `OLLAMA_IGPU_ENABLE=1`, and `HIP_VISIBLE_DEVICES=-1`; reload systemd and restart
@@ -56,10 +133,10 @@ Ollama. Follow the full
 [README troubleshooting entry](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#troubleshooting).
 
 Why the guide keeps the Vulkan route and hides HIP devices: upstream
-[ollama#17895](https://github.com/ollama/ollama/issues/17895) (open, checked
-2026-09-25) reports that Ollama's bundled ROCm backend returns wrong output for
-prompts above about 4K tokens on gfx1151, while Vulkan and CPU are correct on
-the same machine. It was reported on Ollama 0.32.5 through 0.32.14 and has not
+[ollama#17895](https://github.com/ollama/ollama/issues/17895) (historical report,
+read 2026-09-25; its current status was not rechecked here) says that Ollama's
+bundled ROCm backend returns wrong output for prompts above about 4K tokens on
+gfx1151, while Vulkan and CPU are correct on the same machine. It was reported on Ollama 0.32.5 through 0.32.14 and has not
 been tested here on 0.33 or 0.34. `OLLAMA_VULKAN=1` plus
 `HIP_VISIBLE_DEVICES=-1` keeps the service off that ROCm path.
 

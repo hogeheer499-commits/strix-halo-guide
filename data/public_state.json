@@ -5,9 +5,9 @@
   "evidence_review_scope": "ACTIVE_EVIDENCE_REVIEW_2026-10-01.md; review of active recommendation surfaces, upstream availability, buyer context, security status and vendor surfaces (checked 2026-09-30); not remeasurement of historical archives",
   "freshness_max_age_days": 21,
   "publication": {
-    "expected_content_revision": "beginner-maintenance-2026-10-21",
+    "expected_content_revision": "ram-route-maintenance-2026-11-08",
     "deployment_verified": null,
-    "scope": "Local beginner-route and scoped maintenance candidate; not published. Broad evidence review remains October 1. No new fresh-install or hardware qualification. Verify exact guide/mirror/site identities after separately authorized publication.",
+    "scope": "RAM-route and scoped maintenance review. Broad evidence review remains October 1. No new runtime, fresh-install, reboot or hardware qualification. Guide/mirror/site publication and verification remain separate.",
     "previous_verified_record": {
       "revision": "closeout-2026-09-19",
       "deployment_verified": "2026-09-19T21:58:27Z",
@@ -57,6 +57,16 @@
       "open_webui_stable": "0.12.3",
       "open_webui_pin_advisory": "GHSA-3vvh-g22g-jq6r; includes 0.11.4; channels/webhook preconditions; patched 0.12.2",
       "scope": "Scoped availability/advisory observations only; historical fields retain their checked dates. See MAINTENANCE_REVIEW_2026-10-21.md."
+    },
+    "observed_update_2026_11_08": {
+      "ollama_latest_release": "0.40.15; published 2026-11-03; available, unqualified",
+      "ollama_lfm3_linux_windows": "0.40.13 release notes, published 2026-10-28; not tested here",
+      "llama_cpp_latest_release": "v0.9.0; published 2026-11-04; available, unqualified",
+      "llama_cpp_issue_26209": "closed 2026-10-16, not_planned; not proof of a fix",
+      "llama_cpp_issue_28211": "open",
+      "llama_cpp_pr_31196": "open, unmerged",
+      "open_webui_pin_advisory": "GHSA-3vvh-g22g-jq6r includes 0.11.4; enabled channels + webhook + member write access + known webhook ID; fix 0.12.2",
+      "scope": "Selected release/issue/advisory sources re-read 2026-11-08 UTC. Qualification versions and older dated observations remain unchanged; see MAINTENANCE_REVIEW_2026-11-08.md."
     }
   },
   "qwen38": {
@@ -95,7 +105,7 @@
     "checked": "2026-09-19",
     "policy": "VENDOR_DISCLOSURE.md"
   },
-  "content_modified": "2026-10-21",
-  "maintenance_reviewed": "2026-10-21",
-  "maintenance_review_scope": "MAINTENANCE_REVIEW_2026-10-21.md; scoped beginner-route, saved-output, release/advisory and 495 dispatch checks; does not reset broad evidence review or its freshness limit"
+  "content_modified": "2026-11-09",
+  "maintenance_reviewed": "2026-11-09",
+  "maintenance_review_scope": "MAINTENANCE_REVIEW_2026-11-08.md; RAM/task artifacts, setup component evidence and advisory conditions, selected releases/issues, 192GB storefront text and service/contact/funding correction; sources read November 8 UTC; does not reset broad evidence review or freshness limit"
 }

@@ -82,16 +82,19 @@ bulletins. Practical guidance built on this list is in
 
 ### Open WebUI
 
-**Scoped recheck 2026-10-21:** [GHSA-3vvh-g22g-jq6r](https://github.com/open-webui/open-webui/security/advisories/GHSA-3vvh-g22g-jq6r),
+**Scoped recheck 2026-11-08:** [GHSA-3vvh-g22g-jq6r](https://github.com/open-webui/open-webui/security/advisories/GHSA-3vvh-g22g-jq6r),
 published October 18, includes the component-tested 0.11.4 pin in its affected
 range (>=0.7.0,<0.12.2; patched in 0.12.2). Channel members can impersonate a
 channel webhook. Preconditions are enabled channels, at least one channel
-webhook and a member with write access. The advisory says disabled channels or
+webhook, a member with write access and knowledge of the webhook ID (readable
+from webhook messages, so not a secret). The advisory says disabled channels or
 no channel webhooks are not affected. Keep these features off for the local
-single-user candidate; this has not been exploit-tested here. Stable 0.12.3 is
-available, not locally qualified. Two feed-page requests returned duplicate
-100-record pages, so this is not a complete advisory census or security clearance.
-[Review scope](MAINTENANCE_REVIEW_2026-10-21.md). Older counts below retain their
+single-user candidate; this has not been exploit-tested here. Version 0.12.3
+was observed on October 21 and is not locally qualified. That earlier review
+received duplicate 100-record feed pages, so it was not a complete advisory
+census. This November check re-read only the named advisory; it is not a
+security clearance.
+[Review scope](MAINTENANCE_REVIEW_2026-11-08.md). Older counts below retain their
 original check dates.
 
 - **47 published advisories include the pinned 0.10.2 image (counted 2026-10-02).**

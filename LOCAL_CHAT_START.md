@@ -2,10 +2,11 @@
 
 <a id="local-chat-start-and-acceptance-checks"></a>
 
-Follow these steps to run a local AI model on your own computer, get an answer
-in the terminal, check that it runs on the GPU rather than the CPU, and check
-that Ollama currently listens only on the loopback address. After that, you
-choose a model for your work and, if you want, a chat window in your browser.
+Follow these steps to run a local AI model on your own computer. You get an
+answer in the terminal and check it against a known task, look at the GPU
+memory allocation that Ollama reports, and check that Ollama currently listens
+only on the loopback address. After that, you choose a model for your work and,
+if you want, a chat window in your browser.
 
 **Is this your system?** This route is for an AMD Strix Halo / Ryzen AI MAX+ 395
 machine with **128GB installed**, showing 120–136GiB to Linux, with **Ubuntu 24.04**
@@ -225,8 +226,8 @@ Stuck? Get free error help in [Discussions](https://github.com/hogeheer499-commi
 
 ### Step 6: Confirm GPU Use
 
-If Ollama still has the model loaded after the chat, ask it where the model
-is running:
+If Ollama still has the model loaded after the chat, ask where it reports the
+model's memory:
 
 ```bash
 OLLAMA_HOST=http://127.0.0.1:11434 ollama ps
@@ -235,10 +236,17 @@ OLLAMA_HOST=http://127.0.0.1:11434 ollama ps
 **Good:** the model's processor column shows `100% GPU`. (That is the expected
 value; this page does not reproduce a captured run.) If the model has already
 unloaded, repeat the chat in step 5 once and check again. **If not:** `CPU`, or
-a mix of CPU and GPU, means the model is not fully on the GPU and this check has
-not passed. Follow the [CPU fallback troubleshooting](README.md#troubleshooting)
+a mix of CPU and GPU, means Ollama does not report the model fully on the GPU,
+and this check has not passed. Follow the [CPU fallback troubleshooting](README.md#troubleshooting)
 before you look at speed. An answer on screen proves nothing here: the CPU can
 produce one too.
+
+Want the same information as a short, read-only report for the exact starter
+tag? See [Is it running on the GPU?](docs/troubleshooting.md#is-it-running-on-the-gpu).
+An allocation label says where Ollama reports the memory. It does not prove
+that every operation ran on the GPU, that an answer was correct or that a model
+is fast. A report can be complete and still show CPU or mixed allocation, so it
+does not replace this check or the known-answer check.
 
 <!-- PAID_HELP_STEP: gpu -->
 Stuck? Get free error help in [Discussions](https://github.com/hogeheer499-commits/strix-halo-guide/discussions) or [paid setup help on strixhaloguide.com](https://strixhaloguide.com/services/#setup-rescue).
@@ -254,7 +262,7 @@ This runs the small benchmark that the setup script placed in your home folder.
 value above zero. **If not:** use the failure table. If `Generation` shows only
 a few tokens per second on this model, go back to step 6 and recheck for CPU
 fallback. Speed figures say nothing about whether answers are correct or whether
-the GPU is used; steps 5 and 6 cover those.
+Ollama reports full GPU allocation; steps 5 and 6 check those separately.
 
 <details>
 <summary>What speed to expect</summary>
@@ -271,8 +279,8 @@ before you use it, and do not overwrite it just to run setup again.
 </details>
 
 **Done, if all checks above passed.** The model answered you, got a known task
-right and runs fully on the GPU. The Ollama listener was bound only to
-`127.0.0.1:11434` when checked; browser and second-device access need their own
+right, and Ollama reports full GPU allocation. The Ollama listener was bound
+only to `127.0.0.1:11434` when checked; browser and second-device access need their own
 checks below. Three
 good next moves: save [your result](#your-result-save-and-share) so you can
 compare later, pick a model that suits your work in [Best Known Profiles](BEST_KNOWN_PROFILES.md),
@@ -308,9 +316,11 @@ changed, use the [manual undo table](README.md#undo-the-setup-script), which is
 offers [paid setup help](https://strixhaloguide.com/services/#setup-rescue) on
 strixhaloguide.com. Send the same information you would post in Discussions:
 the step where you stopped, your hardware and memory, the versions involved and
-the redacted error. It covers one machine and one goal in a remote session, and
-ends in either a working path or a clearly described blocker, with a short
-written follow-up. It is a paid service; the scope and conditions are on that page.
+the redacted error. A session covers one 128GB-class machine on Ubuntu 24.04
+and one goal, remotely, for up to 90 minutes. It ends in either a working path
+or a clearly described blocker, with a short written follow-up. Other
+configurations get a bounded diagnosis only, after an intake. It is a paid
+service; the scope and conditions are on that page.
 
 ## Your Result: Save And Share
 
@@ -366,14 +376,16 @@ Follow the checks below on your own machine too. Docker installation, a fresh
 native setup and a full computer reboot remain unverified; this is not a
 current security qualification. [See the test and its limits](data/raw/2026-10-15/ollama-0312-webui-0114-isolated-acceptance/).
 
-**Security check October 21:** the [October 18 channel-webhook advisory](https://github.com/open-webui/open-webui/security/advisories/GHSA-3vvh-g22g-jq6r)
+**Scoped security recheck November 8:** the [October 18 channel-webhook advisory](https://github.com/open-webui/open-webui/security/advisories/GHSA-3vvh-g22g-jq6r)
 includes this 0.11.4 pin (affected: >=0.7.0,<0.12.2; patched: 0.12.2).
-It requires enabled channels, a channel webhook and a member with write access.
+It requires enabled channels, a channel webhook, a member with write access and
+knowledge of the webhook ID. The ID can be read from webhook messages, so do
+not rely on it as a secret.
 The advisory says instances with channels disabled (the default), or without
 channel webhooks, are not affected. Keep channels and channel webhooks off and
 do not add untrusted users. This is source-based guidance, not a new mitigation
-test. Newer stable 0.12.3 exists but has not been qualified here; a fixed image
-digest does not receive patches automatically. [Full check scope](MAINTENANCE_REVIEW_2026-10-21.md).
+test. Version 0.12.3 was observed on October 21 but has not been qualified
+here; a fixed image digest does not receive patches automatically. [Full check scope](MAINTENANCE_REVIEW_2026-11-08.md).
 
 You need Docker Engine already installed and working on this Ubuntu machine.
 Installing Docker, and Docker Desktop, are outside this page. First check that

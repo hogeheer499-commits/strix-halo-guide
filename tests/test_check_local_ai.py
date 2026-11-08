@@ -1,5 +1,5 @@
 """Offline setup-check fixtures; no host change, socket or model invocation."""
-from contextlib import redirect_stdout
+from contextlib import ExitStack, redirect_stdout
 import importlib.util
 import io
 import json
@@ -24,6 +24,16 @@ def tcp(address="0100007F", port=11434, state="0A"):
 
 def reply(answer="STRIX_CHECK=391", done=True, reason="stop"):
     return {"message": {"content": answer}, "done": done, "done_reason": reason}
+
+
+def loaded_model(name=check.MODEL, size=1024, vram=1024):
+    return {"name": name, "model": name, "size": size, "size_vram": vram}
+
+
+def system_fixture(memory=128 * 2**30):
+    return {"memory_bytes": memory, "kernel": "6.19.4",
+            "boot": {p.split("=")[0]: "match" for p in check.BOOT_PARAMETERS},
+            "groups": {"render": "active", "video": "active"}}
 
 
 class BootTests(unittest.TestCase):
@@ -272,13 +282,17 @@ class HttpTests(unittest.TestCase):
 
 class CommandTests(unittest.TestCase):
     def test_invalid_cli_stops_without_work(self):
-        for args in ([], ["unknown"], ["answer", "--host", "example.invalid"]):
+        for args in ([], ["unknown"], ["answer", "--host", "example.invalid"],
+                     ["report", "--host", "PRIVATE_CLI_99"], ["report", "--model", "PRIVATE_CLI_99"]):
             with self.subTest(args=args), patch.object(check, "check_boot") as boot, \
-                 patch.object(check, "check_answer") as answer, redirect_stdout(io.StringIO()) as output:
+                 patch.object(check, "check_answer") as answer, patch.object(check, "check_report") as report, \
+                 redirect_stdout(io.StringIO()) as output:
                 self.assertEqual(check.main(args), 1)
                 self.assertTrue(output.getvalue().startswith("STOP:"))
                 boot.assert_not_called()
                 answer.assert_not_called()
+                report.assert_not_called()
+                self.assertNotIn("PRIVATE_CLI_99", output.getvalue())
 
     def test_boot_success_and_failure_use_same_exit_contract(self):
         for failure, expected in ((None, 0), (check.CheckFailed("missing boot value"), 1)):
@@ -298,6 +312,328 @@ class DriftTests(unittest.TestCase):
         self.assertEqual(check.PAYLOAD["model"], check.MODEL)
         self.assertFalse(check.PAYLOAD["stream"])
         self.assertFalse(check.PAYLOAD["think"])
+
+
+class ReportAllocationTests(unittest.TestCase):
+    def test_gpu_cpu_and_mixed_use_runtime_bytes(self):
+        for vram, expected in ((1024, "GPU"), (0, "CPU"), (512, "mixed"), (1023, "mixed")):
+            with self.subTest(vram=vram):
+                state, reason, sizes = check.allocation_metadata({"models": [loaded_model(vram=vram)]})
+                self.assertEqual(state, expected)
+                self.assertEqual(sizes, (1024, vram))
+
+    def test_exact_selection_among_multiple_models_ignores_order_and_prefixes(self):
+        other = loaded_model("private-client-model", vram=0)
+        prefix = loaded_model(check.MODEL + "-private", vram=0)
+        for rows in ([other, loaded_model(), prefix], [loaded_model(), prefix, other]):
+            self.assertEqual(check.allocation_metadata({"models": rows})[0], "GPU")
+
+    def test_missing_empty_unrelated_and_duplicate_models_are_unknown(self):
+        for rows in ([], [loaded_model("other")], [loaded_model(check.MODEL + "x")],
+                     [loaded_model(), loaded_model()], [loaded_model(), loaded_model(vram=0)]):
+            with self.subTest(rows=rows):
+                self.assertEqual(check.allocation_metadata({"models": rows})[0], "unknown")
+
+    def test_invalid_schema_error_and_conflicting_identity_are_unknown(self):
+        for value in (None, [], {}, {"models": None}, {"models": {}},
+                      {"error": "private-error", "models": [loaded_model()]},
+                      {"models": [None]}, {"models": [loaded_model(), None]},
+                      {"models": [{**loaded_model(), "model": "different"}]},
+                      {"models": [{"name": check.MODEL, "size": 1024, "size_vram": 1024}]},
+                      {"models": [{**loaded_model(), "name": None}]}):
+            with self.subTest(value=value):
+                self.assertEqual(check.allocation_metadata(value)[0], "unknown")
+
+    def test_invalid_missing_boolean_float_negative_and_overflow_sizes_are_unknown(self):
+        for key in ("size", "size_vram"):
+            for invalid in (None, True, False, "1024", 1024.0, -1, [], {}, 2**63, float("nan")):
+                row = {**loaded_model(), key: invalid}
+                with self.subTest(key=key, value=invalid):
+                    self.assertEqual(check.allocation_metadata({"models": [row]})[0], "unknown")
+            row = loaded_model()
+            del row[key]
+            self.assertEqual(check.allocation_metadata({"models": [row]})[0], "unknown")
+        for size, vram in ((0, 0), (0, 1), (1024, 1025)):
+            self.assertEqual(check.allocation_metadata({"models": [loaded_model(size=size, vram=vram)]})[0], "unknown")
+
+
+class ReportSystemTests(unittest.TestCase):
+    def collect(self, meminfo="MemTotal: 134217728 kB\n", cmdline=None, release="6.19.4", groups=(100, 101)):
+        if cmdline is None:
+            cmdline = " ".join(check.BOOT_PARAMETERS)
+        with patch.object(check, "read_metadata_file", side_effect=[meminfo, cmdline]), \
+             patch.object(check.os, "uname", return_value=SimpleNamespace(release=release)), \
+             patch.object(check.os, "getgroups", return_value=list(groups)), \
+             patch.object(check.os, "getegid", return_value=1000), \
+             patch.object(check.grp, "getgrnam", side_effect=lambda name: SimpleNamespace(gr_gid={"render": 100, "video": 101}[name])):
+            return check.system_metadata()
+
+    def test_linux_kibibytes_convert_to_gib_and_primary_group_is_counted(self):
+        value = self.collect()
+        self.assertEqual(value["memory_bytes"] / 2**30, 128)
+        self.assertEqual(value["groups"], {"render": "active", "video": "active"})
+        self.assertEqual(self.collect(groups=(100,))["groups"]["video"], "inactive")
+        with patch.object(check, "read_metadata_file", return_value=""), \
+             patch.object(check.os, "getgroups", return_value=[]), \
+             patch.object(check.os, "getegid", return_value=101), \
+             patch.object(check.grp, "getgrnam", return_value=SimpleNamespace(gr_gid=101)):
+            self.assertEqual(check.system_metadata()["groups"]["video"], "active")
+
+    def test_malformed_missing_duplicate_or_oversized_memory_is_unknown(self):
+        for text in (None, "", "MemTotal: 2 GB", "MemTotal: -1 kB", "MemTotal: 0 kB",
+                     "MemTotal: 134217728 kB\nMemTotal: 1 kB", "MemTotal: " + "9" * 80 + " kB"):
+            with self.subTest(text=text):
+                self.assertIsNone(self.collect(meminfo=text)["memory_bytes"])
+
+    def test_kernel_suffix_and_unrelated_cmdline_never_reach_metadata(self):
+        secret = "PRIVATE_FIXTURE_92"
+        value = self.collect(release="6.19.4-" + secret,
+                             cmdline=f"root=/private/{secret} console={secret} amdgpu.gttsize={secret}")
+        self.assertEqual(value["kernel"], "6.19.4")
+        self.assertNotIn(secret, json.dumps(value))
+        self.assertEqual(value["boot"]["amdgpu.gttsize"], "different")
+        self.assertEqual(value["boot"]["ttm.pages_limit"], "absent")
+        self.assertEqual(self.collect(release=secret)["kernel"], "unknown")
+
+    def test_duplicate_boot_parameters_and_unreadable_metadata_are_distinct(self):
+        value = self.collect(cmdline=" ".join((*check.BOOT_PARAMETERS, check.BOOT_PARAMETERS[0])))
+        self.assertEqual(value["boot"]["amdgpu.gttsize"], "conflicting")
+        with patch.object(check, "read_metadata_file", return_value=None), \
+             patch.object(check.os, "uname", side_effect=OSError("private")), \
+             patch.object(check.os, "getgroups", side_effect=OSError("private")):
+            value = check.system_metadata()
+        self.assertEqual(value["kernel"], "unknown")
+        self.assertEqual(set(value["boot"].values()), {"unknown"})
+        self.assertEqual(set(value["groups"].values()), {"unknown"})
+
+    def test_group_database_errors_are_unknown_and_absence_is_reported(self):
+        for error, expected in ((OSError("private"), "unknown"), (KeyError("private"), "absent")):
+            with patch.object(check, "read_metadata_file", return_value=""), \
+                 patch.object(check.grp, "getgrnam", side_effect=error):
+                self.assertEqual(set(check.system_metadata()["groups"].values()), {expected})
+
+    def test_proc_read_is_bounded_and_nonascii_or_io_failure_is_hidden(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "fixture"
+            for body in (b"x" * (check.MAX_RESPONSE_BYTES + 1), b"\xff"):
+                path.write_bytes(body)
+                self.assertIsNone(check.read_metadata_file(path))
+            path.write_text("test")
+            self.assertEqual(check.read_metadata_file(path), "test")
+            with patch.object(check.Path, "open", side_effect=PermissionError("secret")):
+                self.assertIsNone(check.read_metadata_file(path))
+
+
+class ReportTests(unittest.TestCase):
+    def run_report(self, models=None, version=None, listener_error=None, error=None, system=None):
+        with patch.object(check, "system_metadata", return_value=system_fixture() if system is None else system), \
+             patch.object(check, "check_listeners", side_effect=listener_error) as listener, \
+             patch.object(check, "fetch_metadata", side_effect=error or [
+                 {"version": "0.31.2"} if version is None else version,
+                 {"models": [loaded_model()]} if models is None else models]) as fetch, \
+             patch.object(check, "check_boot") as boot, patch.object(check, "check_answer") as answer, \
+             redirect_stdout(io.StringIO()) as output:
+            code = check.main(["report"])
+            boot.assert_not_called()
+            answer.assert_not_called()
+            listener.assert_called_once_with(quiet=True)
+            return code, output.getvalue(), fetch
+
+    def test_known_allocations_return_zero_without_claiming_setup_pass(self):
+        for vram, state in ((1024, "GPU"), (0, "CPU"), (512, "mixed")):
+            with self.subTest(state=state):
+                code, output, fetch = self.run_report(models={"models": [loaded_model(vram=vram)]})
+                self.assertEqual(code, 0)
+                self.assertIn(f"Allocation: {state}", output)
+                self.assertIn("REPORT: complete (allocation only)", output)
+                self.assertNotIn("PASS", output)
+                self.assertIn(check.REPORT_NEXT[state], output)
+                self.assertEqual([c.args for c in fetch.call_args_list], [("/api/version",), ("/api/ps",)])
+                self.assertIn("not proof of GPU execution", output)
+
+    def test_unknown_allocation_or_metadata_returns_two_without_pass(self):
+        for kwargs in ({"models": {"models": []}}, {"models": {}}, {"version": {}},
+                       {"version": {"version": "0.31.2-secret-build"}},
+                       {"system": {**system_fixture(), "memory_bytes": None}},
+                       {"system": {**system_fixture(), "kernel": "unknown"}},
+                       {"system": {**system_fixture(), "groups": {"render": "unknown", "video": "active"}}}):
+            with self.subTest(kwargs=kwargs):
+                code, output, _ = self.run_report(**kwargs)
+                self.assertEqual(code, 2)
+                self.assertIn("REPORT: incomplete/unknown", output)
+                self.assertNotIn("PASS", output)
+
+    def test_listener_failure_makes_no_request_and_hides_exception(self):
+        code, output, fetch = self.run_report(listener_error=check.CheckFailed("PRIVATE_LISTENER_93"))
+        self.assertEqual(code, 1)
+        fetch.assert_not_called()
+        self.assertIn("no HTTP request was sent", output)
+        self.assertIn("Allocation: unknown", output)
+        self.assertNotIn("PRIVATE_LISTENER_93", output)
+
+    def test_real_listener_parser_blocks_unsafe_missing_or_invalid_tables(self):
+        for ipv4, ipv6 in ((HEADER + tcp("00000000"), HEADER),
+                           (HEADER + tcp(), HEADER + tcp("0" * 32)),
+                           (HEADER, HEADER), ("invalid", HEADER)):
+            with patch.object(check, "system_metadata", return_value=system_fixture()), \
+                 patch.object(check.Path, "read_text", side_effect=[ipv4, ipv6]), \
+                 patch.object(check.http.client, "HTTPConnection") as connection, \
+                 redirect_stdout(io.StringIO()) as output:
+                self.assertEqual(check.main(["report"]), 1)
+                connection.assert_not_called()
+                self.assertIn("Allocation: unknown", output.getvalue())
+
+    def test_timeout_transport_api_and_cancel_failures_stop_without_retry_or_details(self):
+        secret = "PRIVATE_ERROR_94"
+        for error in (TimeoutError(secret), ConnectionRefusedError(secret),
+                      check.http.client.BadStatusLine(secret), check.CheckFailed(secret), KeyboardInterrupt()):
+            with self.subTest(error=type(error)):
+                code, output, fetch = self.run_report(error=error)
+                self.assertEqual(code, 1)
+                self.assertEqual(fetch.call_count, 1)
+                self.assertNotIn(secret, output)
+                self.assertNotIn("Traceback", output)
+                self.assertIn("STOP:", output)
+
+    def test_failure_of_second_get_keeps_safe_version_but_allocation_unknown(self):
+        code, output, fetch = self.run_report(error=[{"version": "0.31.2"}, TimeoutError("private")])
+        self.assertEqual(code, 1)
+        self.assertEqual(fetch.call_count, 2)
+        self.assertIn("Ollama version: 0.31.2", output)
+        self.assertIn("Allocation: unknown", output)
+
+    def test_private_model_fields_error_text_and_versions_are_not_printed(self):
+        secret = "PRIVATE_API_95"
+        rows = [loaded_model(secret), {**loaded_model(), "digest": secret,
+                                      "details": {"family": secret}, "expires_at": secret}]
+        code, output, _ = self.run_report(models={"models": rows, "private": secret},
+                                         version={"version": secret})
+        self.assertEqual(code, 2)
+        self.assertIn("Allocation: GPU", output)
+        self.assertNotIn(secret, output)
+        _, output, _ = self.run_report(models={"error": secret, "models": rows})
+        self.assertNotIn(secret, output)
+        self.assertIn("Allocation: unknown", output)
+
+    def test_all_memory_classes_keep_128gb_reference_nonprescriptive(self):
+        for gib in (32, 64, 96, 128, 192, 48):
+            with self.subTest(gib=gib):
+                code, output, _ = self.run_report(system=system_fixture(gib * 2**30))
+                self.assertEqual(code, 0)
+                self.assertIn(f"{gib:.2f} GiB MemTotal", output)
+                self.assertIn("not installed RAM/SKU", output)
+                self.assertIn("never copy the 128GB boot values to another size", output)
+                self.assertNotIn("131072", output)
+                self.assertNotIn("31457280", output)
+
+    def test_runtime_version_allows_numeric_release_or_rc_only(self):
+        for value, expected in (("0.31.2", "0.31.2"), ("0.31.2-rc1", "0.31.2-rc1"),
+                                ("0.31.2\n", "unknown"), ("0.31.2-private", "unknown"),
+                                (17, "unknown"), ([], "unknown"), (None, "unknown")):
+            self.assertEqual(check.runtime_version({"version": value}), expected)
+        self.assertEqual(check.runtime_version({"version": "0.31.2", "error": "secret"}), "unknown")
+
+
+class ReportHttpTests(unittest.TestCase):
+    """Isolated synthetic HTTP boundary, not a running Ollama or host qualification."""
+
+    def run_http_report(self, responses):
+        connections = []
+        for response in responses:
+            connection = Mock()
+            connection.getresponse.return_value = response
+            connections.append(connection)
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(check, "system_metadata", return_value=system_fixture()))
+            stack.enter_context(patch.object(check.Path, "read_text", side_effect=[HEADER + tcp(), HEADER]))
+            factory = stack.enter_context(patch.object(check.http.client, "HTTPConnection", side_effect=connections))
+            output = stack.enter_context(redirect_stdout(io.StringIO()))
+            code = check.main(["report"])
+        for connection in connections[:factory.call_count]:
+            connection.close.assert_called_once()
+        return code, output.getvalue(), factory, connections
+
+    def response(self, value=None, body=None, status=200, length=None):
+        response = Mock(status=status)
+        response.getheader.return_value = length
+        response.read.return_value = json.dumps(value).encode() if body is None else body
+        return response
+
+    def test_synthetic_cpu_fixture_uses_only_two_fixed_gets_despite_host_and_proxy_env(self):
+        responses = [self.response({"version": "0.31.2"}),
+                     self.response({"models": [loaded_model(vram=0)]})]
+        with patch.dict(check.os.environ, {"OLLAMA_HOST": "https://PRIVATE_PROXY_96.invalid",
+                                          "HTTP_PROXY": "http://PRIVATE_PROXY_96.invalid",
+                                          "HTTPS_PROXY": "http://PRIVATE_PROXY_96.invalid",
+                                          "ALL_PROXY": "socks5://PRIVATE_PROXY_96.invalid"}):
+            code, output, factory, connections = self.run_http_report(responses)
+        self.assertEqual(code, 0)
+        self.assertIn("Allocation: CPU", output)
+        self.assertNotIn("PRIVATE_PROXY_96", output)
+        self.assertEqual(factory.call_count, 2)
+        for call, conn, response, path in zip(factory.call_args_list, connections, responses, ("/api/version", "/api/ps")):
+            self.assertEqual(call.args, ("127.0.0.1", 11434))
+            self.assertEqual(call.kwargs, {"timeout": 5})
+            conn.request.assert_called_once_with("GET", path)
+            conn.connect.assert_called_once()
+            self.assertEqual(conn.auto_open, 0)
+            conn.sock.settimeout.assert_called_once_with(10)
+            response.read.assert_called_once_with(check.MAX_RESPONSE_BYTES + 1)
+
+    def test_redirect_http_error_and_oversize_length_stop_without_body_or_second_request(self):
+        for response in (self.response(status=302), self.response(status=500),
+                         self.response(length=str(check.MAX_RESPONSE_BYTES + 1)),
+                         self.response(length="PRIVATE_LENGTH_97")):
+            code, output, factory, _ = self.run_http_report([response])
+            self.assertEqual(code, 1)
+            self.assertEqual(factory.call_count, 1)
+            response.read.assert_not_called()
+            self.assertNotIn("PRIVATE_LENGTH_97", output)
+
+    def test_malformed_json_duplicate_keys_and_large_body_stop_privately(self):
+        for body in (b"PRIVATE_JSON_98", b"\xff", b"", b"x" * (check.MAX_RESPONSE_BYTES + 1),
+                     b'{"version":"0.31.2","version":"PRIVATE_JSON_98"}',
+                     b'{"version":NaN}', b'{"version":Infinity}'):
+            with self.subTest(body_length=len(body)):
+                code, output, factory, _ = self.run_http_report([self.response(body=body)])
+                self.assertEqual(code, 1)
+                self.assertEqual(factory.call_count, 1)
+                self.assertNotIn("PRIVATE_JSON_98", output)
+
+    def test_json_recursion_failure_stops_without_runtime_depth_assumptions(self):
+        with patch.object(check.json, "loads", side_effect=RecursionError):
+            code, output, factory, _ = self.run_http_report([self.response(body=b"[]")])
+        self.assertEqual(code, 1)
+        self.assertEqual(factory.call_count, 1)
+        self.assertIn("Allocation: unknown", output)
+
+    def test_duplicate_allocation_fields_are_not_silently_accepted(self):
+        body = ('{"models":[{"name":"%s","model":"%s","size":1024,"size_vram":0,"size_vram":1024}]}'
+                % (check.MODEL, check.MODEL)).encode()
+        code, output, _, _ = self.run_http_report([self.response({"version": "0.31.2"}), self.response(body=body)])
+        self.assertEqual(code, 1)
+        self.assertIn("Allocation: unknown", output)
+
+    def test_actual_report_deadline_interrupts_response_and_restores_signal(self):
+        handlers = []
+        response = self.response()
+        response.read.side_effect = lambda _count: handlers[0](check.signal.SIGALRM, None)
+        with patch.object(check.signal, "signal", side_effect=lambda _sig, handler: handlers.append(handler) or "previous"), \
+             patch.object(check.signal, "setitimer") as timer:
+            code, output, factory, _ = self.run_http_report([response])
+        self.assertEqual(code, 1)
+        self.assertEqual(factory.call_count, 1)
+        self.assertIn("10s total per GET", output)
+        self.assertEqual(timer.call_args_list[0].args, (check.signal.ITIMER_REAL, 10))
+        self.assertEqual(timer.call_args_list[-1].args, (check.signal.ITIMER_REAL, 0))
+        self.assertEqual(handlers[-1], "previous")
+
+    def test_nonmetadata_endpoint_is_rejected_before_connection(self):
+        with patch.object(check.http.client, "HTTPConnection") as connection:
+            for path in ("/api/generate", "/api/chat", "/api/pull", "https://example.invalid/api/ps"):
+                with self.assertRaises(check.CheckFailed):
+                    check.fetch_metadata(path)
+            connection.assert_not_called()
 
 
 if __name__ == "__main__":

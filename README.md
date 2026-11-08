@@ -1,8 +1,8 @@
 # Strix Halo Guide: AMD Ryzen AI MAX+ 395 Local LLM Setup & Benchmarks
 
-**Maintenance update: October 21, 2026.** Beginner-route evidence, model-answer corrections, current release observations and 495 dispatch status: [MAINTENANCE_REVIEW_2026-10-21.md](MAINTENANCE_REVIEW_2026-10-21.md). Historical measurements and the broad October 1 evidence review keep their original dates.
+**Maintenance update: November 8, 2026.** Model choices by RAM and task, corrected setup evidence, selected release and issue states, 192GB order phases and service details: [MAINTENANCE_REVIEW_2026-11-08.md](MAINTENANCE_REVIEW_2026-11-08.md). Historical measurements and the broad October 1 evidence review keep their original dates.
 
-Get a local AI model running on your AMD Strix Halo / Ryzen AI MAX+ 395 (Radeon 8060S) under Ubuntu 24.04, with settings measured on real hardware and a check that it really runs on the GPU. Then pick the right model for your work and make it faster.
+Get a local AI model running on your AMD Strix Halo / Ryzen AI MAX+ 395 (Radeon 8060S) under Ubuntu 24.04, with settings measured on real hardware. Along the way you check a known answer and look at the GPU memory allocation that Ollama reports. Then pick the right model for your work and make it faster.
 
 **Start here → [Get local AI running, step by step](LOCAL_CHAT_START.md)** · Ubuntu 24.04 · 128GB-class systems · from BIOS to your first answer and a GPU check, then chat in your browser if you want it.
 
@@ -13,7 +13,7 @@ Built on [real-world results from 10 Strix Halo systems plus 3 independent sourc
 ## What This Gives You
 
 - **A clear setup route.** The settings that matter on this chip, from the BIOS memory option to the one Ollama setting without which measured builds quietly run on the CPU, in one [step-by-step start route](LOCAL_CHAT_START.md) that shows the expected result of every step.
-- **A model that fits your work.** Which model to run for chat, coding, images or long context, with the speed each one reached here: [Best Known Profiles](BEST_KNOWN_PROFILES.md).
+- **A model for your RAM and task.** [What can I run with my RAM?](docs/models.md#what-can-i-run-with-my-ram) gives a starting point from 32GB to 192GB and shows which route was tested here and which are candidates. [Best Known Profiles](BEST_KNOWN_PROFILES.md) has the measured settings and speeds.
 - **Know what's tested.** See which settings have been tested, what is still experimental, and which [known failures you can avoid](#things-that-dont-work-dont-waste-your-time). If something goes wrong, use the [troubleshooting steps](#troubleshooting). Every headline number links to its [raw evidence](#headline-evidence) or carries an explicit caveat.
 
 ## Start Here
@@ -21,9 +21,9 @@ Built on [real-world results from 10 Strix Halo systems plus 3 independent sourc
 | I want to… | Start here |
 |---|---|
 | Get local AI running | [Install, get an answer and check the GPU](LOCAL_CHAT_START.md) |
-| Choose a model or make it faster | [Best Known Profiles](BEST_KNOWN_PROFILES.md) and [Current Models](CURRENT_MODELS.md) |
+| Choose a model or make it faster | [Choose by RAM and task](docs/models.md#what-can-i-run-with-my-ram), then [Best Known Profiles](BEST_KNOWN_PROFILES.md) |
 | Fix something that is not working | [Troubleshooting](#troubleshooting) |
-| Decide what to buy | [Buyer Use Cases](BUYER_USE_CASES.md) and [Buying Guide](#buying-guide) |
+| Decide what to buy | [Choose a system for your task](docs/best-strix-halo-mini-pc.md) and [Buyer Use Cases](BUYER_USE_CASES.md) |
 
 Also: [website](https://strixhaloguide.com/) · [Qwen3.8](QWEN38_STRIX_HALO.md) · [reproduce a result](REPRODUCIBILITY.md) · [vendor/reviewer brief](ONE_PAGE_BRIEF.md).
 

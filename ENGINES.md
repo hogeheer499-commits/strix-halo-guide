@@ -4,6 +4,14 @@
 
 Nothing here is a recommendation, a ranking or an endorsement. A listed engine is not a verified engine.
 
+**Scoped availability update, November 8, 2026:** [Ollama 0.40.15](https://github.com/ollama/ollama/releases/tag/v0.40.15)
+and [llama.cpp v0.9.0](https://github.com/ggml-org/llama.cpp/releases/tag/v0.9.0)
+are available, not qualified here. Ollama 0.40.13 added LFM3 on Linux and
+Windows. The [November status check](ROCM_VLLM_BUGWATCH.md#november-8-2026-scoped-recheck)
+also records that a HIP report closed as not planned is not a fix, and that an
+open Q8 Vulkan PR is not released code. The September engine comparison below
+was not re-run.
+
 ## How To Read A Headline Number
 
 Headline speeds on this hardware are not comparable across engines unless the claim class matches. Check these before comparing:

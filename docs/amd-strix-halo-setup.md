@@ -6,7 +6,7 @@ permalink: /amd-strix-halo-setup/
 canonical_url: "https://strixhaloguide.com/amd-strix-halo-setup/"
 sitemap: false
 date: "2026-08-14T00:00:00+02:00"
-last_modified_at: "2026-10-21T00:00:00+02:00"
+last_modified_at: "2026-11-09T00:01:20+01:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,7 +14,7 @@ image:
   alt: "AMD Strix Halo Local LLM Guide with direct, server, and unified-memory evidence highlights"
 seo:
   type: "TechArticle"
-  date_modified: "2026-10-21T00:00:00+02:00"
+  date_modified: "2026-11-09T00:01:20+01:00"
 ---
 
 # AMD Strix Halo Setup: BIOS, UMA, IOMMU, Ubuntu and Local LLMs
@@ -34,8 +34,9 @@ repository.
 
 This is the practical starting configuration measured by the independent
 [AMD Strix Halo Local LLM Guide](https://github.com/hogeheer499-commits/strix-halo-guide).
-It targets Ryzen AI MAX+ 395 / Radeon 8060S (`gfx1151`) systems with 96GB or
-128GB unified memory. The primary first-party machine is a 128GB Beelink GTR9
+The guide's own setup evidence covers Ryzen AI MAX+ 395 / Radeon 8060S
+(`gfx1151`) with 128GB installed; community results on 96GB are separate
+evidence. The primary first-party machine is a 128GB Beelink GTR9
 Pro; BIOS labels, firmware, cooling and power modes can differ on other OEM
 systems.
 
@@ -86,6 +87,26 @@ explains the configuration behind the route; the copyable commands live on that
 one page to reduce duplication. GPU answers and the pinned browser interface
 passed an isolated hardware check on October 15; a complete fresh native
 installation remains unverified. The start route records the test boundaries.
+
+<a id="other-memory-sizes"></a>
+
+**32GB, 64GB or 96GB installed?** This guide has no tested automatic profile
+for those capacities. Use the [manual memory reference](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md#step-32-configure-grub-boot-parameters)
+to understand each setting, then qualify a profile for your own installed
+memory, GPU budget, model and context. The same applies to 192GB: do not copy
+the 128GB limits. A candidate model in the [RAM card](models.md#what-can-i-run-with-my-ram)
+does not change this setup boundary.
+
+## What Has Been Tested?
+
+- **Ubuntu 24.04, 128GB:** the [October 15 isolated check](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/raw/2026-10-15/ollama-0312-webui-0114-isolated-acceptance/README.md) used Ollama 0.31.2 and the pinned WebUI 0.11.4 image, separate ports and a bind-mounted new data directory. GPU output, browser login/answer, closed signup, rejected anonymous requests and process restart passed.
+- **Still open:** Docker installation, the exact default-port/named-volume command, a fresh native installation, host reboot, restore and access from a second device. The component tests above do not cover these checks.
+- **Windows:** use [Starting on Windows](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/WINDOWS_START.md). It has its own community and runtime evidence; Linux boot values and results do not qualify Windows.
+
+If boot, GPU placement or browser chat fails, start with the free
+[troubleshooting checks](troubleshooting.md). Still stuck? [Setup Rescue](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SERVICES.md#setup-rescue)
+is paid personal help for a 128GB system on Ubuntu 24.04; other configurations
+get a bounded diagnosis only, after an intake.
 
 ## Short Answer
 
@@ -196,8 +217,19 @@ test here.
 Ollama has no password, so keep its API listening only on this computer, and
 never open it to the network to make a browser interface work. The start route
 describes the digest-pinned **Open WebUI 0.11.4 candidate**; it does not tell
-you to install the historical 0.10.2 image. Its new loopback-only installation,
-login, client, restart and reboot checks have not yet been performed here. Read
+you to install the historical 0.10.2 image. In an isolated component check on
+October 15 it passed startup with new data, first admin/login, a visible answer,
+closed signup, anonymous-request rejection, loopback listeners and UI/runtime
+restart. That check did not cover a fresh native installation, host reboot or
+restore. The later
+[October 18 channel-webhook advisory](https://github.com/open-webui/open-webui/security/advisories/GHSA-3vvh-g22g-jq6r)
+affects versions >=0.7.0,<0.12.2, including this pin; 0.12.2 is the listed fix.
+The issue requires enabled channels, a channel webhook, member write access and
+knowledge of the webhook ID. The advisory says instances with channels disabled,
+or without channel webhooks, are not affected. Keep these features off; a
+loopback-only listener does not resolve an issue that an authenticated user can
+trigger. A newer version needs its own acceptance checks before it replaces the
+pin. Read
 [Security status of pinned components](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#security-status-of-pinned-components)
 and the [local AI security checklist](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURE_LOCAL_AI.md).
 
@@ -217,8 +249,8 @@ results are separate claim types in this project.
 
 **Browser interface:** the [start route's Open WebUI section](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/LOCAL_CHAT_START.md#2-optional-browser-ui-linux-docker-engine)
 is the single place for the new 0.11.4 candidate and its checks. The historical
-0.10.2 result is not current installation advice. A patched version and a
-reading of its source do not show that the new route works; see
+0.10.2 result is not current installation advice. The limited October 15 pass
+does not establish current security or complete installation acceptance; see
 [Open WebUI in SECURITY.md](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#open-webui).
 
 ## Frequently Asked Setup Questions

@@ -6,7 +6,7 @@ permalink: /best-strix-halo-mini-pc/
 canonical_url: "https://strixhaloguide.com/best-strix-halo-mini-pc/"
 sitemap: false
 date: "2026-08-21T00:00:00+02:00"
-last_modified_at: "2026-10-21T00:00:00+02:00"
+last_modified_at: "2026-11-09T00:01:20+01:00"
 image:
   path: "https://hogeheer499-commits.github.io/strix-halo-guide/assets/social-preview.png"
   height: 640
@@ -14,36 +14,51 @@ image:
   alt: "AMD Strix Halo local AI setup, benchmarks and buyer evidence"
 seo:
   type: "TechArticle"
-  date_modified: "2026-10-21T00:00:00+02:00"
+  date_modified: "2026-11-09T00:01:20+01:00"
 ---
 
 # Best Strix Halo Mini PC for Local LLMs (2026)
 
 **Evidence reviewed:** October 1, 2026.
 
-Start with the independent [Strix Halo Guide](https://strixhaloguide.com/) for
-the current setup and evidence model; use this page for the buyer comparison.
+Choose the task first, then the memory, then the system. Start with
+[What can I run with my RAM?](models.md#what-can-i-run-with-my-ram): it gives a
+starting model from 32GB to 192GB and separates the guide's tested 128GB
+retrieval route from the untested candidates.
 
-**Short answer:** choose a Strix Halo mini PC by the exact model artifact and context you need, the delivered price for that memory configuration, cooling, firmware and support. The guide has useful first-party and community results, but the cross-OEM rows below are not a controlled ranking. A 128GB system is valuable for the larger measured artifacts; a smaller configuration may be sufficient for a smaller workload.
+| Your starting point | What to compare before buying |
+| --- | --- |
+| **A first local assistant** | Start with the 32GB and 64GB candidate rows. Check the exact model, context and GPU access on the system you plan to buy; a small file is not a proven fit. |
+| **Larger models or longer sessions** | Compare the exact model file and workload you need with the 96GB, 128GB and 192GB evidence. Extra capacity helps only if the route you need works on it; it does not promise faster or better answers. |
+| **A ready-to-use workstation** | Ask the seller for the included software versions, a demonstration of a task on the GPU, restart and restore checks, and the support terms. A preinstalled model is not proof of a completed installation. |
 
-This page interprets the evidence in the [canonical Strix Halo guide repository](https://github.com/hogeheer499-commits/strix-halo-guide). Every number links to a dated source; first-party and community measurements stay labeled. The first-party Beelink GTR9 Pro was bought by the maintainer; no loaned, gifted or sponsored hardware is used for first-party results (statement as of 2026-09-26 in [`VENDOR_DISCLOSURE.md`](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/VENDOR_DISCLOSURE.md#current-relationships-and-hardware-provenance)).
+This guide does not name a winning brand: it has no controlled comparison
+across OEMs. Choose by the exact configuration, delivered price, cooling,
+firmware and support. The first-party Beelink was bought by the maintainer
+([hardware provenance and disclosure](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/VENDOR_DISCLOSURE.md#current-relationships-and-hardware-provenance));
+first-party and community results stay labeled separately.
 
-Newest price observations (US, EU, NL/DE; observed 2026-09-30): the [September 30 exact-SKU snapshot](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_SNAPSHOT_2026-10-01.md) and its [CSV](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/data/buyer_price_snapshot_2026-09-30.csv).
+The broad [September 30 price snapshot](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_SNAPSHOT_2026-10-01.md)
+is historical. The 192GB update below is limited to three listings; it is not
+a new price comparison across the market.
+
+<a id="192gb-order-status"></a>
 
 ## PRO 495 / 192GB: Platform And Dispatch Check
 
-**Checked October 21, 2026:** [AMD presents its own Ryzen AI Halo with PRO 495
-and 192GB](https://www.amd.com/en/products/processors/desktops/ryzen/ryzen-ai-halo.html)
-([introduction dated October 12](https://www.amd.com/en/blogs/2026/meet-the-next-amd-ryzen-ai-halo.html)).
-This confirms vendor specifications, not local performance, an EU retail SKU or
-customer delivery. The guide's own 395/128GB results do not qualify a 495/192GB.
+**Store text read November 8, 2026.** The table shows what each seller states,
+with prices as observed on that date. No delivery was independently confirmed,
+and the guide has no 192GB measurement or qualified boot profile.
 
-The [GMKtec EU EVO-X5 Pro 495 listing](https://de.gmktec.com/en/products/gmktec-evo-x5-pro-ai-max-495)
-now says orders placed by October 15 are expected to dispatch at the end of
-October, and orders from October 16 are expected to dispatch **November 20–30**.
-The seller explicitly calls this dispatch, not delivery. Check the exact SKU,
-destination and checkout terms before buying; no Dutch delivery or speed
-advantage is established here. [Scope of this update](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MAINTENANCE_REVIEW_2026-10-21.md).
+| Exact system | Listed price and phase | What remains unknown |
+| --- | --- | --- |
+| [Framework Desktop PRO 495, 192GB](https://frame.work/blog/192gb-framework-desktop-open-for-pre-order/) | **Pre-order**, with first shipments planned from November. The [NL store's link](https://frame.work/nl/en/products/desktop-diy-amd-aimax300/configuration/new) says **from €7,659**. | The current 192GB configurator could not be read reliably. The starting price is not a complete quote or a delivery confirmation. |
+| [GMKtec EU EVO-X5 Pro, 192GB + 2TB](https://de.gmktec.com/en/products/gmktec-evo-x5-pro-ai-max-495) | **€6,599**. The store shows an in-stock label, but orders from October 16 have **expected dispatch November 20–30**. | Dispatch is when the seller expects to send the system, not when it arrives. No delivery to a buyer was verified. |
+| [Minisforum EU MS-S1 MAX-P495, 192GB + 2TB](https://minisforumpc.eu/products/minisforum-ms-s1-max-p495) | **€7,799**. The same page contains both a German-warehouse stock claim and **Sold out** purchase text. | **Whether it can be ordered is unknown.** The two labels conflict, so they establish neither immediate availability nor a delivery promise. |
+
+Confirm SSD, OS, VAT, shipping and destination at checkout; these three prices
+are not comparable quotes for delivery in the Netherlands. More memory alone
+does not establish an inference speed gain. [Review scope and access limits](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/MAINTENANCE_REVIEW_2026-11-08.md).
 
 ## Before Choosing Memory Or Sending A System For Repair
 
@@ -80,7 +95,7 @@ Budget for model weights, KV cache, runtime buffers, concurrent sequences and th
 
 ## 128GB or 192GB?
 
-**Checked 2026-09-30.** 192GB configurations use the Ryzen AI Max+ PRO 495 (systems and prices: [PRO 400 table](#ryzen-ai-max-pro-400-systems-checked-2026-09-30)). No 192GB system is measured here, and the guide's setup script and memory profile are written for 128GB systems: `setup.sh` stops above about 136GiB of visible RAM because no 192GB profile is qualified. The amounts below are arithmetic on dated list prices, or claims of vendors and third parties, not measurements.
+**Historical comparison, checked 2026-09-30; current order phases are [above](#192gb-order-status).** 192GB configurations use the Ryzen AI Max+ PRO 495 (systems and prices: [PRO 400 table](#ryzen-ai-max-pro-400-systems-checked-2026-09-30)). No 192GB system is measured here, and the guide's setup script and memory profile are written for 128GB systems: `setup.sh` stops above about 136GiB of visible RAM because no 192GB profile is qualified. The amounts below are arithmetic on dated list prices, or claims of vendors and third parties, not measurements.
 
 | Vendor and store | 128GB reference | 192GB configuration | Difference (calculation) |
 |---|---|---|---|
@@ -91,7 +106,7 @@ Budget for model weights, KV cache, runtime buffers, concurrent sequences and th
 
 - **Memory speed is not settled by store text.** AMD lists LPDDR5x-8533 as the maximum for the [PRO 495](https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-max-pro-400-series/amd-ryzen-ai-max-plus-pro-495.html). Framework, Minisforum and Acemagic state 8533 MT/s for their 192GB systems, Lenovo states 8533MHz for its X Ultra (up to 128GB), and GMKtec's page says "up to" 8533 for 192GB. HP's [product page](https://www.hp.com/us-en/workstations/mobile-workstation-pc/zbook-ultra-g3.html) footnote says up to 8000 MT/s for 128GB and 192GB, while HP's [QuickSpecs](https://www8.hp.com/h20195/v2/GetDocument.aspx?docname=c09287369) (version 3, 2026-09-22) says the system runs at 8533 MT/s. The guide's measured 128GB systems run LPDDR5X-8000 ([host record](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/REPRODUCIBILITY.md)). Check the configured speed after delivery with `sudo dmidecode -t memory`; the guide makes no speed claim for 192GB systems.
 - **"Up to 160GB of VRAM" is a vendor figure.** HP's product page says up to 192GB of unified memory sharing up to 160GB of dedicated VRAM via BIOS or GUI, Minisforum's EU page lists 160GB of allocatable VRAM for the P495, and [Tweakers](https://tweakers.net/nieuws/251824/192gb-mini-pcs-met-nieuwe-amd-processor-kosten-rond-8000-dollar.html) wrote on 2026-09-06 that the PRO 495's GPU cannot address the full 192GB but at most 160GB (claim of a third party). This guide recommends a small fixed BIOS reserve plus GTT instead of a large fixed carve-out (see the [setup page](https://strixhaloguide.com/amd-strix-halo-setup/)). Neither approach is tested on 192GB, and whether 160GB is the limit on Linux with GTT is to verify.
-- **More memory is not more speed.** Framework states 273 GB/s for its 192GB configuration ([launch post](https://community.frame.work/t/192gb-framework-desktop-open-for-pre-order/85192), 2026-09-30), which equals 8533 MT/s on a 256-bit bus; the same bus at 8000 MT/s gives 256 GB/s (calculation). Framework's blog claims about 6.7 percent more theoretical bandwidth than Strix Halo. The guide uses a rough weight-streaming estimate of ~215 GB/s divided by the weight size for dense models (see the [README](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md); an estimate, not a ceiling). If the artifact you need fits in 128GB, this guide has no measurement showing a speed gain from 192GB; a larger dense artifact fits but streams more weight bytes per token.
+- **More memory is not more speed.** Framework states 273 GB/s for its 192GB configuration ([launch post](https://community.frame.work/t/192gb-framework-desktop-open-for-pre-order/85192), 2026-09-30), which equals 8533 MT/s on a 256-bit bus; the same bus at 8000 MT/s gives 256 GB/s (calculation). Framework's blog claims about 6.7 percent more theoretical bandwidth than Strix Halo. The guide uses a rough weight-streaming estimate of ~215 GB/s divided by the weight size for dense models (see the [README](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/README.md); an estimate, not a ceiling). If the artifact you need fits in 128GB, this guide has no measurement showing a speed gain from 192GB; a larger dense artifact, if it fits, streams more weight bytes per token.
 - **NPU on Linux.** The PRO 495 NPU needs a driver change targeted at Linux 7.4: the patch was posted on 2026-09-29 and applied to the drm-misc-next tree ([Phoronix](https://www.phoronix.com/news/AMD-Gorgon-Halo-NPU-LInux), 2026-09-30); the merge window is expected in late October and a stable release around year-end. A backport is possible but unconfirmed. Framework states that existing software carries over to the 192GB Desktop ([post](https://community.frame.work/t/what-192gb-changes-for-local-ai-on-the-framework-desktop/85191)); that is a vendor statement about the GPU route and is not tested here.
 - **Vendor-published model claims (not reproduced).** Framework's [launch blog](https://frame.work/nl/en/blog/what-192gb-changes-for-local-ai-on-the-framework-desktop) (2026-09-30) reports DeepSeek V4.1 Flash Q2 running on a single 192GB machine at about 14 t/s without speculative decoding, and MiMo V2.6 Flash falling from about 18 to about 16 t/s between 0 and 64K context. These are vendor-published claims about Framework's reference configuration; this guide has not reproduced them. Which published artifacts need more than 128GB is tracked in the [model hub](models.md).
 
@@ -216,7 +231,7 @@ Everything in this section is dated hardware context. None of these systems or p
 
 AMD [announced the Ryzen AI Max PRO 400 Series](https://www.amd.com/en/blogs/2026/amd-powers-next-generation-agent-computers-with-new-ryzen-ai-hal.html) on 2026-05-20 (reported under the codename Gorgon Halo). AMD lists the [Ryzen AI Max+ PRO 495](https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-max-pro-400-series/amd-ryzen-ai-max-plus-pro-495.html) with 16 cores, Radeon 8065S graphics with 40 CUs and up to 192GB LPDDR5x-8533; the [PRO 490](https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-max-pro-400-series/amd-ryzen-ai-max-pro-490.html) and [PRO 485](https://www.amd.com/en/products/processors/laptop/ryzen-pro/ai-max-pro-400-series/amd-ryzen-ai-max-pro-485.html) use Radeon 8050S graphics with 32 CUs. A later "Medusa Halo" (Ryzen AI Max 500) is rumored only and not confirmed by AMD ([VideoCardz report](https://videocardz.com/newz/amd-ryzen-max-500-medusa-halo-rumored-to-support-lpddr6-memory)).
 
-The first PRO 495 systems opened for order between 2026-09-28 and 2026-09-30. The guide has not measured any of them, and a 192GB memory setup is not qualified here. Systems in alphabetical order, not a ranking:
+The following PRO 495 listings were observed between 2026-09-28 and 2026-09-30; their order and shipping columns are a historical snapshot, not current offers. The guide has not measured any of them, and a 192GB memory setup is not qualified here. Systems in alphabetical order, not a ranking:
 
 | System | Configuration | Price and price kind | Country, currency, tax | Orderable | Ships | Source |
 |---|---|---|---|---|---|---|
@@ -275,7 +290,7 @@ Buy when a currently available configuration supports a task you need now at an 
 
 **State of the market (checked 2026-09-30).**
 
-- **192GB systems are starting to open for order.** The first Ryzen AI Max+ PRO 495 systems with 192GB were listed between 2026-09-28 and 2026-09-30, with shipping from mid-October (Minisforum) to November (Framework); see the [PRO 400 table](#ryzen-ai-max-pro-400-systems-checked-2026-09-30). The early prices are early-bird, batch or pre-order prices, and some promotions end on 2026-10-05 or 2026-10-06. None of these systems is measured here.
+- **September 30 observation: 192GB listings.** The Ryzen AI Max+ PRO 495 listings read between 2026-09-28 and 2026-09-30 advertised shipping from mid-October (Minisforum) to November (Framework); see the [PRO 400 table](#ryzen-ai-max-pro-400-systems-checked-2026-09-30). The early prices are early-bird, batch or pre-order prices, and some promotions end on 2026-10-05 or 2026-10-06. None of these systems is measured here.
 - **Stock can run out.** On 2026-09-30 (about 18:13 UTC) all three 300-series Framework Desktop DIY variants (32, 64 and 128GB) showed as out of stock in the NL store. Framework's launch post states that it expects memory prices to keep rising over the next six months (vendor statement; this guide does not forecast prices).
 - **The NPU of the PRO 495 on Linux.** See [128GB or 192GB?](#128gb-or-192gb): driver support is targeted at Linux 7.4, which is not released yet.
 - **Software support is still arriving.** A Lemonade issue ([#3662](https://github.com/lemonade-sdk/lemonade/issues/3662), opened 2026-09-23 and still open when checked on 2026-09-30) reports that Lemonade's ROCm backend calls the GPU of a PRO 495 unsupported (Windows), while native llama.cpp ROCm works according to the issue title.
@@ -346,7 +361,7 @@ Choose from the exact artifact, context and concurrency requirement. Smaller Q4 
 The guide has no 192GB measurement. On 2026-09-30 the 192GB configuration was listed €3,770 (Framework, NL store), $3,350 (Framework, US), $3,149 (GMKtec, regular price) and $3,600 (Minisforum) above the 128GB configuration of the same vendor (calculations; the GMKtec and Minisforum pairs are different models), and if your artifact fits in 128GB there is no measured speed gain here. See [128GB or 192GB?](#128gb-or-192gb), including the comparison with two 128GB systems.
 
 **Should I wait for the next generation?**
-Wait if a currently available configuration cannot meet your task or budget. As of 2026-09-30, the first Ryzen AI Max PRO 400 systems with 192GB were open for order with shipping from mid-October to November, and they are not measured here (see the [PRO 400 table](#ryzen-ai-max-pro-400-systems-checked-2026-09-30)). Check confirmed product specifications and shipping dates; more advertised memory does not by itself prove faster inference, and future prices are uncertain.
+Wait if a currently available configuration cannot meet your task or budget. The [November 8 order-phase check](#192gb-order-status) records pre-orders, dispatch estimates and conflicting stock text for 192GB systems; none is measured here. Check confirmed product specifications and shipping dates; more advertised memory does not by itself prove faster inference, and future prices are uncertain.
 
 **Can I buy in the Netherlands or Germany from a local store?**
 Some systems are listed by local retailers on Tweakers Pricewatch and Geizhals, at prices that differ from the maker's EU store; most mini PCs in this guide had no listing with prices on Tweakers Pricewatch on 2026-09-30. See [Buying in Europe](#buying-in-europe-checked-2026-09-30).
