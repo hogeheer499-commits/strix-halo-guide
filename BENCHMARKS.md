@@ -1,8 +1,8 @@
 # Benchmark Results - Current Snapshot
 
-**Benchmarks reviewed:** October 1, 2026.
+**Benchmarks reviewed:** November 9, 2026.
 
-This is an [active claim/scope review](ACTIVE_EVIDENCE_REVIEW_2026-10-01.md),
+This is an [active claim/scope review](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md),
 not a remeasurement date. Historical runs keep their exact original dates.
 
 September 13 label reconciliation: dated campaign takeaways use “current”,

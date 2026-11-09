@@ -1,5 +1,7 @@
 # Strix Halo Local-AI Guide: Partner Brief
 
+**Active-surface review: November 9, 2026.** [Review scope](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md): historical technical results, relationship declarations and external listing/reuse observations retain their stated dates. No new vendor endorsement, relationship, sales or support-cost outcome is established.
+
 Independent, reproducible setup and benchmark evidence for AMD Strix Halo / Ryzen AI MAX+ 395 local-AI systems.
 
 Public project overview: <https://strixhaloguide.com/>
@@ -24,7 +26,7 @@ outcomes, not measured conversion or support-cost improvements.
 
 The repo already includes a technical proof layer:
 
-- Public GitHub demand signal: 345 stars and 24 forks in a small hardware/software niche as of 2026-09-25 (GitHub repository page); the previous 2026-08-27 GitHub API snapshot showed 300 stars, 21 forks, and 5 subscribers/watchers. Use this as supporting context, not the main claim.
+- Public GitHub demand signal: 371 stars and 27 forks in a small hardware/software niche as of 2026-11-09 (GitHub repository API); the previous 2026-08-27 GitHub API snapshot showed 300 stars, 21 forks, and 5 subscribers/watchers. Use this as supporting context, not the main claim.
 - Upstream-reviewed engineering: 15 merged engineering PRs across 10 projects, including `llama.cpp`, the AMD-sponsored open-source Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf, plus 3 merged listing/docs PRs (counts reconciled 2026-09-13). The exact PRs, validation scope, and boundaries are listed in [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md). The `llama.cpp` merge is preset/router maintenance, not a Strix Halo performance claim.
 - Public evidence-coverage signal: 10 credited community benchmark contributors and 13 represented systems or independent sources (2026-09-19 evidence review). These are visible project and evidence-coverage signals, not attributable-sales claims.
 - Setup and workflow guide: [`README.md`](README.md).
@@ -40,7 +42,7 @@ The repo already includes a technical proof layer:
 - Frontier-size agent evidence: a first-party Step 3.7 Flash 198B-total / about 11B-active ROCmFPX target plus MTP draft measured 34.50 t/s at 4K and 33.83 t/s at 16K, allocated 256K context, and returned a native tool call on one 128GB Beelink. This is scoped server/capacity evidence, not a direct speed headline.
 - Frontier-size direct GGUF evidence: a pinned 90.86GB DeepSeek V4 Flash 284.33B `UD-IQ2_XXS` artifact loaded, generated, and passed a basic deterministic check through official `llama.cpp` b10034 Vulkan/RADV on one 128GB Beelink. The 13.27 tg128 row is capacity/current-model evidence with a low-bit quality caveat, not a speed claim.
 - Ryzen AI server-optimization evidence: an isolated official ROCm 7.14 / PyTorch 2.11 / vLLM FP16 A/B reproduced AMD's documented batch-8+ hipBLASLt workaround on `gfx1151`, improving aggregate throughput by 40.50%, 38.96%, and 41.54% at concurrency 8, 9, and 16. This is scoped small-model server evidence, not a universal backend claim.
-- Current HIP compatibility evidence: the September 19 v0.4.1 mitigation #28604 route passed bounded Coder retrieval and concurrent-output controls where historical b10687 failed. Both builds passed the Gemma image fixture. Official Qwen3.8, maximum memory and broad correctness remain unqualified; issue #26209 is not declared closed by this result. See [exact scope](RUNTIME_QUALIFICATION_2026-09-19.md).
+- Current HIP compatibility evidence: the September 19 v0.4.1 mitigation #28604 route passed bounded Coder retrieval and concurrent-output controls where historical b10687 failed. Both builds passed the Gemma image fixture. Official Qwen3.8, maximum memory and broad correctness remain unqualified; issue #26209 closed as not planned on October 16, which is not proof of a fix (rechecked November 9). See [exact scope](RUNTIME_QUALIFICATION_2026-09-19.md).
 - Local model-development evidence: a digest-pinned ROCm 7.2 Unsloth workflow on the retail Beelink passed Radeon GPU detection, one-step SFT, checkpoint inference, `Q4_K_M` GGUF export, ROCm `llama.cpp` inference, artifact persistence, and a post-restart reload. The public guide preserves the exact commands and two real path/export failures without presenting the tiny smoke as useful model quality or training speed. See [`UNSLOTH_STRIX_HALO.md`](UNSLOTH_STRIX_HALO.md).
 - Buyer-friction measurement protocol: [`BUYER_PATH_VALIDATION.md`](BUYER_PATH_VALIDATION.md) defines a repeatable retail-box-to-working-local-AI campaign with timed checkpoints, intervention counts, restart persistence, failure classification, and evidence links. It is a protocol for future system campaigns, not an invented time-to-first-result claim.
 - Platform context: [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).

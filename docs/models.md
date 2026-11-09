@@ -80,7 +80,7 @@ remain open. The tested host's Ollama listener was LAN-reachable, not local-only
 Released llama.cpp v0.4.1 passed bounded direct/server/HIP controls; this does
 not qualify every model, long-context shape or maximum-memory allocation.
 
-**Evidence reviewed:** October 1, 2026.
+**Evidence reviewed:** November 9, 2026.
 
 **Model watchlist update (public sources checked 2026-09-30; merge states re-read
 2026-10-01):** adds a table of third-party public capability scores next to fit on
@@ -188,7 +188,12 @@ and the [raw bundle](https://github.com/hogeheer499-commits/strix-halo-guide/tre
 Its **qwen-community-1.0** license differs from Apache 2.0; inspect the terms for
 commercial use.
 
-## Public Capability Scores Versus Fit On One Box (third-party, checked 2026-09-30)
+**November 9 artifact recheck:** the MiMo manifest's model/projector digests and sizes,
+and the pinned Bolt and Super VL tree sizes above, still match the November 8
+observations. This is a metadata check, not a download, fit or task test.
+[Scope and source limits](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ACTIVE_EVIDENCE_REVIEW_2026-11-09.md).
+
+## Public Capability Scores Versus Fit On One Box (historical third-party snapshot, checked 2026-09-30)
 
 This table puts publicly reported capability next to what fits on a Strix Halo
 box. **These are third-party scores, full precision via API, not measured locally;
@@ -205,8 +210,7 @@ the number shown, and by how much has not been measured here.
   ([leaderboard](https://lmarena.ai/leaderboard/text), which redirects to arena.ai).
   A different scale from the index; compare only within a column. Entries not
   recorded in the snapshot read are marked "not recorded".
-- **Valid until 2026-10-21** (this guide's 21-day freshness window); treat the
-  table as stale after that date until it is read again.
+- **Stale since 2026-10-22; not rechecked November 9.** These scores and model-availability cells are historical context, not a current capability ranking. The broad review does not renew this table.
 - **Fit is on paper:** a publisher-listed file size against 64, 128 or 192GB, as in
   the fit tiers below. It is not a measured fit and not a usability result.
 

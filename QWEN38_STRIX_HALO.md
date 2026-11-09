@@ -6,7 +6,7 @@ and v0.4.1 direct/server/HIP controls. Historical reboot default 0.31.2 and
 Qwen3.8-on-0.32.13 measurements remain separate; official Qwen3.8 on the candidate
 and a new full-host reboot are not qualified.
 
-**Evidence reviewed:** October 1, 2026.
+**Evidence reviewed:** November 9, 2026.
 
 Qwen3.8 27B is a practical dense multimodal model on AMD Strix Halo / Ryzen AI
 MAX+ 395 with Radeon 8060S and 96GB/128GB unified memory. The difficult part is
@@ -87,11 +87,10 @@ no longer matches the measurement. To reproduce exactly, pin
 ID and runner a Linux client shows for the plain tag has not been verified here.
 
 Keep the Strix Halo service environment documented in the main guide,
-including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Ollama 0.34.4 was the latest
-stable release checked (September 30, 2026; availability only; GitHub listed 0.35.0 as the
-latest release on October 1, unqualified here) and Ollama 0.34.2
-was the September 19 check; neither is a test-day-qualified package or an
-automatic inheritance of the 0.32.13 results. The normal 0.31.2 service remains the guide's full-reboot-qualified
+including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Ollama 0.40.15 is the latest
+stable release checked (November 9, 2026; availability only, not qualified here).
+Ollama 0.34.2 passed isolated controls on September 19; neither observation
+inherits the 0.32.13 measurement results. See the [new advisory observations](SECURITY.md#november-9-2026-recheck). The normal 0.31.2 service remains the guide's full-reboot-qualified
 general beginner baseline until the controlled upgrade matrix passes.
 
 ## Why 20, 22, 31, 52, and 65 t/s Can All Be Honest

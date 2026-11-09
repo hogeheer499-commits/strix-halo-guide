@@ -41,7 +41,7 @@ does not change BIOS settings; the BIOS is yours to set in step 1.
 - **A fresh machine gets Ollama 0.31.2.** That is the version this guide
   measured through a full reboot, but it also falls inside published security
   advisories. Read the [security status](SECURITY.md#security-status-of-pinned-components)
-  before you continue, so the choice is yours.
+  before you continue, so the choice is yours. The November 9 recheck adds a pull-API path traversal report with possible code execution; NVD names 0.35.0 as fixed. Keep the API isolated and do not pull untrusted artifacts. No replacement has completed this route's hardware acceptance.
 - **Already have Ollama working?** The script keeps your existing Ollama
   version. Before you change anything, [write down what you have and test your backup](#existing-installations-and-upgrades).
 
@@ -596,6 +596,8 @@ Full-host reboot remains a separate unperformed test. Stop if storage, identity
 or rollback is unclear; a newer version number alone does not qualify a route.
 
 ## Version And Security Status
+
+**November 9 source review:** [new published advisory observations](SECURITY.md#november-9-2026-recheck) include the older Ollama pins. Ollama 0.40.15 and Open WebUI 0.13.3 are available, not qualified here. The functional rows below do not certify current security.
 
 Component acceptance added 2026-10-15; scoped release/advisory check added
 2026-10-21 ([scope](MAINTENANCE_REVIEW_2026-10-21.md)). Earlier upstream/security observations remain dated

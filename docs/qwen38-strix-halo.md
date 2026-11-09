@@ -32,7 +32,7 @@ systems. The useful question is no longer only “does it run?” It is which
 official, stock, MTP, DFlash, ROCmFP4, or performance-fork route fits the
 workload—and which published numbers are actually comparable.
 
-**Evidence reviewed:** October 1, 2026.
+**Evidence reviewed:** November 9, 2026.
 
 Project home: [Strix Halo Guide](https://strixhaloguide.com/). The [canonical Qwen3.8 evidence page](https://strixhaloguide.com/qwen38-strix-halo/) is on the project domain; this page remains a technical mirror.
 
@@ -61,11 +61,11 @@ ollama run qwen3.8:27b
 ```
 
 The Strix Halo service still needs the guide's Vulkan/iGPU environment,
-including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Ollama 0.34.4 was the latest
-stable release checked (September 30, 2026; availability only; GitHub listed 0.35.0 as the
-latest release on October 1, unqualified here) and Ollama 0.34.2
-was the September 19 check. Neither has inherited the measured 0.32.13 result or
-the full normal-service/reboot qualification.
+including `OLLAMA_VULKAN=1` and `OLLAMA_IGPU_ENABLE=1`. Ollama 0.40.15 is the latest
+stable release checked (November 9, 2026; availability only, not qualified here).
+Ollama 0.34.2 passed isolated controls on September 19. Neither observation
+inherits the measured 0.32.13 result or full normal-service/reboot qualification.
+See the [advisory recheck](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#november-9-2026-recheck).
 
 ## Why The Speed Claims Differ
 

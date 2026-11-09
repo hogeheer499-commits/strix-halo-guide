@@ -2,11 +2,11 @@
 
 This file is the checklist for copying, rerunning, or challenging benchmark claims from the guide. The README is the human-facing entry point; structured CSVs and raw logs are the source of truth.
 
-**Checklist reviewed:** October 1, 2026. Per-run raw directories always override this summary.
+**Checklist reviewed:** November 9, 2026. Per-run raw directories always override this summary.
 
 ## Scope
 
-The [September 19 active review](ACTIVE_EVIDENCE_REVIEW_2026-09-19.md) is a
+The [November 9 active review](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md) is a
 source/scope review, not a new date for historical hardware measurements.
 New functional results are in [the runtime qualification](RUNTIME_QUALIFICATION_2026-09-19.md):
 current service 0.32.15, isolated 0.34.2 and pinned llama.cpp v0.4.1.

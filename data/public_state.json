@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "evidence_reviewed": "2026-10-01",
-  "evidence_reviewed_human": "October 1, 2026",
-  "evidence_review_scope": "ACTIVE_EVIDENCE_REVIEW_2026-10-01.md; review of active recommendation surfaces, upstream availability, buyer context, security status and vendor surfaces (checked 2026-09-30); not remeasurement of historical archives",
+  "evidence_reviewed": "2026-11-09",
+  "evidence_reviewed_human": "November 9, 2026",
+  "evidence_review_scope": "ACTIVE_EVIDENCE_REVIEW_2026-11-09.md; active recommendation surfaces, upstream releases, pinned-component advisory sources, buyer context and vendor surfaces rechecked 2026-11-09; storefront access and advisory coverage gaps explicit; not remeasurement of historical archives",
   "freshness_max_age_days": 21,
   "publication": {
-    "expected_content_revision": "ram-route-maintenance-2026-11-08",
+    "expected_content_revision": "active-evidence-review-2026-11-09",
     "deployment_verified": null,
-    "scope": "RAM-route and scoped maintenance review. Broad evidence review remains October 1. No new runtime, fresh-install, reboot or hardware qualification. Guide/mirror/site publication and verification remain separate.",
+    "scope": "Broad active-evidence review with explicit source/access limits; no new runtime, fresh-install, reboot or hardware qualification. Guide/mirror/site publication and verification remain separate.",
     "previous_verified_record": {
       "revision": "closeout-2026-09-19",
       "deployment_verified": "2026-09-19T21:58:27Z",
@@ -21,29 +21,29 @@
     "date": "2026-10-02"
   },
   "runtime": {
-    "ollama_current_checked": "0.34.4",
-    "availability_checked": "2026-09-30",
+    "ollama_current_checked": "0.40.15",
+    "availability_checked": "2026-11-09",
     "ollama_qwen38_measured": "0.32.13",
     "ollama_reboot_qualified_default": "0.31.2",
     "ollama_existing_service_qualified": "0.32.15; scoped functions after service restart, no new full reboot",
     "ollama_previous_checked": "0.34.2",
-    "ollama_previous_checked_scope": "isolated controls on 2026-09-19; superseded as the latest stable by 0.34.4 (available, not qualified here)",
+    "ollama_previous_checked_scope": "isolated controls on 2026-09-19; later stable releases including 0.40.15 (checked 2026-11-09) are available, not qualified here",
     "ollama_previous_candidate_decision": "0.34.2 useful but not default; official Qwen3.8 and normal upgrade/client/reboot acceptance open",
     "llama_cpp_functional_qualification": "v0.4.1 b29c606; scoped Coder direct/server and HIP controls; see RUNTIME_QUALIFICATION_2026-09-19.md",
-    "llama_cpp_current_release": "v0.5.0",
-    "llama_cpp_current_release_build": "b11146; released 2026-09-23; available; locally measured 2026-09-26 as a controlled re-check (not a fully idle host), not qualified here",
-    "llama_cpp_latest_build_available": "b11265; published 2026-09-29 23:24 UTC, checked 2026-09-30; not measured here",
+    "llama_cpp_current_release": "v0.9.0",
+    "llama_cpp_current_release_build": "released 2026-11-04; available, not measured or qualified here; semantic release and numbered build observations are separate",
+    "llama_cpp_latest_build_available": "b12211; published 2026-11-08 16:48 UTC, checked 2026-11-09; marked prerelease, not measured here",
     "llama_cpp_latest_locally_measured": "b11146",
     "llama_cpp_build_scope": "b11146 was measured locally on 2026-09-26 (controlled re-check, not a fully idle host; see BENCHMARKS.md); the August 30 b10687 Vulkan sentinel is a separate earlier measurement; availability above is not a measurement",
-    "upstream_availability_checked": "2026-09-30",
-    "upstream_availability_scope": "Latest available only; not latest measured and not recommended. See ROCM_VLLM_BUGWATCH.md 2026-09-30 Upstream Recheck",
-    "ollama_latest_prerelease_available": "0.35.1-rc0; published 2026-09-29 (0.40.0-rc0 published 2026-09-25)",
+    "upstream_availability_checked": "2026-11-09",
+    "upstream_availability_scope": "Available only, not latest measured or recommended; see ROCM_VLLM_BUGWATCH.md November 9, 2026 Broad Recheck",
+    "ollama_latest_prerelease_available": "none in the 10-record release feed read 2026-11-09; not a complete prerelease census",
     "ollama_latest_release_observed_2026_10_01": "0.35.0; published 2026-09-28, marked pre-release on 2026-09-30 and returned by the GitHub latest-release endpoint on 2026-10-01; not qualified here",
-    "vllm_latest_available": "0.30.0",
-    "sglang_latest_available": "0.5.20; gfx1151 Docker image on ROCm 7.2.4",
-    "lemonade_latest_available": "v2026.40.0; stable since 2026-09-30",
-    "rocm_cli_latest_stable_available": "v0.1.0; first stable tag 2026-09-23",
-    "rocm_vendor_support_scope": "ROCm Core SDK 10.0.0 release notes dated 2026-08-26; vendor documentation, not local qualification; measured host is outside AMD's listed Ryzen OS matrix",
+    "vllm_latest_available": "0.32.0 stable; 0.33.0rc3 is a release candidate by version name despite GitHub prerelease=false",
+    "sglang_latest_available": "0.5.23; published 2026-11-02, not qualified here",
+    "lemonade_latest_available": "v2026.45.3; published 2026-11-04; candidate-v2026.46.1 is a prerelease",
+    "rocm_cli_latest_stable_available": "v0.2.1; published 2026-10-29; v0.3.0-rc.1 is a prerelease",
+    "rocm_vendor_support_scope": "ROCm Core SDK 10.1.0 release notes read 2026-11-09; ROCm/ROCm GitHub latest endpoint still returns rocm-7.14.0, not the whole SDK release state. Vendor documentation, not local qualification; measured host is outside the previously recorded Ryzen OS matrix",
     "observed_update_2026_10_03": {
       "ollama_stable": "0.35.1",
       "llama_cpp_numbered_build": "b11379",
@@ -67,6 +67,11 @@
       "llama_cpp_pr_31196": "open, unmerged",
       "open_webui_pin_advisory": "GHSA-3vvh-g22g-jq6r includes 0.11.4; enabled channels + webhook + member write access + known webhook ID; fix 0.12.2",
       "scope": "Selected release/issue/advisory sources re-read 2026-11-08 UTC. Qualification versions and older dated observations remain unchanged; see MAINTENANCE_REVIEW_2026-11-08.md."
+    },
+    "observed_update_2026_11_09": {
+      "mesa": "26.2.6; official release notes dated 2026-10-28",
+      "open_webui": "0.13.3; published 2026-11-08; available, unqualified",
+      "scope": "Official feeds/docs re-read November 9. Historical qualification versions and earlier dated observations unchanged."
     }
   },
   "qwen38": {
@@ -89,15 +94,15 @@
     "community_benchmark_contributors": 10
   },
   "public_project_snapshot": {
-    "date": "2026-09-25",
-    "stars": 345,
-    "forks": 24,
-    "source": "GitHub repository page, observed 2026-09-25",
+    "date": "2026-11-09",
+    "stars": 371,
+    "forks": 27,
+    "source": "GitHub repository API, observed 2026-11-09",
     "previous": {
-      "date": "2026-08-27",
-      "stars": 300,
-      "forks": 21,
-      "source": "GitHub API snapshot"
+      "date": "2026-09-25",
+      "stars": 345,
+      "forks": 24,
+      "source": "GitHub repository page, observed 2026-09-25"
     }
   },
   "affiliate_status": {
@@ -107,5 +112,11 @@
   },
   "content_modified": "2026-11-09",
   "maintenance_reviewed": "2026-11-09",
-  "maintenance_review_scope": "MAINTENANCE_REVIEW_2026-11-08.md; RAM/task artifacts, setup component evidence and advisory conditions, selected releases/issues, 192GB storefront text and service/contact/funding correction; sources read November 8 UTC; does not reset broad evidence review or freshness limit"
+  "maintenance_review_scope": "MAINTENANCE_REVIEW_2026-11-08.md; RAM/task artifacts, setup component evidence and advisory conditions, selected releases/issues, 192GB storefront text and service/contact/funding correction; sources read November 8 UTC; does not reset broad evidence review or freshness limit",
+  "storefront_recheck_2026_11_09": {
+    "corsair": "CS-9080003-NA page readable; out of stock; exact-SKU price unresolved because displayed price belongs to CS-9080002-NA",
+    "framework": "403; announcement/configurator not rechecked",
+    "beelink_gmktec_minisforum_eu": "429; selected 128GB/192GB pages not rechecked",
+    "scope": "No delivered checkout quote; storefront_observed retains the broad 2026-09-30 price snapshot"
+  }
 }

@@ -27,12 +27,14 @@ remain open. The tested host's Ollama listener was LAN-reachable, not local-only
 Released llama.cpp v0.4.1 passed bounded direct/server/HIP controls; this does
 not qualify every model, long-context shape or maximum-memory allocation.
 
-**Evidence reviewed:** October 1, 2026.
+**Evidence reviewed:** November 9, 2026.
 
-**Scoped security recheck November 8:** the start route uses a component-tested
+**Security sources rechecked November 9:** the start route uses a component-tested
 Open WebUI **0.11.4 candidate**, not the historical 0.10.2 image. A later
 channel-webhook advisory includes 0.11.4, and published Ollama advisories include
-the historical 0.31.2 installer pin. The exact conditions and acceptance limits
+the historical 0.31.2 installer pin, including a pull-API path traversal report
+with possible code execution. Older llama.cpp builds also have new parser, GGUF
+and RPC reports. These are published reports, not exploits tested by this guide. The exact conditions and acceptance limits
 are in [Security status of pinned components](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/SECURITY.md#security-status-of-pinned-components).
 
 This page extracts the most useful checks from the canonical

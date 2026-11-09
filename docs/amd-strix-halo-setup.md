@@ -40,7 +40,7 @@ evidence. The primary first-party machine is a 128GB Beelink GTR9
 Pro; BIOS labels, firmware, cooling and power modes can differ on other OEM
 systems.
 
-**Setup reviewed:** October 1, 2026 (the recorded configuration baseline).
+**Setup reviewed:** November 9, 2026 (review of the recorded configuration; no new installation or measurement).
 **Beginner route text reviewed:** October 14, 2026; the configuration evidence
 keeps its original dates. Exact benchmark claims remain canonical in
 the repository's structured data and raw evidence.

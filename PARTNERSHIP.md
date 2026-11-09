@@ -1,5 +1,7 @@
 # Partnership Overview
 
+**Active-surface review: November 9, 2026.** [Review scope](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md): historical technical results, relationship declarations and external listing/reuse observations retain their stated dates. No new vendor endorsement, relationship, sales or support-cost outcome is established.
+
 For the latest bounded technical outcomes and the missing exact-SKU retail
 proof, read [the vendor proof summary](VENDOR_PROOF_SUMMARY.md). No measured
 sales, conversion or support-cost effect is claimed.
@@ -20,8 +22,8 @@ That uncertainty creates adoption friction. A technically strong AI PC can still
 
 This guide reduces setup friction, provides reproducible benchmark evidence, and helps buyers evaluate AMD local-AI hardware with clearer expectations. It gives developers and buyers a practical path from "what should I install?" to "which backend, model, and settings should I try first?"
 
-The repo also has a visible public project signal: 345 GitHub stars and 24 forks
-as of 2026-09-25 (GitHub repository page; 300 stars and 21 forks on 2026-08-27),
+The repo also has a visible public project signal: 371 GitHub stars and 27 forks
+as of 2026-11-09 (GitHub repository API; 300 stars and 21 forks on 2026-08-27),
 plus 10 credited community benchmark contributors and 13 Strix Halo-class owner
 systems or independent sources represented as of the 2026-09-19 evidence review. These public
 counts should not be treated as attributable buyer conversion or the main

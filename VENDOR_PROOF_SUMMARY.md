@@ -1,5 +1,7 @@
 # Vendor and reviewer proof summary
 
+**Active-surface review: November 9, 2026.** [Review scope](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md): historical technical results, relationship declarations and external listing/reuse observations retain their stated dates. No new vendor endorsement, relationship, sales or support-cost outcome is established.
+
 **Scope: September 19, 2026 functional campaign and the matched controls of September 26, 2026, plus attributed historical evidence. Each statement carries its own date; versions named are the versions tested, not the latest available.**
 
 ## Buyer questions now answered more precisely
@@ -17,7 +19,7 @@
   the tested Coder controls. Both passed the Gemma image fixture. The
   [qualification summary](RUNTIME_QUALIFICATION_2026-09-19.md) preserves these
   boundaries rather than declaring HIP universally fixed.
-- **What does the price buy?** The [new snapshot](BUYER_SNAPSHOT_2026-09-19.md)
+- **What does the price buy?** The [dated broad snapshot](BUYER_SNAPSHOT_2026-10-01.md)
   separates 64GB from 128GB, SSD variants, mainboards from complete PCs,
   selected stock/ETA and unresolved checkout costs. No unmatched value ranking.
 - **Is the route local-only?** Local inference was observed, but the existing

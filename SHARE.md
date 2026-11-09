@@ -178,12 +178,11 @@ public headline claims map to their sources in
 
 ## Check Freshness Before Sharing Numbers
 
-Evidence was reviewed on October 1, 2026. Availability checked September 30 includes
-Ollama 0.34.4 (the latest stable release on that date; GitHub lists 0.35.0 as the
-latest release on October 1; Ollama 0.34.2 was the September 19 check) and `llama.cpp` v0.5.0 with numbered build b11265; the historical August
-check covered Ollama 0.33.2 and `llama.cpp` v0.3.0 / b10687. Those were checked
-targets on those dates; they are not automatic replacements for the runtime
-versions attached to older measured rows.
+Evidence was reviewed on November 9, 2026. Availability checked that day includes
+Ollama 0.40.15, `llama.cpp` v0.9.0 and numbered prerelease b12211. These are
+available targets, not replacements for the runtime versions attached to measured
+rows. Read the [review and its coverage gaps](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md)
+and the [advisory recheck](SECURITY.md#november-9-2026-recheck) before sharing setup advice.
 
 Before copying a version or benchmark claim, check
 [`data/public_state.json`](data/public_state.json) and the linked evidence page.

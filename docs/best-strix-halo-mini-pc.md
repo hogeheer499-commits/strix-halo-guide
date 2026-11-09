@@ -19,7 +19,7 @@ seo:
 
 # Best Strix Halo Mini PC for Local LLMs (2026)
 
-**Evidence reviewed:** October 1, 2026.
+**Evidence reviewed:** November 9, 2026.
 
 Choose the task first, then the memory, then the system. Start with
 [What can I run with my RAM?](models.md#what-can-i-run-with-my-ram): it gives a
@@ -41,6 +41,13 @@ first-party and community results stay labeled separately.
 The broad [September 30 price snapshot](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/BUYER_SNAPSHOT_2026-10-01.md)
 is historical. The 192GB update below is limited to three listings; it is not
 a new price comparison across the market.
+
+**November 9 access check:** Framework's announcement and NL configurator returned
+HTTP 403; the selected Beelink, GMKtec and Minisforum EU product pages returned
+HTTP 429. Their prices, stock and dispatch text were **not rechecked**. The
+Corsair US CS-9080003-NA page was readable and still said out of stock; its
+comparison card prices a different SKU, so the exact-SKU price remains unresolved.
+No checkout quote was verified. [Review sources and limits](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/ACTIVE_EVIDENCE_REVIEW_2026-11-09.md).
 
 <a id="192gb-order-status"></a>
 

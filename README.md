@@ -1,6 +1,6 @@
 # Strix Halo Guide: AMD Ryzen AI MAX+ 395 Local LLM Setup & Benchmarks
 
-**Maintenance update: November 8, 2026.** Model choices by RAM and task, corrected setup evidence, selected release and issue states, 192GB order phases and service details: [MAINTENANCE_REVIEW_2026-11-08.md](MAINTENANCE_REVIEW_2026-11-08.md). Historical measurements and the broad October 1 evidence review keep their original dates.
+**Maintenance update: November 8, 2026.** Model choices by RAM and task, corrected setup evidence, selected release and issue states, 192GB order phases and service details: [MAINTENANCE_REVIEW_2026-11-08.md](MAINTENANCE_REVIEW_2026-11-08.md). The [November 9 broad evidence review](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md) follows this scoped update; historical measurements keep their original dates.
 
 Get a local AI model running on your AMD Strix Halo / Ryzen AI MAX+ 395 (Radeon 8060S) under Ubuntu 24.04, with settings measured on real hardware. Along the way you check a known answer and look at the GPU memory allocation that Ollama reports. Then pick the right model for your work and make it faster.
 
@@ -164,17 +164,19 @@ Project website: <https://strixhaloguide.com/>. This GitHub repository remains t
 
 Maintainer credibility is public and reviewable: 15 merged engineering PRs across 10 upstream projects, including [`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), the AMD-sponsored open-source Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf, plus 3 merged listing/docs PRs (counts reconciled 2026-09-13). See [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md) for every PR link, its scope, and honest boundaries. Upstream acceptance strengthens confidence in the engineering process; it does not replace the raw evidence required for each benchmark claim.
 
-**Current evidence state — October 1, 2026 review (observations of September 30):** Qwen3.8 27B is
+**Current evidence state — November 9, 2026 review:** Qwen3.8 27B is
 measured through the official Ollama route, labelled as Ollama-default MTP drafting; a matched
 control on Ollama 0.32.15 (2026-09-26) measured 12.89 t/s without drafting versus 22.71 t/s with
-default MTP. See [the active-evidence review](ACTIVE_EVIDENCE_REVIEW_2026-10-01.md); the
+default MTP. See [the active-evidence review](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md); the
 [September 26 review](ACTIVE_EVIDENCE_REVIEW_2026-09-26.md) keeps its original wording. The August 30 b10687 Vulkan sentinel and Flash-Next
 scout are indexed with their own stack and caveats; see
 [the measured update](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout).
-The [September 30 availability check](ROCM_VLLM_BUGWATCH.md#2026-09-30-upstream-recheck)
-lists newer candidates without promoting them: Ollama 0.34.4 (the latest stable release that day),
-`llama.cpp` v0.5.0 (the same commit as build b11146, which the 2026-09-26 routine scouts used) and
-the numbered build b11265 (the newest numbered build when that check was made, published 2026-09-29 23:24 UTC; newer builds followed within hours; not measured here). The
+The [November 9 availability check](ROCM_VLLM_BUGWATCH.md#november-9-2026-broad-recheck)
+records Ollama 0.40.15, `llama.cpp` v0.9.0 and numbered prerelease b12211 as
+available, not measured or qualified here. The [security recheck](SECURITY.md#november-9-2026-recheck)
+adds published reports affecting older pins, including Ollama's pull API and
+llama.cpp parser/GGUF/RPC paths. Storefront blocks and advisory-feed limits are
+explicit in the review. The
 machine-readable freshness record is [`data/public_state.json`](data/public_state.json).
 
 What you get:
@@ -205,7 +207,7 @@ Halo owners find it; a reproducible result or correction helps even more.
 
 | Question | Current answer |
 | --- | --- |
-| Best beginner route | Ollama with Vulkan/RADV. The fully reboot-qualified general baseline remains 0.31.2; Qwen3.8 is separately measured on 0.32.13. Available Ollama 0.34.4 (September 30 check; GitHub lists the then pre-release 0.35.0 as the latest release on October 1, not qualified; 0.34.2 passed isolated controls on September 19) still needs the controlled upgrade/reboot matrix; the revised installer itself is not yet fresh-install/upgrade qualified. |
+| Best beginner route | Ollama with Vulkan/RADV. The fully reboot-qualified general baseline remains 0.31.2; Qwen3.8 is separately measured on 0.32.13. Available Ollama 0.40.15 (November 9 check, not qualified; 0.34.2 passed isolated controls on September 19) still needs the controlled upgrade/reboot matrix; the revised installer itself is not yet fresh-install/upgrade qualified. |
 | Current Qwen3.8 route | Official Qwen3.8 27B `Q4_K_M` measured 292.49 prompt t/s and 20.42 generation t/s through the Ollama API with Ollama-default MTP drafting (`draft_num_predict 4`; not a no-draft result); a separate matched control on Ollama 0.32.15 (2026-09-26) measured 12.89 t/s without drafting versus 22.71 t/s with default MTP; image, tools, thinking, and exact retrieval through 50,059 prompt tokens passed. [Read the route comparison.](QWEN38_STRIX_HALO.md) |
 | Fast direct 30B-class route | Qwen3-Coder 30B-A3B `Q4_K_S` reached 100.99 tg128 on official b9851; it is a speed-first quant, not the balanced default. |
 | Largest direct GGUF tested | DeepSeek V4 Flash 284B `UD-IQ2_XXS` loaded as a 90.86GB low-bit artifact and measured 13.27 tg128; capacity proof, not broad quality. |
@@ -2206,7 +2208,7 @@ For a new setup, use [the Linux loopback-only candidate and acceptance checklist
 
 **Historical, scoped client result:** Open WebUI 0.10.2 passed discovery, visible Qwen3.6 output and restart checks against the existing Ollama 0.32.15 route. The measured host was LAN-reachable, **not local-only**. Keep [that qualification](RUNTIME_QUALIFICATION_2026-09-19.md) as historical evidence; its bridge command is not a fresh local-only installation recipe.
 
-**Security status, read 2026-10-03:** 47 of the 165 published Open WebUI advisories include 0.10.2 in their affected ranges (15 high, 31 medium, 1 low). The same advisory review found no ranges including 0.11.4; that is not a general safety guarantee. Turning community sharing off addresses one condition and does not patch the old image. Environment settings normally lose to persistent database values; the new candidate uses a separate volume and explicit nonpersistent configuration. See [SECURITY.md](SECURITY.md#open-webui) for the source and scope.
+**Security status, read 2026-10-03:** 47 of the 165 published Open WebUI advisories include 0.10.2 in their affected ranges (15 high, 31 medium, 1 low). The same advisory review found no ranges including 0.11.4; that is not a general safety guarantee. Turning community sharing off addresses one condition and does not patch the old image. Environment settings normally lose to persistent database values; the new candidate uses a separate volume and explicit nonpersistent configuration. The [November 9 recheck](SECURITY.md#november-9-2026-recheck) does include 0.11.4 in a later channel-webhook advisory and adds new Ollama/llama.cpp reports; the older count is historical. See [SECURITY.md](SECURITY.md#open-webui) for the source and scope.
 
 The historical 0.10.2 digest remains in the qualification report. A patched release is not qualified here; priority 40 in [the test queue](data/current_test_queue.csv) tracks text, image, tool, login, restart, reboot and network acceptance. Use the same UI port in your [SSH tunnel](LOCAL_CHAT_START.md#3-use-from-another-computer).
 

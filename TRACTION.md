@@ -1,17 +1,19 @@
 # Public Project Signals And Evidence
 
+**Active-surface review: November 9, 2026.** [Review scope](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md): historical technical results, relationship declarations and external listing/reuse observations retain their stated dates. No new vendor endorsement, relationship, sales or support-cost outcome is established.
+
 This page records public, independently checkable project signals. It supports
 vendor and reviewer conversations, but it does not claim attributable hardware
 sales, buyer conversion, endorsement, or private audience behavior.
 
-Repository-stat snapshot date: 2026-09-25.
+Repository-stat snapshot date: 2026-11-09.
 
 ## Dated Public Snapshot
 
 | Metric | Value | As of | Public source |
 | --- | ---: | --- | --- |
-| Stars | 345 | 2026-09-25 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) page |
-| Forks | 24 | 2026-09-25 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) page |
+| Stars | 371 | 2026-11-09 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) API |
+| Forks | 27 | 2026-11-09 | [GitHub repository](https://github.com/hogeheer499-commits/strix-halo-guide) API |
 | GitHub contributors | 4 | 2026-08-27 | [GitHub Contributors](https://github.com/hogeheer499-commits/strix-halo-guide/graphs/contributors) |
 | Credited community benchmark contributors | 10 | 2026-09-19 evidence review | [`CONTRIBUTORS.md`](CONTRIBUTORS.md) |
 | Strix Halo-class systems or independent sources represented | 13 | 2026-09-19 evidence review | [`SYSTEM_EVIDENCE_MATRIX.md`](SYSTEM_EVIDENCE_MATRIX.md) |

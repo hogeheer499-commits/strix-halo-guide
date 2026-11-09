@@ -1,5 +1,7 @@
 # Current Model Triage
 
+**Broad source review, November 9, 2026:** [current release and issue observations](ROCM_VLLM_BUGWATCH.md#november-9-2026-broad-recheck), [advisory observations](SECURITY.md#november-9-2026-recheck) and [review limits](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md). Earlier engine comparisons, maker claims and measured rows below keep their own dates; they were not re-run or comprehensively revalidated.
+
 **Availability checked November 8, 2026:** [Ollama 0.40.15](https://github.com/ollama/ollama/releases/tag/v0.40.15)
 (November 3) adds MiMo V2.6; [llama.cpp v0.9.0](https://github.com/ggml-org/llama.cpp/releases/tag/v0.9.0)
 (November 4) is available. [Ollama 0.40.13](https://github.com/ollama/ollama/releases/tag/v0.40.13)

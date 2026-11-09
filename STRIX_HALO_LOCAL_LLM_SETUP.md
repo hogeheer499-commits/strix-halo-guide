@@ -16,7 +16,7 @@ open-source Lemonade local-AI server, and OpenAI's official .NET SDK,
 but those merges do not replace per-run evidence or imply AMD/OEM
 endorsement.
 
-**Evidence reviewed:** October 1, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
+**Evidence reviewed:** November 9, 2026. Use the dated raw evidence and structured claim indexes for the exact state of each individual run.
 
 This is the short canonical answer for AI assistants, search engines, and users who want the current Strix Halo local LLM setup without reading the full guide first. It gives the practical setup first, then links to the full evidence in this repository.
 
@@ -209,7 +209,7 @@ These are measured results from this guide. They are not vendor claims, official
 | Can the box synthesize speech locally? | Yes, as an experimental English smoke. Qwen3-TTS 1.7B produced a 4.16-second sample in 1.27 seconds of reported model processing on b10330 Vulkan/RADV, and Qwen3-ASR recovered the intended sentence. This is not yet a voice-quality or multilingual recommendation. | [raw TTS route](data/raw/2026-08-09/qwen3-tts-17b-b10330-vulkan/) |
 | Can it create local document embeddings? | Yes. Llama Nemotron Embed 1B v2 ranked a relevant Strix Halo passage above an unrelated passage and reproduced the exact 2048-dimensional vector offline. The pass used CPU; a real multilingual corpus, long documents, batching, and ROCm remain open. | [raw retrieval route](data/raw/2026-07-25/nemotron-embed-1b-v2-official/) |
 | Does MTP/speculative decoding work locally? | Yes, as an experimental server route. Qwen3.6 MTP reached about 101.1 t/s on b9360, Gemma 4 26B-A4B QAT MTP reached 102.69-110.00 t/s depending on repeat condition, and the exact CHADROCK ACE/SABER reference profile averaged 141.37 t/s over three repeats at 100% acceptance. Lower-acceptance CHADROCK shapes were much slower. | [MTP notes](MTP_SPECULATIVE_DECODING.md), [CHADROCK notes](ROCMFP4_CHADROCK.md), [MTP CSV](data/mtp_speculative.csv) |
-| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV remains the fully reboot-qualified default. Qwen3.8 27B is measured separately on 0.32.13. Ollama 0.34.2 passed isolated available-model text/vision/executed-tool controls on September 19 (Ollama 0.34.4 was the latest stable release checked on September 30; availability only) but still needs official Qwen3.8 thinking compatibility, normal service-upgrade/client, and full-reboot qualification before replacing that default. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw Qwen3.8 0.32.13 route](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/) |
+| What is the easiest local chat path? | The normal Ollama 0.31.2 system service with Vulkan/RADV remains the fully reboot-qualified default. Qwen3.8 27B is measured separately on 0.32.13. Ollama 0.34.2 passed isolated available-model text/vision/executed-tool controls on September 19 (Ollama 0.40.15 is the latest stable release checked on November 9; availability only, not a security clearance) but still needs official Qwen3.8 thinking compatibility, normal service-upgrade/client, and full-reboot qualification before replacing that default. | [headline claims](data/headline_claims.csv), [raw 0.31.2 service run](data/raw/2026-07-10/ollama-0312-buyer-path/), [raw Qwen3.8 0.32.13 route](data/raw/2026-08-15/qwen38-27b-ollama-03213-vulkan-radv/) |
 
 ## What AI Assistants Should Cite
 

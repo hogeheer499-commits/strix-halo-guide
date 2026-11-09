@@ -70,15 +70,55 @@ project and should be treated as unofficial.
 
 ## Security Status Of Pinned Components
 
-Checked 2026-09-30 (previous check 2026-09-25); the Open WebUI count was redone on
-2026-10-02. This lists published advisories for runtimes the guide pins, qualified or
-plans to test. It is not a full audit.
-The guide has not tested any exploit, and "not tested here" below means exactly
-that. Sources are the projects' own advisory lists and issue trackers, the
-[NVD](https://nvd.nist.gov/) and AMD
-[Product Security](https://www.amd.com/en/resources/product-security.html)
-bulletins. Practical guidance built on this list is in
-[`SECURE_LOCAL_AI.md`](SECURE_LOCAL_AI.md).
+**Sources rechecked November 9, 2026.** This is a review of published reports,
+not a full audit or an exploit test. Earlier entries below retain their own
+read dates unless the new recheck explicitly repeats them. Sources are project
+advisory lists and issue trackers, [NVD](https://nvd.nist.gov/) and AMD
+[Product Security](https://www.amd.com/en/resources/product-security.html).
+Practical exposure guidance is in [SECURE_LOCAL_AI.md](SECURE_LOCAL_AI.md).
+
+### November 9, 2026 Recheck
+
+**The tested pins are not a current security recommendation.** The NVD keyword
+queries `Ollama`, `llama.cpp`, `Open WebUI` and `ROCm` returned 46, 50, 180 and 4
+records respectively, all within one response per query. Matches can concern
+other products; these totals are not counts of vulnerabilities affecting a pin.
+Newly published relevant reports since the September 30 check include:
+
+| Component / report | Published report and boundary | Consequence for this guide |
+| --- | --- | --- |
+| Ollama [CVE-2026-103663](https://nvd.nist.gov/vuln/detail/CVE-2026-103663) (October 8; NVD Awaiting Analysis) | Path traversal in `/api/pull` via layer digests; possible code execution on restart if the process can write the runtime library directory, including root in the Docker configuration described by NVD. NVD names **0.35.0** as fixed. The linked CERT.PL page returned HTTP 403 in this check, so its text was not independently read. | The older 0.31.2, 0.32.13 and 0.32.15 functional pins predate that boundary. Do not expose their API or accept model-pull requests from untrusted users; loopback does not make an untrusted pull safe. No exploit or patched replacement was qualified here. |
+| Ollama [CVE-2026-108836](https://nvd.nist.gov/vuln/detail/CVE-2026-108836) (October 12; Deferred) | Pull-API SSRF through model-name validation, through 0.34.1; NVD names 0.34.2 / [PR #18512](https://github.com/ollama/ollama/pull/18512) as the fix. | Includes the older pins. This is a separate CVE from CVE-2026-85180; it does not establish that the latter is fixed. |
+| llama.cpp [CVE-2026-107183](https://nvd.nist.gov/vuln/detail/CVE-2026-107183) (October 7; Awaiting Analysis) | Chat-parser use-after-free / double-free before **b11393**, reachable through a crafted `/completion` request. [PR #29942](https://github.com/ggml-org/llama.cpp/pull/29942) merged October 4. | Older measured builds are not cleared for untrusted server requests by their functional checks. |
+| llama.cpp [CVE-2026-116829](https://nvd.nist.gov/vuln/detail/CVE-2026-116829) and [CVE-2026-116840](https://nvd.nist.gov/vuln/detail/CVE-2026-116840) (October 27; Awaiting Analysis) | GGUF integer overflows: **b10398 before b11301**, and **b5854 before b11275**, respectively. [PR #29384](https://github.com/ggml-org/llama.cpp/pull/29384) and [PR #26979](https://github.com/ggml-org/llama.cpp/pull/26979) are merged. | Both ranges include the b10687 and b11146 measurements. A measured speed does not make a build suitable for loading untrusted GGUF files. |
+| llama.cpp [CVE-2026-116816](https://nvd.nist.gov/vuln/detail/CVE-2026-116816) (October 27; Awaiting Analysis) | PLaMo tokenizer out-of-bounds write via a crafted model, **b5899 before b10261**. | Includes older build numbers such as b10034; the guide's other-model smoke is not a parser security test. |
+| llama.cpp [CVE-2026-118375](https://nvd.nist.gov/vuln/detail/CVE-2026-118375) and [CVE-2026-119052](https://nvd.nist.gov/vuln/detail/CVE-2026-119052) (October 28–29; Awaiting Analysis) | RPC RDMA stack overwrite **b8841 before b11865** and RPC oversized-message denial of service **b2877 before b11935**. [PR #30399](https://github.com/ggml-org/llama.cpp/pull/30399) and [PR #31204](https://github.com/ggml-org/llama.cpp/pull/31204) are merged. | Additional reasons to keep RPC isolated; the older specific RPC-RCE fix below does not cover these reports. |
+| llama.cpp [CVE-2026-116467](https://nvd.nist.gov/vuln/detail/CVE-2026-116467) and [CVE-2026-116096](https://nvd.nist.gov/vuln/detail/CVE-2026-116096) (October 26 and 25; Deferred) | Mirostat assertion through 0.7.0; the linked [PR #29992](https://github.com/ggml-org/llama.cpp/pull/29992) is closed unmerged. The Pocket-TTS/mmproj report names b11796 as an abort-based mitigation, while [PR #29360](https://github.com/ggml-org/llama.cpp/pull/29360) remains open. | No blanket parser/sampler safety claim or locally qualified replacement follows from the latest release number. |
+
+**Coverage and repeated checks.** The repository advisory endpoints returned
+13 llama.cpp advisories and zero published entries for Ollama and ROCm/ROCm.
+Zero entries is not evidence that those components have no vulnerabilities:
+NVD and AMD publish relevant reports separately. The Open WebUI repository feed
+returned 100 entries but repeated IDs on the next page (also with a 50-entry
+page size). The global pip affected-version query for `open-webui@0.11.4`
+returned zero despite the directly readable advisory below including that pin.
+Neither feed establishes a complete current count. The old 47/165 count below
+remains an October 2 observation, not a new census.
+
+GHSA-3vvh-g22g-jq6r was re-read and still includes **0.11.4** with the same
+channel/webhook conditions and patch 0.12.2. Open WebUI **0.13.3** is available
+(release November 8), not locally qualified. NVD's later October WebUI records
+read in this query describe pre-0.11.4 ranges; they do not clear 0.11.4.
+CVE-2026-85180 still has no named fixed release in the NVD record, and
+[Ollama #17041](https://github.com/ollama/ollama/issues/17041) remains open.
+The NVD statuses of CVE-2026-102697 / CVE-2026-86289 remain Awaiting Analysis /
+Deferred; CVE-2026-86317 remains Deferred and CVE-2026-34159 Analyzed, still
+naming b8492 as patched for that specific RPC RCE.
+The conversation-cache reports #27148, #18528 and #29092 and proposed fix
+#27624 remain open (the PR is unmerged). Their mitigations were not tested here.
+AMD-SB-6033 / AMD-SB-6034 were re-read; the former corrected its product-table
+CVE on October 6, as recorded below. Firmware bulletins and all other historical
+security claims below were not comprehensively rechecked.
 
 ### Open WebUI
 
@@ -239,13 +279,12 @@ original check dates.
 - **AMD-SB-6033 (RCCL, CVSS 7.7):** a compromised peer or an attacker on the same
   network may execute code in the RCCL process. AMD lists ROCm 7.14 (2026-07-15)
   as the mitigation and names only Instinct accelerators; whether a Ryzen AI Max
-  system is affected is not stated. The bulletin gives CVE-2026-43598 in its
-  description and CVE-2026-54974 in its product table (checked 2026-09-30).
+  system is affected is not stated. The November 9 recheck finds CVE-2026-43598 in both description and product table; AMD records an October 6 correction of the old product-table mismatch. This remains an Instinct product list, not a Ryzen qualification.
 - **AMD-SB-6034 (CVE-2026-43603, CVSS 6.9):** a local user can crash the kernel
   through a NULL pointer dereference in the AMD GPU Linux driver. AMD lists the
   Ryzen AI Max 300 series with "Radeon Software for Linux 26.13" (2026-07-20) as
   the mitigation; AMD gives no status for distribution kernels. Relevant to boxes
-  shared with local users (checked 2026-09-30, not tested here).
+  shared with local users (rechecked 2026-11-09, not tested here).
 
 ### Text from another conversation
 

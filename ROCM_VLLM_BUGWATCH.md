@@ -1,9 +1,8 @@
 # ROCm and vLLM Bugwatch
 
-**Latest scoped check: November 8, 2026.** Ollama 0.40.15 and llama.cpp v0.9.0
-are available, not locally qualified. The three issue/PR states below were
-re-read; other historical snapshots keep their own dates.
-[Sources and limits](MAINTENANCE_REVIEW_2026-11-08.md).
+**Latest broad source check: November 9, 2026.** Availability and issue states
+below are observations, not local runtime qualification.
+[Review scope and gaps](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md).
 
 **September 19 scoped qualification:** [the existing-user runtime result](RUNTIME_QUALIFICATION_2026-09-19.md)
 separates the 0.32.15 service/client pass, useful-but-not-default isolated 0.34.2,
@@ -14,6 +13,30 @@ and a new full-host reboot are not qualified.
 Status: September 19 functional update above; historical sections and external issue/release rows retain their own checked dates. A document review does not silently recheck every upstream issue.
 
 This file tracks fast-moving upstream items that affect Strix Halo local AI work. It is intentionally separate from the README so the public guide stays stable even when upstream ROCm/vLLM issues move.
+
+## November 9, 2026 Broad Recheck
+
+Official GitHub release feeds and latest endpoints read with the GitHub API on
+November 9; Mesa uses its official release-note site, not an unofficial GitHub
+mirror. No software was installed or benchmarked.
+
+| Source | Observed availability | Boundary |
+| --- | --- | --- |
+| [Ollama releases](https://github.com/ollama/ollama/releases) | Stable **0.40.15**, November 3; 0.40.13 (October 28) added LFM3 on Linux/Windows | Available, not qualified. No prerelease in the ten returned records; not a complete prerelease census. |
+| [llama.cpp releases](https://github.com/ggml-org/llama.cpp/releases) | Latest semantic release **v0.9.0**, November 4; newest numbered entry **b12211**, November 8 16:48 UTC, marked prerelease | Separate release streams; b11146 remains the latest locally measured numbered build. |
+| [Lemonade releases](https://github.com/lemonade-sdk/lemonade/releases) | Stable **v2026.45.3**, November 4; candidate-v2026.46.1 is prerelease | Later than the measured Lemonade route; no performance inheritance. |
+| [ROCm/ROCm releases](https://github.com/ROCm/ROCm/releases), [Core SDK notes](https://rocm.docs.amd.com/en/latest/about/release-notes.html) | Repository latest is **rocm-7.14.0**, July 16; official docs now describe **Core SDK 10.1.0** | The older repository tag is not the whole SDK release state. Vendor support claims do not qualify this guide's host. |
+| [Mesa release notes](https://docs.mesa3d.org/relnotes.html), [26.2.6](https://docs.mesa3d.org/relnotes/26.2.6.html) | **26.2.6**, October 28, latest linked release-note entry | Bug-fix release, not this guide's measured driver or a tested PPA upgrade. |
+| [Open WebUI](https://github.com/open-webui/open-webui/releases) | **0.13.3**, November 8 | Not qualified; [advisory coverage limits](SECURITY.md#november-9-2026-recheck) remain. |
+| [rocm-cli](https://github.com/ROCm/rocm-cli/releases) | Stable **v0.2.1**, October 29; v0.3.0-rc.1, November 6, prerelease | Not the measured packaging build. |
+| [vLLM](https://github.com/vllm-project/vllm/releases), [SGLang](https://github.com/sgl-project/sglang/releases) | vLLM **0.32.0** stable; **0.33.0rc3** is a release candidate by name even though GitHub's prerelease flag is false. SGLang **0.5.23**, November 2 | Availability only, no new gfx1151 correctness or serving acceptance. |
+
+The three statuses in the November 8 table were repeated: #26209 remains closed
+as not planned, #28211 remains open, and PR #31196 remains open/unmerged.
+[Security sources](SECURITY.md#november-9-2026-recheck) also add new NVD reports
+for the older Ollama and llama.cpp pins and repeat the named cache-leak reports.
+Other dated issue, community-engine and firmware entries below were not silently
+renewed by this check.
 
 ## November 8, 2026 Scoped Recheck
 

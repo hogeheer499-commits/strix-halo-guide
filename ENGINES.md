@@ -1,5 +1,7 @@
 # Inference Engines For Strix Halo (claims of third parties, checked 2026-09-30)
 
+**Broad source review, November 9, 2026:** [current release and issue observations](ROCM_VLLM_BUGWATCH.md#november-9-2026-broad-recheck), [advisory observations](SECURITY.md#november-9-2026-recheck) and [review limits](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md). Earlier engine comparisons, maker claims and measured rows below keep their own dates; they were not re-run or comprehensively revalidated.
+
 **The guide has not measured any of the community engines on this page.** The only routes with first-party rows are the `llama.cpp` and Ollama routes documented in [README.md](README.md), [BENCHMARKS.md](BENCHMARKS.md) and [SERVER_SHOOTOUT.md](SERVER_SHOOTOUT.md). Everything else below is what an engine's own README, its users or a vendor say. Facts that can change fast (versions, issue states, merge states) carry the date they were read; where a source was read again on 2026-10-01, that is stated.
 
 Nothing here is a recommendation, a ranking or an endorsement. A listed engine is not a verified engine.

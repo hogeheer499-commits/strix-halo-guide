@@ -1,5 +1,7 @@
 # Vendor Disclosure Policy
 
+**Active-surface review: November 9, 2026.** [Review scope](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md): historical technical results, relationship declarations and external listing/reuse observations retain their stated dates. No new vendor endorsement, relationship, sales or support-cost outcome is established.
+
 This guide is independent and evidence-first. Vendor support can improve the quality of public testing, but it must be visible to readers and must not control benchmark conclusions.
 
 ## Disclosure Categories
@@ -72,6 +74,8 @@ disclosed here and next to the affected results.
 
 This repository contains no affiliate links as of September 19, 2026. The public
 registry is [`data/affiliate_link_registry.csv`](data/affiliate_link_registry.csv).
+
+November 9 repository check: the registry is still header-only and a URL-pattern scan of the active Markdown/data found no affiliate tracking destinations. This does not verify private relationship changes.
 
 If affiliate links are added later:
 
