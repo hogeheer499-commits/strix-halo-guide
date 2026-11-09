@@ -1,14 +1,80 @@
 # Strix Halo Guide: AMD Ryzen AI MAX+ 395 Local LLM Setup & Benchmarks
 
-**Maintenance update: November 8, 2026.** Model choices by RAM and task, corrected setup evidence, selected release and issue states, 192GB order phases and service details: [MAINTENANCE_REVIEW_2026-11-08.md](MAINTENANCE_REVIEW_2026-11-08.md). The [November 9 broad evidence review](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md) follows this scoped update; historical measurements keep their original dates.
+### By a contributor to llama.cpp, Lemonade, OpenAI's .NET SDK and NVIDIA AICR
 
-Get a local AI model running on your AMD Strix Halo / Ryzen AI MAX+ 395 (Radeon 8060S) under Ubuntu 24.04, with settings measured on real hardware. Along the way you check a known answer and look at the GPU memory allocation that Ollama reports. Then pick the right model for your work and make it faster.
+[![Merged upstream: 19 pull requests in 13 open-source projects](https://img.shields.io/badge/merged_upstream-24292f?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI%2BPHBhdGggZmlsbD0id2hpdGUiIGQ9Ik01LjQ1IDUuMTU0QTQuMjUgNC4yNSAwIDAgMCA5LjI1IDcuNWgxLjM3OGEyLjI1MSAyLjI1MSAwIDEgMSAwIDEuNUg5LjI1QTUuNzM0IDUuNzM0IDAgMCAxIDUgNy4xMjN2My41MDVhMi4yNSAyLjI1IDAgMSAxLTEuNSAwVjUuMzcyYTIuMjUgMi4yNSAwIDEgMSAxLjk1LS4yMThaTTQuMjUgMTMuNWEuNzUuNzUgMCAxIDAgMC0xLjUuNzUuNzUgMCAwIDAgMCAxLjVabTguNS00LjVhLjc1Ljc1IDAgMSAwIDAtMS41Ljc1Ljc1IDAgMCAwIDAgMS41Wk01IDMuMjVhLjc1Ljc1IDAgMSAwIDAgLjAwNVYzLjI1WiIvPjwvc3ZnPg%3D%3D)](UPSTREAM_CONTRIBUTIONS.md)
+[![llama.cpp: pull request merged](https://img.shields.io/badge/llama.cpp-8250df?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI%2BPHBhdGggZmlsbD0id2hpdGUiIGQ9Ik01LjQ1IDUuMTU0QTQuMjUgNC4yNSAwIDAgMCA5LjI1IDcuNWgxLjM3OGEyLjI1MSAyLjI1MSAwIDEgMSAwIDEuNUg5LjI1QTUuNzM0IDUuNzM0IDAgMCAxIDUgNy4xMjN2My41MDVhMi4yNSAyLjI1IDAgMSAxLTEuNSAwVjUuMzcyYTIuMjUgMi4yNSAwIDEgMSAxLjk1LS4yMThaTTQuMjUgMTMuNWEuNzUuNzUgMCAxIDAgMC0xLjUuNzUuNzUgMCAwIDAgMCAxLjVabTguNS00LjVhLjc1Ljc1IDAgMSAwIDAtMS41Ljc1Ljc1IDAgMCAwIDAgMS41Wk01IDMuMjVhLjc1Ljc1IDAgMSAwIDAgLjAwNVYzLjI1WiIvPjwvc3ZnPg%3D%3D)](UPSTREAM_CONTRIBUTIONS.md#strix-halo-and-local-runtime-work-most-relevant-to-this-guide)
+[![Lemonade, the AMD-sponsored local AI server: pull request merged](https://img.shields.io/badge/Lemonade-8250df?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI%2BPHBhdGggZmlsbD0id2hpdGUiIGQ9Ik01LjQ1IDUuMTU0QTQuMjUgNC4yNSAwIDAgMCA5LjI1IDcuNWgxLjM3OGEyLjI1MSAyLjI1MSAwIDEgMSAwIDEuNUg5LjI1QTUuNzM0IDUuNzM0IDAgMCAxIDUgNy4xMjN2My41MDVhMi4yNSAyLjI1IDAgMSAxLTEuNSAwVjUuMzcyYTIuMjUgMi4yNSAwIDEgMSAxLjk1LS4yMThaTTQuMjUgMTMuNWEuNzUuNzUgMCAxIDAgMC0xLjUuNzUuNzUgMCAwIDAgMCAxLjVabTguNS00LjVhLjc1Ljc1IDAgMSAwIDAtMS41Ljc1Ljc1IDAgMCAwIDAgMS41Wk01IDMuMjVhLjc1Ljc1IDAgMSAwIDAgLjAwNVYzLjI1WiIvPjwvc3ZnPg%3D%3D)](https://github.com/lemonade-sdk/lemonade/pull/3004)
+[![OpenAI's official .NET SDK: 2 pull requests merged](https://img.shields.io/badge/OpenAI_.NET_SDK-8250df?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI%2BPHBhdGggZmlsbD0id2hpdGUiIGQ9Ik01LjQ1IDUuMTU0QTQuMjUgNC4yNSAwIDAgMCA5LjI1IDcuNWgxLjM3OGEyLjI1MSAyLjI1MSAwIDEgMSAwIDEuNUg5LjI1QTUuNzM0IDUuNzM0IDAgMCAxIDUgNy4xMjN2My41MDVhMi4yNSAyLjI1IDAgMSAxLTEuNSAwVjUuMzcyYTIuMjUgMi4yNSAwIDEgMSAxLjk1LS4yMThaTTQuMjUgMTMuNWEuNzUuNzUgMCAxIDAgMC0xLjUuNzUuNzUgMCAwIDAgMCAxLjVabTguNS00LjVhLjc1Ljc1IDAgMSAwIDAtMS41Ljc1Ljc1IDAgMCAwIDAgMS41Wk01IDMuMjVhLjc1Ljc1IDAgMSAwIDAgLjAwNVYzLjI1WiIvPjwvc3ZnPg%3D%3D)](https://github.com/openai/openai-dotnet/pull/1256)
+[![NVIDIA AICR: pull request merged](https://img.shields.io/badge/NVIDIA_AICR-8250df?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI%2BPHBhdGggZmlsbD0id2hpdGUiIGQ9Ik01LjQ1IDUuMTU0QTQuMjUgNC4yNSAwIDAgMCA5LjI1IDcuNWgxLjM3OGEyLjI1MSAyLjI1MSAwIDEgMSAwIDEuNUg5LjI1QTUuNzM0IDUuNzM0IDAgMCAxIDUgNy4xMjN2My41MDVhMi4yNSAyLjI1IDAgMSAxLTEuNSAwVjUuMzcyYTIuMjUgMi4yNSAwIDEgMSAxLjk1LS4yMThaTTQuMjUgMTMuNWEuNzUuNzUgMCAxIDAgMC0xLjUuNzUuNzUgMCAwIDAgMCAxLjVabTguNS00LjVhLjc1Ljc1IDAgMSAwIDAtMS41Ljc1Ljc1IDAgMCAwIDAgMS41Wk01IDMuMjVhLjc1Ljc1IDAgMSAwIDAgLjAwNVYzLjI1WiIvPjwvc3ZnPg%3D%3D)](https://github.com/NVIDIA/aicr/pull/1730)
+[![Qwen Code: 5 pull requests merged](https://img.shields.io/badge/Qwen_Code-8250df?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI%2BPHBhdGggZmlsbD0id2hpdGUiIGQ9Ik01LjQ1IDUuMTU0QTQuMjUgNC4yNSAwIDAgMCA5LjI1IDcuNWgxLjM3OGEyLjI1MSAyLjI1MSAwIDEgMSAwIDEuNUg5LjI1QTUuNzM0IDUuNzM0IDAgMCAxIDUgNy4xMjN2My41MDVhMi4yNSAyLjI1IDAgMSAxLTEuNSAwVjUuMzcyYTIuMjUgMi4yNSAwIDEgMSAxLjk1LS4yMThaTTQuMjUgMTMuNWEuNzUuNzUgMCAxIDAgMC0xLjUuNzUuNzUgMCAwIDAgMCAxLjVabTguNS00LjVhLjc1Ljc1IDAgMSAwIDAtMS41Ljc1Ljc1IDAgMCAwIDAgMS41Wk01IDMuMjVhLjc1Ljc1IDAgMSAwIDAgLjAwNVYzLjI1WiIvPjwvc3ZnPg%3D%3D)](https://github.com/QwenLM/qwen-code/pull/7258)
+[![llmfit: Strix Halo detection fix merged](https://img.shields.io/badge/llmfit-8250df?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI%2BPHBhdGggZmlsbD0id2hpdGUiIGQ9Ik01LjQ1IDUuMTU0QTQuMjUgNC4yNSAwIDAgMCA5LjI1IDcuNWgxLjM3OGEyLjI1MSAyLjI1MSAwIDEgMSAwIDEuNUg5LjI1QTUuNzM0IDUuNzM0IDAgMCAxIDUgNy4xMjN2My41MDVhMi4yNSAyLjI1IDAgMSAxLTEuNSAwVjUuMzcyYTIuMjUgMi4yNSAwIDEgMSAxLjk1LS4yMThaTTQuMjUgMTMuNWEuNzUuNzUgMCAxIDAgMC0xLjUuNzUuNzUgMCAwIDAgMCAxLjVabTguNS00LjVhLjc1Ljc1IDAgMSAwIDAtMS41Ljc1Ljc1IDAgMCAwIDAgMS41Wk01IDMuMjVhLjc1Ljc1IDAgMSAwIDAgLjAwNVYzLjI1WiIvPjwvc3ZnPg%3D%3D)](https://github.com/AlexsJones/llmfit/pull/842)
+[![whichllm: Strix Halo detection fix merged](https://img.shields.io/badge/whichllm-8250df?style=for-the-badge&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiI%2BPHBhdGggZmlsbD0id2hpdGUiIGQ9Ik01LjQ1IDUuMTU0QTQuMjUgNC4yNSAwIDAgMCA5LjI1IDcuNWgxLjM3OGEyLjI1MSAyLjI1MSAwIDEgMSAwIDEuNUg5LjI1QTUuNzM0IDUuNzM0IDAgMCAxIDUgNy4xMjN2My41MDVhMi4yNSAyLjI1IDAgMSAxLTEuNSAwVjUuMzcyYTIuMjUgMi4yNSAwIDEgMSAxLjk1LS4yMThaTTQuMjUgMTMuNWEuNzUuNzUgMCAxIDAgMC0xLjUuNzUuNzUgMCAwIDAgMCAxLjVabTguNS00LjVhLjc1Ljc1IDAgMSAwIDAtMS41Ljc1Ljc1IDAgMCAwIDAgMS41Wk01IDMuMjVhLjc1Ljc1IDAgMSAwIDAgLjAwNVYzLjI1WiIvPjwvc3ZnPg%3D%3D)](https://github.com/Andyyyy64/whichllm/pull/154)
 
-**Start here → [Get local AI running, step by step](LOCAL_CHAT_START.md)** · Ubuntu 24.04 · 128GB-class systems · from BIOS to your first answer and a GPU check, then chat in your browser if you want it.
+[![AMD Ryzen AI MAX+ 395](https://img.shields.io/badge/AMD-Ryzen_AI_MAX+_395-ED1C24?style=for-the-badge&logo=amd&logoColor=white)](#strix-halo-specs)
+[![Primary test system: 128GB unified memory](https://img.shields.io/badge/128GB-unified_memory-blue?style=for-the-badge)](#strix-halo-specs)
+[![Results from 13 Strix Halo systems or independent sources](https://img.shields.io/badge/13_systems%2Fsources-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
+[![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=for-the-badge)](https://github.com/hogeheer499-commits/strix-halo-guide/stargazers)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
 
-Built on [real-world results from 10 Strix Halo systems plus 3 independent sources](SYSTEM_EVIDENCE_MATRIX.md), with measured settings, model comparisons and documented fixes.
+**Runs models up to 284B on one 128GB mini PC**, measured on a Beelink GTR9 Pro, with results from [13 systems and sources](SYSTEM_EVIDENCE_MATRIX.md). [Raw logs and caveats](#headline-evidence).
 
-**Setup status:** GPU answers and browser chat passed an isolated hardware check on October 15. A complete run on a freshly installed Strix Halo is not yet verified; [see what has been checked](LOCAL_CHAT_START.md#version-and-security-status).
+Independent guide, not endorsed by AMD, any OEM or the projects named above.
+
+## Quick Start (6 Steps)
+
+Run a local LLM on the GPU of a 128GB AMD Strix Halo / Ryzen AI MAX+ 395 (Radeon 8060S) with Ubuntu 24.04, Ollama and Vulkan/RADV.
+
+1. **BIOS:** set the UMA frame buffer to 512MB if offered, otherwise the lowest value your vendor allows (often 2GB). Leave IOMMU enabled/default.
+2. **Ubuntu:** install Ubuntu 24.04 LTS directly on the hardware.
+3. **Install:** run the [setup script](#setup-script) below. It adds the 128GB boot parameters `amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0`, upgrades Mesa/RADV and configures Ollama for Vulkan with `OLLAMA_VULKAN=1`, `OLLAMA_IGPU_ENABLE=1` and `HIP_VISIBLE_DEVICES=-1`.
+4. **Reboot** when the script prints `REBOOT REQUIRED`.
+5. **Check:** the boot check and the known-answer check must both end in `PASS`.
+6. **Chat:** run `ollama run qwen3.6:35b-a3b`, then confirm that `ollama ps` shows `100% GPU`.
+
+Another memory size (64/96/192GB)? The 128GB values do not carry over: use the [manual route](#phase-1-bios-configuration) and its [memory section](#step-32-configure-grub-boot-parameters). On Windows: the [Windows route](WINDOWS_START.md).
+
+## Setup Script
+
+> [!IMPORTANT]
+> - **128GB-class systems on Ubuntu 24.04 only.** The script stops on any other OS, and when Linux sees less than 120GiB or more than about 136GiB of RAM.
+> - **Read [`setup.sh`](setup.sh) first.** It edits GRUB, adds the kisak Mesa PPA, runs `apt upgrade -y` and, on a machine without Ollama, installs Ollama 0.31.2, which has [published security advisories](SECURITY.md#security-status-of-pinned-components).
+> - **No automatic rollback.** It is not a transactional installer: if it stops halfway, the changes made so far stay in place. Back up first and check [what you need](LOCAL_CHAT_START.md#before-you-install).
+> - **Not yet verified on a fresh install.** Fresh-install hardware qualification is pending. GPU answers and browser chat passed an isolated hardware check on October 15, 2026: [what has been checked](LOCAL_CHAT_START.md#version-and-security-status).
+
+**Step 3: install.** Run this as your normal user, not as root. It stops at the first command that fails:
+
+```bash
+sudo apt update &&
+sudo apt install -y git curl python3 zstd software-properties-common &&
+cd "$HOME" &&
+git clone https://github.com/hogeheer499-commits/strix-halo-guide &&
+cd "$HOME/strix-halo-guide" &&
+bash setup.sh
+```
+
+**Steps 4 to 6: reboot, check, chat.** Reboot if the script printed `REBOOT REQUIRED`, then run:
+
+```bash
+cd "$HOME/strix-halo-guide" &&
+python3 scripts/check_local_ai.py boot &&
+python3 scripts/check_local_ai.py answer &&
+OLLAMA_HOST=http://127.0.0.1:11434 ollama run qwen3.6:35b-a3b
+```
+
+**Good:** both checks end in `PASS` and the model answers your question. Type `/bye` to leave the chat, then check the GPU:
+
+```bash
+OLLAMA_HOST=http://127.0.0.1:11434 ollama ps
+```
+
+It should show `100% GPU`. An empty list means the model has already unloaded: run the chat once more and check again right away. `CPU` or a CPU/GPU mix means this check has not passed: see [CPU fallback](#troubleshooting).
+
+**Keep Ollama local.** It has no password. The script binds it to `127.0.0.1` and the answer check confirms that.
+
+**Working?** Choose a [model for your RAM and task](docs/models.md#what-can-i-run-with-my-ram) or add [browser chat](LOCAL_CHAT_START.md#2-optional-browser-ui-linux-docker-engine). **Stuck?** Stop at the first error and use [If a step fails](LOCAL_CHAT_START.md#if-a-step-fails); [Get local AI running, step by step](LOCAL_CHAT_START.md) shows what every step should print.
+
+Existing installations, version pinning, the `curl | bash` route and how to undo the changes: [Setup Script Details](#setup-script-details).
 
 ## What This Gives You
 
@@ -27,127 +93,6 @@ Built on [real-world results from 10 Strix Halo systems plus 3 independent sourc
 
 Also: [website](https://strixhaloguide.com/) · [Qwen3.8](QWEN38_STRIX_HALO.md) · [reproduce a result](REPRODUCIBILITY.md) · [vendor/reviewer brief](ONE_PAGE_BRIEF.md).
 
-## Quick Start (6 Steps)
-
-New here? Use the [complete start route](LOCAL_CHAT_START.md): it has the
-commands, what each one should print, and what to do when it does not. The six
-points below are the short overview for anyone who wants to do, or understand,
-each step by hand:
-
-1. **BIOS:** use UMA 512MB if available, or the vendor minimum such as 2GB. Leave IOMMU enabled/default; the desktop benchmark alternative has [suspend/NPU caveats](#step-12-choose-the-iommu-policy).
-2. **OS:** install Ubuntu 24.04 LTS. X11 is needed only by desktop tools that require it.
-3. **Memory:** the recorded 128GB profile uses `amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0`. Do not reuse these limits on 64/96/192GB systems; see [the manual memory section](#step-32-configure-grub-boot-parameters).
-4. **Drivers:** use Mesa/RADV and preserve the existing power policy by default. `tuned` is an opt-in reproduction profile.
-5. **Ollama:** the setup script does steps 3–5 for you on the 128GB-class profile. It sets `OLLAMA_VULKAN=1`, `OLLAMA_IGPU_ENABLE=1` and `HIP_VISIBLE_DEVICES=-1`; reboot first if it asks you to.
-6. **Check:** chat with the model using `ollama run qwen3.6:35b-a3b`, then run the [known-answer, GPU and loopback-listener checks](LOCAL_CHAT_START.md#step-5-get-your-first-answer-and-check-a-known-task) from the start route. The historical 0.31.2 row reached about 60 generation t/s; that is an indication, not a promise for today's model tag. Single-digit t/s on this model is a reason to check for [CPU fallback](#troubleshooting).
-
-Further down, the phases explain each change in detail for anyone who wants to
-inspect or reproduce it by hand. For another model, use
-[Best Known Profiles](BEST_KNOWN_PROFILES.md); the
-[Qwen3.8 decision](QWEN38_STRIX_HALO.md) has its own runtime and context boundaries.
-
-## Setup Script
-
-**Scope before running:** this automatic route is for 128GB-class systems with
-at least 120GiB visible RAM on Ubuntu 24.04. It is not a general 64GB/96GB
-installer, and it stops above about 136GiB visible RAM: 192GB-class systems
-(for example Ryzen AI Max+ PRO 495) are not qualified, so do not reuse the 128GB
-values there. The check reads OS-visible RAM only, so a 192GB system with a
-large BIOS UMA reserve can still pass it; confirm your installed memory first.
-Ubuntu 26.04 is **not qualified** by this guide; the script stops on any OS
-other than Ubuntu 24.04 unless you deliberately pass
-`STRIX_HALO_ALLOW_UNQUALIFIED_OS=1` to it (for example
-`STRIX_HALO_ALLOW_UNQUALIFIED_OS=1 bash setup.sh`). Configuration
-handling has offline fixture coverage; the revised script's fresh-install and
-upgrade paths still need hardware qualification. Review the script and existing
-configuration first: a later conflict can stop a partially completed run; this
-is not a transactional installer with a complete automatic rollback.
-
-If `/etc/default/grub.d/` contains any `*.cfg` files, the script stops before
-changing the system and asks for manual review. These files can override the
-boot settings it writes. This conservative check also stops for harmless
-fragments; keep them and use the [manual boot-settings reference](#step-32-configure-grub-boot-parameters).
-
-**Existing-user result, September 19:** [the scoped qualification](RUNTIME_QUALIFICATION_2026-09-19.md)
-passed text, separate-model image, executed tools and pinned WebUI on the
-existing Ollama 0.32.15 service after restart. The historical fresh-install
-reboot pin stays 0.31.2; isolated 0.34.2 is useful but not default. These tests
-are not a new clean-install or full-host-reboot qualification.
-
-Fresh installations request **Ollama 0.31.2**, the reboot-qualified runtime.
-An existing installation is retained, with its version reported; it is not
-automatically downgraded. Set `OLLAMA_VERSION` explicitly to test another
-release. This pins only the requested runtime: model tags, Mesa and other
-packages can change, so record the actual stack and complete the reboot/GPU
-checks before comparing with a measured profile. See
-[Ollama version selection](https://docs.ollama.com/linux#installing-specific-versions).
-
-**Before you change anything:** the [complete start route](LOCAL_CHAT_START.md)
-walks through the prerequisites, disk checks, the expected output of each step
-and help when something fails. The script edits GRUB, adds the kisak Mesa PPA
-and runs a full `apt upgrade -y`; the [manual undo table](#undo-the-setup-script)
-is untested on hardware. Ollama has no password, so keep its API on loopback.
-Published advisories include the historical 0.31.2 pin; read the
-[security status](SECURITY.md#security-status-of-pinned-components). If you
-already have a working setup, back it up and test the restore before running
-the script.
-
-If you've already set your BIOS (UMA = 512MB if available, or 2GB if that is your vendor minimum; leave IOMMU enabled/default unless you deliberately choose the desktop benchmark profile) and installed Ubuntu 24.04:
-
-```bash
-git clone https://github.com/hogeheer499-commits/strix-halo-guide
-cd strix-halo-guide
-bash setup.sh
-```
-
-Both the `git clone` route above and the `curl | bash` route below run the
-unpinned `main` branch, which has not been fresh-install qualified on hardware.
-For a reproducible run, review the script and pin it to a tag or commit you have
-reviewed (`git checkout <tag-or-commit>` before `bash setup.sh`, or replace
-`main` in the raw URL with that commit). No tag is currently marked as
-fresh-install qualified for the revised script.
-
-Inspect the script first with `less setup.sh` before running it: it edits GRUB boot parameters, adds the kisak Mesa PPA, and runs a full `apt upgrade`.
-
-For unattended copy/paste installs, the same script can also be run as:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/setup.sh | bash
-```
-
-This also adds the kisak Mesa PPA and runs a full `apt upgrade -y`, and it
-fetches unpinned `main` (see the pinning note above).
-
-This installs the Linux-side Vulkan/RADV + Ollama path, configures Ollama for Vulkan, pulls a model, and prepares a verification benchmark. If the script changes boot parameters, reboot first and then run `bash ~/bench-ollama.sh`.
-
-### Undo the setup script
-
-> **Untested on hardware:** these manual reversal steps have not been run on the
-> test system. Review each one against your own configuration first, and only
-> undo what the script actually changed on your machine.
-
-| Change made by `setup.sh` | Manual reversal |
-|---|---|
-| Added `amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0` to `GRUB_CMDLINE_LINUX_DEFAULT` | `sudoedit /etc/default/grub`, remove only those parameters, run `sudo update-grub`, reboot and check `/proc/cmdline` |
-| Installed `/etc/systemd/system/ollama.service.d/60-strix-halo-guide.conf` | `sudo rm /etc/systemd/system/ollama.service.d/60-strix-halo-guide.conf`, then `sudo systemctl daemon-reload` and `sudo systemctl restart ollama` |
-| Added `ppa:kisak/kisak-mesa` and ran `apt upgrade -y` | `sudo apt install ppa-purge && sudo ppa-purge ppa:kisak/kisak-mesa` (downgrades the PPA packages to Ubuntu's versions); other packages upgraded by `apt upgrade` are not reverted |
-| Added your user to `render` and/or `video` | Only if the script added them: `sudo gpasswd -d "$USER" render` / `video`, then log out and back in |
-| Wrote `~/bench-ollama.sh` | `rm ~/bench-ollama.sh` |
-| Pulled `qwen3.6:35b-a3b` | `ollama rm qwen3.6:35b-a3b` |
-| Installed Ollama (fresh installs only) and `vulkan-tools` if missing | Follow [Ollama's Linux uninstall steps](https://docs.ollama.com/linux#uninstall); `sudo apt remove vulkan-tools` |
-| With `POWER_POLICY=tuned` only: installed/enabled `tuned` | `sudo systemctl disable --now tuned`, then restore your previous power manager |
-
-![AMD](https://img.shields.io/badge/AMD-Ryzen_AI_MAX+_395-ED1C24?style=for-the-badge&logo=amd&logoColor=white)
-![Speed](https://img.shields.io/badge/direct_30B_Qwen-100.0_t/s-brightgreen?style=for-the-badge)
-![Small MoE](https://img.shields.io/badge/small_MoE-170.0_t/s-brightgreen?style=for-the-badge)
-![284B](https://img.shields.io/badge/direct_284B_GGUF-13.3_t/s-0ea5e9?style=for-the-badge)
-![MTP](https://img.shields.io/badge/MTP_server-101--141_t/s_experimental-7c3aed?style=for-the-badge)
-[![Community](https://img.shields.io/badge/community-10_benchmark_contributors_13_systems%2Fsources-success?style=for-the-badge)](COMMUNITY_RESULTS.md)
-![RAM](https://img.shields.io/badge/128GB_unified-blue?style=for-the-badge)
-![GitHub stars](https://img.shields.io/github/stars/hogeheer499-commits/strix-halo-guide?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
-[![Validate](https://img.shields.io/github/actions/workflow/status/hogeheer499-commits/strix-halo-guide/validate.yml?branch=main&label=validate&style=for-the-badge)](https://github.com/hogeheer499-commits/strix-halo-guide/actions/workflows/validate.yml)
-
 ## Use This Guide If
 
 - You own, ordered, review, sell, or are evaluating a Strix Halo / Ryzen AI MAX system for local AI.
@@ -161,23 +106,6 @@ Covers BIOS config, Ubuntu 24.04/kernel setup, Ollama, `llama.cpp` Vulkan/RADV, 
 AMD now publicly frames Ryzen AI Halo-class systems as a local-AI and developer-platform direction. This repository is the independent practical layer: copyable setup, measured rows, raw evidence, failures, and community reproductions. It is not official AMD or OEM endorsement. See [`RYZEN_AI_HALO_CONTEXT.md`](RYZEN_AI_HALO_CONTEXT.md).
 
 Project website: <https://strixhaloguide.com/>. This GitHub repository remains the source of truth for setup commands, benchmark claims, and raw evidence.
-
-Maintainer credibility is public and reviewable: 15 merged engineering PRs across 10 upstream projects, including [`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), the AMD-sponsored open-source Lemonade local-AI server, a Strix Halo detection fix in llmfit, OpenAI's official .NET SDK, and Kubernetes SIG inference-perf, plus 3 merged listing/docs PRs (counts reconciled 2026-09-13). See [`UPSTREAM_CONTRIBUTIONS.md`](UPSTREAM_CONTRIBUTIONS.md) for every PR link, its scope, and honest boundaries. Upstream acceptance strengthens confidence in the engineering process; it does not replace the raw evidence required for each benchmark claim.
-
-**Current evidence state — November 9, 2026 review:** Qwen3.8 27B is
-measured through the official Ollama route, labelled as Ollama-default MTP drafting; a matched
-control on Ollama 0.32.15 (2026-09-26) measured 12.89 t/s without drafting versus 22.71 t/s with
-default MTP. See [the active-evidence review](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md); the
-[September 26 review](ACTIVE_EVIDENCE_REVIEW_2026-09-26.md) keeps its original wording. The August 30 b10687 Vulkan sentinel and Flash-Next
-scout are indexed with their own stack and caveats; see
-[the measured update](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout).
-The [November 9 availability check](ROCM_VLLM_BUGWATCH.md#november-9-2026-broad-recheck)
-records Ollama 0.40.15, `llama.cpp` v0.9.0 and numbered prerelease b12211 as
-available, not measured or qualified here. The [security recheck](SECURITY.md#november-9-2026-recheck)
-adds published reports affecting older pins, including Ollama's pull API and
-llama.cpp parser/GGUF/RPC paths. Storefront blocks and advisory-feed limits are
-explicit in the review. The
-machine-readable freshness record is [`data/public_state.json`](data/public_state.json).
 
 What you get:
 
@@ -196,12 +124,36 @@ Halo owners find it; a reproducible result or correction helps even more.
 
 | Need | Source of truth |
 | --- | --- |
-| Full beginner route | [Install, check the result and fix errors](LOCAL_CHAT_START.md); [manual reference](#quick-start-6-steps) |
+| Full beginner route | [Install, check the result and fix errors](LOCAL_CHAT_START.md); [manual reference](#phase-1-bios-configuration) |
 | Current Qwen3.8 decision | [`QWEN38_STRIX_HALO.md`](QWEN38_STRIX_HALO.md) and [`data/qwen38_route_matrix.csv`](data/qwen38_route_matrix.csv) |
 | Known-good workload profiles | [`BEST_KNOWN_PROFILES.md`](BEST_KNOWN_PROFILES.md) and [`data/best_known_profiles.csv`](data/best_known_profiles.csv) |
 | Auditable benchmark claims | [Headline Evidence](#headline-evidence), [`data/headline_claims.csv`](data/headline_claims.csv), and [`data/raw/`](data/raw/) |
 | Cross-OEM buyer evidence | [`SYSTEM_EVIDENCE_MATRIX.md`](SYSTEM_EVIDENCE_MATRIX.md), [`COMMUNITY_RESULTS.md`](COMMUNITY_RESULTS.md), and [`BUYER_PATH_VALIDATION.md`](BUYER_PATH_VALIDATION.md) |
 | Current blockers and test priorities | [`CURRENT_MODELS.md`](CURRENT_MODELS.md), [`ROCM_VLLM_BUGWATCH.md`](ROCM_VLLM_BUGWATCH.md), and [`data/current_test_queue.csv`](data/current_test_queue.csv) |
+
+## Maintenance And Evidence Status
+
+[![Date of the last broad evidence review](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhogeheer499-commits%2Fstrix-halo-guide%2Fmain%2Fdata%2Fpublic_state.json&query=%24.evidence_reviewed&label=evidence%20reviewed&color=0ea5e9&style=flat)](#maintenance-and-evidence-status)
+[![Validate](https://img.shields.io/github/actions/workflow/status/hogeheer499-commits/strix-halo-guide/validate.yml?branch=main&label=validate&style=flat)](https://github.com/hogeheer499-commits/strix-halo-guide/actions/workflows/validate.yml)
+
+**Maintenance update: November 8, 2026.** Model choices by RAM and task, corrected setup evidence, selected release and issue states, 192GB order phases and service details: [MAINTENANCE_REVIEW_2026-11-08.md](MAINTENANCE_REVIEW_2026-11-08.md). The [November 9 broad evidence review](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md) follows this scoped update; historical measurements keep their original dates.
+
+**Current evidence state, November 9, 2026 review:** Qwen3.8 27B is
+measured through the official Ollama route, labelled as Ollama-default MTP drafting; a matched
+control on Ollama 0.32.15 (2026-09-26) measured 12.89 t/s without drafting versus 22.71 t/s with
+default MTP. See [the active-evidence review](ACTIVE_EVIDENCE_REVIEW_2026-11-09.md); the
+[September 26 review](ACTIVE_EVIDENCE_REVIEW_2026-09-26.md) keeps its original wording. The August 30 b10687 Vulkan sentinel and Flash-Next
+scout are indexed with their own stack and caveats; see
+[the measured update](BENCHMARKS.md#2026-08-30-vulkan-sentinel-and-flash-next-scout).
+The [November 9 availability check](ROCM_VLLM_BUGWATCH.md#november-9-2026-broad-recheck)
+records Ollama 0.40.15, `llama.cpp` v0.9.0 and numbered prerelease b12211 as
+available, not measured or qualified here. The [security recheck](SECURITY.md#november-9-2026-recheck)
+adds published reports affecting older pins, including Ollama's pull API and
+llama.cpp parser/GGUF/RPC paths. Storefront blocks and advisory-feed limits are
+explicit in the review. The
+machine-readable freshness record is [`data/public_state.json`](data/public_state.json).
+
+Older changes are in the [Changelog](#changelog).
 
 ## 20-Second Summary
 
@@ -470,11 +422,12 @@ All first-party numbers come from one Beelink GTR9 Pro with 128GB; community row
 
 ## Table of Contents
 
+- [Quick Start (6 Steps)](#quick-start-6-steps)
+- [Setup Script](#setup-script)
 - [20-Second Summary](#20-second-summary)
 - [Use This Guide If](#use-this-guide-if)
-- [Quick Start (6 Steps)](#quick-start-6-steps)
+- [Maintenance And Evidence Status](#maintenance-and-evidence-status)
 - [Qwen3.8 On Strix Halo](QWEN38_STRIX_HALO.md)
-- [Setup Script](#setup-script)
 - [What You Can Run: Quick Snapshot](#what-you-can-run-quick-snapshot)
 - [Use This If You Want](#use-this-if-you-want)
 - [Community-Tested Rules Of Thumb](#community-tested-rules-of-thumb)
@@ -499,6 +452,7 @@ All first-party numbers come from one Beelink GTR9 Pro with 128GB; community row
   - [Long Context Performance](#long-context-performance)
 - [Backend Decision Guide](#backend-decision-guide)
 - [Server Shootout](SERVER_SHOOTOUT.md)
+- [Setup Script Details](#setup-script-details)
 - [Phase 1: BIOS Configuration](#phase-1-bios-configuration)
 - [Phase 2: Ubuntu 24.04 Installation](#phase-2-ubuntu-2404-installation)
 - [Phase 3: Kernel Configuration](#phase-3-kernel-configuration)
@@ -1046,6 +1000,93 @@ ROCm 7.x/10.0; do not use it as current build guidance.
 | Long context or a specific workload | The matching measured route in [`BEST_KNOWN_PROFILES.md`](BEST_KNOWN_PROFILES.md) | Per-workload routes with caveats instead of stale one-line advice. |
 
 Note: an earlier version of this diagram recommended the rocWMMA-tuned ROCm branch for long context. That route measured a 73% regression on ROCm 7.2 and failed to load current Qwen3.6 GGUFs here — see [Things That DON'T Work](#things-that-dont-work-dont-waste-your-time) before copying it.
+
+## Setup Script Details
+
+The short version is in [Setup Script](#setup-script). This section keeps the full scope, version pinning, the unattended `curl | bash` route and how to undo the changes.
+
+**Scope before running:** this automatic route is for 128GB-class systems with
+at least 120GiB visible RAM on Ubuntu 24.04. It is not a general 64GB/96GB
+installer, and it stops above about 136GiB visible RAM: 192GB-class systems
+(for example Ryzen AI Max+ PRO 495) are not qualified, so do not reuse the 128GB
+values there. The check reads OS-visible RAM only, so a 192GB system with a
+large BIOS UMA reserve can still pass it; confirm your installed memory first.
+Ubuntu 26.04 is **not qualified** by this guide; the script stops on any OS
+other than Ubuntu 24.04 unless you deliberately pass
+`STRIX_HALO_ALLOW_UNQUALIFIED_OS=1` to it (for example
+`STRIX_HALO_ALLOW_UNQUALIFIED_OS=1 bash setup.sh`). Configuration
+handling has offline fixture coverage; the revised script's fresh-install and
+upgrade paths still need hardware qualification. Review the script and existing
+configuration first: a later conflict can stop a partially completed run; this
+is not a transactional installer with a complete automatic rollback.
+
+If `/etc/default/grub.d/` contains any `*.cfg` files, the script stops before
+changing the system and asks for manual review. These files can override the
+boot settings it writes. This conservative check also stops for harmless
+fragments; keep them and use the [manual boot-settings reference](#step-32-configure-grub-boot-parameters).
+
+**Existing-user result, September 19:** [the scoped qualification](RUNTIME_QUALIFICATION_2026-09-19.md)
+passed text, separate-model image, executed tools and pinned WebUI on the
+existing Ollama 0.32.15 service after restart. The historical fresh-install
+reboot pin stays 0.31.2; isolated 0.34.2 is useful but not default. These tests
+are not a new clean-install or full-host-reboot qualification.
+
+Fresh installations request **Ollama 0.31.2**, the reboot-qualified runtime.
+An existing installation is retained, with its version reported; it is not
+automatically downgraded. Set `OLLAMA_VERSION` explicitly to test another
+release. This pins only the requested runtime: model tags, Mesa and other
+packages can change, so record the actual stack and complete the reboot/GPU
+checks before comparing with a measured profile. See
+[Ollama version selection](https://docs.ollama.com/linux#installing-specific-versions).
+
+**Before you change anything:** the [complete start route](LOCAL_CHAT_START.md)
+walks through the prerequisites, disk checks, the expected output of each step
+and help when something fails. The script edits GRUB, adds the kisak Mesa PPA
+and runs a full `apt upgrade -y`; the [manual undo table](#undo-the-setup-script)
+is untested on hardware. Ollama has no password, so keep its API on loopback.
+Published advisories include the historical 0.31.2 pin; read the
+[security status](SECURITY.md#security-status-of-pinned-components). If you
+already have a working setup, back it up and test the restore before running
+the script.
+
+Both the `git clone` route in [Setup Script](#setup-script) and the `curl | bash` route below run the
+unpinned `main` branch, which has not been fresh-install qualified on hardware.
+For a reproducible run, review the script and pin it to a tag or commit you have
+reviewed (`git checkout <tag-or-commit>` before `bash setup.sh`, or replace
+`main` in the raw URL with that commit). No tag is currently marked as
+fresh-install qualified for the revised script.
+
+Inspect the script first with `less setup.sh` before running it: it edits GRUB boot parameters, adds the kisak Mesa PPA, and runs a full `apt upgrade`.
+
+For unattended copy/paste installs, the same script can also be run as:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/hogeheer499-commits/strix-halo-guide/main/setup.sh | bash
+```
+
+This also adds the kisak Mesa PPA and runs a full `apt upgrade -y`, and it
+fetches unpinned `main` (see the pinning note above). Install the tools from the
+`apt install` line in [Setup Script](#setup-script) first; if a required tool is
+missing, the script stops before it changes anything.
+
+This installs the Linux-side Vulkan/RADV + Ollama path, configures Ollama for Vulkan, pulls a model, and prepares a verification benchmark. If the script changes boot parameters, reboot first and then run `bash ~/bench-ollama.sh`.
+
+### Undo the setup script
+
+> **Untested on hardware:** these manual reversal steps have not been run on the
+> test system. Review each one against your own configuration first, and only
+> undo what the script actually changed on your machine.
+
+| Change made by `setup.sh` | Manual reversal |
+|---|---|
+| Added `amdgpu.gttsize=131072 ttm.pages_limit=31457280 amdgpu.cwsr_enable=0` to `GRUB_CMDLINE_LINUX_DEFAULT` | `sudoedit /etc/default/grub`, remove only those parameters, run `sudo update-grub`, reboot and check `/proc/cmdline` |
+| Installed `/etc/systemd/system/ollama.service.d/60-strix-halo-guide.conf` | `sudo rm /etc/systemd/system/ollama.service.d/60-strix-halo-guide.conf`, then `sudo systemctl daemon-reload` and `sudo systemctl restart ollama` |
+| Added `ppa:kisak/kisak-mesa` and ran `apt upgrade -y` | `sudo apt install ppa-purge && sudo ppa-purge ppa:kisak/kisak-mesa` (downgrades the PPA packages to Ubuntu's versions); other packages upgraded by `apt upgrade` are not reverted |
+| Added your user to `render` and/or `video` | Only if the script added them: `sudo gpasswd -d "$USER" render` / `video`, then log out and back in |
+| Wrote `~/bench-ollama.sh` | `rm ~/bench-ollama.sh` |
+| Pulled `qwen3.6:35b-a3b` | `ollama rm qwen3.6:35b-a3b` |
+| Installed Ollama (fresh installs only) and `vulkan-tools` if missing | Follow [Ollama's Linux uninstall steps](https://docs.ollama.com/linux#uninstall); `sudo apt remove vulkan-tools` |
+| With `POWER_POLICY=tuned` only: installed/enabled `tuned` | `sudo systemctl disable --now tuned`, then restore your previous power manager |
 
 ## Phase 1: BIOS Configuration
 

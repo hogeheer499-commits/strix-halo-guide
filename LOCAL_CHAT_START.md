@@ -12,7 +12,7 @@ if you want, a chat window in your browser.
 machine with **128GB installed**, showing 120–136GiB to Linux, with **Ubuntu 24.04**
 installed directly on the hardware. A larger machine that reserves memory in the
 BIOS can show the same amount and is still not covered. For another memory size,
-Windows or another operating system, use the [manual reference](README.md#quick-start-6-steps)
+Windows or another operating system, use the [manual reference](README.md#phase-1-bios-configuration)
 or the [Windows route](WINDOWS_START.md); each has its own checks.
 
 Where this route stands: the current setup script has **not yet been run from

@@ -66,11 +66,11 @@ Claims are linked to public commands, CSVs, raw logs, charts, corrections, and
 failed routes instead of relying on screenshots or vendor marketing. Community
 results remain separate from the primary Beelink measurements.
 
-The maintainer also has 15 merged engineering PRs across 10 projects, including
+The maintainer also has 19 merged engineering PRs across 13 projects, including
 [`llama.cpp`](https://github.com/ggml-org/llama.cpp/pull/25643), the AMD-sponsored
 open-source Lemonade local-AI server, a Strix Halo detection fix in llmfit,
 OpenAI's official .NET SDK, and Kubernetes SIG inference-perf, plus 3 merged
-listing/docs PRs (counts reconciled 2026-09-13). The
+listing/docs PRs (counts reconciled 2026-11-09). The
 [upstream contribution record](https://github.com/hogeheer499-commits/strix-halo-guide/blob/main/UPSTREAM_CONTRIBUTIONS.md)
 links every relevant PR and explains what each merge does and does not prove.
 The `llama.cpp` change is preset/router maintenance, not a Strix Halo

@@ -4,10 +4,11 @@ This page records accepted upstream work by the maintainer of `strix-halo-guide`
 It is a verification page, not an endorsement claim: each entry links to the
 upstream pull request, review history, tests, and merge record.
 
-Entry-count reconciliation: 2026-09-13. Merged pull requests listed: 18 across 13 external
-projects, plus one contribution under active upstream review. Split: 15 merged
-engineering PRs across 10 projects, plus 3 listing/docs PRs across 3 projects
+Entry-count reconciliation: 2026-11-09. Merged pull requests listed: 22 across 16 external
+projects, plus one contribution under active upstream review. Split: 19 merged
+engineering PRs across 13 projects, plus 3 listing/docs PRs across 3 projects
 (see [External Adoption Of This Guide](#external-adoption-of-this-guide)).
+Pull requests in the maintainer's own repositories are not counted.
 
 ## Why This Matters
 
@@ -33,6 +34,7 @@ their own raw evidence and reproduction path.
 |---|---|---|
 | `lemonade-sdk/lemonade` (AMD-sponsored open-source local-AI server) | [`#3004 fix: honor custom backend binary environment variables`](https://github.com/lemonade-sdk/lemonade/pull/3004), merged 2026-08-11 | Makes backend configuration, runtime, and status behavior consistent when custom backend binaries are configured, with substantive reviewer feedback addressed. Lemonade is the ROCm runtime route used in this guide's concurrency and NPU evidence. |
 | `AlexsJones/llmfit` | [`#842 fix: resolve generic AMD/ATI Strix Halo identity`](https://github.com/AlexsJones/llmfit/pull/842), merged 2026-08-09 | Fixes hardware identification for Strix Halo systems in a model-fit tool, so fit recommendations stop treating the Radeon 8060S as a generic AMD/ATI device. Directly about this platform. |
+| `Andyyyy64/whichllm` | [`#154 fix: detect Strix Halo by AMD PCI id`](https://github.com/Andyyyy64/whichllm/pull/154), merged 2026-10-03 | Maps the Strix Halo PCI device ID so the tool stops reporting the GPU as an unnamed device with 512 MB of dedicated memory and applies its existing shared-memory logic instead. Reproduced on this guide's Beelink GTR9 Pro; regression tests cover both Linux probe paths. The project maintainer changed the reported name to the SKU-neutral `Strix Halo [Radeon Graphics]` before merging. Directly about this platform. |
 | `ggml-org/llama.cpp` | [`#25643 common: skip empty implicit default preset`](https://github.com/ggml-org/llama.cpp/pull/25643), merged 2026-07-25 | Fixes an INI preset/router edge case while preserving real default presets, named presets, and global settings. The PR includes a successful `llama-server` build, focused router-mode checks, and two upstream approvals. `llama.cpp` is a core runtime used throughout this guide. This is runtime-maintenance evidence, not a Strix Halo performance patch. |
 | `mudler/LocalAI` | [`#10783 fix(ds4): bundle transitive runtime dependencies`](https://github.com/mudler/LocalAI/pull/10783), merged 2026-07-11 | Makes the DS4 backend package self-contained, validates packaged loader resolution, and prevents builder-host dependencies from hiding a broken release artifact. This is directly relevant to reliable local-AI packaging and deployment. |
 | `vllm-project/vllm-gguf-plugin` | [`#86 document tested GGUF model coverage`](https://github.com/vllm-project/vllm-gguf-plugin/pull/86), merged 2026-07-20 | Documents model families and quantizations exercised by upstream generation tests while explicitly avoiding a false compatibility allowlist. This supports the same claim-hygiene approach used in this guide. |
@@ -44,6 +46,8 @@ their own raw evidence and reproduction path.
 | `openai/openai-dotnet` (official OpenAI .NET SDK) | [`#1256 Add Responses reasoning context support`](https://github.com/openai/openai-dotnet/pull/1256), merged 2026-08-14 | Adds reasoning-context support through the full SDK chain: specification, generated models, serialization, public API, and tests. Two approvals; 1,578 tests passing. |
 | `openai/openai-dotnet` | [`#1255 Fix conversation include query serialization`](https://github.com/openai/openai-dotnet/pull/1255), merged 2026-07-28 | Fixes query serialization for conversation `include` parameters in the official SDK. |
 | `kubernetes-sigs/inference-perf` | [`#613 Let the finite timer stop zero-worker load generation`](https://github.com/kubernetes-sigs/inference-perf/pull/613), merged 2026-08-18 | Reproduces a real load-generation fault, adds a regression test, and passes the 435-test suite. Inference-perf is a Kubernetes SIG benchmarking tool for LLM serving, which is the same problem space as this guide's concurrency evidence. |
+
+| `ray-project/ray` | [`#64738 [Autoscaler][AWS] Retry key pair creation after duplicate`](https://github.com/ray-project/ray/pull/64738), merged 2026-08-24 | Fixes a race where two concurrent `ray up` runs pick the same EC2 key-pair name and one aborts. Only the duplicate-name error is retried; other errors still surface. Includes a regression test that reproduces the race. Ray is general AI compute infrastructure; the fix is in its AWS autoscaler and is not a Strix Halo change. |
 
 Precise wording for the SDK entries: two contributions merged into OpenAI's
 official .NET SDK. This makes the maintainer a contributor to that SDK, not an
@@ -61,6 +65,14 @@ provider behavior, model selection, and messaging integration:
 | [`QwenLM/qwen-code#7612`](https://github.com/QwenLM/qwen-code/pull/7612), merged 2026-07-23 | Preserves Telegram forum-topic routing for command and agent replies, including concurrent topics. |
 | [`QwenLM/qwen-code#7666`](https://github.com/QwenLM/qwen-code/pull/7666), merged 2026-07-25 | Adds configurable SSE rate-limit retry delays while preserving existing defaults, with focused tests and build/lint/type checks. |
 | [`QwenLM/qwen-code#7661`](https://github.com/QwenLM/qwen-code/pull/7661), merged 2026-07-26 | Avoids sending required tool calls to DashScope thinking modes that reject them. |
+
+Two accepted changes in T3 Code (`pingdotgg/t3code`), an open-source app for
+controlling coding agents:
+
+| Contribution | Scope |
+|---|---|
+| [`pingdotgg/t3code#19627`](https://github.com/pingdotgg/t3code/pull/19627), merged 2026-10-18 | Resolves `~/` file links on Windows when the home path is spelled with different letter case, with two regression cases. |
+| [`pingdotgg/t3code#16941`](https://github.com/pingdotgg/t3code/pull/16941), merged 2026-10-20 | Stops queued browser-preview actions from starting after their caller has timed out, while a recording stop still runs so capture is cleaned up. The project maintainer rebuilt the final version on top of this pull request and kept its deadline model. |
 
 These changes are broader AI-agent engineering evidence. They are not Strix
 Halo benchmark claims.
@@ -80,7 +92,7 @@ source-of-truth links.
 
 | Project | Contribution | Status |
 |---|---|---|
-| `ROCm/aiter` | [`#4385`](https://github.com/ROCm/aiter/pull/4385) | Open. Public maintainer feedback confirms the technical direction; it is listed here as ongoing technical validation and is excluded from the merge count until merged. |
+| `ROCm/aiter` | [`#4385`](https://github.com/ROCm/aiter/pull/4385) | Open (checked 2026-11-09). Public maintainer feedback confirms the technical direction; it is listed here as ongoing technical validation and is excluded from the merge count until merged. |
 
 ## External Adoption Of This Guide
 
@@ -101,9 +113,11 @@ independent recommendations:
   to enable Strix Halo or improve Strix Halo inference speed.
 - The Lemonade contribution is a configuration-consistency fix accepted by
   the AMD-sponsored open-source Lemonade project; it is not an AMD partnership.
-- OpenAI .NET SDK, Kubernetes SIG, Qwen Code, OpenTelemetry, NVIDIA AICR,
-  LocalAI, and vLLM GGUF work should not be presented as AMD or OEM
-  collaboration.
+- The llmfit and whichllm contributions fix how those tools identify Strix
+  Halo hardware; they do not change inference speed.
+- OpenAI .NET SDK, Kubernetes SIG, Ray, Qwen Code, T3 Code, OpenTelemetry,
+  NVIDIA AICR, LocalAI, and vLLM GGUF work should not be presented as AMD or
+  OEM collaboration.
 - Awesome-list and wiki listings are adoption signals, not technical review.
 - Guide performance and compatibility claims remain supported by the linked
   CSVs, raw logs, charts, commands, and caveats for each specific run.
